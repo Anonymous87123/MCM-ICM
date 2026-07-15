@@ -1,0 +1,3188 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2018-77845-746864a6",
+  "problem_type": "A",
+  "year": "2018",
+  "source_sha256": "746864a60a1cf3bbccc8f24d92458c2e30605ba9b9f6aef019547b164b3471fd",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-A-2018-77845-001",
+      "page": 5,
+      "section": "Functional D/E/F layer interface",
+      "family": "layered propagation architecture",
+      "purpose": "Define the retained physical roles and default scenario passed to MHPM.",
+      "base_or_modification": "paper-specific",
+      "summary": "D attenuates, E refracts once, and merged F bends/reflects the ray under a daytime-summer baseline.",
+      "variables": [
+        {
+          "symbol": "D_min",
+          "normalized_name": "d-layer lower boundary",
+          "definition": "D-layer lower boundary",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_max",
+          "normalized_name": "d-layer upper boundary",
+          "definition": "D-layer upper boundary",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_mid",
+          "normalized_name": "e-layer representative height",
+          "definition": "E-layer representative height",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_state",
+          "normalized_name": "f-layer profile state",
+          "definition": "F-layer profile state",
+          "unit": "profile",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "scenario",
+          "normalized_name": "default environmental scenario",
+          "definition": "default environmental scenario",
+          "unit": "categorical",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "layer_roles",
+          "normalized_name": "functional layer roles",
+          "definition": "functional layer roles",
+          "unit": "typed modules",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "D_min",
+        "D_max",
+        "E_mid",
+        "F_state",
+        "scenario"
+      ],
+      "outputs": [
+        "layer_roles"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes this controller or aggregation in prose/figures without a single numbered governing equation."
+      },
+      "objectives": [
+        "Define the retained physical roles and default scenario passed to MHPM."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "D_min",
+          "D_max",
+          "E_mid"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set the default scenario.",
+          "Map D, E, and merged F to attenuation, single refraction, and refraction/reflection roles.",
+          "Pass layer interfaces to the profile and path modules."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Daytime summer conditions are treated as the main baseline.",
+        "F1 and F2 are merged."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "layer_roles"
+      ],
+      "validation_refs": [
+        "Assumption list",
+        "Model Description"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-002",
+      "page": 7,
+      "section": "D-layer energy loss",
+      "family": "ionospheric absorption",
+      "purpose": "Compute D-layer attenuation per path length.",
+      "base_or_modification": "paper-specific",
+      "summary": "Electron density and collision rate produce a frequency-dependent attenuation coefficient.",
+      "variables": [
+        {
+          "symbol": "alpha",
+          "normalized_name": "d-layer attenuation coefficient",
+          "definition": "D-layer attenuation coefficient",
+          "unit": "dB/km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "d-layer electron density",
+          "definition": "D-layer electron density",
+          "unit": "m^-3",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "collision rate",
+          "definition": "collision rate",
+          "unit": "s^-1",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "carrier frequency",
+          "definition": "carrier frequency",
+          "unit": "MHz",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N",
+        "nu",
+        "f"
+      ],
+      "outputs": [
+        "alpha"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-001",
+          "label": "1",
+          "page": 7,
+          "source_expression": "alpha=1.16e-15*N*nu/f^2",
+          "normalized_latex": "\\alpha=1.16\\times10^{-15}N\\nu/f^2",
+          "purpose": "Compute the D-layer loss rate.",
+          "variable_symbols": [
+            "alpha",
+            "N",
+            "nu",
+            "f"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Compute D-layer attenuation per path length."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "nu"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Adopt N and collision rate.",
+          "Evaluate alpha for the carrier frequency.",
+          "Multiply by traversed D-layer distance in the multi-hop ledger."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The D layer changes energy but not ray direction."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "alpha"
+      ],
+      "validation_refs": [
+        "Equation 1 variable check",
+        "frequency-squared trend"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-003",
+      "page": 8,
+      "section": "Piecewise electron-density profile",
+      "family": "ionosphere state profile",
+      "purpose": "Construct Ne(h) across the E and F regions.",
+      "base_or_modification": "paper-specific",
+      "summary": "A four-piece profile joins an E parabola, linear bridge, F2 parabola, and topside exponential.",
+      "variables": [
+        {
+          "symbol": "Ne",
+          "normalized_name": "electron density",
+          "definition": "electron density",
+          "unit": "m^-3",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "altitude",
+          "definition": "altitude",
+          "unit": "km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NmE",
+          "normalized_name": "e-layer peak electron density",
+          "definition": "E-layer peak electron density",
+          "unit": "m^-3",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hmE",
+          "normalized_name": "e-layer peak height",
+          "definition": "E-layer peak height",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ymE",
+          "normalized_name": "e-layer semi-thickness",
+          "definition": "E-layer semi-thickness",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NmF2",
+          "normalized_name": "f2 peak electron density",
+          "definition": "F2 peak electron density",
+          "unit": "m^-3",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hmF2",
+          "normalized_name": "f2 peak height",
+          "definition": "F2 peak height",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ymF2",
+          "normalized_name": "f2 semi-thickness",
+          "definition": "F2 semi-thickness",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nj",
+          "normalized_name": "bridge electron density",
+          "definition": "bridge electron density",
+          "unit": "m^-3",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hj",
+          "normalized_name": "bridge height",
+          "definition": "bridge height",
+          "unit": "km",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fj",
+          "normalized_name": "bridge frequency",
+          "definition": "bridge frequency",
+          "unit": "MHz",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "foE",
+          "normalized_name": "e critical frequency",
+          "definition": "E critical frequency",
+          "unit": "MHz",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "foF2",
+          "normalized_name": "f2 critical frequency",
+          "definition": "F2 critical frequency",
+          "unit": "MHz",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "topside scale height",
+          "definition": "topside scale height",
+          "unit": "km",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "h",
+        "NmE",
+        "hmE",
+        "ymE",
+        "NmF2",
+        "hmF2",
+        "ymF2",
+        "foE",
+        "foF2"
+      ],
+      "outputs": [
+        "Ne"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-003",
+          "label": "3",
+          "page": 8,
+          "source_expression": "Ne(h)=four-piece E/bridge/F2/topside profile",
+          "normalized_latex": "N_e(h)=\\begin{cases}N_{mE}[1-((h-h_{mE})/y_{mE})^2]&\\cdots\\\\\\text{linear bridge}&\\cdots\\\\N_{mF2}[1-((h-h_{mF2})/y_{mF2})^2]&\\cdots\\\\N_{mF2}\\exp\\{0.5[1-(h-h_{mF2})/H-e^{-(h-h_{mF2})/H}]\\}&\\cdots\\end{cases}",
+          "purpose": "Define the electron-density profile.",
+          "variable_symbols": [
+            "Ne",
+            "h",
+            "NmE",
+            "hmE",
+            "ymE",
+            "NmF2",
+            "hmF2",
+            "ymF2",
+            "Nj",
+            "hj",
+            "H"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2018-77845-004",
+          "label": "4",
+          "page": 8,
+          "source_expression": "H, Nj, hj and fj supporting relations",
+          "normalized_latex": "H=1.66[30+0.075(h_{mF2}-200)],\\;N_j=1.24\\times10^{10}f_j^2,\\;h_j=h_{mF2}-y_{mF2}\\sqrt{1-(f_j/f_{oF2})^2},\\;f_j=1.7f_{oE}",
+          "purpose": "Compute the joining and topside parameters.",
+          "variable_symbols": [
+            "H",
+            "hmF2",
+            "Nj",
+            "fj",
+            "hj",
+            "ymF2",
+            "foF2",
+            "foE"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Construct Ne(h) across the E and F regions."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "NmE",
+          "hmE",
+          "ymE",
+          "NmF2",
+          "hmF2",
+          "ymF2",
+          "foE",
+          "foF2"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Load Table 2 parameters.",
+          "Compute H, fj, Nj, and hj.",
+          "Evaluate the appropriate profile branch by height.",
+          "Return Ne to the refractive-index model."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Regional parameters represent a fixed daytime profile."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "Ne"
+      ],
+      "validation_refs": [
+        "Figure 2 left profile",
+        "Table 2 parameter bundle",
+        "joining-point continuity check"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-004",
+      "page": 7,
+      "section": "Refractive index from density",
+      "family": "plasma refractive relation",
+      "purpose": "Convert Ne(h) and frequency into n(h,f).",
+      "base_or_modification": "paper-specific",
+      "summary": "The density profile becomes the refractive-index field used by E/F ray tracing.",
+      "variables": [
+        {
+          "symbol": "n",
+          "normalized_name": "refractive index",
+          "definition": "refractive index",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ne",
+          "normalized_name": "electron density",
+          "definition": "electron density",
+          "unit": "10^12 m^-3",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "carrier frequency",
+          "definition": "carrier frequency",
+          "unit": "MHz",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Ne",
+        "f"
+      ],
+      "outputs": [
+        "n"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-002",
+          "label": "2",
+          "page": 7,
+          "source_expression": "n=sqrt(1-80.8*Ne/f^2)",
+          "normalized_latex": "n=\\sqrt{1-80.8N_e/f^2}",
+          "purpose": "Compute the refractive-index field.",
+          "variable_symbols": [
+            "n",
+            "Ne",
+            "f"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Convert Ne(h) and frequency into n(h,f)."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Read Ne at height h.",
+          "Evaluate n for the carrier frequency.",
+          "Supply the local index to Snell updates."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Magnetic-field, collision, and polarization effects on refractive index are ignored."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "n"
+      ],
+      "validation_refs": [
+        "Figure 2 frequency comparison",
+        "real-valued index domain"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-005",
+      "page": 9,
+      "section": "E-layer single refraction",
+      "family": "single-interface refraction",
+      "purpose": "Compute the direction entering the F layer.",
+      "base_or_modification": "paper-specific",
+      "summary": "The continuous E layer is compressed to one interface at its representative height.",
+      "variables": [
+        {
+          "symbol": "theta_in",
+          "normalized_name": "incident grazing-angle state",
+          "definition": "incident grazing-angle state",
+          "unit": "rad",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_air",
+          "normalized_name": "air refractive index",
+          "definition": "air refractive index",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_E",
+          "normalized_name": "e-layer representative refractive index",
+          "definition": "E-layer representative refractive index",
+          "unit": "dimensionless",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_E",
+          "normalized_name": "e-layer exit angle",
+          "definition": "E-layer exit angle",
+          "unit": "rad",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "theta_in",
+        "n_air",
+        "n_E"
+      ],
+      "outputs": [
+        "theta_E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U01",
+          "label": null,
+          "page": 9,
+          "source_expression": "theta_E=acos(cos(theta_in)*n_air/n_E)",
+          "normalized_latex": "\\theta_E=\\arccos(\\cos\\theta_{in}\\,n_{air}/n_E)",
+          "purpose": "Reconstruct the single-refraction update implemented in Appendix B.",
+          "variable_symbols": [
+            "theta_E",
+            "theta_in",
+            "n_air",
+            "n_E"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Compute the direction entering the F layer."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "n_air"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Evaluate n_E at the E representative height.",
+          "Apply the single-interface Snell update.",
+          "Pass theta_E to F-layer marching."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The E layer causes one refraction and has no finite-gradient path."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "theta_E"
+      ],
+      "validation_refs": [
+        "Figure 3 geometry",
+        "Appendix B angle_E update"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-006",
+      "page": 11,
+      "section": "F-layer micro-element recursion",
+      "family": "finite-step ray tracing",
+      "purpose": "Trace the refracted path to a horizontal turning event and mirror descent.",
+      "base_or_modification": "paper-specific",
+      "summary": "A 0.01 km height march updates local angle and transverse distance until the ray becomes nearly horizontal.",
+      "variables": [
+        {
+          "symbol": "n_i",
+          "normalized_name": "refractive index at step i",
+          "definition": "refractive index at step i",
+          "unit": "dimensionless",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_next",
+          "normalized_name": "refractive index at next step",
+          "definition": "refractive index at next step",
+          "unit": "dimensionless",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_i",
+          "normalized_name": "ray angle from vertical at step i",
+          "definition": "ray angle from vertical at step i",
+          "unit": "rad",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_next",
+          "normalized_name": "next ray angle",
+          "definition": "next ray angle",
+          "unit": "rad",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_i",
+          "normalized_name": "complementary angle",
+          "definition": "complementary angle",
+          "unit": "rad",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_step",
+          "normalized_name": "vertical step",
+          "definition": "vertical step",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Distance_i",
+          "normalized_name": "transverse increment",
+          "definition": "transverse increment",
+          "unit": "km",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Distance_total",
+          "normalized_name": "accumulated transverse distance",
+          "definition": "accumulated transverse distance",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "turning_state",
+          "normalized_name": "horizontal or escaped terminal state",
+          "definition": "horizontal or escaped terminal state",
+          "unit": "categorical",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "n_i",
+        "n_next",
+        "beta_i",
+        "beta_next",
+        "alpha_i",
+        "h_step"
+      ],
+      "outputs": [
+        "Distance_total",
+        "turning_state"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-005",
+          "label": "5",
+          "page": 11,
+          "source_expression": "n_i/n_(i+1)=sin(beta_(i+1))/sin(beta_i)=cos(alpha_(i+1))/cos(alpha_i)",
+          "normalized_latex": "n_i/n_{i+1}=\\sin\\beta_{i+1}/\\sin\\beta_i=\\cos\\alpha_{i+1}/\\cos\\alpha_i",
+          "purpose": "Update the F-layer angle between micro-elements.",
+          "variable_symbols": [
+            "n_i",
+            "n_next",
+            "beta_i",
+            "beta_next",
+            "alpha_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2018-77845-006",
+          "label": "6",
+          "page": 11,
+          "source_expression": "Distance_i=h_step*tan(beta_i)",
+          "normalized_latex": "Distance_i=h_{step}\\tan\\beta_i",
+          "purpose": "Compute one transverse increment.",
+          "variable_symbols": [
+            "Distance_i",
+            "h_step",
+            "beta_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2018-77845-007",
+          "label": "7",
+          "page": 11,
+          "source_expression": "Distance_total=sum_i Distance_i",
+          "normalized_latex": "Distance_{total}=\\sum_i Distance_i",
+          "purpose": "Accumulate the horizontal range.",
+          "variable_symbols": [
+            "Distance_total",
+            "Distance_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Trace the refracted path to a horizontal turning event and mirror descent."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "h_step"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Initialize from theta_E.",
+          "Advance height by 0.01 km.",
+          "Update local n and angle using Equation 5.",
+          "Accumulate Equation 6 increments.",
+          "Stop near the horizontal event or at the printed F_max bound.",
+          "Mirror the ascent to form descent."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Locally horizontal layers and a fixed 0.01 km step represent the F region."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "Distance_total",
+        "turning_state"
+      ],
+      "validation_refs": [
+        "Figure 4 recursion",
+        "Appendix B cosAngleF test",
+        "path plots"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-007",
+      "page": 12,
+      "section": "Critical frequency and MUF gate",
+      "family": "frequency feasibility gate",
+      "purpose": "Compute critical frequency and maximum usable frequency.",
+      "base_or_modification": "paper-specific",
+      "summary": "Peak density and Earth-radius geometry define an admissible reflection-frequency limit.",
+      "variables": [
+        {
+          "symbol": "MUF",
+          "normalized_name": "maximum usable frequency",
+          "definition": "maximum usable frequency",
+          "unit": "MHz",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fcr",
+          "normalized_name": "critical frequency",
+          "definition": "critical frequency",
+          "unit": "MHz",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ne",
+          "normalized_name": "electron density",
+          "definition": "electron density",
+          "unit": "m^-3",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RE",
+          "normalized_name": "earth radius",
+          "definition": "Earth radius",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "ionosphere height",
+          "definition": "ionosphere height",
+          "unit": "km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Ne",
+        "RE",
+        "h"
+      ],
+      "outputs": [
+        "MUF"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-008",
+          "label": "8",
+          "page": 12,
+          "source_expression": "MUF=fcr/sqrt(1-(RE/(RE+h))^2); fcr=sqrt(Ne/(1.24e10))",
+          "normalized_latex": "MUF=\\frac{f_{cr}}{\\sqrt{1-(R_E/(R_E+h))^2}},\\quad f_{cr}=\\sqrt{N_e/(1.24\\times10^{10})}",
+          "purpose": "Gate carrier frequencies by ionospheric feasibility.",
+          "variable_symbols": [
+            "MUF",
+            "fcr",
+            "Ne",
+            "RE",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Compute critical frequency and maximum usable frequency."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "RE"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute fcr from density.",
+          "Apply Earth-radius geometry.",
+          "Compare the candidate frequency with MUF."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The gate uses a single height and peak-density summary."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "MUF"
+      ],
+      "validation_refs": [
+        "fcandMUF.m",
+        "day/night stated ranges"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-008",
+      "page": 12,
+      "section": "Calm-sea Fresnel reflection",
+      "family": "complex-medium Fresnel reflection",
+      "purpose": "Compute horizontal and vertical calm-sea reflection amplitudes.",
+      "base_or_modification": "paper-specific",
+      "summary": "A complex seawater permittivity and grazing angle produce polarization-specific coefficients.",
+      "variables": [
+        {
+          "symbol": "RH",
+          "normalized_name": "horizontal-polarization amplitude coefficient",
+          "definition": "horizontal-polarization amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RV",
+          "normalized_name": "vertical-polarization amplitude coefficient",
+          "definition": "vertical-polarization amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "grazing angle",
+          "definition": "grazing angle",
+          "unit": "rad",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps_tilde",
+          "normalized_name": "complex relative permittivity",
+          "definition": "complex relative permittivity",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "wavelength",
+          "definition": "wavelength",
+          "unit": "m",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "theta",
+        "eps_tilde",
+        "lambda"
+      ],
+      "outputs": [
+        "RH",
+        "RV"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-009",
+          "label": "9",
+          "page": 12,
+          "source_expression": "RH=(sin(theta)-sqrt(eps~-cos^2(theta)))/(sin(theta)+sqrt(...)); RV=(eps~sin(theta)-sqrt(...))/(eps~sin(theta)+sqrt(...))",
+          "normalized_latex": "R_H=\\frac{\\sin\\theta-\\sqrt{\\tilde\\epsilon-\\cos^2\\theta}}{\\sin\\theta+\\sqrt{\\tilde\\epsilon-\\cos^2\\theta}},\\quad R_V=\\frac{\\tilde\\epsilon\\sin\\theta-\\sqrt{\\tilde\\epsilon-\\cos^2\\theta}}{\\tilde\\epsilon\\sin\\theta+\\sqrt{\\tilde\\epsilon-\\cos^2\\theta}}",
+          "purpose": "Compute calm-sea polarization coefficients.",
+          "variable_symbols": [
+            "RH",
+            "RV",
+            "theta",
+            "eps_tilde"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Compute horizontal and vertical calm-sea reflection amplitudes."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "eps_tilde",
+          "lambda"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Construct the complex seawater permittivity.",
+          "Evaluate RH and RV.",
+          "Compare polarization sensitivity and retain the horizontal branch."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The sea is a locally flat homogeneous interface."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "RH",
+        "RV"
+      ],
+      "validation_refs": [
+        "Figure 5",
+        "seareflection.m baseline coefficients"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-009",
+      "page": 13,
+      "section": "Rough-sea correction",
+      "family": "wind-driven roughness correction",
+      "purpose": "Convert the calm-sea coefficient into a wind-conditioned coefficient.",
+      "base_or_modification": "paper-specific",
+      "summary": "Wind speed determines effective wave height, roughness g, and multiplicative factor rho.",
+      "variables": [
+        {
+          "symbol": "R",
+          "normalized_name": "calm-sea amplitude coefficient",
+          "definition": "calm-sea amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rprime",
+          "normalized_name": "rough-sea amplitude coefficient",
+          "definition": "rough-sea amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "rough-sea correction factor",
+          "definition": "rough-sea correction factor",
+          "unit": "dimensionless",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "sea roughness state",
+          "definition": "sea roughness state",
+          "unit": "dimensionless",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_wave",
+          "normalized_name": "effective wind-wave height",
+          "definition": "effective wind-wave height",
+          "unit": "m",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "near-surface wind speed",
+          "definition": "near-surface wind speed",
+          "unit": "m/s",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "carrier frequency",
+          "definition": "carrier frequency",
+          "unit": "Hz",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "grazing angle",
+          "definition": "grazing angle",
+          "unit": "rad",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "speed of light",
+          "definition": "speed of light",
+          "unit": "m/s",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "R",
+        "v",
+        "f",
+        "theta",
+        "c"
+      ],
+      "outputs": [
+        "Rprime"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-010",
+          "label": "10",
+          "page": 13,
+          "source_expression": "Rprime=rho*R",
+          "normalized_latex": "R'=\\rho R",
+          "purpose": "Apply the roughness correction.",
+          "variable_symbols": [
+            "Rprime",
+            "rho",
+            "R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2018-77845-011",
+          "label": "11",
+          "page": 13,
+          "source_expression": "rho=1/sqrt(3.2g-2+sqrt((3.2g)^2-7g+9)); g=0.5*(4*pi*h_wave*f*sin(theta)/c)^2; h_wave=0.0051*v^2",
+          "normalized_latex": "\\rho=[3.2g-2+\\sqrt{(3.2g)^2-7g+9}]^{-1/2},\\;g=\\tfrac12(4\\pi h f\\sin\\theta/c)^2,\\;h=0.0051v^2",
+          "purpose": "Compute the wind-driven sea correction.",
+          "variable_symbols": [
+            "rho",
+            "g",
+            "h_wave",
+            "f",
+            "theta",
+            "c",
+            "v"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Convert the calm-sea coefficient into a wind-conditioned coefficient."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "v",
+          "c"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Convert wind speed to effective wave height.",
+          "Evaluate g and rho.",
+          "Multiply the selected Fresnel coefficient by rho.",
+          "Use magnitude squared for a power ratio."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The empirical sea-height and correction relations apply over the tested range."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "Rprime"
+      ],
+      "validation_refs": [
+        "Figure 6",
+        "Table 3 paired cases"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-010",
+      "page": 14,
+      "section": "Smooth-ground reflection",
+      "family": "material-parameter Fresnel reflection",
+      "purpose": "Reuse the Fresnel kernel for a smooth wet-concrete proxy ground.",
+      "base_or_modification": "paper-specific",
+      "summary": "Ground changes the complex permittivity inputs while preserving the polarization kernel.",
+      "variables": [
+        {
+          "symbol": "Rground",
+          "normalized_name": "smooth-ground amplitude coefficient",
+          "definition": "smooth-ground amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "grazing angle",
+          "definition": "grazing angle",
+          "unit": "rad",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps_r",
+          "normalized_name": "relative permittivity",
+          "definition": "relative permittivity",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "conductivity",
+          "definition": "conductivity",
+          "unit": "S/m",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "wavelength",
+          "definition": "wavelength",
+          "unit": "m",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps_ground",
+          "normalized_name": "complex ground permittivity",
+          "definition": "complex ground permittivity",
+          "unit": "dimensionless",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "theta",
+        "eps_r",
+        "sigma",
+        "lambda"
+      ],
+      "outputs": [
+        "Rground"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U02",
+          "label": null,
+          "page": 14,
+          "source_expression": "eps_ground=eps_r+i*60*sigma*lambda; Rground=Fresnel_H(eps_ground,theta)",
+          "normalized_latex": "\\tilde\\epsilon_g=\\epsilon_r+i60\\sigma\\lambda,\\quad R_g=\\mathcal F_H(\\tilde\\epsilon_g,\\theta)",
+          "purpose": "Apply the shared Fresnel form to the smooth-ground proxy.",
+          "variable_symbols": [
+            "eps_ground",
+            "eps_r",
+            "sigma",
+            "lambda",
+            "Rground",
+            "theta"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Reuse the Fresnel kernel for a smooth wet-concrete proxy ground."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "eps_r",
+          "sigma"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set wet-concrete material properties.",
+          "Construct complex ground permittivity.",
+          "Evaluate the horizontal Fresnel coefficient."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Wet concrete is used as a general smooth-ground proxy."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "Rground"
+      ],
+      "validation_refs": [
+        "Figure 7",
+        "groundreflection.m"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-011",
+      "page": 14,
+      "section": "Rugged-ground topographic correction",
+      "family": "terrain roughness correction",
+      "purpose": "Reduce the smooth-ground amplitude using elevation standard deviation.",
+      "base_or_modification": "paper-specific",
+      "summary": "Frequency, grazing angle, and Sh define an exponential roughness penalty.",
+      "variables": [
+        {
+          "symbol": "rho_s",
+          "normalized_name": "ground roughness correction",
+          "definition": "ground roughness correction",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "ground roughness state",
+          "definition": "ground roughness state",
+          "unit": "dimensionless",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sh",
+          "normalized_name": "elevation standard deviation",
+          "definition": "elevation standard deviation",
+          "unit": "m",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "wavelength",
+          "definition": "wavelength",
+          "unit": "m",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi",
+          "normalized_name": "grazing angle",
+          "definition": "grazing angle",
+          "unit": "rad",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rground",
+          "normalized_name": "smooth-ground amplitude",
+          "definition": "smooth-ground amplitude",
+          "unit": "dimensionless",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rrugged",
+          "normalized_name": "rugged-ground amplitude",
+          "definition": "rugged-ground amplitude",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Sh",
+        "lambda",
+        "phi",
+        "Rground"
+      ],
+      "outputs": [
+        "rho_s",
+        "Rrugged"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-012",
+          "label": "12",
+          "page": 14,
+          "source_expression": "rho_s=exp(-0.5*g^2); g=4*pi*(Sh/lambda)*sin(phi)",
+          "normalized_latex": "\\rho_s=e^{-0.5g^2},\\quad g=4\\pi(S_h/\\lambda)\\sin\\varphi",
+          "purpose": "Compute the terrain-roughness penalty.",
+          "variable_symbols": [
+            "rho_s",
+            "g",
+            "Sh",
+            "lambda",
+            "phi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2018-77845-U03",
+          "label": null,
+          "page": 14,
+          "source_expression": "Rrugged=rho_s*Rground",
+          "normalized_latex": "R_{rugged}=\\rho_s R_{ground}",
+          "purpose": "Apply the correction to ground reflection amplitude.",
+          "variable_symbols": [
+            "Rrugged",
+            "rho_s",
+            "Rground"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Reduce the smooth-ground amplitude using elevation standard deviation."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "Sh"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compute g from Sh, wavelength, and angle.",
+          "Evaluate rho_s.",
+          "Multiply the smooth-ground amplitude.",
+          "Compare matched smooth and rugged cases."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "A single elevation standard deviation represents topographic complexity."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "rho_s",
+        "Rrugged"
+      ],
+      "validation_refs": [
+        "Figures 8-9",
+        "Table 5 arithmetic"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-012",
+      "page": 15,
+      "section": "Free-space path loss",
+      "family": "distance-frequency path loss",
+      "purpose": "Compute propagation loss for each accumulated path segment.",
+      "base_or_modification": "paper-specific",
+      "summary": "Distance and carrier frequency enter the standard km/MHz FSPL form.",
+      "variables": [
+        {
+          "symbol": "FSPL",
+          "normalized_name": "free-space path loss",
+          "definition": "free-space path loss",
+          "unit": "dB",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "propagation distance",
+          "definition": "propagation distance",
+          "unit": "km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "carrier frequency",
+          "definition": "carrier frequency",
+          "unit": "MHz",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d",
+        "f"
+      ],
+      "outputs": [
+        "FSPL"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-013",
+          "label": "13",
+          "page": 15,
+          "source_expression": "FSPL=20*log10(d)+20*log10(f)+32.45",
+          "normalized_latex": "FSPL=20\\log_{10}d+20\\log_{10}f+32.45",
+          "purpose": "Compute free-space loss in km/MHz units.",
+          "variable_symbols": [
+            "FSPL",
+            "d",
+            "f"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Compute propagation loss for each accumulated path segment."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Accumulate ray-path distance.",
+          "Evaluate FSPL with d in km and f in MHz.",
+          "Subtract the result from the link state."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Far-field free-space spreading is used throughout the ionosphere-surface path."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "FSPL"
+      ],
+      "validation_refs": [
+        "Equation 13 unit check",
+        "Appendix B cumulative distance"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-013",
+      "page": 16,
+      "section": "Background noise and initial SNR",
+      "family": "external-noise link state",
+      "purpose": "Convert noise factor, temperature, and bandwidth into an initial SNR.",
+      "base_or_modification": "paper-specific",
+      "summary": "Frequency-specific Fa values are added to thermal noise and subtracted from 100 W source power.",
+      "variables": [
+        {
+          "symbol": "Fa",
+          "normalized_name": "external noise factor",
+          "definition": "external noise factor",
+          "unit": "dB",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pn",
+          "normalized_name": "noise power",
+          "definition": "noise power",
+          "unit": "dBW",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "boltzmann constant",
+          "definition": "Boltzmann constant",
+          "unit": "J/K",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T0",
+          "normalized_name": "reference temperature",
+          "definition": "reference temperature",
+          "unit": "K",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "noise bandwidth",
+          "definition": "noise bandwidth",
+          "unit": "Hz",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pt",
+          "normalized_name": "transmitter power",
+          "definition": "transmitter power",
+          "unit": "W",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SNR0",
+          "normalized_name": "initial signal-to-noise ratio",
+          "definition": "initial signal-to-noise ratio",
+          "unit": "dB",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Fa",
+        "K",
+        "T0",
+        "b",
+        "Pt"
+      ],
+      "outputs": [
+        "SNR0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U04",
+          "label": null,
+          "page": 16,
+          "source_expression": "Fa=10*log10(Pn/(K*T0*b)); Pn_dBW=Fa+10*log10(K*T0*b); SNR0=10*log10(Pt)-Pn_dBW",
+          "normalized_latex": "F_a=10\\log_{10}\\frac{P_n}{KT_0b},\\quad P_{n,dBW}=F_a+10\\log_{10}(KT_0b),\\quad SNR_0=10\\log_{10}P_t-P_{n,dBW}",
+          "purpose": "Initialize the SNR ledger.",
+          "variable_symbols": [
+            "Fa",
+            "Pn",
+            "K",
+            "T0",
+            "b",
+            "Pt",
+            "SNR0"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Convert noise factor, temperature, and bandwidth into an initial SNR."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "Fa",
+          "K",
+          "T0",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Read Fa by frequency from the noise curve.",
+          "Compute thermal-reference noise power.",
+          "Add Fa and subtract from logarithmic source power."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The printed code fixes b at 200 Hz and uses three discrete Fa values."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "SNR0"
+      ],
+      "validation_refs": [
+        "Figure 10",
+        "Appendix B initialization"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-014",
+      "page": 17,
+      "section": "Multi-hop cumulative controller",
+      "family": "recursive path and SNR controller",
+      "purpose": "Repeat path, loss, and surface updates until reception fails.",
+      "base_or_modification": "paper-specific",
+      "summary": "One hop links E/F geometry, D absorption, FSPL, surface reflection, and an SNR continuation gate.",
+      "variables": [
+        {
+          "symbol": "SNR0",
+          "normalized_name": "initial snr",
+          "definition": "initial SNR",
+          "unit": "dB",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SNR",
+          "normalized_name": "current cumulative snr",
+          "definition": "current cumulative SNR",
+          "unit": "dB",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "FSPL",
+          "normalized_name": "free-space loss",
+          "definition": "free-space loss",
+          "unit": "dB",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "d-layer attenuation rate",
+          "definition": "D-layer attenuation rate",
+          "unit": "dB/km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ell_D",
+          "normalized_name": "cumulative d-layer distance",
+          "definition": "cumulative D-layer distance",
+          "unit": "km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rsurface",
+          "normalized_name": "surface amplitude coefficient",
+          "definition": "surface amplitude coefficient",
+          "unit": "dimensionless",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nrefl",
+          "normalized_name": "completed reflection count",
+          "definition": "completed reflection count",
+          "unit": "count",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hop",
+          "normalized_name": "hop count",
+          "definition": "hop count",
+          "unit": "count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "distance",
+          "normalized_name": "maximum propagation distance",
+          "definition": "maximum propagation distance",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "threshold",
+          "normalized_name": "snr continuation threshold",
+          "definition": "SNR continuation threshold",
+          "unit": "dB",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "SNR0",
+        "SNR",
+        "FSPL",
+        "alpha",
+        "ell_D",
+        "Rsurface",
+        "Nrefl",
+        "threshold"
+      ],
+      "outputs": [
+        "hop",
+        "distance",
+        "SNR"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U05",
+          "label": null,
+          "page": 17,
+          "source_expression": "SNR=SNR0-FSPL-alpha*ell_D+Nrefl*10*log10(abs(Rsurface)^2)",
+          "normalized_latex": "SNR=SNR_0-FSPL-\\alpha\\ell_D+N_{refl}10\\log_{10}|R_{surface}|^2",
+          "purpose": "Reconstruct the cumulative loss ledger implemented in main.m.",
+          "variable_symbols": [
+            "SNR",
+            "SNR0",
+            "FSPL",
+            "alpha",
+            "ell_D",
+            "Nrefl",
+            "Rsurface"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Repeat path, loss, and surface updates until reception fails."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "threshold"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize SNR0 and the ray state.",
+          "Trace one up/down ionosphere path.",
+          "Accumulate distance, FSPL, and D absorption.",
+          "Apply surface reflection loss.",
+          "Continue while the stored SNR is at least 10 dB and hop count is at most 10."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The main path is flat Cartesian geometry and uses mirrored descent."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "hop",
+        "distance",
+        "SNR"
+      ],
+      "validation_refs": [
+        "Figure 12",
+        "Table 4",
+        "main.m while condition"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-015",
+      "page": 17,
+      "section": "MHPM experiment and result aggregation",
+      "family": "matched scenario comparison",
+      "purpose": "Compare sea, frequency-angle, and terrain cases with shared metrics.",
+      "base_or_modification": "paper-specific",
+      "summary": "Paired and controlled cases produce first-hop power, ratios, maximum hops, and distance.",
+      "variables": [
+        {
+          "symbol": "case",
+          "normalized_name": "scenario parameter bundle",
+          "definition": "scenario parameter bundle",
+          "unit": "record",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "power",
+          "normalized_name": "reported first-hop link metric",
+          "definition": "reported first-hop link metric",
+          "unit": "dB",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ratio",
+          "normalized_name": "linear power ratio",
+          "definition": "linear power ratio",
+          "unit": "dimensionless",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hop",
+          "normalized_name": "maximum hop count",
+          "definition": "maximum hop count",
+          "unit": "count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "distance",
+          "normalized_name": "maximum propagation distance",
+          "definition": "maximum propagation distance",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sh",
+          "normalized_name": "terrain elevation deviation",
+          "definition": "terrain elevation deviation",
+          "unit": "m",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "case",
+        "Sh"
+      ],
+      "outputs": [
+        "power",
+        "ratio",
+        "hop",
+        "distance"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes this controller or aggregation in prose/figures without a single numbered governing equation."
+      },
+      "objectives": [
+        "Compare sea, frequency-angle, and terrain cases with shared metrics."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "Sh"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Fix all non-target parameters.",
+          "Run calm versus turbulent or smooth versus rugged variants.",
+          "Report additive difference and linear ratio.",
+          "Run frequency-angle cases and record hop and distance."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "Reported tables are deterministic cases rather than replicated experiments."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "power",
+        "ratio",
+        "hop",
+        "distance"
+      ],
+      "validation_refs": [
+        "Tables 3-5",
+        "Figures 11-13"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-016",
+      "page": 19,
+      "section": "MSRSM frequency-band coverage envelope",
+      "family": "parameter-sweep coverage",
+      "purpose": "Convert single-frequency landing points into ship-reception intervals.",
+      "base_or_modification": "paper-specific",
+      "summary": "A continuous 21-21.45 MHz band broadens each landing point into a finite sea-surface intersection zone.",
+      "variables": [
+        {
+          "symbol": "fmin",
+          "normalized_name": "lower carrier frequency",
+          "definition": "lower carrier frequency",
+          "unit": "MHz",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fmax",
+          "normalized_name": "upper carrier frequency",
+          "definition": "upper carrier frequency",
+          "unit": "MHz",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "landing",
+          "normalized_name": "single-frequency landing point",
+          "definition": "single-frequency landing point",
+          "unit": "km",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "left",
+          "normalized_name": "interval left boundary",
+          "definition": "interval left boundary",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "right",
+          "normalized_name": "interval right boundary",
+          "definition": "interval right boundary",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "interval length",
+          "definition": "interval length",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "fmin",
+        "fmax",
+        "landing"
+      ],
+      "outputs": [
+        "left",
+        "right",
+        "L"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U06",
+          "label": null,
+          "page": 19,
+          "source_expression": "L=right-left for landing envelope over f in [fmin,fmax]",
+          "normalized_latex": "L_j=x_{right,j}-x_{left,j},\\quad f\\in[f_{min},f_{max}]",
+          "purpose": "Define each frequency-sweep landing interval.",
+          "variable_symbols": [
+            "L",
+            "right",
+            "left",
+            "fmin",
+            "fmax"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Convert single-frequency landing points into ship-reception intervals."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "fmin",
+          "fmax"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Sweep frequency from fmin to fmax.",
+          "Trace each path with common angle and environment.",
+          "Take the landing envelope for each hop index.",
+          "Store left, right, and L."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The frequency band is treated as simultaneously available and maps continuously to landing locations."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "left",
+        "right",
+        "L"
+      ],
+      "validation_refs": [
+        "Figure 14",
+        "Table 6"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-017",
+      "page": 19,
+      "section": "Coverage-to-duration conversion",
+      "family": "kinematic service metric",
+      "purpose": "Convert each reception-zone length into residence time.",
+      "base_or_modification": "paper-specific",
+      "summary": "Constant ship speed maps the four interval lengths to times whose sum is 46.20 h.",
+      "variables": [
+        {
+          "symbol": "time",
+          "normalized_name": "residence time in one zone",
+          "definition": "residence time in one zone",
+          "unit": "h",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "reception-zone length",
+          "definition": "reception-zone length",
+          "unit": "km",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vship",
+          "normalized_name": "ship speed",
+          "definition": "ship speed",
+          "unit": "km/h",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "time_total",
+          "normalized_name": "sum of zone residence times",
+          "definition": "sum of zone residence times",
+          "unit": "h",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "vship"
+      ],
+      "outputs": [
+        "time",
+        "time_total"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-77845-U07",
+          "label": null,
+          "page": 19,
+          "source_expression": "time=L/vship; time_total=sum_j time_j",
+          "normalized_latex": "t_j=L_j/v_{ship},\\quad t_{total}=\\sum_j t_j",
+          "purpose": "Translate spatial coverage into a conditional duration metric.",
+          "variable_symbols": [
+            "time",
+            "L",
+            "vship",
+            "time_total"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The paper prints or visually defines the retained relation."
+      },
+      "objectives": [
+        "Convert each reception-zone length into residence time."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "vship"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute interval length.",
+          "Divide by constant ship speed.",
+          "Sum the four zone residence times."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The ship follows the propagation-distance axis at constant speed."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "time",
+        "time_total"
+      ],
+      "validation_refs": [
+        "Table 6 arithmetic",
+        "reported 46.20 h"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    },
+    {
+      "model_id": "MU-A-2018-77845-018",
+      "page": 20,
+      "section": "Environmental sensitivity experiments",
+      "family": "deterministic one-factor sensitivity",
+      "purpose": "Perturb density, layer height, and wind channels and compare path/energy outputs.",
+      "base_or_modification": "paper-specific",
+      "summary": "Three controlled sweeps distinguish geometry-changing states from reflection-energy states and an unvisited F2-density region.",
+      "variables": [
+        {
+          "symbol": "NmE",
+          "normalized_name": "e-layer peak density",
+          "definition": "E-layer peak density",
+          "unit": "m^-3",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NmF2",
+          "normalized_name": "f2 peak density",
+          "definition": "F2 peak density",
+          "unit": "m^-3",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hF",
+          "normalized_name": "f-layer height",
+          "definition": "F-layer height",
+          "unit": "km",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "wind speed",
+          "definition": "wind speed",
+          "unit": "m/s",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "path",
+          "normalized_name": "propagation trajectory",
+          "definition": "propagation trajectory",
+          "unit": "curve",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SNR",
+          "normalized_name": "propagation energy state",
+          "definition": "propagation energy state",
+          "unit": "dB",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hop",
+          "normalized_name": "maximum hop count",
+          "definition": "maximum hop count",
+          "unit": "count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "distance",
+          "normalized_name": "maximum propagation distance",
+          "definition": "maximum propagation distance",
+          "unit": "km",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "NmE",
+        "NmF2",
+        "hF",
+        "v"
+      ],
+      "outputs": [
+        "path",
+        "SNR",
+        "hop",
+        "distance"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes this controller or aggregation in prose/figures without a single numbered governing equation."
+      },
+      "objectives": [
+        "Perturb density, layer height, and wind channels and compare path/energy outputs."
+      ],
+      "constraints": [
+        "Operate only within the paper's stated daytime/summer HF scenarios, functional layer simplifications, flat-ray geometry, surface parameters, and tested frequency-angle-wind cases."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper supplies a default scenario and case-specific overrides before simulation."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Layer heights, frequency feasibility, surface state, 10 dB SNR gate, and the printed 10-hop cap bound the computation."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The ionosphere and surface are treated as frozen deterministic states; no stationarity proof is supplied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are adopted from regional literature, fixed physical constants, default scenarios, or deterministic perturbation cases; no joint calibration is reported.",
+        "parameters": [
+          "NmE",
+          "NmF2",
+          "hF",
+          "v"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Change one environmental input while holding others fixed.",
+          "Recompute path and SNR.",
+          "Separate active geometric channels from surface-energy channels.",
+          "Explain near-zero F2-density response by the unvisited altitude region."
+        ],
+        "software": [
+          "MATLAB",
+          "printed Appendix B"
+        ],
+        "convergence_criteria": "Finite forward evaluation; the paper uses physical events or an SNR threshold rather than optimization convergence, and supplies no step-size convergence study."
+      },
+      "assumptions": [
+        "The sensitivity study uses a few deterministic levels without joint uncertainty."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper demonstrates deterministic computations and scenario outputs but does not independently identify parameters from observations or validate all code-to-figure paths."
+      },
+      "handoff_outputs": [
+        "path",
+        "SNR",
+        "hop",
+        "distance"
+      ],
+      "validation_refs": [
+        "Figures 15-17",
+        "mechanism explanations"
+      ],
+      "computational_cost": "Constant-time closed forms or a height-step recursion per path; exact complexity and runtime are not reported.",
+      "strengths": [
+        "Provides a typed state or metric that connects the physical propagation model to a downstream comparison or decision."
+      ],
+      "limitations": [
+        "The retained interface is conditional on the paper's fixed regional profile, simplified geometry, proxy surface parameters, deterministic cases, and stated implementation gaps."
+      ],
+      "missing_details": [
+        "No unified provenance map ties every printed equation and code path to every reported table and figure."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2018-77845-001",
+      "to_model_id": "MU-A-2018-77845-003",
+      "handoff": "Functional E/F roles and default scenario parameterize the electron-density profile."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-003",
+      "to_model_id": "MU-A-2018-77845-004",
+      "handoff": "Ne(h) is converted to n(h,f)."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-004",
+      "to_model_id": "MU-A-2018-77845-005",
+      "handoff": "The representative E-layer refractive index sets the F-entry angle."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-005",
+      "to_model_id": "MU-A-2018-77845-006",
+      "handoff": "The E-layer exit angle initializes F-layer marching."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-004",
+      "to_model_id": "MU-A-2018-77845-006",
+      "handoff": "The local refractive-index profile drives every F-layer Snell update."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-003",
+      "to_model_id": "MU-A-2018-77845-007",
+      "handoff": "Peak density and height feed the critical-frequency/MUF gate."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-007",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "The physical feasibility limit should screen candidate carrier frequencies before recursion."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-008",
+      "to_model_id": "MU-A-2018-77845-009",
+      "handoff": "The calm-sea Fresnel coefficient is the baseline multiplied by roughness rho."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-009",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "The rough-sea amplitude supplies per-reflection loss."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-010",
+      "to_model_id": "MU-A-2018-77845-011",
+      "handoff": "The smooth-ground Fresnel coefficient is reduced by the terrain factor."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-011",
+      "to_model_id": "MU-A-2018-77845-015",
+      "handoff": "The rugged-ground coefficient feeds the matched ground comparison."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-002",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "D-layer attenuation enters the cumulative SNR ledger."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-006",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "F-layer range and mirrored descent determine the hop geometry."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-012",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "Accumulated path distance determines FSPL in the recursive ledger."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-013",
+      "to_model_id": "MU-A-2018-77845-014",
+      "handoff": "Frequency-specific noise initializes SNR0."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-014",
+      "to_model_id": "MU-A-2018-77845-015",
+      "handoff": "Terminal distance, hop count, SNR, and first-hop states feed result tables."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-014",
+      "to_model_id": "MU-A-2018-77845-016",
+      "handoff": "Repeated MHPM paths over a frequency band yield landing-point envelopes."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-016",
+      "to_model_id": "MU-A-2018-77845-017",
+      "handoff": "Each interval length is divided by ship speed."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-003",
+      "to_model_id": "MU-A-2018-77845-018",
+      "handoff": "E/F density and layer-height perturbations modify the refractive state."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-009",
+      "to_model_id": "MU-A-2018-77845-018",
+      "handoff": "Wind perturbations modify the rough-sea energy channel."
+    },
+    {
+      "from_model_id": "MU-A-2018-77845-018",
+      "to_model_id": "MU-A-2018-77845-015",
+      "handoff": "Sensitivity outputs qualify the baseline performance conclusions."
+    }
+  ]
+}

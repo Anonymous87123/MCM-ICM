@@ -1,0 +1,62 @@
+       Team # 77845                              Page 25 of 30
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+
+
+
+      Appendix B The Code
+           main.m:
+      clc
+      clear
+      %The main program of "multi-hop"; i=1;
+
+      D_min=61.2;
+      D_max=88.6;
+      E_mid=95.65;
+      E_max=101;
+      F_max=271.5;
+      n1=1;
+      v=8;     % ocean wind speed, m/s
+      totalf=[15 17.65 20]; %Define output frequency, MHz f=totalf(3);
+
+      totalAngled=[5 15 25];% grazing angle, degree for
+      l=1:length(totalf)
+            f=totalf(l);
+      % angled=totalAngled(l); angled=15;
+
+           angle=angled/180*pi;
+           x=zeros(1,1); y=zeros(1,1);
+           Srn=zeros(1,1);
+
+      parameterOcean=seareflection(f,angled,v);
+      lossOcean=parameterOcean(1);
+      Ploss=lossOcean^2;
+
+      NeN_E=calnAndNe(E_mid,f);
+      n_E=NeN_E(2);
+
+      angle_E=acos(cos(angle)*n1/n_E);
+      p0=100;%transmitting power
+               %watt to dBW
+      dp0=10*log10(p0);%dBW
+      K_boltzmann=1.38064852e-23; %Boltzmann constant
+      T0=290;%Kelvin temperature
+      b=200; %Bandwidth
+      KT0b=10*log10(K_boltzmann*T0*b);
+      %Different frequencies correspond to noise levels. if f==15
+
+            p0=27;
+      end
+      if f==17.65
+            p0=22;
+      end
+      if f==20
+            p0=19;
+      end
+      pw=10^((p0+KT0b)/10);
+      dpnoise=10*log10(pw);
+      Srn(1)=dp0-dpnoise;
+      SrnLoop(1)=Srn(1);
+      % Below the ionosphere.
+      NumLoop=1;
+      x(1)=0;
+      y(1)=0;

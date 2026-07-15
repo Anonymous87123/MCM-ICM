@@ -1,0 +1,63 @@
+       Team # 77845                              Page 26 of 30
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+
+
+      dist(1)=0;
+
+      k=1; alpha_D=1.16*10^(-15)*10^10*10^6/f/f;
+      XofLoop(1)=0;
+      DISTofLoop(1)=1; while(SrnLoop(NumLoop)>=10 &&
+      NumLoop<=10)
+           stepy_D=1;
+           while(y(k)<D_min)
+                y(k+1)=y(k)+stepy_D; x(k+1)=y(k+1)/tan(angle)+XofLoop(NumLoop);
+                dist(k+1)=y(k+1)/sin(angle)+DISTofLoop(NumLoop); Srn(k+1)=Srn(1)-
+
+                   20*log10(dist(k+1))-20*log10(f)-32.45...
+                         -alpha_D*(D_max-D_min)/sin(angle)*2*(NumLoop-1)+10*log10(Ploss)...
+                         *(NumLoop-1);
+                   k=k+1;
+           end
+           dist_beforD(NumLoop)=dist(k);
+           while(y(k)>D_min && y(k)<=D_max)
+                 y(k+1)=y(k)+stepy_D;
+                 x(k+1)=y(k+1)/tan(angle)+XofLoop(NumLoop);
+                 dist(k+1)=y(k+1)/sin(angle)+DISTofLoop(NumLoop);
+                 Srn(k+1)=Srn(1)-20*log10(dist(k+1))-20*log10(f)-32.45-alpha_D*(y(k+1)-D_min)...
+                   /sin(angle)-alpha_D*2*(D_max-D_min)/sin(angle)*(NumLoop-1)+10*log10(Ploss)...
+                         *(NumLoop-1);
+                   k=k+1;
+           end
+           while(y(k)>D_max && y(k)<=E_mid) y(k+1)=y(k)+stepy_D;
+                x(k+1)=y(k+1)/tan(angle)+XofLoop(NumLoop);
+                dist(k+1)=y(k+1)/sin(angle)+DISTofLoop(NumLoop);
+
+                   Srn(k+1)=Srn(1)-20*log10(dist(k+1))-20*log10(f)-32.45-alpha_D*(D_max-D_min)...
+                   /sin(angle)-alpha_D*(D_max-D_min)/sin(angle)*2*(NumLoop-1)+10*log10(Ploss)...
+                         *(NumLoop-1);
+                   k=k+1;
+           end
+           x_beforeE_mid(NumLoop)=x(k);
+           y_beforeE_mid(NumLoop)=y(k);
+           dist_beforeE(NumLoop)=dist(k);
+           while(y(k)>=E_mid && y(k)<=E_max)
+                 y(k+1)=y(k)+stepy_D; x(k+1)=x_beforeE_mid(NumLoop)+(y(k+1)-y_beforeE_mid(NumLoop))/tan(angle_E);
+                 dist(k+1)= dist_beforeE(NumLoop)+(y(k+1)-y_beforeE_mid(NumLoop))/sin(angle_E); Srn(k+1)=Srn(1)-
+
+                   20*log10(dist(k+1))-20*log10(f)-32.45-alpha_D*(D_max-D_min)...
+                   /sin(angle)-alpha_D*(D_max-D_min)/sin(angle)*2*(NumLoop-1)+10*log10(Ploss)...
+                         *(NumLoop-1);
+
+                k=k+1;
+           end
+           stepy_F=0.01;
+           t=1;
+           NeN_F=calnAndNe(y(k),f);
+           n_F(1)=NeN_F(2);
+           cosAngleF=cos(angle_E);
+           COSF(1)=cosAngleF;
+           while(y(k)>=E_max && y(k)<=F_max && cosAngleF<1 && (1-cosAngleF)>0.0001)
+                y(k+1)=y(k)+stepy_F;
+                NeN_F=calnAndNe(y(k+1),f);
+                n_F(t+1)=NeN_F(2);
+                   cosAngleF=COSF(t)*n_F(t)/n_F(t+1);

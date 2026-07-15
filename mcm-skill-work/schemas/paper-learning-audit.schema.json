@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.mcm.invalid/schemas/paper-learning-audit.schema.json",
+  "title": "Language-first per-paper learning audit gate",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "audit_id",
+    "paper_id",
+    "problem_type",
+    "year",
+    "source_sha256",
+    "priority_order",
+    "chapter_saturation",
+    "language_unit_dispositions",
+    "paragraph_chains",
+    "organization_logic",
+    "formula_error_watch",
+    "model_retention",
+    "visualization_dispositions",
+    "dimension_counts",
+    "positive_reusable_language_count",
+    "weakness_record_count",
+    "review_status"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "audit_id": {"type": "string", "pattern": "^LA-[A-F]-"},
+    "paper_id": {"type": "string", "pattern": "^P-[A-F]-"},
+    "problem_type": {"enum": ["A", "B", "C", "D", "E", "F"]},
+    "year": {"type": "string", "pattern": "^(?:19|20)\\d{2}$"},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "priority_order": {
+      "const": [
+        "language-imitation",
+        "organization-logic",
+        "formula-error-watch"
+      ]
+    },
+    "chapter_saturation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/chapterSaturation"}
+    },
+    "language_unit_dispositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/languageDisposition"}
+    },
+    "paragraph_chains": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/paragraphChain"}
+    },
+    "organization_logic": {"$ref": "#/$defs/organizationLogic"},
+    "formula_error_watch": {"$ref": "#/$defs/formulaErrorWatch"},
+    "model_retention": {"$ref": "#/$defs/modelRetention"},
+    "visualization_dispositions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/visualizationDisposition"}
+    },
+    "dimension_counts": {"$ref": "#/$defs/dimensionCounts"},
+    "positive_reusable_language_count": {"type": "integer", "minimum": 0},
+    "weakness_record_count": {"type": "integer", "minimum": 0},
+    "review_status": {"const": "validated"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "nonemptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "chapterSaturation": {
+      "type": "object",
+      "required": [
+        "chapter",
+        "pass_count",
+        "last_pass_new_moves",
+        "coverage_status",
+        "gaps"
+      ],
+      "properties": {
+        "chapter": {"type": "string", "minLength": 1},
+        "pass_count": {"type": "integer", "minimum": 2},
+        "last_pass_new_moves": {"const": 0},
+        "coverage_status": {"const": "complete"},
+        "gaps": {"type": "array", "maxItems": 0}
+      },
+      "additionalProperties": false
+    },
+    "languageDisposition": {
+      "type": "object",
+      "required": [
+        "language_unit_id",
+        "disposition",
+        "target_pattern_ids",
+        "reason"
+      ],
+      "properties": {
+        "language_unit_id": {"type": "string", "pattern": "^LU-[A-F]-"},
+        "disposition": {
+          "enum": [
+            "supports-existing",
+            "opens-candidate",
+            "paper-specific-nonreusable"
+          ]
+        },
+        "target_pattern_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^LP-[A-F]-"}
+        },
+        "reason": {"type": "string"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": ["supports-existing", "opens-candidate"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "target_pattern_ids": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {"const": "paper-specific-nonreusable"}
+            }
+          },
+          "then": {
+            "properties": {
+              "target_pattern_ids": {"maxItems": 0},
+              "reason": {"minLength": 1}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "paragraphChain": {
+      "type": "object",
+      "required": [
+        "chapter",
+        "visual_paragraph_count",
+        "coverage_status",
+        "gaps",
+        "paragraphs"
+      ],
+      "properties": {
+        "chapter": {"enum": ["abstract", "introduction"]},
+        "visual_paragraph_count": {"type": "integer", "minimum": 1},
+        "coverage_status": {"const": "complete"},
+        "gaps": {"type": "array", "maxItems": 0},
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/paragraphMove"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "paragraphMove": {
+      "type": "object",
+      "required": ["paragraph_index", "dominant_move", "language_unit_ids"],
+      "properties": {
+        "paragraph_index": {"type": "integer", "minimum": 1},
+        "dominant_move": {"type": "string", "minLength": 1},
+        "language_unit_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^LU-[A-F]-"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "organizationLogic": {
+      "type": "object",
+      "required": [
+        "positive_artifacts_status",
+        "weakness_substitution_allowed",
+        "global_organization_chain",
+        "section_progressions",
+        "main_argument_chains"
+      ],
+      "properties": {
+        "positive_artifacts_status": {"const": "complete"},
+        "weakness_substitution_allowed": {"const": false},
+        "global_organization_chain": {"$ref": "#/$defs/nonemptyStringArray"},
+        "section_progressions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sectionProgression"}
+        },
+        "main_argument_chains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/argumentChain"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "sectionProgression": {
+      "type": "object",
+      "required": ["chapter", "moves", "positive_pattern"],
+      "properties": {
+        "chapter": {"type": "string", "minLength": 1},
+        "moves": {"$ref": "#/$defs/nonemptyStringArray"},
+        "positive_pattern": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "argumentChain": {
+      "type": "object",
+      "required": ["claim", "support_steps", "decision_consequence", "source_pages"],
+      "properties": {
+        "claim": {"type": "string", "minLength": 1},
+        "support_steps": {"$ref": "#/$defs/nonemptyStringArray"},
+        "decision_consequence": {"type": "string", "minLength": 1},
+        "source_pages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "formulaErrorWatch": {
+      "type": "object",
+      "required": ["mode", "completed_after_positive_passes", "warnings"],
+      "properties": {
+        "mode": {"const": "last-pass-warning-only"},
+        "completed_after_positive_passes": {"const": true},
+        "warnings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/formulaWarning"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "formulaWarning": {
+      "type": "object",
+      "required": ["model_id", "equation_id", "page", "warning"],
+      "properties": {
+        "model_id": {"type": "string", "pattern": "^MU-[A-F]-"},
+        "equation_id": {"type": "string", "pattern": "^EQ-[A-F]-"},
+        "page": {"type": "integer", "minimum": 1},
+        "warning": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "modelRetention": {
+      "type": "object",
+      "required": [
+        "model_count",
+        "retained_model_ids",
+        "retained_equation_ids",
+        "central_equations"
+      ],
+      "properties": {
+        "model_count": {"type": "integer", "minimum": 1},
+        "retained_model_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^MU-[A-F]-"}
+        },
+        "retained_equation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^EQ-[A-F]-"}
+        },
+        "central_equations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/centralEquations"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "centralEquations": {
+      "type": "object",
+      "required": ["model_id", "equation_ids", "all_central_equations_retained"],
+      "properties": {
+        "model_id": {"type": "string", "pattern": "^MU-[A-F]-"},
+        "equation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^EQ-[A-F]-"}
+        },
+        "all_central_equations_retained": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "visualizationDisposition": {
+      "type": "object",
+      "required": [
+        "paper_card_visual_index",
+        "visual_record_id",
+        "disposition",
+        "analytical_purpose"
+      ],
+      "properties": {
+        "paper_card_visual_index": {"type": "integer", "minimum": 1},
+        "visual_record_id": {"type": "string", "pattern": "^V-[A-F]-"},
+        "disposition": {"const": "important-visual-record"},
+        "analytical_purpose": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "dimensionCounts": {
+      "type": "object",
+      "required": [
+        "language",
+        "modeling",
+        "logic",
+        "visualization",
+        "verification",
+        "data",
+        "assumption",
+        "result",
+        "weakness",
+        "other"
+      ],
+      "properties": {
+        "language": {"type": "integer", "minimum": 0},
+        "modeling": {"type": "integer", "minimum": 0},
+        "logic": {"type": "integer", "minimum": 0},
+        "visualization": {"type": "integer", "minimum": 0},
+        "verification": {"type": "integer", "minimum": 0},
+        "data": {"type": "integer", "minimum": 0},
+        "assumption": {"type": "integer", "minimum": 0},
+        "result": {"type": "integer", "minimum": 0},
+        "weakness": {"type": "integer", "minimum": 0},
+        "other": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,48 @@
+Team # 32722                                                                        Page 15 of 37
+
+
+of cures, and modification of the underlying simulation, which are treated as a black box.
+In the light of these issues, we found it prudent to develop our own simulation, drawing
+inspiration from GLEAM.
+
+2.4. Implementation
+    Our model uses a GLEAM-like combination of compartmental and metapopulation mod-
+els to allow us to capture a variety of behaviors both within and between regions. This is
+implemented in Python, with individuals, regions, and connections between regions defined
+as classes to allow for the addition of the wide variety of parameters we are interested in
+modeling. Simulations were run using the PyPy interpreter [14]
+    To start, we define a list of geographic regions, their population, area, regional Ebola
+parameters, and the latitude and longitude of their centroids. For toy models, some of these
+parameters (latitude/longitude) can be defined arbitrarily, but the program treats toy data
+and real data as equal, so scaling to real-world data is trivial. After defining these regions,
+we create a list of people, each of which is assigned a starting region and an initial state, being
+healthy, latent-infected, or otherwise. This state can change by reassignment at any point
+in the simulation. Lastly, hospitals with a fixed number of beds are created and assigned to
+their respective regions. Any relevant parameters are saved to a file before the simulation
+continues.
+    Once all object creation is finished, the simulation begins. Once each timestep all of
+the regional statistics are updated - things such as “total number of open beds” or “total
+number of stage-1 infected individuals”. These values are often used to calculate some of the
+many probabilities used to advance people from state to state or region to region. Once these
+statistics are calculated, the program iterates over the list of people, checking their current
+state, generating a random number (using the Mersenne Twister engine), and seeing if the
+person will move from their current state to another allowed state using said random number
+(the allowed states being defined by the Ebola state-flow network diagram). Each person can
+also attempt to move to another region, with probabilities defined by our modified gravity
+mobility model.
+    This process of updating and iterating continues on for a predefined number of timesteps,
+with data being outout to a file after each timestep. This data was then analyzed and plotted
+using the Numpy and MatplotLib Python libraries [15] [16].
+
+2.5. Additional Considerations
+2.5.1. Modeling of Hospitals
+    For the purposes of treatment distribution, the simulation considers three levels of medical
+technology: basic, in which doctors and hospitals have no cure save those available today for
+Ebola patients; vaccine available, in which susceptible and latent individuals will attempt
+to obtain innoculations without a dependence on hospitals or doctors; and cure available,
+in which doctors and hospitals can use a stock of medicine to cure infected individuals in
+the early stage of the illness. These levels can be mixed and matched to simulate varying
+treatment regimes.
+    Cures are modeled as an additional path for individuals to enter the cured state at a
+higher probability governed by the effectiveness of the cure. Cure effectiveness is described
+in terms of the average number of days needed for an individual taking doses of the cure to

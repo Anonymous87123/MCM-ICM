@@ -1,0 +1,2016 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2014-30532-8f80536d",
+  "problem_type": "A",
+  "year": "2014",
+  "source_sha256": "8f80536d50bd42f13781eb03a929d1334a1b186d54ddd4a1e35f5bd4f7b6b80b",
+  "models": [
+    {
+      "model_id": "MU-A-2014-30532-001",
+      "page": 6,
+      "section": "4.1.1 Single Lane Model",
+      "family": "Nagel-Schreckenberg single-lane cellular automaton",
+      "purpose": "Provide the base discrete vehicle motion used by later multilane policies.",
+      "base_or_modification": "base",
+      "summary": "A periodic single-lane lattice uses acceleration, gap limitation, and random braking.",
+      "variables": [
+        {
+          "symbol": "i",
+          "normalized_name": "vehicle index",
+          "role": "input",
+          "unit": "count",
+          "definition": "Index of a vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "vehicle position",
+          "role": "state",
+          "unit": "lattice sites",
+          "definition": "Vehicle lattice position.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "vehicle velocity",
+          "role": "state",
+          "unit": "sites/time-step",
+          "definition": "Current vehicle velocity.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vd",
+          "normalized_name": "desired maximum velocity",
+          "role": "parameter",
+          "unit": "sites/time-step",
+          "definition": "Vehicle maximum velocity.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane length",
+          "role": "parameter",
+          "unit": "sites",
+          "definition": "Number of sites in one periodic lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "forward empty gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Sites between vehicle and predecessor.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pd",
+          "normalized_name": "random braking probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability of stochastic deceleration.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rand",
+          "normalized_name": "random draw",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Uniform stochastic draw.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pred",
+          "normalized_name": "predecessor",
+          "role": "intermediate",
+          "unit": "vehicle index",
+          "definition": "Index of preceding vehicle.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "vd",
+        "pd",
+        "rand"
+      ],
+      "outputs": [
+        "x",
+        "v"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-001",
+          "page": 6,
+          "label": "S1",
+          "source_expression": "IF v(i) != vd(i) THEN v(i) := v(i)+1",
+          "normalized_latex": "v_i<v_{d,i}\\Rightarrow v_i\\leftarrow v_i+1",
+          "purpose": "Accelerate toward desired speed.",
+          "variable_symbols": [
+            "v",
+            "vd"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-002",
+          "page": 6,
+          "label": "S2",
+          "source_expression": "IF v(i)>gap(i) THEN v(i):=gap(i)",
+          "normalized_latex": "v_i>gap(i)\\Rightarrow v_i\\leftarrow gap(i)",
+          "purpose": "Limit speed by the forward gap.",
+          "variable_symbols": [
+            "v",
+            "gap"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-003",
+          "page": 6,
+          "label": "S3",
+          "source_expression": "IF v(i)>0 AND rand<pd(i) THEN v(i):=v(i)-1",
+          "normalized_latex": "v_i>0\\land rand<p_{d,i}\\Rightarrow v_i\\leftarrow v_i-1",
+          "purpose": "Apply random braking.",
+          "variable_symbols": [
+            "v",
+            "rand",
+            "pd"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Update vehicle speed safely in a discrete lane."
+      ],
+      "constraints": [
+        "One vehicle per site.",
+        "Vehicles move in one direction."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Source specifies local rules but not the full experiment configuration.",
+        "parameters": [
+          "L",
+          "vd",
+          "pd"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize lattice vehicles.",
+          "Apply S1-S3 in parallel.",
+          "Advance using updated speed."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Periodic road.",
+        "Parallel updates.",
+        "Desired speed bounds velocity."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The mechanism is stated, but source evidence does not show calibration or independent reproduction."
+      },
+      "handoff_outputs": [
+        "v",
+        "x"
+      ],
+      "validation_refs": [
+        "p6 rule explanation",
+        "p9 time-space chart"
+      ],
+      "computational_cost": "Cost grows with vehicles, sites, and time steps; exact runs are not reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "The source gives no run count, seed, or calibration for reported curves."
+      ],
+      "missing_details": [
+        "initial vehicle distribution",
+        "simulation horizon",
+        "random-number seed"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-002",
+      "page": 7,
+      "section": "4.1.2 / 4.2.1 Multi-lane and KREP",
+      "family": "two-lane KREP cellular automaton",
+      "purpose": "Apply incentive, safety, and stochastic gates to the baseline lane-change decision.",
+      "base_or_modification": "modification",
+      "summary": "Parallel lanes add lateral decisions before independent longitudinal updates.",
+      "variables": [
+        {
+          "symbol": "L",
+          "normalized_name": "current lane index",
+          "role": "state",
+          "unit": "index",
+          "definition": "Lane index increases right to left.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lprime",
+          "normalized_name": "target lane index",
+          "role": "input",
+          "unit": "index",
+          "definition": "Candidate adjacent lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "same-lane forward gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Forward gap in the present lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0",
+          "normalized_name": "other-lane forward gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Forward gap in the target lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0back",
+          "normalized_name": "other-lane rear gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Rear gap in the target lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vi",
+          "normalized_name": "vehicle speed",
+          "role": "state",
+          "unit": "sites/time-step",
+          "definition": "Current vehicle speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vmax",
+          "normalized_name": "maximum speed",
+          "role": "parameter",
+          "unit": "sites/time-step",
+          "definition": "Maximum allowed speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pchange",
+          "normalized_name": "lane-change probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Stochastic lane-change probability.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rand",
+          "normalized_name": "random draw",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Stochastic draw.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "change",
+          "normalized_name": "lane-change decision",
+          "role": "output",
+          "unit": "boolean",
+          "definition": "Permitted lateral movement.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "Lprime",
+        "gap",
+        "gap0",
+        "gap0back",
+        "vi",
+        "vmax",
+        "Pchange",
+        "rand"
+      ],
+      "outputs": [
+        "change"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-004",
+          "page": 7,
+          "label": "T1",
+          "source_expression": "L<L'",
+          "normalized_latex": "L<L'",
+          "purpose": "Right-lane return incentive as printed.",
+          "variable_symbols": [
+            "L",
+            "Lprime"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-005",
+          "page": 7,
+          "label": "T2",
+          "source_expression": "L>L' and gap(i)<vi+1",
+          "normalized_latex": "L>L'\\land gap(i)<v_i+1",
+          "purpose": "Overtaking incentive as printed.",
+          "variable_symbols": [
+            "L",
+            "Lprime",
+            "gap",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-006",
+          "page": 7,
+          "label": "T3",
+          "source_expression": "gap0(i)>vi+1",
+          "normalized_latex": "gap_0(i)>v_i+1",
+          "purpose": "Forward target-lane safety condition.",
+          "variable_symbols": [
+            "gap0",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-007",
+          "page": 7,
+          "label": "T4",
+          "source_expression": "gap0,back(i)>vmax",
+          "normalized_latex": "gap_{0,back}(i)>v_{max}",
+          "purpose": "Rear target-lane safety condition.",
+          "variable_symbols": [
+            "gap0back",
+            "vmax"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-008",
+          "page": 7,
+          "label": "T5",
+          "source_expression": "rand()<Pchange",
+          "normalized_latex": "rand()<P_{change}",
+          "purpose": "Stochastic permission condition.",
+          "variable_symbols": [
+            "rand",
+            "Pchange"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Implement Keep-Right-Except-Pass behavior."
+      ],
+      "constraints": [
+        "Target lane is adjacent.",
+        "All safety and stochastic conditions apply."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "RBP, LCP, vmax, and vthreshold are stated for one scenario; broader experiment parameters are incomplete.",
+        "parameters": [
+          "Pchange",
+          "vmax"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Evaluate incentive conditions.",
+          "Evaluate forward and rear safety.",
+          "Apply probability gate.",
+          "Move laterally before longitudinal update."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Lateral move is instantaneous.",
+        "Lane indices are right-to-left."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The policy gates are inspectable, but no external safety calibration or collision validation is supplied."
+      },
+      "handoff_outputs": [
+        "change"
+      ],
+      "validation_refs": [
+        "p10-p15 scenario curves",
+        "p17-p18 policy comparisons"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "The paper acknowledges a sideways-only sub-step is physically incomplete in isolation."
+      ],
+      "missing_details": [
+        "tie handling",
+        "conflict resolution for simultaneous changes",
+        "execution code"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-003",
+      "page": 8,
+      "section": "4.2.2-4.2.3 Simulation setup and metrics",
+      "family": "loop-road CA measurement and sensitivity sweep",
+      "purpose": "Convert CA paths into flow, density, speed, lane-change, and lane-use outputs for scenario curves.",
+      "base_or_modification": "hybrid",
+      "summary": "A 7.5 m, 133-cell-per-lane loop is randomized by density and summarized through five metrics.",
+      "variables": [
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "output",
+          "unit": "laps/(second lane)",
+          "definition": "Loop laps normalized by time and lanes.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "total laps",
+          "role": "intermediate",
+          "unit": "laps",
+          "definition": "Total laps driven.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "simulation time",
+          "role": "parameter",
+          "unit": "seconds",
+          "definition": "Simulation horizon.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "number of lanes",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Lane count in the output formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "density",
+          "role": "output",
+          "unit": "vehicles/site",
+          "definition": "Vehicles normalized by two lanes and sites.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "vehicle count",
+          "role": "input",
+          "unit": "count",
+          "definition": "Total simulated vehicles.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vbar",
+          "normalized_name": "average speed",
+          "role": "output",
+          "unit": "sites/time-step",
+          "definition": "Time-space-vehicle average speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vijt",
+          "normalized_name": "vehicle speed sample",
+          "role": "state",
+          "unit": "sites/time-step",
+          "definition": "Speed of vehicle j in lane i at time t.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "lane-change totality",
+          "role": "output",
+          "unit": "changes/time-step",
+          "definition": "Average number of lane changes.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ct",
+          "normalized_name": "lane changes at t",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Lane changes at a time step.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ui",
+          "normalized_name": "lane-use measure",
+          "role": "output",
+          "unit": "vehicles",
+          "definition": "Time-average vehicles in lane i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nit",
+          "normalized_name": "lane occupancy",
+          "role": "intermediate",
+          "unit": "vehicles",
+          "definition": "Vehicles in lane i at time t.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i",
+          "normalized_name": "lane index",
+          "role": "input",
+          "unit": "index",
+          "definition": "Lane summation index.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "vehicle index",
+          "role": "input",
+          "unit": "index",
+          "definition": "Vehicle summation index.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time index",
+          "role": "input",
+          "unit": "index",
+          "definition": "Time summation index.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S",
+        "T",
+        "L",
+        "N",
+        "Vijt",
+        "ct",
+        "Nit"
+      ],
+      "outputs": [
+        "Q",
+        "rho",
+        "Vbar",
+        "C",
+        "Ui"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-009",
+          "page": 8,
+          "label": null,
+          "source_expression": "Q=S/(T*L)",
+          "normalized_latex": "Q=\\frac{S}{T\\,L}",
+          "purpose": "Define loop flow.",
+          "variable_symbols": [
+            "Q",
+            "S",
+            "T",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-010",
+          "page": 8,
+          "label": null,
+          "source_expression": "rho=N/(2L)",
+          "normalized_latex": "\\rho=\\frac{N}{2L}",
+          "purpose": "Define two-lane density.",
+          "variable_symbols": [
+            "rho",
+            "N",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-011",
+          "page": 8,
+          "label": null,
+          "source_expression": "Vbar=(1/(N*T)) sum_i sum_t sum_j V_i,j,t",
+          "normalized_latex": "\\bar V=\\frac{1}{NT}\\sum_{i=1}^{L}\\sum_{t=1}^{T}\\sum_{j=1}^{N_i}V_{i,j,t}",
+          "purpose": "Define average speed.",
+          "variable_symbols": [
+            "Vbar",
+            "N",
+            "T",
+            "i",
+            "t",
+            "j",
+            "Vijt",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-012",
+          "page": 8,
+          "label": null,
+          "source_expression": "C=(1/T) sum_t c_t",
+          "normalized_latex": "C=\\frac{1}{T}\\sum_{t=1}^{T}c_t",
+          "purpose": "Define average lane-change totality.",
+          "variable_symbols": [
+            "C",
+            "T",
+            "t",
+            "ct"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-013",
+          "page": 9,
+          "label": null,
+          "source_expression": "Ui=(1/T) sum_t N_i,t",
+          "normalized_latex": "U_i=\\frac{1}{T}\\sum_{t=1}^{T}N_{i,t}",
+          "purpose": "Define lane-use measure.",
+          "variable_symbols": [
+            "Ui",
+            "T",
+            "t",
+            "Nit",
+            "i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Measure traffic-rule responses under six parameter sweeps."
+      ],
+      "constraints": [
+        "Each time step is one second.",
+        "One site holds at most one vehicle.",
+        "Road is a loop."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "A single setup states RBP=.2, LCP=.9, vmax=5, and vthreshold=4; calibration is not supplied.",
+        "parameters": [
+          "T",
+          "L",
+          "N",
+          "RBP",
+          "LCP",
+          "vmax"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set physical lattice scale.",
+          "Randomize fleet by density.",
+          "Run CA updates.",
+          "Accumulate laps, speeds, lane changes, and occupancy.",
+          "Sweep six factors and plot outputs."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Random initial position and speed.",
+        "Fixed displayed RBP/LCP/vmax values for stated scenario."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The output formulas are visible but their data-generating run protocol is incomplete."
+      },
+      "handoff_outputs": [
+        "Q",
+        "rho",
+        "Vbar",
+        "C",
+        "Ui"
+      ],
+      "validation_refs": [
+        "Figures 1-7",
+        "Figures 8-11"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "Output units, aggregation, uncertainty, and scenario replication are incomplete."
+      ],
+      "missing_details": [
+        "simulation duration",
+        "replication protocol",
+        "external traffic data"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-004",
+      "page": 15,
+      "section": "4.3.1 Keep-Left-Or-Right",
+      "family": "symmetric free-overtaking counterfactual",
+      "purpose": "Compare a symmetric lane-choice rule against KREP under shared safety and stochastic conditions.",
+      "base_or_modification": "modification",
+      "summary": "KROL removes the keep-right obligation and permits passing in either direction when the forward gap and safety gates allow it.",
+      "variables": [
+        {
+          "symbol": "gap",
+          "normalized_name": "same-lane forward gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Forward gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vi",
+          "normalized_name": "vehicle speed",
+          "role": "state",
+          "unit": "sites/time-step",
+          "definition": "Current speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0",
+          "normalized_name": "target-lane forward gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Target-lane forward gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0back",
+          "normalized_name": "target-lane rear gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Target-lane rear gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vmax",
+          "normalized_name": "maximum speed",
+          "role": "parameter",
+          "unit": "sites/time-step",
+          "definition": "Maximum speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pchange",
+          "normalized_name": "lane-change probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Stochastic permission.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rand",
+          "normalized_name": "random draw",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Stochastic draw.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "change",
+          "normalized_name": "lane-change decision",
+          "role": "output",
+          "unit": "boolean",
+          "definition": "KROL lateral movement.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "gap",
+        "vi",
+        "gap0",
+        "gap0back",
+        "vmax",
+        "Pchange",
+        "rand"
+      ],
+      "outputs": [
+        "change"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-014",
+          "page": 15,
+          "label": null,
+          "source_expression": "gap(i)<vi+1",
+          "normalized_latex": "gap(i)<v_i+1",
+          "purpose": "KROL speed-improvement incentive.",
+          "variable_symbols": [
+            "gap",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-015",
+          "page": 16,
+          "label": null,
+          "source_expression": "gap0(i)>vi+1",
+          "normalized_latex": "gap_0(i)>v_i+1",
+          "purpose": "KROL forward safety condition.",
+          "variable_symbols": [
+            "gap0",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-016",
+          "page": 16,
+          "label": null,
+          "source_expression": "gap0,back(i)>vmax",
+          "normalized_latex": "gap_{0,back}(i)>v_{max}",
+          "purpose": "KROL rear safety condition.",
+          "variable_symbols": [
+            "gap0back",
+            "vmax"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-017",
+          "page": 16,
+          "label": null,
+          "source_expression": "rand()<Pchange",
+          "normalized_latex": "rand()<P_{change}",
+          "purpose": "KROL stochastic condition.",
+          "variable_symbols": [
+            "rand",
+            "Pchange"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Create a controlled symmetry counterfactual."
+      ],
+      "constraints": [
+        "Shared safety and stochastic gates."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Scenario values and source definitions are stated; empirical calibration is not supplied.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Replace the asymmetric incentive.",
+          "Reuse safety and probability gates.",
+          "Run matched density sweeps."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Same loop CA and metric bundle as KREP."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source provides a readable mechanism but omits enough inputs, execution details, or external comparison for independent decision validation."
+      },
+      "handoff_outputs": [
+        "change"
+      ],
+      "validation_refs": [
+        "Figures 8-11",
+        "Figures 12-16"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "The source states the counterfactual but does not give a complete executable conflict-resolution specification."
+      ],
+      "missing_details": [
+        "exact lane-selection tie handling",
+        "repeated-run protocol"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-005",
+      "page": 16,
+      "section": "4.3.1 High-Speed-Right-And-Low-Speed-Left",
+      "family": "threshold lane-allocation counterfactual",
+      "purpose": "Compare threshold-based speed segregation with KREP and KROL.",
+      "base_or_modification": "modification",
+      "summary": "HLLR assigns vehicles to lanes by vthreshold while retaining passing, safety, and stochastic conditions.",
+      "variables": [
+        {
+          "symbol": "L",
+          "normalized_name": "current lane index",
+          "role": "state",
+          "unit": "index",
+          "definition": "Current lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lprime",
+          "normalized_name": "target lane index",
+          "role": "input",
+          "unit": "index",
+          "definition": "Target lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vi",
+          "normalized_name": "vehicle speed",
+          "role": "state",
+          "unit": "sites/time-step",
+          "definition": "Current speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vthreshold",
+          "normalized_name": "speed threshold",
+          "role": "parameter",
+          "unit": "sites/time-step",
+          "definition": "Low/high speed lane threshold.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "same-lane gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Forward gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0",
+          "normalized_name": "target-lane forward gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Target-lane forward gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap0back",
+          "normalized_name": "target-lane rear gap",
+          "role": "state",
+          "unit": "sites",
+          "definition": "Target-lane rear gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vmax",
+          "normalized_name": "maximum speed",
+          "role": "parameter",
+          "unit": "sites/time-step",
+          "definition": "Maximum speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pchange",
+          "normalized_name": "lane-change probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Stochastic permission.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rand",
+          "normalized_name": "random draw",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Stochastic draw.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "change",
+          "normalized_name": "lane-change decision",
+          "role": "output",
+          "unit": "boolean",
+          "definition": "HLLR lateral movement.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "Lprime",
+        "vi",
+        "vthreshold",
+        "gap",
+        "gap0",
+        "gap0back",
+        "vmax",
+        "Pchange",
+        "rand"
+      ],
+      "outputs": [
+        "change"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-018",
+          "page": 16,
+          "label": "T1",
+          "source_expression": "L<L' and vi>=vthreshold",
+          "normalized_latex": "L<L'\\land v_i\\ge v_{threshold}",
+          "purpose": "High-speed lane assignment incentive.",
+          "variable_symbols": [
+            "L",
+            "Lprime",
+            "vi",
+            "vthreshold"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-019",
+          "page": 16,
+          "label": "T2",
+          "source_expression": "L>L' and vi<vthreshold",
+          "normalized_latex": "L>L'\\land v_i<v_{threshold}",
+          "purpose": "Low-speed lane assignment incentive.",
+          "variable_symbols": [
+            "L",
+            "Lprime",
+            "vi",
+            "vthreshold"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-020",
+          "page": 16,
+          "label": "T3",
+          "source_expression": "gap(i)<vi+1",
+          "normalized_latex": "gap(i)<v_i+1",
+          "purpose": "Passing incentive.",
+          "variable_symbols": [
+            "gap",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-021",
+          "page": 16,
+          "label": null,
+          "source_expression": "gap0(i)>vi+1",
+          "normalized_latex": "gap_0(i)>v_i+1",
+          "purpose": "Forward safety condition.",
+          "variable_symbols": [
+            "gap0",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-022",
+          "page": 16,
+          "label": null,
+          "source_expression": "gap0,back(i)>vmax",
+          "normalized_latex": "gap_{0,back}(i)>v_{max}",
+          "purpose": "Rear safety condition.",
+          "variable_symbols": [
+            "gap0back",
+            "vmax"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-023",
+          "page": 16,
+          "label": null,
+          "source_expression": "rand()<Pchange",
+          "normalized_latex": "rand()<P_{change}",
+          "purpose": "Stochastic condition.",
+          "variable_symbols": [
+            "rand",
+            "Pchange"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Create a speed-threshold lane-allocation counterfactual."
+      ],
+      "constraints": [
+        "One of T1-T3 gives incentive.",
+        "Safety and stochastic gates remain shared."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Scenario values and source definitions are stated; empirical calibration is not supplied.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Apply speed-threshold incentive.",
+          "Apply shared safety gates.",
+          "Run matched response curves."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Threshold is fixed at the stated scenario value."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source provides a readable mechanism but omits enough inputs, execution details, or external comparison for independent decision validation."
+      },
+      "handoff_outputs": [
+        "change"
+      ],
+      "validation_refs": [
+        "Figures 8-16",
+        "Figures 17-19"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "No threshold sensitivity or empirical lane-choice validation is reported."
+      ],
+      "missing_details": [
+        "threshold calibration",
+        "parameter sweep",
+        "tie handling"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-006",
+      "page": 19,
+      "section": "4.3.3 Factor analysis",
+      "family": "factor-analysis measurement model",
+      "purpose": "Compress simulation inputs and outputs into common factors and interpretable score dimensions.",
+      "base_or_modification": "hybrid",
+      "summary": "A linear factor model maps observed variables to common factors plus special factors, then uses rotation and scoring.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "observed-variable vector",
+          "role": "input",
+          "unit": "standardized variables",
+          "definition": "Factor-analysis observed variables.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "loading matrix",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Factor loading matrix.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "common-factor vector",
+          "role": "output",
+          "unit": "factor scores",
+          "definition": "Latent common factors.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "special-factor vector",
+          "role": "intermediate",
+          "unit": "residual factors",
+          "definition": "Factors outside common factors.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "aij",
+          "normalized_name": "loading coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Loading of factor i and variable j.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Fi",
+          "normalized_name": "factor score",
+          "role": "output",
+          "unit": "score",
+          "definition": "Factor i score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xj",
+          "normalized_name": "observed variable",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Variable j in score equation.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X",
+        "A",
+        "eps",
+        "aij",
+        "Xj"
+      ],
+      "outputs": [
+        "F",
+        "Fi"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-024",
+          "page": 19,
+          "label": null,
+          "source_expression": "X=A F+epsilon",
+          "normalized_latex": "\\mathbf X=\\mathbf A\\mathbf F+\\boldsymbol\\epsilon",
+          "purpose": "State the factor decomposition.",
+          "variable_symbols": [
+            "X",
+            "A",
+            "F",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-025",
+          "page": 19,
+          "label": null,
+          "source_expression": "Fi=ai1X1+...+ainXn",
+          "normalized_latex": "F_i=\\sum_{j=1}^{n}a_{ij}X_j",
+          "purpose": "Define linear factor scoring.",
+          "variable_symbols": [
+            "Fi",
+            "aij",
+            "Xj"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Reduce multivariate simulation records into common factors."
+      ],
+      "constraints": [
+        "Linear common-factor structure.",
+        "Residual special factors can be ignored for interpretation."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Principal component estimation and rotation are named, but data preprocessing is not reported.",
+        "parameters": [
+          "X",
+          "A",
+          "aij"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Build correlation matrix.",
+          "Estimate principal components and loadings.",
+          "Rotate factors.",
+          "Interpret dominant loadings.",
+          "Estimate scoring coefficients."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Observed variables are appropriate for common factor analysis."
+      ],
+      "identifiability_feasibility": {
+        "status": "uncertain",
+        "analysis": "The factor model is algebraically visible but not empirically identified from the published paper."
+      },
+      "handoff_outputs": [
+        "F",
+        "Fi"
+      ],
+      "validation_refs": [
+        "Tables 1-3",
+        "Figures 12-16"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "The source omits sample construction, standardization, adequacy diagnostics, and an independent validation target."
+      ],
+      "missing_details": [
+        "sample count",
+        "correlation matrix",
+        "KMO/Bartlett checks",
+        "rotation criterion"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-007",
+      "page": 21,
+      "section": "4.3.4 Factor scores",
+      "family": "standardized factor-score comparison",
+      "purpose": "Apply four published linear score functions to the simulation records and plot rule comparisons.",
+      "base_or_modification": "modification",
+      "summary": "The source reports F1-F4 coefficient vectors and uses them to compare score curves over density and policy inputs.",
+      "variables": [
+        {
+          "symbol": "F1",
+          "normalized_name": "traffic-flow factor score",
+          "role": "output",
+          "unit": "score",
+          "definition": "Reported first factor score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F2",
+          "normalized_name": "safety factor score",
+          "role": "output",
+          "unit": "score",
+          "definition": "Reported second factor score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F3",
+          "normalized_name": "road-use factor score",
+          "role": "output",
+          "unit": "score",
+          "definition": "Reported third factor score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F4",
+          "normalized_name": "speed-limit factor score",
+          "role": "output",
+          "unit": "score",
+          "definition": "Reported fourth factor score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X1",
+          "normalized_name": "factor input 1",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X2",
+          "normalized_name": "factor input 2",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X3",
+          "normalized_name": "factor input 3",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X4",
+          "normalized_name": "factor input 4",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X5",
+          "normalized_name": "factor input 5",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X6",
+          "normalized_name": "factor input 6",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X7",
+          "normalized_name": "factor input 7",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X8",
+          "normalized_name": "factor input 8",
+          "role": "input",
+          "unit": "standardized variable",
+          "definition": "Source X1-X8 input or simulated output.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "X5",
+        "X6",
+        "X7",
+        "X8"
+      ],
+      "outputs": [
+        "F1",
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-30532-026",
+          "page": 21,
+          "label": null,
+          "source_expression": "F1=-.42148X1+.29755X2+.34145X3+.11943X4-.00956X5+.08992X6-.11648X7-.00884X8",
+          "normalized_latex": "F_1=-0.42148X_1+0.29755X_2+0.34145X_3+0.11943X_4-0.00956X_5+0.08992X_6-0.11648X_7-0.00884X_8",
+          "purpose": "Score the first reported factor.",
+          "variable_symbols": [
+            "F1",
+            "X1",
+            "X2",
+            "X3",
+            "X4",
+            "X5",
+            "X6",
+            "X7",
+            "X8"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-027",
+          "page": 22,
+          "label": null,
+          "source_expression": "F2=-.32831X1-.1221X2-.03788X3+.47215X4+.01093X5-.07379X6+.07545X7+.45523X8",
+          "normalized_latex": "F_2=-0.32831X_1-0.12210X_2-0.03788X_3+0.47215X_4+0.01093X_5-0.07379X_6+0.07545X_7+0.45523X_8",
+          "purpose": "Score the second reported factor.",
+          "variable_symbols": [
+            "F2",
+            "X1",
+            "X2",
+            "X3",
+            "X4",
+            "X5",
+            "X6",
+            "X7",
+            "X8"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-028",
+          "page": 22,
+          "label": null,
+          "source_expression": "F3=.05569X1+.02855X2-.00242X3+.06831X4-.00814X5+.63251X6+.63929X7-.08095X8",
+          "normalized_latex": "F_3=0.05569X_1+0.02855X_2-0.00242X_3+0.06831X_4-0.00814X_5+0.63251X_6+0.63929X_7-0.08095X_8",
+          "purpose": "Score the third reported factor.",
+          "variable_symbols": [
+            "F3",
+            "X1",
+            "X2",
+            "X3",
+            "X4",
+            "X5",
+            "X6",
+            "X7",
+            "X8"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-30532-029",
+          "page": 22,
+          "label": null,
+          "source_expression": "F4=.05885X1+.0456X2+.01521X3+.03353X4+.98713X5-.08209X6+.07671X7-.01995X8",
+          "normalized_latex": "F_4=0.05885X_1+0.04560X_2+0.01521X_3+0.03353X_4+0.98713X_5-0.08209X_6+0.07671X_7-0.01995X_8",
+          "purpose": "Score the fourth reported factor.",
+          "variable_symbols": [
+            "F4",
+            "X1",
+            "X2",
+            "X3",
+            "X4",
+            "X5",
+            "X6",
+            "X7",
+            "X8"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Score flow, safety, road use, and maximal-velocity factors."
+      ],
+      "constraints": [
+        "The source-selected four factors are retained."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Scenario values and source definitions are stated; empirical calibration is not supplied.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Insert standardized X1-X8.",
+          "Evaluate F1-F4.",
+          "Plot score curves by rule and scenario.",
+          "Read bounded rank claims."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "Score interpretations follow rotated loadings."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source provides a readable mechanism but omits enough inputs, execution details, or external comparison for independent decision validation."
+      },
+      "handoff_outputs": [
+        "F1",
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "validation_refs": [
+        "Figures 12-16",
+        "final ranking in p25"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "No composite policy utility, uncertainty interval, or external safety validation accompanies the score curves."
+      ],
+      "missing_details": [
+        "full score data",
+        "normalization procedure",
+        "decision aggregation"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-30532-008",
+      "page": 25,
+      "section": "4.4 Results and Discussion under Intelligent System",
+      "family": "idealized ITS counterfactual",
+      "purpose": "Test the three rules after suppressing random braking and forcing lane-change permission.",
+      "base_or_modification": "paper-specific",
+      "summary": "The ITS scenario sets RBP to zero and LCP to one, then reuses flow, lane-change, speed, and factor-score curves.",
+      "variables": [
+        {
+          "symbol": "RBP",
+          "normalized_name": "random braking probability",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Set to zero in the ITS scenario.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LCP",
+          "normalized_name": "lane-change probability",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Set to one in the ITS scenario.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "output",
+          "unit": "loop-flow proxy",
+          "definition": "ITS scenario comparison output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "lane-change frequency",
+          "role": "output",
+          "unit": "changes/time-step",
+          "definition": "ITS scenario comparison output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vbar",
+          "normalized_name": "average speed",
+          "role": "output",
+          "unit": "sites/time-step",
+          "definition": "ITS scenario comparison output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "score",
+          "normalized_name": "factor-score output",
+          "role": "output",
+          "unit": "score",
+          "definition": "Reported ITS score comparison.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "RBP",
+        "LCP"
+      ],
+      "outputs": [
+        "Q",
+        "C",
+        "Vbar",
+        "score"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The source states a policy or counterfactual scenario but supplies no standalone displayed governing equation."
+      },
+      "objectives": [
+        "Compare rule behavior under an idealized information-and-control condition."
+      ],
+      "constraints": [
+        "Random braking probability is zero.",
+        "Lane-change probability is one."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scenario or initial fleet configuration is stated or explicitly limited by the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A loop, lane, or scenario boundary is part of the stated mechanism."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source discusses response regimes but does not establish a formal equilibrium proof for every model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Ideal parameter values are asserted rather than calibrated.",
+        "parameters": [
+          "RBP",
+          "LCP"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set RBP=0 and LCP=1.",
+          "Reuse CA rule simulations.",
+          "Compare output curves."
+        ],
+        "software": [
+          "Cellular-automaton simulation",
+          "factor-analysis calculation",
+          "unreported plotting workflow"
+        ],
+        "convergence_criteria": "No seed protocol, repeated-run uncertainty, or numerical convergence test is reported unless a displayed table states otherwise."
+      },
+      "assumptions": [
+        "ITS knows road condition ahead.",
+        "Vehicle speed remains heterogeneous."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The scenario is a limiting counterfactual, not a demonstrated controller."
+      },
+      "handoff_outputs": [
+        "Q",
+        "C",
+        "Vbar",
+        "score"
+      ],
+      "validation_refs": [
+        "Figures 17-19 and repeated Figure 12"
+      ],
+      "computational_cost": "Computational cost, run count, and convergence evidence are not fully reported.",
+      "strengths": [
+        "The source states concrete variables, conditions, outputs, or a comparison interface."
+      ],
+      "limitations": [
+        "The source changes inputs but does not specify an actual routing/controller algorithm or an ITS communications model."
+      ],
+      "missing_details": [
+        "controller objective",
+        "state-estimation error",
+        "latency",
+        "implementation constraints"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2014-30532-001",
+      "to_model_id": "MU-A-2014-30532-002",
+      "handoff": "Single-lane vehicle state and update semantics are extended with a KREP lateral decision."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-002",
+      "to_model_id": "MU-A-2014-30532-003",
+      "handoff": "KREP trajectories provide laps, speeds, lane changes, and occupancies for output metrics."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-003",
+      "to_model_id": "MU-A-2014-30532-004",
+      "handoff": "The same loop CA setup and metric bundle define the KROL counterfactual comparison."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-003",
+      "to_model_id": "MU-A-2014-30532-005",
+      "handoff": "The same loop CA setup and metric bundle define the HLLR threshold counterfactual."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-003",
+      "to_model_id": "MU-A-2014-30532-006",
+      "handoff": "Simulation inputs and outputs become observed variables for factor analysis."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-006",
+      "to_model_id": "MU-A-2014-30532-007",
+      "handoff": "Factor loadings and selected factor structure determine the score functions."
+    },
+    {
+      "from_model_id": "MU-A-2014-30532-003",
+      "to_model_id": "MU-A-2014-30532-008",
+      "handoff": "The baseline CA is rerun with idealized RBP and LCP inputs for ITS comparison."
+    }
+  ],
+  "review_status": "validated"
+}

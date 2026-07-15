@@ -1,0 +1,55 @@
+Team # 25142                                         Page 30 of 34
+
+
+          road1(lane,xdistance,:)=zeros(1,1,2);
+      else
+          [b,y,x]=Xurgent(lane,xdistance);
+          road1(lane,x,:)=road1(lane,xdistance,:);
+          road1(lane,xdistance,:)=zeros(1,1,2);
+      end
+
+
+elseif lane==numoflane
+    if f_dis==0
+        [b,y,x]=Xfree(lane,xdistance);
+        road1(lane,x,:)=road1(lane,xdistance,:);
+        road1(lane,xdistance,:)=zeros(1,1,2);
+    elseif l_dis==0&&Xovertake(lane,xdistance)
+        Xpleft(road1(lane,xdistance,1));
+        [b,y,x]=Xacc(lane,xdistance);
+        road1(lane-1,x,:)=road1(lane,xdistance,:);
+        road1(lane,xdistance,:)=zeros(1,1,2);
+
+      elseif f_dis==1
+          [b,y,x]=Xsub(lane,xdistance);
+          road1(lane,x,:)=road1(lane,xdistance,:);
+          road1(lane,xdistance,:)=zeros(1,1,2);
+      else
+          [b,y,x]=Xurgent(lane,xdistance);
+          road1(lane,x,:)=road1(lane,xdistance,:);
+          road1(lane,xdistance,:)=zeros(1,1,2);
+      end
+end
+
+end
+
+
+Inflow:
+function Xbegin( p,q )
+%
+global speedmaxl speedmaxs
+
+prnd=poissrnd(p);
+if (prnd>16)
+    prnd=16;
+end
+global road1;
+A=road1(:,1:8,1);
+B=road1(:,1:8,2);
+S=size(road1);
+R=randperm(8*S(1));
+for i = R(1:prnd)
+    if A(i)==0
+        if rand<q
+             A(i)=5;
+             B(i)=speedmaxl;

@@ -1,0 +1,59 @@
+       Team # 77845                              Page 28 of 30
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+
+
+      ylabel(’signal-to-noise ratio(dB)’)
+
+      hold on
+      end
+      colormap(’hsv’)
+      subplot(2,1,1)
+       legend(’15 MHz’,’17.65 MHz’,’20 MHz’);
+         legend(’5^o’,’15^o’,’25^o’);
+      subplot(2,1,2)
+       legend(’15 MHz’,’17.65 MHz’,’20 MHz’);
+         legend(’5^o’,’15^o’,’25^o’);
+
+
+            calnAndNe.m:
+      function NeN=calnAndNe(h,f)
+                                                       ˘ ´
+      %this function is a simulatation of the n and Neã A C %And the ’h’
+      should above the ionosphere ’E’. f_0E=3.21; %MHz
+      h_mE=101; %km
+      y_mE=10.7; %km
+      f_0F2=14.20;%MHz
+      h_mF2=339.3;%km
+      y_mF2=78; %km
+      f_j=1.7*f_0E;
+      N_j=1.24/100*f_j^2;%10^12* m^(-3) h_j=h_mF2-
+      y_mF2*sqrt(1-(f_j/f_0F2)^2); N_mE=3.16/100;%10^12*
+      m^(-3) N_mF2=2.5;%10^12* m^(-3)
+      H=1.66*(30+0.075*(h_mF2-200)); NeN=zeros(1,2);
+      if h < (h_mE-y_mE) || h > 1000
+            n=100; %means the "h" is not in the effective range Ne=0; %means
+            the "h" is not in the effective range
+      end
+      if h >= (h_mE-y_mE) && h <= h_mE
+             Ne=N_mE*(1-((h-h_mE)/y_mE)^2);
+            n=sqrt(1-80.8*Ne/f/f);
+      end
+      if h > h_mE && h <= h_j Ne=(N_j-N_mE)/(h_j-h_mE)*h+(N_mE*h_j-
+            N_j*h_mE)/(h_j-h_mE); n=sqrt(1-80.8*Ne/f/f);
+      end
+      if h > h_j && h <= h_mF2 Ne=N_mF2*(1-((h-
+             h_mF2)/y_mF2).^2);
+             n=sqrt(1-80.8*Ne/f/f);
+      end
+      if h > h_mF2 && h <= 1000 Ne=N_mF2*exp(0.5*(1-(h-h_mF2)/H-exp(-1.0*(h-
+          h_mF2)/H))); n=sqrt(1-80.8*Ne/f/f);
+      end
+      NeN(1)=Ne;
+      NeN(2)=n;
+
+
+            fcandMUF.m:
+      function frequency=fcandMUF(Ne,h)
+      R=6371;%The radius of the earth,km
+      fcr=(Ne/1.24/10^10).^(0.5);%Critical frequency; MUF=fcr/(1-
+      (R/(R+h)).^2).^0.5;

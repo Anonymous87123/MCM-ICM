@@ -1,0 +1,46 @@
+Team #7586                                                                                             Page 7 of 15
+
+    To reiterate, the main features of our model are an emphasis on ball coupling with the bat, finite speed
+of wave propagation in short time-scale, and adaptation to realistic bats. This is a natural outgrowth of the
+approaches found in the literature.
+
+3.2 Mathematics of Our Model
+Our equations are a discretized version of the Euler-Bernoulli equations:
+                                   ∂ 2 y(z, t)             ∂2     ∂ 2 y(z, t)
+                                                                             
+                                 ρ             = F (z, t) + 2 Y I
+                                       ∂t2                 ∂z         ∂z 2
+In the above equation, ρ is the mass density, y(z, t) is the displacement, F (z, t) is the external force (in our
+case applied by the ball), Y is the material’s Young’s modulus (a constant), and I is the second moment of
+area (πR4 /4 for a solid disc). We will discretize z in steps of ∆. The only force will be from the ball, which
+applies a force in the negative direction to the k-th segment. Our discretized equation is:
+     d2 yi                         Y
+ρA∆     2
+           = −δik F (u(t), u0 (t))− 3 (Ii−1 (yi−2 − 2yi−1 + yi ) − 2Ii (yi−1 − 2yi + yi+1 ) + Ii+1 (yi − 2yi+1 + yi+2 ))
+      dt                           ∆
+Our dynamical variables are y1 through yN . For a fixed left end we pretend y−1 = y0 = 0. For a free left
+end we pretend y1 − y0 = y0 − y−1 = y−1 − y−2 . The conditions on the right end are analogous. These are
+the same conditions Cross uses.
+     Finally, we have an additional variable for the ball’s position (relative to some constant) w(t). Initially
+w(t) is positive and w0 (t) is negative, so the ball is moving towards the negative from the positive direction.
+Let u(t) = w(t) − yk (t). This variable will represent the compression of the ball, and we will replace F (t)
+with F (u(t), u0 (t)). Initially u(t) = 0 and u0 (t) = −vball . The force between the ball and the bat will take
+the form of hysteresis curves such as the ones shown in Figure 3b. The higher curve will be taken when
+u0 (t) < 0 (compression) and the lower curve when u0 (t) > 0 (expansion). When u(t) > 0 the force is zero.
+The equation of motion for the ball can then be written:
+                                     w00 (t) = u00 (t) + yk00 (t) = F (u(t), u0 (t))
+We have eliminated the variable w.
+    We have yet to specify the function F (u(t), u0 (t)). As we can see in videos,8 the ball does not act
+like a rigid object in collisions and instead compresses significantly (often more than a centimeter.) This
+compression and decompression is lossy. We could model this loss by just subtracting some fraction of the
+ball’s energy after the collision. This is good enough for many purposes, but we will instead follow Nathan
+and model this as a non-linear spring with hysteresis.
+
+
+
+
+Figure 3: Left: An image of a ball hitting a rigid wall.8 The compression is easily visible. Right: A hysteresis
+curve used in our modeling. The maximum compression here is a very significant 1 cm.
+
+
+                                                           7

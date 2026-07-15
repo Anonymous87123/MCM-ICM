@@ -1,0 +1,45 @@
+Team # 66500
+
+
+          alpha=0.2;
+       beta=0.5;
+    best=init_pso(n,Lb,Ub);
+    fbest=1.0e+100;
+    for t=1:time,
+       for i=1:n,
+           fval=Fun(fhandle,fnonlin,best(i,:));
+           if fval<=fbest,
+                 gbest=best(i,:);
+                 fbest=fval;
+           end
+                  end
+    alpha=newPara(alpha,gamma);
+       best=pso_move(best,gbest,alpha,beta,Lb,Ub);
+           str=strcat('Best estimates: gbest=',num2str(gbest));
+           str=strcat(str,'     iteration='); str=strcat(str,num2str(t));
+           disp(str);
+           fitness1(t)=fbest;
+           plot(fitness1,'r','Linewidth',2)
+           grid on
+           hold on
+           title('ÊÊÓ¦¶È')
+    end
+    function [guess]=init_pso(n,Lb,Ub)
+    ndim=length(Lb);
+    for i=1:n,
+           guess(i,1:ndim)=Lb+rand(1,ndim).*(Ub-Lb);
+    end
+    function ns=pso_move(best,gbest,alpha,beta,Lb,Ub)
+    n=size(best,1); ndim=size(best,2);
+    scale=(Ub-Lb);
+    for i=1:n,
+           ns(i,:)=best(i,:)+beta*(gbest-
+best(i,:))+alpha.*randn(1,ndim).*scale;
+    end
+    ns=findrange(ns,Lb,Ub);
+    function ns=findrange(ns,Lb,Ub)
+    n=length(ns);
+    for i=1:n,
+       ns_tmp=ns(i,:);
+       I=ns_tmp<Lb;
+       ns_tmp(I)=Lb(I);
