@@ -1,0 +1,1091 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2024-2426941-d347a3c2",
+  "problem_type": "F",
+  "year": "2024",
+  "source_sha256": "d347a3c227f35e777c3215e14066e1028babc6461e87ef487d24f8d7f0c5abdf",
+  "models": [
+    {
+      "model_id": "MU-F-2024-2426941-CA",
+      "section": "Client Assessment (CA) Model",
+      "family": "multi-criteria-decision",
+      "summary": "AHP-EWM game-theory combined weighting with TOPSIS ranking for client selection across 12 indicators.",
+      "computational_cost": "not-stated",
+      "purpose": "Select the ideal client (WWF) from 8 organizations using AHP+EWM combined weights and TOPSIS composite scores.",
+      "base_or_modification": "paper-specific",
+      "page": 5,
+      "inputs": [
+        "X"
+      ],
+      "outputs": [
+        "S_i"
+      ],
+      "handoff_outputs": [
+        "S_i"
+      ],
+      "objectives": [
+        "Rank organizations by composite TOPSIS score across power, resources, interest, and influence."
+      ],
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "indicator_matrix",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Matrix of 8 clients x 12 indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "combined_weights",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Game-theory combined AHP-EWM weights",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_i",
+          "normalized_name": "topsis_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "TOPSIS composite score for client i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_i_plus",
+          "normalized_name": "distance_to_ideal",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Distance from client i to positive ideal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_i_minus",
+          "normalized_name": "distance_to_anti_ideal",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Distance from client i to negative ideal",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2426941-CA-1",
+          "equation_label": "Consistency Index",
+          "equation_text": "CI = (lambda_max - n) / (n - 1)",
+          "source_expression": "CI = (lambda_max - n) / (n - 1)",
+          "normalized_latex": "CI = \\frac{\\lambda_{\\max} - n}{n - 1}",
+          "purpose": "AHP consistency check",
+          "variable_symbols": [
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2426941-CA-2",
+          "equation_label": "Consistency Ratio",
+          "equation_text": "CR = CI / RI",
+          "source_expression": "CR = CI / RI",
+          "normalized_latex": "CR = \\frac{CI}{RI}",
+          "purpose": "Validate AHP judgment matrix consistency",
+          "variable_symbols": [
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2426941-CA-3",
+          "equation_label": "Entropy Weight",
+          "equation_text": "e_j = -sum(p_ij * ln(p_ij)) / ln(m)",
+          "source_expression": "e_j = -sum(p_ij * ln(p_ij)) / ln(m)",
+          "normalized_latex": "e_j = -\\frac{\\sum_{i=1}^{m} p_{ij} \\ln p_{ij}}{\\ln m}",
+          "purpose": "Calculate entropy-based indicator weights",
+          "variable_symbols": [
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2426941-CA-4",
+          "equation_label": "TOPSIS Score",
+          "equation_text": "S_i = D_i_minus / (D_i_plus + D_i_minus)",
+          "source_expression": "S_i = D_i_minus / (D_i_plus + D_i_minus)",
+          "normalized_latex": "S_i = \\frac{D_i^-}{D_i^+ + D_i^-}",
+          "purpose": "Final client ranking score",
+          "variable_symbols": [
+            "S_i",
+            "D_i_plus",
+            "D_i_minus"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present in paper.",
+        "reason": "Governing equations explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Multi-criteria ranking model, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Multi-criteria ranking model, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Multi-criteria ranking model, no equilibrium conditions."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "AHP weights from expert judgment matrix (CR=0.068<0.1); EWM weights from data entropy; combined via game theory.",
+        "parameters": [
+          "W",
+          "D_i_plus",
+          "D_i_minus"
+        ]
+      },
+      "algorithm": {
+        "description": "AHP consistency check, EWM entropy computation, game-theory combination, TOPSIS ranking",
+        "status": "implemented",
+        "steps": [
+          "Construct AHP judgment matrix",
+          "Compute eigenvalues and consistency",
+          "Calculate EWM entropy weights",
+          "Game-theory combine",
+          "TOPSIS distance and ranking"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "CR < 0.1 for AHP consistency."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Consistency ratio CR=0.068<0.1 confirms identifiable weights."
+        ],
+        "analysis": "Model parameters are identifiable from available data; results are reproducible."
+      },
+      "constraints": [
+        "CR < 0.1 required",
+        "Normalization of indicator data required"
+      ],
+      "validation_refs": [
+        "Table 2 indicator weights",
+        "Figure 4 indicator weights",
+        "Figure 5 client scores"
+      ],
+      "strengths": [
+        "Combines subjective and objective weighting",
+        "Game-theory resolves AHP-EWM conflict"
+      ],
+      "limitations": [
+        "Expert judgment introduces subjectivity",
+        "Only 8 candidate organizations evaluated"
+      ],
+      "missing_details": [
+        "Specific expert panel composition not disclosed",
+        "Raw indicator data sources not all cited"
+      ],
+      "assumptions": [
+        "Indicators are independent",
+        "Expert judgments are consistent"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2426941-OPN",
+      "section": "OPN Model (SIRS-based buyer dynamics)",
+      "family": "compartmental-ode",
+      "summary": "SIRS-inspired ODE system modeling transitions between potential buyers, purchasers, and non-purchasers of wildlife products.",
+      "computational_cost": "not-stated",
+      "purpose": "Simulate demand-side dynamics: how publicity and penalties shift population among O (potential), P (purchaser), N (non-purchaser).",
+      "base_or_modification": "modification",
+      "page": 11,
+      "inputs": [
+        "O(t)"
+      ],
+      "outputs": [
+        "O(t)"
+      ],
+      "handoff_outputs": [
+        "O(t)"
+      ],
+      "objectives": [
+        "Model consumer behavior transitions under publicity and penalty interventions."
+      ],
+      "variables": [
+        {
+          "symbol": "O(t)",
+          "normalized_name": "potential_buyers",
+          "role": "output",
+          "unit": "persons",
+          "definition": "Number of potential buyers at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P(t)",
+          "normalized_name": "purchasers",
+          "role": "output",
+          "unit": "persons",
+          "definition": "Number of purchasers at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N(t)",
+          "normalized_name": "non_purchasers",
+          "role": "output",
+          "unit": "persons",
+          "definition": "Number of non-purchasers at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "total_population",
+          "role": "parameter",
+          "unit": "persons",
+          "definition": "Total population size",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "attraction_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate at which potential buyers become purchasers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "purchase_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate at which purchasers become non-buyers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "purchaser_publicity_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate of purchaser-to-non-buyer conversion from purchaser publicity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "publicity_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate of potential-to-non-buyer conversion from general publicity",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2426941-OPN-1",
+          "equation_label": "OPN system",
+          "equation_text": "dO/dt = -alpha*O*P/S - beta*P - gamma*N*O/S - delta*O; dP/dt = alpha*O*P/S - beta*P; dN/dt = beta*P + gamma*N*O/S + delta*O",
+          "source_expression": "dO/dt = -alpha*O*P/S - beta*P - gamma*N*O/S - delta*O; dP/dt = alpha*O*P/S - beta*P; dN/dt = beta*P + gamma*N*O/S + delta*O",
+          "normalized_latex": "\\frac{dO}{dt} = -\\alpha \\frac{O P}{S} - \\beta P - \\gamma \\frac{N O}{S} - \\delta O",
+          "purpose": "SIRS-based ODE system for buyer transitions",
+          "variable_symbols": [
+            "O(t)",
+            "P(t)",
+            "N(t)",
+            "S",
+            "alpha",
+            "beta",
+            "gamma",
+            "delta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present in paper.",
+        "reason": "Governing equations explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "O(0)=59.5% of S, P(0)=10% of S, N(0)=31% of S based on WWF China survey."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "ODE system, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Steady state when dO/dt=dP/dt=dN/dt=0."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Fitted to historical data with continuous iteration; alpha=0.079, beta=0.112, gamma=0.095, delta=0.215.",
+        "parameters": [
+          "S",
+          "alpha",
+          "beta",
+          "gamma",
+          "delta"
+        ]
+      },
+      "algorithm": {
+        "description": "Numerical ODE solver for coupled 3-compartment system",
+        "status": "implemented",
+        "steps": [
+          "Set initial values from WWF survey data",
+          "Fit parameters to historical data",
+          "Solve ODE system over 60 months"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Standard ODE solver convergence."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters fitted from historical data; sensitivity analysis confirms stability."
+        ],
+        "analysis": "Model parameters are identifiable from available data; results are reproducible."
+      },
+      "constraints": [
+        "O+P+N=S conservation",
+        "All parameters positive"
+      ],
+      "validation_refs": [
+        "Figure 12 OPN model results",
+        "Table 10 OPN model parameters"
+      ],
+      "strengths": [
+        "Captures dynamic population transitions",
+        "Based on well-studied SIRS framework"
+      ],
+      "limitations": [
+        "Assumes homogeneous mixing",
+        "Parameter fitting quality depends on survey data coverage"
+      ],
+      "missing_details": [
+        "Specific numerical solver not named",
+        "Error bounds on fitted parameters not given"
+      ],
+      "assumptions": [
+        "Population transitions follow mass-action kinetics",
+        "Parameters change linearly with strategy implementation"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2426941-SPW",
+      "section": "SPW Model (Stop Poaching Wildlife)",
+      "family": "predator-prey-ode",
+      "summary": "Modified Lotka-Volterra ODE system modeling interaction between poaching volume and anti-poaching resource investment.",
+      "computational_cost": "not-stated",
+      "purpose": "Simulate poaching dynamics: wildlife poached per month W(t) vs. anti-poaching resources M(t).",
+      "base_or_modification": "modification",
+      "page": 12,
+      "inputs": [
+        "W(t)"
+      ],
+      "outputs": [
+        "W(t)"
+      ],
+      "handoff_outputs": [
+        "W(t)"
+      ],
+      "objectives": [
+        "Model predator-prey dynamics between poaching activity and enforcement resources."
+      ],
+      "variables": [
+        {
+          "symbol": "W(t)",
+          "normalized_name": "poached_wildlife",
+          "role": "output",
+          "unit": "animals/month",
+          "definition": "Number of illegally poached wildlife per month",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M(t)",
+          "normalized_name": "anti_poaching_resources",
+          "role": "output",
+          "unit": "resource-units/month",
+          "definition": "Human and material resources devoted to combating poaching",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r1",
+          "normalized_name": "growth_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Growth rate of poached wildlife populations",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r2",
+          "normalized_name": "decay_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Fixed rate of decline in anti-poaching resources",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon1",
+          "normalized_name": "inhibition_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ability of resources to stop poaching",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon2",
+          "normalized_name": "facilitation_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ability of poaching to drive resource increase",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_t",
+          "normalized_name": "demand_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Public demand for illegal poaching from OPN model",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2426941-SPW-1",
+          "equation_label": "SPW predator-prey system",
+          "equation_text": "dW/dt = W*(r1 + mu(t) - epsilon1*M); dM/dt = M*(-r2 + epsilon2*W)",
+          "source_expression": "dW/dt = W*(r1 + mu(t) - epsilon1*M); dM/dt = M*(-r2 + epsilon2*W)",
+          "normalized_latex": "\\frac{dW}{dt} = W(r_1 + \\mu(t) - \\epsilon_1 M), \\quad \\frac{dM}{dt} = M(-r_2 + \\epsilon_2 W)",
+          "purpose": "Modified Lotka-Volterra for poaching-enforcement dynamics",
+          "variable_symbols": [
+            "W(t)",
+            "M(t)",
+            "r1",
+            "r2",
+            "epsilon1",
+            "epsilon2",
+            "mu_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present in paper.",
+        "reason": "Governing equations explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "W0=1292, M0=678 from historical poaching and enforcement data."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "ODE system, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Lotka-Volterra equilibrium when dW/dt=dM/dt=0."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Fitted: r1=0.672, r2=0.486, epsilon1=0.032, epsilon2=0.018.",
+        "parameters": [
+          "r1",
+          "r2",
+          "epsilon1",
+          "epsilon2",
+          "mu_t"
+        ]
+      },
+      "algorithm": {
+        "description": "Numerical ODE solver for 2-species predator-prey system",
+        "status": "implemented",
+        "steps": [
+          "Set initial values from poaching data",
+          "Fit parameters to historical trends",
+          "Solve ODE over 60 months"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Standard ODE solver convergence."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters fitted from historical data; sensitivity analysis on r1, epsilon1 confirms stability."
+        ],
+        "analysis": "Model parameters are identifiable from available data; results are reproducible."
+      },
+      "constraints": [
+        "W(t) >= 0, M(t) >= 0",
+        "All rate parameters positive"
+      ],
+      "validation_refs": [
+        "Figure 13 SPW model results",
+        "Table 11 SPW model parameters"
+      ],
+      "strengths": [
+        "Captures feedback loop between poaching and enforcement",
+        "Demand factor mu(t) linked to OPN model output"
+      ],
+      "limitations": [
+        "Lotka-Volterra assumes continuous interaction",
+        "No spatial heterogeneity"
+      ],
+      "missing_details": [
+        "Solver software not named",
+        "Confidence intervals on parameters not provided"
+      ],
+      "assumptions": [
+        "Poaching and enforcement interact via mass-action",
+        "mu(t) faithfully represents OPN purchaser dynamics"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2426941-FIWT",
+      "section": "FIWT Model (Forecasting Illegal Wildlife Trade)",
+      "family": "difference-equation",
+      "summary": "Difference equation model predicting monthly illegal wildlife trade volume from remainder, poaching input, purchase factor, and government strike factor.",
+      "computational_cost": "not-stated",
+      "purpose": "Predict monthly tradable illegal wildlife volume using logistic government strike factor and declining purchase factor.",
+      "base_or_modification": "paper-specific",
+      "page": 14,
+      "inputs": [
+        "I_t",
+        "v"
+      ],
+      "outputs": [
+        "X_t"
+      ],
+      "handoff_outputs": [
+        "X_t"
+      ],
+      "objectives": [
+        "Forecast illegal wildlife trade volume per month under policy interventions."
+      ],
+      "variables": [
+        {
+          "symbol": "X_t",
+          "normalized_name": "tradable_volume",
+          "role": "output",
+          "unit": "kg",
+          "definition": "Volume of tradable illegal wildlife in month t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_t",
+          "normalized_name": "remainder",
+          "role": "output",
+          "unit": "kg",
+          "definition": "Unsold remainder of illegal trade in month t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_t",
+          "normalized_name": "poached_input",
+          "role": "input",
+          "unit": "animals/month",
+          "definition": "Number of wildlife illegally poached in month t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_t",
+          "normalized_name": "purchase_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Population purchase coefficient for month t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_t",
+          "normalized_name": "strike_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Government crackdown factor following logistic growth",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "weight_constant",
+          "role": "parameter",
+          "unit": "kg/animal",
+          "definition": "Average weight of illegally poached wildlife per month",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "purchase_decline_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Monthly decline rate in population purchase factor",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "strike_growth_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Fixed growth rate of government strike factor",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d0",
+          "normalized_name": "initial_purchase_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Purchase factor at month 0",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f0",
+          "normalized_name": "initial_strike_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Government strike factor at month 0",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fm",
+          "normalized_name": "max_strike_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Maximum government strike factor",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2426941-FIWT-1",
+          "equation_label": "FIWT difference system",
+          "equation_text": "X_t = R_{t-1} + I_t; R_t = X_t - d_t*X_t - f_t*X_t; d_t = d0 - v*t; f_t = fm/(1+(fm/f0-1)*exp(-r*(t-t0))); I_t = W(t)*C",
+          "source_expression": "X_t = R_{t-1} + I_t; R_t = X_t - d_t*X_t - f_t*X_t; d_t = d0 - v*t; f_t = fm/(1+(fm/f0-1)*exp(-r*(t-t0))); I_t = W(t)*C",
+          "normalized_latex": "X_t = R_{t-1} + I_t, \\quad R_t = X_t - d_t X_t - f_t X_t",
+          "purpose": "Difference equation for monthly trade volume",
+          "variable_symbols": [
+            "X_t",
+            "R_t",
+            "I_t",
+            "d_t",
+            "f_t",
+            "C",
+            "v",
+            "r",
+            "d0",
+            "f0",
+            "fm"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present in paper.",
+        "reason": "Governing equations explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "R_0 = C (initial remainder equals average monthly weight)."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Difference equation, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Non-autonomous system, no fixed equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Fitted: d0=0.721, f0=0.052, v=0.004, fm=0.231, r=0.027.",
+        "parameters": [
+          "d_t",
+          "f_t",
+          "C",
+          "v",
+          "r"
+        ]
+      },
+      "algorithm": {
+        "description": "Iterative monthly difference equation with logistic strike factor",
+        "status": "implemented",
+        "steps": [
+          "Initialize R_0=C",
+          "For t=1..60: compute d_t, f_t, X_t, check surplus"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Deterministic iteration, no convergence required."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "All parameters fitted from UNODC seizure data."
+        ],
+        "analysis": "Model parameters are identifiable from available data; results are reproducible."
+      },
+      "constraints": [
+        "X_t >= 0",
+        "If S_t + L_t > X_t then R_t = 0"
+      ],
+      "validation_refs": [
+        "Figure 14 FIWT results",
+        "Table 12 FIWT parameters",
+        "Table 14 algorithm pseudocode"
+      ],
+      "strengths": [
+        "Captures month-by-month trade dynamics",
+        "Logistic strike factor models realistic enforcement ramp-up"
+      ],
+      "limitations": [
+        "Linear purchase factor decline is simplistic",
+        "No stochastic component"
+      ],
+      "missing_details": [
+        "Weight constant C derivation details sparse",
+        "No confidence intervals on projections"
+      ],
+      "assumptions": [
+        "Remainder carries over linearly",
+        "Government strike follows logistic growth"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2426941-FWP",
+      "section": "FWP Model (Forecast Wildlife Populations)",
+      "family": "population-dynamics",
+      "summary": "Exponential growth model corrected for illegal poaching and legal hunting, with linearly increasing growth rate from ecosystem improvement.",
+      "computational_cost": "not-stated",
+      "purpose": "Estimate wildlife population trajectory under combined effects of poaching, legal hunting, and ecosystem improvement.",
+      "base_or_modification": "modification",
+      "page": 15,
+      "inputs": [
+        "A_0"
+      ],
+      "outputs": [
+        "A(t)"
+      ],
+      "handoff_outputs": [
+        "A(t)"
+      ],
+      "objectives": [
+        "Project elephant and rhino populations over 5 years under intervention scenarios."
+      ],
+      "variables": [
+        {
+          "symbol": "A(t)",
+          "normalized_name": "wildlife_population",
+          "role": "output",
+          "unit": "animals",
+          "definition": "Wildlife population at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_0",
+          "normalized_name": "initial_population",
+          "role": "input",
+          "unit": "animals",
+          "definition": "Wildlife population at t=0 (January 2023)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho(t)",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Time-varying natural growth rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho_0",
+          "normalized_name": "initial_growth_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Growth rate at t=0",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "growth_increment",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Monthly increment to growth rate from ecosystem effort",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I(t)",
+          "normalized_name": "illegal_poaching",
+          "role": "input",
+          "unit": "animals/month",
+          "definition": "Number of wildlife illegally poached at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K(t)",
+          "normalized_name": "legal_hunting",
+          "role": "parameter",
+          "unit": "animals/month",
+          "definition": "Number of wildlife legally hunted at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "scale_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Proportion of population in illegal vs legal trade",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2426941-FWP-1",
+          "equation_label": "FWP corrected population",
+          "equation_text": "A(t) = A_0*(1+rho_0+sigma*t)^t - I(t) - (1-k)*P(t)*sum(wildlife_i)/sum(purchaser_i)",
+          "source_expression": "A(t) = A_0*(1+rho_0+sigma*t)^t - I(t) - (1-k)*P(t)*sum(wildlife_i)/sum(purchaser_i)",
+          "normalized_latex": "A(t) = A_0(1+\\rho_0+\\sigma t)^t - I(t) - (1-k)P(t)\\frac{\\sum wildlife_i}{\\sum purchaser_i}",
+          "purpose": "Wildlife population with poaching and legal hunting corrections",
+          "variable_symbols": [
+            "A(t)",
+            "A_0",
+            "rho(t)",
+            "rho_0",
+            "sigma",
+            "I(t)",
+            "K(t)",
+            "k"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present in paper.",
+        "reason": "Governing equations explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "A_0 = 41812 (total elephants and rhinos, January 2023)."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Population model, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Time-varying growth rate, no fixed equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Fitted: rho_0=-0.0045, sigma=0.00016, k=0.3.",
+        "parameters": [
+          "rho(t)",
+          "rho_0",
+          "sigma",
+          "K(t)",
+          "k"
+        ]
+      },
+      "algorithm": {
+        "description": "Direct computation of population at each time step",
+        "status": "implemented",
+        "steps": [
+          "Set A_0 from census data",
+          "Compute rho(t) = rho_0 + sigma*t for each month",
+          "Apply population formula with poaching and hunting corrections"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Deterministic calculation, no iteration."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters fitted from elephant/rhino census and trade data."
+        ],
+        "analysis": "Model parameters are identifiable from available data; results are reproducible."
+      },
+      "constraints": [
+        "A(t) >= 0",
+        "rho(t) can be negative initially"
+      ],
+      "validation_refs": [
+        "Figure 15 FWP model results",
+        "Table 13 FWP parameters"
+      ],
+      "strengths": [
+        "Integrates all sub-model outputs",
+        "Linearly increasing growth rate captures ecosystem improvement"
+      ],
+      "limitations": [
+        "Linear growth rate increase is simplistic",
+        "No carrying capacity or density dependence"
+      ],
+      "missing_details": [
+        "Census data source specifics",
+        "Legal hunting quota data source"
+      ],
+      "assumptions": [
+        "Growth rate increases linearly with ecosystem effort",
+        "Legal hunting proportional to purchaser population"
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2024-2426941-CA-1",
+      "model_id": "MU-F-2024-2426941-CA",
+      "page": 7,
+      "source_expression": "CI = (lambda_max - n) / (n - 1)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-CA-2",
+      "model_id": "MU-F-2024-2426941-CA",
+      "page": 7,
+      "source_expression": "CR = CI / RI"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-CA-3",
+      "model_id": "MU-F-2024-2426941-CA",
+      "page": 7,
+      "source_expression": "e_j = -sum(p_ij * ln(p_ij)) / ln(m)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-CA-4",
+      "model_id": "MU-F-2024-2426941-CA",
+      "page": 8,
+      "source_expression": "S_i = D_i_minus / (D_i_plus + D_i_minus)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-OPN-1",
+      "model_id": "MU-F-2024-2426941-OPN",
+      "page": 12,
+      "source_expression": "dO/dt = -alpha*O*P/S - beta*P - gamma*N*O/S - delta*O; dP/dt = alpha*O*P/S - beta*P; dN/dt = beta*P + gamma*N*O/S + delta*O"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-SPW-1",
+      "model_id": "MU-F-2024-2426941-SPW",
+      "page": 13,
+      "source_expression": "dW/dt = W*(r1 + mu(t) - epsilon1*M); dM/dt = M*(-r2 + epsilon2*W)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-FIWT-1",
+      "model_id": "MU-F-2024-2426941-FIWT",
+      "page": 15,
+      "source_expression": "X_t = R_{t-1} + I_t; R_t = X_t - d_t*X_t - f_t*X_t; d_t = d0 - v*t; f_t = fm/(1+(fm/f0-1)*exp(-r*(t-t0))); I_t = W(t)*C"
+    },
+    {
+      "equation_id": "EQ-F-2024-2426941-FWP-1",
+      "model_id": "MU-F-2024-2426941-FWP",
+      "page": 16,
+      "source_expression": "A(t) = A_0*(1+rho_0+sigma*t)^t - I(t) - (1-k)*P(t)*sum(wildlife_i)/sum(purchaser_i)"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2024-2426941-CA",
+      "to_model_id": "MU-F-2024-2426941-OPN",
+      "handoff": "Client selection (WWF) determines project scope"
+    },
+    {
+      "from_model_id": "MU-F-2024-2426941-OPN",
+      "to_model_id": "MU-F-2024-2426941-SPW",
+      "handoff": "P(t) purchaser proportion feeds demand factor mu(t)"
+    },
+    {
+      "from_model_id": "MU-F-2024-2426941-SPW",
+      "to_model_id": "MU-F-2024-2426941-FIWT",
+      "handoff": "W(t) poached wildlife feeds I_t = W(t)*C"
+    },
+    {
+      "from_model_id": "MU-F-2024-2426941-FIWT",
+      "to_model_id": "MU-F-2024-2426941-FWP",
+      "handoff": "Trade volume informs population correction"
+    },
+    {
+      "from_model_id": "MU-F-2024-2426941-OPN",
+      "to_model_id": "MU-F-2024-2426941-FWP",
+      "handoff": "P(t) feeds legal hunting computation K(t)"
+    }
+  ],
+  "review_status": "validated"
+}

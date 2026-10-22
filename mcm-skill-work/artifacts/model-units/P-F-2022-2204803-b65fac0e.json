@@ -1,0 +1,531 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2022-2204803-b65fac0e",
+  "problem_type": "F",
+  "year": "2022",
+  "source_sha256": "b65fac0e34023db1e5621591547e276489f43e4bd1dd71e6e8309e98ae238232",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2022-2204803-NDI",
+      "section": "3 National Development Level Index Model",
+      "family": "composite-index",
+      "summary": "Equity defined as similarity of development levels. McKinsey logic tree picks 15 indicators in five groups. Negative indicators reversed, then min-max normalized. Entropy weights. NDI is the weighted sum. K-means splits 115 countries into High, Medium, Low. GEI is the relative gap between mean High and mean Low NDI. 2020 GEI is 14.06. EU regional check: REI falls from 2.65 in 1990 to 0.90 in 2015.",
+      "computational_cost": "not-stated",
+      "purpose": "Score national development and measure global inequity as the gap between the top and bottom clusters.",
+      "base_or_modification": "hybrid",
+      "page": 4,
+      "inputs": [
+        "X_ij"
+      ],
+      "outputs": [
+        "NDI",
+        "GEI"
+      ],
+      "handoff_outputs": [
+        "NDI",
+        "GEI",
+        "w_i"
+      ],
+      "objectives": [
+        "Build a per-capita development score and a gap index that does not depend on country size."
+      ],
+      "variables": [
+        {
+          "symbol": "X_ij",
+          "normalized_name": "raw_indicator",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Raw value of indicator i for country j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_ij",
+          "normalized_name": "normalized",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Min-max normalized indicator, after reversing negative indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_ij",
+          "normalized_name": "share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of country j in indicator i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_i",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of indicator i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_i",
+          "normalized_name": "weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy weight of indicator i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NDI",
+          "normalized_name": "development_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "National development level, weighted sum of normalized indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GEI",
+          "normalized_name": "equity_gap",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Relative gap between mean High NDI and mean Low NDI",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "REI",
+          "normalized_name": "regional_gap",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Same gap computed inside the EU sample",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2204803-NDI-1",
+          "equation_label": "Reverse negative indicators",
+          "equation_text": "X_ij = max(X_i) - X_ij",
+          "source_expression": "X_ij = max(X_i) - X_ij",
+          "normalized_latex": "X_{ij} = \\max(X_i) - X_{ij}",
+          "purpose": "Flip cost indicators before scaling. Equation (1).",
+          "variable_symbols": [
+            "X_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2204803-NDI-2",
+          "equation_label": "Min-max normalization",
+          "equation_text": "Y_ij = (X_ij - min(X_i)) / (max(X_i) - min(X_i))",
+          "source_expression": "Y_ij = (X_ij - min(X_i)) / (max(X_i) - min(X_i))",
+          "normalized_latex": "Y_{ij} = \\frac{X_{ij} - \\min(X_i)}{\\max(X_i) - \\min(X_i)}",
+          "purpose": "Scale every indicator to the unit interval. Equation (2).",
+          "variable_symbols": [
+            "Y_ij",
+            "X_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2204803-NDI-3",
+          "equation_label": "Entropy",
+          "equation_text": "E_i = -1/ln(n) * sum_j P_ij ln P_ij, with P_ij = Y_ij / sum_j Y_ij, and the limit 0 at P=0",
+          "source_expression": "E_i = -1/ln(n) * sum_j P_ij ln P_ij, with P_ij = Y_ij / sum_j Y_ij, and the limit 0 at P=0",
+          "normalized_latex": "E_i = -\\frac{1}{\\ln n}\\sum_j P_{ij}\\ln P_{ij}",
+          "purpose": "Information entropy. Equations (3)-(5). OCR collapses the sum.",
+          "variable_symbols": [
+            "E_i",
+            "P_ij",
+            "Y_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2204803-NDI-4",
+          "equation_label": "Entropy weight",
+          "equation_text": "w_i = (1 - E_i) / (k - sum_i E_i)",
+          "source_expression": "w_i = (1 - E_i) / (k - sum_i E_i)",
+          "normalized_latex": "w_i = \\frac{1 - E_i}{k - \\sum_i E_i}",
+          "purpose": "Weight of indicator i. Equation (6).",
+          "variable_symbols": [
+            "w_i",
+            "E_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2204803-NDI-5",
+          "equation_label": "Global equity index",
+          "equation_text": "GEI(t) = (avg NDI_High(t) - avg NDI_Low(t)) / avg NDI_Low(t)",
+          "source_expression": "GEI(t) = (avg NDI_High(t) - avg NDI_Low(t)) / avg NDI_Low(t)",
+          "normalized_latex": "GEI(t) = \\frac{\\mathrm{avg}(NDI_{High}) - \\mathrm{avg}(NDI_{Low})}{\\mathrm{avg}(NDI_{Low})}",
+          "purpose": "Relative gap between the top and bottom clusters. Equation (7).",
+          "variable_symbols": [
+            "GEI",
+            "NDI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (1), (2), (6), (7) are readable. Entropy sum in (3)-(4) is OCR-scrambled; reconstructed as the standard form.",
+        "reason": "Explicitly numbered."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "115 countries, five years 2016-2020, World Bank and UNdata. Countries with too many gaps dropped."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Per capita and shares only, so country size does not enter. Cultural influence excluded."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Index model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Entropy weight method after reversing negative indicators. K-means with three clusters.",
+        "parameters": [
+          "w_i"
+        ]
+      },
+      "algorithm": {
+        "description": "Select 15 indicators with a logic tree, reverse cost indicators, min-max scale, entropy-weight, sum to NDI, cluster, take the relative high-low gap.",
+        "status": "implemented",
+        "steps": [
+          "Logic tree",
+          "Drop sparse countries",
+          "Fill tolerable gaps",
+          "Reverse negatives",
+          "Min-max",
+          "Entropy",
+          "Weights",
+          "NDI",
+          "K-means",
+          "GEI"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Three clusters named High, Medium, Low."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "GEI 14.06 in 2020. High mean NDI 11249, Low mean 747. EU REI 2.65 in 1990, 0.90 in 2015. Economy 44.85 percent, civilization 25.92 percent of weight."
+        ],
+        "analysis": "The EU decline is the only external check, and it moves in the direction the authors call logical."
+      },
+      "constraints": [
+        "15 indicators.",
+        "Three clusters.",
+        "Relative and per-capita measures."
+      ],
+      "validation_refs": [
+        "Figure 3 global development map",
+        "Figure 4 NDI distribution",
+        "Figure 5 income per capita trend",
+        "Table 3 cluster summary"
+      ],
+      "strengths": [
+        "The equity statistic is a gap between groups, so a large middle cannot hide the tails.",
+        "EU panel gives the index a before-and-after."
+      ],
+      "limitations": [
+        "Authors reverse the usual entropy story: they say larger entropy means more significance.",
+        "K is not justified. GEI of 14 is a ratio, and the prose calls the high group hundreds of times the low group, which the table does not support (about 15 times)."
+      ],
+      "missing_details": [
+        "K-means distance and initialization.",
+        "Which two EU countries switched groups."
+      ],
+      "assumptions": [
+        "International-organization data are accurate.",
+        "Omitted countries barely move the weights.",
+        "A country is one unit.",
+        "Relative and per-capita values, not totals."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2204803-FCE",
+      "section": "4 Impact of Asteroid Mining",
+      "family": "fuzzy-evaluation",
+      "summary": "Two funding regimes, state and private, scored by fuzzy comprehensive evaluation on the same 15 factors. Evaluation grades scored 5, 2, 1, -2, -5. Membership rows are hand-set at 0.7, 0.3, and 0. State funding: IM 2.332 for more-developed countries and 2.312 for less-developed. Private funding: 2.003 and 1.708. State funding helps both more, and opens a smaller gap.",
+      "computational_cost": "not-stated",
+      "purpose": "Compare how the funder changes the equity impact of asteroid mining.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "inputs": [
+        "A_w",
+        "R"
+      ],
+      "outputs": [
+        "IM"
+      ],
+      "handoff_outputs": [
+        "IM"
+      ],
+      "objectives": [
+        "Turn qualitative judgments about each indicator into one impact score per group and per funding regime."
+      ],
+      "variables": [
+        {
+          "symbol": "U",
+          "normalized_name": "factor_set",
+          "role": "input",
+          "unit": "set",
+          "definition": "The 15 equity indicators from the NDI model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "evaluation_set",
+          "role": "parameter",
+          "unit": "set",
+          "definition": "Five grades from significant positive impact to significant negative impact",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_w",
+          "normalized_name": "weight_vector",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Entropy weights carried over from the NDI model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "membership",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Hand-set single-factor evaluation matrix, entries 0.7, 0.3, or 0",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "comprehensive",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "A times R, the grade membership of one group",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s",
+          "normalized_name": "grade_score",
+          "role": "parameter",
+          "unit": "score",
+          "definition": "Scores 5, 2, 1, -2, -5 on the five grades",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IM",
+          "normalized_name": "impact_value",
+          "role": "output",
+          "unit": "score",
+          "definition": "Impact score, B dot s",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2204803-FCE-1",
+          "equation_label": "Comprehensive evaluation",
+          "equation_text": "B = A_w · R",
+          "source_expression": "B = A_w · R",
+          "normalized_latex": "B = A \\cdot R",
+          "purpose": "Fuzzy composition of entropy weights and the hand-set membership matrix.",
+          "variable_symbols": [
+            "B",
+            "A_w",
+            "R"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2204803-FCE-2",
+          "equation_label": "Impact value",
+          "equation_text": "IM = B · s, with s = (5, 2, 1, -2, -5)",
+          "source_expression": "IM = B · s, with s = (5, 2, 1, -2, -5)",
+          "normalized_latex": "IM = B \\cdot s,\\quad s = (5, 2, 1, -2, -5)",
+          "purpose": "Scalar impact. State: 2.332 and 2.312. Private: 2.003 and 1.708.",
+          "variable_symbols": [
+            "IM",
+            "B",
+            "s"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Membership matrices (11)-(14) are badly OCR-garbled. The composition B = A·R and the four IM numbers are readable.",
+        "reason": "Numbers and the composition rule are explicit."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country classes from task 1 stay fixed. Mining is a high-threshold international project, not a single-government project."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "No sudden change. Individuals and small firms cannot enter."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Scoring model, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Membership degrees are assigned by the authors, not estimated. 0.7, 0.3, and 0 are stipulated.",
+        "parameters": [
+          "R",
+          "s"
+        ]
+      },
+      "algorithm": {
+        "description": "Reuse the entropy weights, write a membership row per indicator for each of four cases, multiply, score, compare the four impact values.",
+        "status": "implemented",
+        "steps": [
+          "Fix factor set",
+          "Fix five grades",
+          "Carry weights",
+          "Assign memberships",
+          "Compose B",
+          "Score IM",
+          "Compare gaps"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Not applicable."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "IM1 2.332, IM2 2.312, IM3 2.003, IM4 1.708. State gap is smaller than the private gap."
+        ],
+        "analysis": "The direction matches the narrative. The magnitudes are only as strong as the hand-set 0.7 and 0.3."
+      },
+      "constraints": [
+        "Classes fixed.",
+        "High threshold.",
+        "No sudden shocks."
+      ],
+      "validation_refs": [
+        "Equations (11)-(14) membership matrices",
+        "Section 4.3 two conclusions"
+      ],
+      "strengths": [
+        "One number per regime makes the comparison readable.",
+        "The same weights serve both models, so the impact score is in the equity model's units."
+      ],
+      "limitations": [
+        "Memberships are opinions.",
+        "The phrase 'very likely' is used for both 0.7 and 0.3.",
+        "Several indicator judgments are copied verbatim between the two regimes."
+      ],
+      "missing_details": [
+        "Who assigned the memberships, and any agreement check.",
+        "Clean copies of matrices R1 to R4."
+      ],
+      "assumptions": [
+        "Classes do not change after mining begins.",
+        "Mining stays a high-threshold industry.",
+        "Projects are cooperative, not single-government.",
+        "No sudden change."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2022-2204803-NDI-1",
+      "model_id": "MU-F-2022-2204803-NDI",
+      "page": 8,
+      "source_expression": "X_ij = max(X_i) - X_ij"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-NDI-2",
+      "model_id": "MU-F-2022-2204803-NDI",
+      "page": 8,
+      "source_expression": "Y_ij = (X_ij - min(X_i)) / (max(X_i) - min(X_i))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-NDI-3",
+      "model_id": "MU-F-2022-2204803-NDI",
+      "page": 8,
+      "source_expression": "E_i = -1/ln(n) * sum_j P_ij ln P_ij, with P_ij = Y_ij / sum_j Y_ij, and the limit 0 at P=0"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-NDI-4",
+      "model_id": "MU-F-2022-2204803-NDI",
+      "page": 8,
+      "source_expression": "w_i = (1 - E_i) / (k - sum_i E_i)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-NDI-5",
+      "model_id": "MU-F-2022-2204803-NDI",
+      "page": 10,
+      "source_expression": "GEI(t) = (avg NDI_High(t) - avg NDI_Low(t)) / avg NDI_Low(t)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-FCE-1",
+      "model_id": "MU-F-2022-2204803-FCE",
+      "page": 15,
+      "source_expression": "B = A_w · R"
+    },
+    {
+      "equation_id": "EQ-F-2022-2204803-FCE-2",
+      "model_id": "MU-F-2022-2204803-FCE",
+      "page": 15,
+      "source_expression": "IM = B · s, with s = (5, 2, 1, -2, -5)"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2022-2204803-NDI",
+      "to_model_id": "MU-F-2022-2204803-FCE",
+      "handoff": "Entropy weights and the High or Low classification are the factor weights and the two groups of the fuzzy evaluation"
+    }
+  ]
+}

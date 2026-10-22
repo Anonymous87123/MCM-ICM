@@ -1,0 +1,3898 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-B-2017-70545-8e86fcfa",
+  "problem_type": "B",
+  "year": "2017",
+  "source_sha256": "8e86fcfa286c46c3d8bddc3ef1ab64b376abe7e07c86827adc811b6c086d9954",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-B-2017-70545-001",
+      "page": 6,
+      "section": "4.1 Existing Model (EM)",
+      "family": "qualitative baseline merge model",
+      "purpose": "Classify free-route and predetermined-merge baselines and explain why heavy traffic creates unpredictable or simultaneous conflicts.",
+      "base_or_modification": "base",
+      "summary": "Classify free-route and predetermined-merge baselines and explain why heavy traffic creates unpredictable or simultaneous conflicts.",
+      "variables": [
+        {
+          "symbol": "B",
+          "normalized_name": "tollbooth count",
+          "unit": "booths",
+          "definition": "Number of tollbooth egress lanes.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "outgoing highway lanes",
+          "unit": "lanes",
+          "definition": "Number of downstream lanes.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "route",
+          "normalized_name": "post-toll route rule",
+          "unit": "category",
+          "definition": "Free discretion or predetermined merge point.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "traffic",
+          "normalized_name": "traffic regime",
+          "unit": "category",
+          "definition": "Light or heavy traffic.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "conflict",
+          "normalized_name": "merge conflict state",
+          "unit": "event",
+          "definition": "Simultaneous or crossing trajectory requiring braking or waiting.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "B",
+        "L",
+        "route",
+        "traffic"
+      ],
+      "outputs": [
+        "conflict"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper supplies a qualitative comparison, placement rule, or algorithmic narrative without a separate governing display."
+      },
+      "objectives": [
+        "Classify free-route and predetermined-merge baselines and explain why heavy traffic creates unpredictable or simultaneous conflicts.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "B",
+          "L",
+          "route",
+          "traffic"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "classify free and predetermined merging",
+          "evaluate each under light traffic",
+          "switch to heavy traffic",
+          "trace crossing or simultaneous arrival",
+          "record braking, waiting, risk, and throughput consequences"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Drivers follow markings when a predetermined merge point is provided.",
+        "Light traffic makes route intersections and simultaneous arrivals less likely.",
+        "Heavy traffic exposes the baseline's order and safety defects."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "conflict"
+      ],
+      "validation_refs": [
+        "physical page 6 baseline prose",
+        "Authority letter diagnosis"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The later numerical EM is only a two-service-stream timing model and does not implement all behavior described here.",
+        "No field crash, trajectory, or delay data validate either qualitative baseline."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-002",
+      "page": 6,
+      "section": "4.2 CTM / appropriate control time",
+      "family": "safe-release control and emergency-braking rationale",
+      "purpose": "Prevent two vehicles assigned to one lane from leaving neighboring booths within the chosen control interval.",
+      "base_or_modification": "modification",
+      "summary": "Prevent two vehicles assigned to one lane from leaving neighboring booths within the chosen control interval.",
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "relative distance proxy",
+          "unit": "m",
+          "definition": "Printed emergency-braking separation expression.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_m",
+          "normalized_name": "merging-area speed limit",
+          "unit": "m/s",
+          "definition": "Vehicle speed before emergency braking.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_res",
+          "normalized_name": "driver response time",
+          "unit": "s",
+          "definition": "Reaction time, cited as 0.8 s.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "elapsed emergency time",
+          "unit": "s",
+          "definition": "Time since the emergency begins.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_posterior",
+          "normalized_name": "posterior-vehicle speed",
+          "unit": "m/s",
+          "definition": "Speed function named in the first integral.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_previous",
+          "normalized_name": "previous-vehicle speed",
+          "unit": "m/s",
+          "definition": "Speed function named by the printed piecewise equation.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_b",
+          "normalized_name": "severe braking deceleration",
+          "unit": "m/s^2",
+          "definition": "Magnitude of emergency deceleration.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_0",
+          "normalized_name": "control time",
+          "unit": "s",
+          "definition": "Minimum interval between releases toward the same outgoing lane.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "v_m",
+        "t_res",
+        "a_b"
+      ],
+      "outputs": [
+        "d",
+        "t_0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-001",
+          "page": 7,
+          "label": null,
+          "source_expression": "d = v_m t_res + integral_0^t v_posterior(t) dt - integral_0^t v_previous(t) dt",
+          "normalized_latex": "d=v_m t_{\\mathrm{res}}+\\int_0^t v_{\\mathrm{posterior}}(\\tau)\\,d\\tau-\\int_0^t v_{\\mathrm{previous}}(\\tau)\\,d\\tau",
+          "purpose": "Transcribe the printed emergency-braking relative-distance expression without repairing its actor labels or sign convention.",
+          "variable_symbols": [
+            "d",
+            "v_m",
+            "t_res",
+            "t",
+            "v_posterior",
+            "v_previous"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-002",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "v_previous(t)=v_m for t<=t_res; v_m-a_b(t-t_res) for t_res<t<=t_res+v_m/a_b; 0 afterwards",
+          "normalized_latex": "v_{\\mathrm{previous}}(t)=\\begin{cases}v_m,&t\\le t_{\\mathrm{res}},\\\\v_m-a_b(t-t_{\\mathrm{res}}),&t_{\\mathrm{res}}<t\\le t_{\\mathrm{res}}+v_m/a_b,\\\\0,&t_{\\mathrm{res}}+v_m/a_b<t.\\end{cases}",
+          "purpose": "Retain the printed piecewise braking trajectory and its source label.",
+          "variable_symbols": [
+            "v_previous",
+            "t",
+            "v_m",
+            "t_res",
+            "a_b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-003",
+          "page": 7,
+          "label": null,
+          "source_expression": "d >= 0 => t_0 >= t_res; t_0 = 1 s > t_res = 0.8 s",
+          "normalized_latex": "d\\ge0\\Longrightarrow t_0\\ge t_{\\mathrm{res}},\\qquad t_0=1\\,\\mathrm{s}>t_{\\mathrm{res}}=0.8\\,\\mathrm{s}",
+          "purpose": "Record the paper's chosen safe release interval and claimed implication.",
+          "variable_symbols": [
+            "d",
+            "t_0",
+            "t_res"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Prevent two vehicles assigned to one lane from leaving neighboring booths within the chosen control interval.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "v_m",
+          "t_res",
+          "a_b"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "identify booths feeding one lane",
+          "allow only one booth to release",
+          "evaluate the printed emergency trajectory",
+          "select t_0=1 s",
+          "alternate releases by at least t_0"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "The first and following vehicles begin at the same speed.",
+        "The following driver reacts after t_res and both vehicles use the same severe braking magnitude.",
+        "One universal one-second interval is treated as sufficient for all controlled merges."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "d",
+        "t_0"
+      ],
+      "validation_refs": [
+        "Figures 1-3",
+        "Equation (1)",
+        "Lee et al. reaction-time citation"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "t_0 does not appear in the distance equation, so the displayed algebra does not directly prove t_0>=t_res.",
+        "The piecewise curve describes a reacting posterior vehicle but is labeled v_previous; sign and actor conventions are internally uncertain.",
+        "Vehicle length, speed difference, road friction, grade, controller delay, and failure are omitted."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-003",
+      "page": 8,
+      "section": "4.2 CTM / booth allocation and service-limited throughput",
+      "family": "controlled-lane service saturation",
+      "purpose": "Relate the number of booths assigned to each downstream lane to interarrival time and total plaza throughput.",
+      "base_or_modification": "modification",
+      "summary": "Relate the number of booths assigned to each downstream lane to interarrival time and total plaza throughput.",
+      "variables": [
+        {
+          "symbol": "t_i",
+          "normalized_name": "average lane arrival interval",
+          "unit": "s/veh",
+          "definition": "Paper's t_{i_k}, the average interval for a car to enter lane k.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "mean toll service time",
+          "unit": "s/veh",
+          "definition": "Expected human-staffed service time, 15 s in the example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i_k",
+          "normalized_name": "booths assigned to lane k",
+          "unit": "booths",
+          "definition": "Cardinality of the booth preimage for lane k.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_0",
+          "normalized_name": "control time",
+          "unit": "s",
+          "definition": "Minimum same-lane release interval.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "plaza throughput",
+          "unit": "veh/s",
+          "definition": "Approximate service-limited throughput.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "tollbooth count",
+          "unit": "booths",
+          "definition": "Total booths in one direction.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "T",
+        "i_k",
+        "t_0",
+        "B"
+      ],
+      "outputs": [
+        "t_i",
+        "theta"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-004",
+          "page": 8,
+          "label": null,
+          "source_expression": "t_{i_k} is close to T/i_k when i_k << T/t_0",
+          "normalized_latex": "t_{i_k}\\approx\\frac{T}{i_k}\\quad\\text{when}\\quad i_k\\ll\\frac{T}{t_0}",
+          "purpose": "Approximate the average interval at downstream lane k before the control-time floor binds.",
+          "variable_symbols": [
+            "t_i",
+            "T",
+            "i_k",
+            "t_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-005",
+          "page": 8,
+          "label": null,
+          "source_expression": "theta_plaza is close to B/T cars per second",
+          "normalized_latex": "\\theta_{\\mathrm{plaza}}\\approx\\frac{B}{T}\\ \\mathrm{veh/s}",
+          "purpose": "State the paper's service-limited total throughput approximation.",
+          "variable_symbols": [
+            "theta",
+            "B",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Relate the number of booths assigned to each downstream lane to interarrival time and total plaza throughput.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "T",
+          "i_k",
+          "t_0",
+          "B"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "assign i_k booths to lane k",
+          "compare i_k with T/t_0",
+          "approximate t_i by T/i_k",
+          "sum service capacity across B booths",
+          "report B/T and convert to hourly throughput"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Service-time variance is small enough for the average approximation.",
+        "The one-second control interval does not bind while i_k is far below T/t_0.",
+        "Heavy traffic keeps every booth continuously occupied."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "t_i",
+        "theta"
+      ],
+      "validation_refs": [
+        "physical page 8 throughput paragraph",
+        "B=8,T=15 worked substitution",
+        "Appendix CTM simulation"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The prose says t_{i_k} increases with i_k even though the printed T/i_k relation decreases; the direction is internally contradictory.",
+        "For B=8,T/t_0=15, no feasible i_k exceeds the threshold, so the threshold alone does not prove that only even allocation is optimal."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-004",
+      "page": 8,
+      "section": "4.2 CTM / geometry and merging-pattern optimization",
+      "family": "minimax booth-to-lane geometry",
+      "purpose": "Choose a non-decreasing booth-to-lane assignment and minimum two-arc merge length for given B and L.",
+      "base_or_modification": "modification",
+      "summary": "Choose a non-decreasing booth-to-lane assignment and minimum two-arc merge length for given B and L.",
+      "variables": [
+        {
+          "symbol": "f",
+          "normalized_name": "booth-to-lane mapping",
+          "unit": "mapping",
+          "definition": "Non-decreasing assignment of booth index to outgoing-lane index.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "tollbooth count",
+          "unit": "booths",
+          "definition": "Number of booths in one direction.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "outgoing-lane count",
+          "unit": "lanes",
+          "definition": "Number of highway lanes in one direction.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i",
+          "normalized_name": "booth index",
+          "unit": "index",
+          "definition": "Booth used in a local geometry constraint.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "lane index",
+          "unit": "index",
+          "definition": "Outgoing lane used in a local geometry constraint.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "summation or lane index",
+          "unit": "index",
+          "definition": "Index in occupancy sums.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i_k",
+          "normalized_name": "lane occupancy",
+          "unit": "booths",
+          "definition": "Booths assigned to lane k.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "merging-area length",
+          "unit": "m",
+          "definition": "Distance from booth line to plaza end.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_m",
+          "normalized_name": "merging-area speed limit",
+          "unit": "m/s",
+          "definition": "Speed used in the straight acceleration distance.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "starting acceleration",
+          "unit": "m/s^2",
+          "definition": "Acceleration symbol used by the geometry formulas; notation table calls it a_s.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "turning radius",
+          "unit": "m",
+          "definition": "Radius of each tangent circular arc.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_B",
+          "normalized_name": "booth-lane width",
+          "unit": "m",
+          "definition": "Center spacing in the booth area.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_L",
+          "normalized_name": "highway-lane width",
+          "unit": "m",
+          "definition": "Center spacing in the outgoing highway.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "maximum lateral half-offset",
+          "unit": "m",
+          "definition": "Largest local offset induced by a mapping.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_min",
+          "normalized_name": "minimum maximum offset",
+          "unit": "m",
+          "definition": "Smallest x over feasible mappings.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_0",
+          "normalized_name": "fixed terminal lower bound",
+          "unit": "m",
+          "definition": "Offset contributed by the final booth/lane extreme.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "B",
+        "L",
+        "d_B",
+        "d_L",
+        "r",
+        "v_m",
+        "a"
+      ],
+      "outputs": [
+        "f",
+        "i_k",
+        "x_min",
+        "D"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-006",
+          "page": 8,
+          "label": null,
+          "source_expression": "f:{1,...,B}->{1,...,L}, f non-decreasing, and f(i)=j iff booth i merges into lane j",
+          "normalized_latex": "f:\\{1,\\ldots,B\\}\\to\\{1,\\ldots,L\\},\\quad f\\ \\text{non-decreasing},\\quad f(i)=j\\Longleftrightarrow i\\to j",
+          "purpose": "Define the booth-to-lane merging pattern.",
+          "variable_symbols": [
+            "f",
+            "B",
+            "L",
+            "i",
+            "j"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-007",
+          "page": 8,
+          "label": null,
+          "source_expression": "i_k = ||f^{-1}({k})||",
+          "normalized_latex": "i_k=\\left\\lvert f^{-1}(\\{k\\})\\right\\rvert",
+          "purpose": "Count the booths assigned to downstream lane k.",
+          "variable_symbols": [
+            "i_k",
+            "f",
+            "k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-008",
+          "page": 8,
+          "label": null,
+          "source_expression": "((D-v_m^2/(2a))/2)^2 + (r-((i-1/2)d_B-(j-1/2)d_L)/2)^2 = r^2",
+          "normalized_latex": "\\left(\\frac{D-\\frac{v_m^2}{2a}}{2}\\right)^2+\\left(r-\\frac{(i-\\frac12)d_B-(j-\\frac12)d_L}{2}\\right)^2=r^2",
+          "purpose": "Connect acceleration distance, lateral offset, two tangent arcs, and required plaza length.",
+          "variable_symbols": [
+            "D",
+            "v_m",
+            "a",
+            "r",
+            "i",
+            "j",
+            "d_B",
+            "d_L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-009",
+          "page": 8,
+          "label": null,
+          "source_expression": "sum_{k=1}^j i_k d_B - j d_L >= (sum_{k=1}^j i_k + 1)d_B - (k+1)d_L",
+          "normalized_latex": "\\sum_{k=1}^{j}i_kd_B-jd_L\\ge\\left(\\sum_{k=1}^{j}i_k+1\\right)d_B-(k+1)d_L",
+          "purpose": "Preserve the printed neighboring-extreme inequality, including its apparent k+1 index error.",
+          "variable_symbols": [
+            "i_k",
+            "k",
+            "j",
+            "d_B",
+            "d_L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-010",
+          "page": 9,
+          "label": null,
+          "source_expression": "x=max_{j in {1,...,L}} {(((sum_{k=1}^j i_k)-1/2)d_B-(j-1/2)d_L)/2}",
+          "normalized_latex": "x(f)=\\max_{j\\in\\{1,\\ldots,L\\}}\\left\\{\\frac{\\left(\\sum_{k=1}^{j}i_k-\\frac12\\right)d_B-\\left(j-\\frac12\\right)d_L}{2}\\right\\}",
+          "purpose": "Aggregate the local lateral offsets that determine the binding outer path.",
+          "variable_symbols": [
+            "x",
+            "f",
+            "j",
+            "L",
+            "i_k",
+            "k",
+            "d_B",
+            "d_L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-011",
+          "page": 9,
+          "label": null,
+          "source_expression": "x_min=min over occupancy vectors induced by all f of x",
+          "normalized_latex": "x_{\\min}=\\min_{(i_1,\\ldots,i_L)\\ \\mathrm{induced\\ by\\ feasible}\\ f}x(f)",
+          "purpose": "Normalize the paper's type-ambiguous set notation as a minimization over feasible occupancy vectors.",
+          "variable_symbols": [
+            "x_min",
+            "x",
+            "f",
+            "i_k",
+            "L"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-012",
+          "page": 9,
+          "label": null,
+          "source_expression": "x=x_0=((B-1/2)d_B-(L-1/2)d_L)/2 and x_min >= x_0",
+          "normalized_latex": "x_0=\\frac{(B-\\frac12)d_B-(L-\\frac12)d_L}{2},\\qquad x_{\\min}\\ge x_0",
+          "purpose": "Record the fixed final extreme and the paper's lower-bound argument.",
+          "variable_symbols": [
+            "x",
+            "x_0",
+            "B",
+            "d_B",
+            "L",
+            "d_L",
+            "x_min"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-013",
+          "page": 9,
+          "label": null,
+          "source_expression": "D=v_m^2/(2a)+2*sqrt(r^2-(r-x_min)^2)",
+          "normalized_latex": "D=\\frac{v_m^2}{2a}+2\\sqrt{r^2-(r-x_{\\min})^2}",
+          "purpose": "Solve the printed circle relation for the positive design-length root used by the numerical example.",
+          "variable_symbols": [
+            "D",
+            "v_m",
+            "a",
+            "r",
+            "x_min"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Choose a non-decreasing booth-to-lane assignment and minimum two-arc merge length for given B and L.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "B",
+          "L",
+          "d_B",
+          "d_L",
+          "r",
+          "v_m",
+          "a"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "enumerate or characterize feasible non-decreasing f",
+          "compute occupancies i_k",
+          "evaluate local lateral offsets",
+          "take x(f) as their maximum",
+          "minimize x over f",
+          "solve the circle equation for D",
+          "retain near-even occupancy patterns"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Each path is a straight acceleration segment followed by two equal-radius tangent arcs.",
+        "Vehicle length and width are ignored and d_L>d_B.",
+        "The outermost local offset controls the required length.",
+        "Practical B and L are small and B>L."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "f",
+        "i_k",
+        "x_min",
+        "D"
+      ],
+      "validation_refs": [
+        "Figures 3-4",
+        "physical pages 8-9 formulas",
+        "B=8,L=3 worked example"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The page-bottom inequality prints k+1 where the prose requires j+1.",
+        "The general optimal-existence claim follows a few small B,L trials and an induction statement, not a complete proof or archived enumeration.",
+        "Vehicle envelope, lane-change dynamics, superelevation, shoulder, barrier, and construction clearances are absent."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-005",
+      "page": 9,
+      "section": "4.3 Waiting Area Model (WAM)",
+      "family": "service-release decoupling with a waiting buffer",
+      "purpose": "Allow a serviced vehicle to vacate the booth and wait for its controlled release so the following vehicle can begin service.",
+      "base_or_modification": "modification",
+      "summary": "Allow a serviced vehicle to vacate the booth and wait for its controlled release so the following vehicle can begin service.",
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "lane-a service-completion clock",
+          "unit": "s",
+          "definition": "Cumulative completion time in the appendix WAM code.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "lane-b service-completion clock",
+          "unit": "s",
+          "definition": "Second service clock; its printed initialization lacks an upper bound.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "lane-a release clock",
+          "unit": "s",
+          "definition": "Controlled physical departure time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "lane-b release clock",
+          "unit": "s",
+          "definition": "Controlled physical departure time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "waiting-area capacity",
+          "unit": "vehicles",
+          "definition": "Operational capacity required by the concept but omitted by the paper.",
+          "role": "input",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "theta_W",
+          "normalized_name": "WAM throughput",
+          "unit": "veh/(h lane)",
+          "definition": "Vehicles released in the one-hour simulation.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x",
+        "y",
+        "K"
+      ],
+      "outputs": [
+        "X",
+        "Y",
+        "theta_W"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper supplies a qualitative comparison, placement rule, or algorithmic narrative without a separate governing display."
+      },
+      "objectives": [
+        "Allow a serviced vehicle to vacate the booth and wait for its controlled release so the following vehicle can begin service.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "x",
+          "y",
+          "K"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "complete service on one lane",
+          "move the vehicle to a waiting state",
+          "start service for the following vehicle",
+          "release the waiting vehicle when both t_0 constraints permit",
+          "count one-hour releases"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "A waiting area can be inserted immediately after the booths.",
+        "Moving into the buffer is instantaneous and does not block the following customer.",
+        "The same one-second release rule remains applicable after service completion."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "X",
+        "Y",
+        "theta_W"
+      ],
+      "validation_refs": [
+        "Figure 5",
+        "Section 4.3 prose",
+        "Appendix WAM code"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "Waiting-area length, capacity, circulation, spillback, and construction cost are not modeled.",
+        "The paper later rejects WAM by a qualitative cost argument even though no WAM area or cost calculation is supplied.",
+        "The appendix prints y=runif(1,0,) with no upper bound."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-006",
+      "page": 10,
+      "section": "5.1.1 Throughput of existing model",
+      "family": "stochastic two-stream service and PET-delay model",
+      "purpose": "Estimate EM throughput from two independent human-service streams plus PET-based conflict delay.",
+      "base_or_modification": "base",
+      "summary": "Estimate EM throughput from two independent human-service streams plus PET-based conflict delay.",
+      "variables": [
+        {
+          "symbol": "T_h",
+          "normalized_name": "human service time",
+          "unit": "s",
+          "definition": "Independent service time for one vehicle.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "service-time mean",
+          "unit": "s",
+          "definition": "15 s.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma2",
+          "normalized_name": "service-time variance",
+          "unit": "s^2",
+          "definition": "4 s^2 in the source-prose convention.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_n",
+          "normalized_name": "nth cumulative completion time",
+          "unit": "s",
+          "definition": "Sum of n service times in one booth stream.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "vehicles per booth stream",
+          "unit": "vehicles",
+          "definition": "Completion index.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PET_i",
+          "normalized_name": "post-encroachment time for event i",
+          "unit": "s",
+          "definition": "Adjacent merged completion-time gap.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_r",
+          "normalized_name": "reaction threshold",
+          "unit": "s",
+          "definition": "1 s.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_d",
+          "normalized_name": "total PET delay",
+          "unit": "s",
+          "definition": "Sum of reaction-time shortfalls.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_bar",
+          "normalized_name": "mean completion time",
+          "unit": "s/veh",
+          "definition": "Paper's two-stream average.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_EM",
+          "normalized_name": "EM throughput",
+          "unit": "veh/(h lane)",
+          "definition": "Hourly vehicles in one outgoing lane.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mu",
+        "sigma2",
+        "t_r",
+        "n"
+      ],
+      "outputs": [
+        "PET_i",
+        "T_d",
+        "theta_EM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-014",
+          "page": 10,
+          "label": null,
+          "source_expression": "T_{h,i} ~ N(15,4), with mu=15 and sigma^2=4",
+          "normalized_latex": "T_{h,i}\\sim\\mathcal N(15,4),\\qquad \\mu=15\\,\\mathrm{s},\\ \\sigma^2=4\\,\\mathrm{s}^2",
+          "purpose": "Model a single human-staffed service time.",
+          "variable_symbols": [
+            "T_h",
+            "mu",
+            "sigma2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-015",
+          "page": 10,
+          "label": null,
+          "source_expression": "t_n=sum_{i=1}^n T_{h,i}",
+          "normalized_latex": "t_n=\\sum_{i=1}^{n}T_{h,i}",
+          "purpose": "Accumulate service times for the nth completion in one booth lane.",
+          "variable_symbols": [
+            "t_n",
+            "n",
+            "T_h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-016",
+          "page": 10,
+          "label": null,
+          "source_expression": "t_n ~ N(15n,4n)",
+          "normalized_latex": "t_n\\sim\\mathcal N(15n,4n)",
+          "purpose": "State the distribution of the cumulative service time under the paper's variance convention.",
+          "variable_symbols": [
+            "t_n",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-017",
+          "page": 11,
+          "label": null,
+          "source_expression": "T_d=sum_{PET_i<t_r}(t_r-PET_i)",
+          "normalized_latex": "T_d=\\sum_{PET_i<t_r}(t_r-PET_i)",
+          "purpose": "Add delay when an event's PET is below the one-second reaction threshold.",
+          "variable_symbols": [
+            "T_d",
+            "PET_i",
+            "t_r"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-018",
+          "page": 11,
+          "label": null,
+          "source_expression": "t_bar=(t_n+T_d)/(2n)",
+          "normalized_latex": "\\bar t=\\frac{t_n+T_d}{2n}",
+          "purpose": "Approximate mean completion time per vehicle for two simultaneous booth streams.",
+          "variable_symbols": [
+            "t_bar",
+            "t_n",
+            "T_d",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-019",
+          "page": 11,
+          "label": null,
+          "source_expression": "theta=3600/t_bar",
+          "normalized_latex": "\\theta_{EM}=\\frac{3600}{\\bar t}",
+          "purpose": "Convert mean seconds per vehicle to hourly per-lane throughput.",
+          "variable_symbols": [
+            "theta_EM",
+            "t_bar"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Estimate EM throughput from two independent human-service streams plus PET-based conflict delay.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "mu",
+          "sigma2",
+          "t_r",
+          "n"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "draw two service-time sequences",
+          "form cumulative completion times",
+          "merge and sort events",
+          "compute adjacent PET gaps",
+          "sum shortfall delay",
+          "convert to hourly throughput",
+          "repeat 1,000 times"
+        ],
+        "software": [
+          "R appendix"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Two booth streams operate independently and continuously.",
+        "Service times are iid normal with positive support implicitly assumed.",
+        "PET below one second adds exactly the missing time as delay."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "PET_i",
+        "T_d",
+        "theta_EM"
+      ],
+      "validation_refs": [
+        "Figure 6",
+        "physical pages 10-11 equations",
+        "Appendix EM efficiency code",
+        "Table 1"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The CLT does not by itself justify a normal distribution for each individual service time.",
+        "Normal draws are untruncated and can be negative.",
+        "The appendix uses rnorm(...,15,4), where 4 is the R standard deviation, while the source prose says variance 4 and the other models use standard deviation 2.",
+        "The appendix formula uses x[1000] rather than the maximum of both lane completion times."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-007",
+      "page": 11,
+      "section": "5.1.2 Throughput of CTM",
+      "family": "two-stream controlled event recurrence",
+      "purpose": "Simulate service completions and enforce one-second mutual release spacing for two booths merging into one lane.",
+      "base_or_modification": "modification",
+      "summary": "Simulate service completions and enforce one-second mutual release spacing for two booths merging into one lane.",
+      "variables": [
+        {
+          "symbol": "T_a",
+          "normalized_name": "lane-a service time",
+          "unit": "s",
+          "definition": "Service draw for the next lane-a vehicle.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_b",
+          "normalized_name": "lane-b service time",
+          "unit": "s",
+          "definition": "Service draw for the next lane-b vehicle.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DeltaT",
+          "normalized_name": "initial stream offset",
+          "unit": "s",
+          "definition": "Uniform offset between the first arrivals, 0-15 s.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_a",
+          "normalized_name": "lane-a release time",
+          "unit": "s",
+          "definition": "Most recent or next controlled release time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_b",
+          "normalized_name": "lane-b release time",
+          "unit": "s",
+          "definition": "Most recent or next controlled release time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_0",
+          "normalized_name": "control time",
+          "unit": "s",
+          "definition": "One-second minimum release interval.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "lane-a count",
+          "unit": "vehicles",
+          "definition": "Current lane-a release index.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "lane-b count",
+          "unit": "vehicles",
+          "definition": "Current lane-b release index.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_star",
+          "normalized_name": "first overrun lane-a index",
+          "unit": "vehicles",
+          "definition": "Lane-a index at the one-hour boundary.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_star",
+          "normalized_name": "first overrun lane-b index",
+          "unit": "vehicles",
+          "definition": "Lane-b index at the one-hour boundary.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_CTM",
+          "normalized_name": "CTM throughput",
+          "unit": "veh/(h lane)",
+          "definition": "Releases counted before the one-hour boundary.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "T_a",
+        "T_b",
+        "DeltaT",
+        "t_0"
+      ],
+      "outputs": [
+        "t_a",
+        "t_b",
+        "theta_CTM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-020",
+          "page": 11,
+          "label": null,
+          "source_expression": "T_{a,n},T_{b,m} ~ N(15,4)",
+          "normalized_latex": "T_{a,n},T_{b,m}\\sim\\mathcal N(15,4)",
+          "purpose": "Draw independent service times for the two controlled booth streams.",
+          "variable_symbols": [
+            "T_a",
+            "T_b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-021",
+          "page": 11,
+          "label": null,
+          "source_expression": "Delta T ~ U(0,15)",
+          "normalized_latex": "\\Delta T\\sim\\mathcal U(0,15)\\ \\mathrm{s}",
+          "purpose": "Initialize the second booth stream after the first by a random offset.",
+          "variable_symbols": [
+            "DeltaT"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-022",
+          "page": 11,
+          "label": null,
+          "source_expression": "if t_{a,n}+T_{a,n+1}<t_{b,m}+T_{b,m+1}, t_{a,n+1}=max{t_{a,n}+T_{a,n+1},t_{a,n}+t_0,t_{b,m}+t_0}",
+          "normalized_latex": "t_{a,n+1}=\\max\\{t_{a,n}+T_{a,n+1},\\ t_{a,n}+t_0,\\ t_{b,m}+t_0\\}\\quad\\text{if }t_{a,n}+T_{a,n+1}<t_{b,m}+T_{b,m+1}",
+          "purpose": "Release the next lane-a vehicle no earlier than service completion or either one-second spacing constraint.",
+          "variable_symbols": [
+            "t_a",
+            "T_a",
+            "t_b",
+            "T_b",
+            "t_0",
+            "n",
+            "m"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-023",
+          "page": 11,
+          "label": null,
+          "source_expression": "otherwise t_{b,m+1}=max{t_{b,m}+T_{b,m+1},t_{a,n}+t_0,t_{b,m}+t_0}",
+          "normalized_latex": "t_{b,m+1}=\\max\\{t_{b,m}+T_{b,m+1},\\ t_{a,n}+t_0,\\ t_{b,m}+t_0\\}\\quad\\text{otherwise}",
+          "purpose": "Apply the symmetric controlled release update to lane b.",
+          "variable_symbols": [
+            "t_b",
+            "T_b",
+            "t_a",
+            "t_0",
+            "m",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-024",
+          "page": 11,
+          "label": null,
+          "source_expression": "max{t_{a,n},t_{b,m}}<3600; stop when t_{a,n*}>3600 or t_{b,m*}>3600",
+          "normalized_latex": "\\max\\{t_{a,n},t_{b,m}\\}<3600;\\quad t_{a,n^*}>3600\\ \\text{or}\\ t_{b,m^*}>3600",
+          "purpose": "Bound one simulated run to one hour and identify the first overrun indices.",
+          "variable_symbols": [
+            "t_a",
+            "t_b",
+            "n_star",
+            "m_star"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-025",
+          "page": 11,
+          "label": null,
+          "source_expression": "theta=n*+m*-1",
+          "normalized_latex": "\\theta_{CTM}=n^*+m^*-1",
+          "purpose": "Count releases completed before the first one-hour overrun.",
+          "variable_symbols": [
+            "theta_CTM",
+            "n_star",
+            "m_star"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Simulate service completions and enforce one-second mutual release spacing for two booths merging into one lane.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "T_a",
+          "T_b",
+          "DeltaT",
+          "t_0"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "initialize t_a=0 and t_b=DeltaT",
+          "draw service sequences",
+          "compare next potential completions",
+          "update the earlier stream with a three-way maximum",
+          "repeat while both release clocks remain within one hour",
+          "subtract the first overrun event",
+          "repeat 1,000 runs"
+        ],
+        "software": [
+          "R appendix"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Two booths feed one outgoing lane and remain continuously busy.",
+        "The next service completion determines which recurrence branch is evaluated.",
+        "A one-hour finite window is sufficient for comparison."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "t_a",
+        "t_b",
+        "theta_CTM"
+      ],
+      "validation_refs": [
+        "physical page 11 recurrences",
+        "Appendix CTM efficiency code",
+        "Figure 7",
+        "Table 1"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The source reuses similar symbols for service times and release times, making the recurrence easy to misread.",
+        "The source prose says N(15,4) with variance 4; the appendix uses R sd=2 for CTM, unlike EM sd=4.",
+        "The text points to the unresolved source label 'Figure. x'."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-008",
+      "page": 12,
+      "section": "5.1.3 Throughput of WAM",
+      "family": "dual service-clock and release-clock recurrence",
+      "purpose": "Simulate WAM by allowing service clocks to advance independently of the controlled physical release clocks.",
+      "base_or_modification": "modification",
+      "summary": "Simulate WAM by allowing service clocks to advance independently of the controlled physical release clocks.",
+      "variables": [
+        {
+          "symbol": "t_as",
+          "normalized_name": "lane-a service-completion time",
+          "unit": "s",
+          "definition": "Time when a lane-a vehicle completes toll collection.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_bs",
+          "normalized_name": "lane-b service-completion time",
+          "unit": "s",
+          "definition": "Time when a lane-b vehicle completes toll collection.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_a",
+          "normalized_name": "next lane-a service time",
+          "unit": "s",
+          "definition": "Service increment.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_b",
+          "normalized_name": "next lane-b service time",
+          "unit": "s",
+          "definition": "Service increment.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_a",
+          "normalized_name": "lane-a release time",
+          "unit": "s",
+          "definition": "Controlled physical departure time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_b",
+          "normalized_name": "lane-b release time",
+          "unit": "s",
+          "definition": "Controlled physical departure time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_0",
+          "normalized_name": "control time",
+          "unit": "s",
+          "definition": "One-second mutual release interval.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "lane-a release index",
+          "unit": "vehicles",
+          "definition": "Current lane-a count.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "lane-b release index",
+          "unit": "vehicles",
+          "definition": "Current lane-b count.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_star",
+          "normalized_name": "first overrun lane-a index",
+          "unit": "vehicles",
+          "definition": "One-hour boundary index.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_star",
+          "normalized_name": "first overrun lane-b index",
+          "unit": "vehicles",
+          "definition": "One-hour boundary index.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_WAM",
+          "normalized_name": "WAM throughput",
+          "unit": "veh/(h lane)",
+          "definition": "Controlled releases before the one-hour boundary.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "T_a",
+        "T_b",
+        "t_0"
+      ],
+      "outputs": [
+        "t_as",
+        "t_bs",
+        "t_a",
+        "t_b",
+        "theta_WAM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-026",
+          "page": 12,
+          "label": null,
+          "source_expression": "if t_{as,n}+T_{a,n+1}<t_{bs,m}+T_{b,m+1}",
+          "normalized_latex": "t_{as,n}+T_{a,n+1}<t_{bs,m}+T_{b,m+1}",
+          "purpose": "Choose the stream whose next service completes first under WAM.",
+          "variable_symbols": [
+            "t_as",
+            "T_a",
+            "t_bs",
+            "T_b",
+            "n",
+            "m"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-027",
+          "page": 12,
+          "label": null,
+          "source_expression": "t_{a,n+1}=max{t_{as,n}+T_{a,n+1},t_{a,n}+t_0,t_{b,m}+t_0}",
+          "normalized_latex": "t_{a,n+1}=\\max\\{t_{as,n}+T_{a,n+1},\\ t_{a,n}+t_0,\\ t_{b,m}+t_0\\}",
+          "purpose": "Use lane-a service completion but keep controlled release spacing.",
+          "variable_symbols": [
+            "t_a",
+            "t_as",
+            "T_a",
+            "t_b",
+            "t_0",
+            "n",
+            "m"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-028",
+          "page": 12,
+          "label": null,
+          "source_expression": "t_{b,m+1}=max{t_{bs,m}+T_{b,m+1},t_{a,n}+t_0,t_{b,m}+t_0}",
+          "normalized_latex": "t_{b,m+1}=\\max\\{t_{bs,m}+T_{b,m+1},\\ t_{a,n}+t_0,\\ t_{b,m}+t_0\\}",
+          "purpose": "Apply the symmetric WAM release update to lane b.",
+          "variable_symbols": [
+            "t_b",
+            "t_bs",
+            "T_b",
+            "t_a",
+            "t_0",
+            "m",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-029",
+          "page": 12,
+          "label": null,
+          "source_expression": "theta=n*+m*-1",
+          "normalized_latex": "\\theta_{WAM}=n^*+m^*-1",
+          "purpose": "Count WAM releases before the one-hour boundary.",
+          "variable_symbols": [
+            "theta_WAM",
+            "n_star",
+            "m_star"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Simulate WAM by allowing service clocks to advance independently of the controlled physical release clocks.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "T_a",
+          "T_b",
+          "t_0"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "initialize service and release clocks",
+          "select the next service completion",
+          "update the corresponding release clock",
+          "advance only that service clock",
+          "repeat to one hour",
+          "count releases"
+        ],
+        "software": [
+          "R appendix"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "The waiting area allows service completion to advance before the prior vehicle is released.",
+        "The physical release clocks retain CTM's one-second mutual spacing.",
+        "The same one-hour and 1,000-run comparison boundary is used."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "t_as",
+        "t_bs",
+        "t_a",
+        "t_b",
+        "theta_WAM"
+      ],
+      "validation_refs": [
+        "physical page 12 recurrences",
+        "Appendix WAM efficiency code",
+        "Figure 7",
+        "Table 1"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The source prose defines both t_as and t_bs as waiting in lane b; the first label is a source error and should refer to lane a.",
+        "The source prose omits explicit recurrences for t_as and t_bs, so the appendix is required to reconstruct the full state update.",
+        "The appendix initialization y=runif(1,0,) is syntactically incomplete."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-009",
+      "page": 13,
+      "section": "5.1.4 Throughput comparison and hypothesis tests",
+      "family": "three-model Monte Carlo summary and mean comparison",
+      "purpose": "Compare the 1,000-run throughput distributions, retain CTM as statistically near EM, and reject WAM on a small-benefit qualitative cost judgment.",
+      "base_or_modification": "paper-specific",
+      "summary": "Compare the 1,000-run throughput distributions, retain CTM as statistically near EM, and reject WAM on a small-benefit qualitative cost judgment.",
+      "variables": [
+        {
+          "symbol": "mu_1",
+          "normalized_name": "EM population mean",
+          "unit": "veh/(h lane)",
+          "definition": "Null-hypothesis mean.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_2",
+          "normalized_name": "CTM population mean",
+          "unit": "veh/(h lane)",
+          "definition": "Null-hypothesis mean.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEM_1",
+          "normalized_name": "EM standard error",
+          "unit": "veh/(h lane)",
+          "definition": "0.128.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEM_2",
+          "normalized_name": "CTM standard error",
+          "unit": "veh/(h lane)",
+          "definition": "0.185.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SE",
+          "normalized_name": "difference standard error",
+          "unit": "veh/(h lane)",
+          "definition": "0.225.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mean_EM",
+          "normalized_name": "EM sample mean",
+          "unit": "veh/(h lane)",
+          "definition": "477.830.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mean_CTM",
+          "normalized_name": "CTM sample mean",
+          "unit": "veh/(h lane)",
+          "definition": "477.422.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mean_WAM",
+          "normalized_name": "WAM sample mean",
+          "unit": "veh/(h lane)",
+          "definition": "479.081.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEM_WAM",
+          "normalized_name": "WAM standard error",
+          "unit": "veh/(h lane)",
+          "definition": "0.191.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEM_CTM",
+          "normalized_name": "CTM standard error",
+          "unit": "veh/(h lane)",
+          "definition": "0.185.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "EM-CTM test statistic",
+          "unit": "dimensionless",
+          "definition": "1.813.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_one",
+          "normalized_name": "one-tail normal area",
+          "unit": "probability",
+          "definition": "0.0348, called p-value by the source.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_WC",
+          "normalized_name": "WAM-CTM mean difference",
+          "unit": "veh/(h lane)",
+          "definition": "1.659.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SE_WC",
+          "normalized_name": "WAM-CTM standard error",
+          "unit": "veh/(h lane)",
+          "definition": "Approximately 0.266.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z_WC",
+          "normalized_name": "WAM-CTM test statistic magnitude",
+          "unit": "dimensionless",
+          "definition": "Approximately 6.24.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mean_EM",
+        "mean_CTM",
+        "mean_WAM",
+        "SEM_1",
+        "SEM_2",
+        "SEM_WAM"
+      ],
+      "outputs": [
+        "z",
+        "p_one",
+        "delta_WC",
+        "z_WC"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-030",
+          "page": 13,
+          "label": null,
+          "source_expression": "H0: mu_1=mu_2; H1: mu_1 != mu_2",
+          "normalized_latex": "H_0:\\mu_1=\\mu_2,\\qquad H_1:\\mu_1\\ne\\mu_2",
+          "purpose": "State the two-sided EM-versus-CTM mean-throughput hypotheses.",
+          "variable_symbols": [
+            "mu_1",
+            "mu_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-031",
+          "page": 13,
+          "label": null,
+          "source_expression": "SE=sqrt(0.128^2+0.185^2)=0.225",
+          "normalized_latex": "SE=\\sqrt{0.128^2+0.185^2}=0.225",
+          "purpose": "Pool the reported standard errors for the difference in independent means.",
+          "variable_symbols": [
+            "SEM_1",
+            "SEM_2",
+            "SE"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-032",
+          "page": 13,
+          "label": null,
+          "source_expression": "z=(477.830-477.422)/0.225=1.813; reported p-value=0.0348>0.025",
+          "normalized_latex": "z=\\frac{477.830-477.422}{0.225}=1.813,\\qquad p_{\\mathrm{one\\ tail}}=0.0348>0.025",
+          "purpose": "Retain the source calculation while labeling 0.0348 as the one-tail area used by its two-tail comparison.",
+          "variable_symbols": [
+            "mean_EM",
+            "mean_CTM",
+            "SE",
+            "z",
+            "p_one"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-033",
+          "page": 13,
+          "label": null,
+          "source_expression": "WAM-CTM=479.081-477.422=1.659; SE=sqrt(0.191^2+0.185^2)=0.266; |z| about 6.24",
+          "normalized_latex": "\\Delta_{W-C}=1.659,\\quad SE_{W-C}\\approx0.266,\\quad |z|\\approx6.24",
+          "purpose": "Reconstruct the 'later two models' comparison that the prose misnames but the 1.6 veh/h claim identifies.",
+          "variable_symbols": [
+            "mean_WAM",
+            "mean_CTM",
+            "SEM_WAM",
+            "SEM_CTM",
+            "delta_WC",
+            "SE_WC",
+            "z_WC"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Compare the 1,000-run throughput distributions, retain CTM as statistically near EM, and reject WAM on a small-benefit qualitative cost judgment.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "mean_EM",
+          "mean_CTM",
+          "mean_WAM",
+          "SEM_1",
+          "SEM_2",
+          "SEM_WAM"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "summarize 1,000 runs per model",
+          "compare EM and CTM means",
+          "compute a standard-error test statistic",
+          "retain the null at the source threshold",
+          "compare CTM and WAM",
+          "weigh the 1.659 gain against unmodeled waiting-area cost",
+          "discard WAM"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Run-level observations are treated as independent.",
+        "Normal approximation and reported SEM values are accepted for the source calculation.",
+        "A 5% two-sided decision is implemented by comparing a one-tail area with 0.025."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "z",
+        "p_one",
+        "delta_WC",
+        "z_WC"
+      ],
+      "validation_refs": [
+        "Figure 7",
+        "Table 1",
+        "physical page 13 hypothesis calculation"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The 0.0348 value is a one-tail area; a standard two-tail p-value is about 0.0696.",
+        "Failure to reject is not an equivalence test and cannot prove that CTM never reduces throughput.",
+        "The 'later two models' sentence incorrectly repeats EM and CTM even though the values and 1.6 claim point to CTM and WAM.",
+        "Table 1 is captioned 'two models' but contains three.",
+        "The inconsistent R standard deviations make the cross-model comparison non-equivalent to the source-prose specification."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-010",
+      "page": 14,
+      "section": "5.2 Accident prevention",
+      "family": "PET conflict distribution and crash-probability proxy",
+      "purpose": "Compare EM and CTM conflict timing and translate PET into a per-100,000 risk proxy.",
+      "base_or_modification": "paper-specific",
+      "summary": "Compare EM and CTM conflict timing and translate PET into a per-100,000 risk proxy.",
+      "variables": [
+        {
+          "symbol": "PET",
+          "normalized_name": "post-encroachment time",
+          "unit": "s",
+          "definition": "Time between one vehicle leaving the conflict point and the next arriving.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "event collision-probability proxy",
+          "unit": "probability",
+          "definition": "Exponential function set to 0.01 at PET=0.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "risk-event count",
+          "unit": "events",
+          "definition": "The source prose claims 4,000 simulations; the appendix exposes one set of PET events.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_100k",
+          "normalized_name": "accident-rate proxy",
+          "unit": "events/100000 vehicles",
+          "definition": "Expected proxy scaled to 100,000 vehicles.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_0",
+          "normalized_name": "CTM minimum PET",
+          "unit": "s",
+          "definition": "One-second controlled release interval.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "PET",
+        "N",
+        "t_0"
+      ],
+      "outputs": [
+        "p",
+        "R_100k"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-034",
+          "page": 14,
+          "label": "(2)",
+          "source_expression": "p=e^{-PET}/100",
+          "normalized_latex": "p(PET)=\\frac{e^{-PET}}{100}",
+          "purpose": "Map a PET event to the paper's uncalibrated collision-probability proxy.",
+          "variable_symbols": [
+            "p",
+            "PET"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-035",
+          "page": 15,
+          "label": null,
+          "source_expression": "risk per 100000 = 100000 * mean_i p(PET_i)",
+          "normalized_latex": "R_{100k}=100000\\cdot\\frac1N\\sum_{i=1}^{N}p(PET_i)",
+          "purpose": "Reconstruct the aggregation implied by the Table 2 accident-per-100,000 heading.",
+          "variable_symbols": [
+            "R_100k",
+            "N",
+            "p",
+            "PET"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Compare EM and CTM conflict timing and translate PET into a per-100,000 risk proxy.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "PET",
+          "N",
+          "t_0"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "generate or collect release-event times",
+          "sort events and difference adjacent times",
+          "evaluate p(PET)",
+          "average and scale to 100,000",
+          "compare EM and CTM"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "PET alone determines event crash probability.",
+        "The same probability curve applies to EM and CTM and across all vehicles.",
+        "CTM's release rule creates a one-second minimum PET."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "p",
+        "R_100k"
+      ],
+      "validation_refs": [
+        "Figure 8",
+        "Equation (2)",
+        "Table 2",
+        "Appendix risk code"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The PET-to-crash function is asserted rather than calibrated to crash or conflict data.",
+        "Appendix risk code does not implement the probability function, 4,000 repeats, or Table 2 aggregation.",
+        "Table 2 prints EM=53.024 and CTM=61.416, the reverse of the claimed 13.66% CTM reduction; swapping labels alone produces the claimed percentage.",
+        "PET is a surrogate conflict measure, not an observed accident rate."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-011",
+      "page": 15,
+      "section": "5.3 Cost",
+      "family": "geometry-linked fixed and annual cost accounting",
+      "purpose": "Translate CTM geometry and the assumed booth mix into one-time land/construction cost and recurring annual operation cost.",
+      "base_or_modification": "paper-specific",
+      "summary": "Translate CTM geometry and the assumed booth mix into one-time land/construction cost and recurring annual operation cost.",
+      "variables": [
+        {
+          "symbol": "A",
+          "normalized_name": "plaza-area expression",
+          "unit": "m^2",
+          "definition": "Area expression associated with acceleration and merging paths; the source alternates between one-direction and symmetric interpretations.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_m",
+          "normalized_name": "maximum merging speed",
+          "unit": "m/s",
+          "definition": "15 m/s in the sensitivity baseline.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "acceleration magnitude",
+          "unit": "m/s^2",
+          "definition": "2.78 m/s^2 in the worked baseline.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "number of tollbooths",
+          "unit": "booths",
+          "definition": "Eight in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "number of highway lanes",
+          "unit": "lanes",
+          "definition": "Three in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_B",
+          "normalized_name": "tollbooth-lane width",
+          "unit": "m",
+          "definition": "2.5 m.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_L",
+          "normalized_name": "highway-lane width",
+          "unit": "m",
+          "definition": "3.75 m.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "merging-area length",
+          "unit": "m",
+          "definition": "105.5 m in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_l",
+          "normalized_name": "land construction cost",
+          "unit": "USD/m^2",
+          "definition": "172.83 on physical page 15 and 172.84 in the sensitivity baseline.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_h",
+          "normalized_name": "source-labeled automated-booth construction cost",
+          "unit": "USD/booth",
+          "definition": "58,500; the h/a labels conflict with the accompanying prose.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_e",
+          "normalized_name": "electronic-booth construction cost",
+          "unit": "USD/booth",
+          "definition": "15,400.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_a",
+          "normalized_name": "source-labeled human-staffed-booth construction cost",
+          "unit": "USD/booth",
+          "definition": "58,000; the h/a labels conflict with the accompanying prose.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_h",
+          "normalized_name": "source h-type booth proportion",
+          "unit": "proportion",
+          "definition": "4/8 in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_e",
+          "normalized_name": "electronic-booth proportion",
+          "unit": "proportion",
+          "definition": "1/8 in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_a",
+          "normalized_name": "source a-type booth proportion",
+          "unit": "proportion",
+          "definition": "3/8 in the worked example.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_fixed",
+          "normalized_name": "reported fixed cost",
+          "unit": "USD",
+          "definition": "739,320 for the worked example.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_prime_2",
+          "normalized_name": "undefined printed annual-cost term",
+          "unit": "USD/(booth year)",
+          "definition": "Printed as c-prime-2; no matching definition is supplied.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_prime_h",
+          "normalized_name": "annual cashier salary cost",
+          "unit": "USD/(booth year)",
+          "definition": "141,900.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_prime_e",
+          "normalized_name": "annual electronic-device cost",
+          "unit": "USD/(booth year)",
+          "definition": "4,200.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_prime_a",
+          "normalized_name": "annual automated construction/operation cost",
+          "unit": "USD/(booth year)",
+          "definition": "43,300.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_annual_printed",
+          "normalized_name": "annual cost under the printed expression",
+          "unit": "USD/year",
+          "definition": "Not reproducible from the definitions without resolving c-prime-2.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_annual_reconstructed",
+          "normalized_name": "reported annual operation cost",
+          "unit": "USD/year",
+          "definition": "701,700 when c-prime-a is multiplied by p_a.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "v_m",
+        "a",
+        "B",
+        "L",
+        "d_B",
+        "d_L",
+        "D",
+        "c_l",
+        "c_h",
+        "c_e",
+        "c_a",
+        "p_h",
+        "p_e",
+        "p_a",
+        "c_prime_2",
+        "c_prime_h",
+        "c_prime_e",
+        "c_prime_a"
+      ],
+      "outputs": [
+        "A",
+        "C_fixed",
+        "C_annual_printed",
+        "C_annual_reconstructed"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-036",
+          "page": 15,
+          "label": null,
+          "source_expression": "A=(v_m^2/a) B d_B + (B d_B + L d_L)(D-v_m^2/(2a))",
+          "normalized_latex": "A=\\frac{v_m^2}{a}B d_B+(B d_B+L d_L)\\left(D-\\frac{v_m^2}{2a}\\right)",
+          "purpose": "Estimate the plaza land expression from acceleration strips and the merging region under the source symmetry construction.",
+          "variable_symbols": [
+            "A",
+            "v_m",
+            "a",
+            "B",
+            "d_B",
+            "L",
+            "d_L",
+            "D"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-037",
+          "page": 15,
+          "label": null,
+          "source_expression": "Fixed cost = (1/2)c_l A + (c_h p_h + c_e p_e + c_a p_a)B",
+          "normalized_latex": "C_{\\mathrm{fixed}}=\\frac12 c_l A+(c_h p_h+c_e p_e+c_a p_a)B",
+          "purpose": "Combine the land term with the booth-construction mixture for the worked design.",
+          "variable_symbols": [
+            "C_fixed",
+            "c_l",
+            "A",
+            "c_h",
+            "p_h",
+            "c_e",
+            "p_e",
+            "c_a",
+            "p_a",
+            "B"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-038",
+          "page": 16,
+          "label": null,
+          "source_expression": "Annual operation cost = (c'_2 + c'_h p_h + c'_e p_e)B",
+          "normalized_latex": "C_{\\mathrm{annual,printed}}=(c'_2+c'_h p_h+c'_e p_e)B",
+          "purpose": "Preserve the annual-cost formula exactly as printed, including its undefined c-prime-2 term and omitted explicit p_a multiplier.",
+          "variable_symbols": [
+            "C_annual_printed",
+            "c_prime_2",
+            "c_prime_h",
+            "p_h",
+            "c_prime_e",
+            "p_e",
+            "B"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-039",
+          "page": 16,
+          "label": null,
+          "source_expression": "701700 = (43300*(3/8) + 141900*(4/8) + 4200*(1/8))*8",
+          "normalized_latex": "C_{\\mathrm{annual,reconstructed}}=(c'_a p_a+c'_h p_h+c'_e p_e)B=701700",
+          "purpose": "Reconstruct the only stated substitution that yields the reported annual cost while keeping it distinct from the printed formula.",
+          "variable_symbols": [
+            "C_annual_reconstructed",
+            "c_prime_a",
+            "p_a",
+            "c_prime_h",
+            "p_h",
+            "c_prime_e",
+            "p_e",
+            "B"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Translate CTM geometry and the assumed booth mix into one-time land/construction cost and recurring annual operation cost.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "v_m",
+          "a",
+          "B",
+          "L",
+          "d_B",
+          "d_L",
+          "D",
+          "c_l",
+          "c_h",
+          "c_e",
+          "c_a",
+          "p_h",
+          "p_e",
+          "p_a",
+          "c_prime_2",
+          "c_prime_h",
+          "c_prime_e",
+          "c_prime_a"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "compute the geometry-linked area expression",
+          "apply the source symmetry factor",
+          "add booth construction by type proportion",
+          "substitute the eight-booth example",
+          "separate recurring annual inputs",
+          "reconstruct the reported annual total"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "The outer boundary is treated as symmetric.",
+        "Land, construction, and annual unit costs are transferred from the cited 1992 source without escalation to 2017 dollars.",
+        "The booth proportions sum to one and are applied uniformly across B booths."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "A",
+        "C_fixed",
+        "C_annual_printed",
+        "C_annual_reconstructed"
+      ],
+      "validation_refs": [
+        "Figure 9",
+        "physical page 15 fixed-cost display",
+        "physical page 16 annual-cost display",
+        "Conclusion cost restatement"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The literal area expression evaluates to about 3,650.97 m^2; the reported one-direction 1,824.93 m^2 requires a global one-half interpretation.",
+        "The fixed-cost display uses c_1 while the definition and substitution use c_l.",
+        "The c_h/c_a prose labels appear exchanged relative to h/a notation and booth proportions.",
+        "The printed annual expression contains c'_2 and omits an explicit p_a term, but 701,700 is reproduced only with c'_a p_a.",
+        "No currency year, inflation adjustment, maintenance uncertainty, or waiting-area land cost is quantified."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-012",
+      "page": 16,
+      "section": "6.1 Mixture of autonomous and human-driven vehicles",
+      "family": "qualitative autonomous-lane modification",
+      "purpose": "Protect the CTM from lane-marking and curvature-recognition failures by routing autonomous vehicles along the leftmost straight path.",
+      "base_or_modification": "modification",
+      "summary": "Protect the CTM from lane-marking and curvature-recognition failures by routing autonomous vehicles along the leftmost straight path.",
+      "variables": [
+        {
+          "symbol": "s_AV",
+          "normalized_name": "autonomous-vehicle share",
+          "unit": "proportion",
+          "definition": "No numeric mixture or adoption range is supplied.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z_AV",
+          "normalized_name": "autonomous lane assignment",
+          "unit": "lane index",
+          "definition": "Most-left lane in the proposed modification.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_mark",
+          "normalized_name": "lane-marking recognition risk",
+          "unit": "qualitative",
+          "definition": "Risk that the automated system fails to detect leading lines.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_turn",
+          "normalized_name": "turn-radius estimation risk",
+          "unit": "qualitative",
+          "definition": "Risk of misjudging the two-arc turning geometry.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "route_AV",
+          "normalized_name": "autonomous route",
+          "unit": "path",
+          "definition": "Straight path through the leftmost lane to the end of the merging area.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "s_AV",
+        "R_mark",
+        "R_turn"
+      ],
+      "outputs": [
+        "z_AV",
+        "route_AV"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper supplies a qualitative comparison, placement rule, or algorithmic narrative without a separate governing display."
+      },
+      "objectives": [
+        "Protect the CTM from lane-marking and curvature-recognition failures by routing autonomous vehicles along the leftmost straight path.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "s_AV",
+          "R_mark",
+          "R_turn"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "identify autonomous perception failures",
+          "reserve the leftmost lane",
+          "route autonomous vehicles straight",
+          "retain CTM for the remaining human-driven streams",
+          "flag the untested mixed-fleet boundary"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "The leftmost route remains straight through the merging area.",
+        "Lane separation by vehicle type is operationally enforceable.",
+        "Human-driven CTM behavior on the remaining lanes is unchanged."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "z_AV",
+        "route_AV"
+      ],
+      "validation_refs": [
+        "physical page 16 autonomous-vehicle discussion",
+        "Conclusion leading-line requirement"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The paper supplies no autonomous share, perception error rate, lane-change behavior, compliance mechanism, capacity recalculation, or safety simulation.",
+        "The citation '(Sam, 2016)' is absent from the References list.",
+        "The proposal may create lane-selection and demand-imbalance effects that are not modeled."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-013",
+      "page": 16,
+      "section": "6.2 Change in tollbooth-type proportions",
+      "family": "hybrid manual-automatic-ETC allocation",
+      "purpose": "Separate nonstop ETC flow from stopped-service CTM flow and apply the original controller only to the residual subsystem.",
+      "base_or_modification": "modification",
+      "summary": "Separate nonstop ETC flow from stopped-service CTM flow and apply the original controller only to the residual subsystem.",
+      "variables": [
+        {
+          "symbol": "T_h",
+          "normalized_name": "conventional human-staffed service time",
+          "unit": "s/vehicle",
+          "definition": "Approximately 15 s in the source assumption.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_a",
+          "normalized_name": "automated-booth service time",
+          "unit": "s/vehicle",
+          "definition": "Approximately 8 s.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_ETC",
+          "normalized_name": "maximum ETC passing speed",
+          "unit": "mph",
+          "definition": "15 mph.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_ETC",
+          "normalized_name": "single ETC booth capacity",
+          "unit": "veh/h",
+          "definition": "Approximately 2,000 veh/h.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ETC",
+          "normalized_name": "ETC demand share",
+          "unit": "proportion",
+          "definition": "Classified qualitatively as minority or majority; no numeric threshold is supplied.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_ETC",
+          "normalized_name": "ETC booth count",
+          "unit": "booths",
+          "definition": "One in the current-demand recommendation, with possible future increase.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_ETC",
+          "normalized_name": "dedicated ETC downstream lanes",
+          "unit": "lanes",
+          "definition": "One direct lane per ETC booth.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "layout_residual",
+          "normalized_name": "residual controlled layout",
+          "unit": "configuration",
+          "definition": "CTM allocation for the non-ETC booths and lanes.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "T_h",
+        "T_a",
+        "v_ETC",
+        "q_ETC",
+        "p_ETC"
+      ],
+      "outputs": [
+        "B_ETC",
+        "L_ETC",
+        "layout_residual"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-040",
+          "page": 17,
+          "label": null,
+          "source_expression": "q_ETC approximately 2000 vehicles/hour for one ETC booth",
+          "normalized_latex": "q_{ETC}\\approx2000\\ \\mathrm{veh/h}",
+          "purpose": "Record the source capacity used to justify a single direct ETC booth-to-lane path.",
+          "variable_symbols": [
+            "q_ETC"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Separate nonstop ETC flow from stopped-service CTM flow and apply the original controller only to the residual subsystem.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "T_h",
+          "T_a",
+          "v_ETC",
+          "q_ETC",
+          "p_ETC"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "classify booth technologies by service behavior",
+          "separate the nonstop ETC stream",
+          "place one ETC booth on the leftmost direct lane",
+          "apply CTM to remaining booths and lanes",
+          "increase ETC allocation only if demand grows"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Current ETC demand can be served by one approximately 2,000 veh/h booth.",
+        "ETC vehicles do not stop and therefore violate the base CTM service-release premise.",
+        "Each ETC booth merges directly into one highway lane."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "B_ETC",
+        "L_ETC",
+        "layout_residual"
+      ],
+      "validation_refs": [
+        "physical pages 16-17 booth-type modification",
+        "ETC capacity statement"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "No ETC demand forecast, threshold, queue interaction, mixed-lane rule, failure mode, or recalculated throughput/risk/cost is supplied.",
+        "The recommendation assumes that adding ETC booths would increase merging risk without testing the alternative layouts.",
+        "The autonomous-left-lane and ETC-left-lane modifications compete for the same location and are not reconciled."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-014",
+      "page": 17,
+      "section": "7 Sensitivity test",
+      "family": "local elasticity analysis for throughput and fixed cost",
+      "purpose": "Perturb service and design parameters locally, identify dominant elasticities, and translate them into bounded cost-efficiency guidance.",
+      "base_or_modification": "paper-specific",
+      "summary": "Perturb service and design parameters locally, identify dominant elasticities, and translate them into bounded cost-efficiency guidance.",
+      "variables": [
+        {
+          "symbol": "S_X_A",
+          "normalized_name": "elasticity of output A to input X",
+          "unit": "dimensionless",
+          "definition": "Local proportional sensitivity.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_X",
+          "normalized_name": "generic model output",
+          "unit": "native output unit",
+          "definition": "Throughput or fixed cost evaluated at X.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "generic perturbed input",
+          "unit": "native input unit",
+          "definition": "Continuous parameter or one-step discrete booth count.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta_A",
+          "normalized_name": "one-step output difference",
+          "unit": "native output unit",
+          "definition": "A(X+1)-A(X) for discrete X.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "service-limited throughput",
+          "unit": "veh/s or veh/h after scaling",
+          "definition": "B/T in source units before hourly scaling.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "number of tollbooths",
+          "unit": "booths",
+          "definition": "Discrete cost and throughput lever.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "mean service time",
+          "unit": "s/vehicle",
+          "definition": "Mean varied in Figure 10.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "service-time standard deviation",
+          "unit": "s",
+          "definition": "Dispersion varied in Figure 10.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_m",
+          "normalized_name": "maximum merging speed",
+          "unit": "m/s",
+          "definition": "Varied from about 10 to 20 m/s in Figure 11.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_T_theta",
+          "normalized_name": "throughput elasticity to mean service time",
+          "unit": "dimensionless",
+          "definition": "-1 from the inverse formula and plotted curve.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_sigma_theta",
+          "normalized_name": "throughput elasticity to service dispersion",
+          "unit": "dimensionless",
+          "definition": "Approximately zero over the plotted range.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_B_C",
+          "normalized_name": "fixed-cost elasticity to booth count",
+          "unit": "dimensionless",
+          "definition": "About 1.15 around B=8 and reported above one.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_vm_C",
+          "normalized_name": "fixed-cost elasticity to speed",
+          "unit": "dimensionless",
+          "definition": "About 0.38 around the stated baseline.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_r_C",
+          "normalized_name": "fixed-cost elasticity to radius",
+          "unit": "dimensionless",
+          "definition": "About 0.1-0.2 for r from 50 to 200 m.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "turning radius",
+          "unit": "m",
+          "definition": "Perturbed in Figure 11.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "B",
+        "T",
+        "sigma",
+        "v_m",
+        "r",
+        "A_X",
+        "X"
+      ],
+      "outputs": [
+        "S_X_A",
+        "S_T_theta",
+        "S_sigma_theta",
+        "S_B_C",
+        "S_vm_C",
+        "S_r_C"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70545-041",
+          "page": 17,
+          "label": null,
+          "source_expression": "Sensitivity of A(X) in terms of X = (dA/dX)*(X/A)",
+          "normalized_latex": "S_X^A=\\frac{dA}{dX}\\frac{X}{A}",
+          "purpose": "Define the continuous elasticity used in the throughput and fixed-cost sensitivity plots.",
+          "variable_symbols": [
+            "S_X_A",
+            "A_X",
+            "X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-042",
+          "page": 17,
+          "label": null,
+          "source_expression": "For discrete A, replace dA by Delta A=A(X+1)-A(X)",
+          "normalized_latex": "S_X^A=\\frac{A(X+1)-A(X)}{1}\\frac{X}{A(X)}",
+          "purpose": "Define the source's one-step discrete sensitivity convention for booth count.",
+          "variable_symbols": [
+            "S_X_A",
+            "A_X",
+            "X",
+            "Delta_A"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2017-70545-043",
+          "page": 17,
+          "label": null,
+          "source_expression": "theta=B/T, therefore d theta/dT * T/theta = -1 and variance sensitivity is approximately 0",
+          "normalized_latex": "\\theta=\\frac{B}{T},\\qquad S_T^{\\theta}=-1,\\qquad S_{\\sigma}^{\\theta}\\approx0",
+          "purpose": "Reconcile the inverse throughput formula and negative Figure 10 curve with the prose's missing minus sign.",
+          "variable_symbols": [
+            "theta",
+            "B",
+            "T",
+            "S_T_theta",
+            "sigma",
+            "S_sigma_theta"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations and reconstructed formula links were checked against focused, byte-bounded page crops."
+      },
+      "objectives": [
+        "Perturb service and design parameters locally, identify dominant elasticities, and translate them into bounded cost-efficiency guidance.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "B",
+          "T",
+          "sigma",
+          "v_m",
+          "r",
+          "A_X",
+          "X"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "define continuous and discrete elasticity",
+          "vary mean and dispersion of service time",
+          "reconcile the negative unit elasticity",
+          "vary booth count, speed, and radius",
+          "identify booth count as the dominant local cost lever",
+          "state the cost-efficiency tradeoff"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "Local one-factor elasticities around the selected parameter tuple represent reliability.",
+        "The throughput relationship theta=B/T is valid under continuously busy service conditions.",
+        "The fixed-cost formula and its one-direction/symmetry convention are accepted during the perturbation."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "S_X_A",
+        "S_T_theta",
+        "S_sigma_theta",
+        "S_B_C",
+        "S_vm_C",
+        "S_r_C"
+      ],
+      "validation_refs": [
+        "Figure 10",
+        "Figure 11",
+        "throughput inverse relation",
+        "fixed-cost baseline tuple"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "Figure 10 and the inverse formula imply elasticity -1, while the prose calls it constant 1.",
+        "Figure 11 is fixed cost versus v_m, r, and B, but the prose once calls the B result sensitivity of D.",
+        "Only local one-factor plots are supplied; interactions, uncertainty, decision-switch thresholds, and corrected area/cost algebra are absent.",
+        "The land price changes from 172.83 to 172.84 between cost and sensitivity sections."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70545-015",
+      "page": 18,
+      "section": "8 Conclusion and decision synthesis",
+      "family": "bounded multi-criterion design synthesis",
+      "purpose": "Select CTM after throughput screening, then bind geometry, operations, safety proxy, cost, modifications, sensitivity, and unresolved warnings to one recommendation.",
+      "base_or_modification": "paper-specific",
+      "summary": "Select CTM after throughput screening, then bind geometry, operations, safety proxy, cost, modifications, sensitivity, and unresolved warnings to one recommendation.",
+      "variables": [
+        {
+          "symbol": "design",
+          "normalized_name": "selected toll-plaza design",
+          "unit": "configuration",
+          "definition": "CTM with leading lines and two tangent arcs.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pattern",
+          "normalized_name": "booth-to-lane assignment",
+          "unit": "vector",
+          "definition": "Near-even allocation; three source candidates for B=8,L=3.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_star",
+          "normalized_name": "reported merge length",
+          "unit": "m",
+          "definition": "105.5 m for B=8,L=3.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_one",
+          "normalized_name": "reported one-direction area",
+          "unit": "m^2",
+          "definition": "1,824.93 m^2 under the source's implicit one-half convention.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_h",
+          "normalized_name": "reported human-booth plaza throughput",
+          "unit": "veh/h",
+          "definition": "1,920 veh/h for B=8 and T_h=15 s.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "risk_claim",
+          "normalized_name": "claimed CTM accident-rate change",
+          "unit": "percent",
+          "definition": "13.66% reduction in prose, contradicted by Table 2 row order.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_fixed",
+          "normalized_name": "reported fixed cost",
+          "unit": "USD",
+          "definition": "739,320.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_annual_reconstructed",
+          "normalized_name": "reported annual operation cost",
+          "unit": "USD/year",
+          "definition": "701,700 under the reconstructed mixture formula.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "decision_boundary",
+          "normalized_name": "deployment qualification",
+          "unit": "text",
+          "definition": "Requires recalculation for booth mix, autonomous/ETC lane competition, calibrated risk, arrival process, and cost convention.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pattern",
+        "D_star",
+        "A_one",
+        "Q_h",
+        "risk_claim",
+        "C_fixed",
+        "C_annual_reconstructed"
+      ],
+      "outputs": [
+        "design",
+        "decision_boundary"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper supplies a qualitative comparison, placement rule, or algorithmic narrative without a separate governing display."
+      },
+      "objectives": [
+        "Select CTM after throughput screening, then bind geometry, operations, safety proxy, cost, modifications, sensitivity, and unresolved warnings to one recommendation.",
+        "Keep assumed, externally sourced, derived, simulated, compared, and recommended quantities in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain physical page, printed page, lane/booth configuration, unit, traffic regime, service type, simulation horizon, and comparator.",
+        "Do not silently repair the paper's signs, labels, code parameters, table order, undefined symbols, or missing calibration."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The numerical baseline uses two continuously busy human-staffed toll lanes merging into one outgoing lane under heavy traffic.",
+            "Service draws and the initial lane offset are initialized as stated by the relevant model unit."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Drivers are assumed rational and compliant with lane markings and release control.",
+            "Vehicle length, breakdowns, control-system failure, downstream spillback, weather, and most mixed-booth interactions are omitted."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The source uses finite one-hour event simulations and local sensitivity scans, not an equilibrium proof."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine prompt conditions, author assumptions, three cited sources, worked design choices, and unseeded simulation draws; no field calibration ledger is supplied.",
+        "parameters": [
+          "pattern",
+          "D_star",
+          "A_one",
+          "Q_h",
+          "risk_claim",
+          "C_fixed",
+          "C_annual_reconstructed"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "reject WAM after the throughput and land-cost comparison",
+          "retain CTM after diagnosing EM conflicts",
+          "state geometry and lane-guidance requirements",
+          "bind throughput, safety proxy, fixed cost, and annual cost",
+          "carry modification and sensitivity limits into the recommendation",
+          "abstain from field deployment until contradictions and calibration gaps are resolved"
+        ],
+        "software": [
+          "R appendix; the paper also claims Mathematica and MATLAB were used"
+        ],
+        "convergence_criteria": "Finite event-count or one-hour stopping rules are stated; no convergence, seed, precision, or repeated-run stopping diagnostic is supplied."
+      },
+      "assumptions": [
+        "CTM's orderliness and one-second floor are valued even though throughput is statistically near EM.",
+        "WAM's approximately 1.6 veh/h gain does not justify its unquantified waiting-area cost.",
+        "The worked B=8,L=3 case is illustrative rather than a universally optimized plaza."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The event logic is inspectable, but field parameters, code-equation consistency, controller implementation, waiting-area dimensions, seeds, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "design",
+        "decision_boundary"
+      ],
+      "validation_refs": [
+        "Conclusion",
+        "Figure 12",
+        "Strengths and Weaknesses",
+        "Authority letter"
+      ],
+      "computational_cost": "The paper reports 1,000 throughput simulations and 4,000 risk simulations in prose but gives no runtime, hardware, random seeds, precision target, or archived output ledger.",
+      "strengths": [
+        "The unit has a visible location in the condition -> model rule -> event time or geometry -> metric -> decision chain.",
+        "Its outputs can be labeled assumed, derived, simulated, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The conclusion repeats the 13.66% reduction despite Table 2 showing the opposite row order.",
+        "The source does not recompute throughput, risk, geometry, or cost after autonomous and ETC modifications.",
+        "The geometric optimality claim is based on small worked configurations rather than a general proof over B and L.",
+        "Multiple programming platforms are cited as credibility, but executable parity and output reconciliation are not supplied."
+      ],
+      "missing_details": [
+        "Real toll-plaza arrival, service, PET, crash, cost, and geometry calibration data are absent.",
+        "Random seeds, complete executable files, environment versions, cross-platform reconciliation, uncertainty intervals, and raw run tables are absent."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-B-2017-70545-001",
+      "to_model_id": "MU-B-2017-70545-002",
+      "handoff": "baseline merge conflicts motivate a minimum release interval"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-002",
+      "to_model_id": "MU-B-2017-70545-003",
+      "handoff": "the release rule constrains lane-level service saturation"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-002",
+      "to_model_id": "MU-B-2017-70545-004",
+      "handoff": "the controller requires a compatible booth-to-lane geometry"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-003",
+      "to_model_id": "MU-B-2017-70545-004",
+      "handoff": "booth counts by lane become inputs to the minimax geometry"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-004",
+      "to_model_id": "MU-B-2017-70545-005",
+      "handoff": "CTM booth occupation motivates the waiting-area variant"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-001",
+      "to_model_id": "MU-B-2017-70545-006",
+      "handoff": "the existing-model diagnosis is quantified by an EM event simulation"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-002",
+      "to_model_id": "MU-B-2017-70545-007",
+      "handoff": "the one-second rule becomes the CTM event recurrence"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-005",
+      "to_model_id": "MU-B-2017-70545-008",
+      "handoff": "service-release decoupling becomes the WAM recurrence"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-006",
+      "to_model_id": "MU-B-2017-70545-009",
+      "handoff": "EM run outputs enter the three-model comparison"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-007",
+      "to_model_id": "MU-B-2017-70545-009",
+      "handoff": "CTM run outputs enter the three-model comparison"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-008",
+      "to_model_id": "MU-B-2017-70545-009",
+      "handoff": "WAM run outputs enter the three-model comparison"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-009",
+      "to_model_id": "MU-B-2017-70545-010",
+      "handoff": "the retained CTM is compared with EM on PET risk"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-004",
+      "to_model_id": "MU-B-2017-70545-011",
+      "handoff": "selected geometry supplies the area and fixed-cost inputs"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-004",
+      "to_model_id": "MU-B-2017-70545-012",
+      "handoff": "the two-arc layout exposes the autonomous perception boundary"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-003",
+      "to_model_id": "MU-B-2017-70545-013",
+      "handoff": "service-type throughput differences drive the hybrid booth allocation"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-003",
+      "to_model_id": "MU-B-2017-70545-014",
+      "handoff": "service-limited throughput supplies the inverse sensitivity relation"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-011",
+      "to_model_id": "MU-B-2017-70545-014",
+      "handoff": "the fixed-cost expression supplies the B, v_m, and r sensitivity outputs"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-009",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "throughput comparison screens the candidate models"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-010",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "PET risk supplies the safety claim and its warning"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-011",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "fixed and annual costs enter the final design statement"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-012",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "autonomous routing qualifies the base design"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-013",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "ETC allocation qualifies the base design"
+    },
+    {
+      "from_model_id": "MU-B-2017-70545-014",
+      "to_model_id": "MU-B-2017-70545-015",
+      "handoff": "local elasticities qualify the cost-efficiency recommendation"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+Team # 2511565                                                                            Page 29 of 31
+
+
+    <A photo of a single step was taken vertically, and a GLTF file was obtained through the depth
+map estimation model. Please write a Python program to read the wear depth at various positions
+of the single step from this GLTF file, store it in an appropriate data structure, and return a suitable
+image.>
+   Output2:
+   <This Python script demonstrates how to:
+    1. Read mesh data from a glTF file (assuming the mesh contains step depth information) 2.
+
+
+
+
+                                                                     型
+Calculate "wear depth" 3. Store results in appropriate data structures (e.g., 2D array) 4. Visualize
+results using pseudocolor images
+
+
+
+
+                                                                   模
+   Required libraries:
+
+
+
+
+                                                                 学
+    • trimesh: For loading and manipulating 3D meshes
+
+
+
+
+                                                               数
+    • numpy: For numerical operations
+
+    • matplotlib: For visualization
+
+
+
+                                                           ：
+
+                                                          el s
+    • scipy (optional): For scatter-to-grid interpolation号
+
+                                                        od
+                                   Listing 1: Python Implementation
+                                         众
+import trimesh
+import numpy as np
+                                                     Hm
+                            公
+
+
+import matplotlib . pyplot as plt
+
+# Optional scipy import for interpolation
+                                                  AT
+                           信
+
+
+
+try:
+     from scipy . interpolate import griddata
+                    微
+
+
+
+
+     HAS_SCIPY = True
+                                                 M
+
+
+except ImportError :
+     HAS_SCIPY = False
+                                     ：
+
+
+
+
+def read_wear_depth_from_gltf ( gltf_path ):
+                                    号
+
+
+
+
+    """
+    Read glTF file and extract wear depth at step positions .
+                       信
+
+
+
+
+    Assumes Z-axis as vertical direction :
+    wear_depth = z_max - current_z
+                      微
+
+
+
+
+     Parameters :
+         gltf_path (str ): Path to glTF file
+
+     Returns :
+         points (np. ndarray ): (N ,2) array of (x,y) coordinates
+         depth_values (np. ndarray ): (N ,) array of wear depths
+     """
+     mesh = trimesh .load( gltf_path )
+     vertices = mesh. vertices
+     z_vals = vertices [:, 2]
+     depth_values = np.max( z_vals ) - z_vals

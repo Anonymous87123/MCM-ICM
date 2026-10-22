@@ -1,0 +1,885 @@
+{
+  "paper_id": "P-B-2015-36178-d0225ad0",
+  "problem_type": "B",
+  "year": "2015",
+  "team_control_number": "36178",
+  "title": "So You Lost a Plane?",
+  "award_status": "outstanding",
+  "source": {
+    "relative_path": "2015美赛特等奖/B-36178-Outstanding.pdf",
+    "sha256": "d0225ad0b9c2d2dcdb91f20526f5bed617d1c221aff50ab700ad9cf85b1df9ff",
+    "page_count": 20,
+    "pdf_page_offset_note": "Physical page 1 is the unnumbered Summary; physical pages 2-18 contain printed pages 1-17; physical pages 19-20 are a separate press communication."
+  },
+  "schema_version": 1,
+  "source_quality": {
+    "status": "validated",
+    "text_pages": 20,
+    "rendered_pages": 20,
+    "visual_review": "complete",
+    "notes": [
+      "All 20 UTF-8 page-text files were read sequentially, with Summary and Introduction studied first.",
+      "Four byte-bounded overview proxies covered physical pages 1-20 and focused proxies reconciled formulas and Figures 3-7; no original full-page PNG was transported.",
+      "All seven numbered figures have a source-ordered, model-linked disposition; repeated press renderings of Figures 1, 2, and 5 do not inflate the count.",
+      "The official 2015 problem statement is not available in the manifest, so task reconstruction is limited to the paper's own statements and deliverables."
+    ]
+  },
+  "context_sources": [
+    {
+      "type": "paper",
+      "path": "2015美赛特等奖/B-36178-Outstanding.pdf"
+    },
+    {
+      "type": "extraction",
+      "path": "artifacts/papers/P-B-2015-36178-d0225ad0/extraction.json"
+    },
+    {
+      "type": "text-pages",
+      "path": "artifacts/papers/P-B-2015-36178-d0225ad0/text/pages"
+    },
+    {
+      "type": "visual-stage",
+      "path": "tmp/q109-visual-stage-v2/visuals.json"
+    }
+  ],
+  "task_reconstruction": {
+    "status": "incomplete-official-task-unavailable",
+    "inputs": [
+      "last known coordinates and heading",
+      "downed-aircraft family, speed, altitude, mass, glide, and turn behavior",
+      "crash wind and local current field",
+      "search-aircraft type, range, speed, count, daylight, weather, and visibility",
+      "found-debris time and coordinates"
+    ],
+    "outputs": [
+      "initial conservative crash region",
+      "daily drifting debris-search polygon",
+      "parallel, diagonal, and optimized-parallel swept areas",
+      "modeled days to a 95-percent detection threshold",
+      "reverse-current crash-origin estimate",
+      "conditional route recommendation and public explanation"
+    ],
+    "decisions": [
+      "how aircraft state bounds initial location",
+      "how currents update that region each day",
+      "which search route uses available resources",
+      "how repeated coverage affects the stopping rule",
+      "how debris evidence revises the crash estimate",
+      "which uncertainty and provenance limits remain"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "section": "2015 Mathematical Contest in Modeling summary",
+      "summary": "Input: A lost-aircraft incident, last known flight state, ocean setting, available search resources, and uncertain recovery time. Analytical job: Name the initial bound, day-by-day current displacement, reverse debris tracing, three search algorithms, and scenario comparison without deriving them yet. Output: A bounded promise: conditional estimates of where to search, which route to use, and how long debris recovery may take. Handoff: The contents and introduction unpack the route into assumptions, components, and calculations."
+    },
+    {
+      "page": 2,
+      "section": "Contents",
+      "summary": "Input: The summary's promised location-to-search route. Analytical job: Order assumptions, parameters, geometry, algorithms, results, error analysis, and operational reflection as dependencies rather than a topic pile. Output: A navigable source-heading map covering every printed technical and stakeholder section. Handoff: Introduction supplies the decision problem that gives this route its purpose."
+    },
+    {
+      "page": 4,
+      "section": "1 Introduction to Problem",
+      "summary": "Input: A plane likely lost over water and a desire to minimize the elapsed search time. Analytical job: Separate initial-location estimation, adaptable search, and current-informed reconstruction into a three-part technical route. Output: A stated purpose and a preview of the model interfaces needed to fulfill it. Handoff: Assumptions constrain what each later interface may claim."
+    },
+    {
+      "page": 4,
+      "section": "2.1 Assumptions and Justifications",
+      "summary": "Input: The three-task route and numerous unknown physical, sensing, personnel, and time conditions. Analytical job: Fix worst-case crash behavior, omitted drag, visual-only debris search, flat water, daylight, fatigue, debris persistence, and airport distance assumptions. Output: A bounded problem regime in which the geometric and search calculations have defined meaning. Handoff: Parameters operationalize the assumptions as inputs to aircraft, drift, and search calculations."
+    },
+    {
+      "page": 4,
+      "section": "2.2 Parameters",
+      "summary": "Input: The accepted assumptions and the need to implement aircraft and search behavior. Analytical job: Connect altitude, velocity, mass, crash wind, aircraft range/count, available daylight, weather, visibility, current direction, and time since crash to later model outputs. Output: A parameter interface for location bounds, drift, sweep width, and route capacity. Handoff: Problem analysis uses the interface to split the response into location and search mechanisms."
+    },
+    {
+      "page": 5,
+      "section": "3 Analysis of the Problem / 3.1 Hypotheses",
+      "summary": "Input: Aircraft/search parameters and the stated need to find a plane quickly. Analytical job: Divide the task into splash-down prediction and area search; reject spiral-like paths under an efficiency criterion; retain adaptable parallel-route candidates. Output: A justified six-component model architecture and a path-family screening rule. Handoff: Statement of Model turns the decomposition into linked components."
+    },
+    {
+      "page": 5,
+      "section": "4 Statement of Model / 4.1 Components of the Model / 4.1.1-4.1.5",
+      "summary": "Input: Problem decomposition, aircraft/current/search parameters, and the admissible assumptions. Analytical job: Parameterize a downed plane, search plane, and debris drift; generate a crash region; determine how a path searches it; reverse-trace debris evidence. Output: An ordered interface chain from last contact to a changing search area and evidence feedback. Handoff: Grid and geometric construction make those interfaces computationally actionable."
+    },
+    {
+      "page": 9,
+      "section": "4.2 Generating the Search Area / 4.3 Adjusting the search area over time",
+      "summary": "Input: Aircraft state, glide and turn limits, wind uncertainty, and a local ocean-current field. Analytical job: Construct reachable edge points, expand the perimeter by wind, form a convex hull, place it over a grid, drift markers using discrete Euler updates, and rebuild the containing polygon. Output: A time-indexed, bounded n-gon/search grid with an explicit approximation rule. Handoff: Detection theory interprets coverage of this changing area as a probability objective."
+    },
+    {
+      "page": 10,
+      "section": "4.4 Search Theory / 4.5.1 Parallel search",
+      "summary": "Input: A bounded search area, aircraft capability inputs, time window, and a need to compare coverage fairly. Analytical job: Define POD from time, aircraft count, rate, sweep width, and area; describe searchleg/crossleg structure; allocate legs by range; compute swept area. Output: A parallel-search baseline that returns day-level area coverage and a detection-relevant metric. Handoff: Alternative geometries modify the baseline's path and resource-use constraints."
+    },
+    {
+      "page": 12,
+      "section": "4.5.2 Diagonal search / 4.5.3 Optimized parallel search",
+      "summary": "Input: The parallel baseline, the shared POD/coverage objective, and limits on one-pass coverage. Analytical job: Derive diagonal-area cases; allow surplus aircraft to re-sweep search blocks; account for delayed starts and decreasing legs within a block. Output: Two variants with explicit coverage logic, capacity use, and conditions that can later be tested against the baseline. Handoff: The main equation turns their swept area into days/POD and reverse drift closes the evidence loop."
+    },
+    {
+      "page": 13,
+      "section": "4.6 Full Statement of the Model’s Main Equation / 4.7 Tracing the Findings to the Crash / 5 Results",
+      "summary": "Input: Swept-area outputs from each route, a changing search polygon, and found-debris positions. Analytical job: Map swept area to POD/days, reverse Euler current displacement, compare a conservative bound with AF447 context, and simulate route performance under varied resources and weather. Output: A conditional decision rule with observed best/worst cases rather than an unconditional route claim. Handoff: Sensitivity analysis isolates the parameters behind the decision behavior."
+    },
+    {
+      "page": 15,
+      "section": "6 Error/Sensitivity Analysis / 6.1-6.6",
+      "summary": "Input: A 45,000-foot/459-knot/10-knot/21-aircraft/20-knot/14.6-nautical-mile baseline and modeled time-to-search output. Analytical job: Vary height, aircraft speed, crash wind, aircraft count, search wind, and visibility independently; compare days against the 11-day baseline. Output: A set of local response descriptions that distinguish marginal, linear-like, inverse-exponential-like, and threshold behavior. Handoff: Model analysis turns those response limits into explicit strengths, weaknesses, and repair priorities."
+    },
+    {
+      "page": 16,
+      "section": "7.1 Strengths / 7.2 Weaknesses",
+      "summary": "Input: The simulation route, sensitivity results, and documented assumptions. Analytical job: Attribute adaptability to low-input location geometry and moving current fields; bound it by rectangular over-search, MH370-local currents, ignored survivors, and omitted glide-speed detail. Output: A balanced scope statement with concrete failure mechanisms rather than generic self-criticism. Handoff: Future work maps each named limitation to a proposed interface or calculation improvement."
+    },
+    {
+      "page": 17,
+      "section": "7.3 Future improvements",
+      "summary": "Input: The data, geometry, search-method, visualization, and deployment limitations named immediately before it. Analytical job: Propose local current data, more loss-of-contact modes, broader method comparison, coordinate-bearing maps, additional incident inputs, and time-since-crash information. Output: A prioritized expansion list tied to specific missing assumptions, data, or decision interfaces. Handoff: Conclusion restates what is usable now while retaining the uncertainty that motivates the extensions."
+    },
+    {
+      "page": 17,
+      "section": "8 Conclusion",
+      "summary": "Input: Location bound, daily coverage, current drift, algorithm comparison, and stated limits. Analytical job: Recap bounding-area construction, daily POD reporting, current-informed movement/backtracking, conditional route choice, and remaining unknowns. Output: A defensible final claim: the framework assists searchers under its declared inputs and uncertainties. Handoff: References identify external dependencies; the memo translates the same loop for a nontechnical audience."
+    },
+    {
+      "page": 18,
+      "section": "References",
+      "summary": "Input: Aircraft specifications, search theory, convex-hull method, current data, and incident sources used by earlier sections. Analytical job: List the external sources for physical assumptions, detection concepts, geometry, aircraft parameters, and ocean-current data. Output: A dependency boundary that reveals missing frozen data, code, run configuration, and calibration artifacts. Handoff: The following memo is stakeholder communication, not a further technical derivation."
+    },
+    {
+      "page": 19,
+      "section": "Addressing the Press Regarding the Plan for Future Searches",
+      "summary": "Input: The paper's technical decision loop and a public audience needing actionable next steps. Analytical job: Describe bounded-area generation, rectangular/diagonal deployment choice, visual debris observation, current-based reverse tracing, and repeated re-planning. Output: A stakeholder-facing operational narrative consistent with, but simpler than, the technical route. Handoff: The iterative loop itself is the final communication endpoint; no new technical claim is introduced."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 4,
+      "summary": "A worst-case open-water power-loss crash is modeled with negligible drag, flat water, and debris remaining afloat."
+    },
+    {
+      "page": 4,
+      "summary": "Search is visual-only, unaffected by fatigue, limited to ten daylight hours, and staged 200 nautical miles from the search area."
+    },
+    {
+      "page": 8,
+      "summary": "A 1.5-degree-per-second turn and unpowered glide geometry bound reachable endpoints after last contact."
+    },
+    {
+      "page": 9,
+      "summary": "Wind direction is unknown, so the perimeter is expanded by wind speed along outward normals before convex closure."
+    },
+    {
+      "page": 10,
+      "summary": "Debris-current motion is advanced in discrete 24-hour Euler steps rather than continuously."
+    },
+    {
+      "page": 12,
+      "summary": "Staggered same-type aircraft lose one search leg per delayed start and are assumed to finish within the common window."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 6,
+      "summary": "Five aircraft families are represented by one named aircraft each; source specifications feed speed, altitude, mass, and range interfaces."
+    },
+    {
+      "page": 7,
+      "summary": "Search sweep widths are interpolated in Mathematica from an external search-and-rescue table that is not frozen with the paper."
+    },
+    {
+      "page": 9,
+      "summary": "Endpoint samples are wind-expanded, convex-hulled, placed on a longitude-latitude grid, and marked for daily drift."
+    },
+    {
+      "page": 10,
+      "summary": "A local MH370-area current field advances markers by Euler updates and a new hull encloses each day's positions."
+    },
+    {
+      "page": 13,
+      "summary": "More than 900 combinations vary area, aircraft, weather, wind, visibility, and related search settings, but the scenario matrix is not published."
+    },
+    {
+      "page": 15,
+      "summary": "Sensitivity uses one declared median baseline and changes one parameter at a time until a day count changes on one or both sides."
+    }
+  ],
+  "models": [
+    {
+      "model_id": "MU-B-2015-36178-001",
+      "page": 8,
+      "summary": "Generate an initial crash-area boundary from last contact, glide geometry, turn radius, heading, and a wind-speed perimeter expansion."
+    },
+    {
+      "model_id": "MU-B-2015-36178-002",
+      "page": 10,
+      "summary": "Move every marker in the initial search area through a 24-hour current field, then rebuild a containing polygon for the next day."
+    },
+    {
+      "model_id": "MU-B-2015-36178-003",
+      "page": 10,
+      "summary": "Estimate probability of detecting debris from allotted time, number of searchers, search rate, effective sweep width, and total area."
+    },
+    {
+      "model_id": "MU-B-2015-36178-004",
+      "page": 11,
+      "summary": "Assign search planes straight paths parallel to the long edge and sum their effective swept area for the day."
+    },
+    {
+      "model_id": "MU-B-2015-36178-005",
+      "page": 12,
+      "summary": "Compute coverage from diagonal sweeps that lengthen central tracks but introduce short corner legs and additional turns."
+    },
+    {
+      "model_id": "MU-B-2015-36178-006",
+      "page": 12,
+      "summary": "Reuse parallel-search blocks by staggering additional same-type planes so excess capacity can resweep the area and raise modeled coverage."
+    },
+    {
+      "model_id": "MU-B-2015-36178-007",
+      "page": 13,
+      "summary": "Convert the bounding n-gon and a selected algorithm's swept area into the paper's modeled number of days to exceed 95-percent cumulative detection."
+    },
+    {
+      "model_id": "MU-B-2015-36178-008",
+      "page": 13,
+      "summary": "Use a found debris location, elapsed time, and current field to step backward toward a refined crash-origin estimate."
+    },
+    {
+      "model_id": "MU-B-2015-36178-009",
+      "page": 14,
+      "summary": "Compare diagonal and optimized-parallel search durations under resource, weather, area, visibility, and aircraft scenarios, then state conditional method rules."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from_model_id": "MU-B-2015-36178-001",
+      "to_model_id": "MU-B-2015-36178-002",
+      "handoff": "The initial convex-hull boundary supplies markers and the first daily search polygon for forward drift."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-002",
+      "to_model_id": "MU-B-2015-36178-003",
+      "handoff": "The drifted hull defines the day-specific search area used by the detection relation."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-003",
+      "to_model_id": "MU-B-2015-36178-004",
+      "handoff": "Effective sweep width and detection semantics constrain the parallel allocation's area contribution."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-003",
+      "to_model_id": "MU-B-2015-36178-005",
+      "handoff": "The same search-plane effectiveness inputs are used by the diagonal swept-area calculation."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-004",
+      "to_model_id": "MU-B-2015-36178-006",
+      "handoff": "The baseline parallel blocks are retained so extra aircraft can be assigned for staggered repeated coverage."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-004",
+      "to_model_id": "MU-B-2015-36178-007",
+      "handoff": "Parallel swept area is one candidate A_swept input to the daily detection threshold."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-005",
+      "to_model_id": "MU-B-2015-36178-007",
+      "handoff": "Diagonal swept area is an alternative A_swept input to the daily detection threshold."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-006",
+      "to_model_id": "MU-B-2015-36178-007",
+      "handoff": "Optimized repeated-coverage A_swept enters the same daily POD/day comparison."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-007",
+      "to_model_id": "MU-B-2015-36178-008",
+      "handoff": "A found-debris-triggered refinement uses elapsed time and the current field to return an updated crash-origin estimate."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-007",
+      "to_model_id": "MU-B-2015-36178-009",
+      "handoff": "Modeled days-to-threshold and scenario outcomes become the evidence for the conditional algorithm recommendation."
+    },
+    {
+      "from_model_id": "MU-B-2015-36178-008",
+      "to_model_id": "MU-B-2015-36178-001",
+      "handoff": "The reverse-drift origin estimate is intended to restart the search cycle with a refined initial location."
+    }
+  ],
+  "verification": [
+    {
+      "page": 13,
+      "section": "AF447 comparison",
+      "summary": "The paper compares its conservative 125-nautical-mile radius with AF447's 40-nautical-mile search radius.",
+      "verification_type": "context comparison",
+      "strength": "The discrepancy is reported and explained through information precision.",
+      "limitation": "Different incident information makes this a scope illustration, not calibration or validation."
+    },
+    {
+      "page": 14,
+      "section": "algorithm scenario comparison",
+      "summary": "Diagonal and optimized-parallel day counts are compared across more than 900 stated scenarios.",
+      "verification_type": "within-model scenario sweep",
+      "strength": "The paper exposes conditional best and worst regimes.",
+      "limitation": "The scenario table, code, paired outputs, and uncertainty are absent."
+    },
+    {
+      "page": 15,
+      "section": "height and crash-wind sensitivity",
+      "summary": "One-at-a-time perturbations report day-count changes around the 11-day baseline.",
+      "verification_type": "local sensitivity",
+      "strength": "Baseline and changed inputs are explicit.",
+      "limitation": "One or two changes cannot establish the claimed global functional forms."
+    },
+    {
+      "page": 16,
+      "section": "aircraft, search-wind, and visibility sensitivity",
+      "summary": "Resource and observation inputs are perturbed and their modeled day responses are stated.",
+      "verification_type": "local sensitivity",
+      "strength": "Decision-facing inputs are linked to completion time.",
+      "limitation": "No interaction, uncertainty, calibration, or repeated-run analysis is supplied."
+    },
+    {
+      "page": 17,
+      "section": "strengths and weaknesses",
+      "summary": "The source itself identifies rectangular over-search, local current data, survivor drift, and omitted glide-speed state.",
+      "verification_type": "source scope audit",
+      "strength": "Concrete mechanisms are named.",
+      "limitation": "Self-reported limitations do not measure their quantitative impact."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 13,
+      "summary": "The simple parallel route ranges from 3 to 3,581 modeled days and cannot exploit capacity beyond one daily sweep."
+    },
+    {
+      "page": 14,
+      "summary": "Diagonal search is usually two modeled days faster than simple parallel but reaches more than 35,000 days in adverse cases."
+    },
+    {
+      "page": 15,
+      "summary": "Optimized parallel is recommended for few-plane/large-area/bad-weather and many-plane/small-area/good-weather regimes; diagonal is recommended otherwise."
+    },
+    {
+      "page": 15,
+      "summary": "The declared sensitivity baseline is an 85,957-square-nautical-mile region with a modeled 11-day search."
+    },
+    {
+      "page": 16,
+      "summary": "Altitude, crash wind, aircraft count, search wind, and visibility perturbations change the rounded day output by different local amounts."
+    },
+    {
+      "page": 17,
+      "summary": "The conclusion retains a conditional method choice because weather, area, aircraft count, and unknown crash behavior alter the result."
+    }
+  ],
+  "contributions": [
+    {
+      "page": 8,
+      "summary": "Turn-constrained glide endpoints replace a single circular radius with a more explicit reachable-boundary construction."
+    },
+    {
+      "page": 10,
+      "summary": "Marker-wise current advection makes the search region move and reshape between daily operations."
+    },
+    {
+      "page": 11,
+      "summary": "Productive searchlegs are separated from crossleg and turn overhead before swept area is counted."
+    },
+    {
+      "page": 12,
+      "summary": "Diagonal and repeated parallel blocks expose different resource and corner-geometry tradeoffs."
+    },
+    {
+      "page": 13,
+      "summary": "The same current interface is reversed after debris is found, closing an evidence-to-location feedback loop."
+    },
+    {
+      "page": 15,
+      "summary": "Conditional route rules are stated from scenario behavior rather than naming one method universally best."
+    },
+    {
+      "page": 19,
+      "summary": "The press communication translates required facts, bounded area, field search, found debris, and iterative replanning for a public audience."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "abstract: Compress the practical need into a complete route that makes the later paper legible before technical detail appears. The contents and introduction unpack the route into assumptions, components, and calculations."
+    },
+    {
+      "page": 2,
+      "summary": "title: Expose the architecture before the body begins, including sensitivity, limitations, conclusion, and a separate public communication artifact. Introduction supplies the decision problem that gives this route its purpose."
+    },
+    {
+      "page": 4,
+      "summary": "introduction: Frame urgency while specifying the linked tasks a reader must accept as one response system. Assumptions constrain what each later interface may claim."
+    },
+    {
+      "page": 4,
+      "summary": "assumptions: Make simplifying commitments inspectable by attaching reasons rather than silently hiding them in equations. Parameters operationalize the assumptions as inputs to aircraft, drift, and search calculations."
+    },
+    {
+      "page": 4,
+      "summary": "notation: Bind operational facts to the later decision roles they play instead of presenting a detached symbol list. Problem analysis uses the interface to split the response into location and search mechanisms."
+    },
+    {
+      "page": 5,
+      "summary": "problem-analysis: Show why the proposed route is a deliberate decomposition, not a collection of convenient formulas. Statement of Model turns the decomposition into linked components."
+    },
+    {
+      "page": 5,
+      "summary": "model-establishment: Make a multi-stage system readable by enumerating its interfaces before deriving the individual calculations. Grid and geometric construction make those interfaces computationally actionable."
+    },
+    {
+      "page": 9,
+      "summary": "data-preprocessing: Turn heterogeneous physical uncertainty into a represented computational object that later search algorithms can consume. Detection theory interprets coverage of this changing area as a probability objective."
+    },
+    {
+      "page": 10,
+      "summary": "algorithm: Establish a baseline route and metric so later alternatives have a common decision standard. Alternative geometries modify the baseline's path and resource-use constraints."
+    },
+    {
+      "page": 12,
+      "summary": "model-improvement: Make alternative designs comparable by explaining both the intended gain and the structural cost of each modification. The main equation turns their swept area into days/POD and reverse drift closes the evidence loop."
+    },
+    {
+      "page": 13,
+      "summary": "robustness-verification: Translate local computations into an outcome metric and test whether the intended operational choice behaves plausibly across evidence sources and scenarios. Sensitivity analysis isolates the parameters behind the decision behavior."
+    },
+    {
+      "page": 15,
+      "summary": "sensitivity-analysis: Bound interpretation by showing which operational inputs matter locally and how the claim changes when one input is perturbed. Model analysis turns those response limits into explicit strengths, weaknesses, and repair priorities."
+    },
+    {
+      "page": 16,
+      "summary": "strengths-limitations: Preserve useful mechanisms while preventing their operational scope from being mistaken for field validity. Future work maps each named limitation to a proposed interface or calculation improvement."
+    },
+    {
+      "page": 17,
+      "summary": "future-improvements: Turn each scope boundary into a concrete extension route with a clear operational use. Conclusion restates what is usable now while retaining the uncertainty that motivates the extensions."
+    },
+    {
+      "page": 17,
+      "summary": "conclusion: Close the paper by restitching the operational loop without erasing the conditional nature of the recommendation. References identify external dependencies; the memo translates the same loop for a nontechnical audience."
+    },
+    {
+      "page": 18,
+      "summary": "references: Expose provenance and reproducibility dependencies without treating citation text as model evidence itself. The following memo is stakeholder communication, not a further technical derivation."
+    },
+    {
+      "page": 19,
+      "summary": "memo: Translate technical uncertainty into a three-stage response that specifies required incident facts, field actions, and evidence feedback. The iterative loop itself is the final communication endpoint; no new technical claim is introduced."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "abstract: A lost-aircraft incident, last known flight state, ocean setting, available search resources, and uncertain recovery time. -> A bounded promise: conditional estimates of where to search, which route to use, and how long debris recovery may take."
+    },
+    {
+      "page": 2,
+      "summary": "title: The summary's promised location-to-search route. -> A navigable source-heading map covering every printed technical and stakeholder section."
+    },
+    {
+      "page": 4,
+      "summary": "introduction: A plane likely lost over water and a desire to minimize the elapsed search time. -> A stated purpose and a preview of the model interfaces needed to fulfill it."
+    },
+    {
+      "page": 4,
+      "summary": "assumptions: The three-task route and numerous unknown physical, sensing, personnel, and time conditions. -> A bounded problem regime in which the geometric and search calculations have defined meaning."
+    },
+    {
+      "page": 4,
+      "summary": "notation: The accepted assumptions and the need to implement aircraft and search behavior. -> A parameter interface for location bounds, drift, sweep width, and route capacity."
+    },
+    {
+      "page": 5,
+      "summary": "problem-analysis: Aircraft/search parameters and the stated need to find a plane quickly. -> A justified six-component model architecture and a path-family screening rule."
+    },
+    {
+      "page": 5,
+      "summary": "model-establishment: Problem decomposition, aircraft/current/search parameters, and the admissible assumptions. -> An ordered interface chain from last contact to a changing search area and evidence feedback."
+    },
+    {
+      "page": 9,
+      "summary": "data-preprocessing: Aircraft state, glide and turn limits, wind uncertainty, and a local ocean-current field. -> A time-indexed, bounded n-gon/search grid with an explicit approximation rule."
+    },
+    {
+      "page": 10,
+      "summary": "algorithm: A bounded search area, aircraft capability inputs, time window, and a need to compare coverage fairly. -> A parallel-search baseline that returns day-level area coverage and a detection-relevant metric."
+    },
+    {
+      "page": 12,
+      "summary": "model-improvement: The parallel baseline, the shared POD/coverage objective, and limits on one-pass coverage. -> Two variants with explicit coverage logic, capacity use, and conditions that can later be tested against the baseline."
+    },
+    {
+      "page": 13,
+      "summary": "robustness-verification: Swept-area outputs from each route, a changing search polygon, and found-debris positions. -> A conditional decision rule with observed best/worst cases rather than an unconditional route claim."
+    },
+    {
+      "page": 15,
+      "summary": "sensitivity-analysis: A 45,000-foot/459-knot/10-knot/21-aircraft/20-knot/14.6-nautical-mile baseline and modeled time-to-search output. -> A set of local response descriptions that distinguish marginal, linear-like, inverse-exponential-like, and threshold behavior."
+    },
+    {
+      "page": 16,
+      "summary": "strengths-limitations: The simulation route, sensitivity results, and documented assumptions. -> A balanced scope statement with concrete failure mechanisms rather than generic self-criticism."
+    },
+    {
+      "page": 17,
+      "summary": "future-improvements: The data, geometry, search-method, visualization, and deployment limitations named immediately before it. -> A prioritized expansion list tied to specific missing assumptions, data, or decision interfaces."
+    },
+    {
+      "page": 17,
+      "summary": "conclusion: Location bound, daily coverage, current drift, algorithm comparison, and stated limits. -> A defensible final claim: the framework assists searchers under its declared inputs and uncertainties."
+    },
+    {
+      "page": 18,
+      "summary": "references: Aircraft specifications, search theory, convex-hull method, current data, and incident sources used by earlier sections. -> A dependency boundary that reveals missing frozen data, code, run configuration, and calibration artifacts."
+    },
+    {
+      "page": 19,
+      "summary": "memo: The paper's technical decision loop and a public audience needing actionable next steps. -> A stakeholder-facing operational narrative consistent with, but simpler than, the technical route."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 5,
+      "figure": "Figure 1",
+      "visual_record_id": "V-B-2015-36178-001",
+      "caption": "Some of our initial ideas for how to search a rectangular area.",
+      "source_model_ids": [
+        "MU-B-2015-36178-004",
+        "MU-B-2015-36178-005",
+        "MU-B-2015-36178-006"
+      ],
+      "summary": "Place three candidate rectangular-area search patterns side by side so the method discussion can reject the inward spiral and retain parallel and diagonal sweeps for quantitative development. Exact supported claim: The figure supports only the qualitative claim that several plausible search geometries were considered and that the paper proceeds with parallel and diagonal searches after discussing adaptability and efficiency; it does not establish which method is faster or more effective. Uncertainty boundary: No uncertainty, efficiency interval, turn-cost range, or coverage-quality distribution is shown.",
+      "disposition": "important-visual-record",
+      "evidence_role": "important-positive-record"
+    },
+    {
+      "page": 7,
+      "figure": "Figure 2",
+      "visual_record_id": "V-B-2015-36178-002",
+      "caption": "A vector field representing the ocean currents moving an object.[21]",
+      "source_model_ids": [
+        "MU-B-2015-36178-002",
+        "MU-B-2015-36178-008"
+      ],
+      "summary": "Make the current-field mechanism visually concrete before the paper uses forward drift to move a crash/search area and reverse drift to infer an origin from found debris. Exact supported claim: The figure supports the qualitative mechanism that a spatial current field can advect floating debris and can motivate a reverse-drift calculation; it does not validate the paper's selected field, recurrence, or crash-origin estimate. Uncertainty boundary: No data uncertainty, temporal variability, interpolation uncertainty, or reverse-integration error is encoded.",
+      "disposition": "important-visual-record",
+      "evidence_role": "bounded-source-context"
+    },
+    {
+      "page": 8,
+      "figure": "Figure 3",
+      "visual_record_id": "V-B-2015-36178-003",
+      "caption": "The more our example airplane turns, the less it can fly after the turn ends.",
+      "source_model_ids": [
+        "MU-B-2015-36178-001"
+      ],
+      "summary": "Translate the turn-radius and remaining-glide calculation into an inspectable geometric mechanism before the parametric endpoint equations are introduced. Exact supported claim: For the paper's example inputs, increasing turn angle consumes more of the available glide path and reduces the remaining straight-line distance after the turn. Uncertainty boundary: No uncertainty in glide ratio, speed, wind, bank angle, aircraft mass, or turn radius is shown.",
+      "disposition": "important-visual-record",
+      "evidence_role": "important-positive-record"
+    },
+    {
+      "page": 9,
+      "figure": "Figure 4",
+      "visual_record_id": "V-B-2015-36178-004",
+      "caption": "The possible end locations for our example plane, if it turns only to the left. The smaller circle represents the airplane's turn radius.",
+      "source_model_ids": [
+        "MU-B-2015-36178-001"
+      ],
+      "summary": "Show how the parametric turn-and-glide equations map sampled left-turn angles into a noncircular endpoint locus and distinguish that locus from the turn-radius circle. Exact supported claim: Equation 2 produces an asymmetric locus of possible terminal locations for left turns, and the smaller circle gives a geometric reference for the aircraft's turn radius. Uncertainty boundary: No parameter uncertainty, endpoint probability, wind uncertainty, discretization error, or model-validation band is shown.",
+      "disposition": "important-visual-record",
+      "evidence_role": "important-positive-record"
+    },
+    {
+      "page": 9,
+      "figure": "Figure 5",
+      "visual_record_id": "V-B-2015-36178-005",
+      "caption": "The full range of end locations for our example plane.",
+      "source_model_ids": [
+        "MU-B-2015-36178-001"
+      ],
+      "summary": "Mirror the left-turn locus to include right turns and expose the nonconvex full endpoint boundary that is subsequently wind-expanded and simplified by a convex hull. Exact supported claim: Allowing both turn directions yields the displayed full endpoint locus, which provides the geometric input that the paper later expands for wind and encloses with a convex hull to obtain an initial search area. Uncertainty boundary: No uncertainty in aircraft state, trajectory, wind, reachability, or hull expansion is encoded.",
+      "disposition": "important-visual-record",
+      "evidence_role": "important-positive-record"
+    },
+    {
+      "page": 11,
+      "figure": "Figure 6",
+      "visual_record_id": "V-B-2015-36178-006",
+      "caption": "A visual representation of one leg of a search plane's search path. (Source: United States National Search and Rescue Supplement to the International Aeronautical and Maritime Search and Rescue Manual)",
+      "source_model_ids": [
+        "MU-B-2015-36178-004"
+      ],
+      "summary": "Define searchleg, crossleg, track-space, searchleg-length, and turn-diameter geometry so the parallel swept-area algorithm can separate searching distance from repositioning distance. Exact supported claim: A parallel-search leg can be decomposed into searchable straightaways and nonsearch crossleg/turn components, which supports the paper's later swept-area and full-leg calculations. Uncertainty boundary: No variability in turn diameter, track spacing, detection width, aircraft speed, or boundary clipping is shown.",
+      "disposition": "important-visual-record",
+      "evidence_role": "bounded-source-context"
+    },
+    {
+      "page": 14,
+      "figure": "Figure 7",
+      "visual_record_id": "V-B-2015-36178-007",
+      "caption": "A visual representation of the results from our analysis of different search methods. Red dots represent results from the diagonal search algorithm; blue dots represent the optimized parallel search algorithm. The horizontal axis is the unique index of the search in our data. The vertical axis is the number of days in which the search was completed. Values toward the right of the plot represent searches with more planes and higher wind speeds.",
+      "source_model_ids": [
+        "MU-B-2015-36178-005",
+        "MU-B-2015-36178-006",
+        "MU-B-2015-36178-009"
+      ],
+      "summary": "Compare modeled completion days for diagonal and optimized-parallel searches over the paper's indexed scenario set and connect scenario outcomes to conditional algorithm recommendations. Exact supported claim: Within the source's selected scenarios and model assumptions, diagonal search usually has fewer modeled days, while optimized parallel can perform best in some configurations; the figure supports conditional comparison rather than universal optimality. Uncertainty boundary: No confidence interval, stochastic variation, input uncertainty, scenario weight, repeated-run variability, or model-error band is shown.",
+      "disposition": "important-visual-record",
+      "evidence_role": "important-positive-record-with-auditability-boundary"
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "summary": "The Summary gives a complete location-to-drift-to-search-to-decision route, but award status does not prove which element caused the judgment.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 14,
+      "summary": "A shared-scale scenario comparison makes conditional route behavior visible, without establishing field validity or global optimality.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 19,
+      "summary": "The separate public communication closes the technical-to-stakeholder loop, without proving operational readiness.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 8,
+      "model_id": "MU-B-2015-36178-001",
+      "equation_id": "EQ-B-2015-36178-001",
+      "summary": "Equation 1 inserts 1.5t directly into cosine after defining the turn rate as 1.5 degrees per second. A numerical implementation must state whether the trigonometric function receives degrees or radians and apply the conversion explicitly."
+    },
+    {
+      "page": 12,
+      "model_id": "MU-B-2015-36178-006",
+      "equation_id": "EQ-B-2015-36178-008",
+      "summary": "Equation 7 visibly spaces the total-leg symbol as T L_i and compresses the summand around L_i, 1, 2, and 3. Preserve the printed ambiguity and reconstruct the intended finite sequence with typed indices before coding it."
+    },
+    {
+      "page": 13,
+      "model_id": "MU-B-2015-36178-007",
+      "equation_id": "EQ-B-2015-36178-010",
+      "summary": "Equation 9 prints the region name with a visibly spaced n-gon token while defining A_search as maximum width times maximum height. That quantity is the axis-aligned bounding rectangle, not the area of the drifting polygon, and the distinction must survive transcription."
+    },
+    {
+      "page": 13,
+      "model_id": "MU-B-2015-36178-007",
+      "equation_id": "EQ-B-2015-36178-010",
+      "summary": "The daily stopping rule is displayed as a sum of POD values exceeding 0.95. Daily PODs are not automatically additive probabilities; a reusable implementation needs an explicit conditional miss or survival update, dependence assumptions for repeated passes, and the day-specific moving area."
+    },
+    {
+      "page": 7,
+      "model_id": "MU-B-2015-36178-003",
+      "equation_id": "EQ-B-2015-36178-005",
+      "summary": "Effective sweep width is interpolated from an unfrozen external table and later altered by an unstated piecewise wind function. Target size, observer performance, sensor mode, units, interpolation domain, and calibration evidence are missing, so the resulting POD is not a field-calibrated detection probability."
+    },
+    {
+      "page": 10,
+      "model_id": "MU-B-2015-36178-002",
+      "equation_id": "EQ-B-2015-36178-004",
+      "summary": "The current update lacks a frozen current grid, coordinate reference system, longitude/latitude unit contract, spatial interpolation rule, boundary behavior, and time-step convergence check. The source also limits available current data to the MH370 vicinity, so neither forward nor reverse drift transfers globally."
+    },
+    {
+      "page": 9,
+      "model_id": "MU-B-2015-36178-001",
+      "equation_id": null,
+      "summary": "Convex-hull closure fills nonconvex gaps in the endpoint set, and the later maximum-width by maximum-height rectangle adds further area outside that hull. Both conservative inflations must be measured separately because they directly enlarge coverage time and can dominate route comparisons."
+    },
+    {
+      "page": 12,
+      "model_id": "MU-B-2015-36178-006",
+      "equation_id": "EQ-B-2015-36178-008",
+      "summary": "Plane assignment is sequential and greedy: each plane takes the block of its type with most empty space, delayed aircraft lose one leg, and extra aircraft repeat earlier coverage. No joint scheduling optimality, conflict separation, overlap correlation, or independent repeated-pass detection model is established."
+    },
+    {
+      "page": 14,
+      "model_id": "MU-B-2015-36178-009",
+      "equation_id": null,
+      "summary": "Figure 7 compresses more than 900 heterogeneous scenarios into an unpublished index, uses dense red/blue overplotting without a plotted legend or axis titles, and reports no uncertainty or paired scenario table. It supports a conditional within-model comparison, not a reproducible or universal route ranking."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-B-36178-001",
+      "page": 8,
+      "summary": "Use aircraft-specific energy, drag, failure-mode, bank-angle, and uncertainty models to produce a probabilistic reachable set rather than a single hull."
+    },
+    {
+      "extension_id": "E-B-36178-002",
+      "page": 10,
+      "summary": "Archive georeferenced current fields and propagate particles with interpolation, adaptive steps, diffusion, windage, and ensemble uncertainty."
+    },
+    {
+      "extension_id": "E-B-36178-003",
+      "page": 10,
+      "summary": "Calibrate sweep width and detection curves from target-, sensor-, observer-, sea-state-, altitude-, visibility-, and weather-specific trials."
+    },
+    {
+      "extension_id": "E-B-36178-004",
+      "page": 12,
+      "summary": "Formulate joint multi-aircraft routing with separation, staging, refueling, turn dynamics, overlap, and conditional repeated-pass detection."
+    },
+    {
+      "extension_id": "E-B-36178-005",
+      "page": 13,
+      "summary": "Replace additive daily POD with a documented conditional miss/survival update on the moving region and report uncertainty in days-to-threshold."
+    },
+    {
+      "extension_id": "E-B-36178-006",
+      "page": 14,
+      "summary": "Publish the full scenario matrix and paired outputs, then use explicit factors, paired differences, uncertainty, and held-out incident comparisons."
+    },
+    {
+      "extension_id": "E-B-36178-007",
+      "page": 17,
+      "summary": "Measure hull and rectangle inflation and let routes operate on the actual nonrectangular search geometry when operationally feasible."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-B-LANG-001",
+      "action": "retain the incident-to-location-to-drift-to-route-to-comparison-to-evidence-feedback-to-public-communication sequence with explicit boundaries",
+      "evidence_ids": [
+        "O-B-2015-36178-0001"
+      ]
+    },
+    {
+      "rule_id": "R-B-LOG-001",
+      "action": "trace last contact through reachable geometry, current updates, search blocks, probability threshold, reverse drift, route choice, and stakeholder action",
+      "evidence_ids": [
+        "O-B-2015-36178-0078"
+      ]
+    },
+    {
+      "rule_id": "R-B-DATA-001",
+      "action": "version aircraft specifications, coordinate systems, current grids, sweep-width tables, weather, visibility, scenario designs, and found-debris records",
+      "evidence_ids": [
+        "O-B-2015-36178-0204"
+      ]
+    },
+    {
+      "rule_id": "R-B-DATA-002",
+      "action": "maintain assumptions for drag, crash mode, sensing, daylight, fatigue, staging, debris persistence, current motion, and repeated coverage",
+      "evidence_ids": [
+        "O-B-2015-36178-0240"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-001",
+      "action": "retain glide and turn geometry, wind expansion, current advection, POD, three routes, daily threshold, reverse trace, scenarios, and handoffs",
+      "evidence_ids": [
+        "O-B-2015-36178-0069"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-003",
+      "action": "combine reachable sets, moving polygons, coverage, detection, scheduling, and route selection only through typed coordinate, unit, probability, and resource contracts",
+      "evidence_ids": [
+        "O-B-2015-36178-0070"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-004",
+      "action": "keep polygon area, bounding rectangle, swept area, daily POD, cumulative detection, days, scenario state, and route recommendation distinct",
+      "evidence_ids": [
+        "O-B-2015-36178-0270"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-005",
+      "action": "stress angle units, hull inflation, current interpolation, sweep-width calibration, daily dependence, greedy scheduling, route interactions, and scenario uncertainty",
+      "evidence_ids": [
+        "O-B-2015-36178-0071"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-002",
+      "action": "make every reliability claim incident-, equation-, geometry-, scenario-, sensitivity-, figure-, or deployment-trace-specific",
+      "evidence_ids": [
+        "O-B-2015-36178-0162"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-004",
+      "action": "reconcile degree/radian use, T L_i notation, n-gon versus rectangle, additive POD, missing provenance, repeated-pass dependence, and Figure 7 opacity",
+      "evidence_ids": [
+        "O-B-2015-36178-0306"
+      ]
+    },
+    {
+      "rule_id": "R-B-VIZ-001",
+      "action": "retain candidate patterns, current vectors, reachable loci, searchleg geometry, scenario comparison, audience reuse, captions, encodings, and uncertainty boundaries",
+      "evidence_ids": [
+        "O-B-2015-36178-0126"
+      ]
+    },
+    {
+      "rule_id": "R-B-COMP-001",
+      "action": "measure endpoint sampling, hull construction, marker advection, block assignment, path coverage, scenario sweeps, sensitivity reruns, and multi-aircraft scheduling separately",
+      "evidence_ids": [
+        "O-B-2015-36178-0069"
+      ]
+    }
+  ],
+  "unresolved_questions": [
+    "Equation 1 inserts 1.5t directly into cosine after defining the turn rate as 1.5 degrees per second. A numerical implementation must state whether the trigonometric function receives degrees or radians and apply the conversion explicitly.",
+    "Equation 7 visibly spaces the total-leg symbol as T L_i and compresses the summand around L_i, 1, 2, and 3. Preserve the printed ambiguity and reconstruct the intended finite sequence with typed indices before coding it.",
+    "Equation 9 prints the region name with a visibly spaced n-gon token while defining A_search as maximum width times maximum height. That quantity is the axis-aligned bounding rectangle, not the area of the drifting polygon, and the distinction must survive transcription.",
+    "The daily stopping rule is displayed as a sum of POD values exceeding 0.95. Daily PODs are not automatically additive probabilities; a reusable implementation needs an explicit conditional miss or survival update, dependence assumptions for repeated passes, and the day-specific moving area.",
+    "Effective sweep width is interpolated from an unfrozen external table and later altered by an unstated piecewise wind function. Target size, observer performance, sensor mode, units, interpolation domain, and calibration evidence are missing, so the resulting POD is not a field-calibrated detection probability.",
+    "The current update lacks a frozen current grid, coordinate reference system, longitude/latitude unit contract, spatial interpolation rule, boundary behavior, and time-step convergence check. The source also limits available current data to the MH370 vicinity, so neither forward nor reverse drift transfers globally.",
+    "Convex-hull closure fills nonconvex gaps in the endpoint set, and the later maximum-width by maximum-height rectangle adds further area outside that hull. Both conservative inflations must be measured separately because they directly enlarge coverage time and can dominate route comparisons.",
+    "Plane assignment is sequential and greedy: each plane takes the block of its type with most empty space, delayed aircraft lose one leg, and extra aircraft repeat earlier coverage. No joint scheduling optimality, conflict separation, overlap correlation, or independent repeated-pass detection model is established.",
+    "Figure 7 compresses more than 900 heterogeneous scenarios into an unpublished index, uses dense red/blue overplotting without a plotted legend or axis titles, and reports no uncertainty or paired scenario table. It supports a conditional within-model comparison, not a reproducible or universal route ranking."
+  ],
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-B-2015-36178-d0225ad0.json",
+      "schema_version": 3,
+      "unit_count": 68,
+      "chapters": [
+        "abstract",
+        "title",
+        "introduction",
+        "assumptions",
+        "notation",
+        "problem-analysis",
+        "model-establishment",
+        "data-preprocessing",
+        "algorithm",
+        "model-improvement",
+        "robustness-verification",
+        "sensitivity-analysis",
+        "strengths-limitations",
+        "future-improvements",
+        "conclusion",
+        "references",
+        "memo"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-B-2015-36178-d0225ad0.json",
+      "schema_version": 2,
+      "model_count": 9,
+      "equation_count": 11,
+      "review_status": "validated"
+    }
+  },
+  "review_status": "validated"
+}

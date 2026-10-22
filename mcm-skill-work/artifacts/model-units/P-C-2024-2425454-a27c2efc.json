@@ -1,0 +1,933 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2425454-a27c2efc",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "a27c2efcce8f8a516399f5241c456c0255607d403207581428a8a9d199ce4b48",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q253-001",
+      "page": 7,
+      "section": "5.2 Leverage Quantitative Momentum Capture Model",
+      "family": "serve-success lift with a Monte Carlo winning probability and an exponential leverage average",
+      "purpose": "Turn each ball into a winning probability and a momentum for both players.",
+      "base_or_modification": "base",
+      "summary": "Short-term motivation raises the next serve success rate in proportion to the consecutive points just won, and the paper keeps only orders of three and below because higher orders rarely appear. A confidence factor then blends the historical grass-court serve rate into the current rate through a tuning parameter, so the career record dominates early and fades. The two are combined by substituting the confidence rate for the unmotivated rate. Because a tennis point is uncertain, a Monte Carlo of 1000 runs climbs from the ball to the game, the set, and the match, and the winning rate after a ball is the wins divided by the runs. Leverage is the change in that rate from winning the point rather than losing it, and its sign names the player rather than the size. Momentum is the exponential moving average of the leverage a player has gained, so the newest point weighs most.",
+      "variables": [
+        {
+          "symbol": "pf",
+          "normalized_name": "unmotivated rate A",
+          "unit": "1",
+          "definition": "Player A's scoring probability before the motivational lift.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "qf",
+          "normalized_name": "unmotivated rate B",
+          "unit": "1",
+          "definition": "Player B's scoring probability before the motivational lift.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mAi",
+          "normalized_name": "serve lift A",
+          "unit": "1",
+          "definition": "The increase in A's next serve rate after i consecutive points.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mBi",
+          "normalized_name": "serve lift B",
+          "unit": "1",
+          "definition": "The increase in B's next serve rate after i consecutive points.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ps",
+          "normalized_name": "motivated rate A",
+          "unit": "1",
+          "definition": "A's next serve probability under short-term motivation.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "qs",
+          "normalized_name": "motivated rate B",
+          "unit": "1",
+          "definition": "B's next serve probability under short-term motivation.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "confidence weight",
+          "unit": "1",
+          "definition": "The tuning parameter for the confidence boost, printed as lambda.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TAB",
+          "normalized_name": "cumulative score",
+          "unit": "1",
+          "definition": "The cumulative total score of the two players since the start.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pt",
+          "normalized_name": "current rate A",
+          "unit": "1",
+          "definition": "A's scoring probability up to the present.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p0",
+          "normalized_name": "historical rate A",
+          "unit": "1",
+          "definition": "A's historical grass-court serve success rate.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q0",
+          "normalized_name": "historical rate B",
+          "unit": "1",
+          "definition": "B's historical grass-court serve success rate.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pc",
+          "normalized_name": "confidence rate A",
+          "unit": "1",
+          "definition": "A's serve probability after the confidence boost.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "qc",
+          "normalized_name": "confidence rate B",
+          "unit": "1",
+          "definition": "B's serve probability after the confidence boost.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "combined rate A",
+          "unit": "1",
+          "definition": "A's next serve success rate with both effects.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "combined rate B",
+          "unit": "1",
+          "definition": "B's next serve success rate with both effects.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Li",
+          "normalized_name": "leverage",
+          "unit": "1",
+          "definition": "The change in winning probability from the ith point. The sign names the winner.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GiA",
+          "normalized_name": "leverage gained A",
+          "unit": "1",
+          "definition": "The leverage A gained on the ith point, else zero.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GiB",
+          "normalized_name": "leverage gained B",
+          "unit": "1",
+          "definition": "The leverage B gained on the ith point, else zero.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GK",
+          "normalized_name": "leverage gained",
+          "unit": "1",
+          "definition": "The leverage gained by player K over the recent points.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "smoothing weight",
+          "unit": "1",
+          "definition": "The smoothing coefficient, set to 0.33.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MiK",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "Player K's momentum, the exponential average of leverage gained.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "simulations",
+          "unit": "1",
+          "definition": "The number of Monte Carlo repetitions, fixed at 1000.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "wins",
+          "unit": "1",
+          "definition": "The number of simulated wins for player K.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "winp",
+          "normalized_name": "winning rate",
+          "unit": "1",
+          "definition": "The wins divided by the repetitions after a given ball.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pf",
+        "qf",
+        "TAB",
+        "p0",
+        "q0"
+      ],
+      "outputs": [
+        "p",
+        "q",
+        "MiK",
+        "winp"
+      ],
+      "handoff_outputs": [
+        "MiK",
+        "winp"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q253-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "ps = pf(1 + mAi); qs = qf(1 + mBi)",
+          "normalized_latex": "p_s=p_f(1+m_{A_i});\\ q_s=q_f(1+m_{B_i})",
+          "purpose": "The next serve probability once the consecutive points have lifted it.",
+          "variable_symbols": [
+            "ps",
+            "pf",
+            "mAi",
+            "qs",
+            "qf",
+            "mBi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q253-002",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "pc = lam^TAB * pt + (1 - lam^TAB) * p0",
+          "normalized_latex": "p_c=\\lambda^{T_{AB}} p_t+(1-\\lambda^{T_{AB}})p_0",
+          "purpose": "The confidence boost blending the current rate into the historical rate.",
+          "variable_symbols": [
+            "pc",
+            "lam",
+            "TAB",
+            "pt",
+            "p0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q253-003",
+          "page": 8,
+          "label": null,
+          "source_expression": "p = (TAB/lam*pc + (1 - TAB/lam)*pt)(1 + mAi)",
+          "normalized_latex": "p=(\\frac{T_{AB}}{\\lambda}p_c+(1-\\frac{T_{AB}}{\\lambda})p_t)(1+m_{A_i})",
+          "purpose": "The combined serve rate. The interpolation coefficient is garbled in the text layer.",
+          "variable_symbols": [
+            "p",
+            "TAB",
+            "lam",
+            "pc",
+            "pt",
+            "mAi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q253-004",
+          "page": 11,
+          "label": null,
+          "source_expression": "GiA = Li if Li >= 0 else 0; GiB = Li if Li <= 0 else 0",
+          "normalized_latex": "G_{i}^{A}=L_{i}\\,[L_{i}\\ge 0];\\ G_{i}^{B}=L_{i}\\,[L_{i}\\le 0]",
+          "purpose": "The leverage each player gained. The sign only names the winner.",
+          "variable_symbols": [
+            "GiA",
+            "Li",
+            "GiB"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q253-005",
+          "page": 11,
+          "label": null,
+          "source_expression": "MiK = sum_{j=0}^{i} (1-alpha)^{i-j} G_j / sum_{j=0}^{i} (1-alpha)^j",
+          "normalized_latex": "M_{i}^{K}=\\frac{\\sum_{j=0}^{i}(1-\\alpha)^{i-j}G_{j}}{\\sum_{j=0}^{i}(1-\\alpha)^{j}}",
+          "purpose": "The momentum. The printed denominator runs to t rather than i.",
+          "variable_symbols": [
+            "MiK",
+            "alpha",
+            "GK"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Five formulas are printed. The combined serve rate has a garbled coefficient, and the moving average has its denominator index detached."
+      },
+      "objectives": [
+        "Give both players a winning probability and a momentum after every ball."
+      ],
+      "constraints": [
+        "Only motivation orders of three and below are kept.",
+        "The sign of leverage names the player, not the size."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The lift is estimated from the dataset, with an admitted bias. The smoother is set to 0.33 by testing against the handicap winning percentage. The confidence weight is a tuning parameter and is not given a value.",
+        "parameters": [
+          "mAi",
+          "mBi",
+          "lam",
+          "alpha",
+          "N"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Raise the serve rate by the lift for the consecutive points just won.",
+          "Blend in the historical grass-court rate through the confidence weight.",
+          "Simulate the remaining balls 1000 times and take the wins over the runs.",
+          "Score each point by the change in winning probability and smooth the gained part."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "One thousand repetitions; the winning rate is the wins divided by the repetitions."
+      },
+      "assumptions": [
+        "Winning a point raises the probability of winning the next one.",
+        "A longer run raises it more."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The repetition count and the smoothing value are printed. The lift is estimated with an admitted bias and is not tabulated."
+      },
+      "validation_refs": [
+        "Figure 5: the simulated winning probability of the 2023 final, read against the sets actually played.",
+        "Figure 7: the momentum of the final with the smoother at 0.33."
+      ],
+      "computational_cost": "One thousand simulated finishes after each ball of one final.",
+      "strengths": [
+        "The server's advantage and the career record are given their own factors before the simulation."
+      ],
+      "limitations": [
+        "The worked leverage example is labelled as fictional, so it checks the arithmetic and not the data."
+      ],
+      "missing_details": [
+        "The value of the confidence weight, and the tabulated lift for each order."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q253-002",
+      "page": 12,
+      "section": "6.1 The runs test and the contingency table",
+      "family": "runs test for randomness with a chi-square contingency check",
+      "purpose": "Test whether the scoring sequence is random and whether it moves with the momentum.",
+      "base_or_modification": "base",
+      "summary": "Each point in a game is coded 1 when player A won it and 0 otherwise, and a run is a streak of the same code. The test asks whether the number of runs is what a random arrangement would give, with the expectation and the variance written out and the statistic referred to a standard normal. Applied to every game, 45.11 percent of games reject randomness at the 90 percent level. A second check crosses who won the point with whose momentum was larger, and the chi-square of 5.566 with a level of 0.018 rejects independence at the same confidence. No formula is printed for the chi-square itself.",
+      "variables": [
+        {
+          "symbol": "m",
+          "normalized_name": "count of Y",
+          "unit": "1",
+          "definition": "The number of Y outcomes drawn.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "count of X",
+          "unit": "1",
+          "definition": "The number of X outcomes drawn.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "run count",
+          "unit": "1",
+          "definition": "The total number of runs in the sequence.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Er",
+          "normalized_name": "expected runs",
+          "unit": "1",
+          "definition": "The expected number of runs under randomness.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vr",
+          "normalized_name": "variance of runs",
+          "unit": "1",
+          "definition": "The variance of the run count.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "runs statistic",
+          "unit": "1",
+          "definition": "The standardized run count, referred to a standard normal.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "chi-square",
+          "unit": "1",
+          "definition": "The chi-square statistic for the score and momentum table, printed as 5.566.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "significance level",
+          "unit": "1",
+          "definition": "The level printed for the table, 0.018.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "m",
+        "n",
+        "r"
+      ],
+      "outputs": [
+        "Z",
+        "X",
+        "P"
+      ],
+      "handoff_outputs": [
+        "Z"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q253-006",
+          "page": 12,
+          "label": null,
+          "source_expression": "E(r) = 2*m*n/(m+n) + 1",
+          "normalized_latex": "E(r)=\\frac{2mn}{m+n}+1",
+          "purpose": "The expected run count when the arrangement is random.",
+          "variable_symbols": [
+            "Er",
+            "m",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q253-007",
+          "page": 13,
+          "label": null,
+          "source_expression": "V(r) = 2*m*n*(2*m*n - m - n)/((m+n)^2*(m+n-1))",
+          "normalized_latex": "V(r)=\\frac{2mn(2mn-m-n)}{(m+n)^{2}(m+n-1)}",
+          "purpose": "The variance of the run count. The fraction is split across two pages.",
+          "variable_symbols": [
+            "Vr",
+            "m",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q253-008",
+          "page": 13,
+          "label": null,
+          "source_expression": "Z = (r - E(r))/sqrt(V(r))",
+          "normalized_latex": "Z=\\frac{r-E(r)}{\\sqrt{V(r)}}",
+          "purpose": "The standardized statistic. The divisor is printed as V(R).",
+          "variable_symbols": [
+            "Z",
+            "r",
+            "Er",
+            "Vr"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The expectation, the variance, and the statistic are printed. The variance is broken across the page, and the chi-square has no formula."
+      },
+      "objectives": [
+        "Decide whether the scoring is random and whether it is tied to the momentum."
+      ],
+      "constraints": [
+        "The test is run once per game, not on the whole match.",
+        "The null is randomness for the runs and no correlation for the table."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Nothing is fitted. The statistics are computed from the coded points.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Code each point 1 or 0 by who won it.",
+          "Count the runs in each game and standardize the count.",
+          "Cross the winner of the point with the larger momentum and compute the chi-square."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "45.11 percent of games reject randomness; the table gives 5.566 and 0.018."
+      },
+      "assumptions": [
+        "The points are coded as a binary sequence.",
+        "Every expected cell count exceeds 5."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Both decisions are printed with their levels: 45.11 percent of games, and a chi-square of 5.566 at 0.018."
+      },
+      "validation_refs": [
+        "The runs share of 45.11 percent at the 90 percent level.",
+        "The contingency result X = 5.566 and P = 0.018."
+      ],
+      "computational_cost": "One runs test per game and one table for the tournament.",
+      "strengths": [
+        "The coach's claim is answered by two separate tests rather than one."
+      ],
+      "limitations": [
+        "The chi-square formula is not printed, only the value."
+      ],
+      "missing_details": [
+        "The cell counts of the contingency table."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q253-003",
+      "page": 14,
+      "section": "7.1 The GSRF swing predictor",
+      "family": "grid-searched random forest for the direction of the next swing",
+      "purpose": "Call whether the advantage shifts in the next stretch of points, and toward whom.",
+      "base_or_modification": "paper-specific",
+      "summary": "A reversal point is the nearest zero of the momentum lying between a peak of one player and a peak of the other, found with the peak routine. The order of the peaks sets the label: 1 when the advantage turns toward the player, -1 when it turns toward the opponent, and 0 when the point is not a turn. Two groups of indicators, one player's own and the shared ones, with the second player mirroring the first, are fed to a random forest whose depth, leaf size, split size, and tree count are chosen by an exhaustive search. On an 8 to 2 split the search returns no depth limit, a leaf of 1, a split of 3, and 100 trees, and the accuracy reaches 94 percent, with only 3 points missed and no turn ever called as the opposite turn. The opponent's total score ranks as the most relevant indicator.",
+      "variables": [
+        {
+          "symbol": "feat",
+          "normalized_name": "indicator vector",
+          "unit": "1",
+          "definition": "The player and shared indicators, original and derived.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s",
+          "normalized_name": "horizon",
+          "unit": "1",
+          "definition": "The number of future points the swing is predicted over.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "swing label",
+          "unit": "1",
+          "definition": "The class: 1 toward the player, -1 toward the opponent, 0 no turn.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "acc",
+          "normalized_name": "accuracy",
+          "unit": "1",
+          "definition": "The share of points classified correctly, up to 94 percent.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "imp",
+          "normalized_name": "importance",
+          "unit": "1",
+          "definition": "The importance of each indicator, led by the opponent's total score.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "max_depth",
+          "normalized_name": "tree depth",
+          "unit": "1",
+          "definition": "The depth limit chosen by the search, printed as None.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "min_samples_leaf",
+          "normalized_name": "leaf size",
+          "unit": "1",
+          "definition": "The minimum samples in a leaf, set to 1.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "min_samples_split",
+          "normalized_name": "split size",
+          "unit": "1",
+          "definition": "The minimum samples to split a node, set to 3.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_estimators",
+          "normalized_name": "tree count",
+          "unit": "1",
+          "definition": "The number of trees, set to 100.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "feat"
+      ],
+      "outputs": [
+        "y",
+        "acc",
+        "imp"
+      ],
+      "handoff_outputs": [
+        "imp"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The classifier is a grid-searched random forest. No equation is printed; the chosen hyperparameters and the accuracy are."
+      },
+      "objectives": [
+        "Predict the direction of the next swing and rank the indicators that signal it."
+      ],
+      "constraints": [
+        "The label comes from the order of the momentum peaks.",
+        "The second player's indicators repeat the first and are not listed twice."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "An exhaustive search trains and scores every combination and keeps the best set.",
+        "parameters": [
+          "max_depth",
+          "min_samples_leaf",
+          "min_samples_split",
+          "n_estimators",
+          "s"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Mark the reversal points from the momentum peaks and label them 1, -1, or 0.",
+          "Split one match 8 to 2.",
+          "Search the parameter grid and refit the forest with the best set.",
+          "Read the accuracy, the confusion, and the indicator importance."
+        ],
+        "software": [
+          "Python",
+          "scikit-learn"
+        ],
+        "convergence_criteria": "Accuracy up to 94 percent on the split; above 85 percent as the horizon runs from 1 to 10."
+      },
+      "assumptions": [
+        "The three labels cover every point.",
+        "The derived indicators are computable from the given ones."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The best parameter set and the accuracy are printed. The individual trees are not."
+      },
+      "validation_refs": [
+        "Table 3: depth unlimited, leaf 1, split 3, 100 trees.",
+        "Figure 12: the confusion matrix, with 3 points missed and no cross-turn error.",
+        "Figure 13: the opponent's total score leads the importance."
+      ],
+      "computational_cost": "One grid search and one forest on a single match split.",
+      "strengths": [
+        "The kind of error that never happens is reported, not only the accuracy."
+      ],
+      "limitations": [
+        "The accuracy is quoted for the training split, and the test performance is called only good."
+      ],
+      "missing_details": [
+        "The test-set accuracy as a number, and the full list of 43 indicators."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q253-004",
+      "page": 18,
+      "section": "7.2 The player performance factor analysis",
+      "family": "principal-component extraction with a varimax rotation",
+      "purpose": "Reduce the many swing indicators to a few factors a coach can compare.",
+      "base_or_modification": "base",
+      "summary": "The importances are too many for a coach to use, so the top 15 are tested for factorability. Bartlett's statistic is 11512.67 on 105 degrees of freedom with a probability of 0, which rejects the identity at the 95 percent level, and the sampling adequacy is 0.708, which the paper reads as adequate by Kaiser's standard. The scree plot flattens at four components, so four are kept and rotated by the varimax rule under Kaiser normalization. They are named from their heaviest loads: expenditure from points, rallies, and distance; technical from break and net conversion; running distance from the per-point distance; and game situation from the games won.",
+      "variables": [
+        {
+          "symbol": "ind",
+          "normalized_name": "top indicators",
+          "unit": "1",
+          "definition": "The fifteen indicators with the highest swing importance.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kmo",
+          "normalized_name": "sampling adequacy",
+          "unit": "1",
+          "definition": "The Kaiser-Meyer-Olkin measure, printed as 0.708.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "chi",
+          "normalized_name": "sphericity statistic",
+          "unit": "1",
+          "definition": "Bartlett's chi-square, printed as 11512.67.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nfac",
+          "normalized_name": "factor count",
+          "unit": "1",
+          "definition": "The number of common factors retained, fixed at 4 by the scree plot.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "factors",
+          "normalized_name": "common factors",
+          "unit": "1",
+          "definition": "The four named factors: expenditure, technical, running distance, game situation.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "ind"
+      ],
+      "outputs": [
+        "kmo",
+        "factors"
+      ],
+      "handoff_outputs": [
+        "factors"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The adequacy and the sphericity are printed as values. No extraction equation is printed."
+      },
+      "objectives": [
+        "Hand the coach a few named factors instead of the full indicator list."
+      ],
+      "constraints": [
+        "The count is chosen where the scree contribution becomes small.",
+        "Each factor is named from its heaviest loads."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The factor count is read off the scree plot. No loading is estimated by hand.",
+        "parameters": [
+          "nfac"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Keep the fifteen most important indicators.",
+          "Run the adequacy and the sphericity tests.",
+          "Extract components and stop at four.",
+          "Rotate by varimax and name each factor from its loads."
+        ],
+        "software": [
+          "SPSS"
+        ],
+        "convergence_criteria": "Four factors; sampling adequacy 0.708; sphericity 11512.67 with probability 0."
+      },
+      "assumptions": [
+        "The top fifteen indicators are enough to represent the swing.",
+        "The factors are independent after rotation."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Both suitability tests are printed and passed, and the four factors are named from the rotated loads."
+      },
+      "validation_refs": [
+        "Table 4: adequacy 0.708, chi-square 11512.67, 105 degrees of freedom, probability 0.",
+        "Figure 14: the scree plot flattening at four.",
+        "Table 5: the rotated component matrix."
+      ],
+      "computational_cost": "One extraction and one rotation on the fifteen indicators.",
+      "strengths": [
+        "The reduction is justified by what a coach can use, and the tests come before the extraction."
+      ],
+      "limitations": [
+        "The printed summary names expenditure twice and drops the technical factor."
+      ],
+      "missing_details": [
+        "The numeric loadings of the rotated matrix, which the text layer does not transcribe."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q253-001",
+      "to_model_id": "MU-C-Q253-002",
+      "handoff": "The momentum and the winner of each point are the two columns of the contingency table."
+    },
+    {
+      "from_model_id": "MU-C-Q253-001",
+      "to_model_id": "MU-C-Q253-003",
+      "handoff": "The momentum series supplies the peaks the reversal points sit between."
+    },
+    {
+      "from_model_id": "MU-C-Q253-003",
+      "to_model_id": "MU-C-Q253-004",
+      "handoff": "The indicator importance selects the fifteen inputs the factors are drawn from."
+    }
+  ]
+}

@@ -1,0 +1,1446 @@
+{
+  "paper_id": "P-B-2011-11759-ee4be862",
+  "problem_type": "B",
+  "year": "2011",
+  "team_control_number": "11759",
+  "title": "Optimizing VHF Repeater Coordination Using Cluster Analysis",
+  "award_status": "Outstanding Winner",
+  "source": {
+    "relative_path": "2011美赛特等奖/B-11759-Outstanding.pdf",
+    "sha256": "ee4be8627fefacc6d8d7ecd4f6030b1e8df9b7ed437a67aa817e265396b0b885",
+    "page_count": 51,
+    "pdf_page_offset_note": "Physical page 2 is the title page with a centered footer number; normal headers and Page 1 of 51 through Page 51 of 51 otherwise identify the physical sequence."
+  },
+  "schema_version": 1,
+  "source_quality": {
+    "status": "validated",
+    "text_pages": 51,
+    "rendered_pages": 51,
+    "visual_review": "complete",
+    "notes": [
+      "All 51 text pages and all 51 rendered pages were reviewed in order by the root thread; independent read-only audits separately covered pages 1-17, 18-34, and 35-51.",
+      "The root used seven full-range JPEG contact proxies and one formula crop, each below 450000 bytes. Independent audits used fresh bounded contexts. Original 180-DPI PNGs remained on disk and no further image was added after the root's eight-proxy context ceiling.",
+      "Text extraction is complete but corrupts several symbols; visual review confirmed flow arrows, roots, plus/minus signs, Greek symbols, table structure, graph topology, colors, MATLAB tilde syntax, and physical code cropping."
+    ]
+  },
+  "context_sources": [
+    {
+      "page": 4,
+      "summary": "The official VHF repeater problem supplies domain, spectrum, offset, tone, user, scale, and terrain constraints."
+    },
+    {
+      "page": 5,
+      "summary": "Radio-technology references motivate repeater separation, antenna height, and CTCSS gating."
+    },
+    {
+      "page": 28,
+      "summary": "Eleven references cover repeaters, radio horizon, CTCSS, k-means, MATLAB, propagation, and amateur-radio coordination."
+    }
+  ],
+  "task_reconstruction": {
+    "inputs": [
+      "potential user coordinates inside a radius-40-mile region",
+      "target of 1,000 or 10,000 served users",
+      "145-148 MHz band, plus-or-minus 600 kHz offsets, nominal channel width, and 54 CTCSS tones",
+      "k, d_s, h_r, d_h, d_p, l_n, l_c, and synthetic city or rural distributions"
+    ],
+    "outputs": [
+      "Snaking and Branching open-repeater positions",
+      "CTCSS repeater positions and long-distance/local tone lines",
+      "plus/minus parity labels and connectivity plots",
+      "open, CTCSS, nominal channel, and served-user counts",
+      "sensitivity tables and qualitative terrain guidance"
+    ],
+    "decisions": [
+      "which heuristic to use for infrastructure count versus claimed connectivity",
+      "where to place open and tone-gated repeaters",
+      "how many towers and tones are required in each case",
+      "when a minimum or terrain claim must be withheld"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "section": "summary",
+      "summary": "The Abstract frames the 40-mile, 145-148 MHz repeater-coordination task, introduces the Bender Snaking and Branching heuristics, names city and rural synthetic cases, contrasts repeater counts and connectivity, and announces 10,000-user and mountainous-terrain extensions."
+    },
+    {
+      "page": 2,
+      "section": "title-and-contents",
+      "summary": "The title page and two contents pages expose the complete argument from restatement and assumptions through two algorithms, matched city and rural cases, stress and sensitivity sections, conclusion, full-page plots, and two MATLAB appendices."
+    },
+    {
+      "page": 4,
+      "section": "problem-restatement",
+      "summary": "The restatement retains the 40-mile radius, 145-148 MHz band, plus-or-minus 600 kHz offsets, 54 CTCSS tones, 1,000 simultaneous users, a 10,000-user extension, and mountainous terrain as the exact decision envelope."
+    },
+    {
+      "page": 4,
+      "section": "assumptions",
+      "summary": "The assumptions define a planar closed system with no external interference, isotropic antennas, homogeneous compliant users, fixed user range, Euclidean geometry, and a coordination-distance interpretation before stating why each simplification permits the two placement heuristics."
+    },
+    {
+      "page": 5,
+      "section": "available-technology",
+      "summary": "The technology section serves as the engineering introduction: it explains repeater separation, coverage overlap, antenna-height range, and CTCSS activation, then converts those mechanisms into spacing, tower-height, channel, and tone constraints used by both models."
+    },
+    {
+      "page": 6,
+      "section": "snake-description",
+      "summary": "Figure 1 and the prose describe k-means population clusters, a highest-coverage starting point, perimeter growth toward valuable clusters, conditional CTCSS placement when channel deficit is positive, and optional reclustering."
+    },
+    {
+      "page": 7,
+      "section": "snake-mathematics",
+      "summary": "The mathematical interpretation defines n, k, d_s, h_r, d_h, Delta f, N_c, N_f, O, and D; Algorithms 1 and 2 search candidate CTCSS angles and open-repeater cluster directions until at least 1,000 users have channels."
+    },
+    {
+      "page": 11,
+      "section": "branch-description",
+      "summary": "Figure 2 and the Branching prose create an open backbone, repeatedly recluster remaining users, extend branches from the nearest existing network node, then add long-distance and local CTCSS lines after coverage construction."
+    },
+    {
+      "page": 12,
+      "section": "branch-mathematics",
+      "summary": "The Branching mathematical section adds l_n and l_c, selects a distant or high-value target, places d_h-spaced nodes, reclusters uncovered users, attaches branches, and uses Algorithm 3 plus long-distance CTCSS chains to recover channel capacity and connectivity."
+    },
+    {
+      "page": 14,
+      "section": "model-comparison",
+      "summary": "The comparison section uses parallel similarities and differences: both models use k-means and frequency-offset parity, while Snaking grows one continuous path and inserts CTCSS during growth whereas Branching builds a backbone, reclusters every branch, and adds tones afterward."
+    },
+    {
+      "page": 15,
+      "section": "city-setup",
+      "summary": "The city case defines a central high-density population surface, explains plus/minus parity, and establishes the common parameter and symbol conventions needed to compare the two layouts on the same synthetic geography."
+    },
+    {
+      "page": 16,
+      "section": "matched-case-results",
+      "summary": "The matched city and rural results preserve both methods under each synthetic geography: city Snaking 9 open plus 8 CTCSS, city Branching 9 plus 17, rural Snaking 10 plus 8 with 1,080 covered users, and rural Branching 8 plus 17, together with placement narratives and tone allocation."
+    },
+    {
+      "page": 17,
+      "section": "parity-and-connectivity-checks",
+      "summary": "The four parity and CTCSS diagrams test post-placement graph consequences: odd cycles and adjacent same-sign nodes expose leakage, while Branching uses tones 1-3 for long-distance paths and 4-8 locally but never quantifies its claimed connectivity advantage."
+    },
+    {
+      "page": 22,
+      "section": "ten-thousand-users",
+      "summary": "The scale section draws 12,000 potential users, reduces channel spacing from 25 to 10 kHz, applies the existing heuristic to connect 10,000 users, and reports 19 open and 33 CTCSS repeaters while printing an inconsistent total of 42."
+    },
+    {
+      "page": 23,
+      "section": "mountainous-terrain",
+      "summary": "The mountainous-terrain section offers a qualitative placement rule for single peaks, multiple peaks, mountain chains, foothills, and valleys, but does not add a DEM, propagation computation, or experiment to the algorithm."
+    },
+    {
+      "page": 24,
+      "section": "sensitivity",
+      "summary": "The sensitivity section varies cluster count, open-repeater separation and implied tower height, and initial potential population, then reports repeater counts and qualitative cost tradeoffs while omitting repeated seeds and several plotted settings."
+    },
+    {
+      "page": 25,
+      "section": "strengths-and-weaknesses",
+      "summary": "The final evaluation labels adaptability and dynamic reclustering as strengths and records k-means dependence and last-user search as weaknesses before the conclusion opens."
+    },
+    {
+      "page": 26,
+      "section": "conclusion",
+      "summary": "The conclusion compares the four exact case totals, describes Snaking as lower-infrastructure and Branching as better connected, claims an absolute minimum of 17 without a lower bound, and comments on remaining CTCSS lines."
+    },
+    {
+      "page": 28,
+      "section": "references-and-full-plots",
+      "summary": "The references and Appendix A preserve 11 sources and seven full-page city, rural, CTCSS, and 10,000-user layouts so node classes, coverage circles, parity, tone labels, and spatial connectivity can be inspected at full scale."
+    },
+    {
+      "page": 36,
+      "section": "matlab-source",
+      "summary": "Appendix B supplies 319 lines of Snaking MATLAB and 500 lines of Branching MATLAB, exposing parameter initialization, k-means calls, angle search, user deletion, channel accounting, long-distance tone chains, plotting, hard-coded paths, commented blocks, and implementation defects."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 4,
+      "summary": "The circular service region can be represented as a flat Euclidean plane."
+    },
+    {
+      "page": 4,
+      "summary": "The designed repeater network is closed and experiences no outside interference."
+    },
+    {
+      "page": 4,
+      "summary": "Repeater and user antennas are isotropic so communication regions can be drawn as circles."
+    },
+    {
+      "page": 4,
+      "summary": "Users have equal low-power equipment, follow operating rules, and are homogeneous for placement purposes."
+    },
+    {
+      "page": 4,
+      "summary": "A user can communicate with any repeater within a fixed distance d_s."
+    },
+    {
+      "page": 5,
+      "summary": "At least ten miles of coordination separation is a useful general repeater-spacing rule."
+    },
+    {
+      "page": 5,
+      "summary": "The printed antenna-height rule adequately links tower height to service distance."
+    },
+    {
+      "page": 6,
+      "summary": "CTCSS tones create separable logical service lines and can be counted as additional capacity."
+    },
+    {
+      "page": 7,
+      "summary": "K-means centers and neighborhood population counts identify valuable placement directions."
+    },
+    {
+      "page": 7,
+      "summary": "The first open repeater should be near the candidate covering the most potential users."
+    },
+    {
+      "page": 8,
+      "summary": "Each nominal frequency can serve one simultaneous user under N_f=min(N_c,O)."
+    },
+    {
+      "page": 9,
+      "summary": "A finite angular grid is sufficient to locate the best CTCSS candidate."
+    },
+    {
+      "page": 10,
+      "summary": "Alternating open and CTCSS placement will eventually frequency-serve at least 1,000 users."
+    },
+    {
+      "page": 12,
+      "summary": "A high-value backbone followed by dynamic reclustering improves network connectivity."
+    },
+    {
+      "page": 13,
+      "summary": "High-density locations can be connected by shared long-distance CTCSS lines and supplemented locally."
+    },
+    {
+      "page": 15,
+      "summary": "Alternating plus/minus 600 kHz labels is an adequate post-placement frequency plan."
+    },
+    {
+      "page": 19,
+      "summary": "One city and one rural synthetic distribution are representative tests of the two heuristics."
+    },
+    {
+      "page": 22,
+      "summary": "Narrowing channel width from 25 kHz to 10 kHz is a valid way to scale nominal capacity."
+    },
+    {
+      "page": 23,
+      "summary": "Mountain effects can be handled through qualitative placement near peaks, foothills, and valleys."
+    },
+    {
+      "page": 24,
+      "summary": "Single runs at selected k, d_h, and potential-population values reveal parameter sensitivity."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 7,
+      "summary": "User coordinates M are clustered by k-means and each center is scored by nearby population."
+    },
+    {
+      "page": 8,
+      "summary": "Users within the paper's distance test are counted as covered and deleted from the remaining coordinate array."
+    },
+    {
+      "page": 15,
+      "summary": "The city generator creates a central high peak and lower surrounding suburban density inside the fixed region."
+    },
+    {
+      "page": 19,
+      "summary": "The rural generator creates eight towns, about one hundred dispersed residents, and 1,400 potential users."
+    },
+    {
+      "page": 22,
+      "summary": "The large case draws 12,000 potential users so the heuristic can select and serve 10,000."
+    },
+    {
+      "page": 24,
+      "summary": "Sensitivity cells vary k, d_h, and initial potential population while retaining other case settings."
+    },
+    {
+      "page": 36,
+      "summary": "Snaking MATLAB reads a hard-coded user file, initializes numclus, distances, Delta f, counters, and arrays, then mutates arrays by deletion."
+    },
+    {
+      "page": 42,
+      "summary": "Branching MATLAB forms concat=[x,y,density score] and clusters the three-column feature array before later geographic distance calculations."
+    }
+  ],
+  "models": [
+    {
+      "page": 5,
+      "summary": "Retain the source's displayed antenna-height relation exactly and use it only as the paper uses it."
+    },
+    {
+      "page": 8,
+      "summary": "Preserve the printed square-root-of-a-difference expression for last-pass audit rather than silently correcting it."
+    },
+    {
+      "page": 8,
+      "summary": "Convert the three-megahertz band width into the paper's count of nominal channels."
+    },
+    {
+      "page": 8,
+      "summary": "Set the currently covered population from the first repeater coverage count."
+    },
+    {
+      "page": 8,
+      "summary": "Cap users with available frequencies by covered users and nominal channel count."
+    },
+    {
+      "page": 8,
+      "summary": "Compute the paper's trigger for adding a CTCSS repeater."
+    },
+    {
+      "page": 9,
+      "summary": "Generate one angular CTCSS candidate around the latest repeater."
+    },
+    {
+      "page": 9,
+      "summary": "Generate an open-repeater candidate toward a selected cluster."
+    },
+    {
+      "page": 13,
+      "summary": "Rank cluster targets by Euclidean distance from a selected network point."
+    },
+    {
+      "page": 5,
+      "summary": "Use tower height, a fixed user range, and minimum separation to define circular reach and candidate open-repeater spacing."
+    },
+    {
+      "page": 6,
+      "summary": "Treat a subaudible tone as a way to gate a repeater and create additional logical service lines within the same radio band."
+    },
+    {
+      "page": 7,
+      "summary": "Run k-means, count users near each center, and rank clusters for repeater placement."
+    },
+    {
+      "page": 7,
+      "summary": "Choose a starting open repeater near the location covering the greatest number of users."
+    },
+    {
+      "page": 8,
+      "summary": "Delete users newly covered by a repeater and update N_c, N_f, O, and D."
+    },
+    {
+      "page": 9,
+      "summary": "Enumerate candidate angles around the prior repeater, count remaining users in range, and choose the maximum-coverage CTCSS position."
+    },
+    {
+      "page": 9,
+      "summary": "Generate one d_h-spaced candidate toward each cluster and choose the candidate covering the most new users."
+    },
+    {
+      "page": 10,
+      "summary": "Alternate open placement and CTCSS placement according to channel deficit until at least 1,000 users are frequency-served."
+    },
+    {
+      "page": 13,
+      "summary": "Choose an initial target, place d_h-spaced repeaters along a backbone, and remove covered users."
+    },
+    {
+      "page": 13,
+      "summary": "Recluster remaining users, choose the highest-value cluster, find its nearest existing network node, and grow a new branch."
+    },
+    {
+      "page": 13,
+      "summary": "Select high-density connection locations and join them with tone-specific d_p-spaced CTCSS repeaters before adding local tone lines."
+    },
+    {
+      "page": 15,
+      "summary": "Label connected open repeaters with alternating plus and minus 600 kHz offsets and inspect same-sign adjacent nodes."
+    },
+    {
+      "page": 15,
+      "summary": "Create a dense central urban peak with surrounding lower-density suburbs inside the 40-mile region."
+    },
+    {
+      "page": 19,
+      "summary": "Create eight town clusters plus a dispersed background population within the same domain."
+    },
+    {
+      "page": 22,
+      "summary": "Draw 12,000 potential users, reduce Delta f to 10 kHz, and run the existing placement and tone accounting until 10,000 are served."
+    },
+    {
+      "page": 23,
+      "summary": "Place stronger repeaters near a single peak or distribute repeaters along foothills and valleys for multiple peaks and ranges."
+    },
+    {
+      "page": 24,
+      "summary": "Run the Snaking model at k equal to 5, 10, and 20 and compare open and CTCSS counts."
+    },
+    {
+      "page": 24,
+      "summary": "Vary d_h over 10, 15, and 20 miles, convert each to a stated tower height, and compare open-repeater counts."
+    },
+    {
+      "page": 25,
+      "summary": "Vary the initial potential population while retaining a 1,000-user target and compare open and CTCSS counts."
+    },
+    {
+      "page": 36,
+      "summary": "Initialize parameters, cluster users, search 360 CTCSS angles, grow 15-mile open steps, update coverage and channels, and plot the network."
+    },
+    {
+      "page": 42,
+      "summary": "Cluster coordinate-density triples, build open branches, recluster remaining users, connect long-distance locations with CTCSS lines, and plot outputs."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from_model_id": "MU-B-2011-11759-001",
+      "to_model_id": "MU-B-2011-11759-010",
+      "handoff": "The printed height relation motivates fixed circular ranges and spacing."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-010",
+      "to_model_id": "MU-B-2011-11759-012",
+      "handoff": "Coverage radii define how cluster candidates are scored."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-012",
+      "to_model_id": "MU-B-2011-11759-013",
+      "handoff": "The highest-scoring location initializes the Snaking network."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-003",
+      "to_model_id": "MU-B-2011-11759-014",
+      "handoff": "Nominal channels are compared with covered users."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-004",
+      "to_model_id": "MU-B-2011-11759-014",
+      "handoff": "Covered users update the served-state ledger."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-005",
+      "to_model_id": "MU-B-2011-11759-014",
+      "handoff": "N_f records users with nominal frequency capacity."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-006",
+      "to_model_id": "MU-B-2011-11759-015",
+      "handoff": "Positive D triggers tone-gated capacity placement."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-007",
+      "to_model_id": "MU-B-2011-11759-015",
+      "handoff": "The position equation generates angular candidates."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-008",
+      "to_model_id": "MU-B-2011-11759-016",
+      "handoff": "The position equation generates cluster-directed candidates."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-015",
+      "to_model_id": "MU-B-2011-11759-017",
+      "handoff": "The chosen tone node updates deficit within the main loop."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-016",
+      "to_model_id": "MU-B-2011-11759-017",
+      "handoff": "The chosen open node expands geographic coverage."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-009",
+      "to_model_id": "MU-B-2011-11759-018",
+      "handoff": "Phi ranks the initial backbone target."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-018",
+      "to_model_id": "MU-B-2011-11759-019",
+      "handoff": "The backbone is the graph to which new branches attach."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-019",
+      "to_model_id": "MU-B-2011-11759-020",
+      "handoff": "The completed open network is augmented with tone lines."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-022",
+      "to_model_id": "MU-B-2011-11759-017",
+      "handoff": "City coordinates instantiate the Snaking case."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-022",
+      "to_model_id": "MU-B-2011-11759-018",
+      "handoff": "The same city coordinates instantiate Branching."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-023",
+      "to_model_id": "MU-B-2011-11759-017",
+      "handoff": "Rural coordinates instantiate the Snaking case."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-023",
+      "to_model_id": "MU-B-2011-11759-018",
+      "handoff": "The same rural coordinates instantiate Branching."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-017",
+      "to_model_id": "MU-B-2011-11759-021",
+      "handoff": "The open graph receives frequency-offset labels after placement."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-024",
+      "to_model_id": "MU-B-2011-11759-026",
+      "handoff": "The stress case and sensitivity studies reuse the same heuristic family."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-029",
+      "to_model_id": "MU-B-2011-11759-026",
+      "handoff": "The code exposes the parameters used for reported sensitivity counts."
+    },
+    {
+      "from_model_id": "MU-B-2011-11759-030",
+      "to_model_id": "MU-B-2011-11759-020",
+      "handoff": "The code exposes the long-distance tone construction."
+    }
+  ],
+  "verification": [
+    {
+      "page": 16,
+      "section": "verification",
+      "summary": "The city Snaking case applies one fixed parameter set and reports 9 open plus 8 CTCSS repeaters.",
+      "verification_type": "single-case-trace",
+      "strength": "Connects the model description to a complete plotted layout and exact count.",
+      "limitation": "One synthetic case and one k-means realization provide no uncertainty."
+    },
+    {
+      "page": 17,
+      "section": "verification",
+      "summary": "The city Snaking parity plot exposes an odd-cycle same-sign edge.",
+      "verification_type": "graph-feasibility-check",
+      "strength": "Makes one frequency-offset conflict visible instead of hiding it.",
+      "limitation": "The paper accepts leakage without measuring interference or repairing the graph."
+    },
+    {
+      "page": 18,
+      "section": "verification",
+      "summary": "The city Branching case reports 9 open plus 17 CTCSS repeaters and shows long-distance tone lines.",
+      "verification_type": "matched-method-comparison",
+      "strength": "Uses the same urban geography for a direct infrastructure comparison.",
+      "limitation": "Connectivity is praised but not quantified."
+    },
+    {
+      "page": 19,
+      "section": "verification",
+      "summary": "The rural Snaking case reports 10 open plus 8 CTCSS repeaters and 1,080 covered users.",
+      "verification_type": "rural-case-trace",
+      "strength": "Checks that the path can cross separated towns and exceed the target count.",
+      "limitation": "There is no repeated rural generator or fairness metric."
+    },
+    {
+      "page": 20,
+      "section": "verification",
+      "summary": "The rural Snaking parity plot exposes two adjacent step-up repeaters.",
+      "verification_type": "second-graph-feasibility-check",
+      "strength": "Shows the parity problem is not unique to the city case.",
+      "limitation": "The proposed alternate direction has no propagation or interference test."
+    },
+    {
+      "page": 22,
+      "section": "verification",
+      "summary": "The rural Branching case reports 8 open plus 17 CTCSS repeaters.",
+      "verification_type": "second-matched-comparison",
+      "strength": "Retains the open-versus-tone count and branch topology on the same rural data.",
+      "limitation": "No path-length, redundancy, or failure robustness metric is reported."
+    },
+    {
+      "page": 22,
+      "section": "verification",
+      "summary": "A 12,000-person potential population is used to stress the design at 10,000 served users.",
+      "verification_type": "scale-stress-test",
+      "strength": "Tests a tenfold target and reveals much larger infrastructure.",
+      "limitation": "The printed total is arithmetically inconsistent and channel legality is untested."
+    },
+    {
+      "page": 24,
+      "section": "verification",
+      "summary": "Cluster-count sensitivity compares reported outcomes for k=5,10,20.",
+      "verification_type": "parameter-sensitivity",
+      "strength": "Shows that more clusters can reduce open repeaters by one.",
+      "limitation": "Figure 16 omits k=5 and no random-seed variation is shown."
+    },
+    {
+      "page": 24,
+      "section": "verification",
+      "summary": "Separation sensitivity compares d_h=10,15,20 and stated tower heights.",
+      "verification_type": "engineering-cost-sensitivity",
+      "strength": "Connects wider spacing to fewer open repeaters and higher towers.",
+      "limitation": "The height relation is uncalibrated and the plotted notation changes to d."
+    },
+    {
+      "page": 25,
+      "section": "verification",
+      "summary": "Potential-population sensitivity compares 1400, 3000, and 10000 candidate users for a fixed 1,000-user target.",
+      "verification_type": "candidate-pool-sensitivity",
+      "strength": "Reveals that denser choice sets reduce open-repeater count.",
+      "limitation": "The table header is wrong and the design may simply select easier users."
+    },
+    {
+      "page": 25,
+      "section": "verification",
+      "summary": "Strengths and weaknesses are explicitly labeled before the conclusion.",
+      "verification_type": "author-self-audit",
+      "strength": "Separates claimed adaptability from k-means and final-user limitations.",
+      "limitation": "The strongest spectrum, arithmetic, and code defects are not acknowledged."
+    },
+    {
+      "page": 29,
+      "section": "verification",
+      "summary": "Full-page city and rural plots preserve node classes, coverage circles, tone labels, and topology.",
+      "verification_type": "visual-traceability",
+      "strength": "Allows the compact case figures to be checked at larger scale.",
+      "limitation": "Most plots lack linked numeric metrics and some rely on inherited legends."
+    },
+    {
+      "page": 36,
+      "section": "verification",
+      "summary": "Appendix B exposes the Snaking source code and parameter values.",
+      "verification_type": "code-to-claim-check",
+      "strength": "Permits direct reconciliation of the 360-degree search, 15-mile steps, user deletion, and channel accounting.",
+      "limitation": "Cropped lines, hard-coded paths, mismatched indices, and no seed prevent clean reproduction."
+    },
+    {
+      "page": 42,
+      "section": "verification",
+      "summary": "Appendix B exposes the Branching source code and long-distance CTCSS logic.",
+      "verification_type": "second-code-to-claim-check",
+      "strength": "Permits direct inspection of dynamic reclustering, nearest-node branching, and tone-line construction.",
+      "limitation": "Coordinate-density clustering and array-dimension defects conflict with the prose."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 16,
+      "summary": "City Snaking uses 9 open and 8 CTCSS repeaters for 17 total."
+    },
+    {
+      "page": 18,
+      "summary": "City Branching uses 9 open and 17 CTCSS repeaters for 26 total."
+    },
+    {
+      "page": 19,
+      "summary": "Rural Snaking uses 10 open and 8 CTCSS repeaters for 18 total and reports 1,080 covered users."
+    },
+    {
+      "page": 22,
+      "summary": "Rural Branching uses 8 open and 17 CTCSS repeaters for 25 total."
+    },
+    {
+      "page": 22,
+      "summary": "The 10,000-user case reports 19 open and 33 CTCSS repeaters but incorrectly prints a total of 42 instead of 52."
+    },
+    {
+      "page": 24,
+      "summary": "For k=5 and k=10 the paper reports 9 open plus 8 CTCSS; for k=20 it reports 8 plus 8."
+    },
+    {
+      "page": 24,
+      "summary": "For d_h=10,15,20 the reported open counts are 10,8,7 with stated heights 66 ft 8 in, 150 ft, and 266 ft 8 in."
+    },
+    {
+      "page": 25,
+      "summary": "For potential populations 1400,3000,10000 the reported open counts are 10,3,1 while CTCSS remains 8."
+    },
+    {
+      "page": 26,
+      "summary": "The conclusion ranks Snaking lower in infrastructure and Branching higher in claimed connectivity, then calls 17 an absolute minimum."
+    }
+  ],
+  "contributions": [
+    {
+      "page": 6,
+      "summary": "Defines a Snaking heuristic that grows a coverage path toward population clusters and inserts CTCSS when deficit is positive."
+    },
+    {
+      "page": 11,
+      "summary": "Defines a Branching heuristic that builds a backbone, dynamically reclusters, and attaches new branches."
+    },
+    {
+      "page": 13,
+      "summary": "Adds long-distance tone chains to connect high-density regions after open-network construction."
+    },
+    {
+      "page": 14,
+      "summary": "Provides a parallel two-model comparison rather than presenting one method in isolation."
+    },
+    {
+      "page": 16,
+      "summary": "Runs both methods on matched city and rural synthetic cases and reports separate open and CTCSS counts."
+    },
+    {
+      "page": 24,
+      "summary": "Varies k, spacing/height, and candidate-population size to expose infrastructure sensitivity."
+    },
+    {
+      "page": 36,
+      "summary": "Supplies substantial MATLAB source for both placement heuristics, enabling code-to-claim audit."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "Abstract chain: official repeater task -> two named heuristics -> city and rural cases -> infrastructure/connectivity comparison -> 10,000-user and terrain extension."
+    },
+    {
+      "page": 4,
+      "summary": "Opening chain: problem resources and targets -> explicit assumptions -> available repeater and CTCSS mechanisms."
+    },
+    {
+      "page": 6,
+      "summary": "Snaking chain: intuitive flow chart -> k-means and variable table -> coverage/channel equations -> Algorithms 1 and 2 -> 1,000-user stop."
+    },
+    {
+      "page": 11,
+      "summary": "Branching chain: backbone flow chart -> added long-distance variables -> far/high-value target -> dynamic branch attachment -> tone-line augmentation."
+    },
+    {
+      "page": 14,
+      "summary": "Comparison chain: shared clustering and parity -> continuous path versus backbone/branches -> when tones are added -> infrastructure/connectivity tradeoff."
+    },
+    {
+      "page": 15,
+      "summary": "City chain: population surface and parity rule -> Snaking parameters, placement, count, parity -> Branching placement, tones, count, parity."
+    },
+    {
+      "page": 19,
+      "summary": "Rural chain: separated towns -> Snaking coverage/count/parity -> Branching backbone/tone allocation/count/parity."
+    },
+    {
+      "page": 22,
+      "summary": "Extension chain: 10,000-user channel narrowing and count -> qualitative terrain placement -> parameter sensitivity."
+    },
+    {
+      "page": 25,
+      "summary": "Evaluation chain: labeled strengths -> labeled weaknesses -> exact four-case totals -> claimed minimum and connectivity conclusion."
+    },
+    {
+      "page": 28,
+      "summary": "Evidence appendix chain: references -> full-page plots for every principal case -> complete Snaking and Branching MATLAB listings."
+    },
+    {
+      "page": 36,
+      "summary": "Code chain: parameter initialization -> clustering -> candidate generation -> coverage deletion -> channel update -> plotting and printed counts."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "The Abstract uses a two-model sequence: shared task, first mechanism, second mechanism, matched cases, comparison, then extensions."
+    },
+    {
+      "page": 4,
+      "summary": "The restatement preserves exact regulatory and numerical resources before any simplifying assumption appears."
+    },
+    {
+      "page": 4,
+      "summary": "Assumption bullets repeatedly follow assumption -> justification -> enabled simplification, which is reusable even when the substance is weak."
+    },
+    {
+      "page": 5,
+      "summary": "Technology prose moves from a hardware fact to a spacing or range implication and immediately hands that parameter to the models."
+    },
+    {
+      "page": 6,
+      "summary": "Each model is introduced visually and intuitively before variable tables and pseudocode formalize it."
+    },
+    {
+      "page": 14,
+      "summary": "The model comparison uses parallel similarities and differences, improving scanability and matched evaluation."
+    },
+    {
+      "page": 16,
+      "summary": "Case sections follow a stable order: distribution -> parameters -> placement narrative -> exact open/CTCSS count -> parity or connectivity consequence."
+    },
+    {
+      "page": 22,
+      "summary": "The scale extension changes one resource, reports resulting infrastructure, then transitions to a qualitatively different terrain question."
+    },
+    {
+      "page": 24,
+      "summary": "Sensitivity paragraphs name the parameter, tested values, observed counts, and an engineering cost tradeoff."
+    },
+    {
+      "page": 25,
+      "summary": "Strengths and weaknesses are explicitly labeled before the conclusion restates exact case totals."
+    },
+    {
+      "page": 36,
+      "summary": "The code appendix supports a distinct reconciliation move: prose parameter -> source assignment -> loop behavior -> printed output -> discrepancy."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 1,
+      "figure": "Abstract",
+      "summary": "Provides the two-model task, matched cases, comparison axis, and extension boundary."
+    },
+    {
+      "page": 2,
+      "figure": "Title and Contents page 1",
+      "summary": "Exposes the first half of the complete model-to-case sequence."
+    },
+    {
+      "page": 3,
+      "figure": "Contents page 2",
+      "summary": "Exposes cases, sensitivity, evaluation, conclusion, plots, and code appendices."
+    },
+    {
+      "page": 6,
+      "figure": "Figure 1 Snaking flow chart",
+      "summary": "Shows clustering, first placement, channel-deficit decisions, CTCSS insertion, open growth, and looping."
+    },
+    {
+      "page": 7,
+      "figure": "Snaking parameter table",
+      "summary": "Defines n, k, d_s, h_r, d_h, and Delta f with units and roles."
+    },
+    {
+      "page": 8,
+      "figure": "Snaking core formulas",
+      "summary": "Preserves the printed distance test and O, N_c, N_f, and D relations."
+    },
+    {
+      "page": 9,
+      "figure": "Algorithms 1 and 2",
+      "summary": "Makes angular CTCSS search and cluster-directed open placement inspectable."
+    },
+    {
+      "page": 11,
+      "figure": "Figure 2 Branching flow chart",
+      "summary": "Shows backbone construction, reclustering, branching, coverage, channel checks, and PL insertion."
+    },
+    {
+      "page": 12,
+      "figure": "Branching parameter table",
+      "summary": "Adds long-distance line and connection-location counts to the shared parameters."
+    },
+    {
+      "page": 13,
+      "figure": "Algorithm 3",
+      "summary": "Preserves backbone target selection, branch attachment, and the theta wording defect."
+    },
+    {
+      "page": 15,
+      "figure": "Figure 3 city population surface",
+      "summary": "Shows the dense central peak and surrounding suburban demand."
+    },
+    {
+      "page": 16,
+      "figure": "City Snaking parameter table",
+      "summary": "Binds the reported 17-repeater layout to its exact parameter cell."
+    },
+    {
+      "page": 16,
+      "figure": "Figure 4 city Snaking placement",
+      "summary": "Shows user points, open and CTCSS nodes, cluster points, and overlapping coverage circles."
+    },
+    {
+      "page": 17,
+      "figure": "Figure 5 city Snaking parity",
+      "summary": "Shows the odd-cycle plus/minus assignment and same-sign adjacency."
+    },
+    {
+      "page": 17,
+      "figure": "Figure 6 city Branching placement",
+      "summary": "Shows the central backbone and three main branches."
+    },
+    {
+      "page": 18,
+      "figure": "Figure 7 city CTCSS arrangement",
+      "summary": "Shows long-distance and local tone coverage with numbered lines."
+    },
+    {
+      "page": 18,
+      "figure": "Figure 8 city Branching parity",
+      "summary": "Shows plus/minus assignments on the branched graph."
+    },
+    {
+      "page": 19,
+      "figure": "Figure 9 rural population surface",
+      "summary": "Shows eight town-like peaks and dispersed residents."
+    },
+    {
+      "page": 20,
+      "figure": "Figure 10 rural Snaking placement",
+      "summary": "Shows sequential coverage across separated demand islands."
+    },
+    {
+      "page": 20,
+      "figure": "Figure 11 rural Snaking parity",
+      "summary": "Shows the southeastern same-sign adjacency discussed in the prose."
+    },
+    {
+      "page": 21,
+      "figure": "Figure 12 rural Branching placement",
+      "summary": "Shows the four-node backbone and town-directed branches."
+    },
+    {
+      "page": 21,
+      "figure": "Figure 13 rural CTCSS arrangement",
+      "summary": "Shows tone-specific long-distance and local coverage circles."
+    },
+    {
+      "page": 22,
+      "figure": "Figure 14 rural Branching parity",
+      "summary": "Shows plus/minus labels on the rural branch graph."
+    },
+    {
+      "page": 23,
+      "figure": "Figure 15 10,000-user network",
+      "summary": "Shows the high-density stress layout whose legend must be inherited from earlier figures."
+    },
+    {
+      "page": 24,
+      "figure": "Figure 16 cluster-count sensitivity",
+      "summary": "Compares k=10 and k=20 layouts while the reported k=5 case is absent."
+    },
+    {
+      "page": 24,
+      "figure": "Cluster-count sensitivity results",
+      "summary": "Reports 9+8 repeaters for k=5 and 10 and 8+8 for k=20."
+    },
+    {
+      "page": 25,
+      "figure": "Figure 17 separation-distance sensitivity",
+      "summary": "Compares d=10 and d=20 layouts while the prose uses d_h."
+    },
+    {
+      "page": 25,
+      "figure": "Separation and population sensitivity tables",
+      "summary": "Links d_h, implied tower height, potential population, and repeater counts despite a mislabeled column."
+    },
+    {
+      "page": 29,
+      "figure": "Figure 18 city Snaking full-page plot",
+      "summary": "Retains complete node, cluster, and coverage geometry."
+    },
+    {
+      "page": 30,
+      "figure": "Figure 19 city Branching full-page plot",
+      "summary": "Retains full backbone and branch topology."
+    },
+    {
+      "page": 31,
+      "figure": "Figure 20 city CTCSS full-page plot",
+      "summary": "Retains tone numbering and colored coverage regions."
+    },
+    {
+      "page": 32,
+      "figure": "Figure 21 rural Snaking full-page plot",
+      "summary": "Retains coverage across all eight towns."
+    },
+    {
+      "page": 33,
+      "figure": "Figure 22 rural Branching full-page plot",
+      "summary": "Retains the rural backbone and branches."
+    },
+    {
+      "page": 34,
+      "figure": "Figure 23 rural CTCSS full-page plot",
+      "summary": "Retains long-distance and local tone labels."
+    },
+    {
+      "page": 35,
+      "figure": "Figure 24 10,000-user full-page plot",
+      "summary": "Retains the dense user cloud, open and CTCSS nodes, clusters, and overlapping circles."
+    },
+    {
+      "page": 36,
+      "figure": "Snaking MATLAB source page 36",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 37,
+      "figure": "Snaking MATLAB source page 37",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 38,
+      "figure": "Snaking MATLAB source page 38",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 39,
+      "figure": "Snaking MATLAB source page 39",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 40,
+      "figure": "Snaking MATLAB source page 40",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 41,
+      "figure": "Snaking MATLAB source page 41",
+      "summary": "Preserves executable parameters, loops, index choices, channel accounting, and plotting code for claim reconciliation."
+    },
+    {
+      "page": 42,
+      "figure": "Branching MATLAB source page 42",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 43,
+      "figure": "Branching MATLAB source page 43",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 44,
+      "figure": "Branching MATLAB source page 44",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 45,
+      "figure": "Branching MATLAB source page 45",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 46,
+      "figure": "Branching MATLAB source page 46",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 47,
+      "figure": "Branching MATLAB source page 47",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 48,
+      "figure": "Branching MATLAB source page 48",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 49,
+      "figure": "Branching MATLAB source page 49",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 50,
+      "figure": "Branching MATLAB source page 50",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    },
+    {
+      "page": 51,
+      "figure": "Branching MATLAB source page 51",
+      "summary": "Preserves coordinate-density clustering, backbone and branch loops, long-distance CTCSS logic, outputs, and code defects."
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "summary": "An abstract that names two mechanisms and matched cases plausibly improves judge traceability, but does not prove the minimum claim.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 14,
+      "summary": "A parallel comparison section plausibly helps a judge see infrastructure-versus-connectivity tradeoffs before inspecting figures.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 36,
+      "summary": "Supplying source code plausibly improves transparency, although defects and missing inputs prevent reproducibility.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 4,
+      "summary": "The paper operationalizes the 1,000-user requirement as selecting and connecting 1,000 users from a larger potential population rather than modeling 1,000 simultaneous transmissions with duration and interference."
+    },
+    {
+      "page": 4,
+      "summary": "The closed-system, no-external-interference, isotropic-antenna, homogeneous-user, and fixed-range assumptions remove major radio and behavioral mechanisms without a sensitivity or fallback model."
+    },
+    {
+      "page": 5,
+      "summary": "The printed distance-in-miles equals sqrt(1.5 A_f) relation is physically questionable and differs in form from common radio-horizon rules; no calibration data are supplied."
+    },
+    {
+      "page": 5,
+      "summary": "The prose mixes a ten-mile coordination separation with d_h values of 15 or 20 miles and overlapping coverage circles without a single explicit semantic distinction."
+    },
+    {
+      "page": 6,
+      "summary": "CTCSS tones gate receivers but are not independent RF channels; the paper repeatedly treats tone count, channel count, and simultaneous capacity as interchangeable resources."
+    },
+    {
+      "page": 7,
+      "summary": "Algorithm inputs use d_p for CTCSS placement even though the main Snaking parameter table defines d_s and d_h but not d_p."
+    },
+    {
+      "page": 8,
+      "summary": "The printed user-to-repeater distance relation has a subtraction between squared coordinate differences; this can make the radicand negative and contradicts Euclidean distance."
+    },
+    {
+      "page": 8,
+      "summary": "O=3/Delta f divides the full three-megahertz band by nominal channel width without duplex pairing, guard bands, occupied bandwidth, adjacent-channel interference, or coordination rules."
+    },
+    {
+      "page": 8,
+      "summary": "N_f=min(N_c,O) assumes one simultaneous user per nominal channel and omits transmission duration, spatial reuse, contention, and interference."
+    },
+    {
+      "page": 9,
+      "summary": "Algorithm 1 scores remaining users near a CTCSS candidate even though adding a tone-gated repeater does not by itself extend connectivity of the open network."
+    },
+    {
+      "page": 9,
+      "summary": "Algorithms 1 and 2 mix zero-based and one-based intervals such as [0,k] and [1,k], and several candidate counters are not explicitly initialized."
+    },
+    {
+      "page": 13,
+      "summary": "The Branching prose says the backbone connects the two highest-scoring clusters, while Algorithm 3 selects the farthest cluster according to phi."
+    },
+    {
+      "page": 13,
+      "summary": "Algorithm 3 defines theta as the distance between R_T and T but immediately uses theta inside cosine and sine, where it must be an angle."
+    },
+    {
+      "page": 13,
+      "summary": "After selecting the nearest existing node R_T as a branch origin, Algorithm 3 updates R_j from R_(j-1), leaving the actual branch start and indices ambiguous."
+    },
+    {
+      "page": 15,
+      "summary": "The plus/minus parity assignment is performed graphically after placement and has no general feasibility algorithm, band-edge check, or proof for graphs with cycles."
+    },
+    {
+      "page": 17,
+      "summary": "The city Snaking parity graph is an odd cycle and contains adjacent equal signs; the paper acknowledges possible signal leakage but accepts it without a quantitative frequency analysis."
+    },
+    {
+      "page": 18,
+      "summary": "The Branching model's claimed outstanding connectivity is not defined by a connectivity, latency, path-length, reliability, or robustness metric."
+    },
+    {
+      "page": 19,
+      "summary": "City and rural evaluation each use one synthetic distribution with no repeated random seeds, distributional variance, statistical test, or real coordinate validation."
+    },
+    {
+      "page": 20,
+      "summary": "The rural parity graph again contains adjacent step-up repeaters, and the proposed alternative-direction workaround is qualitative rather than a verified spectrum solution."
+    },
+    {
+      "page": 22,
+      "summary": "The 10,000-user section states 19 open plus 33 CTCSS repeaters total 42, but the arithmetic total is 52."
+    },
+    {
+      "page": 22,
+      "summary": "The conclusion says 12 of 54 CTCSS lines remain, implying 42 used, which conflicts with the reported 33 CTCSS repeaters and incomplete tone-reuse accounting."
+    },
+    {
+      "page": 22,
+      "summary": "Reducing Delta f from 25 kHz to 10 kHz is treated as automatically legal and interference-free without occupied-bandwidth, receiver-selectivity, or coordination validation."
+    },
+    {
+      "page": 23,
+      "summary": "Figure 15 and the full-page Figure 24 omit a local legend and depend on colors and shapes defined in earlier figures."
+    },
+    {
+      "page": 23,
+      "summary": "The mountainous-terrain section is purely qualitative and supplies no DEM, propagation model, shadowing calculation, asymmetric link test, optimization objective, or experiment."
+    },
+    {
+      "page": 24,
+      "summary": "The cluster-count sensitivity claims k=5,10,20 were tested, but Figure 16 displays only k=10 and k=20, and no seed variation is reported."
+    },
+    {
+      "page": 24,
+      "summary": "The reported k=20 result is 8 open plus 8 CTCSS equals 16, contradicting the later claim that 17 is the absolute minimum."
+    },
+    {
+      "page": 24,
+      "summary": "The d_h sensitivity uses 10, 15, and 20 miles with implied heights 66 ft 8 in, 150 ft, and 266 ft 8 in, but Figure 17 labels the parameter only d and no propagation validation supports the conversion."
+    },
+    {
+      "page": 25,
+      "summary": "The initial-population sensitivity table labels its first column d_h even though the entries 1400, 3000, and 10000 are potential-user counts."
+    },
+    {
+      "page": 25,
+      "summary": "Larger potential populations produce fewer open repeaters because the algorithm may choose the easiest 1,000 users, which can sacrifice geographic fairness and coverage obligations."
+    },
+    {
+      "page": 26,
+      "summary": "The conclusion calls 17 an absolute minimum although the algorithms are heuristics, no lower bound or optimality proof is given, and sensitivity cells report 16 or even 9 repeaters under changed inputs."
+    },
+    {
+      "page": 27,
+      "summary": "The statement that all 54 CTCSS lines are unnecessary lacks a complete allocation, reuse, collision, and simultaneous-capacity ledger."
+    },
+    {
+      "page": 36,
+      "summary": "The MATLAB appendices hard-code local Windows paths, domain bounds, target user counts, and plotting conventions, and provide no input package, seed, output data, or execution log."
+    },
+    {
+      "page": 37,
+      "summary": "Snaking code assigns rep(1,2)=clusters(index,1), copying the x coordinate into y for the first repeater."
+    },
+    {
+      "page": 37,
+      "summary": "Snaking initializes numclus=10 but several starting and direction loops are hard-coded over only five clusters."
+    },
+    {
+      "page": 38,
+      "summary": "Snaking scores a CTCSS candidate using reppl but appears to delete covered users using an open-repeater position, so scoring and state update may refer to different nodes."
+    },
+    {
+      "page": 39,
+      "summary": "Snaking prose uses d_h=15 while code constructs open candidates at sepdist*1.5 after initializing sepdist=10; the parameter link is implicit and brittle."
+    },
+    {
+      "page": 39,
+      "summary": "Several quadrant formulas and a branch using rep(1,1) instead of the latest repeater make the direction computation difficult to reconcile with Algorithm 2."
+    },
+    {
+      "page": 40,
+      "summary": "Boundary fallback repeatedly changes angles but does not visibly enforce a safe candidate-index or retry bound."
+    },
+    {
+      "page": 42,
+      "summary": "Branching runs kmeans on concat containing x, y, and density score, whereas the paper describes geographic x-y clustering; scale normalization is not supplied."
+    },
+    {
+      "page": 46,
+      "summary": "Branching initializes cluslongscr with numclus rows but loops over numlongdist clusters, relying on implicit array growth and inconsistent dimensions."
+    },
+    {
+      "page": 47,
+      "summary": "The nearest-neighbor long-distance CTCSS chain and indexnum==actlongdist boundary logic are heuristic and may mishandle cycle completion or self-selection."
+    },
+    {
+      "page": 49,
+      "summary": "Branching appears to index pluncovered(i) as a scalar where two coordinate columns are needed, indicating a likely coordinate bug."
+    },
+    {
+      "page": 36,
+      "summary": "Large blocks of source code are commented out with percent-brace delimiters, include debugging output and hard-coded alternatives, and do not establish which path generated the published figures."
+    },
+    {
+      "page": 37,
+      "summary": "Multiple long MATLAB lines are physically cropped at the right page edge, so parts of conditions and plotting calls cannot be recovered from either text extraction or raster review."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-B-11759-001",
+      "page": 5,
+      "summary": "Replace the height rule and circular range assumptions with a calibrated bidirectional link budget, antenna pattern, terrain profile, fading margin, and measured coverage data."
+    },
+    {
+      "extension_id": "E-B-11759-002",
+      "page": 8,
+      "summary": "Build an explicit duplex channel plan with occupied bandwidth, guard bands, spatial reuse, CTCSS reuse, and an interference graph before defining simultaneous capacity."
+    },
+    {
+      "extension_id": "E-B-11759-003",
+      "page": 9,
+      "summary": "Formulate Snaking as a reproducible multi-objective heuristic with typed candidate sets, initialized counters, fair user coverage, and seed-controlled clustering."
+    },
+    {
+      "extension_id": "E-B-11759-004",
+      "page": 13,
+      "summary": "Formulate Branching as a graph optimization with explicit backbone objective, branch origin, connectivity metric, tone-line routing, and cycle-feasible parity assignment."
+    },
+    {
+      "extension_id": "E-B-11759-005",
+      "page": 19,
+      "summary": "Use measured or generative city and rural populations with many seeds, confidence intervals, fairness metrics, and identical comparator cases."
+    },
+    {
+      "extension_id": "E-B-11759-006",
+      "page": 23,
+      "summary": "Integrate DEM-based propagation and shadowing into candidate reach, then validate single-peak, multi-peak, valley, and ridge cases quantitatively."
+    },
+    {
+      "extension_id": "E-B-11759-007",
+      "page": 36,
+      "summary": "Refactor the MATLAB into parameterized functions, fix coordinate and dimension errors, recover cropped lines from original source, package inputs, set seeds, and emit machine-readable logs."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-B-LANG-001",
+      "action": "retain two-model abstract, parallel comparison, case-parameter-count, sensitivity, and code-reconciliation language only when all claims remain tied to exact evidence and scope",
+      "evidence_ids": [
+        "O-B-2011-11759-001"
+      ]
+    },
+    {
+      "rule_id": "R-B-LOG-001",
+      "action": "retain the official-task-to-assumptions-to-two-models-to-matched-cases-to-stress-and-sensitivity-to-bounded-conclusion chain",
+      "evidence_ids": [
+        "O-B-2011-11759-373"
+      ]
+    },
+    {
+      "rule_id": "R-B-DATA-001",
+      "action": "treat population coordinates, density scores, user deletions, repeater geometry, parity, spectrum state, and terrain as versioned data rather than anonymous mutable arrays",
+      "evidence_ids": [
+        "O-B-2011-11759-523"
+      ]
+    },
+    {
+      "rule_id": "R-B-DATA-002",
+      "action": "retain a ledger for d_s, h_r, d_h, d_p, Delta f, duplex offset, tones, k, l_n, l_c, potential users, served users, and random seeds",
+      "evidence_ids": [
+        "O-B-2011-11759-524"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-001",
+      "action": "retain spatial placement heuristics only after formulas, units, cluster targets, branch origins, radio semantics, objective, and executable indices agree",
+      "evidence_ids": [
+        "O-B-2011-11759-301"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-003",
+      "action": "combine open towers, CTCSS towers, nominal RF channels, tones, geographic coverage, served users, connectivity, parity feasibility, fairness, and cost through a declared decision rule",
+      "evidence_ids": [
+        "O-B-2011-11759-302"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-004",
+      "action": "keep potential users, served users, simultaneous transmissions, open repeaters, CTCSS repeaters, arithmetic totals, tones, channels, and connectivity claims separately labeled",
+      "evidence_ids": [
+        "O-B-2011-11759-595"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-005",
+      "action": "stress placement and tone allocation across populations, k-means seeds, ranges, tower heights, channel plans, terrain, failures, and fairness constraints",
+      "evidence_ids": [
+        "O-B-2011-11759-303"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-002",
+      "action": "make reliability distribution-, seed-, load-, spectrum-, parity-, terrain-, and code-version-specific with uncertainty and abstention outside the tested regime",
+      "evidence_ids": [
+        "O-B-2011-11759-479"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-004",
+      "action": "run formula, arithmetic, symbol, graph-coloring, array-dimension, coordinate-index, path, seed, and output reconciliation before trusting the simulation",
+      "evidence_ids": [
+        "O-B-2011-11759-635"
+      ]
+    },
+    {
+      "rule_id": "R-B-VIZ-001",
+      "action": "retain network maps only with common axes, complete legends, node and edge semantics, coverage-circle meaning, tone and parity labels, and linked numeric counts",
+      "evidence_ids": [
+        "O-B-2011-11759-425"
+      ]
+    },
+    {
+      "rule_id": "R-B-COMP-001",
+      "action": "choose clustering, angular search resolution, nearest-node search, array mutation, caching, and spatial indexing from measured problem size, runtime, memory, and reproducibility needs",
+      "evidence_ids": [
+        "O-B-2011-11759-304"
+      ]
+    }
+  ],
+  "unresolved_questions": [
+    "The paper operationalizes the 1,000-user requirement as selecting and connecting 1,000 users from a larger potential population rather than modeling 1,000 simultaneous transmissions with duration and interference.",
+    "The closed-system, no-external-interference, isotropic-antenna, homogeneous-user, and fixed-range assumptions remove major radio and behavioral mechanisms without a sensitivity or fallback model.",
+    "The printed distance-in-miles equals sqrt(1.5 A_f) relation is physically questionable and differs in form from common radio-horizon rules; no calibration data are supplied.",
+    "The prose mixes a ten-mile coordination separation with d_h values of 15 or 20 miles and overlapping coverage circles without a single explicit semantic distinction.",
+    "CTCSS tones gate receivers but are not independent RF channels; the paper repeatedly treats tone count, channel count, and simultaneous capacity as interchangeable resources.",
+    "Algorithm inputs use d_p for CTCSS placement even though the main Snaking parameter table defines d_s and d_h but not d_p.",
+    "The printed user-to-repeater distance relation has a subtraction between squared coordinate differences; this can make the radicand negative and contradicts Euclidean distance.",
+    "O=3/Delta f divides the full three-megahertz band by nominal channel width without duplex pairing, guard bands, occupied bandwidth, adjacent-channel interference, or coordination rules.",
+    "N_f=min(N_c,O) assumes one simultaneous user per nominal channel and omits transmission duration, spatial reuse, contention, and interference.",
+    "Algorithm 1 scores remaining users near a CTCSS candidate even though adding a tone-gated repeater does not by itself extend connectivity of the open network.",
+    "Algorithms 1 and 2 mix zero-based and one-based intervals such as [0,k] and [1,k], and several candidate counters are not explicitly initialized.",
+    "The Branching prose says the backbone connects the two highest-scoring clusters, while Algorithm 3 selects the farthest cluster according to phi.",
+    "Algorithm 3 defines theta as the distance between R_T and T but immediately uses theta inside cosine and sine, where it must be an angle.",
+    "After selecting the nearest existing node R_T as a branch origin, Algorithm 3 updates R_j from R_(j-1), leaving the actual branch start and indices ambiguous.",
+    "The plus/minus parity assignment is performed graphically after placement and has no general feasibility algorithm, band-edge check, or proof for graphs with cycles.",
+    "The city Snaking parity graph is an odd cycle and contains adjacent equal signs; the paper acknowledges possible signal leakage but accepts it without a quantitative frequency analysis.",
+    "The Branching model's claimed outstanding connectivity is not defined by a connectivity, latency, path-length, reliability, or robustness metric.",
+    "City and rural evaluation each use one synthetic distribution with no repeated random seeds, distributional variance, statistical test, or real coordinate validation.",
+    "The rural parity graph again contains adjacent step-up repeaters, and the proposed alternative-direction workaround is qualitative rather than a verified spectrum solution.",
+    "The 10,000-user section states 19 open plus 33 CTCSS repeaters total 42, but the arithmetic total is 52.",
+    "The conclusion says 12 of 54 CTCSS lines remain, implying 42 used, which conflicts with the reported 33 CTCSS repeaters and incomplete tone-reuse accounting.",
+    "Reducing Delta f from 25 kHz to 10 kHz is treated as automatically legal and interference-free without occupied-bandwidth, receiver-selectivity, or coordination validation.",
+    "Figure 15 and the full-page Figure 24 omit a local legend and depend on colors and shapes defined in earlier figures.",
+    "The mountainous-terrain section is purely qualitative and supplies no DEM, propagation model, shadowing calculation, asymmetric link test, optimization objective, or experiment.",
+    "The cluster-count sensitivity claims k=5,10,20 were tested, but Figure 16 displays only k=10 and k=20, and no seed variation is reported.",
+    "The reported k=20 result is 8 open plus 8 CTCSS equals 16, contradicting the later claim that 17 is the absolute minimum.",
+    "The d_h sensitivity uses 10, 15, and 20 miles with implied heights 66 ft 8 in, 150 ft, and 266 ft 8 in, but Figure 17 labels the parameter only d and no propagation validation supports the conversion.",
+    "The initial-population sensitivity table labels its first column d_h even though the entries 1400, 3000, and 10000 are potential-user counts.",
+    "Larger potential populations produce fewer open repeaters because the algorithm may choose the easiest 1,000 users, which can sacrifice geographic fairness and coverage obligations.",
+    "The conclusion calls 17 an absolute minimum although the algorithms are heuristics, no lower bound or optimality proof is given, and sensitivity cells report 16 or even 9 repeaters under changed inputs.",
+    "The statement that all 54 CTCSS lines are unnecessary lacks a complete allocation, reuse, collision, and simultaneous-capacity ledger.",
+    "The MATLAB appendices hard-code local Windows paths, domain bounds, target user counts, and plotting conventions, and provide no input package, seed, output data, or execution log.",
+    "Snaking code assigns rep(1,2)=clusters(index,1), copying the x coordinate into y for the first repeater.",
+    "Snaking initializes numclus=10 but several starting and direction loops are hard-coded over only five clusters.",
+    "Snaking scores a CTCSS candidate using reppl but appears to delete covered users using an open-repeater position, so scoring and state update may refer to different nodes.",
+    "Snaking prose uses d_h=15 while code constructs open candidates at sepdist*1.5 after initializing sepdist=10; the parameter link is implicit and brittle.",
+    "Several quadrant formulas and a branch using rep(1,1) instead of the latest repeater make the direction computation difficult to reconcile with Algorithm 2.",
+    "Boundary fallback repeatedly changes angles but does not visibly enforce a safe candidate-index or retry bound.",
+    "Branching runs kmeans on concat containing x, y, and density score, whereas the paper describes geographic x-y clustering; scale normalization is not supplied.",
+    "Branching initializes cluslongscr with numclus rows but loops over numlongdist clusters, relying on implicit array growth and inconsistent dimensions.",
+    "The nearest-neighbor long-distance CTCSS chain and indexnum==actlongdist boundary logic are heuristic and may mishandle cycle completion or self-selection.",
+    "Branching appears to index pluncovered(i) as a scalar where two coordinate columns are needed, indicating a likely coordinate bug.",
+    "Large blocks of source code are commented out with percent-brace delimiters, include debugging output and hard-coded alternatives, and do not establish which path generated the published figures.",
+    "Multiple long MATLAB lines are physically cropped at the right page edge, so parts of conditions and plotting calls cannot be recovered from either text extraction or raster review."
+  ],
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-B-2011-11759-ee4be862.json",
+      "schema_version": 3,
+      "unit_count": 300,
+      "chapters": [
+        "abstract",
+        "title",
+        "problem-restatement",
+        "assumptions",
+        "introduction",
+        "model-establishment",
+        "notation",
+        "model-improvement",
+        "algorithm",
+        "problem-analysis",
+        "data-preprocessing",
+        "results",
+        "robustness-verification",
+        "sensitivity-robustness",
+        "limitations",
+        "sensitivity-analysis",
+        "strengths-limitations",
+        "conclusion",
+        "references",
+        "appendix"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-B-2011-11759-ee4be862.json",
+      "schema_version": 2,
+      "model_count": 30,
+      "equation_count": 9,
+      "review_status": "validated"
+    }
+  },
+  "review_status": "validated"
+}

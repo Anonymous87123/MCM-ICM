@@ -1,0 +1,1190 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2020-2013772-594465e5",
+  "problem_type": "F",
+  "year": "2020",
+  "source_sha256": "594465e5144f53a4bc969831f7766351da8ea89ab866632561149a8318ccefec",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2020-2013772-CV",
+      "section": "4.2 Cultural Value Evaluation System",
+      "family": "scoring-system",
+      "summary": "Culture is scored like species on the IUCN Red List. Eight indicators under three criteria, weights 0.4, 0.3, 0.3 from Delphi and pairwise comparison used to correct each other. Uniqueness is yes or no, scored 4 or 0. Geographic range and number of users are each four bands scored 1 to 4, then rescaled to 100. The total sorts a culture into extinct, critically endangered (80-100), vulnerable (60-80), near threatened (40-60), near common, least concern (0-20), data deficient, or not evaluated. The printed bands collide: near threatened and near common are both given 40-60, and the 20-40 band is missing.",
+      "computational_cost": "not-stated",
+      "purpose": "Give a displaced population's culture a single score and a threat class.",
+      "base_or_modification": "modification",
+      "page": 7,
+      "inputs": [
+        "u_k",
+        "g_k",
+        "p_k"
+      ],
+      "outputs": [
+        "V"
+      ],
+      "handoff_outputs": [
+        "V"
+      ],
+      "objectives": [
+        "Classify a culture by how close it is to disappearing."
+      ],
+      "variables": [
+        {
+          "symbol": "u_k",
+          "normalized_name": "uniqueness",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Whether indicator k is unique: 4 if yes, 0 if no",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g_k",
+          "normalized_name": "range_band",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Geographic spread of indicator k, band 1 to 4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_k",
+          "normalized_name": "user_band",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Number of users of indicator k, band 1 to 4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_c",
+          "normalized_name": "criterion_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of criterion c, the three being 0.4, 0.3 and 0.3",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "culture_value_score",
+          "role": "output",
+          "unit": "points",
+          "definition": "Weighted total on a hundred-point scale",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-CV-1",
+          "equation_label": "Culture value score",
+          "equation_text": "V = sum over criteria of w_c * (rescaled bands), weights 0.4, 0.3, 0.3",
+          "source_expression": "V = sum over criteria of w_c * (rescaled bands), weights 0.4, 0.3, 0.3",
+          "normalized_latex": "V = \\sum_c w_c \\, s_c",
+          "purpose": "Weighted sum of rescaled indicator grades. Each band step is later worth 0.825 points.",
+          "variable_symbols": [
+            "V",
+            "w_c"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The aggregation formula is not printed as algebra; the weights, bands and rescaling are. The formula here reconstructs the weighted sum the prose describes.",
+        "reason": "Section 4.2.1 and 4.2.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Eight indicators: historical buildings, oral and written language, performing arts, customs, knowledge, handicrafts, cultural space."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Uniqueness binary. Range bands at 10, 50, 100. User bands at 1000, 5000, 10000."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Scoring system, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Delphi and pairwise comparison set the weights and correct each other.",
+        "parameters": [
+          "w_c"
+        ]
+      },
+      "algorithm": {
+        "description": "Grade each indicator, rescale to 100, weight, sum, read off the threat class.",
+        "status": "partial",
+        "steps": [
+          "Grade indicators",
+          "Rescale",
+          "Weight and sum",
+          "Classify"
+        ],
+        "software": [],
+        "convergence_criteria": "None."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Class boundaries printed, but two classes share the 40-60 band and 20-40 is absent."
+        ],
+        "analysis": "The direction of the score is clear. The exact aggregation is not written, and the class table contradicts itself."
+      },
+      "constraints": [
+        "Indicators must be scored by hand from directories and population data.",
+        "The system is declared to need updating as society changes."
+      ],
+      "validation_refs": [
+        "Figure 5 index structure",
+        "Figure 6 criterion weights",
+        "Figure 7 evaluation system"
+      ],
+      "strengths": [
+        "Keeps classes for missing data and for things not assessed.",
+        "Reuses a structure readers already trust."
+      ],
+      "limitations": [
+        "Two threat classes occupy one interval.",
+        "The weighted-sum formula is described, not written."
+      ],
+      "missing_details": [
+        "The per-indicator weights below the three criteria.",
+        "Which band edges map to which scores."
+      ],
+      "assumptions": [
+        "Cultural value rises with rarity and falls with spread.",
+        "A single number can stand for a culture."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013772-RL",
+      "section": "4.3 EDPs Relocation Model",
+      "family": "multi-objective-allocation",
+      "summary": "A destination scores on five indicators: gross national happiness, a social security ratio, GDP per capita, a culture pull index and an environment pull index. Z-score standardization, then AHP weights 0.1461, 0.2751, 0.4798, 0.0340, 0.0650, with CR 0.055. For the urgent state a second objective, accessibility, divides 100 by travel time times one minus the death rate on the route. Capacity is capped at 0.5 percent of the destination's population. Applied greedily to the Maldives: Australia 127,200, Sri Lanka 107,200, India 205,600.",
+      "computational_cost": "not-stated",
+      "purpose": "Choose where displaced people go, balancing how suitable a country is against how reachable it is.",
+      "base_or_modification": "hybrid",
+      "page": 11,
+      "inputs": [
+        "h_j",
+        "m_j",
+        "d_j",
+        "c_j",
+        "e_j",
+        "t_ij",
+        "q_ij"
+      ],
+      "outputs": [
+        "S_j",
+        "A_ij"
+      ],
+      "handoff_outputs": [
+        "S_j"
+      ],
+      "objectives": [
+        "Maximize destination suitability and route accessibility together, within capacity."
+      ],
+      "variables": [
+        {
+          "symbol": "h_j",
+          "normalized_name": "happiness",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Gross national happiness of destination j, income growth over the Gini times unemployment and inflation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_j",
+          "normalized_name": "social_security",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Health spending plus transfers, divided by government revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_j",
+          "normalized_name": "gdp_per_capita",
+          "role": "input",
+          "unit": "currency",
+          "definition": "GDP per capita of destination j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_j",
+          "normalized_name": "culture_pull",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Religious tolerance times cultural similarity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_j",
+          "normalized_name": "environment_pull",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of climate similarity and inverse pollution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_ij",
+          "normalized_name": "travel_time",
+          "role": "input",
+          "unit": "time",
+          "definition": "Time to travel from origin i to destination j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_ij",
+          "normalized_name": "route_death_rate",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Death rate on the route from i to j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_k",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "AHP weight of indicator k",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_j",
+          "normalized_name": "suitability",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the five standardized indicators for destination j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_ij",
+          "normalized_name": "accessibility",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Route score, falling with time and with deaths",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-RL-1",
+          "equation_label": "Destination suitability",
+          "equation_text": "S_j = 0.1461*h_j + 0.2751*m_j + 0.4798*d_j + 0.0340*c_j + 0.0650*e_j, after Z-score standardization",
+          "source_expression": "S_j = 0.1461*h_j + 0.2751*m_j + 0.4798*d_j + 0.0340*c_j + 0.0650*e_j, after Z-score standardization",
+          "normalized_latex": "S_j = \\sum_k \\omega_k \\, z_{jk}",
+          "purpose": "Weighted sum of standardized indicators. GDP dominates the weight.",
+          "variable_symbols": [
+            "S_j",
+            "b_k",
+            "h_j",
+            "m_j",
+            "d_j",
+            "c_j",
+            "e_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013772-RL-2",
+          "equation_label": "Accessibility",
+          "equation_text": "A_ij = 100 / (t_ij * (1 - q_ij))",
+          "source_expression": "A_ij = 100 / (t_ij * (1 - q_ij))",
+          "normalized_latex": "A_{ij} = \\frac{100}{t_{ij}\\,(1 - q_{ij})}",
+          "purpose": "Shorter and safer routes score higher. OCR places the terms ambiguously; the form follows the prose.",
+          "variable_symbols": [
+            "A_ij",
+            "t_ij",
+            "q_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The suitability weights are printed in prose and again in the appendix. The accessibility formula is garbled by OCR and reconstructed.",
+        "reason": "Equations (7) and (8)."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "One country in crisis at a time. Destinations proposed externally: for the Maldives, India, Australia, Sri Lanka."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Capacity capped at 0.5 percent of destination population. Accessibility used only for the urgent state."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Allocation rule, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "AHP on a 5 by 5 pairwise matrix, CR 0.055 against 0.1, largest eigenvalue 5.2203.",
+        "parameters": [
+          "b_k"
+        ]
+      },
+      "algorithm": {
+        "description": "Standardize, weight, rank destinations, fill the best to its cap, spill the rest down the ranking.",
+        "status": "implemented",
+        "steps": [
+          "Compute indicators",
+          "Standardize",
+          "Weight",
+          "Rank",
+          "Fill to capacity"
+        ],
+        "software": [],
+        "convergence_criteria": "AHP consistency ratio below 0.1."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Australia outranks Sri Lanka outranks India. Allocation 127,200, 107,200, 205,600. Populations given as 1.266 billion, 22.73 million, 20.42 million."
+        ],
+        "analysis": "The ranking and the caps reproduce the allocation. The two-objective step is described but no combined objective is solved."
+      },
+      "constraints": [
+        "Only destinations the displaced country itself names.",
+        "Half a percent of population is the hard cap."
+      ],
+      "validation_refs": [
+        "Table 1 raw indicators",
+        "Table 2 standardized indicators",
+        "Appendix A matrix"
+      ],
+      "strengths": [
+        "The cap is grounded in existing quota practice.",
+        "Urgent and non-urgent cases are given different objectives."
+      ],
+      "limitations": [
+        "GDP takes nearly half the weight, so the index mostly tracks income.",
+        "The two objectives are never actually combined into one program."
+      ],
+      "missing_details": [
+        "The pairwise matrix entries, which OCR scrambled.",
+        "How suitability and accessibility are traded off."
+      ],
+      "assumptions": [
+        "People prefer to stay in their own country.",
+        "Only one country is in crisis at a time."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013772-EL",
+      "section": "5.2 Effective labor model",
+      "family": "growth-accounting",
+      "summary": "Arrivals are treated as human capital in a Cobb-Douglas output function with a time-varying technology term tracked by a state space model. Fit to Australia, 1990-2012: capital elasticity 0.573, human capital elasticity 0.923, technology persistence 0.738. Human capital then accounts for 70.4 percent of GDP growth. Checked on 2013-2016, the GDP errors are 4.3, 2.4, 1.4 and 3.1 percent.",
+      "computational_cost": "not-stated",
+      "purpose": "Measure how much displaced labor, once trained, adds to the destination's growth.",
+      "base_or_modification": "base",
+      "page": 12,
+      "inputs": [
+        "K_t",
+        "H_t"
+      ],
+      "outputs": [
+        "Y_t",
+        "C_h"
+      ],
+      "handoff_outputs": [
+        "C_h"
+      ],
+      "objectives": [
+        "Separate the share of growth that comes from human capital."
+      ],
+      "variables": [
+        {
+          "symbol": "K_t",
+          "normalized_name": "capital_stock",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Capital input in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_t",
+          "normalized_name": "human_capital",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Human capital stock in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_t",
+          "normalized_name": "technology",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Technology level, unobserved, following a logged autoregression",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_k",
+          "normalized_name": "capital_elasticity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Output elasticity of capital, 0.573 for Australia",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_h",
+          "normalized_name": "human_elasticity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Output elasticity of human capital, 0.923 for Australia",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_t",
+          "normalized_name": "output",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Total output in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_h",
+          "normalized_name": "human_contribution",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Share of GDP growth attributed to human capital, 0.704 for Australia",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-EL-1",
+          "equation_label": "Effective labor",
+          "equation_text": "Y_t = A_t * K_t^alpha_k * H_t^beta_h; ln A_t = gamma + theta*ln A_(t-1) + v_t",
+          "source_expression": "Y_t = A_t * K_t^alpha_k * H_t^beta_h; ln A_t = gamma + theta*ln A_(t-1) + v_t",
+          "normalized_latex": "Y_t = A_t K_t^{\\alpha} H_t^{\\beta}",
+          "purpose": "Output from capital and human capital, technology estimated as a hidden autoregression.",
+          "variable_symbols": [
+            "Y_t",
+            "A_t",
+            "K_t",
+            "H_t",
+            "alpha_k",
+            "beta_h"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013772-EL-2",
+          "equation_label": "Contribution share",
+          "equation_text": "C_h = beta_h * (dH/H) / (dY/Y)",
+          "source_expression": "C_h = beta_h * (dH/H) / (dY/Y)",
+          "normalized_latex": "C_h = \\beta \\frac{\\Delta H / H}{\\Delta Y / Y}",
+          "purpose": "Human capital's share of growth. For Australia, 2.41 times 0.923 over 3.16 gives 70.4 percent.",
+          "variable_symbols": [
+            "C_h",
+            "beta_h"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (9) to (13) are readable. The contribution formula is printed ambiguously but the worked numbers fix it.",
+        "reason": "Equations (9) to (13)."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Australia, annual GDP, capital stock and human capital stock, 1990 to 2012."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Elasticities assumed stable over short spans."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Accounting identity, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "State space estimation on 1990-2012, coefficients reported.",
+        "parameters": [
+          "alpha_k",
+          "beta_h"
+        ]
+      },
+      "algorithm": {
+        "description": "Fit the logged production function with a hidden technology term, then compute the contribution ratio.",
+        "status": "implemented",
+        "steps": [
+          "Assemble annual data",
+          "Estimate state space",
+          "Compute contribution"
+        ],
+        "software": [],
+        "convergence_criteria": "Hold-out GDP error within a few percent."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "beta 0.923, alpha 0.573, persistence 0.738, contribution 70.4 percent. Hold-out errors 4.3, 2.4, 1.4, 3.1 percent."
+        ],
+        "analysis": "The worked example is fully numerical and checked out of sample."
+      },
+      "constraints": [
+        "Estimated on one country.",
+        "Technology assumed to follow a first-order logged process."
+      ],
+      "validation_refs": [
+        "Figure 11 hold-out test"
+      ],
+      "strengths": [
+        "The unobservable gets its own model instead of being ignored.",
+        "The test uses years the fit never saw."
+      ],
+      "limitations": [
+        "One country, so the leap to all capital-intensive countries is unsupported.",
+        "Human capital here is the whole stock, not the displaced share of it."
+      ],
+      "missing_details": [
+        "How much of Australia's human capital the arrivals would represent.",
+        "The variance of the technology shock."
+      ],
+      "assumptions": [
+        "Arrivals can be turned into human capital by training.",
+        "The economic structure is stable over a few years."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013772-CR",
+      "section": "5.2 Optimal time allocation",
+      "family": "expected-utility",
+      "summary": "Crime is treated as a time allocation. A person splits time between legal and illegal work across four states, from employment crossed with detection, and maximizes expected utility. Legal and illegal earnings and the penalty are concave in time. Differentiating the first-order condition shows that illegal time falls as the welfare payment rises. The conclusion is qualitative: more social spending cuts crime and frees time for legal work.",
+      "computational_cost": "not-stated",
+      "purpose": "Show that welfare spending reduces time spent on crime.",
+      "base_or_modification": "base",
+      "page": 14,
+      "inputs": [
+        "w_l",
+        "w_i",
+        "p_d",
+        "u_e"
+      ],
+      "outputs": [
+        "t_i"
+      ],
+      "handoff_outputs": [
+        "t_i"
+      ],
+      "objectives": [
+        "Sign the effect of welfare spending on illegal time."
+      ],
+      "variables": [
+        {
+          "symbol": "w_l",
+          "normalized_name": "legal_earnings",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Legal wage income as a concave function of legal time",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_i",
+          "normalized_name": "illegal_earnings",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Illegal income as a concave function of illegal time",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_d",
+          "normalized_name": "detection_probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Chance an illegal act is detected",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_e",
+          "normalized_name": "unemployment_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Social unemployment rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_i",
+          "normalized_name": "penalty",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Penalty cost, concave in illegal time",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_s",
+          "normalized_name": "welfare_payment",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Social security payment to the unemployed",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_i",
+          "normalized_name": "illegal_time",
+          "role": "output",
+          "unit": "time",
+          "definition": "Time allocated to illegal activity, falling in the welfare payment",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-CR-1",
+          "equation_label": "Welfare effect on illegal time",
+          "equation_text": "dt_i/dw_s = -(1-p_d)*u_e*w_i*U_3 / Delta < 0",
+          "source_expression": "dt_i/dw_s = -(1-p_d)*u_e*w_i*U_3 / Delta < 0",
+          "normalized_latex": "\\frac{\\partial t_i^{*}}{\\partial w_s} = -\\frac{(1-p_d)\\,u_e\\,w_i\\,U_3}{\\Delta} < 0",
+          "purpose": "The derivative is negative, so illegal time falls as welfare rises.",
+          "variable_symbols": [
+            "t_i",
+            "p_d",
+            "u_e",
+            "w_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The four state incomes and the derivative are readable. Intermediate notation shifts between w_l and w_1.",
+        "reason": "Equations (14) to (17)."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Four states from employed or not, crossed with detected or not."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Legal plus illegal time at most total available time. Risk aversion gives the second-order condition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Interior optimum from the Kuhn-Tucker condition."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No numbers are estimated. The result is a sign.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Write expected utility over four states, differentiate, sign the comparative static.",
+        "status": "implemented",
+        "steps": [
+          "List four states",
+          "Form expected utility",
+          "Take the first-order condition",
+          "Sign the derivative"
+        ],
+        "software": [],
+        "convergence_criteria": "Second-order condition non-positive."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The derivative is shown negative. No magnitude is computed."
+        ],
+        "analysis": "The direction is established. The claim that a small amount of aid cuts crime sharply is not quantified."
+      },
+      "constraints": [
+        "Switching between legal and illegal work is costless.",
+        "Everyone maximizes expected utility."
+      ],
+      "validation_refs": [
+        "Equations (14) to (17) sign the derivative negative; no external dataset"
+      ],
+      "strengths": [
+        "The moral account of crime is rejected up front, so the model has a clear alternative.",
+        "The policy lever comes out of the derivative rather than being asserted."
+      ],
+      "limitations": [
+        "No data. The size of the effect is unknown.",
+        "Detection probability and penalty are not tied to the peacekeeping policy that opens the section."
+      ],
+      "missing_details": [
+        "Any empirical value for the derivative.",
+        "The utility function's specific form."
+      ],
+      "assumptions": [
+        "Rational self-interest dominates.",
+        "No cost to switching activities.",
+        "Risk aversion."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013772-LG",
+      "section": "5.3 Cultural policy impact",
+      "family": "population-projection",
+      "summary": "Language survival is a headcount. Without protection, speakers shrink by the death rate each period; with protection they grow by the birth rate. A unique language is predicted to die within decades if the destination refuses the policy. Separately, each step down in the range or population band of the culture score costs 0.825 points.",
+      "computational_cost": "not-stated",
+      "purpose": "Show how fast a language disappears when it is not taught, and price that loss in the culture score.",
+      "base_or_modification": "paper-specific",
+      "page": 14,
+      "inputs": [
+        "N_0",
+        "r_d",
+        "r_b"
+      ],
+      "outputs": [
+        "N_t"
+      ],
+      "handoff_outputs": [
+        "N_t"
+      ],
+      "objectives": [
+        "Contrast the speaker count under refusal and under protection."
+      ],
+      "variables": [
+        {
+          "symbol": "N_0",
+          "normalized_name": "initial_speakers",
+          "role": "input",
+          "unit": "count",
+          "definition": "Number of displaced people who speak the language at arrival",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_d",
+          "normalized_name": "death_rate",
+          "role": "parameter",
+          "unit": "per-period",
+          "definition": "Death rate applied when the language is not passed on",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_b",
+          "normalized_name": "birth_rate",
+          "role": "parameter",
+          "unit": "per-period",
+          "definition": "Birth rate applied when children are taught the language",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_t",
+          "normalized_name": "speakers",
+          "role": "output",
+          "unit": "count",
+          "definition": "Number of speakers after t periods",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-LG-1",
+          "equation_label": "Speakers under two policies",
+          "equation_text": "N_t = N_0*(1 - r_d)^t without protection; N_t = N_0*(1 + r_b)^t with protection",
+          "source_expression": "N_t = N_0*(1 - r_d)^t without protection; N_t = N_0*(1 + r_b)^t with protection",
+          "normalized_latex": "N_t = N_0(1 - r_d)^{t}",
+          "purpose": "Attrition against growth. The score falls 0.825 points per band dropped.",
+          "variable_symbols": [
+            "N_t",
+            "N_0",
+            "r_d",
+            "r_b"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (18) and (19) are readable. The 0.825 figure is prose, not derived in view.",
+        "reason": "Equations (18) and (19)."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Speakers start at the displaced population. Extinction follows the UNESCO definition."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Speaker count is a non-negative integer."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Projection, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Death and birth rates are left symbolic. No values are fitted.",
+        "parameters": [
+          "r_d",
+          "r_b"
+        ]
+      },
+      "algorithm": {
+        "description": "Compound the speaker count forward under each policy and compare.",
+        "status": "partial",
+        "steps": [
+          "Set the starting count",
+          "Apply the rate",
+          "Compare trajectories"
+        ],
+        "software": [],
+        "convergence_criteria": "None."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The two curves are drawn in a figure. No rate or horizon is printed. The 0.825 point drop per band is stated."
+        ],
+        "analysis": "The qualitative result is solid. The decades claim is not computable from the text."
+      },
+      "constraints": [
+        "Speakers change only by death or by children taught.",
+        "Migration of speakers is ignored."
+      ],
+      "validation_refs": [
+        "Figure 10 language trajectories"
+      ],
+      "strengths": [
+        "Extinction is defined before it is projected.",
+        "The loss is converted into the same score used earlier."
+      ],
+      "limitations": [
+        "No numbers, so the decades claim cannot be checked.",
+        "The 0.825 is asserted without the arithmetic shown."
+      ],
+      "missing_details": [
+        "The death rate, birth rate and starting count used for the figure.",
+        "The derivation of 0.825."
+      ],
+      "assumptions": [
+        "A language dies when newborns are not taught it.",
+        "Policy is the only thing that changes the rate."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013772-EN",
+      "section": "5.4 Environmental policy impact",
+      "family": "weighted-average",
+      "summary": "Per-capita emissions are assumed unchanged by moving, so the destination's new pollution is a population-weighted blend of its own and the arrivals'. The accommodation rate is arrivals over the new total. PM2.5 and carbon dioxide are both updated this way, and the result is the new ceiling the UN should set. For the Maldives the text gives one worked ceiling: Australia's carbon dioxide standard raised to 359,462 thousand metric tons. The supporting tables are images.",
+      "computational_cost": "not-stated",
+      "purpose": "Turn a relocation into a revised emissions ceiling for each destination.",
+      "base_or_modification": "paper-specific",
+      "page": 16,
+      "inputs": [
+        "P_j",
+        "P_i",
+        "E_j",
+        "E_i",
+        "T_j",
+        "R_i"
+      ],
+      "outputs": [
+        "P_new",
+        "E_new"
+      ],
+      "handoff_outputs": [
+        "E_new"
+      ],
+      "objectives": [
+        "Compute the emissions ceiling a destination should be allowed after receiving people."
+      ],
+      "variables": [
+        {
+          "symbol": "P_j",
+          "normalized_name": "destination_pollution",
+          "role": "input",
+          "unit": "concentration",
+          "definition": "PM2.5 level of the destination before arrival",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_i",
+          "normalized_name": "origin_pollution",
+          "role": "input",
+          "unit": "concentration",
+          "definition": "PM2.5 level associated with the arrivals' origin",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_j",
+          "normalized_name": "destination_emissions",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon dioxide emissions of the destination",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_i",
+          "normalized_name": "origin_emissions",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon dioxide emissions associated with the arrivals",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_j",
+          "normalized_name": "destination_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Population of the destination",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_i",
+          "normalized_name": "arrivals",
+          "role": "input",
+          "unit": "count",
+          "definition": "Number of displaced people moving to the destination",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_j",
+          "normalized_name": "accommodation_rate",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Arrivals divided by the new total population",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_new",
+          "normalized_name": "new_pollution",
+          "role": "output",
+          "unit": "concentration",
+          "definition": "Blended PM2.5 after arrival",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_new",
+          "normalized_name": "new_emissions",
+          "role": "output",
+          "unit": "mass",
+          "definition": "Blended carbon dioxide emissions, the proposed ceiling",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013772-EN-1",
+          "equation_label": "Blended emissions",
+          "equation_text": "a_j = R_i / (T_j + R_i); E_new = E_j*(1 - a_j) + E_i*a_j; likewise for pollution",
+          "source_expression": "a_j = R_i / (T_j + R_i); E_new = E_j*(1 - a_j) + E_i*a_j; likewise for pollution",
+          "normalized_latex": "E^{new} = E_j(1 - a_j) + E_i a_j",
+          "purpose": "Population-weighted blend. The ceiling moves by exactly the arrivals' share.",
+          "variable_symbols": [
+            "a_j",
+            "R_i",
+            "T_j",
+            "E_new",
+            "E_j",
+            "E_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (20) and (21) are readable. The per-capita terms are written inconsistently but the weighted form is clear.",
+        "reason": "Equations (20) and (21)."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Per-capita emissions fixed by assumption. Maldives arrivals split across three destinations."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Accommodation rate between 0 and 1."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Accounting blend, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameters. Direct weighted average.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Compute the arrivals' share of the new population and blend both indicators.",
+        "status": "implemented",
+        "steps": [
+          "Compute the share",
+          "Blend pollution",
+          "Blend emissions",
+          "Read off the ceiling"
+        ],
+        "software": [],
+        "convergence_criteria": "None."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Australia's carbon dioxide ceiling given as 359,462 thousand metric tons. Other revised values are in unscanned tables."
+        ],
+        "analysis": "The rule is transparent. Only one output number survives in the prose."
+      },
+      "constraints": [
+        "Per-capita emissions do not change on moving.",
+        "Only PM2.5 and carbon dioxide are tracked."
+      ],
+      "validation_refs": [
+        "Table 4 revised indicators"
+      ],
+      "strengths": [
+        "The policy number comes directly from the formula, so it can be audited.",
+        "The assumption doing the work is restated at the point of use."
+      ],
+      "limitations": [
+        "Holding per-capita emissions fixed ignores any change in technology or income.",
+        "The blend treats the arrivals' emissions as their origin's average, which may not fit a displaced population."
+      ],
+      "missing_details": [
+        "The raw PM2.5 and emissions figures, which sit in tables.",
+        "Why these two indicators and no others."
+      ],
+      "assumptions": [
+        "Lifestyles, and therefore per-capita emissions, survive the move unchanged."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2020-2013772-CV-1",
+      "model_id": "MU-F-2020-2013772-CV",
+      "page": 7,
+      "source_expression": "V = sum over criteria of w_c * (rescaled bands), weights 0.4, 0.3, 0.3"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-RL-1",
+      "model_id": "MU-F-2020-2013772-RL",
+      "page": 11,
+      "source_expression": "S_j = 0.1461*h_j + 0.2751*m_j + 0.4798*d_j + 0.0340*c_j + 0.0650*e_j, after Z-score standardization"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-RL-2",
+      "model_id": "MU-F-2020-2013772-RL",
+      "page": 11,
+      "source_expression": "A_ij = 100 / (t_ij * (1 - q_ij))"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-EL-1",
+      "model_id": "MU-F-2020-2013772-EL",
+      "page": 12,
+      "source_expression": "Y_t = A_t * K_t^alpha_k * H_t^beta_h; ln A_t = gamma + theta*ln A_(t-1) + v_t"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-EL-2",
+      "model_id": "MU-F-2020-2013772-EL",
+      "page": 13,
+      "source_expression": "C_h = beta_h * (dH/H) / (dY/Y)"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-CR-1",
+      "model_id": "MU-F-2020-2013772-CR",
+      "page": 14,
+      "source_expression": "dt_i/dw_s = -(1-p_d)*u_e*w_i*U_3 / Delta < 0"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-LG-1",
+      "model_id": "MU-F-2020-2013772-LG",
+      "page": 14,
+      "source_expression": "N_t = N_0*(1 - r_d)^t without protection; N_t = N_0*(1 + r_b)^t with protection"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013772-EN-1",
+      "model_id": "MU-F-2020-2013772-EN",
+      "page": 16,
+      "source_expression": "a_j = R_i / (T_j + R_i); E_new = E_j*(1 - a_j) + E_i*a_j; likewise for pollution"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2020-2013772-CV",
+      "to_model_id": "MU-F-2020-2013772-RL",
+      "handoff": "The culture indicators, reweighted, become the cultural similarity term inside the culture pull index"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013772-CV",
+      "to_model_id": "MU-F-2020-2013772-LG",
+      "handoff": "The band structure of the culture score prices the language loss at 0.825 points per step"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013772-RL",
+      "to_model_id": "MU-F-2020-2013772-EN",
+      "handoff": "The allocation headcounts are the arrivals that shift each destination's emissions"
+    }
+  ]
+}

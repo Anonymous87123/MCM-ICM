@@ -1,0 +1,37 @@
+Control # 8362                                                                       17
+
+
+
+
+Program 2 The killer-finding and future-predicting algorithm
+1 G is the set of grid points after the search area is partitioned by the mesh
+1 G0 is G augmented with a 40% boundary buffer zone
+1 C is the set of past crimes, each of which has a location and date
+1 f (d) is the distance decay function which returns a higher number for more
+probable locations
+1 Prob is the probability of the killer location based on distance decay affects for the
+grid
+1 ∆Prob measures the change in distribution of Prob when adding a new crime scene
+
+1 Function criminalLocationProb (crimes C, function f ):
+1 1 Let Prob be a mapping from G0 into R
+1 1 for g ∈ G0 do
+1 1 1 /*Calculate cumulative distance affect from all c ∈ C*/
+1 1 1 Prob[g] = 0
+1 1 1 for c ∈ C do
+1 1 1 1 Prob[g] = Prob[g] + f (distance between c and g)
+1 1 Normalize the values of Prob so that the sum of the values is 1
+1 1 return Prob
+
+1 Function nextCrimeProb (crimes C, function f ):
+1 1 killer prob distrib = criminalLocationProb(C,f )
+1 1 Let ∆Prob be a mapping from G0 into R
+1 1 for g ∈ G0 do
+1 1 1 Let C 0 be C augmented with a “virtual crime” at g
+1 1 1 V = criminalLocationProb(C 0 ,f )
+1 1 1 /*Calculate sum of squared differences between killer prob distrib and V */
+1 1 1 ∆Prob[g] = 0
+1 1 1 for h ∈ G0 do
+1 1 1 1 ∆Prob[g] = ∆Prob[g] + (V[h] − killer prob distrib[h])2
+1 1 Normalize the values of ∆Prob so that the sum of the values is 1
+1 1 return ∆Prob

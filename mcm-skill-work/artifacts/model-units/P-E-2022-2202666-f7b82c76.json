@@ -1,0 +1,1123 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2022-2202666-f7b82c76",
+  "problem_type": "E",
+  "year": "2022",
+  "source_sha256": "f7b82c7679c1c1f537eb55fc01ac4be7798677ab64158b7cc5f5c767c79ff4ab",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "section": "Forestry carbon sequestration model",
+      "family": "evaluation",
+      "summary": "Total carbon in a year is living wood plus products. Harvested area is the rate times total area, divided by the cosine of the slope. Living area prints 1 minus a, not 1 minus the rate. Capacity is a fitted curve whose exponent is jammed on the line. The age share prints a broken glyph around the rate. Living carbon sums ages 1 to 100. Harvested carbon sums ages 81 to 100. Product carbon adds the current year, products in use, and landfill. The half-life exponent does not stay on the baseline. Hardwood is 30 years and paper is 2. Landfill is a sum with no decay.",
+      "computational_cost": "Two area lines, two age sums, and one product sum with an unnamed half-life",
+      "purpose": "Turn area, age, and product life into a carbon total.",
+      "base_or_modification": "hybrid",
+      "page": 6,
+      "inputs": [
+        "TFS"
+      ],
+      "outputs": [
+        "Ct"
+      ],
+      "handoff_outputs": [
+        "Ct"
+      ],
+      "objectives": [
+        "Maximize carbon by cutting only trees past the cutting age of 81."
+      ],
+      "variables": [
+        {
+          "symbol": "TFS",
+          "normalized_name": "total_area",
+          "role": "input",
+          "unit": "area",
+          "definition": "Total forest surface area. The ideal run uses 17.98 times 10 to the 4 hectares. The Beijing case uses 1.79 times 10 to the 4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ct",
+          "normalized_name": "year_total",
+          "role": "output",
+          "unit": "mass",
+          "definition": "Total carbon sequestration in year i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cl",
+          "normalized_name": "living_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon in living wood",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cp",
+          "normalized_name": "product_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon in forest products",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HFS",
+          "normalized_name": "harvested_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Harvested forest surface area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "harvest_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Harvesting rate. The search uses 0.1, 0.3, 0.5, 0.7, and 0.9 percent",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "slope_angle",
+          "role": "parameter",
+          "unit": "degree",
+          "definition": "Slope angle. Area is divided by its cosine",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LFS",
+          "normalized_name": "living_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Living forest surface area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "printed_complement",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "The symbol printed in 1 minus a on the living-area line. It is not the alpha of the harvested-area line",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "capacity",
+          "role": "intermediate",
+          "unit": "mass per area",
+          "definition": "Carbon sequestration capacity at age t. The fitted line is jammed",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "afit",
+          "normalized_name": "fit_scale",
+          "role": "parameter",
+          "unit": "mass per area",
+          "definition": "Printed parameter a of the capacity fit. Ideal value 17.86",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bfit",
+          "normalized_name": "fit_width",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Printed parameter b of the capacity fit. Ideal value 69.65",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cfit",
+          "normalized_name": "fit_center",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Printed parameter c of the capacity fit. Ideal value 67.76",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "tree_age",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Tree age. The cut starts at 81",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "age",
+          "normalized_name": "age_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Probability distribution of age. Equation 5 has a missing glyph",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "maturation_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Maturation rate. Immature share is 1 minus beta",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Dj",
+          "normalized_name": "species_capacity",
+          "role": "intermediate",
+          "unit": "mass per area",
+          "definition": "Capacity of tree type j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LFSj",
+          "normalized_name": "species_living_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Living area of tree type j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HFSj",
+          "normalized_name": "species_harvest_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Harvested area of tree type j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "species_index",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Index of tree type",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ch",
+          "normalized_name": "harvested_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon in trees harvested from age 81",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ccurrent",
+          "normalized_name": "current_products",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon in products made this year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cuse",
+          "normalized_name": "use_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Accumulated carbon of products still in use. The half-life exponent is off the baseline",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "Cland",
+          "normalized_name": "landfill_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Accumulated carbon of products in landfill",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "productivity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of logged wood made into products. Printed 0.6 in both runs",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega1",
+          "normalized_name": "use_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of products in use. Ideal run 0.7. Beijing case 0.65",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega2",
+          "normalized_name": "landfill_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of landfill. Ideal run 0.3. Beijing case 0.35. The two weights are said to sum to 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Thalf",
+          "normalized_name": "half_life",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Half-life. Hardwood 30 years. Paper 2 years",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-1",
+          "equation_label": "Year total",
+          "equation_text": "Total carbon in year i is living wood plus forest products.",
+          "source_expression": "Total carbon in year i is living wood plus forest products.",
+          "normalized_latex": "Ct=Cl+Cp",
+          "purpose": "Add the two stores.",
+          "variable_symbols": [
+            "Ct",
+            "Cl",
+            "Cp"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-2",
+          "equation_label": "Harvested area",
+          "equation_text": "Harvested area equals the rate times total area. The prose divides that product by the cosine of the slope. The cosine sits on the next line.",
+          "source_expression": "Harvested area equals the rate times total area. The prose divides that product by the cosine of the slope. The cosine sits on the next line.",
+          "normalized_latex": "HFS=alpha*TFS/\\cos(theta)",
+          "purpose": "Scale the cut by the slope.",
+          "variable_symbols": [
+            "HFS",
+            "alpha",
+            "TFS",
+            "theta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-3",
+          "equation_label": "Living area",
+          "equation_text": "Living area equals 1 minus a, times total area, over the cosine of the slope. The harvested-area line uses alpha. This line prints a.",
+          "source_expression": "Living area equals 1 minus a, times total area, over the cosine of the slope. The harvested-area line uses alpha. This line prints a.",
+          "normalized_latex": "LFS=(1-a)*TFS/\\cos(theta)",
+          "purpose": "Keep the printed complement.",
+          "variable_symbols": [
+            "LFS",
+            "a",
+            "TFS",
+            "theta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-4",
+          "equation_label": "Capacity fit",
+          "equation_text": "Capacity against age is a fitted curve. The print jams a, e, t, c, and b onto one line. The prose says a, b, and c are the parameters. No separated exponent is supplied.",
+          "source_expression": "Capacity against age is a fitted curve. The print jams a, e, t, c, and b onto one line. The prose says a, b, and c are the parameters. No separated exponent is supplied.",
+          "normalized_latex": "D=D(afit,bfit,cfit,t)",
+          "purpose": "Name the fit without supplying it.",
+          "variable_symbols": [
+            "D",
+            "afit",
+            "bfit",
+            "cfit",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-5",
+          "equation_label": "Age share",
+          "equation_text": "The age share is printed as 1 minus a broken term in the rate, times t and beta, plus 1 minus beta. The glyph inside the parentheses is missing.",
+          "source_expression": "The age share is printed as 1 minus a broken term in the rate, times t and beta, plus 1 minus beta. The glyph inside the parentheses is missing.",
+          "normalized_latex": "age=age(alpha,beta,t)",
+          "purpose": "Name the age share without supplying it.",
+          "variable_symbols": [
+            "age",
+            "alpha",
+            "beta",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-6",
+          "equation_label": "Living sum",
+          "equation_text": "Living carbon sums species capacity times living area times the age share, for age from 1 to 100 and for each species.",
+          "source_expression": "Living carbon sums species capacity times living area times the age share, for age from 1 to 100 and for each species.",
+          "normalized_latex": "Cl=\\sum Dj*LFSj*age",
+          "purpose": "Sum the living trees.",
+          "variable_symbols": [
+            "Cl",
+            "Dj",
+            "LFSj",
+            "age",
+            "t",
+            "j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-7",
+          "equation_label": "Harvest sum",
+          "equation_text": "Harvested carbon is the same product summed from age 81 to 100.",
+          "source_expression": "Harvested carbon is the same product summed from age 81 to 100.",
+          "normalized_latex": "Ch=\\sum Dj*HFSj*age",
+          "purpose": "Sum only the trees past 81.",
+          "variable_symbols": [
+            "Ch",
+            "Dj",
+            "HFSj",
+            "age",
+            "t",
+            "j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-8",
+          "equation_label": "Product total",
+          "equation_text": "Product carbon is current products plus accumulated products in use plus accumulated landfill.",
+          "source_expression": "Product carbon is current products plus accumulated products in use plus accumulated landfill.",
+          "normalized_latex": "Cp=Ccurrent+Cuse+Cland",
+          "purpose": "Add the three product stores.",
+          "variable_symbols": [
+            "Cp",
+            "Ccurrent",
+            "Cuse",
+            "Cland"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-9",
+          "equation_label": "Current products",
+          "equation_text": "Current products equal productivity times the harvested carbon.",
+          "source_expression": "Current products equal productivity times the harvested carbon.",
+          "normalized_latex": "Ccurrent=k*Ch",
+          "purpose": "Turn the harvest into products.",
+          "variable_symbols": [
+            "Ccurrent",
+            "k",
+            "Ch"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-10",
+          "equation_label": "Landfill sum",
+          "equation_text": "Landfill carbon sums the landfill weight times current products of earlier years. The prose says this carbon is kept for a long time.",
+          "source_expression": "Landfill carbon sums the landfill weight times current products of earlier years. The prose says this carbon is kept for a long time.",
+          "normalized_latex": "Cland=\\sum omega2*Ccurrent",
+          "purpose": "Accumulate the landfill without a decay.",
+          "variable_symbols": [
+            "Cland",
+            "omega2",
+            "Ccurrent"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SEQ-11",
+          "equation_label": "Half-life",
+          "equation_text": "Products in use are a weighted sum of earlier current products times a power of 2. The exponent does not stay on the baseline. Hardwood half-life is 30 years and paper is 2 years.",
+          "source_expression": "Products in use are a weighted sum of earlier current products times a power of 2. The exponent does not stay on the baseline. Hardwood half-life is 30 years and paper is 2 years.",
+          "normalized_latex": "Cuse=Cuse(omega1,Ccurrent,Thalf)",
+          "purpose": "Name the half-life without supplying it.",
+          "variable_symbols": [
+            "Cuse",
+            "omega1",
+            "Ccurrent",
+            "Thalf"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 3 prints a where equation 2 prints alpha. Equation 4 jams the exponent. Equation 5 and the substituted equation 8 lose a glyph. Equation 11 loses the exponent baseline. Equation 19 is used twice, in the next model.",
+        "reason": "Section 4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Ages start from a uniform distribution that is the same in every forest.",
+            "The ideal area is 17.98 times 10 to the 4 hectares."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The cut starts at age 81.",
+            "Area on a slope is divided by the cosine."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "Maturity is the age when net organic-carbon production is zero. No steady state is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The ideal fit prints 17.86, 69.65, and 67.76. A species table prints further triples, with two names off their rows.",
+        "parameters": [
+          "afit",
+          "bfit",
+          "cfit",
+          "k"
+        ]
+      },
+      "algorithm": {
+        "description": "Divide area by the cosine, sum living and harvested ages, and add products in use to landfill.",
+        "status": "partial",
+        "steps": [
+          "Scale area by the slope",
+          "Sum ages",
+          "Add the three product stores"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "No convergence test is stated for the fit."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The year total, the two age limits, and the product sum print. The capacity exponent and the age glyph do not."
+        ],
+        "analysis": "The ideal maximum is 8.62 times 10 to the 9 kilograms. The Beijing case states 1.08 times 10 to the 10."
+      },
+      "constraints": [
+        "Only trees past age 81 are cut.",
+        "Energy and emission are not counted.",
+        "The two product weights sum to 1."
+      ],
+      "validation_refs": [
+        "Equation 1, the year total",
+        "Figure 4, capacity against age",
+        "Table 5, the species fits"
+      ],
+      "strengths": [
+        "Living carbon and product carbon are added in one line.",
+        "The harvest sum starts at the stated cutting age of 81."
+      ],
+      "limitations": [
+        "Equation 3 prints a instead of alpha.",
+        "The age formula and the half-life exponent do not parse.",
+        "Two Beijing areas are printed."
+      ],
+      "missing_details": [
+        "The glyph inside equation 5.",
+        "The separated exponent of equation 4.",
+        "Which species owns the number row that has no name."
+      ],
+      "assumptions": [
+        "Planted forests are excluded.",
+        "Ages are uniform and identical across forests.",
+        "One maturity threshold applies to every species."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2202666-OPT",
+      "section": "Dynamic optimization of the harvest rate",
+      "family": "decision",
+      "summary": "Each year picks a rate from 0.1, 0.3, 0.5, 0.7, and 0.9 percent. The sum of those rates over 100 years is at most 50 percent. Dynamic programming is named. The ideal forest is said to come from random numbers, and the area used is the 2014 Beijing primary forest. The dots are read as a cycle of about 20 years. The maximum is 8.62 times 10 to the 9 kilograms. Because the rate is small, this search does not include a harvesting interval.",
+      "computational_cost": "A discrete rate each year under one sum cap",
+      "purpose": "Choose the annual rates that maximize the carbon total.",
+      "base_or_modification": "paper-specific",
+      "page": 9,
+      "inputs": [
+        "Ct"
+      ],
+      "outputs": [
+        "alpha"
+      ],
+      "handoff_outputs": [
+        "alpha"
+      ],
+      "objectives": [
+        "Maximize the year total subject to the rates summing to at most 50 percent."
+      ],
+      "variables": [
+        {
+          "symbol": "Ct",
+          "normalized_name": "year_total",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Year total from the sequestration model, the quantity being maximized",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cl",
+          "normalized_name": "living_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Living part of the year total",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cp",
+          "normalized_name": "product_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Product part of the year total",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "harvest_rate",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Annual rate, chosen from five printed values",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2202666-OPT-1",
+          "equation_label": "Rate cap",
+          "equation_text": "The objective maximizes living carbon plus product carbon. The sum of the annual rates over 100 years is at most 50 percent. Each rate is one of 0.1, 0.3, 0.5, 0.7, and 0.9 percent.",
+          "source_expression": "The objective maximizes living carbon plus product carbon. The sum of the annual rates over 100 years is at most 50 percent. Each rate is one of 0.1, 0.3, 0.5, 0.7, and 0.9 percent.",
+          "normalized_latex": "\\sum alpha<=0.5",
+          "purpose": "Cap the hundred-year rate sum.",
+          "variable_symbols": [
+            "alpha",
+            "Ct",
+            "Cl",
+            "Cp"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The cap and the five rates print. The recursion is described as depending on the previous total and is not written as a display.",
+        "reason": "Section 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The run starts from 17.98 times 10 to the 4 hectares, called the 2014 primary forest of Beijing."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The sum of annual rates is at most 50 percent.",
+            "Commercial intensity is cited at no more than 35 percent and public-welfare intensity at no more than 20 percent, with a rotation of about 49 years."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The horizon is 100 years, not a steady harvest."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Productivity is 0.6. Use weight is 0.7 and landfill weight is 0.3. The fit is 17.86, 69.65, and 67.76.",
+        "parameters": [
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "description": "Search the five rates by dynamic programming under the 50 percent cap.",
+        "status": "partial",
+        "steps": [
+          "Pick a rate from the five values",
+          "Update the year total",
+          "Keep the sum at or below 50 percent"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The printed maximum is 8.62 times 10 to the 9 kilograms, read as a cycle of about 20 years."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The cap and the five rates print. The stage recursion does not."
+        ],
+        "analysis": "The search is said to omit the harvesting interval because the rate is small."
+      },
+      "constraints": [
+        "Each annual rate is one of the five printed percents.",
+        "The hundred-year sum is at most 50 percent."
+      ],
+      "validation_refs": [
+        "Figure 5, the solving process",
+        "Figure 6, the annual plan"
+      ],
+      "strengths": [
+        "The allowed rates and the cap are printed as a set.",
+        "The horizon is stated as 100 years."
+      ],
+      "limitations": [
+        "The ideal forest is random and the area is Beijing.",
+        "The solution sketch is cited as Figure 4."
+      ],
+      "missing_details": [
+        "The recursion that links one year to the previous total.",
+        "Which dots are the high rate and which are the low rate."
+      ],
+      "assumptions": [
+        "A small rate means the interval can be left out of this search.",
+        "Parameters of the ideal forest may be random numbers."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2202666-SOC",
+      "section": "ESE forest value model",
+      "family": "decision",
+      "summary": "Value is ecology, society, and economy. Profit is tourism revenue minus forest-product revenue. A metric divides an actual value by the area-wide value and multiplies by 100, and it reuses equation number 19. The score is 0.5816 times ecology plus 0.1095 times society plus 0.3090 times economy. Those three add to 1.0001. The factor table is shifted by a row. An interval returns the area to its pre-cut state and is minus the log of 1 minus the rate, over the log of 1 plus the growth rate. Five programs are printed on shifted rows. Beijing scores 4.0677 and is given program three, 0.06 percent and 30 years. A ten-year lengthening asks for 0.09 percent.",
+      "computational_cost": "One weighted score and one closed interval",
+      "purpose": "Turn a carbon total and a harvest rate into a program.",
+      "base_or_modification": "paper-specific",
+      "page": 11,
+      "inputs": [
+        "Ct",
+        "alpha"
+      ],
+      "outputs": [
+        "VI"
+      ],
+      "handoff_outputs": [
+        "VI"
+      ],
+      "objectives": [
+        "Pick the program whose score matches the forest, and lengthen the interval by changing the rate."
+      ],
+      "variables": [
+        {
+          "symbol": "Ct",
+          "normalized_name": "year_total",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon total handed off as the ecological carbon term",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "harvest_rate",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Harvest rate used in the interval",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VIprofit",
+          "normalized_name": "profit_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Profit index, tourism revenue minus product revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma6",
+          "normalized_name": "profit_factor",
+          "role": "parameter",
+          "unit": "per money",
+          "definition": "Conversion factor on the profit gap",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rtour",
+          "normalized_name": "tourism_revenue",
+          "role": "parameter",
+          "unit": "money",
+          "definition": "Total annual tourism revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rprod",
+          "normalized_name": "product_revenue",
+          "role": "parameter",
+          "unit": "money",
+          "definition": "Total annual forest-product revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Em",
+          "normalized_name": "metric_value",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Nondimensional score, numbered 19 like the profit line",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Im",
+          "normalized_name": "actual_value",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Actual value of factor m",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Iall",
+          "normalized_name": "area_value",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Value of the same factor over the whole area. The print uses I",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VI",
+          "normalized_name": "value_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Composite value index. Beijing is scored 4.0677",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VIeco",
+          "normalized_name": "ecology_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Ecological value index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VIsoc",
+          "normalized_name": "society_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Social value index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VIecon",
+          "normalized_name": "economy_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Economic value index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "deltai",
+          "normalized_name": "harvest_interval",
+          "role": "intermediate",
+          "unit": "year",
+          "definition": "Years until area returns to the pre-cut state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Annual growth rate of forest area",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2202666-SOC-1",
+          "equation_label": "Profit gap",
+          "equation_text": "The profit index is a conversion factor times tourism revenue minus forest-product revenue. The gap is called an opportunity cost.",
+          "source_expression": "The profit index is a conversion factor times tourism revenue minus forest-product revenue. The gap is called an opportunity cost.",
+          "normalized_latex": "VIprofit=gamma6*(Rtour-Rprod)",
+          "purpose": "Price tourism against products.",
+          "variable_symbols": [
+            "VIprofit",
+            "gamma6",
+            "Rtour",
+            "Rprod"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SOC-2",
+          "equation_label": "Metric",
+          "equation_text": "The metric is the actual value divided by the area-wide value, times 100. The prose states the division. The display number is 19, already used for the profit line. The denominator sits on the next line.",
+          "source_expression": "The metric is the actual value divided by the area-wide value, times 100. The prose states the division. The display number is 19, already used for the profit line. The denominator sits on the next line.",
+          "normalized_latex": "Em=Im/Iall*100",
+          "purpose": "Scale a factor to a common score.",
+          "variable_symbols": [
+            "Em",
+            "Im",
+            "Iall"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SOC-3",
+          "equation_label": "Composite score",
+          "equation_text": "The index is 0.5816 times ecology plus 0.1095 times society plus 0.3090 times economy.",
+          "source_expression": "The index is 0.5816 times ecology plus 0.1095 times society plus 0.3090 times economy.",
+          "normalized_latex": "VI=0.5816*VIeco+0.1095*VIsoc+0.3090*VIecon",
+          "purpose": "Weight the three dimensions.",
+          "variable_symbols": [
+            "VI",
+            "VIeco",
+            "VIsoc",
+            "VIecon"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2202666-SOC-4",
+          "equation_label": "Interval",
+          "equation_text": "After the area identity is rearranged, the interval is minus the log of 1 minus the rate, divided by the log of 1 plus the growth rate.",
+          "source_expression": "After the area identity is rearranged, the interval is minus the log of 1 minus the rate, divided by the log of 1 plus the growth rate.",
+          "normalized_latex": "deltai=-\\log(1-alpha)/\\log(1+g)",
+          "purpose": "Recover the years until area returns.",
+          "variable_symbols": [
+            "deltai",
+            "alpha",
+            "g"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 19 is used twice. The three dimension weights add to 1.0001. The factor table is shifted. Displays 14 and 15 put a second quantity on the next line and are not given a fraction here.",
+        "reason": "Section 5."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The score compares plans. It is not an initial-value problem."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The interval is the time at which area returns to the pre-cut area.",
+            "Every consistency ratio is said to be under 0.10."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "The return to the pre-cut area is a cycle length, not a solved steady state."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "K-means makes ten clusters. AHP prints the dimension weights. No pairwise matrix is printed.",
+        "parameters": [
+          "g"
+        ]
+      },
+      "algorithm": {
+        "description": "Cluster the factors, weight the three dimensions, and read a program off the matrix.",
+        "status": "partial",
+        "steps": [
+          "Nondimensionalize the six factors",
+          "Weight the three dimensions",
+          "Read the interval from the rate"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Beijing at 4.0677 is read as program three."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The three coefficients and the interval print. The judgment matrix does not."
+        ],
+        "analysis": "Program three is stated as 0.06 percent and 30 years. The lengthened plan asks for 0.09 percent."
+      },
+      "constraints": [
+        "The interval restores the pre-cut area.",
+        "A high ecological score is said to forbid felling."
+      ],
+      "validation_refs": [
+        "Table 3, the shifted weights",
+        "Table 4, the five programs",
+        "Figure 10, the GE metrix",
+        "Table 6, the Beijing score"
+      ],
+      "strengths": [
+        "The three dimension weights are printed inside the score.",
+        "The interval is rearranged from a stated area identity."
+      ],
+      "limitations": [
+        "Equation 19 is used twice.",
+        "The weight rows and the program rows are shifted.",
+        "0.09 percent is on neither printed list."
+      ],
+      "missing_details": [
+        "The pairwise matrix behind the consistency ratios.",
+        "Which shifted cell is program two.",
+        "The growth rate used for Beijing."
+      ],
+      "assumptions": [
+        "Tourism profit is the product revenue given up on the same area.",
+        "Country A stands in for the 186 forests of the summary."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-1",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 6,
+      "source_expression": "Total carbon in year i is living wood plus forest products."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-2",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 7,
+      "source_expression": "Harvested area equals the rate times total area. The prose divides that product by the cosine of the slope. The cosine sits on the next line."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-3",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 7,
+      "source_expression": "Living area equals 1 minus a, times total area, over the cosine of the slope. The harvested-area line uses alpha. This line prints a."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-4",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 7,
+      "source_expression": "Capacity against age is a fitted curve. The print jams a, e, t, c, and b onto one line. The prose says a, b, and c are the parameters. No separated exponent is supplied."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-5",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 8,
+      "source_expression": "The age share is printed as 1 minus a broken term in the rate, times t and beta, plus 1 minus beta. The glyph inside the parentheses is missing."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-6",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 8,
+      "source_expression": "Living carbon sums species capacity times living area times the age share, for age from 1 to 100 and for each species."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-7",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 8,
+      "source_expression": "Harvested carbon is the same product summed from age 81 to 100."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-8",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 9,
+      "source_expression": "Product carbon is current products plus accumulated products in use plus accumulated landfill."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-9",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 9,
+      "source_expression": "Current products equal productivity times the harvested carbon."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-10",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 9,
+      "source_expression": "Landfill carbon sums the landfill weight times current products of earlier years. The prose says this carbon is kept for a long time."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SEQ-11",
+      "model_id": "MU-E-2022-2202666-SEQ",
+      "page": 9,
+      "source_expression": "Products in use are a weighted sum of earlier current products times a power of 2. The exponent does not stay on the baseline. Hardwood half-life is 30 years and paper is 2 years."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-OPT-1",
+      "model_id": "MU-E-2022-2202666-OPT",
+      "page": 9,
+      "source_expression": "The objective maximizes living carbon plus product carbon. The sum of the annual rates over 100 years is at most 50 percent. Each rate is one of 0.1, 0.3, 0.5, 0.7, and 0.9 percent."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SOC-1",
+      "model_id": "MU-E-2022-2202666-SOC",
+      "page": 12,
+      "source_expression": "The profit index is a conversion factor times tourism revenue minus forest-product revenue. The gap is called an opportunity cost."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SOC-2",
+      "model_id": "MU-E-2022-2202666-SOC",
+      "page": 12,
+      "source_expression": "The metric is the actual value divided by the area-wide value, times 100. The prose states the division. The display number is 19, already used for the profit line. The denominator sits on the next line."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SOC-3",
+      "model_id": "MU-E-2022-2202666-SOC",
+      "page": 14,
+      "source_expression": "The index is 0.5816 times ecology plus 0.1095 times society plus 0.3090 times economy."
+    },
+    {
+      "equation_id": "EQ-E-2022-2202666-SOC-4",
+      "model_id": "MU-E-2022-2202666-SOC",
+      "page": 14,
+      "source_expression": "After the area identity is rearranged, the interval is minus the log of 1 minus the rate, divided by the log of 1 plus the growth rate."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2022-2202666-SEQ",
+      "to_model_id": "MU-E-2022-2202666-OPT",
+      "handoff": "The living store and the product store are what the dynamic program maximizes, under a 50 percent cap on the sum of annual rates."
+    },
+    {
+      "from_model_id": "MU-E-2022-2202666-OPT",
+      "to_model_id": "MU-E-2022-2202666-SOC",
+      "handoff": "The rate chosen by the search is the rate the interval formula and the five programs start from."
+    }
+  ]
+}

@@ -1,0 +1,483 @@
+{
+  "schema_version": 1,
+  "paper_id": "P-C-2022-2229059-dacff43d",
+  "problem_type": "C",
+  "year": "2022",
+  "source": {
+    "relative_path": "2022美赛特等奖/C/2229059.pdf",
+    "sha256": "dacff43d782b662ca5cbb58c7af6a4db45b07d29a0d80a88626e39480babb657",
+    "page_count": 24
+  },
+  "source_quality": {
+    "text_layer": "text-rich",
+    "equation_authority": "rendered page"
+  },
+  "task_reconstruction": {
+    "official_task": "2022 MCM Problem C, as restated on physical page 4.",
+    "required_outputs": [
+      "a model and daily trading actions built only on prices known up to the trading day",
+      "the value of an initial 1000 dollars after the five-year window",
+      "evidence that the strategy is the best one",
+      "how the strategy and the final value change with the transaction costs"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "summary": "abstract runs from page 1 to page 1"
+    },
+    {
+      "page": 4,
+      "summary": "introduction runs from page 4 to page 4"
+    },
+    {
+      "page": 5,
+      "summary": "notation runs from page 5 to page 5"
+    },
+    {
+      "page": 5,
+      "summary": "assumptions runs from page 5 to page 6"
+    },
+    {
+      "page": 7,
+      "summary": "problem-analysis runs from page 7 to page 7"
+    },
+    {
+      "page": 8,
+      "summary": "model-establishment runs from page 8 to page 11"
+    },
+    {
+      "page": 12,
+      "summary": "results runs from page 12 to page 15"
+    },
+    {
+      "page": 16,
+      "summary": "robustness-verification runs from page 16 to page 17"
+    },
+    {
+      "page": 18,
+      "summary": "strengths-limitations runs from page 18 to page 18"
+    },
+    {
+      "page": 19,
+      "summary": "conclusion runs from page 19 to page 19"
+    },
+    {
+      "page": 20,
+      "summary": "memo runs from page 20 to page 21"
+    },
+    {
+      "page": 22,
+      "summary": "references runs from page 22 to page 22"
+    },
+    {
+      "page": 23,
+      "summary": "appendix runs from page 23 to page 24"
+    }
+  ],
+  "contributions": [
+    {
+      "page": 1,
+      "summary": "A price-only day-trading model that balances gold and bitcoin, gated by two theories and an extreme-market override, is offered without a terminal number."
+    },
+    {
+      "page": 8,
+      "summary": "Momentum and mean reversion, sized by a gradient and a distance from the mean, decide the buy, and a sell indicator decides the exit."
+    },
+    {
+      "page": 12,
+      "summary": "Under the stated fees the portfolio ends at 220,486 dollars, and the parameter sweep names [12, 0.6, 0.89] as optimal."
+    },
+    {
+      "page": 16,
+      "summary": "The buy and sell markers track the price turns inside the windows the paper inspects."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from_model_id": "MU-C-2022-2229059-MOMENTUM",
+      "to_model_id": "MU-C-2022-2229059-PROFIT",
+      "handoff": "The gradient sizes the momentum trade."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-REVERSION",
+      "to_model_id": "MU-C-2022-2229059-PROFIT",
+      "handoff": "The distance from the mean sizes the reversion trade."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-MOMENTUM",
+      "to_model_id": "MU-C-2022-2229059-EXTREME",
+      "handoff": "The gradient history triggers the override."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-EXTREME",
+      "to_model_id": "MU-C-2022-2229059-HOLDING",
+      "handoff": "An extreme episode followed by a sale starts the no-buy window."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-PROFIT",
+      "to_model_id": "MU-C-2022-2229059-WEIGHT",
+      "handoff": "The two profitability readings are compared through the weight."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-SELL",
+      "to_model_id": "MU-C-2022-2229059-HOLDING",
+      "handoff": "A sale is blocked during the holding period."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 5,
+      "summary": "The price never reaches zero, because a zero price would end the asset."
+    },
+    {
+      "page": 5,
+      "summary": "The trader never uses leverage, because a margin call would force a sale the model does not plan."
+    },
+    {
+      "page": 6,
+      "summary": "The price oscillates about a mean rather than drifting without return, which the paper coins and then caps with no more."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 1,
+      "summary": "The run uses only the prices given, from 9/11/2016 to 9/10/2021, and only the values dated before the slot being decided."
+    },
+    {
+      "page": 4,
+      "summary": "No history exists at launch, and the data set is treated as small, at most forty years for the discipline."
+    },
+    {
+      "page": 7,
+      "summary": "The two price series are plotted over the full window and judged by eye before any formula."
+    }
+  ],
+  "models": [
+    {
+      "page": 8,
+      "model_id": "MU-C-2022-2229059-MOMENTUM",
+      "summary": "The gradient is written two ways on one line, joined by or: a symbol form and a one-step discrete difference. The moving average is a weighted mean over the last n prices. A buy signal needs both the gradient and the price-minus-average gap to clear 1, and it stays active for exactly one step."
+    },
+    {
+      "page": 8,
+      "model_id": "MU-C-2022-2229059-REVERSION",
+      "summary": "Opened by conceding that momentum only sees breakouts above the average. The formula is an inequality of two integrals of the price density, and the paper translates it twice: once as an operational rule and once qualitatively."
+    },
+    {
+      "page": 9,
+      "model_id": "MU-C-2022-2229059-PROFIT",
+      "summary": "Two stipulations, each introduced with we say that. Momentum profitability grows with the gradient. Reversion profitability grows with the square of the distance from the mean. Neither is written as a formula."
+    },
+    {
+      "page": 9,
+      "model_id": "MU-C-2022-2229059-SELL",
+      "summary": "Characterized up front as simple and conservative. The sell indicator subtracts the fee-adjusted average cost and a margin from the fee-adjusted price. The whole formula is then restated in prose with the gold fee substituted, and the rule ends in six words."
+    },
+    {
+      "page": 10,
+      "model_id": "MU-C-2022-2229059-EXTREME",
+      "summary": "The trigger is stated in prose as a gradient over five times the historical average, then printed with a free scaling factor C, and the two are not reconciled. While active, selling is forbidden until the price falls to a percentage of its peak or a fixed amount below it."
+    },
+    {
+      "page": 10,
+      "model_id": "MU-C-2022-2229059-HOLDING",
+      "summary": "Two prose rules with no formula. After an extreme episode and a sale, buying is barred for a number of days. After any purchase, selling is barred for z days. The reason is named in one word: fees."
+    },
+    {
+      "page": 11,
+      "model_id": "MU-C-2022-2229059-WEIGHT",
+      "summary": "Introduced by resemblance: a weight factor that goes like one over C t squared. It falls as time grows, which the paper calls drowning out small changes, and it makes the bitcoin signal count for more than the gold signal."
+    }
+  ],
+  "verification": [
+    {
+      "page": 13,
+      "summary": "The weight factor is plotted and its vertical axis is defined in the prose as a unitless measure of profitability."
+    },
+    {
+      "page": 14,
+      "summary": "Twenty-seven parameter triples are run and graded by hand, and the prose names [12, 0.6, 0.89] as optimal."
+    },
+    {
+      "page": 15,
+      "summary": "Four fee pairs are run, and the terminal value falls as the fees rise."
+    },
+    {
+      "page": 16,
+      "summary": "Buy and sell markers are checked against the price turns inside one window."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 12,
+      "summary": "The portfolio ends at 220,486 dollars, a return of 21,948 percent and an annualized return of 194 percent."
+    },
+    {
+      "page": 14,
+      "summary": "The largest terminal amount in the sweep is 220,486 dollars, on the row stamped Best."
+    },
+    {
+      "page": 15,
+      "summary": "The fee table runs from 220,486 dollars at the lowest fees down to 47,452 dollars at the highest."
+    },
+    {
+      "page": 19,
+      "summary": "The conclusions state a terminal value of 219,799 dollars and a return of 21,880 percent."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "the trader's world before the task, each asset given a defect and a compensating virtue"
+    },
+    {
+      "page": 4,
+      "summary": "a four-word definition, the easy case knocked down, the task compressed to six words"
+    },
+    {
+      "page": 8,
+      "summary": "a reassurance before the first formula, and each new method opened by conceding the previous one's blind spot"
+    },
+    {
+      "page": 12,
+      "summary": "the result given as an ending, the design intent stated flat, the grades written onto the table by hand"
+    },
+    {
+      "page": 20,
+      "summary": "the letter opened with a commission, every term glossed between dashes, the result converted with a dash"
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "The summary opens on the trader's activity, answers each defect inside the same sentence, and withholds the terminal value."
+    },
+    {
+      "page": 4,
+      "summary": "The restatement defines the difficulty in four words, stacks the obstacles with different additives, and states the choice with no argument."
+    },
+    {
+      "page": 8,
+      "summary": "Each new rule is opened by naming what the previous rule cannot see."
+    },
+    {
+      "page": 12,
+      "summary": "The result is reported as an ending, and the early profit is blamed on the model's own misperception."
+    },
+    {
+      "page": 20,
+      "summary": "The memorandum glosses every term between dashes and converts the result with a dash."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 1,
+      "summary": "V-01: The summary sheet carries no figure. An earlier note claimed an unlabeled portfolio plot under the keyword list; the rendered page ends at the keyword line."
+    },
+    {
+      "page": 7,
+      "summary": "V-02: Two panels, one price series each, over the full date range."
+    },
+    {
+      "page": 7,
+      "summary": "V-03: The bitcoin price again, used to argue the scale gap."
+    },
+    {
+      "page": 9,
+      "summary": "V-04: A decision tree with two questions, Above Moving Average and Positive Slope, each branching Yes or No into Buy or Don't Buy. No prices, no profitability, no threshold, no amounts."
+    },
+    {
+      "page": 12,
+      "summary": "V-05: The portfolio value over the run, ending at the stated terminal value."
+    },
+    {
+      "page": 13,
+      "summary": "V-06: Buy signals over time with the weight applied. The vertical axis carries no title."
+    },
+    {
+      "page": 13,
+      "summary": "V-07: Portfolio paths for the parameter sweep, one curve per parameter set."
+    },
+    {
+      "page": 14,
+      "summary": "V-08: Twenty-seven rows. The header is printed with a space inside Performance. Grades are Poor, Good, Great, and one Best, applied by hand."
+    },
+    {
+      "page": 15,
+      "summary": "V-09: Portfolio paths under the four fee pairs."
+    },
+    {
+      "page": 15,
+      "summary": "V-10: Four rows: [0.01, 0.02] = 220,486; [0.02, 0.03] = 199,945; [0.03, 0.05] = 156,038; [0.1, 0.1] = 47,452."
+    },
+    {
+      "page": 16,
+      "summary": "V-11: Bitcoin price with buy markers in red and sell markers in blue over the named window."
+    },
+    {
+      "page": 17,
+      "summary": "V-12: Gold price with buy and sell markers. The caption window is 460 to 560 days."
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "summary": "A summary that withholds the number and spends its praise on the method reads as confident rather than evasive.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 14,
+      "summary": "A hand-graded sweep that names one row optimal, while the other grades do not follow the amounts, is the point a judge would check.",
+      "evidence_class": "C"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 8,
+      "summary": "The brace is joined by or and each row is glossed as an alternative. The sentence after it says both cases must be true. The skill may require both readings before a buy. It must not print the brace as an or."
+    },
+    {
+      "page": 8,
+      "summary": "The threshold 1 is stated once and never derived. The skill may use a stated threshold. It must not present 1 as a derived value."
+    },
+    {
+      "page": 8,
+      "summary": "P(x) is integrated and never defined or estimated. The skill may state a reversion tendency in words. It must not copy the integral as a computable quantity."
+    },
+    {
+      "page": 9,
+      "summary": "Both rules are introduced with we say that and neither is written as an equation. The skill may size a trade by signal strength. It must not invent the constant."
+    },
+    {
+      "page": 9,
+      "summary": "Figure 3 is a two-question tree, Above Moving Average and Positive Slope, ending in Buy or Don't Buy. It names no threshold and no amount. The skill may gate a buy on those two questions. It must not add a threshold or a size."
+    },
+    {
+      "page": 9,
+      "summary": "L is named and never valued. The skill may require the sale to clear a margin. It must not assign L a number."
+    },
+    {
+      "page": 10,
+      "summary": "The sentence says five times and the formula prints C, and the page never reconciles them. The skill may compare a gradient with its own history. It must not write both five and C."
+    },
+    {
+      "page": 10,
+      "summary": "Neither exit is given a number. The skill may end an override when the price retreats from its peak. It must not invent the percentage or the drop."
+    },
+    {
+      "page": 10,
+      "summary": "The no-buy window has no symbol and z has no value. The skill may suppress trades for a holding period. It must not state a length."
+    },
+    {
+      "page": 11,
+      "summary": "C was a scaling factor two subsections earlier and is now a scalar constant, with no value either time. The skill may down-weight late signals. It must not reuse one letter for both."
+    },
+    {
+      "page": 14,
+      "summary": "The triple names N and the gloss defines L. N is never defined and L is never in the triple. The skill may sweep a holding time and two price ratios. It must not copy the mismatched letter."
+    },
+    {
+      "page": 14,
+      "summary": "That row ends at 220,486 and is the one stamped Best, so the headline agrees. The other grades do not follow the amounts: 169,178 is marked Poor while 117,416 is marked Good, and 90,167 is marked Poor while 82,855 is marked Good. The skill may report the largest terminal value. It must not treat the printed grades as a function of the amount."
+    },
+    {
+      "page": 12,
+      "summary": "Page 12 and the fee table print 220,486 dollars and 21,948 percent. The conclusions and the memorandum print 219,799 dollars and 21,880 percent. The skill may quote one terminal value and must say which page it comes from. It must not merge them."
+    },
+    {
+      "page": 17,
+      "summary": "The prose names the bitcoin window. The caption of Figure 9 says days 460 to 560. The skill may show gold orders over one window. It must not cite both ranges for the same figure."
+    },
+    {
+      "page": 15,
+      "summary": "Figure 6 carries the same caption, and Figure 2 repeats the caption of panel 1a. The skill may caption a figure with what varies. It must not reuse one caption for two figures."
+    },
+    {
+      "page": 1,
+      "summary": "The summary ends the run on 10 September 2021. The definitions and the memorandum end it on 11 September 2021, and the conclusions call the span four years. The skill may state one date range and must keep to it."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-C-2022-2229059-01",
+      "page": 9,
+      "summary": "Replace the two spoken proportionalities with stated constants and show the trade size that results."
+    },
+    {
+      "extension_id": "E-C-2022-2229059-02",
+      "page": 14,
+      "summary": "Recompute the twenty-seven terminal values and grade them by a stated rule instead of by hand."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-C-Q231-LANGUAGE-001",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q231-LANGUAGE-002",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q231-LANGUAGE-009",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q231-LANGUAGE-012",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q231-LANGUAGE-019",
+      "impact": "Opens one candidate language move from a single paper."
+    }
+  ],
+  "unresolved_questions": [
+    "Which of 220,486 dollars and 219,799 dollars is the portfolio the model actually ends at.",
+    "Whether the no-buy window and the holding length z were ever assigned values.",
+    "Whether the grades in the parameter table follow any rule."
+  ],
+  "review_status": "validated",
+  "dimension_counts": {
+    "language": 79,
+    "modeling": 7,
+    "logic": 0,
+    "visualization": 11,
+    "verification": 0,
+    "data": 0,
+    "assumption": 0,
+    "result": 0,
+    "weakness": 16,
+    "other": 0
+  },
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-C-2022-2229059-dacff43d.json",
+      "schema_version": 3,
+      "unit_count": 79,
+      "chapters": [
+        "abstract",
+        "introduction",
+        "notation",
+        "assumptions",
+        "problem-analysis",
+        "model-establishment",
+        "results",
+        "robustness-verification",
+        "strengths-limitations",
+        "conclusion",
+        "memo",
+        "references",
+        "appendix"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-C-2022-2229059-dacff43d.json",
+      "schema_version": 2,
+      "model_count": 7,
+      "equation_count": 7,
+      "review_status": "validated"
+    }
+  }
+}

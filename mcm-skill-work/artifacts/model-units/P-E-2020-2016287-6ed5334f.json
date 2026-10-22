@@ -1,0 +1,1364 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-E-2020-2016287-6ed5334f",
+ "problem_type": "E",
+ "year": "2020",
+ "source_sha256": "6ed5334ffe21204a023222d1a15fb25b2bce5d9eeab1e3c49e5569f83f6f9841",
+ "page_count": 27,
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-E-2020-2016287-EBR",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "environmental bearing rate",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 6,
+   "section": "4.3 Environmental Bearing Rate Model",
+   "summary": "Capacity next year shrinks by a sigmoid of the gap, and the bearing rate is the load divided by the capacity, then a weighted sum across water, air and soil.",
+   "purpose": "say when the load has passed the point at which the environment stops repairing itself",
+   "inputs": [
+    "Q",
+    "C"
+   ],
+   "outputs": [
+    "EBR"
+   ],
+   "objectives": [
+    "hold the bearing rate at or under one"
+   ],
+   "constraints": [
+    "the rate equals one at the largest safe load"
+   ],
+   "assumptions": [
+    "capacity does not grow, because recovery of the system is slow",
+    "a sudden change in the environment is ignored"
+   ],
+   "variables": [
+    {
+     "symbol": "C",
+     "normalized_name": "bearing capacity",
+     "unit": "1",
+     "definition": "environmental bearing capacity in year t",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Q",
+     "normalized_name": "bearing quantity",
+     "unit": "1",
+     "definition": "environmental bearing quantity in year t",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Delta",
+     "normalized_name": "gap",
+     "unit": "1",
+     "definition": "printed difference of capacity and quantity",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "f",
+     "normalized_name": "damage rate",
+     "unit": "1",
+     "definition": "sigmoid of the gap, zero on the other side",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBR",
+     "normalized_name": "bearing rate",
+     "unit": "1",
+     "definition": "load divided by capacity",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBQ",
+     "normalized_name": "bearing quantity",
+     "unit": "1",
+     "definition": "the same load written as a stock",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBC",
+     "normalized_name": "bearing capacity",
+     "unit": "1",
+     "definition": "the same capacity written as a stock",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "category count",
+     "unit": "1",
+     "definition": "number of media",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "W_i",
+     "normalized_name": "medium weight",
+     "unit": "1",
+     "definition": "weight of one medium",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBQ_i",
+     "normalized_name": "medium load",
+     "unit": "1",
+     "definition": "bearing quantity of one medium",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBC_i",
+     "normalized_name": "medium capacity",
+     "unit": "1",
+     "definition": "bearing capacity of one medium",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-01",
+     "page": 6,
+     "source_expression": "C(t+1) = C(t)[1-f(Delta)]; Delta = C(t)-Q(t)",
+     "normalized_latex": "C(t+1)=C(t)[1-f(\\Delta)],\\ \\Delta=C(t)-Q(t)",
+     "purpose": "shrink next year's capacity by the damage rate of the gap",
+     "variable_symbols": [
+      "C",
+      "f",
+      "Delta",
+      "Q"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(1)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-02",
+     "page": 6,
+     "source_expression": "f(Delta) = 1/(1+e^{-Delta+5}) when Delta>0, else 0",
+     "normalized_latex": "f(\\Delta)=1/(1+e^{-\\Delta+5})\\ \\mathrm{if}\\ \\Delta>0,\\ else\\ 0",
+     "purpose": "give the damage rate a sigmoid on one side of zero and nothing on the other",
+     "variable_symbols": [
+      "f",
+      "Delta"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(2)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-03",
+     "page": 7,
+     "source_expression": "EBR = EBQ/EBC",
+     "normalized_latex": "EBR=EBQ/EBC",
+     "purpose": "define the rate as the load over the capacity",
+     "variable_symbols": [
+      "EBR",
+      "EBQ",
+      "EBC"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(3)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-04",
+     "page": 7,
+     "source_expression": "EBR = sum_{i=1}^{n} W_i * EBQ_i/EBC_i",
+     "normalized_latex": "EBR=\\sum_{i=1}^{n} W_i \\cdot EBQ_i/EBC_i",
+     "purpose": "add the three media as a weighted sum of ratios",
+     "variable_symbols": [
+      "EBR",
+      "n",
+      "W_i",
+      "EBQ_i",
+      "EBC_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(4)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "read from the page, but the printed line does not match the prose around it"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "form the gap",
+     "apply the sigmoid",
+     "divide the load by the capacity",
+     "weight the three media"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the rate is defined, not fitted",
+    "parameters": []
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "capacity is whatever the current year already has"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the safe case is named before the formula"
+   ],
+   "limitations": [
+    "the printed gap has the opposite sign from the sentence that introduces it"
+   ],
+   "missing_details": [
+    "the three cases of the rate overlap, and the far-below case is not given its own formula"
+   ],
+   "handoff_outputs": [
+    "EBR"
+   ],
+   "validation_refs": [
+    "the maximum level is the case EBR = 1"
+   ]
+  },
+  {
+   "model_id": "MU-E-2020-2016287-QTY",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "bearing quantities",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 8,
+   "section": "4.3.2 Environmental Bearing Quantity Measurement",
+   "summary": "Ocean debris, incineration toxics and landfill leachate are each a disposal share times the bag and foam production.",
+   "purpose": "turn the two product streams and the four disposal shares into three loads",
+   "inputs": [
+    "p_o",
+    "p_i",
+    "p_l",
+    "P_b",
+    "P_f"
+   ],
+   "outputs": [
+    "WBQ",
+    "ABQ",
+    "SBQ"
+   ],
+   "objectives": [
+    "measure the load each disposal path puts on one medium"
+   ],
+   "constraints": [
+    "only bags and foam are counted as sources"
+   ],
+   "assumptions": [
+    "recycling lowers production and is not given its own load",
+    "any debris above the salvaged amount damages the ocean"
+   ],
+   "variables": [
+    {
+     "symbol": "WBQ",
+     "normalized_name": "water load",
+     "unit": "1",
+     "definition": "plastic marine debris in a period",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "ABQ",
+     "normalized_name": "air load",
+     "unit": "1",
+     "definition": "dioxin and benzene compounds from burning",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "SBQ",
+     "normalized_name": "soil load",
+     "unit": "1",
+     "definition": "phthalate and bisphenol A from landfill",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_o",
+     "normalized_name": "ocean share",
+     "unit": "1",
+     "definition": "share of waste deposited in the ocean",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_i",
+     "normalized_name": "incineration share",
+     "unit": "1",
+     "definition": "share of waste incinerated",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_l",
+     "normalized_name": "landfill share",
+     "unit": "1",
+     "definition": "share of waste landfilled",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_b",
+     "normalized_name": "bag production",
+     "unit": "1",
+     "definition": "annual production of plastic bags",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_f",
+     "normalized_name": "foam production",
+     "unit": "1",
+     "definition": "annual production of foamed products",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q_d",
+     "normalized_name": "dioxin yield",
+     "unit": "1",
+     "definition": "dioxin from incinerating a unit of plastic",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q_b",
+     "normalized_name": "benzene yield",
+     "unit": "1",
+     "definition": "benzene compounds from incinerating a unit",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q_p",
+     "normalized_name": "phthalate yield",
+     "unit": "1",
+     "definition": "phthalate from landfilling a unit",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q_a",
+     "normalized_name": "bisphenol yield",
+     "unit": "1",
+     "definition": "bisphenol A from landfilling a unit",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-05",
+     "page": 8,
+     "source_expression": "WBQ = p_o*(P_b+P_f)",
+     "normalized_latex": "WBQ=p_o\\cdot(P_b+P_f)",
+     "purpose": "scale the two product streams by the ocean share",
+     "variable_symbols": [
+      "WBQ",
+      "p_o",
+      "P_b",
+      "P_f"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(5)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-06",
+     "page": 8,
+     "source_expression": "ABQ = (q_d+q_b)*p_i*(P_b+P_f)",
+     "normalized_latex": "ABQ=(q_d+q_b)\\cdot p_i\\cdot(P_b+P_f)",
+     "purpose": "scale the burned share by the two toxic yields",
+     "variable_symbols": [
+      "ABQ",
+      "q_d",
+      "q_b",
+      "p_i",
+      "P_b",
+      "P_f"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(6)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-07",
+     "page": 8,
+     "source_expression": "SBQ = (q_p+q_a)*p_l*(P_b+P_f)",
+     "normalized_latex": "SBQ=(q_p+q_a)\\cdot p_l\\cdot(P_b+P_f)",
+     "purpose": "scale the landfilled share by the two leachate yields",
+     "variable_symbols": [
+      "SBQ",
+      "q_p",
+      "q_a",
+      "p_l",
+      "P_b",
+      "P_f"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(7)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "split the waste into ocean, burning and landfill",
+     "multiply each share by the bag and foam production"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "omitted-by-paper",
+    "method": "the yields are named and not given numbers",
+    "parameters": [
+     "q_d",
+     "q_b",
+     "q_p",
+     "q_a"
+    ]
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the shares are the current disposal percentages"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "each path is tied to the medium it harms"
+   ],
+   "limitations": [
+    "the soil-capacity sentence copies the air toxics instead of the leachate"
+   ],
+   "missing_details": [
+    "the PVC combustion line is displayed and is not used in these three loads",
+    "the ocean share is written without the year the prose gives it"
+   ],
+   "handoff_outputs": [
+    "WBQ",
+    "ABQ",
+    "SBQ"
+   ],
+   "validation_refs": [
+    "the three loads are the quantities the bearing rate divides"
+   ]
+  },
+  {
+   "model_id": "MU-E-2020-2016287-CUM",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "cumulative bearing rate",
+   "base_or_modification": "modification",
+   "family": "evaluation",
+   "page": 9,
+   "section": "4.4.1 Current Waste Quantity and Capacity",
+   "summary": "The rate adds the stock already there to the new load, and adds the capacity already there to the new capacity, then weights the three media.",
+   "purpose": "carry the existing stock into the rate before reading the safe level",
+   "inputs": [
+    "EBQ_i",
+    "CWQ_i",
+    "EBC_i",
+    "CWC_i",
+    "W_i"
+   ],
+   "outputs": [
+    "EBR"
+   ],
+   "objectives": [
+    "set the rate to one and read off the largest safe waste"
+   ],
+   "constraints": [
+    "the three media are water, air and soil"
+   ],
+   "assumptions": [
+    "today's stock is computed like the future load, using the present values"
+   ],
+   "variables": [
+    {
+     "symbol": "EBR",
+     "normalized_name": "bearing rate",
+     "unit": "1",
+     "definition": "weighted rate after the stock is added",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "W_i",
+     "normalized_name": "medium weight",
+     "unit": "1",
+     "definition": "weight of one medium",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBQ_i",
+     "normalized_name": "new load",
+     "unit": "1",
+     "definition": "bearing quantity still to come in one medium",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "CWQ_i",
+     "normalized_name": "current load",
+     "unit": "1",
+     "definition": "bearing quantity already there",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EBC_i",
+     "normalized_name": "new capacity",
+     "unit": "1",
+     "definition": "bearing capacity still to come",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "CWC_i",
+     "normalized_name": "current capacity",
+     "unit": "1",
+     "definition": "bearing capacity already there",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "category count",
+     "unit": "1",
+     "definition": "number of media in the first form",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-08",
+     "page": 9,
+     "source_expression": "EBR = sum_{i=1}^{n} W_i * (EBQ_i+CWQ_i)/(EBC_i+CWC_i)",
+     "normalized_latex": "EBR=\\sum_{i=1}^{n} W_i\\cdot(EBQ_i+CWQ_i)/(EBC_i+CWC_i)",
+     "purpose": "add the existing stock on both sides of each ratio",
+     "variable_symbols": [
+      "EBR",
+      "n",
+      "W_i",
+      "EBQ_i",
+      "CWQ_i",
+      "EBC_i",
+      "CWC_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(8)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-09",
+     "page": 9,
+     "source_expression": "EBR = sum_{i=1}^{3} W_i * (EBQ_i+CWQ_i)/(EBC_i+CWC_i)",
+     "normalized_latex": "EBR=\\sum_{i=1}^{3} W_i\\cdot(EBQ_i+CWQ_i)/(EBC_i+CWC_i)",
+     "purpose": "write the same rate for the three named media",
+     "variable_symbols": [
+      "EBR",
+      "W_i",
+      "EBQ_i",
+      "CWQ_i",
+      "EBC_i",
+      "CWC_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(9)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "add the current stock to the new load",
+     "add the current capacity to the new capacity",
+     "set the rate to one"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the rate is defined, not fitted",
+    "parameters": []
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the current stock is the waste already present"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the stock is kept instead of being dropped"
+   ],
+   "limitations": [
+    "setting the rate to one is stated and the waste is never solved for"
+   ],
+   "missing_details": [
+    "the two displayed lines differ only by writing 3 in place of n"
+   ],
+   "handoff_outputs": [
+    "EBR"
+   ],
+   "validation_refs": [
+    "a later section substitutes the predicted production into this rate"
+   ]
+  },
+  {
+   "model_id": "MU-E-2020-2016287-MTS",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "multivariate time series",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 15,
+   "section": "5.3.2 Multivariate Time Series Analysis",
+   "summary": "A transfer function of the principal components is replaced by a regression, and the coefficients are said to come from a least-squares objective.",
+   "purpose": "predict the disposable-waste share from the reduced indicators",
+   "inputs": [
+    "x_il",
+    "z_it"
+   ],
+   "outputs": [
+    "y_t"
+   ],
+   "objectives": [
+    "minimize the squared gap between the series and its fit"
+   ],
+   "constraints": [
+    "keep the first three components, whose cumulative share exceeds 85 percent"
+   ],
+   "assumptions": [
+    "the transfer function is too heavy, so a straight regression replaces it"
+   ],
+   "variables": [
+    {
+     "symbol": "y_t",
+     "normalized_name": "target",
+     "unit": "1",
+     "definition": "disposable-waste share in year t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "y_l",
+     "normalized_name": "target in year l",
+     "unit": "1",
+     "definition": "the same share indexed by the summed year",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mu",
+     "normalized_name": "level",
+     "unit": "1",
+     "definition": "intercept of the transfer function",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mu_l",
+     "normalized_name": "year level",
+     "unit": "1",
+     "definition": "intercept in the summed year",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mu_t",
+     "normalized_name": "fitted level",
+     "unit": "1",
+     "definition": "intercept of the fitted line",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P",
+     "normalized_name": "component count",
+     "unit": "1",
+     "definition": "number of retained components",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Theta_i",
+     "normalized_name": "moving-average polynomial",
+     "unit": "1",
+     "definition": "moving-average factor of one input",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Phi_i",
+     "normalized_name": "autoregressive polynomial",
+     "unit": "1",
+     "definition": "autoregressive factor of one input",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "backshift",
+     "unit": "1",
+     "definition": "lag operator",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "l_i",
+     "normalized_name": "delay",
+     "unit": "1",
+     "definition": "delay order of one input",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "z_it",
+     "normalized_name": "input",
+     "unit": "1",
+     "definition": "one principal component in year t",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "epsilon_t",
+     "normalized_name": "residual",
+     "unit": "1",
+     "definition": "regression residual",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_t",
+     "normalized_name": "noise",
+     "unit": "1",
+     "definition": "zero-mean white noise",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "omega_il",
+     "normalized_name": "year coefficient",
+     "unit": "1",
+     "definition": "regression weight of one component in one year",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "omega_it",
+     "normalized_name": "fitted coefficient",
+     "unit": "1",
+     "definition": "weight used in the fitted line",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_il",
+     "normalized_name": "regressor",
+     "unit": "1",
+     "definition": "one component in the summed year",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_it",
+     "normalized_name": "fitted regressor",
+     "unit": "1",
+     "definition": "one component in the forecast year",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Q",
+     "normalized_name": "window length",
+     "unit": "year",
+     "definition": "length of the statistical period",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-10",
+     "page": 15,
+     "source_expression": "y_t = mu + sum_{k=1}^{P} (Theta_i(B)/Phi_i(B)) B^{l_i} z_it + epsilon_t; epsilon_t = (Theta_i(B)/Phi_i(B)) a_t",
+     "normalized_latex": "y_t=\\mu+\\sum_{k=1}^{P}\\frac{\\Theta_i(B)}{\\Phi_i(B)}B^{l_i}z_{it}+\\varepsilon_t,\\ \\varepsilon_t=\\frac{\\Theta_i(B)}{\\Phi_i(B)}a_t",
+     "purpose": "write the share as a lagged transfer of the components plus a noise term",
+     "variable_symbols": [
+      "y_t",
+      "mu",
+      "P",
+      "Theta_i",
+      "Phi_i",
+      "B",
+      "l_i",
+      "z_it",
+      "epsilon_t",
+      "a_t"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(10)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-11",
+     "page": 15,
+     "source_expression": "y_l = mu_l + sum_{i=1}^{P} omega_il x_il",
+     "normalized_latex": "y_l=\\mu_l+\\sum_{i=1}^{P}\\omega_{il}x_{il}",
+     "purpose": "replace the transfer function by a straight sum for one year",
+     "variable_symbols": [
+      "y_l",
+      "mu_l",
+      "P",
+      "omega_il",
+      "x_il"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(11)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-12",
+     "page": 15,
+     "source_expression": "min { sum_{l=1}^{Q} (y_l - y_l)^2 }",
+     "normalized_latex": "\\min\\left\\{\\sum_{l=1}^{Q}(y_l-y_l)^2\\right\\}",
+     "purpose": "state the least-squares objective the coefficients are said to meet",
+     "variable_symbols": [
+      "y_l",
+      "Q"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(12)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-13",
+     "page": 15,
+     "source_expression": "y_t = mu_t + sum_{i=1}^{P} omega_it x_it",
+     "normalized_latex": "y_t=\\mu_t+\\sum_{i=1}^{P}\\omega_{it}x_{it}",
+     "purpose": "write the fitted share once the weights have been chosen",
+     "variable_symbols": [
+      "y_t",
+      "mu_t",
+      "P",
+      "omega_it",
+      "x_it"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(13)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "read from the page, but the printed line does not match the prose around it"
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "reduce the indicators to three components",
+     "replace the transfer function by a regression",
+     "fit the weights by the named objective"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "least squares is named and the objective subtracts a symbol from itself",
+    "parameters": [
+     "omega_il"
+    ]
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the fit starts from the 2000 to 2010 window"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "Ireland's predicted share is checked against the official series"
+   ],
+   "limitations": [
+    "the objective cannot move a coefficient"
+   ],
+   "missing_details": [
+    "the sum in the transfer function runs over k while the term is indexed by i",
+    "the symbol Q, the length of the window, is not among the fitted terms"
+   ],
+   "handoff_outputs": [
+    "y_t"
+   ],
+   "validation_refs": [
+    "Ireland, relative mean square deviation 4.2 percent"
+   ]
+  },
+  {
+   "model_id": "MU-E-2020-2016287-HRI",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "human risk index",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 17,
+   "section": "5.4.2 Human-friendly Indicator",
+   "summary": "The risk is the log of the waste weight times a sum, over food chains, of the product of uptake and transfer along the grades, and a reduction scales the weight.",
+   "purpose": "say how a cut in the waste changes the load that reaches people",
+   "inputs": [
+    "W",
+    "u_i",
+    "R_ij"
+   ],
+   "outputs": [
+    "HRI"
+   ],
+   "objectives": [
+    "show that a smaller waste lowers the index"
+   ],
+   "constraints": [
+    "people sit at the top of every chain"
+   ],
+   "assumptions": [
+    "only the indirect path, through food, is scored here"
+   ],
+   "variables": [
+    {
+     "symbol": "HRI",
+     "normalized_name": "human risk",
+     "unit": "1",
+     "definition": "log of the waste that arrives through food",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "W",
+     "normalized_name": "waste weight",
+     "unit": "kg",
+     "definition": "weight of plastic waste",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "chain count",
+     "unit": "1",
+     "definition": "number of food chains",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "m_i",
+     "normalized_name": "grade count",
+     "unit": "1",
+     "definition": "number of grades in one chain",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "u_i",
+     "normalized_name": "bottom uptake",
+     "unit": "1",
+     "definition": "share absorbed by the bottom species of one chain",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "R_ij",
+     "normalized_name": "transfer",
+     "unit": "1",
+     "definition": "transfer efficiency at one grade",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a",
+     "normalized_name": "reduction",
+     "unit": "1",
+     "definition": "percent by which the waste is cut",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-14",
+     "page": 17,
+     "source_expression": "HRI = ln( W * sum_{i=1}^{n} prod_{j=1}^{m_i} u_i R_ij )",
+     "normalized_latex": "HRI=\\ln\\left(W\\sum_{i=1}^{n}\\prod_{j=1}^{m_i}u_i R_{ij}\\right)",
+     "purpose": "score the waste that climbs every chain",
+     "variable_symbols": [
+      "HRI",
+      "W",
+      "n",
+      "m_i",
+      "u_i",
+      "R_ij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(14)"
+    },
+    {
+     "equation_id": "EQ-E-2020-2016287-15",
+     "page": 17,
+     "source_expression": "HRI = ln( (1-a%) W * sum_{i=1}^{n} prod_{j=1}^{m_i} u_i R_ij )",
+     "normalized_latex": "HRI=\\ln\\left((1-a\\%)W\\sum_{i=1}^{n}\\prod_{j=1}^{m_i}u_i R_{ij}\\right)",
+     "purpose": "scale the same score by the cut",
+     "variable_symbols": [
+      "HRI",
+      "a",
+      "W",
+      "n",
+      "m_i",
+      "u_i",
+      "R_ij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(15)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "place people at the top of each chain",
+     "multiply uptake by the transfers",
+     "take the log",
+     "scale the weight by the cut"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the index is defined, not fitted",
+    "parameters": []
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the waste weight is the present stock"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the cut enters only as a scale on the weight"
+   ],
+   "limitations": [
+    "the bottom uptake is multiplied once per grade, so it is raised to the length of the chain"
+   ],
+   "missing_details": [
+    "the sentence says the index will be improved while the log of a smaller argument falls"
+   ],
+   "handoff_outputs": [
+    "HRI"
+   ],
+   "validation_refs": [
+    "no numeric check is given"
+   ]
+  },
+  {
+   "model_id": "MU-E-2020-2016287-SES",
+   "paper_id": "P-E-2020-2016287-6ed5334f",
+   "name": "second exponential smoothing",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 18,
+   "section": "6.1.1 Prediction of Global Plastics Production",
+   "summary": "Global production a horizon ahead is a level plus a slope times the horizon, and the second smooth updates from the first.",
+   "purpose": "carry global plastic production forward to 2030",
+   "inputs": [
+    "S1",
+    "a"
+   ],
+   "outputs": [
+    "Y"
+   ],
+   "objectives": [
+    "forecast production over a ten-year horizon"
+   ],
+   "constraints": [
+    "production is said to keep rising"
+   ],
+   "assumptions": [
+    "the first smooth is already known"
+   ],
+   "variables": [
+    {
+     "symbol": "Y",
+     "normalized_name": "forecast production",
+     "unit": "t",
+     "definition": "predicted global production at the horizon",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_t",
+     "normalized_name": "level",
+     "unit": "t",
+     "definition": "intercept of the forecast line",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b_t",
+     "normalized_name": "slope",
+     "unit": "t",
+     "definition": "slope of the forecast line",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "T",
+     "normalized_name": "horizon",
+     "unit": "year",
+     "definition": "years ahead",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "S2",
+     "normalized_name": "second smooth",
+     "unit": "t",
+     "definition": "smooth value of the second index",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "S1",
+     "normalized_name": "first smooth",
+     "unit": "t",
+     "definition": "smooth value of the primary index",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a",
+     "normalized_name": "smoothing weight",
+     "unit": "1",
+     "definition": "weight on the newest first smooth",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2020-2016287-16",
+     "page": 18,
+     "source_expression": "Y_{t+T}=a_t+b_t*T; S2_t=a*S1_t+(1-a)*S2_{t-1}; a_t=2*S1_t+S2_t; b_t=(a/(1-a))*(S1_t-S2_t)",
+     "normalized_latex": "Y_{t+T}=a_t+b_t T,\\ S_t^{(2)}=a S_t^{(1)}+(1-a)S_{t-1}^{(2)},\\ a_t=2S_t^{(1)}+S_t^{(2)},\\ b_t=\\frac{a}{1-a}(S_t^{(1)}-S_t^{(2)})",
+     "purpose": "forecast from a level and a slope built on the two smooths",
+     "variable_symbols": [
+      "Y",
+      "a_t",
+      "b_t",
+      "T",
+      "S2",
+      "a",
+      "S1"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(16)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "update the second smooth",
+     "form the level and the slope",
+     "step the horizon"
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "parameter_estimation": {
+    "status": "omitted-by-paper",
+    "method": "the smoothing weight is written and not estimated",
+    "parameters": [
+     "a"
+    ]
+   },
+   "computational_cost": "not stated by the paper",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the shares and the weights are taken from the discussion and no second set is tried"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the second smooth starts from the previous year"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the forecast is drawn against the historical production"
+   ],
+   "limitations": [
+    "the level adds the two smooths where the usual second smoothing subtracts them",
+    "the recurrence of the first smooth is not written"
+   ],
+   "missing_details": [
+    "the primary smooth has no displayed update"
+   ],
+   "handoff_outputs": [
+    "Y"
+   ],
+   "validation_refs": [
+    "the curve is shown and no error is stated"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-E-2020-2016287-QTY",
+   "to_model_id": "MU-E-2020-2016287-CUM",
+   "handoff": "the three loads are the new quantities the cumulative rate adds"
+  },
+  {
+   "from_model_id": "MU-E-2020-2016287-EBR",
+   "to_model_id": "MU-E-2020-2016287-CUM",
+   "handoff": "the cumulative rate is the weighted ratio with the stock put back"
+  },
+  {
+   "from_model_id": "MU-E-2020-2016287-SES",
+   "to_model_id": "MU-E-2020-2016287-CUM",
+   "handoff": "the predicted production is what a later section substitutes into the rate"
+  },
+  {
+   "from_model_id": "MU-E-2020-2016287-MTS",
+   "to_model_id": "MU-E-2020-2016287-HRI",
+   "handoff": "the predicted cut is the percent that scales the waste weight"
+  }
+ ]
+}

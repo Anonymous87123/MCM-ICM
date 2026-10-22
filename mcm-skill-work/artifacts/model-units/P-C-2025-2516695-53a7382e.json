@@ -1,0 +1,1078 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-C-2025-2516695-53a7382e",
+ "problem_type": "C",
+ "year": "2025",
+ "source_sha256": "53a7382e47176ead657cb50dbee242abbdb5305ea430117ec7051ae512e3f139",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-C-Q271-001",
+   "page": 6,
+   "section": "5",
+   "family": "static and dynamic Bayesian network with an LSTM layer",
+   "purpose": "Forecast the 2028 Los Angeles medal table with intervals, and rank countries by improvement or decline.",
+   "base_or_modification": "hybrid",
+   "summary": "HARMONIE stacks a static Bayesian network, a dynamic Bayesian network, and an LSTM. The summary also says SBN-DBN. Display (5), under the LSTM heading, is the incompressible Navier-Stokes system and is not transcribed. Display (6) was watermark-eaten and was not transcribed.",
+   "variables": [
+    {
+     "symbol": "P_model",
+     "normalized_name": "probability of the country's basic potential",
+     "unit": "1",
+     "definition": "probability of the country's basic potential",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X",
+     "normalized_name": "vector of influencing factors",
+     "unit": "1",
+     "definition": "vector of influencing factors",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta_k",
+     "normalized_name": "weight of influencing factor k",
+     "unit": "1",
+     "definition": "weight of influencing factor k",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_k",
+     "normalized_name": "influencing factor k",
+     "unit": "1",
+     "definition": "influencing factor k",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "alpha_i",
+     "normalized_name": "dynamic factor of country i",
+     "unit": "1",
+     "definition": "dynamic factor of country i",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "GDP",
+     "normalized_name": "gross domestic product",
+     "unit": "currency",
+     "definition": "gross domestic product",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Host_i",
+     "normalized_name": "host-country indicator",
+     "unit": "1",
+     "definition": "host-country indicator",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "epsilon",
+     "normalized_name": "error term in the dynamic factor",
+     "unit": "1",
+     "definition": "error term in the dynamic factor",
+     "role": "intermediate",
+     "source_status": "inferred-from-equation"
+    },
+    {
+     "symbol": "S_t",
+     "normalized_name": "state at time t",
+     "unit": "1",
+     "definition": "state at time t",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "A",
+     "normalized_name": "state transition matrix",
+     "unit": "1",
+     "definition": "state transition matrix",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_hat",
+     "normalized_name": "medal prediction result",
+     "unit": "pieces",
+     "definition": "medal prediction result",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "X",
+    "x_k",
+    "GDP",
+    "Host_i"
+   ],
+   "outputs": [
+    "P_model",
+    "alpha_i",
+    "M_hat"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q271-001",
+     "page": 8,
+     "label": "(1)",
+     "source_expression": "P(model | X) = Sigmoid(sum_{k=1}^{K} beta_k x_k + alpha_i)",
+     "normalized_latex": "P(\\mathrm{model}\\mid X)=\\mathrm{Sigmoid}\\left(\\sum_{k=1}^{K}\\beta_k x_k+\\alpha_i\\right)",
+     "purpose": "Layer 1, the static potential. Read from a watermark-split text layer. Not cropped.",
+     "variable_symbols": [
+      "P_model",
+      "X",
+      "beta_k",
+      "x_k",
+      "alpha_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-002",
+     "page": 8,
+     "label": "(2)",
+     "source_expression": "alpha_i = 0.62 log(GDP+) + 1.32 Host_i + 1 epsilon",
+     "normalized_latex": "\\alpha_i=0.62\\log(\\mathrm{GDP}_{+})+1.32\\,\\mathrm{Host}_i+1\\epsilon",
+     "purpose": "The text prints 1.32Hosti+1 epsilon. The coefficient on epsilon may be 1. Not cropped.",
+     "variable_symbols": [
+      "alpha_i",
+      "GDP",
+      "Host_i",
+      "epsilon"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-003",
+     "page": 8,
+     "label": "(3)",
+     "source_expression": "P(S_{t+1} | S_t) = A",
+     "normalized_latex": "P(S_{t+1}\\mid S_t)=A",
+     "purpose": "The dynamic transfer equation. The announcement is doubled, and the citation has no space.",
+     "variable_symbols": [
+      "S_t",
+      "A"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-004",
+     "page": 8,
+     "label": "(4)",
+     "source_expression": "A is the matrix of P(S_{t+1}=low|S_t=low) through P(S_{t+1}=high|S_t=high), with an ellipsis row",
+     "normalized_latex": "A=\\begin{pmatrix}P(S_{t+1}=\\mathrm{low}\\mid S_t=\\mathrm{low})&\\cdots\\\\ \\vdots&\\ddots\\end{pmatrix}",
+     "purpose": "The transition matrix. Watermark-split. Not cropped.",
+     "variable_symbols": [
+      "A",
+      "S_t"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "Displays (1) through (4) were read from a watermark-split text layer and were not cropped. Display (5) is excluded."
+   },
+   "objectives": [
+    "Forecast the 2028 Los Angeles medal table with intervals, and rank countries by improvement or decline."
+   ],
+   "constraints": [
+    "Medal counts are reported in pieces.",
+    "A 95 percent interval is the 2.5 to 97.5 percent quantile."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "Bayesian model averaging, then MCMC with 10^5 iterations and Adam on the dynamic factor",
+    "parameters": [
+     "beta_k",
+     "A"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Build the static network on GDP, host status, and medals.",
+     "Set the dynamic factor from log GDP and the host indicator.",
+     "Draw the next state from the transition matrix.",
+     "Sample 10^5 times and return the mean and the 2.5 and 97.5 percent quantiles."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "Sports rules and national sports policy are stable.",
+    "Each variable's influence is a linear superposition. Higher-order interaction is ignored.",
+    "The great coach effect is not taken into account when predicting the overall medal table."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper prints coefficients, an NRMSE, and coverage. It does not show a trace or a condition number."
+   },
+   "handoff_outputs": [
+    "P_model",
+    "alpha_i",
+    "M_hat"
+   ],
+   "validation_refs": [
+    "NRMSE 0.07 and 93.2 percent interval coverage on the test set.",
+    "Table 3, 2028 gold: USA 45, CHN 38, GBR 25, RUS 22, JPN 18. Row alignment is watermark-shifted.",
+    "Table 4, USA gold 45 with interval 39 to 51. CHN 38 with interval 34 to 42."
+   ],
+   "computational_cost": "No runtime is stated for this model.",
+   "strengths": [
+    "Three layers separate a static potential, a transition, and a time trend.",
+    "The interval is a quantile of the MCMC sample, not a normal approximation."
+   ],
+   "limitations": [
+    "Display (5) under the LSTM heading is the Navier-Stokes system, not an LSTM gate.",
+    "The summary says SBN-DBN and the section says HARMONIE.",
+    "Table 3 gives Japan 18 gold medals and Table 5 gives Japan 22.1 to 44.5."
+   ],
+   "missing_details": [
+    "Display (5) was not transcribed as a governing equation.",
+    "Display (6), the SBN plus DBN plus LSTM sum, was watermark-eaten and was not transcribed.",
+    "The LSTM gate equations are not printed."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q271-002",
+   "page": 11,
+   "section": "6",
+   "family": "Cox proportional hazards with Monte Carlo scenarios",
+   "purpose": "Predict which countries win a first medal in 2028, under two training scenarios.",
+   "base_or_modification": "hybrid",
+   "summary": "CHAMPS is called a supplement to Model I. The heading glues Cox to the closing parenthesis. The summary says 10 countries and approximately 20.36236 percent. The body says about 10 and an average 20.36236 percent. Table 6 prints three countries.",
+   "variables": [
+    {
+     "symbol": "h",
+     "normalized_name": "hazard of a first medal",
+     "unit": "1/year",
+     "definition": "hazard of a first medal",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "h0",
+     "normalized_name": "baseline hazard",
+     "unit": "1/year",
+     "definition": "baseline hazard",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "A_i",
+     "normalized_name": "athlete count of country i",
+     "unit": "count",
+     "definition": "athlete count of country i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "D_i",
+     "normalized_name": "event-category count of country i",
+     "unit": "count",
+     "definition": "event-category count of country i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "H_i",
+     "normalized_name": "neighbor indicator for the 2028 host",
+     "unit": "1",
+     "definition": "neighbor indicator for the 2028 host",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta1",
+     "normalized_name": "athlete-count coefficient",
+     "unit": "1",
+     "definition": "athlete-count coefficient",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "beta2",
+     "normalized_name": "diversity coefficient",
+     "unit": "1",
+     "definition": "diversity coefficient",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "beta3",
+     "normalized_name": "neighbor coefficient",
+     "unit": "1",
+     "definition": "neighbor coefficient",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "P_first",
+     "normalized_name": "probability of a first medal by 2028",
+     "unit": "1",
+     "definition": "probability of a first medal by 2028",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "delta_t",
+     "normalized_name": "discrete time step",
+     "unit": "year",
+     "definition": "discrete time step",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "A_i",
+    "D_i",
+    "H_i"
+   ],
+   "outputs": [
+    "h",
+    "P_first"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q271-005",
+     "page": 11,
+     "label": "(7)",
+     "source_expression": "h(t | A_i, D_i, H_i) = h_0(t) * exp(beta_1 A_i(t) + beta_2 D_i(t) + beta_3 H_i)",
+     "normalized_latex": "h(t\\mid A_i,D_i,H_i)=h_0(t)\\exp(\\beta_1 A_i(t)+\\beta_2 D_i(t)+\\beta_3 H_i)",
+     "purpose": "The Cox hazard. Readable in the text layer. Not cropped.",
+     "variable_symbols": [
+      "h",
+      "h0",
+      "A_i",
+      "D_i",
+      "H_i",
+      "beta1",
+      "beta2",
+      "beta3"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q271-006",
+     "page": 12,
+     "label": null,
+     "source_expression": "P(T <= 2028) = 1 - exp(-sum_{t=2023}^{2028} h_i(t) delta_t), delta_t = 0.5",
+     "normalized_latex": "P(T\\le 2028)=1-\\exp\\left(-\\sum_{t=2023}^{2028}h_i(t)\\Delta t\\right)",
+     "purpose": "The survival formula. The sum is broken across lines. Not cropped. No display number.",
+     "variable_symbols": [
+      "P_first",
+      "h",
+      "delta_t"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "Display (7) was readable in the text layer and was not cropped. The survival formula was watermark-broken and was not cropped."
+   },
+   "objectives": [
+    "Predict which countries win a first medal in 2028, under two training scenarios."
+   ],
+   "constraints": [
+    "A first medal is scored only for a country with no prior medal.",
+    "The time step is 0.5 year."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "Cox partial likelihood is not shown. Monte Carlo uses 1000 runs and a Brier score.",
+    "parameters": [
+     "h0",
+     "beta1",
+     "beta2",
+     "beta3",
+     "delta_t"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Load the baseline hazard, the athlete parameters, and the event weights.",
+     "In scenario 1 multiply the event weight by 1.6. In scenario 2 keep it.",
+     "Step by 0.5 year and accumulate the hazard.",
+     "Convert the cumulative hazard to a probability.",
+     "Repeat 1000 times and compute the Brier score."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "The great coach effect is not in the medal-table forecast this model supplements.",
+    "A neighbor of the United States gets H_i = 1, and a non-neighbor gets 0."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper prints coefficients, an NRMSE, and coverage. It does not show a trace or a condition number."
+   },
+   "handoff_outputs": [
+    "h",
+    "P_first"
+   ],
+   "validation_refs": [
+    "Summary: 10 countries, approximately 20.36236 percent.",
+    "Body: about 10 countries, an average 20.36236 percent.",
+    "Table 6: Nepal 80 and 70 percent, Rwanda 55 and 60, Bhutan 45 and 40."
+   ],
+   "computational_cost": "No runtime is stated for this model.",
+   "strengths": [
+    "Two scenarios separate a resource increase from the baseline system.",
+    "The hazard ratio is interpretable, and the simulation carries the uncertainty."
+   ],
+   "limitations": [
+    "Ten, about ten, and three table rows all stand.",
+    "The strengths call it a Cox proportional risk model. The section calls it a hazards model."
+   ],
+   "missing_details": [
+    "The fitted beta_1, beta_2, and beta_3 are not printed.",
+    "The sum in the survival formula was not cropped."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q271-003",
+   "page": 12,
+   "section": "7",
+   "family": "project influence and national dependence with a host agenda operator",
+   "purpose": "Score events by influence and dependence, and estimate the host's gain from adding events.",
+   "base_or_modification": "paper-specific",
+   "summary": "Forty-six events fall into five types. PI is medals in an event over the event total. SD is the event's medals over the country's total. The host gain is a sum over new events, gated by PI above 0.7. Display (11) was read from the page 14 raster.",
+   "variables": [
+    {
+     "symbol": "T_s",
+     "normalized_name": "event type of sport s",
+     "unit": "1",
+     "definition": "event type of sport s",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PI",
+     "normalized_name": "project advantage index",
+     "unit": "1",
+     "definition": "project advantage index",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_is",
+     "normalized_name": "medals of country i in event s",
+     "unit": "pieces",
+     "definition": "medals of country i in event s",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_s_total",
+     "normalized_name": "total medals in event s",
+     "unit": "pieces",
+     "definition": "total medals in event s",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "SD",
+     "normalized_name": "national dependence",
+     "unit": "1",
+     "definition": "national dependence",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "C_is",
+     "normalized_name": "medal contribution of event s, equal to M_is",
+     "unit": "pieces",
+     "definition": "medal contribution of event s, equal to M_is",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_i_total",
+     "normalized_name": "total medals of country i",
+     "unit": "pieces",
+     "definition": "total medals of country i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "delta_M",
+     "normalized_name": "host medal difference from new events",
+     "unit": "pieces",
+     "definition": "host medal difference from new events",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_hat_s",
+     "normalized_name": "predicted medals in new event s",
+     "unit": "pieces",
+     "definition": "predicted medals in new event s",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "E_M",
+     "normalized_name": "mean of observed medals in event s",
+     "unit": "pieces",
+     "definition": "mean of observed medals in event s",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "M_is",
+    "M_s_total",
+    "C_is",
+    "M_i_total",
+    "E_M"
+   ],
+   "outputs": [
+    "PI",
+    "SD",
+    "delta_M"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q271-007",
+     "page": 13,
+     "label": "(8)",
+     "source_expression": "Event type T_s is 1 Combat, 2 Timed, 3 Technical, 4 Team, 5 Emerging, and Emerging includes E - sports",
+     "normalized_latex": "T_s\\in\\{1,2,3,4,5\\}",
+     "purpose": "Five event types. Keep E - sports with the spaces around the hyphen.",
+     "variable_symbols": [
+      "T_s"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-008",
+     "page": 13,
+     "label": "(9)",
+     "source_expression": "PI_{i,s} = M_{i,s} / M_{s,total}",
+     "normalized_latex": "PI_{i,s}=M_{i,s}/M_{s,\\mathrm{total}}",
+     "purpose": "The influence index. The text prints PIi,sMi,s over Mstotal on one broken line. Not cropped.",
+     "variable_symbols": [
+      "PI",
+      "M_is",
+      "M_s_total"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-009",
+     "page": 13,
+     "label": "(10)",
+     "source_expression": "SD_{i,s} = C_{i,s} / M_{i,total} * 100%",
+     "normalized_latex": "SD_{i,s}=\\frac{C_{i,s}}{M_{i,\\mathrm{total}}}\\times 100\\%",
+     "purpose": "The dependence index. The prose says C_is is M_is.",
+     "variable_symbols": [
+      "SD",
+      "C_is",
+      "M_i_total"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-010",
+     "page": 14,
+     "label": "(11)",
+     "source_expression": "delta_M_c = sum_{s in S_new} (M-hat_{s,c} - E[M_{s,c}]) * I(PI_{s,c} > 0.7)",
+     "normalized_latex": "\\Delta M_c=\\sum_{s\\in S_{\\mathrm{new}}}(\\hat{M}_{s,c}-E[M_{s,c}])\\,I(PI_{s,c}>0.7)",
+     "purpose": "The host agenda operator. Read from the page 14 raster.",
+     "variable_symbols": [
+      "delta_M",
+      "M_hat_s",
+      "E_M",
+      "PI"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "Display (11) was read from the page 14 raster. Displays (8), (9), and (10) were read from the text and were not cropped."
+   },
+   "objectives": [
+    "Score events by influence and dependence, and estimate the host's gain from adding events."
+   ],
+   "constraints": [
+    "A new event enters the host sum only when PI exceeds 0.7.",
+    "Medal counts are in pieces."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "Panel counts from 2000 to 2024 for 120 countries, then a Monte Carlo counterfactual",
+    "parameters": [
+     "PI"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Assign each event to one of five types.",
+     "Compute PI and SD from the medal counts.",
+     "Screen new events at PI above 0.7.",
+     "Sum the gap between the predicted medals and the observed mean."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "The host can add events. Baseball is named as a 2028 addition because it is the national sport of the United States.",
+    "A high-influence and high-dependence event is strategic. The thresholds are PI above 12 percent and SD above 30 percent."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper prints coefficients, an NRMSE, and coverage. It does not show a trace or a condition number."
+   },
+   "handoff_outputs": [
+    "PI",
+    "SD",
+    "delta_M"
+   ],
+   "validation_refs": [
+    "Swimming and track and field contribute 38.7 percent. The page 7 lag term is 38.7 with no unit.",
+    "A 10 percent swimming-quota increase raises Group A share by 6.2 percent.",
+    "The host gains 14.7 percent, with interval 12.3 to 16.9, by adding 5 events. Page 12 says 12.3 percent.",
+    "Event selection explains 31.4 percent of the differences. The printed statistic is Ra2dj = 0.288."
+   ],
+   "computational_cost": "No runtime is stated for this model.",
+   "strengths": [
+    "PI and SD separate international share from domestic concentration.",
+    "The indicator gates the host gain, so a new event with low PI does not enter the sum."
+   ],
+   "limitations": [
+    "The cross-reference says the model established in 1.1. Section 1.1 is Background.",
+    "12.3 percent and 14.7 percent both stand. Ra2dj stands."
+   ],
+   "missing_details": [
+    "The fitted host-event set for 2028 is not listed beyond swimming, track and field, and baseball.",
+    "Display (9) was not cropped."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q271-004",
+   "page": 15,
+   "section": "8",
+   "family": "difference-in-differences with a spatial lag and a coach-flow graph",
+   "purpose": "Quantify the great coach effect and name three investment targets.",
+   "base_or_modification": "hybrid",
+   "summary": "The summary says a DID-GAN hybrid. The body says DID with Bayesian hierarchical spatiotemporal modeling, then DID-GNN, GAT, and GCN. Display (15) was read from the page 16 raster. Display (12) was watermark-split and was not transcribed. Assumption 3 excludes this effect from the medal table.",
+   "variables": [
+    {
+     "symbol": "f_i",
+     "normalized_name": "coach-mobility intensity of country i",
+     "unit": "1",
+     "definition": "coach-mobility intensity of country i",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "f_bar",
+     "normalized_name": "spatial aggregation intensity",
+     "unit": "1",
+     "definition": "spatial aggregation intensity",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X_local",
+     "normalized_name": "local coach feature",
+     "unit": "1",
+     "definition": "local coach feature",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X_neighbor",
+     "normalized_name": "neighbor coach feature",
+     "unit": "1",
+     "definition": "neighbor coach feature",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "W_ij",
+     "normalized_name": "spatial weight",
+     "unit": "1",
+     "definition": "spatial weight",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta0",
+     "normalized_name": "intercept of the log intensity",
+     "unit": "1",
+     "definition": "intercept of the log intensity",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "b1",
+     "normalized_name": "local-feature coefficient",
+     "unit": "1",
+     "definition": "local-feature coefficient",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "b2",
+     "normalized_name": "spatial-lag coefficient",
+     "unit": "1",
+     "definition": "spatial-lag coefficient",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "Treat",
+     "normalized_name": "treatment indicator",
+     "unit": "1",
+     "definition": "treatment indicator",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Post",
+     "normalized_name": "post-policy indicator",
+     "unit": "1",
+     "definition": "post-policy indicator",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "g1",
+     "normalized_name": "treatment main effect",
+     "unit": "1",
+     "definition": "treatment main effect",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "g2",
+     "normalized_name": "post main effect",
+     "unit": "1",
+     "definition": "post main effect",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "g3",
+     "normalized_name": "DID interaction, the net policy effect",
+     "unit": "1",
+     "definition": "DID interaction, the net policy effect",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "g4",
+     "normalized_name": "spatial spillover of the policy",
+     "unit": "1",
+     "definition": "spatial spillover of the policy",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps",
+     "normalized_name": "error term",
+     "unit": "1",
+     "definition": "error term",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "size_i",
+     "normalized_name": "plotted node size",
+     "unit": "1",
+     "definition": "plotted node size",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "delta_i",
+     "normalized_name": "simulated medal increment",
+     "unit": "pieces",
+     "definition": "simulated medal increment",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "X_local",
+    "X_neighbor",
+    "Treat",
+    "Post"
+   ],
+   "outputs": [
+    "f_i",
+    "g3",
+    "g4",
+    "delta_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q271-011",
+     "page": 15,
+     "label": "(13)",
+     "source_expression": "ln(f_i) = beta_0 + beta_1 X_local + beta_2 sum W_ij X_neighbor + epsilon_i, epsilon ~ N(0, sigma^2)",
+     "normalized_latex": "\\ln(f_i)=\\beta_0+\\beta_1 X_{\\mathrm{local}}+\\beta_2\\sum_j W_{ij}X_{\\mathrm{neighbor}}+\\epsilon_i",
+     "purpose": "The text prints Xnj eighbor with a split n, and Xliocal. Not cropped.",
+     "variable_symbols": [
+      "f_i",
+      "beta0",
+      "b1",
+      "b2",
+      "X_local",
+      "X_neighbor",
+      "W_ij",
+      "eps"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-012",
+     "page": 15,
+     "label": "(14)",
+     "source_expression": "size_i = 50 + 930 f_i^norm, and RGB_i maps 90 - 70 f, 127 sin(2 pi f), and -128 + 256 f",
+     "normalized_latex": "\\mathrm{size}_i=50+930 f_i^{\\mathrm{norm}}",
+     "purpose": "The visual mapping. Read from a watermark-adjacent text layer. Not cropped.",
+     "variable_symbols": [
+      "size_i",
+      "f_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q271-013",
+     "page": 16,
+     "label": "(15)",
+     "source_expression": "ln(f_it) = beta_0 + beta_1 X_local + beta_2 sum W X_neighbor + gamma_1 Treat + gamma_2 Post + gamma_3 (Treat x Post) + gamma_4 (Treat x Post x W) + epsilon",
+     "normalized_latex": "\\ln(f_{it})=\\beta_0+\\beta_1 X_{it}^{\\mathrm{local}}+\\beta_2\\sum W_{ijt}X_{jt}^{\\mathrm{neighbor}}+\\gamma_1\\mathrm{Treat}_i+\\gamma_2\\mathrm{Post}_t+\\gamma_3(\\mathrm{Treat}_i\\times\\mathrm{Post}_t)+\\gamma_4(\\mathrm{Treat}_i\\times\\mathrm{Post}_t\\times W_{ij})+\\epsilon_{it}",
+     "purpose": "The DID extension of display (13). Read from the page 16 raster.",
+     "variable_symbols": [
+      "f_i",
+      "beta0",
+      "b1",
+      "b2",
+      "X_local",
+      "X_neighbor",
+      "W_ij",
+      "Treat",
+      "Post",
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "eps"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "Display (15) was read from the page 16 raster. Displays (13) and (14) were read from text and were not cropped. Display (12) was not transcribed."
+   },
+   "objectives": [
+    "Quantify the great coach effect and name three investment targets."
+   ],
+   "constraints": [
+    "A high-potential event has fewer than 3 medals in 2024 and growth above 15 percent."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "DID on the log intensity, then 10^4 Monte Carlo draws of delta times a Bernoulli(0.7) match plus N(0, 0.5)",
+    "parameters": [
+     "g3",
+     "g4",
+     "W_ij"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Standardize mobility with a Min-Max and a geographic decay, d_0 = 1000 km and k = 2.",
+     "Fit the log intensity on local features and a spatial lag.",
+     "Add Treat, Post, and the two interactions.",
+     "Screen events with fewer than 3 medals and growth above 15 percent.",
+     "Draw 10^4 increments and report the 5 and 95 percent quantiles."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "Assumption 3 says this effect is not taken into account in the medal-table forecast.",
+    "The parallel-trend check is the pre-policy interval containing zero."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper prints coefficients, an NRMSE, and coverage. It does not show a trace or a condition number."
+   },
+   "handoff_outputs": [
+    "f_i",
+    "g3",
+    "g4",
+    "delta_i"
+   ],
+   "validation_refs": [
+    "gamma_3 = 0.62, p < 0.001. gamma_4 = 0.15, p < 0.05.",
+    "Treatment gold medals from 5 to 10. Treatment total from 15 to 30. Control total from 5 to 10.",
+    "Placebo mean -0.05, standard deviation 0.12, against beta = 0.62, over 500 random times.",
+    "Table 8: Norway biathlon 0.82 and 2.7 medals, Japan skateboarding 0.79 and 2.4, Australia BMX 0.75 and 2.1."
+   ],
+   "computational_cost": "No runtime is stated for this model.",
+   "strengths": [
+    "The interaction separates the policy from the time trend, and the fourth coefficient carries the neighbor spillover.",
+    "The graph names hubs the regression cannot."
+   ],
+   "limitations": [
+    "The summary says DID-GAN, a 30 percent mobility cut, and an 8 to 12 percent Norway gain. The body says DID-GNN and 2.7 medals.",
+    "The prose cites Figure 6 for a result Figures 10 and 11 show.",
+    "Russia degree 0.87 and China 0.75 stand beside Norway 0.63."
+   ],
+   "missing_details": [
+    "Display (12), the spatial aggregation, was watermark-split and was not transcribed.",
+    "The GCN update on page 18 was watermark-split and was not transcribed.",
+    "The score formula on page 19 was watermark-split and was not transcribed."
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-C-Q271-001",
+   "to_model_id": "MU-C-Q271-002",
+   "handoff": "Model II is a supplement to Model I. The medal table is already forecast, and CHAMPS adds the first-medal probability."
+  },
+  {
+   "from_model_id": "MU-C-Q271-001",
+   "to_model_id": "MU-C-Q271-003",
+   "handoff": "The host agenda uses the predicted medal and the observed mean. The prose cites section 1.1, which is Background."
+  },
+  {
+   "from_model_id": "MU-C-Q271-004",
+   "to_model_id": "MU-C-Q271-001",
+   "handoff": "Assumption 3 keeps the coach effect out of the medal-table forecast. The weakness later says the effect was overlooked."
+  }
+ ]
+}

@@ -1,0 +1,58 @@
+Team # 1908904                                             Page 29 of 30
+
+
+    if (range_img[i][j] != 1.0):
+      area.add( (i,j) );
+    if (range2_img[i][j] != 1.0):
+      area2.add( (i,j) );
+    if (hospital_img[i][j] != 1.0):
+      hospital.append((i,j))
+
+print(hospital)
+
+road_w = [[0] * 400 for i in range(160)]
+city_w = [[0] * 400 for i in range(160)]
+
+def getPosition(area):
+  mean_road = 0
+  mean_city = 0
+  for (x0, y0) in area:
+    i1 = round(max(x0-r, 0))
+    i2 = round(min(x0+r,160))
+    i3 = round(max(y0-r, 0))
+    i4 = round(min(y0+r,400))
+    for x1 in range(i1,i2):
+      for y1 in range(i3,i4):
+        if (inrange(x1, y1, x0, y0, r)):
+           if (road_img[x1][y1] < 0.5):
+             road_w[x1][y1] += 1
+             mean_road += 1
+             road_img[x1][y1] = 1.0
+           if (city_img[x1][y1] != 1.0):
+             city_w[x1][y1] += 1
+             mean_city += 1
+             city_img[x1][y1] = 1.0
+  mean_road /= len(area)
+  mean_city /= len(area)
+  maxn = 0
+  maxx = 0
+  maxy = 0
+  for (x0, y0) in area:
+    if (road_w[x0][y0] * 0.4 / mean_road + city_w[x0][y0] * 0.6 / mean_city > maxn):
+      maxn = road_w[x0][y0] * 0.4 / mean_road + city_w[x0][y0] * 0.6 / mean_city
+      maxx = x0
+      maxy = y0
+  print(18.47-(maxx-hospital[0][0])/51*0.25)
+  print(-66.73+(maxy-hospital[0][1])/133*0.67)
+  return (maxx, maxy)
+
+(maxx,maxy) = getPosition(area)
+
+
+
+i1 = round(max(maxx-round(42.5 / 0.10377) // 5, 0))
+i2 = round(min(maxx+round(42.5 / 0.10377) // 5,160))
+i3 = round(max(maxy-round(42.5 / 0.10377) // 5, 0))
+i4 = round(min(maxy+round(42.5 / 0.10377) // 5,400))
+for x1 in range(i1,i2):
+  for y1 in range(i3,i4):

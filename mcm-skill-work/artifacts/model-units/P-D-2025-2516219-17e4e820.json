@@ -1,0 +1,1161 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-D-2025-2516219-17e4e820",
+ "problem_type": "D",
+ "year": "2025",
+ "source_sha256": "17e4e8208b87589ec07404c6a7f61928df919df0939f80ef6e4567d962b2efdb",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-D-2025-2516219-NET",
+   "page": 8,
+   "section": "5 Network-Theoretic Framework",
+   "family": "network",
+   "purpose": "represent the city roads and the flow on them, and drop the bridge's capacity at the collapse",
+   "base_or_modification": "base",
+   "summary": "The roads are a four-tuple. Density, utilization and a node balance describe the flow, and the bridge's capacity falls to zero at the collapse.",
+   "variables": [
+    {
+     "symbol": "G",
+     "normalized_name": "network",
+     "unit": "1",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the road network as a four-tuple of nodes, edges, attributes and weights"
+    },
+    {
+     "symbol": "V",
+     "normalized_name": "node set",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the intersections"
+    },
+    {
+     "symbol": "E",
+     "normalized_name": "edge set",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the directed road segments"
+    },
+    {
+     "symbol": "mu",
+     "normalized_name": "mean",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the mean of a numeric series"
+    },
+    {
+     "symbol": "sigma",
+     "normalized_name": "spread",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the standard deviation of a numeric series"
+    },
+    {
+     "symbol": "rho",
+     "normalized_name": "density",
+     "unit": "veh/km",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "vehicles per kilometre on a segment"
+    },
+    {
+     "symbol": "AADT",
+     "normalized_name": "daily traffic",
+     "unit": "veh/day",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "annual average daily traffic"
+    },
+    {
+     "symbol": "lij",
+     "normalized_name": "length",
+     "unit": "km",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the length of a segment"
+    },
+    {
+     "symbol": "vbar",
+     "normalized_name": "mean speed",
+     "unit": "km/h",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the time-weighted mean speed"
+    },
+    {
+     "symbol": "uij",
+     "normalized_name": "utilization",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "traffic divided by capacity"
+    },
+    {
+     "symbol": "Cij",
+     "normalized_name": "capacity",
+     "unit": "veh/day",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the most a segment can carry in a day"
+    },
+    {
+     "symbol": "Gi",
+     "normalized_name": "generation",
+     "unit": "veh/day",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "trips starting at a node"
+    },
+    {
+     "symbol": "Li",
+     "normalized_name": "attraction",
+     "unit": "veh/day",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "trips ending at a node"
+    },
+    {
+     "symbol": "IG",
+     "normalized_name": "efficiency",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the global efficiency of the network"
+    },
+    {
+     "symbol": "dij",
+     "normalized_name": "distance",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the shortest-path distance between two nodes"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "node count",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of nodes"
+    },
+    {
+     "symbol": "cb",
+     "normalized_name": "bridge capacity",
+     "unit": "veh/day",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the capacity of the collapsed bridge"
+    },
+    {
+     "symbol": "tcollapse",
+     "normalized_name": "collapse time",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the moment the bridge fails"
+    },
+    {
+     "symbol": "te",
+     "normalized_name": "travel time",
+     "unit": "h",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the travel time on an edge"
+    },
+    {
+     "symbol": "ve",
+     "normalized_name": "edge flow",
+     "unit": "veh/day",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the flow on an edge"
+    },
+    {
+     "symbol": "lam",
+     "normalized_name": "step size",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the step taken in the flow update"
+    }
+   ],
+   "inputs": [
+    "V",
+    "E",
+    "AADT",
+    "Gi"
+   ],
+   "outputs": [
+    "rho",
+    "uij",
+    "IG",
+    "ve"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2025-2516219-01",
+     "page": 7,
+     "label": "(1)",
+     "source_expression": "\\mu=\\frac{1}{n}\\sum_i x_i,\\ \\sigma=\\sqrt{\\frac{1}{n}\\sum_i(x_i-\\mu)^2}",
+     "normalized_latex": "\\mu=\\frac{1}{n}\\sum_i x_i,\\ \\sigma=\\sqrt{\\frac{1}{n}\\sum_i(x_i-\\mu)^2}",
+     "variable_symbols": [
+      "mu",
+      "sigma",
+      "n"
+     ],
+     "purpose": "mean and spread used to fence outliers at three spreads",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-02",
+     "page": 9,
+     "label": "(5)",
+     "source_expression": "\\rho_{ij}=\\frac{AADT_{ij}}{24\\cdot l_{ij}}\\cdot\\bar v_{ij}",
+     "normalized_latex": "\\rho_{ij}=\\frac{AADT_{ij}}{24\\cdot l_{ij}}\\cdot\\bar v_{ij}",
+     "variable_symbols": [
+      "rho",
+      "AADT",
+      "lij",
+      "vbar"
+     ],
+     "purpose": "vehicles per kilometre from daily traffic, length and speed",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-03",
+     "page": 9,
+     "label": "(6)",
+     "source_expression": "u_{ij}=\\frac{AADT_{ij}}{C_{ij}}",
+     "normalized_latex": "u_{ij}=\\frac{AADT_{ij}}{C_{ij}}",
+     "variable_symbols": [
+      "uij",
+      "AADT",
+      "Cij"
+     ],
+     "purpose": "the share of capacity a segment uses",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-04",
+     "page": 9,
+     "label": "(7)",
+     "source_expression": "\\sum_{e_{ki}\\in E_{in}}AADT_{ki}+G_i=\\sum_{e_{ij}\\in E_{out}}AADT_{ij}+L_i",
+     "normalized_latex": "\\sum_{e_{ki}\\in E_{in}}AADT_{ki}+G_i=\\sum_{e_{ij}\\in E_{out}}AADT_{ij}+L_i",
+     "variable_symbols": [
+      "AADT",
+      "Gi",
+      "Li"
+     ],
+     "purpose": "flow in plus trips generated equals flow out plus trips absorbed",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-05",
+     "page": 10,
+     "label": "(11)",
+     "source_expression": "I(G)=\\frac{1}{n(n-1)}\\sum_{i\\neq j}\\frac{1}{d(v_i,v_j)}",
+     "normalized_latex": "I(G)=\\frac{1}{n(n-1)}\\sum_{i\\neq j}\\frac{1}{d(v_i,v_j)}",
+     "variable_symbols": [
+      "IG",
+      "n",
+      "dij"
+     ],
+     "purpose": "global efficiency as the mean reciprocal shortest-path distance",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-06",
+     "page": 11,
+     "label": "(14)",
+     "source_expression": "c_{e_b}(t)=c^{normal}\\ (t<t_{collapse}),\\ 0\\ (t\\ge t_{collapse})",
+     "normalized_latex": "c_{e_b}(t)=c^{normal}\\ (t<t_{collapse}),\\ 0\\ (t\\ge t_{collapse})",
+     "variable_symbols": [
+      "cb",
+      "tcollapse"
+     ],
+     "purpose": "the bridge keeps its capacity until the collapse and then has none",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-07",
+     "page": 11,
+     "label": "(15)",
+     "source_expression": "\\min\\sum_{e\\in E}\\int_0^{v_e}t_e(x)\\,dx",
+     "normalized_latex": "\\min\\sum_{e\\in E}\\int_0^{v_e}t_e(x)\\,dx",
+     "variable_symbols": [
+      "te",
+      "ve"
+     ],
+     "purpose": "the equilibrium total travel cost",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-08",
+     "page": 12,
+     "label": "(16)",
+     "source_expression": "v_e^{(k+1)}=v_e^{(k)}+\\lambda(\\tilde v_e-v_e^{(k)})",
+     "normalized_latex": "v_e^{(k+1)}=v_e^{(k)}+\\lambda(\\tilde v_e-v_e^{(k)})",
+     "variable_symbols": [
+      "ve",
+      "lam"
+     ],
+     "purpose": "the flow is walked toward the equilibrium flow",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "keep the flow balanced at every node",
+    "find the flow of least total travel time"
+   ],
+   "constraints": [
+    "the bridge carries nothing after the collapse"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the network starts from the recorded traffic"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "present",
+     "details": [
+      "the flow settles where every used path has equal travel time"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "entropy weights from incident frequencies; the rest are stated or taken from other cities",
+    "parameters": [
+     "entropy weights",
+     "stated coefficients"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "fence the outliers at three standard deviations",
+     "compute density and utilization",
+     "set the bridge capacity to zero at the collapse",
+     "walk the flow to equilibrium"
+    ],
+    "software": [],
+    "convergence_criteria": "every used path has the same travel time"
+   },
+   "assumptions": [
+    "the network covers the main roads",
+    "edge weights stay fixed within a year"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the metrics are defined and mapped, but no solved flow is printed"
+   },
+   "handoff_outputs": [
+    "rho",
+    "uij",
+    "IG",
+    "ve"
+   ],
+   "validation_refs": [
+    "Figure 5 draws the traffic before and after"
+   ],
+   "computational_cost": "one pass over the recorded edges plus a flow update",
+   "strengths": [
+    "the balance gives a check on the recorded counts",
+    "the collapse enters as a clean drop in capacity"
+   ],
+   "limitations": [
+    "the side roads are missing from the data and are filled by a decay of 0.9",
+    "the equilibrium is described rather than solved in print"
+   ],
+   "missing_details": [
+    "no solved flow is printed"
+   ]
+  },
+  {
+   "model_id": "MU-D-2025-2516219-FUZZY",
+   "page": 13,
+   "section": "6.3 Fuzzy Comprehensive Evaluation",
+   "family": "evaluation",
+   "purpose": "score the collapse on four factors and weight them by past incidents",
+   "base_or_modification": "paper-specific",
+   "summary": "Flow redistribution, detour burden, efficiency loss and emissions are scored and combined with entropy weights.",
+   "variables": [
+    {
+     "symbol": "AADT",
+     "normalized_name": "daily traffic",
+     "unit": "veh/day",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "annual average daily traffic"
+    },
+    {
+     "symbol": "Q",
+     "normalized_name": "redistribution",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "flow moved onto the alternative routes"
+    },
+    {
+     "symbol": "eta",
+     "normalized_name": "detour burden",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the extra time and density of the detour"
+    },
+    {
+     "symbol": "dI",
+     "normalized_name": "efficiency loss",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the drop in global efficiency"
+    },
+    {
+     "symbol": "Ce",
+     "normalized_name": "emission cost",
+     "unit": "kg/day",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the extra emissions"
+    },
+    {
+     "symbol": "wi",
+     "normalized_name": "factor weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the entropy weight of a factor"
+    },
+    {
+     "symbol": "Hi",
+     "normalized_name": "factor entropy",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the entropy of a factor over past incidents"
+    },
+    {
+     "symbol": "fik",
+     "normalized_name": "incident share",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the share of incidents of one kind"
+    },
+    {
+     "symbol": "R",
+     "normalized_name": "membership",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the degree to which a factor takes a linguistic term"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "impact score",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the weighted membership across the four terms"
+    }
+   ],
+   "inputs": [
+    "AADT",
+    "fik"
+   ],
+   "outputs": [
+    "Q",
+    "B",
+    "dI"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2025-2516219-09",
+     "page": 13,
+     "label": "(17)",
+     "source_expression": "Q=\\frac{\\sum_{e\\in E_{alt}}AADT_e\\cdot l_{alt}}{\\sum_{e\\in E_{closed}}AADT_e\\cdot l_{orig}}",
+     "normalized_latex": "Q=\\frac{\\sum_{e\\in E_{alt}}AADT_e\\cdot l_{alt}}{\\sum_{e\\in E_{closed}}AADT_e\\cdot l_{orig}}",
+     "variable_symbols": [
+      "Q",
+      "AADT"
+     ],
+     "purpose": "flow moved onto the alternative routes against the closed ones",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-10",
+     "page": 13,
+     "label": "(21)",
+     "source_expression": "w_i=\\frac{1-H_i}{\\sum_j(1-H_j)},\\ H_i=-\\frac{1}{\\ln 4}\\sum_k f_{ik}\\ln f_{ik}",
+     "normalized_latex": "w_i=\\frac{1-H_i}{\\sum_j(1-H_j)},\\ H_i=-\\frac{1}{\\ln 4}\\sum_k f_{ik}\\ln f_{ik}",
+     "variable_symbols": [
+      "wi",
+      "Hi",
+      "fik"
+     ],
+     "purpose": "entropy weights from the spread of past incidents",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-11",
+     "page": 14,
+     "label": "(22)",
+     "source_expression": "B=W\\circ R",
+     "normalized_latex": "B=W\\circ R",
+     "variable_symbols": [
+      "B",
+      "wi",
+      "R"
+     ],
+     "purpose": "the impact score as the weighted membership",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-12",
+     "page": 14,
+     "label": "(23)",
+     "source_expression": "\\Delta I_{recovery}(t)=0.38\\,e^{-0.21t}",
+     "normalized_latex": "\\Delta I_{recovery}(t)=0.38\\,e^{-0.21t}",
+     "variable_symbols": [
+      "dI"
+     ],
+     "purpose": "the efficiency loss decaying over the months of rebuilding",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "rank the collapse across four linguistic terms"
+   ],
+   "constraints": [
+    "the four terms and their membership shapes are fixed in advance"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the network starts from the recorded traffic"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "present",
+     "details": [
+      "the flow settles where every used path has equal travel time"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "entropy weights from incident frequencies; the rest are stated or taken from other cities",
+    "parameters": [
+     "entropy weights",
+     "stated coefficients"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute the four factors",
+     "weight them by the entropy of past incidents",
+     "combine the weights with the membership"
+    ],
+    "software": [],
+    "convergence_criteria": "the weights sum to one"
+   },
+   "assumptions": [
+    "past incidents are a fair guide to the weights"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "an error of 8.724 percent is stated but not shown"
+   },
+   "handoff_outputs": [
+    "B"
+   ],
+   "validation_refs": [
+    "Figure 6 draws the stakeholder impact"
+   ],
+   "computational_cost": "one weighted sum over four factors",
+   "strengths": [
+    "the score is checked against a Markov simulation with a stated error"
+   ],
+   "limitations": [
+    "the membership breakpoints are stated, not fitted",
+    "the reported error is not shown against the data"
+   ],
+   "missing_details": [
+    "the membership parameters are given as lists with no fitting"
+   ]
+  },
+  {
+   "model_id": "MU-D-2025-2516219-MODE",
+   "page": 15,
+   "section": "7 Multimodal Transportation Network",
+   "family": "network",
+   "purpose": "extend the road graph to bus, walk and car, and measure the equity of a bus rapid transit line",
+   "base_or_modification": "modification",
+   "summary": "Each mode gets its own travel time, demand splits by a nested logit, and equity is read off the Gini coefficient of accessibility.",
+   "variables": [
+    {
+     "symbol": "GM",
+     "normalized_name": "multimodal graph",
+     "unit": "1",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the graph of stops, paths and modes"
+    },
+    {
+     "symbol": "tb",
+     "normalized_name": "bus time",
+     "unit": "min",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the bus impedance on an edge"
+    },
+    {
+     "symbol": "hj",
+     "normalized_name": "headway",
+     "unit": "min",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the scheduled gap between buses"
+    },
+    {
+     "symbol": "fib",
+     "normalized_name": "bus load",
+     "unit": "passenger",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the passengers on a bus edge"
+    },
+    {
+     "symbol": "Cb",
+     "normalized_name": "bus capacity",
+     "unit": "passenger",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the most a line can carry"
+    },
+    {
+     "symbol": "cp",
+     "normalized_name": "walk cost",
+     "unit": "min",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the cost of a walking edge"
+    },
+    {
+     "symbol": "Pm",
+     "normalized_name": "mode share",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the probability a traveller picks a mode"
+    },
+    {
+     "symbol": "Vomd",
+     "normalized_name": "utility",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the systematic utility of a mode"
+    },
+    {
+     "symbol": "Sm",
+     "normalized_name": "inclusive value",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the composite utility inside a nest"
+    },
+    {
+     "symbol": "Ai",
+     "normalized_name": "accessibility",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the opportunity reachable from a place"
+    },
+    {
+     "symbol": "Wj",
+     "normalized_name": "opportunity",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the opportunity at a destination"
+    },
+    {
+     "symbol": "Gini",
+     "normalized_name": "inequality",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the Gini coefficient of accessibility"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "place count",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of places the Gini is taken over"
+    }
+   ],
+   "inputs": [
+    "hj",
+    "fib",
+    "Wj"
+   ],
+   "outputs": [
+    "tb",
+    "Pm",
+    "Ai",
+    "Gini"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2025-2516219-13",
+     "page": 16,
+     "label": "(24)",
+     "source_expression": "t_b=\\frac{1}{2h_j}+\\frac{\\sigma_j^2}{h_j^2}+\\frac{l}{v_0\\exp(-\\alpha f/C)}+\\beta(f/C)^\\gamma",
+     "normalized_latex": "t_b=\\frac{1}{2h_j}+\\frac{\\sigma_j^2}{h_j^2}+\\frac{l}{v_0\\exp(-\\alpha f/C)}+\\beta(f/C)^\\gamma",
+     "variable_symbols": [
+      "tb",
+      "hj",
+      "fib",
+      "Cb"
+     ],
+     "purpose": "bus time as wait plus motion plus a crowding penalty",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-14",
+     "page": 16,
+     "label": "(26)",
+     "source_expression": "P_{m|od}=\\frac{\\exp(V_{omd}+\\ln S_m)}{\\sum_{m'}\\exp(V_{om'd}+\\ln S_{m'})}",
+     "normalized_latex": "P_{m|od}=\\frac{\\exp(V_{omd}+\\ln S_m)}{\\sum_{m'}\\exp(V_{om'd}+\\ln S_{m'})}",
+     "variable_symbols": [
+      "Pm",
+      "Vomd",
+      "Sm"
+     ],
+     "purpose": "the nested logit share of a mode",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-15",
+     "page": 17,
+     "label": "(27)",
+     "source_expression": "A_i=\\sum_j W_j\\exp(-\\lambda\\min_m c_{imj})",
+     "normalized_latex": "A_i=\\sum_j W_j\\exp(-\\lambda\\min_m c_{imj})",
+     "variable_symbols": [
+      "Ai",
+      "Wj"
+     ],
+     "purpose": "accessibility as discounted reachable opportunity",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-16",
+     "page": 17,
+     "label": "(28)",
+     "source_expression": "G=\\frac{1}{2n^2\\bar A}\\sum_i\\sum_j|A_i-A_j|",
+     "normalized_latex": "G=\\frac{1}{2n^2\\bar A}\\sum_i\\sum_j|A_i-A_j|",
+     "variable_symbols": [
+      "Gini",
+      "Ai",
+      "n"
+     ],
+     "purpose": "the Gini coefficient of accessibility",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "raise the bus share and lower the inequality of accessibility"
+   ],
+   "constraints": [
+    "the bus share collapses once the load passes 0.85 of capacity"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the network starts from the recorded traffic"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "present",
+     "details": [
+      "the flow settles where every used path has equal travel time"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "entropy weights from incident frequencies; the rest are stated or taken from other cities",
+    "parameters": [
+     "entropy weights",
+     "stated coefficients"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "write the bus and walking impedances",
+     "split the demand with the nested logit",
+     "compute accessibility and its Gini coefficient"
+    ],
+    "software": [],
+    "convergence_criteria": "the mode shares sum to one"
+   },
+   "assumptions": [
+    "a mean walking speed of 1.34 metres per second",
+    "the groups are homogeneous enough for one value of time"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the simulation results are tabulated but the coefficients are not estimated"
+   },
+   "handoff_outputs": [
+    "Pm",
+    "Ai",
+    "Gini"
+   ],
+   "validation_refs": [
+    "Table 4 gives the before and after figures"
+   ],
+   "computational_cost": "one nested logit over three modes",
+   "strengths": [
+    "the simulation reports a bus share gain and a Gini drop"
+   ],
+   "limitations": [
+    "the many coefficients are stated rather than estimated",
+    "the result is one corridor, not the whole city"
+   ],
+   "missing_details": [
+    "no estimation procedure is given for the logit coefficients"
+   ]
+  },
+  {
+   "model_id": "MU-D-2025-2516219-IMC",
+   "page": 20,
+   "section": "8 Optimal Transportation Network Intervention",
+   "family": "optimization",
+   "purpose": "choose bus lanes, walking infrastructure and micro-mobility hubs to raise welfare, cut cost and cut emissions",
+   "base_or_modification": "paper-specific",
+   "summary": "A three-objective program is calibrated on other cities by MCMC and solved by an epsilon-constraint method.",
+   "variables": [
+    {
+     "symbol": "xb",
+     "normalized_name": "bus lanes",
+     "unit": "km",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "kilometres of bus lane"
+    },
+    {
+     "symbol": "xp",
+     "normalized_name": "walk quality",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the pedestrian infrastructure score"
+    },
+    {
+     "symbol": "xm",
+     "normalized_name": "hub density",
+     "unit": "1/km^2",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "micro-mobility stations per square kilometre"
+    },
+    {
+     "symbol": "f1",
+     "normalized_name": "welfare",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the resident welfare objective"
+    },
+    {
+     "symbol": "f2",
+     "normalized_name": "cost",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the implementation cost objective"
+    },
+    {
+     "symbol": "f3",
+     "normalized_name": "environment",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the environmental benefit objective"
+    },
+    {
+     "symbol": "BCR",
+     "normalized_name": "benefit cost ratio",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "discounted benefits over discounted costs"
+    },
+    {
+     "symbol": "delta",
+     "normalized_name": "discount",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the discount factor, given as 0.96"
+    },
+    {
+     "symbol": "theta",
+     "normalized_name": "parameters",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the parameter vector calibrated by MCMC"
+    },
+    {
+     "symbol": "D",
+     "normalized_name": "data",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the cross-city performance data"
+    }
+   ],
+   "inputs": [
+    "D",
+    "theta"
+   ],
+   "outputs": [
+    "xb",
+    "xp",
+    "xm",
+    "BCR"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2025-2516219-17",
+     "page": 20,
+     "label": "(32)",
+     "source_expression": "\\max_{x\\in X}[f_1(x),-f_2(x),f_3(x)]",
+     "normalized_latex": "\\max_{x\\in X}[f_1(x),-f_2(x),f_3(x)]",
+     "variable_symbols": [
+      "f1",
+      "f2",
+      "f3",
+      "xb",
+      "xp",
+      "xm"
+     ],
+     "purpose": "the three objectives over the feasible investments",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-18",
+     "page": 21,
+     "label": "(36)",
+     "source_expression": "BCR=\\frac{\\sum_t\\delta^t(\\Delta Tax_t+\\Delta Health_t)}{\\sum_t\\delta^t(C_{cap}+C_{O\\&M})}",
+     "normalized_latex": "BCR=\\frac{\\sum_t\\delta^t(\\Delta Tax_t+\\Delta Health_t)}{\\sum_t\\delta^t(C_{cap}+C_{O\\&M})}",
+     "variable_symbols": [
+      "BCR",
+      "delta"
+     ],
+     "purpose": "discounted benefits over discounted costs",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-19",
+     "page": 22,
+     "label": "(42)",
+     "source_expression": "p(\\theta|D)\\propto\\prod_k\\mathcal N(y_k|f(x_k,\\theta),\\Sigma)\\,p(\\theta)",
+     "normalized_latex": "p(\\theta|D)\\propto\\prod_k\\mathcal N(y_k|f(x_k,\\theta),\\Sigma)\\,p(\\theta)",
+     "variable_symbols": [
+      "theta",
+      "D"
+     ],
+     "purpose": "the posterior of the parameters given the cross-city data",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2025-2516219-20",
+     "page": 23,
+     "label": "(44)",
+     "source_expression": "x_b>0.3L_{tot}\\Rightarrow\\frac{\\partial\\Delta c_{auto}}{\\partial x_b}\\to\\infty",
+     "normalized_latex": "x_b>0.3L_{tot}\\Rightarrow\\frac{\\partial\\Delta c_{auto}}{\\partial x_b}\\to\\infty",
+     "variable_symbols": [
+      "xb"
+     ],
+     "purpose": "the point past which taking lanes from cars drives their cost up without bound",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "raise resident welfare",
+    "cut the cost",
+    "raise the environmental benefit"
+   ],
+   "constraints": [
+    "taking more than three tenths of the lanes from cars drives their cost up without bound"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the network starts from the recorded traffic"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "present",
+     "details": [
+      "the flow settles where every used path has equal travel time"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "entropy weights from incident frequencies; the rest are stated or taken from other cities",
+    "parameters": [
+     "entropy weights",
+     "stated coefficients"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "calibrate the parameters on cross-city data",
+     "deploy the bus lanes",
+     "raise the worst-off accessibility",
+     "trace the tradeoff surface"
+    ],
+    "software": [],
+    "convergence_criteria": "the Markov chain is said to converge, with no tolerance given"
+   },
+   "assumptions": [
+    "other American corridors are a fair guide to Baltimore"
+   ],
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the posterior is plotted but no calibration detail is given"
+   },
+   "handoff_outputs": [
+    "xb",
+    "BCR"
+   ],
+   "validation_refs": [
+    "Figure 13 plots the posterior"
+   ],
+   "computational_cost": "a Markov chain over the parameters plus a three-objective program",
+   "strengths": [
+    "the case study reports a welfare gain and a benefit-cost ratio above one"
+   ],
+   "limitations": [
+    "the calibration data are named but not shown",
+    "the three stages are described, not computed"
+   ],
+   "missing_details": [
+    "no chain length or acceptance rate is reported"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-D-2025-2516219-NET",
+   "to_model_id": "MU-D-2025-2516219-FUZZY",
+   "handoff": "the efficiency and the redistributed flow are two of the four factors the score combines"
+  },
+  {
+   "from_model_id": "MU-D-2025-2516219-NET",
+   "to_model_id": "MU-D-2025-2516219-MODE",
+   "handoff": "the road graph is extended with bus, walking and transfer edges"
+  },
+  {
+   "from_model_id": "MU-D-2025-2516219-MODE",
+   "to_model_id": "MU-D-2025-2516219-IMC",
+   "handoff": "the mode shares and the accessibility are what the three objectives are built from"
+  }
+ ]
+}

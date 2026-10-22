@@ -1,0 +1,801 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2024-2422054-7c8f8bf5",
+  "problem_type": "F",
+  "year": "2024",
+  "source_sha256": "7c8f8bf52141ab08ec2d402ad05505fd23053c754919ac2e925c2facb0c8ebc3",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2024-2422054-IWTI",
+      "section": "IWTI Construction",
+      "family": "index-construction",
+      "summary": "Entropy-weighted Illegal Wildlife Trade Index from CITES minimax-normalized trade data.",
+      "computational_cost": "not-stated",
+      "purpose": "Construct composite IWTI from multi-term CITES trade data using entropy weighting.",
+      "base_or_modification": "paper-specific",
+      "page": 9,
+      "inputs": [
+        "X_ij"
+      ],
+      "outputs": [
+        "IWTI"
+      ],
+      "handoff_outputs": [
+        "IWTI"
+      ],
+      "objectives": [
+        "Quantify annual illegal wildlife trade intensity from multi-dimensional CITES data."
+      ],
+      "variables": [
+        {
+          "symbol": "X_ij",
+          "normalized_name": "raw_trade_data",
+          "role": "input",
+          "unit": "various",
+          "definition": "Original data of jth term of ith year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_ij",
+          "normalized_name": "normalized_data",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Minimax-normalized data",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_j",
+          "normalized_name": "information_entropy",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Information entropy of jth term",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_j",
+          "normalized_name": "entropy_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of jth term",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IWTI",
+          "normalized_name": "trade_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Illegal Wildlife Trade Index",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2422054-IWTI-1",
+          "equation_label": "Minimax normalization",
+          "equation_text": "Y_ij = (X_ij - min(X_j)) / (max(X_j) - min(X_j))",
+          "source_expression": "Y_ij = (X_ij - min(X_j)) / (max(X_j) - min(X_j))",
+          "normalized_latex": "Y_{ij} = \\frac{X_{ij} - \\min(X_j)}{\\max(X_j) - \\min(X_j)}",
+          "purpose": "Normalize trade data to [0,1]",
+          "variable_symbols": [
+            "X_ij",
+            "Y_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-IWTI-2",
+          "equation_label": "Entropy weight",
+          "equation_text": "W_j = (1 - E_j) / (n - sum(E_j))",
+          "source_expression": "W_j = (1 - E_j) / (n - sum(E_j))",
+          "normalized_latex": "W_j = \\frac{1 - E_j}{n - \\sum_{j=1}^{n} E_j}",
+          "purpose": "Calculate entropy-based weights for each term",
+          "variable_symbols": [
+            "E_j",
+            "W_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated in paper."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Entropy method from CITES data",
+        "parameters": [
+          "W_j",
+          "E_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Minimax normalize, compute entropy, derive weights, sum weighted data",
+        "status": "implemented",
+        "steps": [
+          "Normalize",
+          "Entropy",
+          "Weight",
+          "Sum"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Deterministic."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "All parameters computed from data."
+        ],
+        "analysis": "Deterministic index construction."
+      },
+      "constraints": [
+        "Y_ij in [0,1]",
+        "sum(W_j) = 1"
+      ],
+      "validation_refs": [
+        "Figure 2 IWTI trend"
+      ],
+      "strengths": [
+        "Data-driven weighting"
+      ],
+      "limitations": [
+        "Depends on CITES reporting completeness"
+      ],
+      "missing_details": [
+        "Specific terms used in IWTI not fully listed"
+      ],
+      "assumptions": [
+        "CITES data is complete and accurate"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2422054-MICRO",
+      "section": "IWTer Behavioral Decision Model",
+      "family": "optimization",
+      "summary": "Micro-level profit maximization model for IWTer behavioral decisions: costs (transport, weapon, opportunity) vs revenue from wildlife trade.",
+      "computational_cost": "not-stated",
+      "purpose": "Determine optimal time allocation to IWT by maximizing net revenue, showing salary-IWT inverse relationship.",
+      "base_or_modification": "paper-specific",
+      "page": 11,
+      "inputs": [
+        "w_i",
+        "beta_t"
+      ],
+      "outputs": [
+        "t_i"
+      ],
+      "handoff_outputs": [
+        "t_i"
+      ],
+      "objectives": [
+        "Find profit-maximizing hours spent on IWT as function of wage level."
+      ],
+      "variables": [
+        {
+          "symbol": "t_i",
+          "normalized_name": "iwt_hours",
+          "role": "output",
+          "unit": "hours/month",
+          "definition": "Hours spent on IWT per month",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_i",
+          "normalized_name": "wage_rate",
+          "role": "input",
+          "unit": "TZS/hour",
+          "definition": "IWTer wage per hour",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_t",
+          "normalized_name": "transport_cost",
+          "role": "parameter",
+          "unit": "TZS/hour",
+          "definition": "Transportation cost per hour",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_w",
+          "normalized_name": "wildlife_rate",
+          "role": "parameter",
+          "unit": "appearances/hour",
+          "definition": "Wildlife appearances per hour",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_p",
+          "normalized_name": "police_rate",
+          "role": "parameter",
+          "unit": "appearances/hour",
+          "definition": "Police appearances per hour",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_b",
+          "normalized_name": "bullet_price",
+          "role": "parameter",
+          "unit": "USD",
+          "definition": "Price of bullets",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_w",
+          "normalized_name": "weapon_price",
+          "role": "parameter",
+          "unit": "USD",
+          "definition": "Price of weapons",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_w",
+          "normalized_name": "weapon_lifespan",
+          "role": "parameter",
+          "unit": "rounds",
+          "definition": "Lifespan of weapons",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_p",
+          "normalized_name": "prison_time",
+          "role": "parameter",
+          "unit": "months",
+          "definition": "Time in prison per month",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "price_intercept",
+          "role": "parameter",
+          "unit": "USD",
+          "definition": "Linear price intercept",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "price_slope",
+          "role": "parameter",
+          "unit": "USD/unit",
+          "definition": "Linear price slope",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2422054-MICRO-1",
+          "equation_label": "Transport cost",
+          "equation_text": "C_t = t_i * beta_t",
+          "source_expression": "C_t = t_i * beta_t",
+          "normalized_latex": "C_t = t_i \\cdot \\beta_t",
+          "purpose": "Monthly transportation cost",
+          "variable_symbols": [
+            "t_i",
+            "beta_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MICRO-2",
+          "equation_label": "Profit maximization",
+          "equation_text": "max_{t_i} R_i - (C_t + C_w + C_o)",
+          "source_expression": "max_{t_i} R_i - (C_t + C_w + C_o)",
+          "normalized_latex": "\\max_{t_i} R_i - (C_t + C_w + C_o)",
+          "purpose": "IWTer net revenue maximization",
+          "variable_symbols": [
+            "t_i",
+            "w_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MICRO-3",
+          "equation_label": "Optimal hours",
+          "equation_text": "t_i = Max{0, -53*w_i + 20}",
+          "source_expression": "t_i = Max{0, -53*w_i + 20}",
+          "normalized_latex": "t_i = \\max\\{0, -53 w_i + 20\\}",
+          "purpose": "Linear relationship between wage and IWT hours",
+          "variable_symbols": [
+            "t_i",
+            "w_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly derived."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Static optimization, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "t_i >= 0, t_i < 360 hours/month."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Optimal t_i where gradient of net revenue = 0."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Estimated from Tanzania data sources and literature",
+        "parameters": [
+          "beta_t",
+          "lambda_w",
+          "lambda_p",
+          "a",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "description": "First-order optimality condition on net revenue",
+        "status": "implemented",
+        "steps": [
+          "Define costs",
+          "Define revenue",
+          "Set gradient=0",
+          "Solve for t_i"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Closed-form solution."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Closed-form solution from FOC."
+        ],
+        "analysis": "Single-variable optimization with unique maximum."
+      },
+      "constraints": [
+        "t_i >= 0",
+        "t_i < 360"
+      ],
+      "validation_refs": [
+        "Equation 11 result"
+      ],
+      "strengths": [
+        "Economic theory-grounded",
+        "Captures cost-benefit trade-off"
+      ],
+      "limitations": [
+        "Poisson process assumptions may oversimplify",
+        "Linear price-quantity relationship"
+      ],
+      "missing_details": [
+        "Full derivation steps from eq 10 to eq 11"
+      ],
+      "assumptions": [
+        "Wildlife arrival follows Poisson process",
+        "Police arrival follows Poisson process",
+        "Linear negative price-quantity relationship"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "section": "Government Political Decision Model",
+      "family": "optimization",
+      "summary": "Macro-level discrete dynamic optimization maximizing weighted government goals (IWT reduction, GDP growth, equity) subject to budget constraints.",
+      "computational_cost": "not-stated",
+      "purpose": "Optimize infrastructure investment vs agricultural subsidy allocation to maximize government composite goal over 30-year horizon.",
+      "base_or_modification": "paper-specific",
+      "page": 15,
+      "inputs": [
+        "a_1",
+        "a_2",
+        "a_3"
+      ],
+      "outputs": [
+        "G_gov"
+      ],
+      "handoff_outputs": [
+        "G_gov"
+      ],
+      "objectives": [
+        "Maximize weighted government goal through optimal infrastructure-subsidy allocation."
+      ],
+      "variables": [
+        {
+          "symbol": "G_gov",
+          "normalized_name": "government_goal",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Government overall composite goal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_IWT",
+          "normalized_name": "iwt_goal",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Goal of reducing IWT",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_GDP",
+          "normalized_name": "gdp_goal",
+          "role": "parameter",
+          "unit": "TZS",
+          "definition": "Goal of promoting economic growth",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_equ",
+          "normalized_name": "equity_goal",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Goal of ensuring distributive equity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_1",
+          "normalized_name": "weight_iwt",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weight for IWT reduction goal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_2",
+          "normalized_name": "weight_gdp",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weight for GDP growth goal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_3",
+          "normalized_name": "weight_equity",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weight for equity goal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_t",
+          "normalized_name": "budget_constraint",
+          "role": "parameter",
+          "unit": "TZS",
+          "definition": "Budget constraint for year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_IWT",
+          "normalized_name": "iwt_population",
+          "role": "parameter",
+          "unit": "persons",
+          "definition": "Population exposed to IWT possibility",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_low",
+          "normalized_name": "low_income_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Proportion of low-income population",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_1",
+          "normalized_name": "consumption_weight_low",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of low-income in consumption",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_2",
+          "normalized_name": "consumption_weight_high",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of high-income in consumption",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2422054-MACRO-1",
+          "equation_label": "Government goal",
+          "equation_text": "G_gov = a_1*G_IWT + a_2*G_GDP + a_3*G_equ",
+          "source_expression": "G_gov = a_1*G_IWT + a_2*G_GDP + a_3*G_equ",
+          "normalized_latex": "G_{gov} = a_1 G_{IWT} + a_2 G_{GDP} + a_3 G_{equ}",
+          "purpose": "Weighted sum of three government goals",
+          "variable_symbols": [
+            "G_gov",
+            "G_IWT",
+            "G_GDP",
+            "G_equ",
+            "a_1",
+            "a_2",
+            "a_3"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MACRO-2",
+          "equation_label": "IWT goal",
+          "equation_text": "G_IWT = -P_IWT * E[Q_IWT]",
+          "source_expression": "G_IWT = -P_IWT * E[Q_IWT]",
+          "normalized_latex": "G_{IWT} = -P_{IWT} \\cdot E[Q_{IWT}]",
+          "purpose": "Negation of expected total IWT volume",
+          "variable_symbols": [
+            "G_IWT",
+            "P_IWT"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MACRO-3",
+          "equation_label": "GDP decomposition",
+          "equation_text": "G_GDP = w_c*dC + w_i*dI + w_g*dG",
+          "source_expression": "G_GDP = w_c*dC + w_i*dI + w_g*dG",
+          "normalized_latex": "G_{GDP} = w_c \\Delta C + w_i \\Delta I + w_g \\Delta G",
+          "purpose": "Expenditure approach GDP change",
+          "variable_symbols": [
+            "G_GDP",
+            "c_1",
+            "c_2"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MACRO-4",
+          "equation_label": "Equity goal",
+          "equation_text": "G_equ = dw_low / dw_high",
+          "source_expression": "G_equ = dw_low / dw_high",
+          "normalized_latex": "G_{equ} = \\frac{\\Delta w_{low}}{\\Delta w_{high}}",
+          "purpose": "Ratio of income changes as equity measure",
+          "variable_symbols": [
+            "G_equ",
+            "p_low"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2422054-MACRO-5",
+          "equation_label": "Optimization",
+          "equation_text": "max_{Infra} G_gov",
+          "source_expression": "max_{Infra} G_gov",
+          "normalized_latex": "\\max_{Infra} G_{gov}",
+          "purpose": "Optimize infrastructure allocation",
+          "variable_symbols": [
+            "G_gov",
+            "B_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly derived."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "B_0 derived from 2022 GDP government purchase share."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "B_t = B_{t-1} + rho*(dInfra_t + dSub_t) budget constraint."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Dynamic optimization, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Parameters from World Bank, CHIP, literature estimates",
+        "parameters": [
+          "c_1",
+          "c_2",
+          "c_4",
+          "c_5",
+          "c_6"
+        ]
+      },
+      "algorithm": {
+        "description": "Discrete dynamic programming over 30-year horizon",
+        "status": "implemented",
+        "steps": [
+          "Set initial budget",
+          "For each year optimize Infra/Sub split",
+          "Update wages and IWT",
+          "Iterate"
+        ],
+        "software": [
+          "Computer optimization (unspecified)"
+        ],
+        "convergence_criteria": "Discrete optimization converges in finite steps."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters identified from data and literature."
+        ],
+        "analysis": "Linear structure ensures unique optimum per period."
+      },
+      "constraints": [
+        "sum(a_i)=1",
+        "Budget constraint B_t",
+        "Infra + Sub <= B_t"
+      ],
+      "validation_refs": [
+        "Table 2 optimal decision and prediction",
+        "Figure 3 macroeconomic characteristics"
+      ],
+      "strengths": [
+        "Integrates micro and macro models",
+        "Budget-constrained optimization"
+      ],
+      "limitations": [
+        "Linear GDP structure is simplistic",
+        "Net exports ignored"
+      ],
+      "missing_details": [
+        "Exact optimization solver not named",
+        "rho value not explicitly stated"
+      ],
+      "assumptions": [
+        "GDP = C + I + G (ignoring NX)",
+        "Linear consumption-income relationship",
+        "Constant government spending share"
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2024-2422054-IWTI-1",
+      "model_id": "MU-F-2024-2422054-IWTI",
+      "page": 9,
+      "source_expression": "Y_ij = (X_ij - min(X_j)) / (max(X_j) - min(X_j))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-IWTI-2",
+      "model_id": "MU-F-2024-2422054-IWTI",
+      "page": 9,
+      "source_expression": "W_j = (1 - E_j) / (n - sum(E_j))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MICRO-1",
+      "model_id": "MU-F-2024-2422054-MICRO",
+      "page": 12,
+      "source_expression": "C_t = t_i * beta_t"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MICRO-2",
+      "model_id": "MU-F-2024-2422054-MICRO",
+      "page": 12,
+      "source_expression": "max_{t_i} R_i - (C_t + C_w + C_o)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MICRO-3",
+      "model_id": "MU-F-2024-2422054-MICRO",
+      "page": 13,
+      "source_expression": "t_i = Max{0, -53*w_i + 20}"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MACRO-1",
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "page": 15,
+      "source_expression": "G_gov = a_1*G_IWT + a_2*G_GDP + a_3*G_equ"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MACRO-2",
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "page": 15,
+      "source_expression": "G_IWT = -P_IWT * E[Q_IWT]"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MACRO-3",
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "page": 16,
+      "source_expression": "G_GDP = w_c*dC + w_i*dI + w_g*dG"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MACRO-4",
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "page": 17,
+      "source_expression": "G_equ = dw_low / dw_high"
+    },
+    {
+      "equation_id": "EQ-F-2024-2422054-MACRO-5",
+      "model_id": "MU-F-2024-2422054-MACRO",
+      "page": 17,
+      "source_expression": "max_{Infra} G_gov"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2024-2422054-IWTI",
+      "to_model_id": "MU-F-2024-2422054-MICRO",
+      "handoff": "IWTI provides historical trade context for micro model calibration"
+    },
+    {
+      "from_model_id": "MU-F-2024-2422054-MICRO",
+      "to_model_id": "MU-F-2024-2422054-MACRO",
+      "handoff": "t_i(w_i) feeds into macro model E[Q_IWT] computation"
+    }
+  ]
+}

@@ -1,0 +1,1160 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2406176-bd7757f9",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "bd7757f9c1ac6ed53281fad1bcd46c932274286373613918e849c592e90ab54d",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q247-001",
+      "page": 7,
+      "section": "4.2 Elo rating and the first point",
+      "family": "elo rating with a reverse-calculated first-point probability",
+      "purpose": "Turn a player's record into a pre-match win probability, then invert it for the server's chance of taking the opening point.",
+      "base_or_modification": "base",
+      "summary": "Ratings start at 1500 and move by a factor that shrinks as the player plays more matches. The pre-match probability is the logistic of the rating gap over 400. The paper defines W_i as 1 when the player loses and 0 when the player wins, which is the reverse of the usual convention, and that definition is kept. The IID assumption is used only to invert the match-win probability for the server's first-point probability, and the paper fences it off from every other calculation. The serve-receive gap is 0.25 for men and 0.15 for women, taken from Machar Reid. Because the match-win probability rises with the first-point probability, the inversion is done by bisection. The expansion of the match through games and sets is badly scrambled, and the coefficients are not rebuilt.",
+      "variables": [
+        {
+          "symbol": "Ei",
+          "normalized_name": "elo rating",
+          "unit": "1",
+          "definition": "Player i's rating before match t. It starts at 1500.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ki",
+          "normalized_name": "update factor",
+          "unit": "1",
+          "definition": "250 over the match count plus 5, to the power 0.4.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mi",
+          "normalized_name": "matches played",
+          "unit": "1",
+          "definition": "How many matches the player has already played.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pij",
+          "normalized_name": "pre-match win probability",
+          "unit": "1",
+          "definition": "The predicted chance that i beats j before the match.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wi",
+          "normalized_name": "match outcome",
+          "unit": "1",
+          "definition": "Printed as 1 if the player loses and 0 if the player wins.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p0",
+          "normalized_name": "first-point probability",
+          "unit": "1",
+          "definition": "The server's chance of winning the opening point, held constant for the match.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q0",
+          "normalized_name": "receiver's first point",
+          "unit": "1",
+          "definition": "One minus p0.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "serve gap",
+          "unit": "1",
+          "definition": "0.25 for men and 0.15 for women.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mi",
+        "Wi"
+      ],
+      "outputs": [
+        "Pij",
+        "p0"
+      ],
+      "handoff_outputs": [
+        "p0",
+        "Pij"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q247-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "E_i(t+1) = E_i(t) + K_i (P_ij(t) - W_i(t)), E_i(1) = 1500",
+          "normalized_latex": "E_i(t+1)=E_i(t)+K_i(P_{ij}(t)-W_i(t)),\\ E_i(1)=1500",
+          "purpose": "The rating update. W_i is 1 for a loss.",
+          "variable_symbols": [
+            "Ei",
+            "Ki",
+            "Pij",
+            "Wi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-002",
+          "page": 8,
+          "label": "(2)",
+          "source_expression": "K_i = 250 / (m_i(t) + 5)^0.4",
+          "normalized_latex": "K_i=250/(m_i(t)+5)^{0.4}",
+          "purpose": "The factor shrinks with experience.",
+          "variable_symbols": [
+            "Ki",
+            "mi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-003",
+          "page": 8,
+          "label": "(3)",
+          "source_expression": "P_ij(t) = 1 / (1 + 10^((E_j - E_i)/400))",
+          "normalized_latex": "P_{ij}(t)=1/(1+10^{(E_j-E_i)/400})",
+          "purpose": "The pre-match probability from the rating gap.",
+          "variable_symbols": [
+            "Pij",
+            "Ei"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-004",
+          "page": 9,
+          "label": "(4)",
+          "source_expression": "f_0(p0, q0) = P_ij",
+          "normalized_latex": "f_0(p_0,q_0)=P_{ij}",
+          "purpose": "The match-win probability inverted for the first point. The expansion is scrambled.",
+          "variable_symbols": [
+            "p0",
+            "q0",
+            "Pij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (1) to (3) are legible. Formula (4) and the match expansion under it are scrambled."
+      },
+      "objectives": [
+        "Produce a pre-match probability and the server's opening-point probability."
+      ],
+      "constraints": [
+        "Ratings start at 1500.",
+        "The gap is 0.25 for men and 0.15 for women.",
+        "IID is used only for p0."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Every rating begins at 1500 before any match is played."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The factor is computed from the match count. The first-point probability is found by bisection, since the match probability rises with it.",
+        "parameters": [
+          "Ki",
+          "eps"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Update the rating after each match.",
+          "Compute the pre-match probability from the gap.",
+          "Expand the match through games and sets.",
+          "Bisect for the first-point probability."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The inversion stops when the expanded probability matches the pre-match one."
+      },
+      "assumptions": [
+        "The IID assumption holds for the opening point and for nothing else.",
+        "The serve-receive gap is the same for every men's match."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The rating update and the logistic are legible. The game and set expansion is scrambled, so the inversion cannot be rerun from the printed text."
+      },
+      "validation_refs": [
+        "Figure 4: the match probability rises with the first-point probability."
+      ],
+      "computational_cost": "One bisection per server.",
+      "strengths": [
+        "The borrowed assumption is fenced to a single quantity."
+      ],
+      "limitations": [
+        "The outcome is coded backwards from the usual convention, and the expansion cannot be read."
+      ],
+      "missing_details": [
+        "The game and set coefficients inside the expansion."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q247-002",
+      "page": 10,
+      "section": "4.4 Real-time win probability and momentum",
+      "family": "quasi-binomial blend of pre-match and in-match serve evidence",
+      "purpose": "Estimate the chance of the next point from both the record and the match so far, then call the gap momentum.",
+      "base_or_modification": "paper-specific",
+      "summary": "Tennis is treated as strongly zero-sum, so the receiver's chance is one minus the server's. The server's next-point probability blends the opening probability with the average so far, and the weight on the opening probability falls as points accumulate. Setting that weight to one recovers the pre-match probability and wipes the momentum out, and the paper uses exactly that case as the rival model. The loss pulls the running average toward the points just played and toward the opening probability, and the moment is weighted more than the start. The weight parameter is never given a number. The serve advantage is then removed: the server is not ahead merely for serving. Momentum is the real-time probability minus the opening probability, shifted by the serve gap when the player is receiving.",
+      "variables": [
+        {
+          "symbol": "p0",
+          "normalized_name": "first-point probability",
+          "unit": "1",
+          "definition": "Handed over from the rating model and held fixed.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PA",
+          "normalized_name": "real-time win probability",
+          "unit": "1",
+          "definition": "The chance that A wins the next point.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pR",
+          "normalized_name": "server next-point probability",
+          "unit": "1",
+          "definition": "The blended estimate for the server.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pbar",
+          "normalized_name": "running serve average",
+          "unit": "1",
+          "definition": "The share of serve points won so far.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "blend weight",
+          "unit": "1",
+          "definition": "Falls from near one toward zero as points are played.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "evidence scale",
+          "unit": "1",
+          "definition": "How much in-match evidence is needed before the record gives way. Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "points played",
+          "unit": "1",
+          "definition": "The count of points so far.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "recency weight",
+          "unit": "1",
+          "definition": "Rises through the match, so the latest point counts more.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "point outcome",
+          "unit": "1",
+          "definition": "Whether the server won the point.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "serve gap",
+          "unit": "1",
+          "definition": "The same gap as in the rating model.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MMT",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The real-time probability minus the opening probability, adjusted for the serve.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p0",
+        "n",
+        "y"
+      ],
+      "outputs": [
+        "MMT"
+      ],
+      "handoff_outputs": [
+        "MMT",
+        "PA"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q247-005",
+          "page": 10,
+          "label": "(5)",
+          "source_expression": "P_A = pR_A if A serves, else 1 - pR_B",
+          "normalized_latex": "P_A(t)=\\hat p_R^A\\ \\text{if A serves, else}\\ 1-\\hat p_R^B",
+          "purpose": "The zero-sum shortcut.",
+          "variable_symbols": [
+            "PA",
+            "pR"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-006",
+          "page": 10,
+          "label": "(6)",
+          "source_expression": "pR(S_n) = eta p0 + (1 - eta) pbar",
+          "normalized_latex": "\\hat p_R(S_n)=\\eta(S_n)p_0+(1-\\eta(S_n))\\bar p_R(S_n)",
+          "purpose": "The blend. Eta equal to one is the rival model.",
+          "variable_symbols": [
+            "pR",
+            "eta",
+            "p0",
+            "pbar"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q247-007",
+          "page": 10,
+          "label": "(7)",
+          "source_expression": "eta(S_n) = alpha / (alpha + n)",
+          "normalized_latex": "\\eta(S_n)=\\alpha/(\\alpha+n)",
+          "purpose": "The weight on the record.",
+          "variable_symbols": [
+            "eta",
+            "alpha",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-008",
+          "page": 11,
+          "label": "(8)",
+          "source_expression": "L = -1/lambda sum [y log pbar + (1-y) log(1-pbar)] + (pbar - p0)^2",
+          "normalized_latex": "L=-\\frac{1}{\\lambda_i}\\sum[y\\log\\bar p+(1-y)\\log(1-\\bar p)]+(\\bar p-p_0)^2",
+          "purpose": "The loss. The line is scrambled.",
+          "variable_symbols": [
+            "lam",
+            "y",
+            "pbar",
+            "p0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q247-009",
+          "page": 11,
+          "label": "(9)",
+          "source_expression": "lambda_i = i / m",
+          "normalized_latex": "\\lambda_i=i/m",
+          "purpose": "Later points weigh more.",
+          "variable_symbols": [
+            "lam"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-010",
+          "page": 12,
+          "label": "(10)",
+          "source_expression": "MMT_A = P_A - p0_A if A serves, else P_A - p0_A + eps",
+          "normalized_latex": "MMT_A(t)=P_A(t)-p_0^A\\ \\text{if A serves, else}\\ P_A(t)-p_0^A+\\varepsilon",
+          "purpose": "Momentum after the serve advantage is removed.",
+          "variable_symbols": [
+            "MMT",
+            "PA",
+            "p0",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (5) to (10) are printed. The loss is scrambled and the blend weight is never valued."
+      },
+      "objectives": [
+        "Separate a player's form in the match from the advantage of serving."
+      ],
+      "constraints": [
+        "The two chances sum to one.",
+        "The weight on the record falls with the point count.",
+        "The latest point counts more than the first."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The blend starts at the opening probability, before any point is played."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The running average is fit by the printed loss. The evidence scale is never given a value, so the blend cannot be rerun.",
+        "parameters": [
+          "alpha",
+          "lam"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Take the server's next-point probability as the blend.",
+          "Set the weight from the points played.",
+          "Fit the running average.",
+          "Flip the probability when the player receives.",
+          "Subtract the opening probability and add the gap on return."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "No stopping rule is printed."
+      },
+      "assumptions": [
+        "The match is zero-sum at the level of one point.",
+        "Performance right now says more about the next point than performance at the start."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The blend and the momentum gap are legible. The evidence scale has no value, and the loss is scrambled."
+      },
+      "validation_refs": [
+        "Figure 5: Carlos and Nicolas, point by point.",
+        "Figure 6: Carlos peaks between points 100 and 200.",
+        "The K-S test against the constant case."
+      ],
+      "computational_cost": "One pass over the points.",
+      "strengths": [
+        "The rival model is the same formula with one weight pinned, not a second construction."
+      ],
+      "limitations": [
+        "The evidence scale is never numbered, so the curve cannot be reproduced."
+      ],
+      "missing_details": [
+        "The value of the evidence scale.",
+        "The fitted running averages."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q247-003",
+      "page": 14,
+      "section": "6 Momentum trend",
+      "family": "fourier series fit",
+      "purpose": "Strip the point-to-point swings out of the momentum and keep the trend.",
+      "base_or_modification": "base",
+      "summary": "The momentum curve is volatile and periodic, so a Fourier series is fit to it and the trend is what remains. No coefficient, no frequency, and no order are printed. The trend, not the raw curve, is what the later model samples at the end of each set.",
+      "variables": [
+        {
+          "symbol": "MMT",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The curve handed over from the real-time model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a0",
+          "normalized_name": "constant term",
+          "unit": "1",
+          "definition": "The average level of the trend. Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "an",
+          "normalized_name": "cosine coefficient",
+          "unit": "1",
+          "definition": "Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "bn",
+          "normalized_name": "sine coefficient",
+          "unit": "1",
+          "definition": "Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "omega",
+          "normalized_name": "base frequency",
+          "unit": "1",
+          "definition": "Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "MMTTV",
+          "normalized_name": "momentum trend",
+          "unit": "1",
+          "definition": "The fitted curve.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "MMT"
+      ],
+      "outputs": [
+        "MMTTV"
+      ],
+      "handoff_outputs": [
+        "MMTTV"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q247-011",
+          "page": 14,
+          "label": "(11)",
+          "source_expression": "f(x) = a0 + sum [a_n cos(n w x) + b_n sin(n w x)]",
+          "normalized_latex": "f(x)=a_0+\\sum_n[a_n\\cos(n\\omega x)+b_n\\sin(n\\omega x)]",
+          "purpose": "The series. The printed line is scrambled and no coefficient is valued.",
+          "variable_symbols": [
+            "a0",
+            "an",
+            "bn",
+            "omega",
+            "MMTTV"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formula (11) is printed and scrambled, with no coefficient given."
+      },
+      "objectives": [
+        "Remove the cyclical swings so the trend can be read."
+      ],
+      "constraints": [
+        "The fit is a trigonometric series."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The series is fit to the whole momentum curve of one match."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The coefficients are said to be fit and none is printed.",
+        "parameters": [
+          "a0",
+          "an",
+          "bn",
+          "omega"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Fit the series to the momentum curve.",
+          "Read the trend off the fit."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "No order or tolerance is printed."
+      },
+      "assumptions": [
+        "The swings in the momentum are cyclical enough for a trigonometric series to carry them."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The form is named. Nothing is numbered, so the trend in the figure cannot be recovered."
+      },
+      "validation_refs": [
+        "Figure 8: the shift near point 130, Carlos above 0.23 and Nicolas near 0.06."
+      ],
+      "computational_cost": "One series per match.",
+      "strengths": [
+        "The trend is separated from the swings before anyone tries to predict a swing."
+      ],
+      "limitations": [
+        "No order, no frequency, no coefficient."
+      ],
+      "missing_details": [
+        "The order of the series.",
+        "Every coefficient."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q247-004",
+      "page": 16,
+      "section": "7 Swing prediction",
+      "family": "factor analysis followed by a fit the prose calls linear",
+      "purpose": "Compress twenty-five technical indicators into five named factors and predict the momentum trend at the end of a set.",
+      "base_or_modification": "paper-specific",
+      "summary": "Twenty-five indicators are built and three of them are shown, the rest deferred to the appendix. The indicators are standardized, then tested for sphericity on 109 observations, and the test passes, so five factors are extracted. They are named AggressiveServe, ExtendedPlay, Endurance, ActiveDefense, and ForehandBias. The third and the fifth are named and never described. The fit is run once per set, on the trend value at the end of the set, because the momentum inside a set moves too often to predict. The section calls the fit a multivariate linear regression. The printed update is a sigmoid of the linear score, a gradient, and a step, which is a logistic fit. Both are kept and neither is corrected. The step size and the stopping tolerance are never valued. The fit reaches 90.44 percent, and the two largest weights belong to the serve.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "indicators",
+          "unit": "1",
+          "definition": "The twenty-five technical indicators, standardized.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "indicator mean",
+          "unit": "1",
+          "definition": "The mean in the factor model.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "loadings",
+          "unit": "1",
+          "definition": "The factor loadings.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "factors",
+          "unit": "1",
+          "definition": "The five named factors.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsf",
+          "normalized_name": "factor noise",
+          "unit": "1",
+          "definition": "Uncorrelated with the factors, unit factor variance.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "sample size",
+          "unit": "1",
+          "definition": "109, the count in the sphericity test.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MMTTV",
+          "normalized_name": "momentum trend",
+          "unit": "1",
+          "definition": "Sampled at the end of the set.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "weights",
+          "unit": "1",
+          "definition": "The weights on the factors.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MMhat",
+          "normalized_name": "predicted trend",
+          "unit": "1",
+          "definition": "The sigmoid of the linear score.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alphastep",
+          "normalized_name": "step size",
+          "unit": "1",
+          "definition": "Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "tol",
+          "normalized_name": "tolerance",
+          "unit": "1",
+          "definition": "The gradient norm that stops the fit. Never valued.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        }
+      ],
+      "inputs": [
+        "X",
+        "N",
+        "MMTTV"
+      ],
+      "outputs": [
+        "MMhat"
+      ],
+      "handoff_outputs": [
+        "MMhat",
+        "F"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q247-012",
+          "page": 16,
+          "label": "(12)",
+          "source_expression": "Aces_p = n(ace)/n(serve); Break_p and Depth_CTL likewise",
+          "normalized_latex": "Aces_{p_i}=n(ace)/n(serve)",
+          "purpose": "Three of the twenty-five indicators. The rest are in the appendix.",
+          "variable_symbols": [
+            "X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-013",
+          "page": 16,
+          "label": "(13)",
+          "source_expression": "X = mu + A F + eps",
+          "normalized_latex": "X=\\mu+AF+\\varepsilon",
+          "purpose": "The factor model. The line is scrambled.",
+          "variable_symbols": [
+            "X",
+            "mu",
+            "A",
+            "F",
+            "epsf"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q247-014",
+          "page": 17,
+          "label": "(14)",
+          "source_expression": "cov(F, eps) = 0, D(F_i) = 1, D(eps_i) = sigma^2",
+          "normalized_latex": "\\mathrm{cov}(F,\\varepsilon)=0,\\ D(F_i)=1,\\ D(\\varepsilon_i)=\\sigma^2",
+          "purpose": "The factor assumptions.",
+          "variable_symbols": [
+            "F",
+            "epsf"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-015",
+          "page": 18,
+          "label": null,
+          "source_expression": "MMhat = 1 / (1 + exp(-X beta)); beta = beta - alpha k",
+          "normalized_latex": "\\widehat{MMTTV}=1/(1+e^{-X\\beta}),\\ \\beta=\\beta-\\alpha k",
+          "purpose": "The printed update. The prose calls the same fit linear.",
+          "variable_symbols": [
+            "MMhat",
+            "X",
+            "beta",
+            "alphastep"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (12) to (14) and the unnumbered update are printed. The factor model is scrambled."
+      },
+      "objectives": [
+        "Predict the end-of-set trend from a handful of named factors."
+      ],
+      "constraints": [
+        "Five factors.",
+        "One prediction per set.",
+        "The sample at the end of the set, not inside it."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The indicators are standardized before the factors are extracted."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The factors come from the correlation matrix after the sphericity test. The weights are stepped until the gradient is small, and neither the step nor the tolerance is numbered.",
+        "parameters": [
+          "beta",
+          "alphastep",
+          "tol"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Build the twenty-five indicators.",
+          "Standardize and test for sphericity.",
+          "Extract five factors and name them.",
+          "Sample the trend at the end of each set.",
+          "Step the weights until the gradient is small."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Stop when the gradient norm falls below the tolerance, which is not given."
+      },
+      "assumptions": [
+        "A set is long enough to predict and a point is not.",
+        "Five factors carry the twenty-five indicators."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The factor names and the accuracy are printed. The update contradicts the prose, and the step size is missing."
+      },
+      "validation_refs": [
+        "Accuracy 90.44 percent.",
+        "Figure 9: peak and trough at the end of the second set.",
+        "85.32 percent on the 2023 final and 88.34 percent on the 2017 French Open, both in the summary."
+      ],
+      "computational_cost": "One factor extraction and one fit over the sets.",
+      "strengths": [
+        "The sampling point is justified: inside a set the momentum moves too often."
+      ],
+      "limitations": [
+        "The prose says linear and the algorithm is logistic.",
+        "Two of the five factors are never described."
+      ],
+      "missing_details": [
+        "The step size.",
+        "The tolerance.",
+        "What Endurance and ForehandBias load on."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q247-005",
+      "page": 18,
+      "section": "7.4 Mixed-strategy equilibrium",
+      "family": "mixed-strategy nash equilibrium on clustered tactics",
+      "purpose": "Find the mix of tactics a player should use against a named opponent.",
+      "base_or_modification": "base",
+      "summary": "Players are taken to mix their tactics rather than commit to one. Clustering the indicators gives four strategies for the server and three for the receiver, and each cluster is named from its loadings: Side-Tearing Assault, Pace Control, Low-Bounce Onslaught, Short-Ball Maneuver for the server, and Bottom Line Defense, Defense at the Net, Deep Defense for the receiver. The payoff of a pair is the swing model's prediction on the median of that cluster. The equilibrium conditions are the textbook ones, and no probability is printed. The worked opponent is Stefanos Tsitsipas, and the answer is a figure.",
+      "variables": [
+        {
+          "symbol": "F",
+          "normalized_name": "factors",
+          "unit": "1",
+          "definition": "The indicators that the clusters are built from.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MMhat",
+          "normalized_name": "predicted trend",
+          "unit": "1",
+          "definition": "The swing model's prediction, used as the payoff.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "server mix",
+          "unit": "1",
+          "definition": "Probabilities over the four server strategies. None is printed.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "receiver mix",
+          "unit": "1",
+          "definition": "Probabilities over the three receiver strategies. None is printed.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "payoff",
+          "unit": "1",
+          "definition": "The predicted trend at the cluster median.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "F",
+        "MMhat"
+      ],
+      "outputs": [
+        "sigma",
+        "rho"
+      ],
+      "handoff_outputs": [
+        "sigma"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q247-016",
+          "page": 20,
+          "label": "(15)",
+          "source_expression": "a probability vector is nonnegative and sums to one",
+          "normalized_latex": "\\sigma_i\\ge 0,\\ \\sum_i\\sigma_i=1",
+          "purpose": "The mix.",
+          "variable_symbols": [
+            "sigma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-017",
+          "page": 20,
+          "label": "(16)",
+          "source_expression": "expected payoff is the mix against the opponent's mix",
+          "normalized_latex": "u(\\sigma,\\rho)=\\sigma^{\\top}U\\rho",
+          "purpose": "The expected payoff.",
+          "variable_symbols": [
+            "u",
+            "sigma",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q247-018",
+          "page": 20,
+          "label": "(17)",
+          "source_expression": "a best response maximizes the payoff against the opponent's mix",
+          "normalized_latex": "\\sigma^*\\in\\arg\\max_\\sigma u(\\sigma,\\rho)",
+          "purpose": "The best response.",
+          "variable_symbols": [
+            "sigma",
+            "u",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q247-019",
+          "page": 21,
+          "label": "(18)",
+          "source_expression": "each mix is a best response to the other",
+          "normalized_latex": "\\sigma^*\\in BR(\\rho^*),\\ \\rho^*\\in BR(\\sigma^*)",
+          "purpose": "The equilibrium. No probability is printed.",
+          "variable_symbols": [
+            "sigma",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The definitions (15) to (19) are printed. No equilibrium probability is given."
+      },
+      "objectives": [
+        "Name the mix a player should open with, and watch it move."
+      ],
+      "constraints": [
+        "Four server strategies and three receiver strategies.",
+        "The payoff is the swing model's prediction."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The cluster medians are computed before any payoff is evaluated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The payoffs are predictions, not estimates. No mix is printed.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Cluster the server into four and the receiver into three.",
+          "Name each cluster from its loadings.",
+          "Evaluate the swing model at each cluster median.",
+          "Solve for the equilibrium mix."
+        ],
+        "software": [
+          "K-means"
+        ],
+        "convergence_criteria": "No solver and no tolerance are printed."
+      },
+      "assumptions": [
+        "A player's tactics are a mix, not a single choice.",
+        "The median of a cluster stands for the cluster."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The strategy names and the payoff rule are printed. The equilibrium itself is only a figure."
+      },
+      "validation_refs": [
+        "Figure 10: the factor values per strategy.",
+        "Figure 11: the mix against Tsitsipas."
+      ],
+      "computational_cost": "One clustering and one equilibrium against one opponent.",
+      "strengths": [
+        "Every strategy is named from the numbers that define it, not from a whim."
+      ],
+      "limitations": [
+        "The answer is a figure, so the mix cannot be quoted."
+      ],
+      "missing_details": [
+        "The equilibrium probabilities.",
+        "The cluster medians."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q247-001",
+      "to_model_id": "MU-C-Q247-002",
+      "handoff": "The first-point probability enters the blend."
+    },
+    {
+      "from_model_id": "MU-C-Q247-002",
+      "to_model_id": "MU-C-Q247-003",
+      "handoff": "The momentum curve is what the series is fit to."
+    },
+    {
+      "from_model_id": "MU-C-Q247-002",
+      "to_model_id": "MU-C-Q247-004",
+      "handoff": "The trend of that curve is sampled at the end of each set."
+    },
+    {
+      "from_model_id": "MU-C-Q247-004",
+      "to_model_id": "MU-C-Q247-005",
+      "handoff": "The prediction at a cluster median is the payoff."
+    }
+  ]
+}

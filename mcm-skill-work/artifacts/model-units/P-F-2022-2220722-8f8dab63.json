@@ -1,0 +1,898 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2022-2220722-8f8dab63",
+  "problem_type": "F",
+  "year": "2022",
+  "source_sha256": "8f8dab63120024255938834ce666792381ac87a0584f59ddb22095c9b21df35a",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "section": "4 Global Equity Model",
+      "family": "composite-index",
+      "summary": "Two-layer equity index: Resource Equity (RE, stock) + Opportunity Equity (OE, incremental via exponential smoothing). 7 first-level indicators, 14 secondary. EWM+AHP weights. FA coefficient. GE via Lorenz-like integral.",
+      "computational_cost": "not-stated",
+      "purpose": "Quantify global equity using a combined stock and change-potential score.",
+      "base_or_modification": "paper-specific",
+      "page": 5,
+      "inputs": [
+        "x_ij",
+        "T_ij"
+      ],
+      "outputs": [
+        "GE"
+      ],
+      "handoff_outputs": [
+        "GE"
+      ],
+      "objectives": [
+        "Build a comprehensive global equity score that captures both current resource allocation and development potential."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Raw value of jth secondary indicator for ith country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_tilde_ij",
+          "normalized_name": "normalized_value",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized indicator (benefit/cost/interval)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z_ij",
+          "normalized_name": "standardized_value",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Standardized proportion for EWM",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_j",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy of jth indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "ewm_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "EWM weight of jth secondary indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_a",
+          "normalized_name": "ahp_weight_vector",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "AHP weight vector for 7 first-level indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_e",
+          "normalized_name": "ewm_weight_vector",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "EWM weight vector for first-level indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_RE",
+          "normalized_name": "combined_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined weight: alpha*W_a + (1-alpha)*W_e",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RE_i",
+          "normalized_name": "resource_equity",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Resource equity score for country i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_ij",
+          "normalized_name": "variation_dataset",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Variation dataset from chain growth ratios",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D2_ij",
+          "normalized_name": "smoothed_dataset",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Exponentially smoothed dataset",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "FA_i",
+          "normalized_name": "fairness_coefficient",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined RE+OE score for country i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GE",
+          "normalized_name": "global_equity",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Global Equity Coefficient = 1 - S1/2",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "blend_parameter",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight blend between AHP and EWM",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-1",
+          "equation_label": "EWM standardized proportion",
+          "equation_text": "z_ij = x_tilde_ij / sum_i(x_tilde_ij)",
+          "source_expression": "z_ij = x_tilde_ij / sum_i(x_tilde_ij)",
+          "normalized_latex": "z_{ij} = \\frac{\\tilde{x}_{ij}}{\\sum_{i=1}^{n} \\tilde{x}_{ij}}",
+          "purpose": "Standardize for entropy calculation",
+          "variable_symbols": [
+            "z_ij",
+            "x_tilde_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-2",
+          "equation_label": "Entropy value",
+          "equation_text": "e_j = sum_i(z_ij * ln(z_ij)) / ln(n)",
+          "source_expression": "e_j = sum_i(z_ij * ln(z_ij)) / ln(n)",
+          "normalized_latex": "e_j = \\frac{\\sum_{i=1}^{n} z_{ij} \\cdot \\ln z_{ij}}{\\ln n}",
+          "purpose": "Information entropy of jth indicator",
+          "variable_symbols": [
+            "e_j",
+            "z_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-3",
+          "equation_label": "EWM weight",
+          "equation_text": "w_j = (1-e_j) / sum_j(1-e_j)",
+          "source_expression": "w_j = (1-e_j) / sum_j(1-e_j)",
+          "normalized_latex": "w_j = \\frac{1 - e_j}{\\sum_{j=1}^{m}(1 - e_j)}",
+          "purpose": "Normalized entropy weight",
+          "variable_symbols": [
+            "w_j",
+            "e_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-4",
+          "equation_label": "Combined weight",
+          "equation_text": "W_RE = alpha * W_a + (1-alpha) * W_e",
+          "source_expression": "W_RE = alpha * W_a + (1-alpha) * W_e",
+          "normalized_latex": "W_{RE} = \\alpha W_a + (1-\\alpha) W_e",
+          "purpose": "Blend AHP and EWM first-level weights",
+          "variable_symbols": [
+            "W_RE",
+            "W_a",
+            "W_e",
+            "alpha"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-5",
+          "equation_label": "Variation dataset",
+          "equation_text": "T_ij = sum(r_k) / sum(|r_k|)",
+          "source_expression": "T_ij = sum(r_k) / sum(|r_k|)",
+          "normalized_latex": "T_{ij} = \\frac{\\sum_{k=1}^{m} r_k}{\\sum_{k=1}^{m}|r_k|}",
+          "purpose": "Direction-weighted chain growth ratio",
+          "variable_symbols": [
+            "T_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-6",
+          "equation_label": "Exponential smoothing",
+          "equation_text": "D2_ij = (1 + T_tilde_ij/4) * x_tilde_ij",
+          "source_expression": "D2_ij = (1 + T_tilde_ij/4) * x_tilde_ij",
+          "normalized_latex": "D2_{ij} = \\left(1 + \\frac{\\tilde{T}_{ij}}{4}\\right) \\tilde{x}_{ij}",
+          "purpose": "Merge stock data with development potential",
+          "variable_symbols": [
+            "D2_ij",
+            "T_ij",
+            "x_tilde_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-GEQ-7",
+          "equation_label": "Global Equity Coefficient",
+          "equation_text": "GE = 1 - S1/2, where S1 = integral_0^1 (x - x^a) dx",
+          "source_expression": "GE = 1 - S1/2, where S1 = integral_0^1 (x - x^a) dx",
+          "normalized_latex": "GE = 1 - \\frac{1}{2}\\int_0^1 (x - x^{0.7165})\\,dx",
+          "purpose": "Lorenz-like measure of FA distribution",
+          "variable_symbols": [
+            "GE",
+            "FA_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations on pages 7-10.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "46 countries, 2008-2018 data, 14 secondary indicators."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index model."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EWM for secondary weights; AHP with Maslow-based comparison for primary weights; alpha blending",
+        "parameters": [
+          "w_j",
+          "W_a",
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize data (benefit/cost/interval), EWM for secondary weights, AHP for primary weights, blend, compute RE. Build variation dataset T, exponential smoothing to D2, compute FA. Fit cumulative distribution y=x^a, compute GE.",
+        "status": "implemented",
+        "steps": [
+          "Normalize 14 indicators",
+          "EWM secondary weights",
+          "AHP primary weights",
+          "Blend to W_RE",
+          "Score RE per country",
+          "Chain growth -> T_ij",
+          "Exponential smoothing -> D2",
+          "Score FA per country",
+          "Fit y=x^a",
+          "Compute GE"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Goodness of fit R^2 = 0.8957. Rand index = 0.85."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "GE = 0.7265. Finland top-1. Rand index 0.85 between RE and OE clustering."
+        ],
+        "analysis": "Model captures both stock and development potential."
+      },
+      "constraints": [
+        "7 first-level indicators.",
+        "14 secondary indicators.",
+        "46 countries."
+      ],
+      "validation_refs": [
+        "Figure 2 FA distribution",
+        "Figure 3 RE vs OE weights",
+        "Figure 6 global equity map",
+        "Figure 7 hierarchical clustering"
+      ],
+      "strengths": [
+        "Combines stock (RE) and incremental (OE) perspectives.",
+        "Validated via hierarchical clustering Rand index."
+      ],
+      "limitations": [
+        "Only 46 countries.",
+        "Interval thresholds are subjective."
+      ],
+      "missing_details": [
+        "Exact alpha value for AHP-EWM blend."
+      ],
+      "assumptions": [
+        "7 indicators suffice.",
+        "Fairness at a point depends only on the past."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2220722-AMI",
+      "section": "5 Asteroid Mining Situation",
+      "family": "partial-equilibrium",
+      "summary": "Partial equilibrium model: analogy to high-seas oil. Three participant tiers (tech leaders, advanced economies, others) with income shares (67.51%, 31.22%, 1.23%). Iterated over time periods.",
+      "computational_cost": "not-stated",
+      "purpose": "Model the asteroid mining market structure and income distribution among participant tiers.",
+      "base_or_modification": "paper-specific",
+      "page": 15,
+      "inputs": [
+        "T_cost",
+        "w_income"
+      ],
+      "outputs": [
+        "P_tech",
+        "P_cap",
+        "P_labor",
+        "GE_after"
+      ],
+      "handoff_outputs": [
+        "GE_after"
+      ],
+      "objectives": [
+        "Determine income distribution across country tiers and iterate to find long-run GE impact."
+      ],
+      "variables": [
+        {
+          "symbol": "T_cost",
+          "normalized_name": "total_cost",
+          "role": "input",
+          "unit": "billion USD",
+          "definition": "Total global fixed cost of asteroid mining",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_income",
+          "normalized_name": "annual_income",
+          "role": "input",
+          "unit": "billion USD",
+          "definition": "Total annual global income from T=6 onwards",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_tech",
+          "normalized_name": "tech_reward",
+          "role": "output",
+          "unit": "billion USD",
+          "definition": "Per-country reward for technology leaders: 0.6751*w/n",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_cap",
+          "normalized_name": "capital_reward",
+          "role": "output",
+          "unit": "billion USD",
+          "definition": "Per-country reward for advanced economies: 0.3122*w/n",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_labor",
+          "normalized_name": "labor_reward",
+          "role": "output",
+          "unit": "billion USD",
+          "definition": "Per-country labor reward proportional to education index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GE_after",
+          "normalized_name": "equity_after_mining",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "GE coefficient after mining impact",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2220722-AMI-1",
+          "equation_label": "Cost share",
+          "equation_text": "cost_tech = sum(s_i1) / (sum(s_i2) + sum(s_i1))",
+          "source_expression": "cost_tech = sum(s_i1) / (sum(s_i2) + sum(s_i1))",
+          "normalized_latex": "\\text{cost}_{\\text{tech}} = \\frac{\\sum s_{i1}}{\\sum s_{i2} + \\sum s_{i1}}",
+          "purpose": "Technology countries bear cost proportional to economic strength",
+          "variable_symbols": [
+            "T_cost"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-AMI-2",
+          "equation_label": "Labor reward",
+          "equation_text": "P_labor_i = 0.0123 * (Ed_i3 / sum(Ed_i3))",
+          "source_expression": "P_labor_i = 0.0123 * (Ed_i3 / sum(Ed_i3))",
+          "normalized_latex": "P_{\\text{labor},i} = 0.0123 \\cdot \\frac{Ed_{i3}}{\\sum Ed_{i3}}",
+          "purpose": "Labor reward proportional to education equity ranking",
+          "variable_symbols": [
+            "P_labor"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations on pages 16-17.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Income ratios from high-seas oil field analogy: (0.6751, 0.3122, 0.0123)."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "T<=5 years for payoff period. Full production from T=6."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Long-run GE = 0.4521 after 50 iterations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Income ratios from high-seas oil analogy; clustering split points from OE model scores",
+        "parameters": [
+          "P_tech",
+          "P_cap",
+          "P_labor"
+        ]
+      },
+      "algorithm": {
+        "description": "Cluster countries by technology and economy equity scores. Assign income shares. Iterate OE model over time periods. Compute long-run GE.",
+        "status": "implemented",
+        "steps": [
+          "Cluster by tech score (0.42 threshold)",
+          "Cluster by economy score (0.58 threshold)",
+          "Assign income shares",
+          "Iterate over T periods",
+          "Compute GE per period"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "50 iterations to long-run equilibrium."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Short-run: equity improves. Long-run: GE drops to 0.4521."
+        ],
+        "analysis": "Mining benefits tech leaders disproportionately."
+      },
+      "constraints": [
+        "Three participant tiers.",
+        "Income ratios fixed from analogy."
+      ],
+      "validation_refs": [
+        "Figure 8 equity over time"
+      ],
+      "strengths": [
+        "Uses real-world high-seas analogy for income ratios."
+      ],
+      "limitations": [
+        "Fixed income ratios may not hold.",
+        "Perfect competition assumed."
+      ],
+      "missing_details": [
+        "Exact clustering results for country assignment."
+      ],
+      "assumptions": [
+        "Analogy to high-seas oil is valid.",
+        "Three production factors: labor, capital, technology."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2220722-FAO",
+      "section": "7 Optimization via Factor Analysis",
+      "family": "factor-analysis",
+      "summary": "Factor analysis extracts 4 common factors (Y=economic, L=education, F=living standard, A=technology). Production function Y=AL^alpha. GM(1,1) prediction. All-participate scenario: GE=0.7613.",
+      "computational_cost": "not-stated",
+      "purpose": "Identify key factors affecting equity and optimize mining landscape by exploring policy impact on factors.",
+      "base_or_modification": "modification",
+      "page": 18,
+      "inputs": [
+        "x_indicators"
+      ],
+      "outputs": [
+        "FA_optimized",
+        "GE_optimized"
+      ],
+      "handoff_outputs": [
+        "GE_optimized"
+      ],
+      "objectives": [
+        "Extract common factors, model their interaction with mining, predict optimized equity."
+      ],
+      "variables": [
+        {
+          "symbol": "x_indicators",
+          "normalized_name": "indicator_vector",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "14 secondary indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_loading",
+          "normalized_name": "loading_matrix",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Factor loading matrix from PCA",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_factor",
+          "normalized_name": "economic_factor",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Factor 1: economic",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_factor",
+          "normalized_name": "education_factor",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Factor 2: education/welfare",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_factor",
+          "normalized_name": "living_standard",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Factor 3: living standard",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_factor",
+          "normalized_name": "technology_factor",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Factor 4: technology",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "FA_optimized",
+          "normalized_name": "optimized_FA",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "FA score under all-participate scenario",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GE_optimized",
+          "normalized_name": "optimized_GE",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "GE = 0.7613 under optimized scenario",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2220722-FAO-1",
+          "equation_label": "Factor model",
+          "equation_text": "X - mu = Lambda * F + epsilon",
+          "source_expression": "X - mu = Lambda * F + epsilon",
+          "normalized_latex": "X - \\mu = \\Lambda F + \\epsilon",
+          "purpose": "Express indicators as linear combination of common factors",
+          "variable_symbols": [
+            "x_indicators",
+            "F_loading"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-FAO-2",
+          "equation_label": "Factor loading matrix",
+          "equation_text": "Lambda = [sqrt(lambda_1)*e_1, ..., sqrt(lambda_p)*e_p]",
+          "source_expression": "Lambda = [sqrt(lambda_1)*e_1, ..., sqrt(lambda_p)*e_p]",
+          "normalized_latex": "\\Lambda = [\\sqrt{\\lambda_1}e_1, \\ldots, \\sqrt{\\lambda_p}e_p]",
+          "purpose": "Loading from eigenvalues and eigenvectors",
+          "variable_symbols": [
+            "F_loading"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-FAO-3",
+          "equation_label": "Production function",
+          "equation_text": "Y = A * L^alpha",
+          "source_expression": "Y = A * L^alpha",
+          "normalized_latex": "Y = A L^{\\alpha}",
+          "purpose": "Technology and labor quality determine economic output from mining",
+          "variable_symbols": [
+            "Y_factor",
+            "A_factor",
+            "L_factor"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-FAO-4",
+          "equation_label": "GM(1,1) whitening equation",
+          "equation_text": "dX^(1)/dt + a*X^(1) = b",
+          "source_expression": "dX^(1)/dt + a*X^(1) = b",
+          "normalized_latex": "\\frac{dX^{(1)}}{dt} + aX^{(1)} = b",
+          "purpose": "Grey model for predicting future indicator trends",
+          "variable_symbols": [
+            "FA_optimized"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2220722-FAO-5",
+          "equation_label": "Optimized GE",
+          "equation_text": "GE = 1 - S1/2, fitted y = x^0.8941, GE = 0.7613",
+          "source_expression": "GE = 1 - S1/2, fitted y = x^0.8941, GE = 0.7613",
+          "normalized_latex": "GE = 1 - \\frac{1}{2}\\int_0^1 (x - x^{0.8941})\\,dx = 0.7613",
+          "purpose": "Global equity under all-participate scenario",
+          "variable_symbols": [
+            "GE_optimized",
+            "FA_optimized"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 21,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations on pages 18-21.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "All countries participate. GM(1,1) predicts trends."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Scenario analysis."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "GE = 0.7613 with all-participate + policy."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "PCA for factor loadings; GM(1,1) for prediction; cumulative contribution 62.545%",
+        "parameters": [
+          "F_loading"
+        ]
+      },
+      "algorithm": {
+        "description": "PCA factor analysis -> 4 factors. Bartlett test (chi=234.01, p<0.001). Production function for economic impact. GM(1,1) for prediction. Compute optimized GE.",
+        "status": "implemented",
+        "steps": [
+          "Bartlett sphericity test",
+          "PCA extract 4 factors",
+          "Rotate factors",
+          "Analyze factor-indicator correlations",
+          "Model production function Y=AL^alpha",
+          "Predict with GM(1,1)",
+          "Compute FA and GE under new scenario"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "All |epsilon(k)| < 0.1 in GM(1,1)."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Bartlett p<0.001. Cumulative contribution 62.545%. GE improves from 0.4521 to 0.7613."
+        ],
+        "analysis": "Policy support significantly improves equity."
+      },
+      "constraints": [
+        "Four common factors explain 62.545%.",
+        "Production function simplified to Y=AL^alpha."
+      ],
+      "validation_refs": [
+        "Figure 9 factor analysis",
+        "Figure 11 Finland/Chile prediction",
+        "Figure 12 CDF"
+      ],
+      "strengths": [
+        "Extracts latent structure from indicators.",
+        "GM(1,1) needs minimal data."
+      ],
+      "limitations": [
+        "Only 62.545% variance explained.",
+        "GM(1,1) assumes exponential growth."
+      ],
+      "missing_details": [
+        "Exact alpha in production function."
+      ],
+      "assumptions": [
+        "All countries participate.",
+        "Four factors suffice.",
+        "GM(1,1) trend continues."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-1",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 7,
+      "source_expression": "z_ij = x_tilde_ij / sum_i(x_tilde_ij)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-2",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 7,
+      "source_expression": "e_j = sum_i(z_ij * ln(z_ij)) / ln(n)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-3",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 8,
+      "source_expression": "w_j = (1-e_j) / sum_j(1-e_j)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-4",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 8,
+      "source_expression": "W_RE = alpha * W_a + (1-alpha) * W_e"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-5",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 9,
+      "source_expression": "T_ij = sum(r_k) / sum(|r_k|)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-6",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 10,
+      "source_expression": "D2_ij = (1 + T_tilde_ij/4) * x_tilde_ij"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-GEQ-7",
+      "model_id": "MU-F-2022-2220722-GEQ",
+      "page": 10,
+      "source_expression": "GE = 1 - S1/2, where S1 = integral_0^1 (x - x^a) dx"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-AMI-1",
+      "model_id": "MU-F-2022-2220722-AMI",
+      "page": 16,
+      "source_expression": "cost_tech = sum(s_i1) / (sum(s_i2) + sum(s_i1))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-AMI-2",
+      "model_id": "MU-F-2022-2220722-AMI",
+      "page": 17,
+      "source_expression": "P_labor_i = 0.0123 * (Ed_i3 / sum(Ed_i3))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-FAO-1",
+      "model_id": "MU-F-2022-2220722-FAO",
+      "page": 18,
+      "source_expression": "X - mu = Lambda * F + epsilon"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-FAO-2",
+      "model_id": "MU-F-2022-2220722-FAO",
+      "page": 18,
+      "source_expression": "Lambda = [sqrt(lambda_1)*e_1, ..., sqrt(lambda_p)*e_p]"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-FAO-3",
+      "model_id": "MU-F-2022-2220722-FAO",
+      "page": 19,
+      "source_expression": "Y = A * L^alpha"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-FAO-4",
+      "model_id": "MU-F-2022-2220722-FAO",
+      "page": 20,
+      "source_expression": "dX^(1)/dt + a*X^(1) = b"
+    },
+    {
+      "equation_id": "EQ-F-2022-2220722-FAO-5",
+      "model_id": "MU-F-2022-2220722-FAO",
+      "page": 21,
+      "source_expression": "GE = 1 - S1/2, fitted y = x^0.8941, GE = 0.7613"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2022-2220722-GEQ",
+      "to_model_id": "MU-F-2022-2220722-AMI",
+      "handoff": "GE model provides equity scores used to evaluate mining impact"
+    },
+    {
+      "from_model_id": "MU-F-2022-2220722-AMI",
+      "to_model_id": "MU-F-2022-2220722-FAO",
+      "handoff": "Mining model results feed into factor analysis for optimization"
+    }
+  ]
+}

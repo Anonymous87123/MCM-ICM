@@ -1,0 +1,54 @@
+                                                                                                      Page 7
+                                                                                                  Team 70174
+
+service-time, anticipation.
+
+   • driver: This is a binary value that designates whether any given car is human operated or is au-
+     tonomous.
+
+   • speed: This is the current speed of the car.
+
+   • top-speed: Since drivers differ in their driving styles, the actual top speed allowed for a vehicle is
+     randomly a little above the speed limit. For self driving cars, the top speed is the speed limit, since
+     they would follow the law perfectly.
+
+   • target-lane: This is used by procedures that govern the merging process. Initially this value corresponds
+     to the lane that the car begins in.
+
+   • patience: Patience is a value that aids in realistically characterizing how aggressive a driver is. Every
+     time that a car has to use its breaks, a little patience is decremented. If the value ever hits zero, then
+     the car will begin to attempt to merge into another lane so that it can pass the slower moving car
+     ahead of it.
+
+   • car-payment-method: This allows for cars to have three different payment methods, EZ-Pass, exact
+     change (automated toll), and cash (they have to go to a human operated toll).
+
+   • service-time: This is the value that it will take a car to be serviced by a toll. Since drivers take
+     varying amounts of time to pay, we sample from distributions to determine the specific time for a car
+     and assign it that value. For example, if a car pays with cash or exact change, we suppose that the
+                                                                          1
+     service-time, X, follows an exponential distribution, i.e. X ∼ Exp( 30 ), so that the mean time is 30
+              4
+     seconds. We then sample from this distribution to set the particular service-time. For cars that have
+     the EZ-Pass, they simply need to slow down to 5 mph when approaching the tollbooth and may pass
+     straight through, so their service time is 0.12
+
+   • anticipation: This value is used to model when drivers decide that they need to merge out of a lane
+     with a lane drop or when they need to try to move towards a toll booth that supports their payment
+     method. A unique value for each car keeps a situation where all cars attempt to merge at the same
+     time from happening, as this is unrealistic and would skew the model’s results.
+
+4.4     Environment Setup Procedures
+The procedures that are used to initialize the model are describe below.
+
+4.4.1   Draw Road
+
+This procedure creates the road on the map. First we color all of the patches in the world green to indicates
+grass. Next, we define which y-values in the world we want the cars to see as lanes. We obtain these values
+by generating a set of the form {(numberof lanes)–(n ∗ 2)–1|0 <= n <= (numberof lanes)} where number
+of lanes is defined as ( numberof tolls ∗ 2) – so that we get one lane on either side of the tolls. Once the
+lanes are defined, we set the toll spawn points along the y-axis above every other lane, starting with the
+bottom lane. Once this is done, we color all of the other lane patches and their neighbors grey. This colors
+in the lanes as well as the spaces in between them. Next, we shave down the part of the highway after the
+tolls where the cars will merge into L lanes by coloring back over part of the road with grass. Once the road
+shape is set, we move on to draw the road lines.

@@ -1,0 +1,712 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2025-2521039-b7738f88",
+  "problem_type": "F",
+  "year": "2025",
+  "source_sha256": "b7738f8895fef180a14792856f97bc15dd4a735dba7560eac1cb3cf9477f17a2",
+  "models": [
+    {
+      "model_id": "MU-F-2025-2521039-HISR",
+      "page": 12,
+      "section": "5.2 Model1: Hierarchical Interaction Scoring Regression Model(HISR), 5.2.3 Model Process",
+      "family": "difference-in-differences multi-level linear regression with country random effects",
+      "purpose": "Estimate the net effect of a country having implemented a cybersecurity policy on its annual cybercrime target count, holding country-level heterogeneity in a random effect.",
+      "base_or_modification": "paper-specific",
+      "summary": "A two-way fixed-effects difference-in-differences equation with country random intercepts, fitted as a multi-level linear model on the merged country-year panel.",
+      "variables": [
+        {
+          "symbol": "Y_ij",
+          "normalized_name": "y_ij",
+          "role": "output",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Target count for country i in the observation indexed by j; the outcome the model explains.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_0",
+          "normalized_name": "beta_0",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Intercept of the fixed-effects part.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "normalized_name": "beta_1",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on Policy_i, the difference-in-differences main effect for policy implementation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Policy_i",
+          "normalized_name": "policy_i",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Whether country i had implemented the policy; a 0/1 indicator, printed in Table 1 as \"Whether a country has implemented the policy (0/1)\".",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "beta_2",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on Post_t, the main effect of the post-implementation period.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Post_t",
+          "normalized_name": "post_t",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Whether the observation falls in the post-implementation period; a 0/1 indicator.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_3",
+          "normalized_name": "beta_3",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on the interaction. Table 1 defines it as \"Net effect of the policy\", which is the quantity the paper interprets and the quantity the sign discussion turns on.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Policy_i_x_Post_t",
+          "normalized_name": "policy_i_x_post_t",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Product of the two indicators; the difference-in-differences term.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_j",
+          "normalized_name": "u_j",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Country-level random effect, described in the prose as the term that controls for potential heterogeneity across countries.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon_ij",
+          "normalized_name": "epsilon_ij",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Error term, printed in Table 1.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Policy_i",
+        "Post_t",
+        "Policy_i_x_Post_t"
+      ],
+      "outputs": [
+        "Y_ij"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2521039-HISR-1",
+          "page": 12,
+          "label": "unlabelled display after 5.2.3",
+          "source_expression": "Y_{ij}=\\beta_0+\\beta_1 Policy_i+\\beta_2 Post_t+\\beta_3(Policy_i\\times Post_t)+u_j+\\epsilon_{ij}",
+          "normalized_latex": "Y_{ij}=\\beta_0+\\beta_1 Policy_i+\\beta_2 Post_t+\\beta_3(Policy_i\\times Post_t)+u_j+\\epsilon_{ij}",
+          "purpose": "Difference-in-differences multi-level regression for the policy net effect",
+          "variable_symbols": [
+            "Y_ij",
+            "beta_0",
+            "beta_1",
+            "Policy_i",
+            "beta_2",
+            "Post_t",
+            "beta_3",
+            "Policy_i_x_Post_t",
+            "u_j",
+            "epsilon_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One display equation, checked against the raster at 827x1170. The text layer drops the beta, subscript and epsilon glyphs, so the transcription was taken from the rendered page rather than the text layer."
+      },
+      "objectives": [
+        "Recover beta_3, the net effect of policy implementation on the target count, with its standard error and p-value.",
+        "Separate the policy main effect, the time main effect, and their interaction so each can be reported against the target count."
+      ],
+      "constraints": [
+        "The panel must carry both a pre and a post period for treated and untreated countries for the interaction to be identified; the paper states the two-group setup in 5.2.1.",
+        "Countries enter as a random effect, so the design assumes country effects are draws from a distribution rather than fixed parameters.",
+        "The two-group parallel-trends condition stated in 5.2.2 must hold before beta_3 is read as a net effect."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The panel opens with the pre-implementation period for both the treated and the untreated group."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The treated and untreated country sets are defined by whether the country had implemented a policy, and the control set is chosen for comparability rather than sampled at random."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The model is a static cross-country comparison, not a dynamic system with a steady state."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Maximum-likelihood or REML fitting of a multi-level linear model, reported as a coefficient table rather than as code.",
+        "parameters": [
+          "beta_0",
+          "beta_1",
+          "beta_2",
+          "beta_3",
+          "u_j"
+        ],
+        "reported_estimates": {
+          "Policy_i": {
+            "coef": 5.225,
+            "se": 0.5,
+            "p": 0.036,
+            "source": "Table 3, page 12"
+          },
+          "Post_t": {
+            "coef": -3.4,
+            "se": 0.866,
+            "p": 0.038,
+            "source": "Table 3, page 12"
+          },
+          "Policy_i_x_Post_t": {
+            "coef": 4.375,
+            "se": null,
+            "p": 0.04,
+            "source": "Table 3, page 12"
+          }
+        },
+        "prose_restatements": {
+          "Policy_i": "The prose bullets give the same coefficient and standard error.",
+          "Post_t": "The prose bullet states the coefficient as 3.4, dropping the negative sign the table prints; it then describes the effect as 3.4 units lower, which only follows from the negative value.",
+          "Policy_i_x_Post_t": "The prose bullet gives a standard error of 1.0 and a p-value of 0.02, while the table prints 1 in the standard-error column and 0.04 in the p-value column."
+        }
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Construct and clean the country datasets, then merge them into one analytical sample.",
+          "Fit the multi-level linear model with countries as a random effect and policy, time, and their interaction as fixed effects.",
+          "Read coefficients, significance levels, and standard errors off the fitted model.",
+          "Report each coefficient in a fixed order: value and test statistic, significance verdict, plain-language reading, and a robustness remark."
+        ],
+        "software": [],
+        "convergence_criteria": "Not stated. The paper reports no convergence diagnostics, no random-effect variance estimate, and no random seed."
+      },
+      "assumptions": [
+        "Country-level heterogeneity is captured by a random intercept.",
+        "The treated and control groups are comparable before the policy, which 5.2.2 tests.",
+        "The 0/1 policy and post indicators are correctly coded for every country-year the panel uses."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The design is identified if the parallel-trends condition holds and if treatment timing varies across countries, which the paper asserts rather than demonstrates for every country. The random-effect variance is never reported, so the size of the country-level component cannot be checked against the fixed effects."
+      },
+      "handoff_outputs": [
+        "beta_3",
+        "Policy_i",
+        "Post_t"
+      ],
+      "validation_refs": [
+        "Rendered PDF pages 12 and 13 checked visually for the display equation and the coefficient prose.",
+        "Table 3 on page 12 checked visually against the prose bullets on the same page."
+      ],
+      "computational_cost": "Not reported. The paper states the toolchain only as R packages in the data chapter and as Python earlier, so the actual fitting environment is unclear.",
+      "strengths": [
+        "Separates the policy effect from a general time trend, which a before-and-after comparison alone would not do.",
+        "Reports standard errors alongside coefficients, so the reader can judge precision.",
+        "Uses country random intercepts instead of discarding between-country variation."
+      ],
+      "limitations": [
+        "The coefficient table and the prose bullets disagree on three of the twelve printed cells, so the reported estimates cannot be used as printed without a ruling on which version governs.",
+        "The random-effect variance is never reported.",
+        "The treatment variable is a 0/1 indicator of whether a country had any policy at all, so the strength or coverage of the policy is not in the model."
+      ],
+      "missing_details": [
+        "Fitting code, the merged panel, the random-effect variance estimate, the number of countries and country-years, and the software used."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2521039-LEQR",
+      "page": 20,
+      "section": "6.2 Model2: Log-Enhanced Quadratic Regression Model(LEQR)",
+      "family": "multiple linear regression extended with one squared term",
+      "purpose": "Estimate how national demographic scale - GDP, ICT goods exports, and population - relates to the target count, allowing one of the three to act non-linearly.",
+      "base_or_modification": "paper-specific",
+      "summary": "A basic additive regression on three logged predictors, then the same regression with the square of the logged GDP term added and the two versions compared on four metrics.",
+      "variables": [
+        {
+          "symbol": "Y",
+          "normalized_name": "y",
+          "role": "output",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Target Count, the outcome, expressed on the logged scale the paper uses.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_0",
+          "normalized_name": "alpha_0",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Intercept of the basic model; Table 1 defines alpha_0 as \"Intercept in the baseline linear regression model\".",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_1",
+          "normalized_name": "alpha_1",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on X1; Table 1 defines the alpha_i as \"Coefficients in the baseline linear regression model, where i = 1, 2, 3\".",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X1",
+          "normalized_name": "x1",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Log_ICT_Goods_Export, the logarithmically transformed ICT goods export variable.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_2",
+          "normalized_name": "alpha_2",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on X2.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X2",
+          "normalized_name": "x2",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Log_Population, the logarithmically transformed population variable.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_3",
+          "normalized_name": "alpha_3",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on X3.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X3",
+          "normalized_name": "x3",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Log_GDP, the logarithmically transformed GDP variable.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_4",
+          "normalized_name": "alpha_4",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Coefficient on the squared term in the improved model only.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X3_squared",
+          "normalized_name": "x3_squared",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The square of X3, glossed in the prose as \"the squared term of Log_GDP\".",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X1",
+        "X2",
+        "X3"
+      ],
+      "outputs": [
+        "Y"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2521039-LEQR-1",
+          "page": 20,
+          "label": "unlabelled display under \"At the basic model stage\"",
+          "source_expression": "Y=\\alpha_0+\\alpha_1\\cdot X_1+\\alpha_2\\cdot X_2+\\alpha_3\\cdot X_3",
+          "normalized_latex": "Y=\\alpha_0+\\alpha_1\\cdot X_1+\\alpha_2\\cdot X_2+\\alpha_3\\cdot X_3",
+          "purpose": "Basic additive regression on the three logged predictors",
+          "variable_symbols": [
+            "Y",
+            "alpha_0",
+            "alpha_1",
+            "X1",
+            "alpha_2",
+            "X2",
+            "alpha_3",
+            "X3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-F-2025-2521039-LEQR-2",
+          "page": 20,
+          "label": "unlabelled display under \"the improved model\"",
+          "source_expression": "Y=\\alpha_0+\\alpha_1\\cdot X_1+\\alpha_2\\cdot X_2+\\alpha_3\\cdot X_3+\\alpha_4\\cdot X_3^2",
+          "normalized_latex": "Y=\\alpha_0+\\alpha_1\\cdot X_1+\\alpha_2\\cdot X_2+\\alpha_3\\cdot X_3+\\alpha_4\\cdot X_3^2",
+          "purpose": "Improved regression with the squared logged-GDP term added",
+          "variable_symbols": [
+            "Y",
+            "alpha_0",
+            "alpha_1",
+            "X1",
+            "alpha_2",
+            "X2",
+            "alpha_3",
+            "X3",
+            "alpha_4",
+            "X3_squared"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-F-2025-2521039-LEQR-3",
+          "page": 21,
+          "label": "unlabelled display under \"the Log-Enhanced Quadratic Regression Model was established\"",
+          "source_expression": "Y=26.3796-13.2802\\cdot X_1-15.4265\\cdot X_2-500.2947\\cdot X_3+551.1509\\cdot X_3^2",
+          "normalized_latex": "Y=26.3796-13.2802\\cdot X_1-15.4265\\cdot X_2-500.2947\\cdot X_3+551.1509\\cdot X_3^2",
+          "purpose": "The fitted improved model with numerical coefficients substituted",
+          "variable_symbols": [
+            "Y",
+            "X1",
+            "X2",
+            "X3",
+            "X3_squared"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three display equations, each checked against the raster. The text layer preserves the digits and the X terms but drops the Greek coefficients, so the alpha glyphs and the minus signs in the fitted equation were read from the rendered page."
+      },
+      "objectives": [
+        "Measure the association between each logged demographic variable and the target count.",
+        "Test whether allowing the GDP term to be quadratic improves the fit enough to prefer the improved model over the basic one."
+      ],
+      "constraints": [
+        "The three predictors are logged before entry, which the paper justifies as reducing volatility and improving linear stability.",
+        "Missing values and outliers are removed and the predictors standardised, so coefficients are on the standardised scale.",
+        "The squared term is built only from X3; no other predictor is allowed to act non-linearly."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No time evolution; the model is a cross-sectional fit."
+          ]
+        },
+        "boundary": {
+          "status": "uncertain",
+          "details": [
+            "The paper does not report the range of X3 over which the quadratic is fitted, so the fitted curve cannot be safely extrapolated beyond the observed GDP range."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No dynamic system."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Ordinary least squares on the standardised logged predictors, reported as a substituted equation rather than a coefficient table.",
+        "parameters": [
+          "alpha_0",
+          "alpha_1",
+          "alpha_2",
+          "alpha_3",
+          "alpha_4"
+        ],
+        "reported_estimates": {
+          "fitted_equation": "Y = 26.3796 - 13.2802*X1 - 15.4265*X2 - 500.2947*X3 + 551.1509*X3^2",
+          "source": "Page 21 display equation",
+          "note": "The basic model's own coefficients are never printed, so the two models cannot be compared numerically from the paper alone."
+        }
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Apply the log transform to the three predictors.",
+          "Remove missing values and outliers, then standardise every predictor.",
+          "Fit the additive model and read R squared, adjusted R squared, and coefficient p-values.",
+          "Add the squared logged-GDP term, refit, and compare the two fits on R squared, adjusted R squared, AIC, and BIC.",
+          "Check the added term's own p-value as a second line of evidence.",
+          "Plot predicted against actual and draw the ideal reference line.",
+          "Draw one curve per predictor with the others held at their means."
+        ],
+        "software": [],
+        "convergence_criteria": "Not applicable for OLS; the paper reports no residual diagnostics."
+      },
+      "assumptions": [
+        "The three logged predictors are linearly related to the outcome once the squared GDP term is included.",
+        "Removing outliers does not remove the observations that carry the relationship, a condition the paper asserts but does not test.",
+        "Country observations are independent after the standardisation, which the paper does not discuss."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The fitted equation is fully printed, so the improved model can be re-evaluated at any GDP value within the fitted range. What cannot be recovered is the basic model's fitted coefficients, the standard errors, or the four comparison metrics, all of which the paper reports as verdicts rather than numbers."
+      },
+      "handoff_outputs": [
+        "Y",
+        "X3_squared"
+      ],
+      "validation_refs": [
+        "Rendered PDF pages 20 and 21 checked visually for all three display equations.",
+        "Figure 16 on page 21 checked visually for the predicted-versus-actual plot and the ideal line."
+      ],
+      "computational_cost": "Not reported; a single OLS fit on a small country cross-section is trivial, but the paper does not characterise the sample size.",
+      "strengths": [
+        "The added term is certified twice, once by the metric comparison and once by its own coefficient test, so a reader who distrusts one check has the other.",
+        "The fitted equation is printed in full, which most papers in this set do not do.",
+        "The quadratic term is glossed in the prose at the point where the abstract symbol appears."
+      ],
+      "limitations": [
+        "The sign pattern the fitted equation produces contradicts the direction the prose reports for the three predictors, and the paper resolves this by describing the reversal as a specification artefact rather than by examining it.",
+        "No coefficient table, standard errors, confidence intervals, or sample size are given.",
+        "The quadratic is fitted on a single predictor and the paper does not report the GDP range over which it is valid."
+      ],
+      "missing_details": [
+        "The basic model's coefficients, the four comparison metrics, standard errors, the sample size, the fitted range of X3, and the fitting code."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2521039-GCI-INDEX",
+      "page": 15,
+      "section": "5.2.4 Comprehensive Scoring Analysis of Policy Effectiveness",
+      "family": "weighted standardised composite index",
+      "purpose": "Reduce five cybercrime indicators on different scales to one comparable score per country so countries can be ranked and grouped.",
+      "base_or_modification": "paper-specific",
+      "summary": "Each indicator is standardised, given a stated weight, and summed into a composite score; higher scores mean the policy performed better across the indicators.",
+      "variables": [
+        {
+          "symbol": "composite_score",
+          "normalized_name": "composite_score",
+          "role": "output",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The weighted sum reported per country; the quantity Table 5 ranks.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "target_count",
+          "normalized_name": "target_count",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Number of cybercrime incidents in the country in the year, the first indicator.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "success_rate",
+          "normalized_name": "success_rate",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The success rate indicator.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thwart_rate",
+          "normalized_name": "thwart_rate",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The rate at which attacks were thwarted; the essay glosses it as a country's technical capability in defending against attacks.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "reporting_rate",
+          "normalized_name": "reporting_rate",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The rate at which incidents were reported; the essay glosses it as monitoring capacity and public trust.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "prosecution_rate",
+          "normalized_name": "prosecution_rate",
+          "role": "input",
+          "unit": "paper-defined or dimensionless",
+          "definition": "The rate at which incidents were prosecuted.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_i",
+          "normalized_name": "w_i",
+          "role": "parameter",
+          "unit": "paper-defined or dimensionless",
+          "definition": "Indicator weight, stated inline on page 15 and not tabulated.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "target_count",
+        "success_rate",
+        "thwart_rate",
+        "reporting_rate",
+        "prosecution_rate"
+      ],
+      "outputs": [
+        "composite_score"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2521039-IDX-1",
+          "page": 15,
+          "label": "no display equation; stated in prose",
+          "source_expression": "\\text{composite score}=\\sum_i w_i\\,\\tilde{x}_i,\\quad \\sum_i w_i=1",
+          "normalized_latex": "\\text{composite score}=\\sum_i w_i\\,\\tilde{x}_i,\\quad \\sum_i w_i=1",
+          "purpose": "Weighted sum of standardised indicators",
+          "variable_symbols": [
+            "composite_score",
+            "w_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Retained as a governing relation although the paper prints no display equation. The weights are given inline in the prose on page 15 - target count 0.2, success rate 0.3, thwart rate 0.2, reporting rate 0.2, prosecution rate 0.1, which sums to 1.0 - but no display equation or table states the index, and the standardisation method is not named beyond \"standardized\"."
+      },
+      "objectives": [
+        "Place every country on one comparable scale despite the indicators having different units.",
+        "Rank countries and, later, split them into full-score and non-full-score groups by pillar."
+      ],
+      "constraints": [
+        "The weights must sum to one; the five stated weights do.",
+        "Every indicator must be standardised first, because the prose gives differences in value ranges and units as the reason for the step."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Static index."
+          ]
+        },
+        "boundary": {
+          "status": "uncertain",
+          "details": [
+            "The standardisation method is not named, so the index cannot be recomputed and the sign convention for each indicator is given only in the sign-convention paragraph, which the paper itself describes as requiring logical adjustments."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Static index."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Weights stated inline in the prose rather than estimated from data.",
+        "parameters": [
+          "w_i"
+        ],
+        "reported_estimates": {
+          "target_count": 0.2,
+          "success_rate": 0.3,
+          "thwart_rate": 0.2,
+          "reporting_rate": 0.2,
+          "prosecution_rate": 0.1,
+          "source": "Page 15 prose",
+          "sum": 1.0
+        }
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Standardise every indicator.",
+          "Multiply each by its stated weight.",
+          "Sum to a composite score.",
+          "Rank the countries, then group them by full-score and non-full-score status on each of the five GCI pillars."
+        ],
+        "software": [],
+        "convergence_criteria": "Not applicable."
+      },
+      "assumptions": [
+        "A single weight set is valid for every country and year in the comparison.",
+        "Standardising the indicators makes them commensurable, which depends on the unstated standardisation method."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The weights are recoverable and sum to one, so the index is reproducible up to the standardisation step, which is named but not specified. The sign convention for each indicator is given in prose and requires per-indicator adjustment."
+      },
+      "handoff_outputs": [
+        "composite_score"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 15 checked visually for the inline weight statement, Table 4, and Table 5."
+      ],
+      "computational_cost": "Not reported.",
+      "strengths": [
+        "Stated weights make the aggregation auditable; a reader can see how much each indicator counts.",
+        "Higher scores are given a single stated meaning, better performance on both lowering the count and raising the rates, so the ranking direction never has to be inferred."
+      ],
+      "limitations": [
+        "The standardisation method is unnamed, so the composite cannot be reproduced exactly.",
+        "The reporting-rate value for the United States appears as 0.32 in the page 15 prose, as 0.29 in the Table 4 row, and as 0.013 on page 8, and the paper does not reconcile the three.",
+        "Indicator signs are handled by a prose paragraph rather than by a stated convention at the point where each indicator is defined."
+      ],
+      "missing_details": [
+        "The standardisation method, the raw indicator values, and a reconciliation of the reporting-rate values that appear differently in three places."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2025-2521039-GCI-INDEX",
+      "to_model_id": "MU-F-2025-2521039-HISR",
+      "handoff": "The composite score and the pillar groupings become the policy-effectiveness discussion that surrounds the regression, and the same policy indicator enters the difference-in-differences design as Policy_i."
+    },
+    {
+      "from_model_id": "MU-F-2025-2521039-HISR",
+      "to_model_id": "MU-F-2025-2521039-LEQR",
+      "handoff": "The policy model establishes that policy and time together shift the target count; the demographic model then asks whether the country's scale explains the same outcome, and the paper reads the second result as theoretical support for the first."
+    },
+    {
+      "from_model_id": "MU-F-2025-2521039-GCI-INDEX",
+      "to_model_id": "MU-F-2025-2521039-LEQR",
+      "handoff": "The pillar analysis supplies the two indicators the paper carries forward as the key metrics, which the demographic chapter then echoes in its own vocabulary."
+    }
+  ],
+  "review_status": "validated",
+  "coverage_note": "Three model units are retained. The two named models are the paper's models 1 and 2. The composite scoring index is retained separately because it is a real mechanism with stated parameters that the paper uses to rank countries and to build the pillar groups, and because the demographic and policy chapters both report against it. Its equation is prose-only and is marked as such rather than given a display equation the paper does not print.",
+  "equation_inventory": {
+    "display_equations_in_source": 4,
+    "retained_display_equations": 4,
+    "prose_only_equations_retained": 1,
+    "pages_checked_visually": [
+      12,
+      20,
+      21
+    ],
+    "symbol_table": "Table 1 on page 5 carries twelve symbols: GCI, DID, Policy_i, Post_t, Policy_i x Post_t, beta3, epsilon_it, X1 (Log_ICT_Goods_Export), X2 (Log_Population), X3 (Log_GDP), alpha0, alpha_i. All twelve are bound to a variable entry in one of the three model units above, or are the index framework terms GCI and DID that name the policy index and the design rather than entering an equation."
+  }
+}

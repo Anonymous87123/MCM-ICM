@@ -1,0 +1,58 @@
+Team # 2511565                                                                 Page 30 of 31
+
+
+     return vertices [:, :2] , depth_values
+
+def visualize_depth_scatter (points , depths , save_path =’scatter .png ’):
+    """ Method A: Direct scatter plot visualization """
+    plt. figure ( figsize =(6 , 5))
+    sc = plt. scatter ( points [: ,0] , points [: ,1] , c=depths ,
+                       cmap=’jet ’, s=5)
+    plt. colorbar (sc , label =’Wear Depth ’)
+    plt.title (’Wear Depth Scatter Plot ’)
+    plt. xlabel (’X’), plt. ylabel (’Y’)
+    plt. tight_layout ()
+    plt. savefig (save_path , dpi =300)
+    plt.show ()
+
+def visualize_depth_image (points , depths ,
+                            save_path =’grid.png ’,
+                            resolution =256):
+    """ Method B: Grid interpolation visualization """
+    if not HAS_SCIPY :
+         print (" Scipy required for interpolation ")
+         return
+
+     x_min , y_min = np.min(points , axis =0)
+     x_max , y_max = np.max(points , axis =0)
+     grid_x , grid_y = np. mgrid [ x_min : x_max : complex ( resolution ),
+                                 y_min : y_max : complex ( resolution )]
+     grid_z = griddata (points , depths , (grid_x , grid_y ),
+                       method =’linear ’, fill_value =0)
+
+     plt. figure ( figsize =(6 , 5))
+     plt. imshow ( grid_z .T, origin =’lower ’,
+                 extent =( x_min , x_max , y_min , y_max ),
+                 cmap=’jet ’, aspect =’auto ’)
+     plt. colorbar ( label =’Wear Depth ’)
+     plt.title (’Interpolated Wear Depth Map ’)
+     plt. xlabel (’X’), plt. ylabel (’Y’)
+     plt. tight_layout ()
+     plt. savefig (save_path , dpi =300)
+     plt.show ()
+
+if __name__ == ’__main__ ’:
+    points , depths = read_wear_depth_from_gltf (’step.gltf ’)
+    visualize_depth_scatter (points , depths )
+    visualize_depth_image (points , depths )
+
+   Implementation Notes:
+
+   • The read_wear_depth_from_gltf function:
+                                                                                          关注数学模型
+        – Loads mesh data using trimesh                                               2
+
+                                                                             MATHmodels
+
+
+                                                                                          获取更多资讯

@@ -1,0 +1,397 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2018-82504-6cc63169",
+  "problem_type": "D",
+  "year": "2018",
+  "source_sha256": "6cc631690fd3446cb81e6fb2841dc0074be6b3c9b54ee50e9f65740ae672fde8",
+  "models": [
+    {
+      "model_id": "MU-D-Q291-RADIUS",
+      "page": 7,
+      "section": "Capturing radius",
+      "family": "optimization",
+      "purpose": "Size the network from a capturing radius.",
+      "base_or_modification": "paper-specific",
+      "summary": "A full charge covers about 300 miles, so the capturing radius is capped at 15 miles, leaving 5 percent of charge on arrival. The radius shrinks with density and income: ru = cu / (rho v G)^(1/4) and rs = cs / (rho v G)^(1/4), both at most 15 miles. cu is fit to the finished Manhattan network. Stations per 40-mile square equal the ceiling of 40 squared over r squared. Rural roads get a station every 20 miles, and a village under 10,000 people gets one. The US total is 130,433 stations: 58,739 urban, 42,533 suburban, 29,161 rural. Expressway stations are 90 percent superchargers; urban and village stations are 70 percent destination chargers. Korea gets 30,343 superchargers, with destination radii of 5, 10 and 15 km.",
+      "variables": [
+        {
+          "symbol": "rho",
+          "normalized_name": "population_density",
+          "unit": "per area",
+          "definition": "population density of the area",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cu",
+          "normalized_name": "urban_constant",
+          "unit": "mile",
+          "definition": "constant fit to the Manhattan network",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nst",
+          "normalized_name": "station_count",
+          "unit": "stations",
+          "definition": "charging stations required",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rho"
+      ],
+      "outputs": [
+        "nst"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q291-RADIUS-1",
+          "page": 7,
+          "source_expression": "ru = cu / (rho v G)^(1/4)",
+          "normalized_latex": "r_u=\\frac{c_u}{(\\rho v G)^{1/4}}",
+          "purpose": "urban capturing radius from density, vehicles and income",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "rho",
+            "cu",
+            "nst"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equation images"
+      },
+      "objectives": [
+        "Size the network from a capturing radius."
+      ],
+      "constraints": [
+        "the radius never exceeds 15 miles"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "cu fit to the Manhattan network; the value is not printed",
+        "parameters": [
+          "cu"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "set the 15-mile cap",
+          "scale by density and income",
+          "tile 40-mile squares"
+        ],
+        "software": [
+          "Python"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "cars are spread evenly inside a square",
+        "only public stations are counted"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "the three region counts sum to 130,433"
+      },
+      "handoff_outputs": [
+        "nst"
+      ],
+      "validation_refs": [
+        "counts compared with the tables"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the radius is tied to a stated battery range"
+      ],
+      "limitations": [
+        "the rural formula is an image and the village count is not separated from the road count"
+      ],
+      "missing_details": [
+        "the constants cu and cs are estimated but not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q291-GROWTH",
+      "page": 15,
+      "section": "Logistic adoption",
+      "family": "evaluation",
+      "purpose": "Date the switch with a logistic curve.",
+      "base_or_modification": "paper-specific",
+      "summary": "The Tesla share grows as dR/dt = k R, then capped as dR/dt = k R (1 - R), giving R = C exp(kt) / (1 + C exp(kt)) with C = 0.01 from a 1 percent share in 2018. The rate k is 0.3 urban, 0.26 suburban and 0.22 rural. South Korea reaches 10 percent by the end of 2026, 30 by 2031, 50 by 2034 and 90 by 2042. The fleet at those dates is 2.246, 2.250, 2.253 and 2.276 million. Total vehicles follow dy/dt = 2.2e-4 (5000 - y) against a population of fifty million.",
+      "variables": [
+        {
+          "symbol": "k",
+          "normalized_name": "growth_rate",
+          "unit": "per year",
+          "definition": "adoption rate, 0.3, 0.26 or 0.22 by area",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cc",
+          "normalized_name": "initial_share",
+          "unit": "dimensionless",
+          "definition": "Tesla share in 2018, about 1 percent",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yr",
+          "normalized_name": "milestone_year",
+          "unit": "year",
+          "definition": "year a given share is reached",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "cc"
+      ],
+      "outputs": [
+        "yr"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q291-GROWTH-1",
+          "page": 15,
+          "source_expression": "dR/dt = k R (1 - R)",
+          "normalized_latex": "\\frac{dR}{dt}=kR(1-R)",
+          "purpose": "capped adoption of the electric share",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "k",
+            "cc",
+            "yr"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equation images"
+      },
+      "objectives": [
+        "Date the switch with a logistic curve."
+      ],
+      "constraints": [
+        "the share cannot exceed one"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "C = 0.01 from the 2018 share; k set by area",
+        "parameters": [
+          "k",
+          "cc"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "write the logistic",
+          "solve for R(t)",
+          "read the years"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "new technology spreads fastest in cities"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "the milestones are tabulated, but the fleet barely grows from 2.246 to 2.276 million"
+      },
+      "handoff_outputs": [
+        "yr"
+      ],
+      "validation_refs": [
+        "counts compared with the tables"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the radius is tied to a stated battery range"
+      ],
+      "limitations": [
+        "a fleet of about 2.25 million against a population of fifty million implies roughly 0.045 vehicles per person, which is not reconciled with the stated 10 percent growth"
+      ],
+      "missing_details": [
+        "the constants cu and cs are estimated but not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q291-CLASS",
+      "page": 17,
+      "section": "Country classification",
+      "family": "evaluation",
+      "purpose": "Decide whether a country can build the network.",
+      "base_or_modification": "paper-specific",
+      "summary": "Countries are gridded by GDP per capita, cut at 3,000 and 10,000 USD, and by population density, cut at 100 and 300 per square mile. A country below 3,000 USD is told not to switch yet. A country larger than 1,000 square miles with a Gini above 0.6 is split into parts and each part is classed on its own. Feasibility uses f(x) = a x + b - p + c exp(kx): build only when profit exceeds cost, and the stagnation point dates the first affordable year. China passes; Indonesia does not.",
+      "variables": [
+        {
+          "symbol": "gini",
+          "normalized_name": "gini",
+          "unit": "dimensionless",
+          "definition": "Gini coefficient, split threshold 0.6",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gdp",
+          "normalized_name": "gdp_per_capita",
+          "unit": "USD",
+          "definition": "income per person, cuts at 3000 and 10000",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "label",
+          "normalized_name": "country_class",
+          "unit": "label",
+          "definition": "grid cell, or not-yet",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "gini",
+        "gdp"
+      ],
+      "outputs": [
+        "label"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q291-CLASS-1",
+          "page": 19,
+          "source_expression": "f(x) = a x + b - p + c exp(k x)",
+          "normalized_latex": "f(x)=ax+b-p+ce^{kx}",
+          "purpose": "profit minus construction cost",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "gini",
+            "gdp",
+            "label"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equation images"
+      },
+      "objectives": [
+        "Decide whether a country can build the network."
+      ],
+      "constraints": [
+        "a country below 3000 USD does not switch yet"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "cuts stated; the profit coefficients are not fitted",
+        "parameters": [
+          "gdp"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "place the country on the grid",
+          "split if Gini exceeds 0.6",
+          "test profit against cost"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "income and density are enough to class a country"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "China and Indonesia match the stated reality; the coefficients are not printed"
+      },
+      "handoff_outputs": [
+        "label"
+      ],
+      "validation_refs": [
+        "counts compared with the tables"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the radius is tied to a stated battery range"
+      ],
+      "limitations": [
+        "the evaluation function is printed two ways, ax + b - p + c exp(kx) and ax + e against p - c exp(-kt)"
+      ],
+      "missing_details": [
+        "the constants cu and cs are estimated but not printed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q291-RADIUS",
+      "to_model_id": "MU-D-Q291-GROWTH",
+      "handoff": "the station count the adoption must eventually fill"
+    },
+    {
+      "from_model_id": "MU-D-Q291-CLASS",
+      "to_model_id": "MU-D-Q291-GROWTH",
+      "handoff": "the country class that picks the growth rate"
+    }
+  ],
+  "review_status": "validated"
+}

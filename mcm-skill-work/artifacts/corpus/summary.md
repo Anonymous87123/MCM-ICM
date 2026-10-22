@@ -1,8 +1,8 @@
 # Corpus Manifest Summary
 
-- Inventory signature: `4a7e8f7b2cd0521e262d7435f6b189e3612604218c9c0377966dc8f2b0af1344`
-- Files: 602
-- Bytes: 1704995186
+- Inventory signature: `8dd02861ac59aea0919440745c9d994774e02b3514945b22efee6bc6a1f6a12c`
+- Files: 604
+- Bytes: 1705049237
 - Eligible papers: 435
 - Type conflicts: 0
 - Unknown quarantine: 0
@@ -29,7 +29,7 @@
 | judging-or-triage-guide | 6 |
 | other-award-paper | 24 |
 | out-of-scope-problem-type | 5 |
-| problem-dataset | 52 |
+| problem-dataset | 54 |
 | problem-statement | 48 |
 | results-document | 25 |
 | supplemental-code | 5 |
@@ -40,7 +40,7 @@
 | Class | Count |
 |---|---:|
 | no-text | 5 |
-| not-applicable | 59 |
+| not-applicable | 61 |
 | text-rich | 537 |
 | text-sparse | 1 |
 

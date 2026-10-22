@@ -772,6 +772,8 @@ Hard stop rules:
 - Do not use a weakness record to fill a language, organization, model-retention, or visualization field.
 - Do not select the next paper while any validator fails, any current paper artifact remains draft, the compliance report names migration debt, or the current transaction is not durably appended.
 - Do not mutate a frozen artifact after hashing. If bytes change after append, create and validate a new corrective transaction.
+- Do not batch model-visible images or send full rendered pages with original detail. Create a JPEG review proxy of at most 450,000 bytes, return one image per tool call, and keep embedded image output below 4 MiB between compactions. Use focused crops for formula, table, plot, and code fidelity. This transport guard never reduces the complete page and visual coverage required below.
+- Never emit an entire Codex session JSONL into model context. Diagnose session state with bounded metadata, streaming byte/count summaries, and outputs that exclude embedded `data:image` content.
 
 ### 8.2 Gate G0 - Source Identity, Task Context, and Visual Chapter Map
 

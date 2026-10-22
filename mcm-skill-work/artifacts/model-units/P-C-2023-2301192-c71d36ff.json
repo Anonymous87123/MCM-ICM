@@ -1,0 +1,1126 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2023-2301192-c71d36ff",
+  "problem_type": "C",
+  "year": "2023",
+  "source_sha256": "c71d36ffeff1e3ea58e84d1cb7eaaa88e94b09dc8cc97e826114f1b5cef623d1",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q256-001",
+      "page": 7,
+      "section": "3.2 Prophet Model",
+      "family": "a piecewise trend times a weekly season times a holiday effect",
+      "purpose": "Forecast the number of Wordle reports and explain the swings.",
+      "base_or_modification": "base",
+      "summary": "The trend is a piecewise line whose slope jumps at the changepoints, and the jump size follows a Laplace distribution scaled by tau. The weekly term is a Fourier sum, and the holiday term adds one coefficient for each named holiday. The forecast multiplies the trend, the season, the holiday, and a residual. The fit uses pyStan on the log of the counts, with 60 changepoints, tau of 0.8, and a changepoint range of 0.9. Five holidays are named. The transpose mark in the trend is printed as a capital gamma.",
+      "variables": [
+        {
+          "symbol": "g",
+          "normalized_name": "trend",
+          "unit": "log count",
+          "definition": "The piecewise linear trend.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "The day index.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "growth rate",
+          "unit": "log count per day",
+          "definition": "The base growth rate.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "changepoint indicator",
+          "unit": "indicator",
+          "definition": "One after a changepoint and zero before it.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta",
+          "normalized_name": "rate change",
+          "unit": "log count per day",
+          "definition": "The change in growth rate at a changepoint.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "offset",
+          "unit": "log count",
+          "definition": "The offset of the trend.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "offset adjustment",
+          "unit": "log count",
+          "definition": "The offset adjustment, printed with a capital gamma.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s",
+          "normalized_name": "season",
+          "unit": "factor",
+          "definition": "The weekly Fourier term.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "period",
+          "unit": "day",
+          "definition": "The period of the season.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "an",
+          "normalized_name": "cosine weight",
+          "unit": "factor",
+          "definition": "The cosine coefficient of one harmonic.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bn",
+          "normalized_name": "sine weight",
+          "unit": "factor",
+          "definition": "The sine coefficient of one harmonic.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "harmonic count",
+          "unit": "count",
+          "definition": "The number of harmonics.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "holiday effect",
+          "unit": "factor",
+          "definition": "The sum of the holiday coefficients.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ki",
+          "normalized_name": "holiday coefficient",
+          "unit": "factor",
+          "definition": "The coefficient of one holiday.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "residual",
+          "unit": "factor",
+          "definition": "The residual term.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "forecast",
+          "unit": "log count",
+          "definition": "The product of the four terms.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "changepoint scale",
+          "unit": "scale",
+          "definition": "The scale of the Laplace distribution on the rate changes.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t"
+      ],
+      "outputs": [
+        "y"
+      ],
+      "handoff_outputs": [
+        "g"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q256-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "g(t) = (k + a(t) Delta) t + (m + a(t)^T gamma)",
+          "normalized_latex": "g(t)=(k+a(t)\\Delta)t+(m+a(t)^{\\top}\\gamma)",
+          "purpose": "Build the piecewise trend. The transpose is printed as a capital gamma.",
+          "variable_symbols": [
+            "g",
+            "t",
+            "k",
+            "a",
+            "Delta",
+            "m",
+            "gamma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-002",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "s(t) = sum_{n=1}^{N} (a_n cos(2 pi n t / P) + b_n sin(2 pi n t / P))",
+          "normalized_latex": "s(t)=\\sum_{n=1}^{N}(a_n\\cos(2\\pi n t/P)+b_n\\sin(2\\pi n t/P))",
+          "purpose": "Build the weekly term.",
+          "variable_symbols": [
+            "s",
+            "N",
+            "an",
+            "bn",
+            "t",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "h(t) = sum_{i=1}^{L} k_i * 1_{t in D_i}",
+          "normalized_latex": "h(t)=\\sum_{i=1}^{L} k_i\\, l_{\\{t\\in D_i\\}}",
+          "purpose": "Add one coefficient per holiday.",
+          "variable_symbols": [
+            "h",
+            "ki",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-004",
+          "page": 8,
+          "label": "(4)",
+          "source_expression": "y(t) = g(t) * s(t) * h(t) * epsilon(t)",
+          "normalized_latex": "y(t)=g(t)\\,s(t)\\,h(t)\\,\\varepsilon(t)",
+          "purpose": "Multiply the four terms.",
+          "variable_symbols": [
+            "y",
+            "g",
+            "s",
+            "h",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Four formulas are printed. The transpose mark is a capital gamma."
+      },
+      "objectives": [
+        "Forecast the report count and give an interval."
+      ],
+      "constraints": [
+        "The rate changes follow a Laplace distribution.",
+        "The weekly coefficients follow a normal distribution."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The model is fit with pyStan on the log counts. The fitting procedure is not written.",
+        "parameters": [
+          "k",
+          "Delta",
+          "m",
+          "gamma",
+          "an",
+          "bn",
+          "ki",
+          "tau"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Take the log of the counts.",
+          "Fit the multiplicative model.",
+          "Exponentiate the forecast."
+        ],
+        "software": [
+          "pyStan"
+        ],
+        "convergence_criteria": "The forecast on the held-out days is kept."
+      },
+      "assumptions": [
+        "The trend is piecewise linear.",
+        "Holidays affect the count."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The four terms are written. The fitting procedure is named but not shown."
+      },
+      "validation_refs": [
+        "Table 4: R-squared 0.9924, MAPE 4.8002 percent."
+      ],
+      "computational_cost": "One pyStan fit on the days from January to November 2022.",
+      "strengths": [
+        "Each term is named before its formula."
+      ],
+      "limitations": [
+        "The same model is later called inadequate for a long horizon."
+      ],
+      "missing_details": [
+        "The number of harmonics, and the prior on the holiday coefficients."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q256-002",
+      "page": 10,
+      "section": "3.3 Explanation of Overall Variation",
+      "family": "three player groups with infection, fatigue, and return",
+      "purpose": "Explain the rise and the fall of the report count.",
+      "base_or_modification": "paper-specific",
+      "summary": "Twitter users are split into ordinary users, players, and tired players, mapped onto the susceptible, the infected, and the recovered. Ordinary users become players with probability lambda, players tire with probability beta, and tired players return with probability eta. All three groups can leave at a rate theta. The player count is said to come from solving the differential equations and is then scaled to the report count. No equation is printed. The fitted curve is said to conform to the Prophet trend.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "ordinary users",
+          "unit": "count",
+          "definition": "Twitter users who may start playing.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "players",
+          "unit": "count",
+          "definition": "Current Wordle players.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "tired players",
+          "unit": "count",
+          "definition": "Players who have stopped for a time.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "infection probability",
+          "unit": "probability",
+          "definition": "The chance an ordinary user starts playing.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "fatigue probability",
+          "unit": "probability",
+          "definition": "The chance a player stops.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "return probability",
+          "unit": "probability",
+          "definition": "The chance a tired player returns.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "removal probability",
+          "unit": "probability",
+          "definition": "The chance any user leaves.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "reports",
+          "normalized_name": "report count",
+          "unit": "count",
+          "definition": "The player count scaled by a proportion.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S"
+      ],
+      "outputs": [
+        "reports"
+      ],
+      "handoff_outputs": [
+        "reports"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The transitions are described in prose. No differential equation is printed."
+      },
+      "objectives": [
+        "Explain the trend term rather than forecast it."
+      ],
+      "constraints": [
+        "Every Twitter user is in exactly one of the three groups."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": [
+            "No starting counts are given."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "No equilibrium is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The parameters are said to be set. No fitting method is named.",
+        "parameters": [
+          "lam",
+          "beta",
+          "eta",
+          "theta"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Split the users into three groups.",
+          "Solve the differential equations.",
+          "Scale the player count."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The curve is kept when it conforms to the Prophet trend."
+      },
+      "assumptions": [
+        "All players are Twitter users.",
+        "A tired player may return."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The probabilities are named. No equation and no fitted value are given."
+      },
+      "validation_refs": [
+        "Figure 8: the fitted report curve."
+      ],
+      "computational_cost": "One differential-equation fit. No compute is reported.",
+      "strengths": [
+        "Each group is described before it is mapped onto the epidemic term."
+      ],
+      "limitations": [
+        "Nothing is printed, so the curve cannot be rebuilt."
+      ],
+      "missing_details": [
+        "The differential equations, the initial counts, and the scaling proportion."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q256-003",
+      "page": 12,
+      "section": "3.5 Impact of Word Attributes",
+      "family": "a least-squares line from word attributes to the hard-mode share",
+      "purpose": "Test whether the word attributes change the hard-mode share.",
+      "base_or_modification": "base",
+      "summary": "The hard-mode share is the hard-mode reports over all reports. The line puts an intercept and one slope on each attribute, plus an error. The attributes are the frequency, the letter-frequency sum, the number of different letters, the breadth of usage, the letter counts, and the part of speech. The fitted line is sent to the appendix because of its length. The F statistic is 1.058 and the p-value is 0.379, so the line is not significant. The null sets every coefficient, including the intercept, to zero.",
+      "variables": [
+        {
+          "symbol": "phard",
+          "normalized_name": "hard-mode share",
+          "unit": "share",
+          "definition": "Hard-mode reports divided by all reports.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nhard",
+          "normalized_name": "hard-mode reports",
+          "unit": "count",
+          "definition": "The number of hard-mode reports.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nrep",
+          "normalized_name": "reported results",
+          "unit": "count",
+          "definition": "The number of reported results.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhat",
+          "normalized_name": "fitted share",
+          "unit": "share",
+          "definition": "The line of attributes.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "intercept",
+          "unit": "share",
+          "definition": "The constant term.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bk",
+          "normalized_name": "slopes",
+          "unit": "share",
+          "definition": "One slope for each attribute.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "attributes",
+          "unit": "mixed",
+          "definition": "The word attributes used as regressors.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "err",
+          "normalized_name": "error",
+          "unit": "share",
+          "definition": "The random error.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Fstat",
+          "normalized_name": "F statistic",
+          "unit": "statistic",
+          "definition": "The ratio of the mean regression square to the mean residual square.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SSR",
+          "normalized_name": "regression sum of squares",
+          "unit": "share squared",
+          "definition": "The explained sum of squares.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SSE",
+          "normalized_name": "residual sum of squares",
+          "unit": "share squared",
+          "definition": "The unexplained sum of squares.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "nhard",
+        "nrep",
+        "x"
+      ],
+      "outputs": [
+        "phard",
+        "yhat",
+        "Fstat"
+      ],
+      "handoff_outputs": [
+        "Fstat"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q256-005",
+          "page": 12,
+          "label": "(7)",
+          "source_expression": "percentage_hard = number_hard / number_reported",
+          "normalized_latex": "percentage_{hard}=number_{hard}/number_{reported}",
+          "purpose": "Define the share the line explains.",
+          "variable_symbols": [
+            "phard",
+            "nhard",
+            "nrep"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-006",
+          "page": 12,
+          "label": "(8)",
+          "source_expression": "yhat = b0 + b1 x1 + ... + bm xm + epsilon",
+          "normalized_latex": "\\hat y=\\beta_0+\\beta_1 x_1+\\cdots+\\beta_m x_m+\\varepsilon",
+          "purpose": "Write the line. The fitted coefficients are in the appendix.",
+          "variable_symbols": [
+            "yhat",
+            "b0",
+            "bk",
+            "x",
+            "err"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-007",
+          "page": 12,
+          "label": "(9)",
+          "source_expression": "F = (SSR/m) / (SSE/(n - m - 1))",
+          "normalized_latex": "F=(SSR/m)/(SSE/(n-m-1))\\sim F(m,n-m-1)",
+          "purpose": "Test whether the line beats an intercept. The residual sum is printed with a broken index.",
+          "variable_symbols": [
+            "Fstat",
+            "SSR",
+            "SSE"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three formulas are printed. The residual sum of squares has a broken summation index."
+      },
+      "objectives": [
+        "Decide whether the attributes explain the hard-mode share."
+      ],
+      "constraints": [
+        "The test uses alpha of 0.05."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Least squares. The fitted line is printed in the appendix with a p-value under each term.",
+        "parameters": [
+          "b0",
+          "bk"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Form the hard-mode share.",
+          "Fit the line.",
+          "Compare the F statistic with the threshold."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The line is rejected when the p-value exceeds 0.05."
+      },
+      "assumptions": [
+        "The share is linear in the attributes.",
+        "The errors are the usual regression errors."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The test is carried through to a p-value and a decision."
+      },
+      "validation_refs": [
+        "Appendix A: R-squared 0.129 on 359 days."
+      ],
+      "computational_cost": "One least-squares fit on 359 days.",
+      "strengths": [
+        "The negative result is stated, not buried."
+      ],
+      "limitations": [
+        "The null sets the intercept to zero along with the slopes."
+      ],
+      "missing_details": [
+        "A check for collinearity among the letter counts."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q256-004",
+      "page": 14,
+      "section": "4.1 Model Building of BP",
+      "family": "a one-hidden-layer network on borrowed word vectors",
+      "purpose": "Predict the share of players who solve the word in each number of tries.",
+      "base_or_modification": "modification",
+      "summary": "The word attributes from the first task are normalized and reduced, then joined to pre-trained GloVe vectors. The network has one hidden layer of 1024 units, a ReLU activation, and a dropout of half the units. The loss is an L2 norm, the optimizer is Adam, the learning rate is 0.05, and the weights start from a Xavier draw. Negative outputs are set to zero and the rest are rescaled so they sum to one. The training is repeated and the best run is kept, because the draw and the dropout change the result.",
+      "variables": [
+        {
+          "symbol": "attr",
+          "normalized_name": "word attributes",
+          "unit": "mixed",
+          "definition": "The attributes taken from the first task.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "glove",
+          "normalized_name": "word vector",
+          "unit": "vector",
+          "definition": "The pre-trained GloVe vector of the word.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dist",
+          "normalized_name": "try distribution",
+          "unit": "share",
+          "definition": "The predicted share of players at each try count.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "attr",
+        "glove"
+      ],
+      "outputs": [
+        "dist"
+      ],
+      "handoff_outputs": [
+        "dist"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The architecture and the settings are described. No network equation is printed."
+      },
+      "objectives": [
+        "Predict seven try shares for a word."
+      ],
+      "constraints": [
+        "The shares are clipped at zero and rescaled to sum to one.",
+        "The data split is 80 percent training."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Adam on the L2 loss, with Xavier initialization and a dropout of one half.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Join the reduced attributes to the word vector.",
+          "Train several times.",
+          "Clip the negatives and rescale."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The best of the repeated trainings is kept."
+      },
+      "assumptions": [
+        "A pre-trained vector carries information the attributes do not."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The settings are stated. The paper itself says the output is not unique."
+      },
+      "validation_refs": [
+        "Table 6: MAE 3.2302, MSE 21.857, MAPE 32.9194."
+      ],
+      "computational_cost": "Several trainings of one hidden layer of 1024 units.",
+      "strengths": [
+        "The clipping and the rescaling are both admitted."
+      ],
+      "limitations": [
+        "The output changes from run to run."
+      ],
+      "missing_details": [
+        "The GloVe dimension, the number of principal components, and the number of repeated trainings."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q256-005",
+      "page": 15,
+      "section": "5.1 Clustering Analysis",
+      "family": "a three-group clustering of words by their try shares",
+      "purpose": "Sort the words into easy, medium, and hard.",
+      "base_or_modification": "base",
+      "summary": "The seven try shares are the inputs. The distance is Euclidean, and the number of groups is set to three by the elbow chart together with the authors' experience of game difficulty. The groups hold 135, 156, and 68 words and are labeled easy, medium, and hard from the share of players who need five or more tries, which is 25.35, 39.92, and 58.59 percent. A later principal-component plot is used to argue the groups separate, and the method is ranked above two alternatives by a silhouette coefficient and a Calinski-Harabasz score.",
+      "variables": [
+        {
+          "symbol": "tries",
+          "normalized_name": "try shares",
+          "unit": "share",
+          "definition": "The seven shares, from one try to seven or more.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "group count",
+          "unit": "count",
+          "definition": "The number of groups, set to three.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "label",
+          "normalized_name": "difficulty label",
+          "unit": "category",
+          "definition": "Easy, medium, or hard.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "tries"
+      ],
+      "outputs": [
+        "label"
+      ],
+      "handoff_outputs": [
+        "label"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The steps are written in prose. No update formula is printed."
+      },
+      "objectives": [
+        "Give each word one of three difficulty labels."
+      ],
+      "constraints": [
+        "The group count is fixed before the run."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The group count is chosen from the elbow chart and from experience. It is not estimated.",
+        "parameters": [
+          "k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Place three centers.",
+          "Assign each word to the nearest center.",
+          "Move the centers and repeat until the assignments settle."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The run stops when the assignments meet the accuracy requirement."
+      },
+      "assumptions": [
+        "The try shares reflect the difficulty."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The labels are checked against the five-or-more share. No stability check is given."
+      },
+      "validation_refs": [
+        "Table 13: silhouette 0.372 against 0.347 and 0.347."
+      ],
+      "computational_cost": "One clustering of 359 words into three groups.",
+      "strengths": [
+        "The group count is justified by a chart and by experience, not by the chart alone."
+      ],
+      "limitations": [
+        "The labels are assigned by looking at the tables."
+      ],
+      "missing_details": [
+        "The accuracy requirement that ends the iteration, and the initialization of the centers."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q256-006",
+      "page": 20,
+      "section": "6.2 Which Initial Letter",
+      "family": "a binomial test on the first letter of the hardest words",
+      "purpose": "Find which first letters make a word hard.",
+      "base_or_modification": "base",
+      "summary": "The difficulty of a word is the share of players who need five or more tries. The hardest fifth of the words is kept. Under the null, a letter starts such a word with probability 0.2, and the count of hard words for that letter is binomial. A letter is called out when its tail probability falls below 0.05. The letters e, f, and w are called hard, and e is called the hardest. The letter t is called the easiest by the same test run on the other tail.",
+      "variables": [
+        {
+          "symbol": "p0",
+          "normalized_name": "null probability",
+          "unit": "probability",
+          "definition": "The chance a word enters the hardest fifth, set to 0.2.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "letter count",
+          "unit": "count",
+          "definition": "The number of words starting with the letter.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "hard count",
+          "unit": "count",
+          "definition": "How many of those words fall in the hardest fifth.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "tail probability",
+          "unit": "probability",
+          "definition": "The probability of the observed count under the null.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hard",
+          "normalized_name": "hard letters",
+          "unit": "category",
+          "definition": "The letters whose tail probability falls below 0.05 and whose rate exceeds 0.2.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "n",
+        "k"
+      ],
+      "outputs": [
+        "P",
+        "hard"
+      ],
+      "handoff_outputs": [
+        "hard"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q256-008",
+          "page": 20,
+          "label": "(10)",
+          "source_expression": "H0: p = 0.2",
+          "normalized_latex": "H_0: p=0.2",
+          "purpose": "Set the null rate.",
+          "variable_symbols": [
+            "p0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q256-009",
+          "page": 20,
+          "label": "(11)",
+          "source_expression": "k ~ Binomial(n, 0.2)",
+          "normalized_latex": "k\\sim B(n,0.2)",
+          "purpose": "Give the count its distribution under the null.",
+          "variable_symbols": [
+            "k",
+            "n",
+            "p0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The null and the binomial line are printed."
+      },
+      "objectives": [
+        "Name the first letters that make a word hard."
+      ],
+      "constraints": [
+        "The threshold is 0.05.",
+        "The hardest fifth defines the event."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The null value is assumed. Nothing is estimated.",
+        "parameters": [
+          "p0"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Count the hard words for each letter.",
+          "Compute the tail probability.",
+          "Reject when it falls below 0.05."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A letter is kept when its rate also exceeds 0.2."
+      },
+      "assumptions": [
+        "Each word falls in the hardest fifth independently with probability 0.2."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The rule is stated and then applied to named letters."
+      },
+      "validation_refs": [
+        "Table 15: the letter e has tail probability 0.006."
+      ],
+      "computational_cost": "One binomial tail per letter.",
+      "strengths": [
+        "The decision rule is stated before any letter is named."
+      ],
+      "limitations": [
+        "The same test is run on the easy tail without a correction for the two looks."
+      ],
+      "missing_details": [
+        "A correction for testing every letter."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q256-001",
+      "to_model_id": "MU-C-Q256-002",
+      "handoff": "The trend term is the curve the player groups are asked to match."
+    },
+    {
+      "from_model_id": "MU-C-Q256-003",
+      "to_model_id": "MU-C-Q256-004",
+      "handoff": "The word attributes move from the rejected line to the network."
+    },
+    {
+      "from_model_id": "MU-C-Q256-004",
+      "to_model_id": "MU-C-Q256-005",
+      "handoff": "The try shares, predicted for EERIE and observed for the rest, are what the clustering sorts."
+    },
+    {
+      "from_model_id": "MU-C-Q256-005",
+      "to_model_id": "MU-C-Q256-006",
+      "handoff": "The difficulty labels motivate the first-letter test."
+    }
+  ]
+}

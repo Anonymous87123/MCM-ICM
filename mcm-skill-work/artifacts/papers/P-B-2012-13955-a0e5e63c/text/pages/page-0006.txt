@@ -1,0 +1,72 @@
+Page 6 of 18                                                                                        Control #13955
+
+    ●   M	
+  =	
+  peak carrying capacity of the river (maximum number of groups which can be sent down
+        the river during its six month season)	
+  
+    ●   D = distribution of trip durations of groups on the river	
+  
+
+
+2 Methods
+
+        Below is a description of the scheduling algorithm and, ultimately, our model which we have
+found to be representative of accurate results based on the various inputs and assumptions specified
+above. We begin by defining the following terms and phrases in an effort to add clarity to how certain
+variables are handled in our simulation, as well as to shed light on some of the details of the
+implementation of our model:
+
+Open Campsite:
+        A campsite is considered to be an open campsite if there is no group currently occupying that
+space. This is equivalent to saying that for a given campsite 𝑐! there exists no other group 𝑔! such that
+𝑔! is assigned to 𝑐! .
+
+Moving to an open campsite:
+       For a group 𝑔! and	
+  a	
+  campsite	
+  	
+  𝑐! , moving to an open campsite is equivalent to assigning 𝑔! to
+a new campsite,	
+  𝑐! . Since a group is only able to move downstream, or remain at their current
+campsite, if 𝑔! was previously occupying 𝑐! , then 𝑔! can only be moved to a 𝑐! where 𝑚 ≥ 𝑛.
+
+Waitlist:
+          The waitlist for a given day is composed of the groups which are not yet on the river, but will
+start their trip on day where their ranking on the waitlist and their ability to reach a campsite, 𝑐,
+includes them in the set 𝐺! , and is deemed ‘the highest priority’ (Note: priority is a significant element
+of our model. This will be explained in further detail a little later). Waitlisted groups are initialized with
+a current campsite value of	
+  𝑐! 	
+  (the	
+  zeroth	
+  campsite), and are assumed to have priority 𝑃 = 1	
+  until	
+  
+they	
+  are	
+  moved	
+  from	
+  the	
+  waitlist	
+  onto	
+  the	
+  river.	
+  
+
+Off the River:
+        Our algorithm considers the first space off of the river to be the ‘final campsite’, 𝑐!"#$% . For our
+model, we consider 𝑐!"#$% to always be an open campsite, so that an infinite number of 𝑔! can be
+assigned to 𝑐!"#$% . This is consistent with the understanding that any number of groups can move off of
+the river in a single day, and allows us to handle such an event in our simulation.
+
+
+2.1 The Furthest Empty Campsite
+
+        Our scheduling algorithm utilizes an array as a data structure to represent the river, where each
+element of the array consists of a campsite. The algorithm begins each day by finding the open
+campsite that is furthest down the river, call that campsite 𝑐, then generates a set 𝐺! , which consists of
+all groups 𝑔! which could potentially reach campsite 𝑐. Thus,
+
+                                𝐺! = 𝑔!   |  𝑔! , 𝑔! , … , 𝑔! ∶ 𝑤ℎ𝑒𝑟𝑒  𝑚! + 𝑙! ≥ 𝑐

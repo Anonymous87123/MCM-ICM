@@ -1,0 +1,815 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2024-2417340-491a7b05",
+  "problem_type": "F",
+  "year": "2024",
+  "source_sha256": "491a7b05999c93b882bf811af6f44f56c0c2f689f6f01f4b62f460f5d2196b30",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2024-2417340-LV",
+      "section": "Lotka-Volterra Client Evaluation",
+      "family": "population-dynamics",
+      "summary": "Lotka-Volterra predator-prey model mapping conservation organizations (predator) vs poachers (prey), with AHP-weighted scoring for client selection.",
+      "computational_cost": "not-stated",
+      "purpose": "Select optimal client from GA/INO/PAP using predator-prey dynamics with AHP-weighted composite adaptation index.",
+      "base_or_modification": "modification",
+      "page": 7,
+      "inputs": [
+        "X_t",
+        "Y_t"
+      ],
+      "outputs": [
+        "CAI"
+      ],
+      "handoff_outputs": [
+        "CAI"
+      ],
+      "objectives": [
+        "Identify client with highest composite adaptation index from Lotka-Volterra population dynamics."
+      ],
+      "variables": [
+        {
+          "symbol": "X_t",
+          "normalized_name": "prey_population",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Population size of poachers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_t",
+          "normalized_name": "predator_population",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Population viability of conservation organization",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "prey_growth_rate",
+          "role": "parameter",
+          "unit": "1/year",
+          "definition": "Natural growth rate of poachers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "predation_rate",
+          "role": "parameter",
+          "unit": "1/year",
+          "definition": "Efficiency of organization combating poachers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "predator_mortality",
+          "role": "parameter",
+          "unit": "1/year",
+          "definition": "Rate of reduction of organization power",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "energy_conversion",
+          "role": "parameter",
+          "unit": "1/year",
+          "definition": "Efficiency of organization self-strengthening",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CAI",
+          "normalized_name": "composite_adaptation_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Composite adaptation index for client selection",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2417340-LV-1",
+          "equation_label": "Lotka-Volterra system",
+          "equation_text": "dX/dt = alpha*X - beta*X*Y; dY/dt = delta*X*Y - gamma*Y",
+          "source_expression": "dX/dt = alpha*X - beta*X*Y; dY/dt = delta*X*Y - gamma*Y",
+          "normalized_latex": "\\frac{dX}{dt} = \\alpha X - \\beta XY, \\quad \\frac{dY}{dt} = \\delta XY - \\gamma Y",
+          "purpose": "Predator-prey dynamics for conservation vs poaching",
+          "variable_symbols": [
+            "X_t",
+            "Y_t",
+            "alpha",
+            "beta",
+            "gamma",
+            "delta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2417340-LV-2",
+          "equation_label": "Composite adaptation index",
+          "equation_text": "CAI = (1+IN)*(CI*SC) = (1+IN)*(CI*(0.43*PUR + 0.22*SR + 0.35*PER))",
+          "source_expression": "CAI = (1+IN)*(CI*SC) = (1+IN)*(CI*(0.43*PUR + 0.22*SR + 0.35*PER))",
+          "normalized_latex": "CAI = (1+IN)(CI \\cdot SC)",
+          "purpose": "Weighted composite score for client ranking",
+          "variable_symbols": [
+            "CAI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "X(0)=0.19, Y(0)=0.2 from normalized data."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "ODE system, no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Predator-prey equilibrium from LV dynamics."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "AHP pairwise comparison with consistency check",
+        "parameters": [
+          "alpha",
+          "beta",
+          "gamma",
+          "delta"
+        ]
+      },
+      "algorithm": {
+        "description": "Solve LV ODE, compute AHP weights, score clients via CAI",
+        "status": "implemented",
+        "steps": [
+          "Fit LV to CITES data",
+          "AHP for PUR/SR/PER weights",
+          "Score GA/INO/PAP",
+          "Select highest CAI"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "AHP consistency ratio CR < 0.1."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters fitted from 2000-2020 CITES data."
+        ],
+        "analysis": "LV system identified from time series; AHP weights from expert judgment."
+      },
+      "constraints": [
+        "CR < 0.1 for AHP consistency",
+        "sum(weights) = 1"
+      ],
+      "validation_refs": [
+        "Figure 2 weight charts",
+        "Table 2 scores"
+      ],
+      "strengths": [
+        "Ecological metaphor for organizational competition",
+        "AHP provides structured weighting"
+      ],
+      "limitations": [
+        "Predator-prey analogy may oversimplify organizational dynamics"
+      ],
+      "missing_details": [
+        "Full AHP consistency check values not shown"
+      ],
+      "assumptions": [
+        "Conservation orgs and poachers follow predator-prey dynamics"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2417340-BP",
+      "section": "BP Neural Network Prediction",
+      "family": "neural-network",
+      "summary": "BP neural network trained on 248 CITES data points to predict global IWT volumes for next 5 years.",
+      "computational_cost": "not-stated",
+      "purpose": "Forecast future IWT volumes using trained BP neural network to justify project necessity.",
+      "base_or_modification": "base",
+      "page": 11,
+      "inputs": [
+        "x_i"
+      ],
+      "outputs": [
+        "y_j"
+      ],
+      "handoff_outputs": [
+        "y_j"
+      ],
+      "objectives": [
+        "Predict 5-year IWT volume trajectory from historical CITES data."
+      ],
+      "variables": [
+        {
+          "symbol": "x_i",
+          "normalized_name": "input_features",
+          "role": "input",
+          "unit": "various",
+          "definition": "Input features from CITES data",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_j",
+          "normalized_name": "predicted_iwt",
+          "role": "output",
+          "unit": "transactions",
+          "definition": "Predicted IWT volume",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega_ij",
+          "normalized_name": "connection_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Connection weight between neurons",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_j",
+          "normalized_name": "neuron_bias",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Bias of neuron j",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2417340-BP-1",
+          "equation_label": "Neuron output",
+          "equation_text": "y_j = sigma(sum(omega_ij * x_i) + b_j)",
+          "source_expression": "y_j = sigma(sum(omega_ij * x_i) + b_j)",
+          "normalized_latex": "y_j = \\sigma\\left(\\sum_{i=1}^{n} \\omega_{ij} x_i + b_j\\right)",
+          "purpose": "Neuron computation with activation function",
+          "variable_symbols": [
+            "x_i",
+            "y_j",
+            "omega_ij",
+            "b_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2417340-BP-2",
+          "equation_label": "Loss function",
+          "equation_text": "E = (1/2) * sum((d_p - y_p)^2)",
+          "source_expression": "E = (1/2) * sum((d_p - y_p)^2)",
+          "normalized_latex": "E(\\omega,b) = \\frac{1}{2} \\sum_{p=1}^{P} (d_p - y_p)^2",
+          "purpose": "Mean square error loss for regression",
+          "variable_symbols": [
+            "y_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Random initial weights, 248 training samples."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Neural network, no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Iterative training, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Backpropagation with 736 iterations, ~29s training",
+        "parameters": [
+          "omega_ij",
+          "b_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Forward pass, compute loss, backpropagate gradients, update weights",
+        "status": "implemented",
+        "steps": [
+          "Initialize weights",
+          "Forward pass",
+          "Compute MSE",
+          "Backpropagate",
+          "Update weights",
+          "Repeat 736 times"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "R-value close to 1 (training R=0.997, test R=0.929)."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "R values 0.92-0.99 across train/val/test splits."
+        ],
+        "analysis": "Network generalizes well based on R-value metrics."
+      },
+      "constraints": [
+        "248 training samples from 193 countries"
+      ],
+      "validation_refs": [
+        "Figure 7 training R-values",
+        "Figure 8 predicted vs actual"
+      ],
+      "strengths": [
+        "Data-driven prediction",
+        "High R-values"
+      ],
+      "limitations": [
+        "Black-box model",
+        "Limited to historical pattern extrapolation"
+      ],
+      "missing_details": [
+        "Network architecture (layers, neurons) not specified"
+      ],
+      "assumptions": [
+        "Historical IWT patterns continue into future"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2417340-TSP",
+      "section": "TSP + Simulated Annealing for Publicity Route",
+      "family": "optimization",
+      "summary": "Traveling Salesman Problem solved via simulated annealing to find optimal global publicity route across 166 countries.",
+      "computational_cost": "not-stated",
+      "purpose": "Find shortest route for INO to visit all 166 IWT network nodes for global advocacy campaign.",
+      "base_or_modification": "base",
+      "page": 16,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "x_ij"
+      ],
+      "handoff_outputs": [
+        "x_ij"
+      ],
+      "objectives": [
+        "Minimize total travel distance across 166 countries."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "route_decision",
+          "role": "output",
+          "unit": "binary",
+          "definition": "Decision variable: 1 if route goes from city i to j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_ij",
+          "normalized_name": "distance_matrix",
+          "role": "input",
+          "unit": "km",
+          "definition": "Distance from city i to city j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_current",
+          "normalized_name": "temperature",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Current annealing temperature",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_cool",
+          "normalized_name": "cooling_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Temperature cooling factor",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2417340-TSP-1",
+          "equation_label": "TSP objective",
+          "equation_text": "Minimize sum(d_ij * x_ij)",
+          "source_expression": "Minimize sum(d_ij * x_ij)",
+          "normalized_latex": "\\min \\sum_{i=1}^{n} \\sum_{j=1, j \\neq i}^{n} d_{ij} x_{ij}",
+          "purpose": "Minimize total travel distance",
+          "variable_symbols": [
+            "d_ij",
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2417340-TSP-2",
+          "equation_label": "Metropolis criterion",
+          "equation_text": "P(accept) = exp(-Delta_E / (k_B * T))",
+          "source_expression": "P(accept) = exp(-Delta_E / (k_B * T))",
+          "normalized_latex": "P(\\text{accept}) = \\exp\\left(-\\frac{\\Delta E}{k_B T}\\right)",
+          "purpose": "Acceptance probability for worse solutions",
+          "variable_symbols": [
+            "T_current"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2417340-TSP-3",
+          "equation_label": "Cooling schedule",
+          "equation_text": "T_new = alpha * T_current",
+          "source_expression": "T_new = alpha * T_current",
+          "normalized_latex": "T_{\\text{new}} = \\alpha \\cdot T_{\\text{current}}",
+          "purpose": "Temperature cooling schedule",
+          "variable_symbols": [
+            "T_current",
+            "alpha_cool"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial high temperature, random tour."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Each city entered and exited exactly once."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Stochastic optimization, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Standard SA parameter tuning",
+        "parameters": [
+          "alpha_cool",
+          "T_current"
+        ]
+      },
+      "algorithm": {
+        "description": "Simulated annealing for TSP",
+        "status": "implemented",
+        "steps": [
+          "Initialize random tour",
+          "Perturb solution",
+          "Accept/reject via Metropolis",
+          "Cool temperature",
+          "Repeat until frozen"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Temperature below threshold."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Solution found for 166 countries: 1696 days."
+        ],
+        "analysis": "SA provides near-optimal solution for TSP."
+      },
+      "constraints": [
+        "Each city visited exactly once",
+        "Travel speed 120 km/h",
+        "Stay 7 days per country"
+      ],
+      "validation_refs": [
+        "Figure 10 optimal route"
+      ],
+      "strengths": [
+        "Handles large-scale TSP",
+        "Practical route planning"
+      ],
+      "limitations": [
+        "Approximate solution, not guaranteed optimal"
+      ],
+      "missing_details": [
+        "Cooling schedule parameters not specified",
+        "Number of SA iterations not stated"
+      ],
+      "assumptions": [
+        "Uniform travel speed between countries",
+        "7-day stay at each node"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2417340-PROB",
+      "section": "Probabilistic Attainment Model",
+      "family": "probability",
+      "summary": "Binomial and Poisson distribution model for project attainment probability under three impediment scenarios.",
+      "computational_cost": "not-stated",
+      "purpose": "Calculate probability of meeting 95% strategy implementation threshold under flight delays, poaching resistance, and weather.",
+      "base_or_modification": "paper-specific",
+      "page": 20,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "x_ij"
+      ],
+      "handoff_outputs": [
+        "x_ij"
+      ],
+      "objectives": [
+        "Compute P(project meets expectations) = P(K1<=28)*P(K2<=1.25)*P(K3<=45.625)."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "route_decision",
+          "role": "input",
+          "unit": "binary",
+          "definition": "Inherited from TSP model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K1",
+          "normalized_name": "flight_delays",
+          "role": "parameter",
+          "unit": "days",
+          "definition": "Number of flight delay events",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K2",
+          "normalized_name": "poaching_resistance",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Poaching organization resistance level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K3",
+          "normalized_name": "bad_weather_days",
+          "role": "parameter",
+          "unit": "days",
+          "definition": "Number of severe weather days",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_w",
+          "normalized_name": "poisson_rate",
+          "role": "parameter",
+          "unit": "1/year",
+          "definition": "Poisson rate for weather events",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2417340-PROB-1",
+          "equation_label": "Binomial distribution",
+          "equation_text": "P(X=k) = C(n,k) * p^k * (1-p)^(n-k)",
+          "source_expression": "P(X=k) = C(n,k) * p^k * (1-p)^(n-k)",
+          "normalized_latex": "P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}",
+          "purpose": "Probability of k delay/resistance events",
+          "variable_symbols": [
+            "K1",
+            "K2"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 21,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2417340-PROB-2",
+          "equation_label": "Poisson distribution",
+          "equation_text": "P(X=k) = lambda^k * exp(-lambda) / k!",
+          "source_expression": "P(X=k) = lambda^k * exp(-lambda) / k!",
+          "normalized_latex": "P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}",
+          "purpose": "Probability of k weather events",
+          "variable_symbols": [
+            "K3",
+            "lambda_w"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 21,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Flight delay probability 15.36%, poaching resistance 10%."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "All three strategies must reach 95% for project success."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Probability calculation, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Historical data for delay and resistance rates",
+        "parameters": [
+          "K1",
+          "K2",
+          "K3",
+          "lambda_w"
+        ]
+      },
+      "algorithm": {
+        "description": "Compute individual strategy probabilities, multiply for joint probability",
+        "status": "implemented",
+        "steps": [
+          "Solve inequality constraints for K thresholds",
+          "Compute P(K1<=28) via binomial",
+          "Compute P(K2<=1.25) via binomial",
+          "Compute P(K3<=45.625) via Poisson",
+          "Multiply"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Exact probability computation."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Parameters from historical flight and weather data."
+        ],
+        "analysis": "Closed-form probability computation."
+      },
+      "constraints": [
+        "95% strategy threshold",
+        "lambda=30 for Poisson"
+      ],
+      "validation_refs": [
+        "Figure 14 distribution plots"
+      ],
+      "strengths": [
+        "Accounts for real-world uncertainties",
+        "Separates three impediment types"
+      ],
+      "limitations": [
+        "Independence assumption between three impediments",
+        "Fixed 95% threshold"
+      ],
+      "missing_details": [
+        "Exact binomial n for poaching resistance not clear"
+      ],
+      "assumptions": [
+        "Flight delays and poaching resistance follow binomial distribution",
+        "Weather follows Poisson with lambda=30"
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2024-2417340-LV-1",
+      "model_id": "MU-F-2024-2417340-LV",
+      "page": 8,
+      "source_expression": "dX/dt = alpha*X - beta*X*Y; dY/dt = delta*X*Y - gamma*Y"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-LV-2",
+      "model_id": "MU-F-2024-2417340-LV",
+      "page": 9,
+      "source_expression": "CAI = (1+IN)*(CI*SC) = (1+IN)*(CI*(0.43*PUR + 0.22*SR + 0.35*PER))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-BP-1",
+      "model_id": "MU-F-2024-2417340-BP",
+      "page": 12,
+      "source_expression": "y_j = sigma(sum(omega_ij * x_i) + b_j)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-BP-2",
+      "model_id": "MU-F-2024-2417340-BP",
+      "page": 12,
+      "source_expression": "E = (1/2) * sum((d_p - y_p)^2)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-TSP-1",
+      "model_id": "MU-F-2024-2417340-TSP",
+      "page": 16,
+      "source_expression": "Minimize sum(d_ij * x_ij)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-TSP-2",
+      "model_id": "MU-F-2024-2417340-TSP",
+      "page": 17,
+      "source_expression": "P(accept) = exp(-Delta_E / (k_B * T))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-TSP-3",
+      "model_id": "MU-F-2024-2417340-TSP",
+      "page": 17,
+      "source_expression": "T_new = alpha * T_current"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-PROB-1",
+      "model_id": "MU-F-2024-2417340-PROB",
+      "page": 21,
+      "source_expression": "P(X=k) = C(n,k) * p^k * (1-p)^(n-k)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2417340-PROB-2",
+      "model_id": "MU-F-2024-2417340-PROB",
+      "page": 21,
+      "source_expression": "P(X=k) = lambda^k * exp(-lambda) / k!"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2024-2417340-LV",
+      "to_model_id": "MU-F-2024-2417340-BP",
+      "handoff": "Client selection (INO) informs BP prediction target scope"
+    },
+    {
+      "from_model_id": "MU-F-2024-2417340-BP",
+      "to_model_id": "MU-F-2024-2417340-TSP",
+      "handoff": "IWT volume predictions justify project necessity and inform strategy design"
+    },
+    {
+      "from_model_id": "MU-F-2024-2417340-TSP",
+      "to_model_id": "MU-F-2024-2417340-PROB",
+      "handoff": "Strategy results feed into attainment probability computation"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+Team # 15420                                                                               Page 5 of 20
+
+
+distance the trips are able to go. This assumption is not very realistic, however we can account for
+this in two ways; we penalize crossovers in our model evaluation and we can decrease the maximum
+expected distance that trips are allowed to travel.
+
+
+4     Models
+Our models address the Big Long River Problem by attempting to generate the ‘optimal’ schedule.
+Optimal is defined to be a schedule that satisfies the contraint of no two trips staying at the same
+campsite during the same night.
+   The current algorithms in scheduling theory and queueing theory do not address the Big Long
+River problem. The Big Long River problem is similar to scheduling n activities (trips), where
+each activity requires Y+1 jobs (traveling along river sections) with precendence (order matters).
+Each section of the river can be treated as a machine that does one job. However, the majority of
+scheduling algorithms today solve scenarios where there are identical parallel machines or a single
+machine. Our problem requires a sequence of jobs to be complete in order, but among unique
+machines (different river section). Markov processes and queueing theory also do not apply as
+However, this problem is one where every campsite only has a queue of one person per night and
+any people beyond that experience balking with probability equal to one.
+
+4.1    Naı̈ve model
+Our first attempt at an algorithm to solve this problem was to start with an empty schedule and
+iteratively add trips until no more trips could be added. We did not expect this solution to be
+optimal, but we belived it would provide a good initial exploration of the problem.
+The General Idea
+
+    • A trip to be added can be randomly selected from a distribution of lengths.
+
+    • If the trip fits anywhere on the schedule, add it at that point.
+
+    • If no fit is found for the entire 6 months, remove the trip length from the distribution.
+
+The Algorithm
+Input: empty Schedule, trip length distribution
+Output: populated schedule
+
+While distribution 6= ∅:
+
+    1. Randomly select one trip length t from the distribution
+
+    2. For n in [1, T − t]:
+
+        (a) Attempt to insert the trip into the schedule starting at night n:
+               i. Try to cover an equal portion of the river each day
+              ii. If a desired campsite is taken, move to the closest avialable site, breaking ties ran-
+                  domly
+             iii. If no camptites are available within tolerance, then insert failed
+             iv. If a valid campsite is found for every night in [n, n + t], then insert succeded
+        (b) If success then break

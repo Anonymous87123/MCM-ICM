@@ -1,0 +1,381 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2017-55295-9001b6d9",
+  "problem_type": "D",
+  "year": "2017",
+  "source_sha256": "9001b6d98e1a4837c5d4c9acbc6a42dc35b906708fdb55f7a267155a9fcffaf9",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q283-NET",
+      "page": 5,
+      "section": "Queueing Network",
+      "family": "queueing",
+      "purpose": "Represent the real checkpoint and find its bottlenecks.",
+      "base_or_modification": "paper-specific",
+      "summary": "Each check point is its own M/G/1 queue. Regular and pre-check passengers stay separate, and each ID queue feeds four screening queues. Arrival rates fitted in Mathematica are 4.63476 and 6.52921 per minute. A suspicious passenger appears with probability 1/1000 and blocks a queue for 10 minutes. Three bottlenecks: too few pre-check ID points, exclusive screening assignment, suspicious passengers.",
+      "variables": [
+        {
+          "symbol": "lam1",
+          "normalized_name": "regular_arrival_rate",
+          "unit": "per minute",
+          "definition": "fitted arrival rate of regular passengers, 4.63476",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam2",
+          "normalized_name": "precheck_arrival_rate",
+          "unit": "per minute",
+          "definition": "fitted arrival rate of pre-check passengers, 6.52921",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "qlen",
+          "normalized_name": "queue_length",
+          "unit": "passengers",
+          "definition": "passengers waiting at one check point",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "qlen"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q283-NET-1",
+          "page": 3,
+          "source_expression": "rate stable if lim sup (1/t) sum (a(tau) - b(tau)) <= 0",
+          "normalized_latex": "\\limsup_{t\\to\\infty}\\frac{1}{t}\\sum_{\\tau=0}^{t-1}[a(\\tau)-b(\\tau)]\\le 0",
+          "purpose": "rate stability keeps the queue from growing without bound",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "qlen"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Represent the real checkpoint and find its bottlenecks."
+      ],
+      "constraints": [
+        "check point ratio of regular to pre-check is 3 to 1",
+        "queues are first in first out"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EstimatedDistribution in Mathematica",
+        "parameters": [
+          "lam1",
+          "lam2"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "fit the distributions",
+          "assign counters for rate stability",
+          "simulate 1000 passengers"
+        ],
+        "software": [
+          "Mathematica"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "service time is normal",
+        "a suspicious passenger blocks a queue for 10 minutes"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "computed waiting times sit near published ranges for four airports and far above for Chicago"
+      },
+      "handoff_outputs": [
+        "qlen"
+      ],
+      "validation_refs": [
+        "five US airports, waiting times from published sources"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "an impractical optimum gives a ceiling to compare against"
+      ],
+      "limitations": [
+        "service distributions are normal while the node diagrams say exponential"
+      ],
+      "missing_details": [
+        "the real number of check points is estimated, not observed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q283-BP",
+      "page": 11,
+      "section": "Backpressure Routing",
+      "family": "optimization",
+      "purpose": "Route passengers to raise throughput toward the tandem ceiling.",
+      "base_or_modification": "paper-specific",
+      "summary": "A Lyapunov function sums the squared backlogs. Each slot the algorithm sends flow over the link with the largest positive differential backlog, and never against a negative one. Pre-check passengers may use regular points but then take regular service time. Throughput reaches 7.328 passengers per minute against an optimal 7.673, with waiting-time variance 84.971.",
+      "variables": [
+        {
+          "symbol": "qa",
+          "normalized_name": "backlog_a",
+          "unit": "passengers",
+          "definition": "queue backlog at the sending node",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "qb",
+          "normalized_name": "backlog_b",
+          "unit": "passengers",
+          "definition": "queue backlog at the receiving node",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thru",
+          "normalized_name": "throughput",
+          "unit": "passengers per minute",
+          "definition": "passengers cleared per minute",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "qa",
+        "qb"
+      ],
+      "outputs": [
+        "thru"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q283-BP-1",
+          "page": 11,
+          "source_expression": "maximize sum mu_ab * (Q_a - Q_b) over positive differential backlogs",
+          "normalized_latex": "\\max\\sum_{a,b}\\mu_{ab}(t)\\,[Q_a(t)-Q_b(t)]_+",
+          "purpose": "max-weight routing on differential backlog",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "qa",
+            "qb",
+            "thru"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Route passengers to raise throughput toward the tandem ceiling."
+      ],
+      "constraints": [
+        "no flow against a negative differential backlog"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "no parameters are fitted",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "compute differential backlogs",
+          "assign the full link rate to the largest",
+          "set the rest to zero"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "pre-check passengers accept regular service time at regular points"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "7.328 against an optimal 7.673, variance 84.971"
+      },
+      "handoff_outputs": [
+        "thru"
+      ],
+      "validation_refs": [
+        "five US airports, waiting times from published sources"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "an impractical optimum gives a ceiling to compare against"
+      ],
+      "limitations": [
+        "service distributions are normal while the node diagrams say exponential"
+      ],
+      "missing_details": [
+        "the real number of check points is estimated, not observed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q283-DPP",
+      "page": 13,
+      "section": "Drift-Plus-Penalty",
+      "family": "optimization",
+      "purpose": "Keep pre-check passengers off regular points at a measured cost.",
+      "base_or_modification": "paper-specific",
+      "summary": "A penalty term weighted by V is added to the drift. With V = 0.5 the throughput falls to 7.224 and the variance rises to 149.880. The paper states the loss openly: throughput and variance are given up to protect pre-check passengers. Thirteen regular points out of sixteen suit backpressure; eleven suit this algorithm.",
+      "variables": [
+        {
+          "symbol": "v",
+          "normalized_name": "penalty_weight",
+          "unit": "index",
+          "definition": "weight on keeping pre-check passengers at their own points, set to 0.5",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thru",
+          "normalized_name": "throughput",
+          "unit": "passengers per minute",
+          "definition": "passengers cleared per minute under the penalty",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "thru"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q283-DPP-1",
+          "page": 13,
+          "source_expression": "minimize Delta(t) + V * E[penalty(t)]",
+          "normalized_latex": "\\min\\ \\Delta(t)+V\\,\\mathbb{E}\\{\\mathrm{penalty}(t)\\}",
+          "purpose": "drift minimized together with a weighted penalty",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "v",
+            "thru"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Keep pre-check passengers off regular points at a measured cost."
+      ],
+      "constraints": [
+        "V is non-negative"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "V set to 0.5, then swept from 0.1 to 1.0",
+        "parameters": [
+          "v"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "add the penalty to the drift",
+          "route as in backpressure",
+          "record throughput and variance"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "pre-check passengers paid for better service and resist regular points"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "throughput 7.224 and variance 149.880, both worse than backpressure"
+      },
+      "handoff_outputs": [
+        "thru"
+      ],
+      "validation_refs": [
+        "five US airports, waiting times from published sources"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "an impractical optimum gives a ceiling to compare against"
+      ],
+      "limitations": [
+        "service distributions are normal while the node diagrams say exponential"
+      ],
+      "missing_details": [
+        "the real number of check points is estimated, not observed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q283-NET",
+      "to_model_id": "MU-D-Q283-BP",
+      "handoff": "the queue backlogs and the tandem ceiling"
+    },
+    {
+      "from_model_id": "MU-D-Q283-BP",
+      "to_model_id": "MU-D-Q283-DPP",
+      "handoff": "the drift minimized by backpressure"
+    }
+  ]
+}

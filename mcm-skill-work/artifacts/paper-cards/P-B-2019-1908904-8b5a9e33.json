@@ -1,0 +1,1456 @@
+{
+  "paper_id": "P-B-2019-1908904-8b5a9e33",
+  "problem_type": "B",
+  "year": "2019",
+  "team_control_number": "1908904",
+  "title": "Arrangement for DroneGo",
+  "award_status": "MCM outstanding paper in the supplied 2019 special-award corpus",
+  "source": {
+    "relative_path": "2019美赛特等奖/MCM2019B/1908904.pdf",
+    "sha256": "8b5a9e331deff44017ab4486fc22f61c05026bd2bbf0c9123ff7f89a14f54696",
+    "page_count": 33
+  },
+  "schema_version": 1,
+  "source_quality": {
+    "status": "text-rich-with-formula-code-and-cross-reference-ambiguities",
+    "notes": "All 33 physical PDF pages were read in order and visually reviewed through seven byte-bounded page contact sheets and one focused crop. Text extraction preserves most prose, equations, tables, and code but splits mathematical tokens and code lines. Focused review retains the lambda_max glyph ambiguity, Figure 5/Figure 2 mismatch, wrong Table 3 caption, coordinate conflict, body-code weight reversal, ideal-realized-conclusion fleet conflicts, hard-coded 339, and in-place raster mutation rather than silently repairing them. Running team/page headers are excluded from author-language evidence."
+  },
+  "context_sources": [
+    "official 2019 MCM Problem B statement and the supplied DroneGo specifications",
+    "summary sheet, complete 30-page printed report body, HELP letter, references, and four appendix code blocks",
+    "drone, cargo bay, medicine, container, hospital, road, populated-place, map, and 3DBP inputs invoked by the paper, with missing provenance retained as a gap"
+  ],
+  "task_reconstruction": {
+    "summary": "Design a transportable DroneGo disaster-response plan for Puerto Rico that chooses three container contents and locations, delivers medicine to five hospitals quickly, surveys roads and populated places, schedules repeated flights, and communicates a conditional recommendation to HELP.",
+    "inputs": [
+      "drone types A-H with dimensions, shipping volumes, speed, endurance, payload, camera, and matching cargo-bay specifications",
+      "three medicine packages, daily five-hospital demand, container geometry, charging and operating-time premises",
+      "hospital coordinates, Puerto Rico coastline, roads, highways, populated places, range circles, and rough-area masks",
+      "AHP pairwise judgments, a 120-day floor, common 0.8 loaded-distance factor, packing API, and timetable conventions"
+    ],
+    "outputs": [
+      "criterion weights and normalized medicine, time, and reconnaissance scores",
+      "ideal and realistically packable B-D-H fleets with container-specific medicine inventories and utilization",
+      "rough Areas A-C and exact latitude-longitude sites based on delivery, transfer, road, and populated-place evidence",
+      "a five-day medicine timetable, reconnaissance allocation, sensitivity results, conclusion, and HELP-facing letter"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "summary": "title: name the designed system; handoff to summary"
+    },
+    {
+      "page": 1,
+      "summary": "abstract: compress the full decision pipeline; handoff to body and HELP letter"
+    },
+    {
+      "page": 4,
+      "summary": "introduction: move from context to measurable success; handoff to assumptions"
+    },
+    {
+      "page": 5,
+      "summary": "assumptions: state and motivate each simplifying premise; handoff to notation"
+    },
+    {
+      "page": 6,
+      "summary": "notation: define symbols with units; handoff to specific formulation"
+    },
+    {
+      "page": 7,
+      "summary": "problem-analysis: justify the first discrete decision; handoff to AHP criteria"
+    },
+    {
+      "page": 8,
+      "summary": "model-establishment: define, weight, and normalize evaluation factors; handoff to greedy packing"
+    },
+    {
+      "page": 11,
+      "summary": "model-improvement: turn ideal scoring into packable container plans; handoff to exact siting and schedules"
+    },
+    {
+      "page": 26,
+      "summary": "algorithm: expose executable state transitions; handoff to warning pass"
+    },
+    {
+      "page": 12,
+      "summary": "results: trace numerical outputs to decisions; handoff to sensitivity and memo"
+    },
+    {
+      "page": 13,
+      "summary": "data-preprocessing: convert maps and service circles into comparable candidate scores; handoff to flight timetable"
+    },
+    {
+      "page": 20,
+      "summary": "sensitivity-analysis: perturb inputs and compare decisions; handoff to strengths and weaknesses"
+    },
+    {
+      "page": 21,
+      "summary": "strengths: name positive reusable properties; handoff to limitations"
+    },
+    {
+      "page": 22,
+      "summary": "limitations: state source-acknowledged boundaries; handoff to conclusion"
+    },
+    {
+      "page": 22,
+      "summary": "conclusion: reassemble the answer; handoff to HELP letter"
+    },
+    {
+      "page": 23,
+      "summary": "memo: translate the report for HELP leadership; handoff to references"
+    },
+    {
+      "page": 25,
+      "summary": "references: separate technical and implementation provenance; handoff to appendix code"
+    },
+    {
+      "page": 26,
+      "summary": "appendix: retain implementation evidence; handoff to reproducibility work"
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 5,
+      "summary": "Loaded maximum distance depends only on drone type and load, with the same proportional reduction applied across drone types."
+    },
+    {
+      "page": 5,
+      "summary": "Drones can be recharged and reused, and every drone type has the same charging time."
+    },
+    {
+      "page": 5,
+      "summary": "Charging is available only at the cargo containers."
+    },
+    {
+      "page": 5,
+      "summary": "Medicine packages may be rotated freely during three-dimensional packing."
+    },
+    {
+      "page": 5,
+      "summary": "Drones, bays, and medicines occupy separate container space and do not share packing volumes."
+    },
+    {
+      "page": 5,
+      "summary": "Weather and other environmental effects on flight are ignored."
+    },
+    {
+      "page": 5,
+      "summary": "Puerto Rico is treated as flat when geographic distances are converted to service circles."
+    },
+    {
+      "page": 5,
+      "summary": "Hospitals can store all medicine delivered before it is consumed."
+    },
+    {
+      "page": 10,
+      "summary": "Average sortie time and average payload are treated as stable enough that completion time can be replaced by inverse drone count."
+    },
+    {
+      "page": 11,
+      "summary": "The sum of individual maximum flight distances is treated as a proxy for reconnaissance capability."
+    },
+    {
+      "page": 13,
+      "summary": "Circular Euclidean service regions, an approximate coastline, and a one-way B transfer radius are treated as sufficient rough-location constraints."
+    },
+    {
+      "page": 17,
+      "summary": "A complete delivery flight including charging fits within a two-hour period, and hospital flights return while container-transfer flights do not."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 6,
+      "summary": "Prompt-supplied dimensions, shipping volumes, payloads, speeds, flight times, and camera availability for drone types A-H feed fleet scoring, packing, range, and scheduling interfaces."
+    },
+    {
+      "page": 6,
+      "summary": "Cargo-bay and medicine-package dimensions, medicine weights, and cargo-container geometry define the nominal packing domain."
+    },
+    {
+      "page": 8,
+      "summary": "The paper converts the five hospitals' daily demand into 7 MED1, 2 MED2, and 4 MED3 packages per supply day."
+    },
+    {
+      "page": 9,
+      "summary": "The displayed three-by-three pairwise-comparison matrix produces weights 0.2051, 0.7167, and 0.0783 for time, medicine amount, and reconnaissance."
+    },
+    {
+      "page": 9,
+      "summary": "A minimum of 120 supply units and a score of 0.6 at that threshold anchor the medicine-amount normalization."
+    },
+    {
+      "page": 10,
+      "summary": "Nominal container, H-drone, and D-drone volumes define the volume-based maximum-drone normalizer used by the time proxy."
+    },
+    {
+      "page": 11,
+      "summary": "Maximum ranges and B-drone shipping volume define the paper's reference reconnaissance-range sum."
+    },
+    {
+      "page": 13,
+      "summary": "Five hospital coordinates, an approximate coastline, B/D delivery radii, and a B transfer radius define the rough siting overlays."
+    },
+    {
+      "page": 15,
+      "summary": "The external 3DBP service receives allocated drone, bay, and medicine cuboids and returns feasibility and packing configurations."
+    },
+    {
+      "page": 16,
+      "summary": "Road, highway, populated-place, service-range, hospital, coastline, and rough-area images are downsampled and converted to candidate-pixel layers."
+    },
+    {
+      "page": 17,
+      "summary": "The reported cargo-container coordinates A=(18.40,-66.12), B=(18.21,-65.82), and C=(18.43,-66.51) feed the flight timetable."
+    },
+    {
+      "page": 17,
+      "summary": "A ten-hour operating day, two-hour flight periods, one-hour charging, packed inventories, hospital identifiers, and thirty reconnaissance B drones parameterize the schedule."
+    }
+  ],
+  "models": [
+    {
+      "page": 9,
+      "summary": "MU-B-2019-1908904-001: Convert judgments about delivery time, medicine amount, and reconnaissance into criterion weights and a consistency screen.",
+      "model_id": "MU-B-2019-1908904-001"
+    },
+    {
+      "page": 8,
+      "summary": "MU-B-2019-1908904-002: Convert medicine counts into supply days and then into a bounded score anchored at 120 days.",
+      "model_id": "MU-B-2019-1908904-002"
+    },
+    {
+      "page": 10,
+      "summary": "MU-B-2019-1908904-003: Approximate completion time by aggregate drone throughput, then replace it with normalized drone count.",
+      "model_id": "MU-B-2019-1908904-003"
+    },
+    {
+      "page": 11,
+      "summary": "MU-B-2019-1908904-004: Normalize the sum of maximum drone ranges against a volume-limited all-B reference fleet.",
+      "model_id": "MU-B-2019-1908904-004"
+    },
+    {
+      "page": 11,
+      "summary": "MU-B-2019-1908904-005: Select the next drone that maximizes the AHP-weighted normalized score until no candidate improves it.",
+      "model_id": "MU-B-2019-1908904-005"
+    },
+    {
+      "page": 12,
+      "summary": "MU-B-2019-1908904-006: Estimate ideal medicine days after subtracting drone and bay volume from container volume.",
+      "model_id": "MU-B-2019-1908904-006"
+    },
+    {
+      "page": 13,
+      "summary": "MU-B-2019-1908904-007: Compute B and D round-trip delivery radii plus the B inter-container transfer radius.",
+      "model_id": "MU-B-2019-1908904-007"
+    },
+    {
+      "page": 14,
+      "summary": "MU-B-2019-1908904-008: Choose three connected rough areas that jointly reach all hospitals with B and D service circles.",
+      "model_id": "MU-B-2019-1908904-008"
+    },
+    {
+      "page": 15,
+      "summary": "MU-B-2019-1908904-009: Scale the ideal plan, allocate goods by hospital responsibility, and maximize the retained fraction using a 3D packing API.",
+      "model_id": "MU-B-2019-1908904-009"
+    },
+    {
+      "page": 16,
+      "summary": "MU-B-2019-1908904-010: Score candidate points by standardized road and populated-place pixels within reconnaissance range.",
+      "model_id": "MU-B-2019-1908904-010"
+    },
+    {
+      "page": 17,
+      "summary": "MU-B-2019-1908904-011: Assign medicine deliveries, transfers, charging cycles, and road reconnaissance over two-hour periods.",
+      "model_id": "MU-B-2019-1908904-011"
+    },
+    {
+      "page": 20,
+      "summary": "MU-B-2019-1908904-012: Perturb the common loaded-distance factor and rerun range radii and container coordinates.",
+      "model_id": "MU-B-2019-1908904-012"
+    },
+    {
+      "page": 21,
+      "summary": "MU-B-2019-1908904-013: Change one criterion weight, split the offset equally over the other two, and rerun greedy fleet selection.",
+      "model_id": "MU-B-2019-1908904-013"
+    },
+    {
+      "page": 26,
+      "summary": "MU-B-2019-1908904-014: Preserve the implemented greedy score, hard-coded bisection quantities, and raster score as evidence about the body models.",
+      "model_id": "MU-B-2019-1908904-014"
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from_model_id": "MU-B-2019-1908904-001",
+      "to_model_id": "MU-B-2019-1908904-002",
+      "handoff": "AHP supplies the medicine-amount weight used in the supply score."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-001",
+      "to_model_id": "MU-B-2019-1908904-003",
+      "handoff": "AHP supplies the completion-time weight used in the time score."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-001",
+      "to_model_id": "MU-B-2019-1908904-004",
+      "handoff": "AHP supplies the reconnaissance weight used in the range score."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-002",
+      "to_model_id": "MU-B-2019-1908904-005",
+      "handoff": "The bounded medicine score enters CE."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-003",
+      "to_model_id": "MU-B-2019-1908904-005",
+      "handoff": "The normalized drone-count time score enters CE."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-004",
+      "to_model_id": "MU-B-2019-1908904-005",
+      "handoff": "The normalized range sum enters CE."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-005",
+      "to_model_id": "MU-B-2019-1908904-006",
+      "handoff": "The ideal greedy fleet determines residual medicine volume."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-005",
+      "to_model_id": "MU-B-2019-1908904-008",
+      "handoff": "The ideal B-D-H mix constrains rough-site roles."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-007",
+      "to_model_id": "MU-B-2019-1908904-008",
+      "handoff": "B/D delivery radii and B transfer range define rough feasible areas."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-006",
+      "to_model_id": "MU-B-2019-1908904-009",
+      "handoff": "The ideal day bound initializes realistic scaling."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-008",
+      "to_model_id": "MU-B-2019-1908904-009",
+      "handoff": "Rough site responsibilities determine goods allocation across containers."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-008",
+      "to_model_id": "MU-B-2019-1908904-010",
+      "handoff": "Rough areas bound the exact pixel search."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-009",
+      "to_model_id": "MU-B-2019-1908904-010",
+      "handoff": "Realized fleets determine reconnaissance radii used in location scoring."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-009",
+      "to_model_id": "MU-B-2019-1908904-011",
+      "handoff": "Realized container inventories and drone counts initialize the timetable."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-010",
+      "to_model_id": "MU-B-2019-1908904-011",
+      "handoff": "Exact container coordinates determine timetable destinations and transfers."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-007",
+      "to_model_id": "MU-B-2019-1908904-012",
+      "handoff": "The baseline range equations are rerun under rho scenarios."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-001",
+      "to_model_id": "MU-B-2019-1908904-013",
+      "handoff": "The baseline AHP weights are perturbed before rerunning greedy selection."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-013",
+      "to_model_id": "MU-B-2019-1908904-005",
+      "handoff": "Perturbed weights produce alternative greedy fleets and supply days."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-014",
+      "to_model_id": "MU-B-2019-1908904-005",
+      "handoff": "Appendix constants provide an implementation cross-check for CE and greedy selection."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-014",
+      "to_model_id": "MU-B-2019-1908904-009",
+      "handoff": "Appendix hard-coded quantities and API calls cross-check realistic packing."
+    },
+    {
+      "from_model_id": "MU-B-2019-1908904-014",
+      "to_model_id": "MU-B-2019-1908904-010",
+      "handoff": "Appendix raster weights and mutation order cross-check exact siting."
+    }
+  ],
+  "verification": [
+    {
+      "page": 9,
+      "summary": "Recompute the eigenpair and CR from the displayed matrix.",
+      "model_id": "MU-B-2019-1908904-001"
+    },
+    {
+      "page": 8,
+      "summary": "Check f(120)=0.6 and monotonicity.",
+      "model_id": "MU-B-2019-1908904-002"
+    },
+    {
+      "page": 10,
+      "summary": "Check all units in T and Nmax.",
+      "model_id": "MU-B-2019-1908904-003"
+    },
+    {
+      "page": 11,
+      "summary": "Check the sign and parentheses in Dmax.",
+      "model_id": "MU-B-2019-1908904-004"
+    },
+    {
+      "page": 11,
+      "summary": "Replay every greedy iteration and tie break.",
+      "model_id": "MU-B-2019-1908904-005"
+    },
+    {
+      "page": 12,
+      "summary": "Reconcile whether Vc denotes one or all three containers.",
+      "model_id": "MU-B-2019-1908904-006"
+    },
+    {
+      "page": 13,
+      "summary": "Reproduce every radius from prompt specifications.",
+      "model_id": "MU-B-2019-1908904-007"
+    },
+    {
+      "page": 14,
+      "summary": "Rasterize every stated feasible region.",
+      "model_id": "MU-B-2019-1908904-008"
+    },
+    {
+      "page": 15,
+      "summary": "Freeze the API version and credentials-free fixture.",
+      "model_id": "MU-B-2019-1908904-009"
+    },
+    {
+      "page": 16,
+      "summary": "Run body weights and code weights separately.",
+      "model_id": "MU-B-2019-1908904-010"
+    },
+    {
+      "page": 17,
+      "summary": "Replay every timetable cell against inventory conservation.",
+      "model_id": "MU-B-2019-1908904-011"
+    },
+    {
+      "page": 20,
+      "summary": "Reproduce all Table 5 coordinates.",
+      "model_id": "MU-B-2019-1908904-012"
+    },
+    {
+      "page": 21,
+      "summary": "Recover every Figure 8 scenario and weight vector.",
+      "model_id": "MU-B-2019-1908904-013"
+    },
+    {
+      "page": 26,
+      "summary": "Compile and execute a repaired syntax-preserving version with fixtures.",
+      "model_id": "MU-B-2019-1908904-014"
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 9,
+      "summary": "AHP reports weights (0.2051, 0.7167, 0.0783), extracted lambda_max=3.0183, and CR=0.0158<0.1."
+    },
+    {
+      "page": 12,
+      "summary": "The ideal volume-stage greedy result is 121 B drones, 54 D drones, and 3 H drones."
+    },
+    {
+      "page": 12,
+      "summary": "Residual nominal volume yields an ideal 411-day medicine-duration claim before geometric packing waste."
+    },
+    {
+      "page": 13,
+      "summary": "The baseline range equations report B and D round-trip delivery radii of 23.4 km and 8 km, plus a 42.5 km B transfer range."
+    },
+    {
+      "page": 14,
+      "summary": "The rough-location overlay divides feasible service into Areas A, B, and C with A acting as the central transfer node."
+    },
+    {
+      "page": 16,
+      "summary": "Realistic packing reports A=(42 D,1 H), B=(39 B,1 H), C=(60 B,1 H), hence 99 B, 42 D, and 3 H overall."
+    },
+    {
+      "page": 16,
+      "summary": "Container utilizations are 77.60, 89.34, and 81.64 percent, averaging 82.86 percent."
+    },
+    {
+      "page": 17,
+      "summary": "Table 4 reports A=(18.40,-66.12), B=(18.21,-65.82), and C=(18.43,-66.51)."
+    },
+    {
+      "page": 18,
+      "summary": "After day one, every hospital is reported to hold at least twelve days of medicine."
+    },
+    {
+      "page": 19,
+      "summary": "The timetable claims all delivery ends after day five with 359 medicine-support days at every hospital."
+    },
+    {
+      "page": 20,
+      "summary": "Changing the loaded-distance factor to 0.825 or 0.775 changes the reported B/D radii and shifts coordinates by at most about 0.01 degree in Table 5."
+    },
+    {
+      "page": 21,
+      "summary": "AHP sensitivity reports maximum changes of 9.92 percent for B count, 33.3 percent for D count, and 2.4 percent for medicine days."
+    },
+    {
+      "page": 22,
+      "summary": "The conclusion reports five-day delivery, 359 supply days, road reconnaissance, and about nine populated places within reconnaissance range."
+    }
+  ],
+  "contributions": [
+    {
+      "page": 1,
+      "summary": "Compresses a long operational pipeline into stage outputs and bounded case results in the summary before expanding it in the body."
+    },
+    {
+      "page": 8,
+      "summary": "Separates delivery time, medicine duration, and reconnaissance before applying explicit stakeholder weights."
+    },
+    {
+      "page": 9,
+      "summary": "Normalizes unlike operational criteria so every marginal fleet change has a visible decision score."
+    },
+    {
+      "page": 11,
+      "summary": "Uses a greedy marginal-update narrative that makes candidate evaluation, state update, and stopping intent inspectable."
+    },
+    {
+      "page": 12,
+      "summary": "Labels the residual-volume duration as an ideal upper bound and anticipates geometric packing waste."
+    },
+    {
+      "page": 13,
+      "summary": "Translates flight specifications into map-visible delivery and transfer geometry before choosing sites."
+    },
+    {
+      "page": 14,
+      "summary": "Assigns each rough site a distinct hospital and transfer role rather than selecting three disconnected points."
+    },
+    {
+      "page": 15,
+      "summary": "Connects site responsibility to container-specific B/D and medicine allocation before invoking a packing oracle."
+    },
+    {
+      "page": 16,
+      "summary": "Replaces rough visual placement with a declared two-feature pixel score over roads and populated places."
+    },
+    {
+      "page": 17,
+      "summary": "Converts aggregate fleet capacity into a repeated-flight timetable and reserves thirty B drones for reconnaissance."
+    },
+    {
+      "page": 20,
+      "summary": "Perturbs both a physical range premise and stakeholder weights after final decisions exist."
+    },
+    {
+      "page": 23,
+      "summary": "Returns locations, fleets, duration, reconnaissance limits, and utilization tradeoffs to HELP in direct operational prose."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "The summary opens with blocked post-hurricane access, names medicine delivery and road reconnaissance, then compresses AHP weighting, greedy fleet selection, rough siting, realistic packing, pixel siting, timetable construction, sensitivity, and final recommendations."
+    },
+    {
+      "page": 4,
+      "summary": "The introduction converts disaster context and heterogeneous drones into three measurable success criteria, making the later AHP stage predictable before technical detail begins."
+    },
+    {
+      "page": 5,
+      "summary": "Assumptions and notation bound range, charging, packing, weather, terrain, storage, communications, entities, units, and output symbols before those choices become hidden inside formulas."
+    },
+    {
+      "page": 7,
+      "summary": "The report fixes three containers from hospital reach and charging flexibility, then uses the flow diagram to route that deployment count into criterion weighting and packing."
+    },
+    {
+      "page": 8,
+      "summary": "AHP keeps time, medicine amount, and reconnaissance separate; three normalization subsections produce f(D), g(n), and h(x) before CE combines them."
+    },
+    {
+      "page": 11,
+      "summary": "CE drives a marginal greedy fleet whose ideal volume balance produces a 411-day upper bound, and the prose explicitly hands that optimistic state to a realistic packing stage."
+    },
+    {
+      "page": 13,
+      "summary": "B/D delivery-return radii and B transfer range become a map overlay; Areas A-C then assign hospital responsibility, D drones, and medicine types across containers."
+    },
+    {
+      "page": 15,
+      "summary": "The 70-percent initialization, allocation rules, external packing oracle, and bisection replace ideal counts with realized container inventories and utilization."
+    },
+    {
+      "page": 16,
+      "summary": "Rough areas, realized ranges, roads, and populated places become standardized raster features whose weighted maxima yield the three exact coordinates."
+    },
+    {
+      "page": 17,
+      "summary": "Exact coordinates and packed inventories become a five-slot-per-day timetable; the sensitivity section then revisits range and AHP interfaces before conclusion and the HELP letter reassemble the decision."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "need-stage-output-result compression: Compress a coupled operational design by naming each stage, output, and bounded case result. Occurrences=19; order=stakeholder need -> model stage -> stage output -> handoff -> bounded result; slots=[need]; [method]; [artifact]; [consumer]; [result with scope]; variants=after; then; based on; as a result; in the end; boundary=Retain fleet, container, hospital, map, horizon, packing, and evidence conditions beside every compressed result."
+    },
+    {
+      "page": 4,
+      "summary": "criterion-to-deliverable roadmap: Convert a broad relief task into an ordered path from criteria through packing, siting, and scheduling. Occurrences=13; order=operational gap -> success criteria -> subproblem -> method -> deliverable; slots=[gap]; [criterion]; [decision]; [method]; [output]; variants=however; to answer; we need; firstly; after that; boundary=A roadmap is a coverage promise, not evidence that every physical and computational interface is closed."
+    },
+    {
+      "page": 5,
+      "summary": "premise-rationale-consequence chain: Expose a simplifying premise, its stated rationale, and the downstream model consequence. Occurrences=13; order=premise -> contextual rationale -> simplification -> affected calculation -> reality boundary; slots=[assumption]; [because]; [simplification]; [term]; [limitation]; variants=we assume; that means; because; thus; in reality; boundary=Do not convert financial, weather, charging, flat-island, storage, or shared-range premises into observations."
+    },
+    {
+      "page": 6,
+      "summary": "definition-equation-interpretation handoff: Introduce an operational quantity, display its formula, interpret direction, and pass it downstream. Occurrences=29; order=quantity -> symbols and units -> equation -> direction -> downstream use; slots=[quantity]; [symbols]; [formula]; [meaning]; [consumer]; variants=we define; we can know; finally; to calculate; which shows; boundary=Keep ambiguous symbols, source transcription, approximation status, and omitted constraints visible."
+    },
+    {
+      "page": 11,
+      "summary": "state-action-update-stop narration: Make a greedy, bisection, raster, or timetable procedure inspectable through state and stopping rules. Occurrences=28; order=initial state -> candidate action -> evaluation -> state update -> stop and output; slots=[state]; [action]; [score/test]; [update]; [termination]; variants=firstly; if; increase; continue; break; return; boundary=Algorithm names must match the implemented state, mutation order, feasibility oracle, and termination condition."
+    },
+    {
+      "page": 12,
+      "summary": "visual-quantity-comparator interpretation: Lead from a named table, figure, or timetable to a scoped quantitative claim. Occurrences=21; order=visual pointer -> quantity -> comparator -> case value -> bounded interpretation; slots=[visual]; [metric]; [baseline]; [value]; [meaning]; variants=shown in; as we can see; we find; the result; therefore; boundary=A plotted configuration, local sensitivity result, or API packing image is not external validation."
+    },
+    {
+      "page": 8,
+      "summary": "criterion weight to operational choice: Connect stated priorities to weights, a scalar score, and the selected fleet or location. Occurrences=6; order=priority rationale -> weight -> normalized criterion -> combined score -> decision; slots=[stake]; [weight]; [criterion]; [score]; [choice]; variants=most important; smallest proportion; weight; comprehensive; choose; boundary=AHP weights express judgments; they do not establish calibration, fairness, or global robustness."
+    },
+    {
+      "page": 23,
+      "summary": "executive need-system-tradeoff-action chain: Translate technical outputs into a conditional operational recommendation with explicit tradeoffs. Occurrences=7; order=stakeholder need -> system recommendation -> case result -> tradeoff -> action boundary; slots=[client]; [system]; [result]; [tradeoff]; [action]; variants=we advise; we recommend; which allows; however; we hope; boundary=Executive prose must preserve location, fleet, energy, range, demand, uncertainty, and reproducibility conditions."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 7,
+      "figure": "Figure 1",
+      "visual_record_id": "VR-B-2019-1908904-001",
+      "caption": "flow diagram of solution",
+      "source_model_ids": [
+        "MU-B-2019-1908904-001",
+        "MU-B-2019-1908904-005",
+        "MU-B-2019-1908904-009",
+        "MU-B-2019-1908904-010",
+        "MU-B-2019-1908904-011"
+      ],
+      "summary": "flow diagram of solution: Preview the path from three criteria through fleet packing, siting, and flight scheduling.",
+      "analytical_purpose": "Preview the path from three criteria through fleet packing, siting, and flight scheduling.",
+      "form": "model-handoff flow diagram",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The report commits to a staged dependency chain before presenting detailed equations.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 9,
+      "figure": "Table 1",
+      "visual_record_id": "VR-B-2019-1908904-002",
+      "caption": "Pairwise comparison matrix of hierarchy",
+      "source_model_ids": [
+        "MU-B-2019-1908904-001"
+      ],
+      "summary": "Pairwise comparison matrix of hierarchy: Expose the three criterion judgments, weights, eigenvalue claim, and consistency result.",
+      "analytical_purpose": "Expose the three criterion judgments, weights, eigenvalue claim, and consistency result.",
+      "form": "pairwise matrix and weight table",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "Medicine amount receives weight 0.7167, time 0.2051, and reconnaissance 0.0783.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 10,
+      "figure": "Displayed equations",
+      "visual_record_id": "VR-B-2019-1908904-003",
+      "caption": "medicine and delivery-time normalizations",
+      "source_model_ids": [
+        "MU-B-2019-1908904-002",
+        "MU-B-2019-1908904-003"
+      ],
+      "summary": "medicine and delivery-time normalizations: Show how supply days and a heterogeneous sortie expression become bounded medicine and drone-count time scores.",
+      "analytical_purpose": "Show how supply days and a heterogeneous sortie expression become bounded medicine and drone-count time scores.",
+      "form": "aligned formula block",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The paper maps 120 days to 0.6 and later approximates completion time by inverse drone count.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 11,
+      "figure": "Displayed equations",
+      "visual_record_id": "VR-B-2019-1908904-004",
+      "caption": "reconnaissance normalization and CE",
+      "source_model_ids": [
+        "MU-B-2019-1908904-004",
+        "MU-B-2019-1908904-005"
+      ],
+      "summary": "reconnaissance normalization and CE: Connect summed maximum range and the three normalized criteria to the greedy objective.",
+      "analytical_purpose": "Connect summed maximum range and the three normalized criteria to the greedy objective.",
+      "form": "aligned formula block",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "CE combines medicine, drone-count, and range scores using the AHP weights.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 12,
+      "figure": "Table 2",
+      "visual_record_id": "VR-B-2019-1908904-005",
+      "caption": "The amount of each type of drones",
+      "source_model_ids": [
+        "MU-B-2019-1908904-005"
+      ],
+      "summary": "The amount of each type of drones: Report the ideal greedy B-D-H fleet before real packing.",
+      "analytical_purpose": "Report the ideal greedy B-D-H fleet before real packing.",
+      "form": "fleet-count table",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The ideal row contains 121 B, 54 D, and 3 H drones.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 12,
+      "figure": "Displayed equation",
+      "visual_record_id": "VR-B-2019-1908904-006",
+      "caption": "ideal residual-volume medicine duration",
+      "source_model_ids": [
+        "MU-B-2019-1908904-006"
+      ],
+      "summary": "ideal residual-volume medicine duration: Translate nominal residual volume into the optimistic 411-day medicine bound.",
+      "analytical_purpose": "Translate nominal residual volume into the optimistic 411-day medicine bound.",
+      "form": "fraction and numeric result",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The equation is explicitly described as ideal because geometric packing wastes space.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 13,
+      "figure": "Equations (1)-(2) and transfer equation",
+      "visual_record_id": "VR-B-2019-1908904-007",
+      "caption": "B/D delivery and B transfer ranges",
+      "source_model_ids": [
+        "MU-B-2019-1908904-007"
+      ],
+      "summary": "B/D delivery and B transfer ranges: Convert flight specifications and the common 80-percent factor into three map radii.",
+      "analytical_purpose": "Convert flight specifications and the common 80-percent factor into three map radii.",
+      "form": "range-equation block",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The reported baseline radii are 23.4 km, 8 km, and 42.5 km.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 13,
+      "figure": "Figure 2",
+      "visual_record_id": "VR-B-2019-1908904-008",
+      "caption": "Image for analyzing the rough locations",
+      "source_model_ids": [
+        "MU-B-2019-1908904-007",
+        "MU-B-2019-1908904-008"
+      ],
+      "summary": "Image for analyzing the rough locations: Show hospital reach, coastline exclusion, inter-container transfer, and Areas A-C.",
+      "analytical_purpose": "Show hospital reach, coastline exclusion, inter-container transfer, and Areas A-C.",
+      "form": "annotated geographic circle overlay",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "Three rough areas jointly cover five hospitals while retaining B-drone transfer through Area A.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 15,
+      "figure": "Figure 3",
+      "visual_record_id": "VR-B-2019-1908904-009",
+      "caption": "Configuration of each container",
+      "source_model_ids": [
+        "MU-B-2019-1908904-009"
+      ],
+      "summary": "Configuration of each container: Show one realized cuboid arrangement for each cargo container.",
+      "analytical_purpose": "Show one realized cuboid arrangement for each cargo container.",
+      "form": "three-dimensional packing render",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The external packing result is a geometric feasibility illustration rather than an optimality certificate.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 16,
+      "figure": "Table 3",
+      "visual_record_id": "VR-B-2019-1908904-010",
+      "caption": "realized packing inventory and utilization",
+      "source_model_ids": [
+        "MU-B-2019-1908904-009"
+      ],
+      "summary": "realized packing inventory and utilization: Bind every B/D/H and MED count to containers A-C and report utilization.",
+      "analytical_purpose": "Bind every B/D/H and MED count to containers A-C and report utilization.",
+      "form": "three-container inventory table",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The realized total is 99 B, 42 D, and 3 H with 82.86-percent average utilization.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 16,
+      "figure": "Figure 4",
+      "visual_record_id": "VR-B-2019-1908904-011",
+      "caption": "routes, cities and range",
+      "source_model_ids": [
+        "MU-B-2019-1908904-007",
+        "MU-B-2019-1908904-008",
+        "MU-B-2019-1908904-010"
+      ],
+      "summary": "routes, cities and range: Combine rough areas, service ranges, roads, populated places, and candidate geometry before exact pixel scoring.",
+      "analytical_purpose": "Combine rough areas, service ranges, roads, populated places, and candidate geometry before exact pixel scoring.",
+      "form": "layered geographic map",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The exact-location stage operates inside the visually constrained rough areas.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 17,
+      "figure": "Table 4",
+      "visual_record_id": "VR-B-2019-1908904-012",
+      "caption": "Accurate location of each cargo container",
+      "source_model_ids": [
+        "MU-B-2019-1908904-010"
+      ],
+      "summary": "Accurate location of each cargo container: Report the three latitude-longitude outputs used downstream.",
+      "analytical_purpose": "Report the three latitude-longitude outputs used downstream.",
+      "form": "coordinate table",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The body and table give B longitude -65.82.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 17,
+      "figure": "Figure 5",
+      "visual_record_id": "VR-B-2019-1908904-013",
+      "caption": "accurate location",
+      "source_model_ids": [
+        "MU-B-2019-1908904-010"
+      ],
+      "summary": "accurate location: Locate the selected container points against roads and populated places.",
+      "analytical_purpose": "Locate the selected container points against roads and populated places.",
+      "form": "road and populated-place map",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "Black curves encode roads, red points populated places, and green points selected locations.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 18,
+      "figure": "Figure 6",
+      "visual_record_id": "VR-B-2019-1908904-014",
+      "caption": "timetable for day 1",
+      "source_model_ids": [
+        "MU-B-2019-1908904-011"
+      ],
+      "summary": "timetable for day 1: Encode first-day medicine assignments, origins, destinations, and transfer actions.",
+      "analytical_purpose": "Encode first-day medicine assignments, origins, destinations, and transfer actions.",
+      "form": "drone-by-period timetable",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The first-day plan is claimed to leave every hospital at least twelve support days.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 19,
+      "figure": "Figure 7",
+      "visual_record_id": "VR-B-2019-1908904-015",
+      "caption": "timetable for day 2 and repeated cycles",
+      "source_model_ids": [
+        "MU-B-2019-1908904-011"
+      ],
+      "summary": "timetable for day 2 and repeated cycles: Show the second-day state and hand off to the repeated A/C departure cycles through day five.",
+      "analytical_purpose": "Show the second-day state and hand off to the repeated A/C departure cycles through day five.",
+      "form": "drone-by-period timetable",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The timetable supports the five-day delivery claim only under its stated charging and return conventions.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 20,
+      "figure": "Table 5",
+      "visual_record_id": "VR-B-2019-1908904-016",
+      "caption": "sensitive test result of distance reduction",
+      "source_model_ids": [
+        "MU-B-2019-1908904-012"
+      ],
+      "summary": "sensitive test result of distance reduction: Compare exact locations under loaded-distance factors 0.775, 0.8, and 0.825.",
+      "analytical_purpose": "Compare exact locations under loaded-distance factors 0.775, 0.8, and 0.825.",
+      "form": "three-scenario coordinate table",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The local scenarios move reported coordinates only slightly.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 21,
+      "figure": "Figure 8",
+      "visual_record_id": "VR-B-2019-1908904-017",
+      "caption": "the sensitive test of AHP",
+      "source_model_ids": [
+        "MU-B-2019-1908904-013"
+      ],
+      "summary": "the sensitive test of AHP: Compare B count, D count, and support days under one-factor weight changes.",
+      "analytical_purpose": "Compare B count, D count, and support days under one-factor weight changes.",
+      "form": "multi-series sensitivity plot",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The maximum reported D-count change is 33.3 percent despite the paper's small-change interpretation.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    },
+    {
+      "page": 22,
+      "figure": "Figure 9",
+      "visual_record_id": "VR-B-2019-1908904-018",
+      "caption": "location in Google Map",
+      "source_model_ids": [
+        "MU-B-2019-1908904-010",
+        "MU-B-2019-1908904-011"
+      ],
+      "summary": "location in Google Map: Return the selected container and hospital points to a recognizable geographic context.",
+      "analytical_purpose": "Return the selected container and hospital points to a recognizable geographic context.",
+      "form": "stakeholder-facing base map",
+      "encodings": [
+        "matrix cell, weight, formula term, drone type, item count, cuboid, utilization, map circle, road line, populated-place point, coordinate, timetable cell, route arrow, or scenario trace encodes the stated object",
+        "day, piece, percent, kilometer, latitude-longitude, dimensionless score, weight, and flight period retain their source scale and entity"
+      ],
+      "exact_claim": "The conclusion uses the map to support its three-site recommendation and reconnaissance summary.",
+      "construction_or_missing": "Transcribed from the complete 33-page text and visual review. Exact prompt arrays, source rasters, coordinate reference system, packing-service fixture, timetable cells, scenario vectors, and uncertainty remain missing rather than inferred.",
+      "applicability": "Use only with this paper's Puerto Rico case, five hospitals, three containers, B/D/H fleet, medicine mix, common range factor, AHP judgments, packing API, raster layers, and schedule conventions.",
+      "forbidden_scenarios": [
+        "Do not transfer the reported fleet counts, 359 or 411 days, coordinates, utilization, weights, radii, five-day horizon, or nine-city claim as general constants.",
+        "Do not treat an AHP matrix, greedy table, packing image, map overlay, timetable, or local sensitivity plot as external validation or proof of global optimality."
+      ],
+      "accessibility": "Add direct labels, units, numeric alternatives, map scale and CRS, color-independent marks, timetable legends, scenario baselines, uncertainty, and a text alternative that reconciles prose, equations, tables, figures, and code.",
+      "disposition": "important-visual-record",
+      "evidence_role": "O"
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "summary": "The summary's complete need-to-stage-to-result chain is highly scannable, but award status does not prove that this structure caused the outcome.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 7,
+      "summary": "The early flow diagram plausibly reduces cognitive load across a coupled packing-siting-scheduling task; this is a clarity hypothesis rather than evidence of correctness.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 13,
+      "summary": "The service-circle diagram makes the functional role of each rough area immediately visible despite missing projection and source-data detail.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 16,
+      "summary": "Placing realized inventories, utilization, map layers, and exact coordinates next to one another plausibly strengthens decision traceability while retaining documented conflicts.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 23,
+      "summary": "The HELP letter repeats the technical chain in operational language and states a reconnaissance/utilization tradeoff, closing the stakeholder loop conditionally.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 9,
+      "summary": "The extracted text reports lambda_max=3.0183, while focused visual inspection can plausibly be read as 3.0153. The ambiguity must be resolved from the source matrix rather than silently normalized.",
+      "model_id": "MU-B-2019-1908904-001",
+      "equation_id": "EQ-B-2019-1908904-002"
+    },
+    {
+      "page": 10,
+      "summary": "The delivery-time expression mixes route distance/speed with T0 declared in minutes, while the prose later replaces heterogeneous route, speed, payload, and charging terms by inverse drone count without a dimensional reconciliation.",
+      "model_id": "MU-B-2019-1908904-003",
+      "equation_id": "EQ-B-2019-1908904-006"
+    },
+    {
+      "page": 11,
+      "summary": "The displayed Dmax numerator uses 3Vc-3(Vh-120Vm), whose parentheses and sign can add rather than reserve medicine volume. The expression, units, and intended three-container accounting require reconstruction.",
+      "model_id": "MU-B-2019-1908904-004",
+      "equation_id": "EQ-B-2019-1908904-012"
+    },
+    {
+      "page": 12,
+      "summary": "The ideal result is B121/D54/H3, the appendix initializes a different D constant, the real packing contains B99/D42/H3, and the conclusion states B121/D42 while omitting H; these are distinct states and cannot be merged.",
+      "model_id": "MU-B-2019-1908904-005",
+      "equation_id": "EQ-B-2019-1908904-015"
+    },
+    {
+      "page": 12,
+      "summary": "The displayed 411-day numerator appears to use one Vc while the surrounding calculation concerns three containers, and its denominator notation does not clearly separate daily package counts from package volumes.",
+      "model_id": "MU-B-2019-1908904-006",
+      "equation_id": "EQ-B-2019-1908904-016"
+    },
+    {
+      "page": 15,
+      "summary": "The prose presents a bisection over a retained percentage beginning at 70 percent, but the appendix first hard-codes a 339-day fleet scale. The searched quantity and reported 359-day endpoint are therefore not reproduced by the printed code.",
+      "model_id": "MU-B-2019-1908904-009",
+      "equation_id": "EQ-B-2019-1908904-020"
+    },
+    {
+      "page": 16,
+      "summary": "The body assigns road/highway weight 0.6 and populated-place weight 0.4, but appendix A.4 implements 0.4 and 0.6 respectively, so the reported coordinates lack a unique scoring specification.",
+      "model_id": "MU-B-2019-1908904-010",
+      "equation_id": "EQ-B-2019-1908904-023"
+    },
+    {
+      "page": 32,
+      "summary": "The raster-scoring function modifies road and city arrays in place while evaluating candidates. Later scores can therefore depend on candidate and function-call order rather than only on location.",
+      "model_id": "MU-B-2019-1908904-010",
+      "equation_id": "EQ-B-2019-1908904-024"
+    },
+    {
+      "page": 19,
+      "summary": "The five-day 359-day claim is not accompanied by a complete inventory, payload, route, charge-port, battery, turnaround, and terminal-state conservation ledger for every timetable cell.",
+      "model_id": "MU-B-2019-1908904-011",
+      "equation_id": "EQ-B-2019-1908904-027"
+    },
+    {
+      "page": 21,
+      "summary": "A maximum 33.3-percent change in D-drone count is characterized as small and stable. A local one-factor plot does not establish end-to-end robustness or justify that interpretation.",
+      "model_id": "MU-B-2019-1908904-013",
+      "equation_id": "EQ-B-2019-1908904-029"
+    },
+    {
+      "page": 26,
+      "summary": "The appendix uses hard-coded normalizers 394 and 256*52.67. Their derivation and consistency with the displayed Nmax and Dmax formulas are not demonstrated.",
+      "model_id": "MU-B-2019-1908904-014",
+      "equation_id": "EQ-B-2019-1908904-030"
+    },
+    {
+      "page": 28,
+      "summary": "The appendix fixes 339 in the B/D scaling formulas even though the body reports 411 ideal days and 359 realized days, leaving the bisection target and final fleet unreconciled.",
+      "model_id": "MU-B-2019-1908904-014",
+      "equation_id": "EQ-B-2019-1908904-032"
+    },
+    {
+      "page": 22,
+      "summary": "The authors acknowledge that using one maximum-distance reduction rate for every drone type suppresses power, weight, speed, and endurance differences.",
+      "observation_id": "O-B-2019-1908904-0238"
+    },
+    {
+      "page": 22,
+      "summary": "The authors acknowledge that treating the island as flat introduces distance error where altitude varies.",
+      "observation_id": "O-B-2019-1908904-0239"
+    },
+    {
+      "page": 13,
+      "summary": "The prose says the rough-location map is the following Figure 5, while the displayed caption is Figure 2.",
+      "observation_id": "O-B-2019-1908904-0240"
+    },
+    {
+      "page": 16,
+      "summary": "Table 3 contains realized container inventories and space use but repeats the title Pairwise comparison matrix of hierarchy.",
+      "observation_id": "O-B-2019-1908904-0241"
+    },
+    {
+      "page": 22,
+      "summary": "The conclusion prints container B longitude -65.28, whereas Table 4, body text, sensitivity table, plotting code, and the operative configuration use approximately -65.82.",
+      "observation_id": "O-B-2019-1908904-0242"
+    },
+    {
+      "page": 25,
+      "summary": "The bibliography has only three entries, while most vehicle specifications, hospital demand, coordinates, road/city rasters, map imagery, and operational parameters lack reproducible source bindings.",
+      "observation_id": "O-B-2019-1908904-0243"
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-B-2019-1908904-001",
+      "page": 9,
+      "summary": "Recompute the displayed AHP matrix, resolve the eigenvalue glyph, elicit judgments from multiple stakeholders, and report disagreement and weight intervals."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-002",
+      "page": 10,
+      "summary": "Replace inverse drone count with a unit-consistent event model covering route, payload, charging, queueing, loading, unloading, and hospital service time."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-003",
+      "page": 11,
+      "summary": "Replace summed maximum range with unique road/population coverage under sensor footprint, overlap, route continuity, energy reserve, and return feasibility."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-004",
+      "page": 11,
+      "summary": "Benchmark the greedy fleet against MILP, CP-SAT, dynamic programming, or bounded enumeration and publish iteration traces and optimality gaps."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-005",
+      "page": 13,
+      "summary": "Use a projected coordinate system, terrain-aware energy model, vehicle-specific loaded range, coastline geometry, and robust service constraints for rough siting."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-006",
+      "page": 15,
+      "summary": "Freeze the exact packing instance and API response, define orientations and weight limits, reproduce it locally, and compare the heuristic allocation with exact packing bounds."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-007",
+      "page": 16,
+      "summary": "Publish immutable road/city rasters, CRS, thresholds, candidate masks, and coordinate transforms; run body and code weights separately and test order invariance."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-008",
+      "page": 17,
+      "summary": "Encode every timetable cell in a conservation-tested time-indexed model with batteries, charge ports, turnaround, maintenance, transfers, routes, and safe terminal states."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-009",
+      "page": 20,
+      "summary": "Run global and joint uncertainty over demand, range, payload, weather, terrain, AHP weights, packing feasibility, raster data, schedules, and decision switches."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-010",
+      "page": 22,
+      "summary": "Generate tables, maps, conclusion coordinates, and the HELP letter from one frozen result object so B longitude and fleet counts cannot diverge."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-011",
+      "page": 25,
+      "summary": "Build a claim-level provenance ledger for every drone, medicine, hospital, map, road, city, container, charging, and API datum."
+    },
+    {
+      "extension_id": "E-B-2019-1908904-012",
+      "page": 26,
+      "summary": "Repair and package all appendix code with redacted credentials, pinned dependencies, fixtures, deterministic tests, body-code parity checks, and one-command reproduction."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-B-LANG-001",
+      "action": "bind optimal, rational, acceptable, reliable, stable, small, flexible, and best claims to the exact metric, comparator, case, horizon, constraints, evidence status, and uncertainty",
+      "evidence_ids": [
+        "O-B-2019-1908904-0001",
+        "O-B-2019-1908904-0002",
+        "O-B-2019-1908904-0003"
+      ]
+    },
+    {
+      "rule_id": "R-B-DATA-002",
+      "action": "ledger every drone, bay, medicine, container, hospital, road, populated place, raster, coordinate, API input, weight, unit, transformation, version, and downstream consumer",
+      "evidence_ids": [
+        "O-B-2019-1908904-0140",
+        "O-B-2019-1908904-0163",
+        "O-B-2019-1908904-0164"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-003",
+      "action": "build the typed AHP -> normalized criteria -> greedy fleet -> range geometry -> allocation -> packing -> raster siting -> timetable chain without skipping physical or computational interfaces",
+      "evidence_ids": [
+        "O-B-2019-1908904-0131",
+        "O-B-2019-1908904-0133",
+        "O-B-2019-1908904-0136"
+      ]
+    },
+    {
+      "rule_id": "R-B-MOD-004",
+      "action": "keep supply units, support days, delivery time, drone count, maximum-range sum, CE, item counts, utilization, coordinates, flight periods, and reconnaissance claims as distinct outputs",
+      "evidence_ids": [
+        "O-B-2019-1908904-0132",
+        "O-B-2019-1908904-0134"
+      ]
+    },
+    {
+      "rule_id": "R-B-COMP-001",
+      "action": "report greedy evaluation, external packing calls, bisection, raster enumeration, and timetable construction with exact instance sizes, fixtures, dependencies, runtime, stopping rules, and optimality evidence",
+      "evidence_ids": [
+        "O-B-2019-1908904-0135",
+        "O-B-2019-1908904-0139",
+        "O-B-2019-1908904-0246"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-002",
+      "action": "replace broad stability language with staged checks of weights, counts, packing, range, coordinates, inventory, schedules, source data, joint uncertainty, and final decision switches",
+      "evidence_ids": [
+        "O-B-2019-1908904-0142",
+        "O-B-2019-1908904-0143",
+        "O-B-2019-1908904-0238"
+      ]
+    },
+    {
+      "rule_id": "R-B-VER-004",
+      "action": "preflight dimensions, signs, parentheses, units, ideal-realized-conclusion reconciliation, code-body parity, immutable raster scoring, energy, conservation, coordinates, references, and solver diagnostics",
+      "evidence_ids": [
+        "O-B-2019-1908904-0144",
+        "O-B-2019-1908904-0175",
+        "O-B-2019-1908904-0176"
+      ]
+    },
+    {
+      "rule_id": "R-B-VIZ-001",
+      "action": "turn matrices, formula blocks, fleet tables, packing renders, map layers, timetables, and sensitivity plots into auditable views with direct labels, units, scales, accessible encodings, uncertainty, and conflict annotations",
+      "evidence_ids": [
+        "O-B-2019-1908904-0145",
+        "O-B-2019-1908904-0146",
+        "O-B-2019-1908904-0147"
+      ]
+    },
+    {
+      "rule_id": "R-B-LOG-001",
+      "action": "trace every requested output from criteria and premises through normalization, greedy choice, rough siting, realistic packing, exact locations, schedules, sensitivity, conclusion, and the HELP letter",
+      "evidence_ids": [
+        "O-B-2019-1908904-0141",
+        "O-B-2019-1908904-0187",
+        "O-B-2019-1908904-0188"
+      ]
+    }
+  ],
+  "unresolved_questions": [
+    "What exact official input values and usable interior container dimensions reproduce every volume and count?",
+    "What assessor judgments and aggregation method produced the AHP matrix, and is lambda_max 3.0183 or 3.0153?",
+    "How are minutes and hours reconciled in the delivery-time expression, and what routes define each d_i?",
+    "Why are 394 and 256 used as appendix normalizers, and do they equal the displayed Nmax and all-B Dmax cases?",
+    "What parentheses, signs, units, and three-container factor define Dmax and the 411-day residual-volume equation?",
+    "What complete greedy iteration trace, candidate order, tie rule, and stopping state reproduce B121/D54/H3?",
+    "Why does the appendix initialize a D count inconsistent with the body, and which ideal fleet is authoritative?",
+    "Which projected CRS, hospital coordinates, coastline data, and great-circle or planar distance convention produce the three range circles?",
+    "What exact allocation rules map hospital responsibilities to every B/D/H and MED count in containers A-C?",
+    "What external API version, dimensions, orientations, weight limits, request body, response, and feasibility rule reproduce Figure 3 and Table 3?",
+    "Why does appendix bisection hard-code 339 while the report states 411 ideal and 359 realized medicine days?",
+    "Which road, highway, populated-place, hospital, range, coastline, and candidate-mask files create the raster score?",
+    "Should road/populated-place weights be 0.6/0.4 as the body says or 0.4/0.6 as the code implements?",
+    "How does immutable scoring change the coordinates relative to the appendix's in-place raster mutation?",
+    "Which pixel-to-coordinate transform reproduces Table 4, and why does the conclusion change B longitude from -65.82 to -65.28?",
+    "How do ideal B121/D54/H3, realized B99/D42/H3, and conclusion B121/D42 reconcile?",
+    "What machine-readable inventory and flight ledger proves every five-day timetable action, charge, transfer, return, and 359-day hospital balance?",
+    "What exact weight perturbations and scenario outputs produce Figure 8, and why is a 33.3-percent D-count change called small?",
+    "Which claim-level sources support vehicle specifications, hospital demand, coordinates, maps, roads, populated places, and operational assumptions?",
+    "Which field drill, held-out disaster, or external comparator would validate packing, locations, delivery time, supply duration, and reconnaissance coverage?"
+  ],
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-B-2019-1908904-8b5a9e33.json",
+      "schema_version": 3,
+      "unit_count": 130,
+      "chapters": [
+        "title",
+        "abstract",
+        "introduction",
+        "assumptions",
+        "notation",
+        "problem-analysis",
+        "model-establishment",
+        "model-improvement",
+        "algorithm",
+        "results",
+        "data-preprocessing",
+        "sensitivity-analysis",
+        "strengths",
+        "limitations",
+        "conclusion",
+        "memo",
+        "references",
+        "appendix"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-B-2019-1908904-8b5a9e33.json",
+      "schema_version": 2,
+      "model_count": 14,
+      "equation_count": 32,
+      "review_status": "validated"
+    }
+  },
+  "review_status": "validated"
+}

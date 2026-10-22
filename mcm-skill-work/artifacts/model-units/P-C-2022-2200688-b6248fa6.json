@@ -1,0 +1,3541 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2022-2200688-b6248fa6",
+  "problem_type": "C",
+  "year": "2022",
+  "source_sha256": "b6248fa6c71fbefc7febca4a55c249b6da93b03481a0d7952567b5f698d5e537",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-2022-2200688-001",
+      "page": 3,
+      "section": "1.2 Restatement; 2 Assumptions; 6.1",
+      "family": "data/state/decision convention",
+      "purpose": "Represent the official dated price streams, two market calendars, initial portfolio and day-level action interface.",
+      "base_or_modification": "paper-specific",
+      "summary": "The paper frames a 2016-09-11 to 2021-09-10 past-only buy/hold/sell task with $1000 initial cash, then organizes gold and bitcoin money sleeves. It mentions only gold and bitcoin in narrative at some points; the official state includes cash, preserved separately.",
+      "variables": [
+        {
+          "symbol": "C_t",
+          "normalized_name": "available cash",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Official initial cash is $1000; algorithm later splits it into two cash sleeves.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_gold",
+          "normalized_name": "quantity of gold",
+          "unit": "gold units",
+          "role": "state",
+          "definition": "Holdings printed as gold_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_bitcoin",
+          "normalized_name": "quantity of bitcoin",
+          "unit": "BTC units",
+          "role": "state",
+          "definition": "Holdings printed as bitcoin_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_g",
+          "normalized_name": "observed gold price",
+          "unit": "USD per gold unit",
+          "role": "input",
+          "definition": "Gold price on available market days; paper uses g_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_b",
+          "normalized_name": "observed bitcoin price",
+          "unit": "USD per BTC",
+          "role": "input",
+          "definition": "Bitcoin daily price; paper uses b_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_g",
+          "normalized_name": "gold transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 1%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_b",
+          "normalized_name": "bitcoin transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 2%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "observed_day",
+          "normalized_name": "decision date",
+          "unit": "calendar day",
+          "role": "input",
+          "definition": "Daily train/predict cycle must precede action.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "C_t",
+        "p_g",
+        "p_b",
+        "c_g",
+        "c_b",
+        "observed_day"
+      ],
+      "outputs": [
+        "action_i",
+        "Q_gold",
+        "Q_bitcoin"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Represent the official dated price streams, two market calendars, initial portfolio and day-level action interface.; do not infer an independently solved global objective."
+      ],
+      "constraints": [
+        "At day t use only data available no later than that decision; official two-asset market calendars and fees remain applicable downstream."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Official starting state is $1000 cash and zero gold/bitcoin; source Algorithm 1 also initializes $1000 separately."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Only supplied CSV price data; past information only at each daily decision.",
+            "Gold has open days, bitcoin has daily observations; nearest-trading-day convention is printed for terminal accounting but full join procedure is not."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Fees are official task inputs (gold 1%, bitcoin 2%); actual source implementation of calendar alignment is absent.",
+        "parameters": [
+          "c_g",
+          "c_b"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Observe the two date-indexed prices and currently available portfolio state.",
+          "Obtain daily asset actions from the forecast and decision components.",
+          "Carry resulting cash sleeves and holdings to the next decision day."
+        ],
+        "software": [],
+        "convergence_criteria": "End on 2021-09-10; source state transition implementation is only partially exposed in Algorithm 1.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Market prices are the task-provided streams.",
+        "Current action must not use future observed prices."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The official initial state and task horizon are explicit, but daily trade feasibility, transaction rounding, market calendars and cash constraints are not fully specified by the paper."
+      },
+      "handoff_outputs": [
+        "action_i",
+        "Q_gold",
+        "Q_bitcoin"
+      ],
+      "validation_refs": [
+        "Official question PDF hash and task reconstruction in G0; source pp3-5,17-18."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Its input-to-output role can be traced to printed text and formulas."
+      ],
+      "limitations": [
+        "The source prose sometimes abbreviates the three-part official portfolio as two assets.",
+        "Cash-allocation and market calendar rules are not fully harmonized in the paper."
+      ],
+      "missing_details": [
+        "Exact date merge and missing-value handling.",
+        "Budget feasibility, fractional holdings and terminal cash-out rule."
+      ],
+      "source_pages": [
+        3,
+        4,
+        5,
+        17,
+        18
+      ],
+      "source_text_bindings": [
+        {
+          "page": 3,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0003.txt",
+          "sha256": "4e513f96bd1d11a00404233db8f76cd10b3716e6bb60c78d14b056f7ee8b9449"
+        },
+        {
+          "page": 4,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0004.txt",
+          "sha256": "5d6c3993104d6a88d12653040059afa3767406f0731e6c8ffa0264981ecd915d"
+        },
+        {
+          "page": 5,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0005.txt",
+          "sha256": "c0189b139760ca8b40e185292b5db83bab9d9a50297409c95a01222f274a424f"
+        },
+        {
+          "page": 17,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0017.txt",
+          "sha256": "2b79d5bc2fb1967cebc798bb7d40279b4b16cca8613a11b43fdba53b884a7c77"
+        },
+        {
+          "page": 18,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0018.txt",
+          "sha256": "796658c3521f887a059b5a40efa398ca2b2915d1f3e792eaf1cffd8fa1c539ef"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Source-specific input/result interface rather than an independently verified common benchmark.",
+        "paper_modification": "Paper uses this component in its forecast-to-action sequence.",
+        "claimed_benefit": [
+          "Its input-to-output role can be traced to printed text and formulas."
+        ],
+        "evidence_of_benefit": "Source-reported method and result only; no independent comparison.",
+        "interface": [
+          "action_i",
+          "Q_gold",
+          "Q_bitcoin"
+        ],
+        "transfer_boundary": "Transfer the interface logic, never asset prices, coefficients or a reported profit."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Retain gold and bitcoin price paths, fee rates and portfolio sleeves; task official cash initial amount is not a source-reproduced result.",
+        "leakage_risk": "Must enforce past-only rows at each day; a full-period fitted scaler or forecast would leak future information."
+      },
+      "result_translation": "This convention supplies inputs to forecasting, a daily action, and later portfolio accounting; it does not itself prove return.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Calendar, fee or information-horizon mismatch changes the policy being evaluated.",
+      "numerical_stability": "No market simulator or end-value reconstruction was independently run.",
+      "source_draft_unit_id": "G5-C-Q223-M001"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-002",
+      "page": 6,
+      "section": "4.1.2 Prophet",
+      "family": "additive time-series forecasting / trend-seasonality-holiday",
+      "purpose": "Define the paper’s interpretable additive forecasting family and its logistic or piecewise-linear trend, Fourier seasonality, holiday component and changepoint prior.",
+      "base_or_modification": "base",
+      "summary": "Equations (1)-(16) decompose the forecast and introduce trend, seasonal features and holiday indicators. Adjacent prose gives p=365.25,I=10 and p=7,I=3 examples, says H(t) must be set in advance under logistic growth, and introduces a Laplace changepoint density. No fitted coefficient set or estimation run is reported in this review.",
+      "variables": [
+        {
+          "symbol": "p",
+          "normalized_name": "Prophet model output",
+          "unit": "price scale in source",
+          "role": "output",
+          "definition": "Printed p(t) is trend plus seasonal, holiday and error components.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "trend component",
+          "unit": "price scale",
+          "role": "intermediate",
+          "definition": "Printed a(t), logistic or piecewise linear trend.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "periodic component",
+          "unit": "price scale",
+          "role": "intermediate",
+          "definition": "Printed b(t), Fourier seasonal component.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "holiday component",
+          "unit": "price scale",
+          "role": "intermediate",
+          "definition": "Printed c(t), holiday feature response.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "forecast error",
+          "unit": "price scale",
+          "role": "intermediate",
+          "definition": "Printed epsilon additive residual.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "capacity of logistic growth",
+          "unit": "price scale",
+          "role": "parameter",
+          "definition": "Source says H(t) must be selected beforehand.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "changepoint vector",
+          "unit": "indicator vector",
+          "role": "input",
+          "definition": "Printed z(t) with s entries.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "source growth change/location parameter",
+          "unit": "context dependent",
+          "role": "parameter",
+          "definition": "Source uses theta for changepoint growth and Laplace location; do not collapse meanings.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "source time or shape index",
+          "unit": "days/index",
+          "role": "input",
+          "definition": "Time t in Prophet; boosting tree index t is distinct, unclarified by source.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "trend growth rate",
+          "unit": "per day",
+          "role": "parameter",
+          "definition": "Prophet logistic/linear source growth-rate k.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "trend offset",
+          "unit": "price scale",
+          "role": "parameter",
+          "definition": "Prophet offset m.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "source offset changes or penalty strength",
+          "unit": "context dependent",
+          "role": "parameter",
+          "definition": "Source glyph gamma denotes offset changes or model-loss strength in distinct models.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_i",
+          "normalized_name": "cosine coefficients",
+          "unit": "price scale",
+          "role": "parameter",
+          "definition": "Source a_i in Fourier expansion.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_i",
+          "normalized_name": "bitcoin price on day i",
+          "unit": "USD per BTC",
+          "role": "input",
+          "definition": "Source daily bitcoin price.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "Fourier order",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Source annual I=10, weekly I=3.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_period",
+          "normalized_name": "seasonal period",
+          "unit": "days",
+          "role": "parameter",
+          "definition": "Source annual 365.25 days and weekly 7 days.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "seasonal coefficient vector or gold allocation",
+          "unit": "vector or share",
+          "role": "parameter",
+          "definition": "Seasonality delta in (8), gold-share delta in portfolio model; model-specific meanings.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "seasonal feature vector or density argument",
+          "unit": "feature/price",
+          "role": "input",
+          "definition": "Context-specific x(t) in Fourier features or x in Laplace density.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_h",
+          "normalized_name": "holiday indicator vector",
+          "unit": "binary vector",
+          "role": "input",
+          "definition": "Source m(t) in equation (14), not trend offset m.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_h",
+          "normalized_name": "holiday coefficients",
+          "unit": "price scale",
+          "role": "parameter",
+          "definition": "Source reuses k for equation (15), not growth k.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "holiday group count",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Source upper sum/vector bound L.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "l",
+          "normalized_name": "date indexed for holiday test",
+          "unit": "day",
+          "role": "input",
+          "definition": "Printed l membership of holiday group D_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_i",
+          "normalized_name": "holiday date set",
+          "unit": "day set",
+          "role": "input",
+          "definition": "Source D_i in holiday indicator.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "density",
+          "normalized_name": "Laplace density",
+          "unit": "inverse scale",
+          "role": "output",
+          "definition": "Printed f(x|theta,t), for changepoint explanation only.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t",
+        "z",
+        "theta",
+        "gamma",
+        "k",
+        "m",
+        "H",
+        "p_period",
+        "I",
+        "a_i",
+        "b_i",
+        "delta",
+        "x",
+        "m_h",
+        "k_h",
+        "L",
+        "l",
+        "D_i"
+      ],
+      "outputs": [
+        "p",
+        "a",
+        "b",
+        "c",
+        "epsilon",
+        "density"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2200688-001",
+          "page": 6,
+          "source_expression": "p(t)=a(t)+b(t)+c(t)+epsilon",
+          "normalized_latex": "p(t)=a(t)+b(t)+c(t)+\\epsilon",
+          "variable_symbols": [
+            "p",
+            "a",
+            "b",
+            "c",
+            "epsilon"
+          ],
+          "purpose": "Four-term additive price forecast.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(1)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p06-formula.jpg",
+            "proxy_sha256": "717afca70da40b25d6ac80a4851159a07bea8c8aed75a4b22c08a1bd8886a818",
+            "proxy_bytes": 404043,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0006.txt",
+            "sha256": "d2f8be7f4ec61c9543038aea8e1d0dbe4b293a274d03dba9904409066e6bf0a0"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-002",
+          "page": 6,
+          "source_expression": "a(t)=H(t)/[1+exp(-(k+z(t)prime theta)*(t-(m+z(t)^T gamma)))]",
+          "normalized_latex": "a(t)=\\frac{H(t)}{1+\\exp\\left(-(k+z(t)^{\\prime}\\theta)\\left(t-(m+z(t)^T\\gamma)\\right)\\right)}",
+          "variable_symbols": [
+            "a",
+            "H",
+            "z",
+            "theta",
+            "t",
+            "k",
+            "m",
+            "gamma"
+          ],
+          "purpose": "Logistic trend, source prime and transpose preserved.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(2)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p06-formula-lower.jpg",
+            "proxy_sha256": "c2d38b22d5c2dfb3e896a0d90a4a6ca14ec2862d418ea34e7138dd00253bb01d",
+            "proxy_bytes": 217569,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0006.txt",
+            "sha256": "d2f8be7f4ec61c9543038aea8e1d0dbe4b293a274d03dba9904409066e6bf0a0"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-003",
+          "page": 6,
+          "source_expression": "z(t)=(z_1(t),...,z_s(t))^T",
+          "normalized_latex": "z(t)=\\bigl(z_1(t),\\ldots,z_s(t)\\bigr)^T",
+          "variable_symbols": [
+            "z",
+            "t"
+          ],
+          "purpose": "Changepoint activation vector.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(3)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p06-formula-lower.jpg",
+            "proxy_sha256": "c2d38b22d5c2dfb3e896a0d90a4a6ca14ec2862d418ea34e7138dd00253bb01d",
+            "proxy_bytes": 217569,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0006.txt",
+            "sha256": "d2f8be7f4ec61c9543038aea8e1d0dbe4b293a274d03dba9904409066e6bf0a0"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-004",
+          "page": 7,
+          "source_expression": "theta(t)=(theta_1,...,theta_s)^T",
+          "normalized_latex": "\\theta(t)=(\\theta_1,\\ldots,\\theta_s)^T",
+          "variable_symbols": [
+            "theta",
+            "t"
+          ],
+          "purpose": "Changepoint growth-rate changes.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(4)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula.jpg",
+            "proxy_sha256": "f434afb6cbe71ef0333602ea763d6808dfdb7dc3ac2f24562647d14cdb084285",
+            "proxy_bytes": 171348,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-005",
+          "page": 7,
+          "source_expression": "gamma(t)=(gamma_1,...,gamma_s)^T",
+          "normalized_latex": "\\gamma(t)=(\\gamma_1,\\ldots,\\gamma_s)^T",
+          "variable_symbols": [
+            "gamma",
+            "t"
+          ],
+          "purpose": "Changepoint offset adjustments.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(5)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula.jpg",
+            "proxy_sha256": "f434afb6cbe71ef0333602ea763d6808dfdb7dc3ac2f24562647d14cdb084285",
+            "proxy_bytes": 171348,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-006",
+          "page": 7,
+          "source_expression": "a(t)=(k+z(t)theta)*t+(m+z(t)^T gamma)",
+          "normalized_latex": "a(t)=(k+z(t)\\theta)\\,t+(m+z(t)^T\\gamma)",
+          "variable_symbols": [
+            "a",
+            "k",
+            "z",
+            "theta",
+            "t",
+            "m",
+            "gamma"
+          ],
+          "purpose": "Piecewise linear trend alternative.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(6)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula-lower.jpg",
+            "proxy_sha256": "1529a52f30f772edcd840d4c418ab72268c86c1d7ef6a4b53cd30da42694331d",
+            "proxy_bytes": 135655,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-007",
+          "page": 7,
+          "source_expression": "b(t)=sum_{i=1}^I(a_i cos(2*pi*i*t/p)+b_i sin(2*pi*i*t/p))",
+          "normalized_latex": "b(t)=\\sum_{i=1}^{I}\\left(a_i\\cos\\frac{2\\pi i t}{p}+b_i\\sin\\frac{2\\pi i t}{p}\\right)",
+          "variable_symbols": [
+            "b",
+            "a_i",
+            "b_i",
+            "I",
+            "p_period",
+            "t"
+          ],
+          "purpose": "Seasonal Fourier expansion.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(7)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula-lower.jpg",
+            "proxy_sha256": "1529a52f30f772edcd840d4c418ab72268c86c1d7ef6a4b53cd30da42694331d",
+            "proxy_bytes": 135655,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-008",
+          "page": 7,
+          "source_expression": "delta=(a_1,b_1,...,a_I,b_I)^T",
+          "normalized_latex": "\\delta=(a_1,b_1,\\ldots,a_I,b_I)^T",
+          "variable_symbols": [
+            "delta",
+            "a_i",
+            "b_i",
+            "I"
+          ],
+          "purpose": "Seasonal coefficient vector.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(8)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula-lower.jpg",
+            "proxy_sha256": "1529a52f30f772edcd840d4c418ab72268c86c1d7ef6a4b53cd30da42694331d",
+            "proxy_bytes": 135655,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-009",
+          "page": 7,
+          "source_expression": "x(t)=[cos(2*pi*1*t/p),...,sin(2*pi*I*t/p)]",
+          "normalized_latex": "x(t)=[\\cos(2\\pi 1t/p),\\ldots,\\sin(2\\pi It/p)]",
+          "variable_symbols": [
+            "x",
+            "p_period",
+            "I",
+            "t"
+          ],
+          "purpose": "Seasonal feature vector.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(9)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula-lower.jpg",
+            "proxy_sha256": "1529a52f30f772edcd840d4c418ab72268c86c1d7ef6a4b53cd30da42694331d",
+            "proxy_bytes": 135655,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-010",
+          "page": 7,
+          "source_expression": "b(t)=x(t)delta",
+          "normalized_latex": "b(t)=x(t)\\delta",
+          "variable_symbols": [
+            "b",
+            "x",
+            "delta",
+            "t"
+          ],
+          "purpose": "Fourier model vector form.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(10)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p07-formula-lower.jpg",
+            "proxy_sha256": "1529a52f30f772edcd840d4c418ab72268c86c1d7ef6a4b53cd30da42694331d",
+            "proxy_bytes": 135655,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 7,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+            "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-011",
+          "page": 8,
+          "source_expression": "x(t)=[cos(2*pi*1*t/365.25),...,sin(2*pi*10*t/365.25)]",
+          "normalized_latex": "x(t)=[\\cos(2\\pi 1t/365.25),\\ldots,\\sin(2\\pi 10t/365.25)]",
+          "variable_symbols": [
+            "x",
+            "t"
+          ],
+          "purpose": "Annual p=365.25 and I=10 feature case, a source parameter choice.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(11)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-012",
+          "page": 8,
+          "source_expression": "x(t)=[cos(2*pi*1*t/7),...,sin(2*pi*3*t/7)]",
+          "normalized_latex": "x(t)=[\\cos(2\\pi 1t/7),\\ldots,\\sin(2\\pi 3t/7)]",
+          "variable_symbols": [
+            "x",
+            "t"
+          ],
+          "purpose": "Weekly p=7 and I=3 feature case, a source parameter choice.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(12)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-013",
+          "page": 8,
+          "source_expression": "c(t)=m(t)k=sum_{i=1}^L * I_{l in D_i}",
+          "normalized_latex": "c(t)=m(t)k=\\sum_{i=1}^{L} * I_{l\\in D_i}",
+          "variable_symbols": [
+            "c",
+            "m_h",
+            "k_h",
+            "L",
+            "l",
+            "D_i"
+          ],
+          "purpose": "Printed holiday sum contains an isolated star; do not supply an unprinted coefficient.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(13)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-014",
+          "page": 8,
+          "source_expression": "m(t)=(l in D_i,...,l in D_L)",
+          "normalized_latex": "m(t)=(l\\in D_i,\\ldots,l\\in D_L)",
+          "variable_symbols": [
+            "m_h",
+            "l",
+            "D_i",
+            "L"
+          ],
+          "purpose": "Source holiday indicator vector, no assumption about exact day encoding.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(14)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-015",
+          "page": 8,
+          "source_expression": "k=(k_1,...,k_L)^T",
+          "normalized_latex": "k=(k_1,\\ldots,k_L)^T",
+          "variable_symbols": [
+            "k_h",
+            "L"
+          ],
+          "purpose": "Holiday coefficients, source reuses the growth-rate k glyph.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(15)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-016",
+          "page": 8,
+          "source_expression": "f(x|theta,t)=exp(-|x-theta|/t)/2t",
+          "normalized_latex": "f(x\\mid\\theta,t)=\\frac{\\exp(-|x-\\theta|/t)}{2t}",
+          "variable_symbols": [
+            "density",
+            "x",
+            "theta",
+            "t"
+          ],
+          "purpose": "Laplace density for discussion of changepoint priors.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(16)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p08-formula.jpg",
+            "proxy_sha256": "e736fbf8cc34bd53f81400e104a0d1494b34f1cbd9448472c72e644596e35ebf",
+            "proxy_bytes": 232312,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 8,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+            "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Source printed equations recorded and checked against bounded JPEG crops."
+      },
+      "objectives": [
+        "Define the paper’s interpretable additive forecasting family and its logistic or piecewise-linear trend, Fourier seasonality, holiday component and changepoint prior.; do not infer an independently solved global objective."
+      ],
+      "constraints": [
+        "At day t use only data available no later than that decision; official two-asset market calendars and fees remain applicable downstream."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Under logistic growth H(t) is set in advance; other initialization values and training-window initial state are not given."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Use a dated input prefix for any daily forecast; no future actual observation may enter fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper introduces prior/feature formulas but omits fitted values and a full estimation configuration.",
+        "parameters": [
+          "H",
+          "k",
+          "m",
+          "theta",
+          "gamma",
+          "delta",
+          "a_i",
+          "b_i",
+          "p_period",
+          "I",
+          "k_h",
+          "L"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Choose logistic or segmented-linear trend form.",
+          "Construct the periodic Fourier feature vector.",
+          "Add holiday indicator response and changepoint structure.",
+          "Fit the time series and provide base price prediction to the improvement module."
+        ],
+        "software": [],
+        "convergence_criteria": "No published convergence tolerance or numeric stopping criterion for this component.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "The selected trend and periodic components capture useful structure in the local series.",
+        "Annual and weekly periodicities are useful source-chosen examples, not independently estimated facts."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "Equations define a model family, but exact estimation, identifiability and out-of-sample error evidence are not supplied here."
+      },
+      "handoff_outputs": [
+        "p",
+        "a",
+        "b",
+        "c",
+        "epsilon",
+        "density"
+      ],
+      "validation_refs": [
+        "Source equations (1)-(16) visually reviewed on pages 6-8; visual checks are transcription only.",
+        "Figures 7-9 are described later, not treated as independent error validation."
+      ],
+      "computational_cost": "No Prophet fit runtime, number of fitted parameters, resource use or convergence report is given.",
+      "strengths": [
+        "Component decomposition creates explicit trend, periodic, holiday and residual interfaces.",
+        "Prose connects selected periodicities and changepoints to the printed terms."
+      ],
+      "limitations": [
+        "Equation (13) contains a visibly isolated multiplication symbol; no missing coefficient supplied.",
+        "Parameter fitting, regressors, actual holiday list and residual treatment are not reproducibly reported."
+      ],
+      "missing_details": [
+        "Fitted parameter values and training dates.",
+        "Exact growth mode, holidays, changepoints and seasonality prior settings for each asset.",
+        "How the displayed Laplace density maps to the learned parameter set."
+      ],
+      "source_pages": [
+        6,
+        7,
+        8
+      ],
+      "source_text_bindings": [
+        {
+          "page": 6,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0006.txt",
+          "sha256": "d2f8be7f4ec61c9543038aea8e1d0dbe4b293a274d03dba9904409066e6bf0a0"
+        },
+        {
+          "page": 7,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0007.txt",
+          "sha256": "37c7245be684663836a82f01ec620d72490632329f5c55b776da33d676d732c4"
+        },
+        {
+          "page": 8,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0008.txt",
+          "sha256": "9b79beacef05ab247d4718e28b991bed3286d7e14adf0b4f9f409c02ba0d402c"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Prophet-style additive decomposition cited by the paper.",
+        "paper_modification": "Paper treats this as the base forecaster later extended by XGBoost.",
+        "claimed_benefit": [
+          "Component decomposition creates explicit trend, periodic, holiday and residual interfaces.",
+          "Prose connects selected periodicities and changepoints to the printed terms."
+        ],
+        "evidence_of_benefit": "Equations (1)-(16) and corresponding component descriptions, pp6-8; no independent fit.",
+        "interface": [
+          "p",
+          "a",
+          "b",
+          "c",
+          "epsilon",
+          "density"
+        ],
+        "transfer_boundary": "Transfer the interface logic, never asset prices, coefficients or a reported profit."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Each asset’s dated price history is fitted to additive terms, with asset-specific parameters unreported.",
+        "leakage_risk": "Source daily protocol says use data only through the previous day; actual scaler/training leakage guard still requires demonstration."
+      },
+      "result_translation": "Base forecast p(t) is handed to X-Prophet, and later a blended daily forecast is handed to the decision component.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "A wrong periodicity or an unreported future-aware fit may invalidate downstream daily actions.",
+      "numerical_stability": "No independent residual, changepoint, prior-scale or numerical sensitivity calculation was run.",
+      "source_draft_unit_id": "G5-C-Q223-M002"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-003",
+      "page": 9,
+      "section": "4.1.3 Improvement Prophet - X-Prophet",
+      "family": "hybrid forecaster / boosting-weighted Prophet",
+      "purpose": "Pass Prophet and additive tree predictions into one weighted future-price output.",
+      "base_or_modification": "hybrid",
+      "summary": "Figure 4 depicts a Prophet confidence branch and an XGBoost branch entering weights w1 and w2. Equations (17)-(19) give tree recursion, (20) leaf value, (21) the printed loss, and (22) the weighted output. Text misnumbers this sequence and does not disclose actual blend weights; neither source figure nor citation [2] is new experimental proof.",
+      "variables": [
+        {
+          "symbol": "yhat",
+          "normalized_name": "boosting prediction",
+          "unit": "source price scale",
+          "role": "intermediate",
+          "definition": "Printed yhat_i^(t) including initialization and tree corrections.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "constant",
+          "normalized_name": "boosting initial constant",
+          "unit": "source price scale",
+          "role": "parameter",
+          "definition": "Printed c in equation (17), distinct from holiday component c(t).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "tree correction function",
+          "unit": "source price scale",
+          "role": "intermediate",
+          "definition": "Printed f_t(x) as tree-leaf response; source loss uses f again.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "normalized_name": "boosting feature vector",
+          "unit": "unspecified",
+          "role": "input",
+          "definition": "Source x_i for sample i; feature construction not fully defined.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "source time or shape index",
+          "unit": "days/index",
+          "role": "input",
+          "definition": "Time t in Prophet; boosting tree index t is distinct, unclarified by source.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "leaf_weight",
+          "normalized_name": "tree leaf response",
+          "unit": "source price scale",
+          "role": "parameter",
+          "definition": "Source w_{q(x)} from equation (20).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "tree leaf assignment",
+          "unit": "index",
+          "role": "intermediate",
+          "definition": "Source q(x), partitioning function not specified.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "loss",
+          "normalized_name": "boosting source objective",
+          "unit": "unspecified",
+          "role": "output",
+          "definition": "Equation (21) source expression, ambiguous yT notation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "source response factor",
+          "unit": "unspecified",
+          "role": "input",
+          "definition": "Unexplained y in the printed yT loss term.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "boosting iteration count",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Printed T is number of tree terms, exact setting absent.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "source offset changes or penalty strength",
+          "unit": "context dependent",
+          "role": "parameter",
+          "definition": "Source glyph gamma denotes offset changes or model-loss strength in distinct models.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "tree weight index j",
+          "unit": "source output scale",
+          "role": "parameter",
+          "definition": "Printed w_j in (21).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "weighted X-Prophet forecast",
+          "unit": "price scale",
+          "role": "output",
+          "definition": "Equation (22) combines Prophet and boosting outputs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w1",
+          "normalized_name": "base forecast blend weight",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "w_1 with w_2 sum to one, learned choice unspecified.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w2",
+          "normalized_name": "boost forecast blend weight",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "w_2 with w_1 sum to one, learned choice unspecified.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "Prophet model output",
+          "unit": "price scale in source",
+          "role": "output",
+          "definition": "Printed p(t) is trend plus seasonal, holiday and error components.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p",
+        "x_i",
+        "constant",
+        "gamma",
+        "w1",
+        "w2",
+        "T"
+      ],
+      "outputs": [
+        "W",
+        "yhat",
+        "loss"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2200688-017",
+          "page": 9,
+          "source_expression": "yhat_i^(0)=c",
+          "normalized_latex": "\\hat y_i^{(0)}=c",
+          "variable_symbols": [
+            "yhat",
+            "constant"
+          ],
+          "purpose": "Boosting initialization.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(17)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p09-formula-lower.jpg",
+            "proxy_sha256": "d54dd5e7071cc19ac4e49e4fa3172809e7f43aeae37e0ceac131765813290ade",
+            "proxy_bytes": 183422,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 9,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0009.txt",
+            "sha256": "dca40a3b339a49b5f63e477cf20d8d56ae5d3a389d405200c966cc7c312bfbbc"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-018",
+          "page": 9,
+          "source_expression": "yhat_i^(1)=yhat_i^(0)+f_1(x_i)",
+          "normalized_latex": "\\hat y_i^{(1)}=\\hat y_i^{(0)}+f_1(x_i)",
+          "variable_symbols": [
+            "yhat",
+            "f",
+            "x_i"
+          ],
+          "purpose": "First additive tree update.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(18)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p09-formula-lower.jpg",
+            "proxy_sha256": "d54dd5e7071cc19ac4e49e4fa3172809e7f43aeae37e0ceac131765813290ade",
+            "proxy_bytes": 183422,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 9,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0009.txt",
+            "sha256": "dca40a3b339a49b5f63e477cf20d8d56ae5d3a389d405200c966cc7c312bfbbc"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-019",
+          "page": 9,
+          "source_expression": "yhat_i^(t)=yhat_i^(t-1)+f_t(x_i)",
+          "normalized_latex": "\\hat y_i^{(t)}=\\hat y_i^{(t-1)}+f_t(x_i)",
+          "variable_symbols": [
+            "yhat",
+            "f",
+            "x_i",
+            "t"
+          ],
+          "purpose": "General tree update, distinct from trading time index.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(19)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p09-formula-lower.jpg",
+            "proxy_sha256": "d54dd5e7071cc19ac4e49e4fa3172809e7f43aeae37e0ceac131765813290ade",
+            "proxy_bytes": 183422,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 9,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0009.txt",
+            "sha256": "dca40a3b339a49b5f63e477cf20d8d56ae5d3a389d405200c966cc7c312bfbbc"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-020",
+          "page": 10,
+          "source_expression": "f_t(x)=w_{q(x)}",
+          "normalized_latex": "f_t(x)=w_{q(x)}",
+          "variable_symbols": [
+            "f",
+            "x_i",
+            "leaf_weight",
+            "q"
+          ],
+          "purpose": "Tree-to-leaf output.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(20)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p10-formula.jpg",
+            "proxy_sha256": "d59d1b11bd14270e3b4331a3830b825554cbdc02a2f73d903d210a5169d39c9e",
+            "proxy_bytes": 209176,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0010.txt",
+            "sha256": "134f5c5673183d1b0093d083fd13f0f3ea2d145becceae8451a5354fd088978f"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-021",
+          "page": 10,
+          "source_expression": "loss(f)=y^T+(gamma/2) sum_{j=1}^T w_j^2",
+          "normalized_latex": "\\operatorname{loss}(f)=y^T+\\frac{\\gamma}{2}\\sum_{j=1}^{T}w_j^2",
+          "variable_symbols": [
+            "loss",
+            "f",
+            "y",
+            "T",
+            "gamma",
+            "w_j"
+          ],
+          "purpose": "Source loss expression appears to print y with superscript T; preserve it though its role is unexplained.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(21)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p10-formula.jpg",
+            "proxy_sha256": "d59d1b11bd14270e3b4331a3830b825554cbdc02a2f73d903d210a5169d39c9e",
+            "proxy_bytes": 209176,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0010.txt",
+            "sha256": "134f5c5673183d1b0093d083fd13f0f3ea2d145becceae8451a5354fd088978f"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-022",
+          "page": 10,
+          "source_expression": "W(t)=w_1 p(t)+w_2 yhat_t (w_1+w_2=1)",
+          "normalized_latex": "W(t)=w_1p(t)+w_2\\hat y_t\\quad(w_1+w_2=1)",
+          "variable_symbols": [
+            "W",
+            "t",
+            "w1",
+            "w2",
+            "p",
+            "yhat"
+          ],
+          "purpose": "Weighted Prophet/boosting forecast output.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(22)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p10-formula.jpg",
+            "proxy_sha256": "d59d1b11bd14270e3b4331a3830b825554cbdc02a2f73d903d210a5169d39c9e",
+            "proxy_bytes": 209176,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0010.txt",
+            "sha256": "134f5c5673183d1b0093d083fd13f0f3ea2d145becceae8451a5354fd088978f"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Source printed equations recorded and checked against bounded JPEG crops."
+      },
+      "objectives": [
+        "Reduce local forecast error according to the source prose; retain exactly the source loss expression (21) without inventing missing terms."
+      ],
+      "constraints": [
+        "Blend condition w1+w2=1 appears in (22); sign or learned-weight bounds are not given.",
+        "Each daily fit should use dated past-only input."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper does not state the procedure or data used to estimate blend weights, tree structure, penalty strength or boosting count.",
+        "parameters": [
+          "w1",
+          "w2",
+          "leaf_weight",
+          "gamma",
+          "constant",
+          "T"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Train or supply source Prophet forecast.",
+          "Apply source additive tree correction updates (17)-(20).",
+          "Combine the two forecasts under (22).",
+          "Pass predicted future values to day-level decision rules."
+        ],
+        "software": [],
+        "convergence_criteria": "No published convergence tolerance or numeric stopping criterion for this component.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "The source asserts base-model point errors motivate the extra correction branch.",
+        "A source-dated future forecast can be constructed without future actual prices."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source describes an analytical interface but does not establish out-of-sample profit feasibility by a reproduced execution."
+      },
+      "handoff_outputs": [
+        "W",
+        "yhat",
+        "loss"
+      ],
+      "validation_refs": [
+        "Figure 4 on p9 is a module map, not an error table.",
+        "Equations (17)-(22) visually checked pp9-10."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "The corrective component is placed at a specific prediction interface.",
+        "Weighted output explicitly names both contributing branches."
+      ],
+      "limitations": [
+        "Printed loss yT and the subsequent prose equation numbers have unresolved meanings.",
+        "No asset-specific backtest scores or learned weights in the formula section."
+      ],
+      "missing_details": [
+        "The response target, feature vector and original Prophet-confidence definition.",
+        "Tree hyperparameters, trained weights, target leakage controls and fit tolerances."
+      ],
+      "source_pages": [
+        9,
+        10
+      ],
+      "source_text_bindings": [
+        {
+          "page": 9,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0009.txt",
+          "sha256": "dca40a3b339a49b5f63e477cf20d8d56ae5d3a389d405200c966cc7c312bfbbc"
+        },
+        {
+          "page": 10,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0010.txt",
+          "sha256": "134f5c5673183d1b0093d083fd13f0f3ea2d145becceae8451a5354fd088978f"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Printed Prophet p(t) and XGBoost-style additive tree functions, with [2] cited for the combination.",
+        "paper_modification": "Source adds a confidence/optimization branch and a weighted Prophet-tree output in (22).",
+        "claimed_benefit": [
+          "The corrective component is placed at a specific prediction interface.",
+          "Weighted output explicitly names both contributing branches."
+        ],
+        "evidence_of_benefit": "Section 4.1.3 and source Fig4 show assembly; no independent hybrid performance reproduction.",
+        "interface": [
+          "W",
+          "yhat",
+          "loss"
+        ],
+        "transfer_boundary": "Borrow failure-location -> inserted corrective branch -> explicit handoff, never an unverified universal gain for XGBoost."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Prophet p(t) and additive tree predictions are combined into W(t) using unreported learned weights.",
+        "leakage_risk": "Any XGBoost target or blended weights fitted using future realized prices would invalidate past-only daily claims; exact training partition is not shown."
+      },
+      "result_translation": "Forecast W(t) is interpreted by the decision module, not itself a buy or sell operation.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "If blend weights, fit schedule or response construction differ, the decision signal and financial result change.",
+      "numerical_stability": "No independent loss-surface, tree count, seed or weight sensitivity report.",
+      "source_draft_unit_id": "G5-C-Q223-M003"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-004",
+      "page": 10,
+      "section": "4.2.1 The 5-day SMA method; 6.2",
+      "family": "moving-average decision correction",
+      "purpose": "Turn current price and five-day historical average into a buy/sell signal with a deviation exception.",
+      "base_or_modification": "modification",
+      "summary": "The source compares current price against a five-day SMA, says an above-average price can trigger buy unless the deviation exceeds an unspecified threshold, and sends below-average cases to sell. It also describes a forecast-reversal buy example; no separately numbered SMA equation or numeric threshold appears.",
+      "variables": [
+        {
+          "symbol": "price_t",
+          "normalized_name": "current-day observed asset price",
+          "unit": "USD per unit",
+          "role": "input",
+          "definition": "Source compares current price with previous five-day average.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SMA5",
+          "normalized_name": "five-day simple moving average",
+          "unit": "USD per unit",
+          "role": "intermediate",
+          "definition": "Source describes average of five past observations without printed numbered formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "deviation5",
+          "normalized_name": "current price above five-day SMA ratio",
+          "unit": "dimensionless",
+          "role": "intermediate",
+          "definition": "Source calls it five-day deviation but gives no explicit calculation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "threshold",
+          "normalized_name": "five-day deviation decision threshold",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Source gives no numerical deviation threshold.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "forecast",
+          "normalized_name": "out-of-sample future-price forecast",
+          "unit": "USD per unit",
+          "role": "intermediate",
+          "definition": "Should use information available before the daily decision.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "observed_day",
+          "normalized_name": "decision date",
+          "unit": "calendar day",
+          "role": "input",
+          "definition": "Daily train/predict cycle must precede action.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "price_t",
+        "SMA5",
+        "deviation5",
+        "threshold",
+        "forecast",
+        "observed_day"
+      ],
+      "outputs": [
+        "action_i"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Translate forecast and observed recent trend into a source-described daily decision that tempers a pure forecast."
+      ],
+      "constraints": [
+        "SMA consumes only earlier observed price records, according to section 4.2.",
+        "Deviation threshold has no reported numerical value."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Source says use five days before current decision; exact treatment of gold closed days and same-day price availability remain unspecified."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Threshold formula/value and calibration sample are not stated; five-day history is a source setting.",
+        "parameters": [
+          "threshold"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compare current asset price with five-day average of previous prices.",
+          "If above average but deviation high, source recommends sell, not buy.",
+          "If above and deviation not high, source recommends buy.",
+          "If below average, source suggests sell; a future forecast reversal is separately suggested as buy."
+        ],
+        "software": [],
+        "convergence_criteria": "No published convergence tolerance or numeric stopping criterion for this component.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Recent average captures useful local direction.",
+        "Source market-rule assertions are narrative premises, not independent empirical findings."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source describes an analytical interface but does not establish out-of-sample profit feasibility by a reproduced execution."
+      },
+      "handoff_outputs": [
+        "action_i"
+      ],
+      "validation_refs": [
+        "Source pp10,18-19 decision rationale; no controlled SMA-only comparison printed."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "The exception is inserted before acting, rather than treating upward trend as automatic buy.",
+        "Local-price evidence and forecast evidence meet at a visible decision rule."
+      ],
+      "limitations": [
+        "No formula or numeric threshold for five-day deviation.",
+        "Below-SMA sell and forecast-reversal buy may conflict without a precedence rule."
+      ],
+      "missing_details": [
+        "Gold market-day handling inside five observations.",
+        "Rule precedence and trade size on conflicting signals."
+      ],
+      "source_pages": [
+        10,
+        18,
+        19
+      ],
+      "source_text_bindings": [
+        {
+          "page": 10,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0010.txt",
+          "sha256": "134f5c5673183d1b0093d083fd13f0f3ea2d145becceae8451a5354fd088978f"
+        },
+        {
+          "page": 18,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0018.txt",
+          "sha256": "796658c3521f887a059b5a40efa398ca2b2915d1f3e792eaf1cffd8fa1c539ef"
+        },
+        {
+          "page": 19,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0019.txt",
+          "sha256": "2615aaa70e08382d6917a6f40a86fb828d53d74cdc36f4b643d8c1db2aa0d005"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Five-day historical simple moving average cited by source [3].",
+        "paper_modification": "Combines SMA, deviation-exception rule and future-price forecast in a daily asset decision.",
+        "claimed_benefit": [
+          "The exception is inserted before acting, rather than treating upward trend as automatic buy.",
+          "Local-price evidence and forecast evidence meet at a visible decision rule."
+        ],
+        "evidence_of_benefit": "Source prose and memoranda attribute usefulness; no independent decision optimality proof.",
+        "interface": [
+          "action_i"
+        ],
+        "transfer_boundary": "Transfer the exception-before-action reasoning, not claims that any five-day rule is best."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Five prior prices become SMA5; compare to current price and threshold, then reconcile with forecast to produce action_i.",
+        "leakage_risk": "A current-day price may not be known before the proposed execution instant; exact trade timestamp is not printed."
+      },
+      "result_translation": "SMA-based signal is handed to the asset-state update and risk narrative, not a guaranteed profitable trade.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "If timing, deviation threshold or precedence changes, action_i and portfolio outcome can change.",
+      "numerical_stability": "No sensitivity to the five-day length or deviation threshold was reproduced.",
+      "source_draft_unit_id": "G5-C-Q223-M004"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-005",
+      "page": 11,
+      "section": "4.2.2 Decision-making method; Appendix 1",
+      "family": "adaptive N-day forecast decision window",
+      "purpose": "Choose an N-day future-forecast window and update it according to the shape of forecast peaks or valleys.",
+      "base_or_modification": "modification",
+      "summary": "The source initializes N=15 and defines six forecast-shape cases. One extremum keeps N and suppresses a repeated trade; monotonic cases expand N by alpha=1.1; multi-extrema cases contract by beta=0.9. The source text also calls N too small in the multi-extrema case while prescribing a reduction; do not silently reconcile this claim.",
+      "variables": [
+        {
+          "symbol": "N",
+          "normalized_name": "adaptive forecast horizon",
+          "unit": "days",
+          "role": "state",
+          "definition": "Source initializes at 15 then multiplies by alpha or beta for shape categories.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "horizon expansion factor",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Source alpha=1.1 for monotonic cases.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "horizon contraction factor",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Source beta=0.9 for multi-extrema cases.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "forecast",
+          "normalized_name": "out-of-sample future-price forecast",
+          "unit": "USD per unit",
+          "role": "intermediate",
+          "definition": "Should use information available before the daily decision.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "shape",
+          "normalized_name": "six-class forecast trajectory case",
+          "unit": "categorical",
+          "role": "input",
+          "definition": "Monotonic, one-peak/valley or multiple-extrema labels.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "prev_action",
+          "normalized_name": "last completed trade action",
+          "unit": "categorical",
+          "role": "state",
+          "definition": "Suppress repeated buy or sell recommendation in the adaptive-window cases.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N",
+        "forecast",
+        "shape",
+        "alpha",
+        "beta",
+        "prev_action"
+      ],
+      "outputs": [
+        "N",
+        "action_i"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Choose an N-day future-forecast window and update it according to the shape of forecast peaks or valleys.; do not infer an independently solved global objective."
+      ],
+      "constraints": [
+        "At day t use only data available no later than that decision; official two-asset market calendars and fees remain applicable downstream."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initialize N=15 before daily analysis."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Initial N=15, alpha=1.1, beta=0.9 are source-chosen; no tuning search or holdout selection printed.",
+        "parameters": [
+          "N",
+          "alpha",
+          "beta"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Classify N-day forecast as monotonic, one turning point or multiple turning points.",
+          "For one-peak/valley cases, retain horizon and propose an action unless that trade was just completed.",
+          "For monotonic cases, multiply N by 1.1 after the action.",
+          "For multi-extrema cases, multiply N by 0.9 after the action."
+        ],
+        "software": [],
+        "convergence_criteria": "Source does not specify rounding, lower/upper bounds or a stopping condition for repeated horizon adjustments.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Forecast peak/valley count can be consistently identified at each day.",
+        "A future predicted path is not future observed price."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source describes an analytical interface but does not establish out-of-sample profit feasibility by a reproduced execution."
+      },
+      "handoff_outputs": [
+        "N",
+        "action_i"
+      ],
+      "validation_refs": [
+        "Source p11 six-case list and pp23-24 selective code snippet; no branch-coverage tests printed."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Makes the decision horizon responsive to the forecast shape.",
+        "The previous-action exception prevents blind repetition."
+      ],
+      "limitations": [
+        "Source justification for multi-extrema shrinkage conflicts with its phrase N too small.",
+        "No horizon rounding, monotonicity tolerance or trade-size interface."
+      ],
+      "missing_details": [
+        "Boundary and integer conversion for N.",
+        "What exact price/extremum rules discriminate cases 3 through 6."
+      ],
+      "source_pages": [
+        11,
+        23,
+        24
+      ],
+      "source_text_bindings": [
+        {
+          "page": 11,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0011.txt",
+          "sha256": "89364479bd112d3b4a9b84cf8c3536bce945164de461a7b22fefe460b2875752"
+        },
+        {
+          "page": 23,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0023.txt",
+          "sha256": "21bdd2c33965f513732b01a7b2a81fe0c3ea0a45c3a29e1ea36762330aae270f"
+        },
+        {
+          "page": 24,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0024.txt",
+          "sha256": "f87027381975e45ec33340e326e5a17118a634bda5ef0f3a5e8a500d645ac6d7"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Source X-Prophet future-price trajectory over an initial 15-day horizon.",
+        "paper_modification": "Adapt the horizon and suppress repeated actions using six source-described trajectory classes.",
+        "claimed_benefit": [
+          "Makes the decision horizon responsive to the forecast shape.",
+          "The previous-action exception prevents blind repetition."
+        ],
+        "evidence_of_benefit": "Source-reported method and result only; no independent comparison.",
+        "interface": [
+          "N",
+          "action_i"
+        ],
+        "transfer_boundary": "Retain source shape -> action -> horizon-update chain and author ambiguity; do not prescribe alpha/beta in other problems."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Convert an N-day forecast trajectory into a shape class, candidate action and updated next-day N.",
+        "leakage_risk": "Six shape cases may use forecasted future prices but cannot use actual future realizations at the current decision."
+      },
+      "result_translation": "A daily shape/action signal goes to asset accounting; the horizon update goes to the following day.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Forecast peak-detection errors or unbounded N cause a different action and risk exposure.",
+      "numerical_stability": "No robust monotonicity tolerance, maximum horizon or cumulative alpha/beta sensitivity supplied.",
+      "source_draft_unit_id": "G5-C-Q223-M005"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-006",
+      "page": 12,
+      "section": "5.1.1 Data Normalization",
+      "family": "Min-Max input rescaling",
+      "purpose": "Make the two price magnitudes dimensionless before component fitting.",
+      "base_or_modification": "paper-specific",
+      "summary": "The source says denoising is unnecessary for the supplied files and applies equation (23). The printed formula is sound as a transformation when X_max differs from X_min, but the paper does not specify fitting minima/maxima on each past-only training fold.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "input historical price value",
+          "unit": "USD per unit",
+          "role": "input",
+          "definition": "Paper claims two given CSVs are clean, then applies Min-Max formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_min",
+          "normalized_name": "historical minimum used in scaler",
+          "unit": "USD per unit",
+          "role": "parameter",
+          "definition": "Fit window not stated in paper, preserve leakage boundary.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "X_max",
+          "normalized_name": "historical maximum used in scaler",
+          "unit": "USD per unit",
+          "role": "parameter",
+          "definition": "Fit window not stated in paper, preserve leakage boundary.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "X_norm",
+          "normalized_name": "normalized price value",
+          "unit": "dimensionless",
+          "role": "output",
+          "definition": "Equation (23) output.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X",
+        "X_min",
+        "X_max"
+      ],
+      "outputs": [
+        "X_norm"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2200688-023",
+          "page": 12,
+          "source_expression": "X_norm=(X-X_min)/(X_max-X_min)",
+          "normalized_latex": "X_{\\mathrm{norm}}=\\frac{X-X_{\\min}}{X_{\\max}-X_{\\min}}",
+          "variable_symbols": [
+            "X_norm",
+            "X",
+            "X_min",
+            "X_max"
+          ],
+          "purpose": "Min-Max rescaling, fitted extrema horizon unspecified.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(23)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p12-formula.jpg",
+            "proxy_sha256": "a589a3588d6322a3766b05883dd5754f477bc9d21821eb1f4c137fd44c5ef2e4",
+            "proxy_bytes": 148772,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 12,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0012.txt",
+            "sha256": "5bb54ab030d6c7f9179d2e6b0dffa4252bcf3a5e920f9f6310946a23d9e2e8cd"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Source printed equations recorded and checked against bounded JPEG crops."
+      },
+      "objectives": [
+        "Enable numerical processing of differently scaled gold and bitcoin inputs under the paper-defined Min-Max formula."
+      ],
+      "constraints": [
+        "Denominator X_max-X_min must be nonzero; source gives no constant-series fallback.",
+        "Any extrema fit must be bounded by information known before the day being predicted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source prints (23) but does not specify window used to estimate X_min/X_max.",
+        "parameters": [
+          "X_min",
+          "X_max"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Take observed input price X within an identified historical training interval.",
+          "Calculate that interval’s minimum and maximum if available.",
+          "Apply equation (23) to produce X_norm; inverse scale for reported prices is not documented."
+        ],
+        "software": [],
+        "convergence_criteria": "No published convergence tolerance or numeric stopping criterion for this component.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Source calls the two files relatively clean and complete; no quality audit provided.",
+        "The training window has nonzero price range."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Algebraic scaling is explicit; leakage-safe fitting schedule and inverse transform for future price interpretation are unspecified."
+      },
+      "handoff_outputs": [
+        "X_norm"
+      ],
+      "validation_refs": [
+        "Equation (23) visually checked from p12 crop; no scaler fitting code independently examined."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Paper explicitly says what preprocessing it forgoes, then records the operation it keeps."
+      ],
+      "limitations": [
+        "Missing train-only extrema and zero-range safeguard.",
+        "Claims of clean and complete CSV inputs are source assertions."
+      ],
+      "missing_details": [
+        "Exact fit/split protocol and inverse transform.",
+        "Constant window denominator handling."
+      ],
+      "source_pages": [
+        11,
+        12
+      ],
+      "source_text_bindings": [
+        {
+          "page": 11,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0011.txt",
+          "sha256": "89364479bd112d3b4a9b84cf8c3536bce945164de461a7b22fefe460b2875752"
+        },
+        {
+          "page": 12,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0012.txt",
+          "sha256": "5bb54ab030d6c7f9179d2e6b0dffa4252bcf3a5e920f9f6310946a23d9e2e8cd"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Source-chosen Min-Max scaling rather than an invented denoising pipeline.",
+        "paper_modification": "Source elects no denoising and rescales observed magnitudes before fitting.",
+        "claimed_benefit": [
+          "Paper explicitly says what preprocessing it forgoes, then records the operation it keeps."
+        ],
+        "evidence_of_benefit": "p12 methodology sentence and visually checked (23), not a reproduced CSV cleaning audit.",
+        "interface": [
+          "X_norm"
+        ],
+        "transfer_boundary": "Transfer the author choice sequence, not an assertion that every data stream needs no denoising."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "X_norm=(X-X_min)/(X_max-X_min); retain source formula and unknown fitting horizon.",
+        "leakage_risk": "Applying extrema fitted on the entire 2016-2021 series before daily forecasting would leak future price information; source does not rule it out."
+      },
+      "result_translation": "Normalized stream enters Prophet/X-Prophet, then any forecast used as a market price must be returned to the right currency scale.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Future-aware extrema make an apparent past-only backtest invalid; zero denominator makes equation undefined.",
+      "numerical_stability": "No numerical guard for zero or nearly zero X_max-X_min is printed.",
+      "source_draft_unit_id": "G5-C-Q223-M006"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-007",
+      "page": 12,
+      "section": "5.1.2 Stability Testing; 5.1.3 Randomness Testing",
+      "family": "time-series diagnostic checks",
+      "purpose": "Provide a paper-described stability and non-pure-random diagnostic before forecasting.",
+      "base_or_modification": "paper-specific",
+      "summary": "Figure 5 pairs time-series prices and correlation plots, and the adjacent prose distinguishes graphical and unit-root testing. Figure 6 reports a randomness test; its p-value claim speaks to pure randomness rather than proving high forecast accuracy. No source diagnostic equation is separately numbered here.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "input historical price value",
+          "unit": "USD per unit",
+          "role": "input",
+          "definition": "Paper claims two given CSVs are clean, then applies Min-Max formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "acf",
+          "normalized_name": "correlation/series stability indication",
+          "unit": "dimensionless",
+          "role": "output",
+          "definition": "Source uses Figure 5 and stability/randomness prose, not a calibrated prediction metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_value",
+          "normalized_name": "reported randomness test p-value",
+          "unit": "dimensionless",
+          "role": "output",
+          "definition": "Source claims non-pure-random based on Figure 6.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X"
+      ],
+      "outputs": [
+        "acf",
+        "p_value"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Determine which forecasting claims the displayed diagnostics can actually support."
+      ],
+      "constraints": [
+        "A visual price/correlation pattern is not itself a formal stationarity proof.",
+        "A p-value against pure randomness is not out-of-sample predictive accuracy."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Fitting/calibration for this component is not reproducibly specified by the source.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Inspect the two price traces and correlation panels in Figure 5.",
+          "Read the named stability check against its actual test evidence.",
+          "Read Figure 6 randomness p-value at its displayed scope.",
+          "Hand the bounded descriptive finding to prediction-section framing."
+        ],
+        "software": [],
+        "convergence_criteria": "No published convergence tolerance or numeric stopping criterion for this component.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Inherits the explicit paper assumptions in §2; source makes no independent causal market guarantee."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source describes an analytical interface but does not establish out-of-sample profit feasibility by a reproduced execution."
+      },
+      "handoff_outputs": [
+        "acf",
+        "p_value"
+      ],
+      "validation_refs": [
+        "Figure 5 on p12 and Figure 6 on p13 require separate G6 plot-level verification; contact sheets alone do not establish exact chart values."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "The narrative distinguishes preprocessing from statistical property checks.",
+        "Separates a graphical pattern from a named randomness claim."
+      ],
+      "limitations": [
+        "Exact stationarity statistic/critical value and p-value extraction need G6 crop confirmation.",
+        "The written “stable” statement cannot replace a calibrated metric."
+      ],
+      "missing_details": [
+        "Full test names, null hypotheses, levels and test output tables.",
+        "Price-window preprocessing and split before diagnostic plots."
+      ],
+      "source_pages": [
+        12,
+        13
+      ],
+      "source_text_bindings": [
+        {
+          "page": 12,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0012.txt",
+          "sha256": "5bb54ab030d6c7f9179d2e6b0dffa4252bcf3a5e920f9f6310946a23d9e2e8cd"
+        },
+        {
+          "page": 13,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0013.txt",
+          "sha256": "eaf52301124d3b6605341a98f0b439047b118820b4230505b3615d820e2b5424"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Graph/correlation inspection and a randomness significance check described in the source.",
+        "paper_modification": "Use the diagnostics as pre-forecast checks rather than as predicted-price inputs.",
+        "claimed_benefit": [
+          "The narrative distinguishes preprocessing from statistical property checks.",
+          "Separates a graphical pattern from a named randomness claim."
+        ],
+        "evidence_of_benefit": "Figures 5-6 and p12-13 surrounding prose, source claims only pending detailed figure records.",
+        "interface": [
+          "acf",
+          "p_value"
+        ],
+        "transfer_boundary": "Transfer graph -> bounded statement -> next method; do not promote a randomness rejection into forecast validity."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Source prices -> plots and reported test summaries; diagnostics frame the next prediction stage.",
+        "leakage_risk": "Diagnostics run on full 2016-2021 history would be descriptive rather than a legally available feature for an earlier day."
+      },
+      "result_translation": "A diagnostic may justify investigating time structure; it does not numerically certify a daily strategy.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "If the evidence is misread as predictive validation, later claims outrun what the figures show.",
+      "numerical_stability": "No independent sensitivity to lag selection or test specification was computed.",
+      "source_draft_unit_id": "G5-C-Q223-M007"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-008",
+      "page": 13,
+      "section": "5.2.1 Single-Step Prediction; 5.2.2 Global Forecast",
+      "family": "rolling origin forecast protocol",
+      "purpose": "Construct per-day, past-only price forecasts and aggregate their first-day outputs into a global trace.",
+      "base_or_modification": "modification",
+      "summary": "The source explicitly rejects a single full-history training pass for daily decisions, instead fitting to a prior window for each day. It describes a 90-day practical window in global forecasting; Figures 7-9 present source prediction traces. A plotted fit is not a verified leakage-free time-series cross-validation.",
+      "variables": [
+        {
+          "symbol": "observed_day",
+          "normalized_name": "decision date",
+          "unit": "calendar day",
+          "role": "input",
+          "definition": "Daily train/predict cycle must precede action.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_g",
+          "normalized_name": "observed gold price",
+          "unit": "USD per gold unit",
+          "role": "input",
+          "definition": "Gold price on available market days; paper uses g_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_b",
+          "normalized_name": "observed bitcoin price",
+          "unit": "USD per BTC",
+          "role": "input",
+          "definition": "Bitcoin daily price; paper uses b_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "forecast",
+          "normalized_name": "out-of-sample future-price forecast",
+          "unit": "USD per unit",
+          "role": "intermediate",
+          "definition": "Should use information available before the daily decision.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "window",
+          "normalized_name": "global sliding history width",
+          "unit": "days",
+          "role": "parameter",
+          "definition": "Source global forecast section proposes a 90-day history.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "observed_day",
+        "p_g",
+        "p_b",
+        "window"
+      ],
+      "outputs": [
+        "forecast"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Supply forecast at each day using only earlier prices; plot the serial set of forecasts."
+      ],
+      "constraints": [
+        "No realized price after the decision day enters its training set.",
+        "Gold market closures and rolling-window start dates require distinct handling."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Source calls 90 days a practical global prediction window; no tuned-window selection experiment documented.",
+        "parameters": [
+          "window"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "At each day select a history interval prior to that decision.",
+          "Fit the source hybrid forecaster using the available interval.",
+          "Predict the next needed price or N-day path.",
+          "Collect first-day predictions across days for the global comparison."
+        ],
+        "software": [],
+        "convergence_criteria": "Daily sweep ends at paper terminal date; fit stopping criteria and how early short windows are treated not specified.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Source-local history contains usable time structure.",
+        "A globally plotted series is composed of prior-only single-step predictions, as asserted by source."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source describes an analytical interface but does not establish out-of-sample profit feasibility by a reproduced execution."
+      },
+      "handoff_outputs": [
+        "forecast"
+      ],
+      "validation_refs": [
+        "Source Figure 7 one-step and Figure 9 global plots pp13-15.",
+        "Figure 8 describes sliding-window selection; exact plotted values require G6 crop inspection."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Explains why the task changes the training protocol from once-only to per-day dated fitting.",
+        "Explicitly states one-step outputs feed the global trace and later decisions."
+      ],
+      "limitations": [
+        "No code-level proof of past-only scaler/fit for every day.",
+        "Forecast metric, 90-day rationale and early-history handling under-specified."
+      ],
+      "missing_details": [
+        "Per-day train/test date lists, model state and random seeds.",
+        "Gold closed-date matching and error scores by asset."
+      ],
+      "source_pages": [
+        13,
+        14,
+        15
+      ],
+      "source_text_bindings": [
+        {
+          "page": 13,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0013.txt",
+          "sha256": "eaf52301124d3b6605341a98f0b439047b118820b4230505b3615d820e2b5424"
+        },
+        {
+          "page": 14,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0014.txt",
+          "sha256": "15d47ad0dafc1716cbeeb21c9ea80772c619b026694fef96e7aea63884f564a8"
+        },
+        {
+          "page": 15,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0015.txt",
+          "sha256": "cdc06db68e972d5ad7d79ab64aab0395ee49ecc587aae19c4a7354016fd922b1"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Single fit and one long forecast contrasted by source as the conventional task.",
+        "paper_modification": "Refit/forecast from a dated prior window at every decision and compose a historical global curve.",
+        "claimed_benefit": [
+          "Explains why the task changes the training protocol from once-only to per-day dated fitting.",
+          "Explicitly states one-step outputs feed the global trace and later decisions."
+        ],
+        "evidence_of_benefit": "Source forecast section and Figures 7-9; no local rerun of daily predictions.",
+        "interface": [
+          "forecast"
+        ],
+        "transfer_boundary": "Transfer dated information-flow contrast, never an unverified forecast advantage."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Past observed window -> one-step/N-day forecast -> aggregate trace -> downstream action rule.",
+        "leakage_risk": "Any fit, normalization, model selection or hyperparameter tuning using the future price interval violates the stated daily decision horizon."
+      },
+      "result_translation": "Forecast stream hands price estimates to SMA/window decisions and later to the source terminal allocation scan.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "A global curve assembled with future-trained forecasts would cease to be evidence of a feasible daily policy.",
+      "numerical_stability": "No repeated-seed or rolling-origin error dispersion results were independently computed.",
+      "source_draft_unit_id": "G5-C-Q223-M008"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-009",
+      "page": 16,
+      "section": "5.3 Get Best Profit by Decision Model; 6; 6.3",
+      "family": "portfolio split and reported decision scan",
+      "purpose": "Relate the two forecast/decision streams to a starting allocation and attributed terminal-asset outcome.",
+      "base_or_modification": "paper-specific",
+      "summary": "The source uses Figure 10 to select a 2% gold/98% bitcoin starting split and reports a final $285,647 from $1000 principal. The risk discussion on p19 says the all-bitcoin position is less attractive in its displayed comparison; the paper does not publish a complete independent optimization proof over all dynamic policies.",
+      "variables": [
+        {
+          "symbol": "delta",
+          "normalized_name": "seasonal coefficient vector or gold allocation",
+          "unit": "vector or share",
+          "role": "parameter",
+          "definition": "Seasonality delta in (8), gold-share delta in portfolio model; model-specific meanings.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "money",
+          "normalized_name": "initial cash",
+          "unit": "USD",
+          "role": "input",
+          "definition": "Official and source initial money $1000.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "forecast",
+          "normalized_name": "out-of-sample future-price forecast",
+          "unit": "USD per unit",
+          "role": "intermediate",
+          "definition": "Should use information available before the daily decision.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_lastday",
+          "normalized_name": "terminal total assets",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Equation (24) target, under source portfolio state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_gold",
+          "normalized_name": "quantity of gold",
+          "unit": "gold units",
+          "role": "state",
+          "definition": "Holdings printed as gold_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_bitcoin",
+          "normalized_name": "quantity of bitcoin",
+          "unit": "BTC units",
+          "role": "state",
+          "definition": "Holdings printed as bitcoin_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_t",
+          "normalized_name": "available cash",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Official initial cash is $1000; algorithm later splits it into two cash sleeves.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "delta",
+        "money",
+        "forecast",
+        "action_i"
+      ],
+      "outputs": [
+        "P_lastday"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Compare source-reported end wealth for tested initial gold shares, not universally optimize every feasible policy."
+      ],
+      "constraints": [
+        "Gold and bitcoin initially receive portions of $1000; official cash state and market fees remain relevant.",
+        "Feasible split and granularity outside the plotted range are not specified."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Source reports an initial allocation split; before any trades official state is $1000 cash, zero holdings."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Figure 10 reports a preferred gold share 2%; step size and split-search grid not specified in text.",
+        "parameters": [
+          "delta"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Take two daily decision streams and a candidate initial split.",
+          "Update each sleeve according to the source’s fee-accounting mechanism.",
+          "Compare final source-reported asset values across candidate splits in Figure 10.",
+          "Report the source 2/98 allocation and attributed terminal value."
+        ],
+        "software": [],
+        "convergence_criteria": "Source finishes on 2021-09-10; no published global optimization search bound or stopping certificate.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "A historical period performance comparison remains conditional on the same data/fees and training timeline."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The paper plots and reports a finite allocation result; daily buy/sell state transitions are not independently reproduced."
+      },
+      "handoff_outputs": [
+        "P_lastday"
+      ],
+      "validation_refs": [
+        "Figure 10 p16 and monthly ratio Figure 11 p17 require G6 exact plot review.",
+        "Risk interpretation p19 is the authors’ argument, not an independently calculated risk statistic."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Places a concrete decision parameter and a source amount after the prediction stage.",
+        "Makes result-to-memo transfer visible."
+      ],
+      "limitations": [
+        "No published exhaustive dynamic-policy domain or error bar.",
+        "Reported 2/98 performance and $285647 cannot be independently verified by visual review alone."
+      ],
+      "missing_details": [
+        "Full grid of tested delta values and actual per-day transaction log.",
+        "Separate terminal cash, gold and bitcoin quantities."
+      ],
+      "source_pages": [
+        16,
+        17,
+        19
+      ],
+      "source_text_bindings": [
+        {
+          "page": 16,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0016.txt",
+          "sha256": "74a4d0723ed519809dd906ef25f462475c26320a3a938596ecc610279c8808ec"
+        },
+        {
+          "page": 17,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0017.txt",
+          "sha256": "2b79d5bc2fb1967cebc798bb7d40279b4b16cca8613a11b43fdba53b884a7c77"
+        },
+        {
+          "page": 19,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0019.txt",
+          "sha256": "2615aaa70e08382d6917a6f40a86fb828d53d74cdc36f4b643d8c1db2aa0d005"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Two asset-specific daily decision streams and a fixed starting cash allocation.",
+        "paper_modification": "Source varies the initial gold/bitcoin split and reads end wealth from Figure 10, then connects it to risk explanation.",
+        "claimed_benefit": [
+          "Places a concrete decision parameter and a source amount after the prediction stage.",
+          "Makes result-to-memo transfer visible."
+        ],
+        "evidence_of_benefit": "Figure 10 and p16 $285647 source statement; Figure 11 and p19 risk explanation, G6 crop pending.",
+        "interface": [
+          "P_lastday"
+        ],
+        "transfer_boundary": "Transfer “plot -> parameter choice -> bounded risk consequence”; never reuse the 2/98 split or dollar value."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Initial cash and candidate delta -> daily decisions/state updates -> source-reported final wealth.",
+        "leakage_risk": "A final-period-selected allocation is an ex post strategy choice unless the paper fixes its selection rule before each historical decision."
+      },
+      "result_translation": "Only an attributed tested-scope allocation is passed to the memo; not an investment recommendation from this review.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Changing fit schedule, fees, allocation selection or market-day execution can change the outcome.",
+      "numerical_stability": "No independent split-grid or forecast-error perturbation around the reported optimum computed.",
+      "source_draft_unit_id": "G5-C-Q223-M009"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-010",
+      "page": 17,
+      "section": "6.1 Description of Final Profit Calculation Procedure; Algorithm 1",
+      "family": "fee-aware cash/asset accounting and terminal objective",
+      "purpose": "Define the reported terminal objective and convert daily buy/sell decisions into cash sleeves, holdings and marked-to-market wealth.",
+      "base_or_modification": "paper-specific",
+      "summary": "Equations (24)-(26) identify terminal-asset argmax, profit above $1000 and two cash sleeves plus holdings. Algorithm 1 initializes the split and loops through buy/sell cases. The printed buy branches set the sleeve to zero before assigning new holdings from that sleeve; that order is retained as source, not silently repaired or executed as a trustworthy simulator.",
+      "variables": [
+        {
+          "symbol": "Policy",
+          "normalized_name": "day-level policy",
+          "unit": "categorical sequence",
+          "role": "state",
+          "definition": "Printed Policy in (24) and (25), domain unspecified.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_lastday",
+          "normalized_name": "terminal total assets",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Equation (24) target, under source portfolio state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Profit",
+          "normalized_name": "terminal profit net initial cash",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Equation (25), not an independently replayed profit.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "money",
+          "normalized_name": "initial cash",
+          "unit": "USD",
+          "role": "input",
+          "definition": "Official and source initial money $1000.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_i",
+          "normalized_name": "daily total assets",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Printed P_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_gold",
+          "normalized_name": "gold trading cash sleeve",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed MoneyForGold_i in (26) and Algorithm 1.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_bitcoin",
+          "normalized_name": "bitcoin trading cash sleeve",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed MoneyForBitcoin_i in (26) and Algorithm 1.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_gold",
+          "normalized_name": "quantity of gold",
+          "unit": "gold units",
+          "role": "state",
+          "definition": "Holdings printed as gold_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_bitcoin",
+          "normalized_name": "quantity of bitcoin",
+          "unit": "BTC units",
+          "role": "state",
+          "definition": "Holdings printed as bitcoin_i in equation (26).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g_i",
+          "normalized_name": "gold price on day i",
+          "unit": "USD per gold unit",
+          "role": "input",
+          "definition": "Source uses nearest trading day when gold market closed, timing ambiguous.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_i",
+          "normalized_name": "bitcoin price on day i",
+          "unit": "USD per BTC",
+          "role": "input",
+          "definition": "Source daily bitcoin price.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_g",
+          "normalized_name": "gold transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 1%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_b",
+          "normalized_name": "bitcoin transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 2%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "action_i",
+          "normalized_name": "day-level buy/hold/sell action",
+          "unit": "categorical",
+          "role": "output",
+          "definition": "Two-asset day-indexed recommendation; paper writes op_j,g and op_j,b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "seasonal coefficient vector or gold allocation",
+          "unit": "vector or share",
+          "role": "parameter",
+          "definition": "Seasonality delta in (8), gold-share delta in portfolio model; model-specific meanings.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Policy",
+        "money",
+        "g_i",
+        "b_i",
+        "c_g",
+        "c_b",
+        "action_i",
+        "delta"
+      ],
+      "outputs": [
+        "P_i",
+        "P_lastday",
+        "Profit",
+        "C_gold",
+        "C_bitcoin",
+        "Q_gold",
+        "Q_bitcoin"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2200688-024",
+          "page": 17,
+          "source_expression": "Policy=argmax(P_lastday(Policy))",
+          "normalized_latex": "\\mathrm{Policy}=\\arg\\max(P_{\\mathrm{lastday}}(\\mathrm{Policy}))",
+          "variable_symbols": [
+            "Policy",
+            "P_lastday"
+          ],
+          "purpose": "Printed terminal-wealth optimization target, search domain unprinted.",
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "label": "(24)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p17-formula-lower.jpg",
+            "proxy_sha256": "fbc6d073a93aa0b04dedb8d8cca1fdde33da720d1e90945460f0c0e47ba9a49a",
+            "proxy_bytes": 161387,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 17,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0017.txt",
+            "sha256": "2b79d5bc2fb1967cebc798bb7d40279b4b16cca8613a11b43fdba53b884a7c77"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Printed notation retained; low-confidence glyphs not silently repaired."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-025",
+          "page": 17,
+          "source_expression": "Profit=P_lastday(Policy)-money",
+          "normalized_latex": "\\mathrm{Profit}=P_{\\mathrm{lastday}}(\\mathrm{Policy})-\\mathrm{money}",
+          "variable_symbols": [
+            "Profit",
+            "P_lastday",
+            "Policy",
+            "money"
+          ],
+          "purpose": "Source profit relative to initial cash.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(25)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p17-formula-lower.jpg",
+            "proxy_sha256": "fbc6d073a93aa0b04dedb8d8cca1fdde33da720d1e90945460f0c0e47ba9a49a",
+            "proxy_bytes": 161387,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 17,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0017.txt",
+            "sha256": "2b79d5bc2fb1967cebc798bb7d40279b4b16cca8613a11b43fdba53b884a7c77"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        },
+        {
+          "equation_id": "EQ-C-2022-2200688-026",
+          "page": 18,
+          "source_expression": "P_i=MoneyForGold_i+MoneyForBitcoin_i+gold_i*g_i+bitcoin_i*b_i",
+          "normalized_latex": "P_i=\\mathrm{MoneyForGold}_i+\\mathrm{MoneyForBitcoin}_i+\\mathrm{gold}_ig_i+\\mathrm{bitcoin}_ib_i",
+          "variable_symbols": [
+            "P_i",
+            "C_gold",
+            "C_bitcoin",
+            "Q_gold",
+            "Q_bitcoin",
+            "g_i",
+            "b_i"
+          ],
+          "purpose": "Daily cash-sleeve plus marked-to-market holdings; fee steps are in Algorithm 1.",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "label": "(26)",
+          "source_type": "paper",
+          "visual_evidence": {
+            "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+            "audit_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc",
+            "proxy": "tmp/q223-g5-formula-proxies-v1/p18-formula.jpg",
+            "proxy_sha256": "e6e7cfeaf04256e7fa69f684f15b5a775b6cafff61a2a161decd342c5e0fec78",
+            "proxy_bytes": 213873,
+            "reviewer": "main agent, one JPEG per image call"
+          },
+          "source_text_binding": {
+            "page": 18,
+            "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0018.txt",
+            "sha256": "796658c3521f887a059b5a40efa398ca2b2915d1f3e792eaf1cffd8fa1c539ef"
+          },
+          "mathematical_correctness_claimed": false,
+          "source_glyph_boundary": "Source-to-LaTeX transcription only, not independent implementation."
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Source printed equations recorded and checked against bounded JPEG crops."
+      },
+      "objectives": [
+        "Source (24): find a policy maximizing last-day assets, without a printed feasible-policy domain.",
+        "Source (25): subtract the $1000 initial money from terminal assets to label profit."
+      ],
+      "constraints": [
+        "Source states gold 1% and bitcoin 2% baseline fees from official task.",
+        "Gold price on a nontrading day is called the nearest trading-day quote; whether that quote is known by the decision time is not resolved."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Algorithm 1 sets money=$1000, P0=money, cash sleeves from the starting gold share and both asset holdings to zero."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Fees are official task inputs; paper does not disclose an algorithm for finding a globally best Policy.",
+        "parameters": [
+          "c_g",
+          "c_b",
+          "delta"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize $1000, split gold/bitcoin cash sleeves, and zero both holdings.",
+          "For each day obtain op_{j,g},op_{j,b} from the proposed decision model.",
+          "If gold buy and gold cash is positive, source sets sleeve to zero and then calculates gold from it; retain printed order.",
+          "If gold sold and gold cash zero, sell holdings net gold fee and set quantity to zero.",
+          "Apply analogous bitcoin buy and sell branches with bitcoin fee; retain source assignment order.",
+          "After four branches, update P_j from both sleeves and marked holdings, then stop at last day."
+        ],
+        "software": [],
+        "convergence_criteria": "Algorithm 1 says for j=1 to lastday; final output and explicit return instruction are not separately printed.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Trade operations are determined by the preceding decision model.",
+        "Pricing and portfolio updates are treated on a consistent date and currency basis."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The printed buy assignment uses a sleeve after setting it to zero and does not certify a feasible, profitable replay; no corrected algorithm has been inferred."
+      },
+      "handoff_outputs": [
+        "P_i",
+        "P_lastday",
+        "Profit",
+        "C_gold",
+        "C_bitcoin",
+        "Q_gold",
+        "Q_bitcoin"
+      ],
+      "validation_refs": [
+        "Equations (24)-(26) checked on p17-18 local crops.",
+        "Algorithm 1 upper and lower segments checked on p18, including its printed assignment sequence."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Defines a dollar-valued state interface between predictions, actions and final reported outcome.",
+        "Shows explicit fee factors and two asset-specific cash sleeves rather than a single opaque return number."
+      ],
+      "limitations": [
+        "Algorithm 1 printed buy-order makes literal arithmetic unfit for a faithful independent return reconstruction without a corrective explanation.",
+        "No exact gold closed-day execution or transaction sizing convention."
+      ],
+      "missing_details": [
+        "Computable repaired algorithm, if any; actual daily action log.",
+        "Optimizer/search over Policy and terminal holdings ledger."
+      ],
+      "source_pages": [
+        17,
+        18
+      ],
+      "source_text_bindings": [
+        {
+          "page": 17,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0017.txt",
+          "sha256": "2b79d5bc2fb1967cebc798bb7d40279b4b16cca8613a11b43fdba53b884a7c77"
+        },
+        {
+          "page": 18,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0018.txt",
+          "sha256": "796658c3521f887a059b5a40efa398ca2b2915d1f3e792eaf1cffd8fa1c539ef"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Official initial cash, gold/bitcoin holdings and per-asset transaction costs.",
+        "paper_modification": "Source uses two cash sleeves and four buy/sell branches to calculate the paper’s daily and final total assets.",
+        "claimed_benefit": [
+          "Defines a dollar-valued state interface between predictions, actions and final reported outcome.",
+          "Shows explicit fee factors and two asset-specific cash sleeves rather than a single opaque return number."
+        ],
+        "evidence_of_benefit": "Printed equations and Algorithm 1 pp17-18; neither the reported ending wealth nor an optimality certificate reproduced.",
+        "interface": [
+          "P_i",
+          "P_lastday",
+          "Profit",
+          "C_gold",
+          "C_bitcoin",
+          "Q_gold",
+          "Q_bitcoin"
+        ],
+        "transfer_boundary": "Keep state -> action -> fee -> marked holdings -> terminal output, but never copy an inconsistent source assignment as executable code."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Two cash sleeves and held quantities update under actions/fees; P_i sums current cash and marked holdings.",
+        "leakage_risk": "Choosing a nearest future gold quote on a closed day would violate past-only information, so the ambiguity cannot be resolved by assumption."
+      },
+      "result_translation": "Reported P_lastday and Profit are source-calculated outputs passed to comparison and trader memo, not independently computed values.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Changing buy assignment order or valuation time changes holdings, feasibility and terminal profit.",
+      "numerical_stability": "No independent handling of zero cash, negative holdings, floating-point rounding or missing market prices tested.",
+      "source_draft_unit_id": "G5-C-Q223-M010"
+    },
+    {
+      "model_id": "MU-C-2022-2200688-011",
+      "page": 19,
+      "section": "7 Sensitive Analysis; 10 Memorandum",
+      "family": "two-transaction-fee sensitivity",
+      "purpose": "Describe how the paper varies gold and bitcoin fees and interprets resulting final-asset response.",
+      "base_or_modification": "paper-specific",
+      "summary": "The source states gold-fee range 0.00005-0.0030 and bitcoin-fee range 0.0001-0.0030, both below official fixed 1% and 2% baselines. It describes Figure 12 and reports maximum fluctuations of 4.86% for gold-fee change and 0.35% for bitcoin-fee change, even while stating bitcoin sensitivity is larger. The source bounds are retained verbatim as claims, not harmonized by guesswork.",
+      "variables": [
+        {
+          "symbol": "c_g",
+          "normalized_name": "gold transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 1%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_b",
+          "normalized_name": "bitcoin transaction rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Official baseline 2%; source sensitivity range differs.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_lastday",
+          "normalized_name": "terminal total assets",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Equation (24) target, under source portfolio state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Policy",
+          "normalized_name": "day-level policy",
+          "unit": "categorical sequence",
+          "role": "state",
+          "definition": "Printed Policy in (24) and (25), domain unspecified.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Profit",
+          "normalized_name": "terminal profit net initial cash",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Equation (25), not an independently replayed profit.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "c_g",
+        "c_b",
+        "Policy"
+      ],
+      "outputs": [
+        "P_lastday",
+        "Profit"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "Source supplies prose/procedure, not a separately numbered governing equation for this unit."
+      },
+      "objectives": [
+        "Measure source-reported final-asset response under two independent fee perturbations at the paper’s plotted scope."
+      ],
+      "constraints": [
+        "Gold fee and bitcoin fee variation ranges are source sensitivity settings, not the official fixed baseline rates.",
+        "Holding daily policy fixed or reoptimizing it per fee is not specified."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No standalone initialized state; inherits dated data and inputs from predecessors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Official evaluation stops 2021-09-10; no future actual price may enter current policy fitting."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Finite historical forecast/decision calculation; no equilibrium solve appears in this source."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Source ranges are given without step size or policy-refit procedure; brokerage-cap rationale is a source statement.",
+        "parameters": [
+          "c_g",
+          "c_b"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Vary gold fee within its printed range while tracking reported final assets.",
+          "Vary bitcoin fee within its printed range while tracking final assets.",
+          "Read Figure 12 and its prose at the stated precision only."
+        ],
+        "software": [],
+        "convergence_criteria": "Sensitivity scans end at source 0.0030 upper bound for both fees; no grid spacing reported.",
+        "randomness_and_seed": "Any seed, numerical tolerance or repeated-run protocol not printed; no rerun is claimed."
+      },
+      "assumptions": [
+        "Portfolio and action rules are assumed to be comparable across fee runs; this is not independently verified."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "Without a runnable asset-state update and precise sensitivity grid, percent changes and actual daily-policy effects cannot be independently reconstructed."
+      },
+      "handoff_outputs": [
+        "P_lastday",
+        "Profit"
+      ],
+      "validation_refs": [
+        "Figure 12 p20 requires G6 axis/legend-level review before exact plotted trends or percentages are accepted as source-visible.",
+        "Adjacent p19 prose preserves both the sensitivity-direction and maximum fluctuation assertions."
+      ],
+      "computational_cost": "No measured runtime or resource usage in this source for this component.",
+      "strengths": [
+        "Varying a cost input makes the trading strategy’s economic boundary visible.",
+        "Output is a decision-relevant terminal response rather than a generic robustness slogan."
+      ],
+      "limitations": [
+        "Fee scan ranges do not include the official baseline percentages.",
+        "Source prose direction and stated gold/bitcoin fluctuation maxima are difficult to reconcile without chart-level review."
+      ],
+      "missing_details": [
+        "Sweep grid and what is refitted when costs vary.",
+        "Daily action changes for each fee, if any."
+      ],
+      "source_pages": [
+        19,
+        20,
+        22
+      ],
+      "source_text_bindings": [
+        {
+          "page": 19,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0019.txt",
+          "sha256": "2615aaa70e08382d6917a6f40a86fb828d53d74cdc36f4b643d8c1db2aa0d005"
+        },
+        {
+          "page": 20,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0020.txt",
+          "sha256": "95ce6d9ae1606e16a603a7a1581336b0adbe5691cc73bd44d3affe4f083cd480"
+        },
+        {
+          "page": 22,
+          "file": "tmp/q223-extraction-v1/P-C-2022-2200688-b6248fa6/text/pages/page-0022.txt",
+          "sha256": "3ce61fe853748ba15881f483c00debe150a5ae2f12ff84e21eb1f7c1ba4a30c2"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "Terminal assets and trade counts from the source strategy, conditional on a fee setting.",
+        "paper_modification": "Vary two separate fees over stated finite ranges and read changes in final wealth.",
+        "claimed_benefit": [
+          "Varying a cost input makes the trading strategy’s economic boundary visible.",
+          "Output is a decision-relevant terminal response rather than a generic robustness slogan."
+        ],
+        "evidence_of_benefit": "p19 printed ranges and percentages, Figure 12 p20 and p22 recipient caution; no independent fee rerun.",
+        "interface": [
+          "P_lastday",
+          "Profit"
+        ],
+        "transfer_boundary": "Transfer cost-perturbation setup -> plotted response -> qualified decision, never the source numbers or an unconditional robustness claim."
+      },
+      "data_provenance": {
+        "source": "Two official supplied CSV price files; source paper not independently rerun.",
+        "observation_unit": "Date-indexed gold/BTC prices with different market calendars.",
+        "coverage": "2016-09-11 to 2021-09-10 only, with day-specific past-only decision constraint.",
+        "cleaning": "How dates are joined and missing market-day prices are treated is not fully specified.",
+        "transformation": "Change c_g or c_b and read paper-reported P_lastday/Profit over the printed finite ranges.",
+        "leakage_risk": "Testing future-period fee response is ex post sensitivity, not a signal legitimately available on earlier market days."
+      },
+      "result_translation": "Fee exposure can qualify the trader memo within tested ranges, not support extrapolated investment advice.",
+      "validation_scope": "Source-bound visual/transcription check; no fitted model, daily simulation, claimed dollar amount or optimality proof independently reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "Source assumptions are recorded, not independently verified against the market.",
+      "computational_cost_evidence_boundary": "Paper performance language is not execution time measurement; runtime and resources not replayed.",
+      "assumption_consequence": "Changes to baseline convention, cost sweep range or policy refit alter sensitivity interpretation.",
+      "numerical_stability": "No independent derivative, uncertainty interval or monotonicity check from raw chart data performed.",
+      "source_draft_unit_id": "G5-C-Q223-M011"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2022-2200688-001",
+      "to_model_id": "MU-C-2022-2200688-006",
+      "handoff": "dated price/state convention -> normalized input values",
+      "source_pages": [
+        3,
+        5,
+        11,
+        12
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-006",
+      "to_model_id": "MU-C-2022-2200688-002",
+      "handoff": "X_norm and the source preprocessing boundary -> Prophet fit",
+      "source_pages": [
+        6,
+        12
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-006",
+      "to_model_id": "MU-C-2022-2200688-007",
+      "handoff": "normalized price stream -> diagnostic plots/tests",
+      "source_pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-007",
+      "to_model_id": "MU-C-2022-2200688-008",
+      "handoff": "bounded time-series diagnostic -> rolling prediction protocol",
+      "source_pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-002",
+      "to_model_id": "MU-C-2022-2200688-003",
+      "handoff": "base p(t) forecast -> X-Prophet correction branch",
+      "source_pages": [
+        6,
+        9,
+        10
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-003",
+      "to_model_id": "MU-C-2022-2200688-004",
+      "handoff": "weighted W(t) future price -> SMA/deviation decision",
+      "source_pages": [
+        10
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-004",
+      "to_model_id": "MU-C-2022-2200688-005",
+      "handoff": "daily action and future path -> adaptive N-window update",
+      "source_pages": [
+        10,
+        11
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-005",
+      "to_model_id": "MU-C-2022-2200688-008",
+      "handoff": "N-day shape/window -> dated single-step/global forecast use",
+      "source_pages": [
+        11,
+        13,
+        14
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-008",
+      "to_model_id": "MU-C-2022-2200688-009",
+      "handoff": "rolling forecast stream -> allocation scan and reported terminal result",
+      "source_pages": [
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-009",
+      "to_model_id": "MU-C-2022-2200688-010",
+      "handoff": "candidate split and daily actions -> fee-aware portfolio accounting",
+      "source_pages": [
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "from_model_id": "MU-C-2022-2200688-010",
+      "to_model_id": "MU-C-2022-2200688-011",
+      "handoff": "terminal wealth under fees -> finite fee sensitivity response",
+      "source_pages": [
+        17,
+        18,
+        19,
+        20
+      ]
+    }
+  ],
+  "visual_review": {
+    "audited_equation_groups": 26,
+    "pending_equation_ids": [],
+    "audit": "tmp/q223-g5-formula-proxies-v1/crop-audit-v2.json",
+    "all_model_visuals_complete": false,
+    "algorithm_and_notation_exactness_pending": false,
+    "important_figures_pending": true,
+    "meaning": "All 26 numbered expressions and the visible complete Algorithm 1 were checked by bounded local JPEGs; this confirms transcription, not mathematical correctness or a reproduced implementation."
+  },
+  "warnings_pending": true,
+  "g7_opened": false,
+  "formal_progress_changed": false,
+  "history_appended": false,
+  "goal_status": "active",
+  "source_draft": {
+    "path": "tmp/q223-model-stage-v1/g5-model-units-draft.json",
+    "input_sha256": "7405c6c3ce3381b7ff9a62af3c3a3edde75a54006d62c1ce5006fa98523642bc"
+  },
+  "coverage_note": "Eleven source-bound model units preserve formula glyph ambiguity, daily information boundaries, missing calibration details, and the source Algorithm 1 assignment order. Important figures and last-pass warnings remain open."
+}

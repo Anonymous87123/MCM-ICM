@@ -1,0 +1,1543 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2011-11325-02",
+      "handoff": "ownership-cost comparison is used qualitatively to set relative market competitiveness",
+      "to_model_id": "MU-C-2011-11325-01"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-01",
+      "handoff": "the competition ODE supplies trajectories and the G=E scenario metric",
+      "to_model_id": "MU-C-2011-11325-03"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-03",
+      "handoff": "scenario vehicle populations feed emissions, oil, and electricity consequences",
+      "to_model_id": "MU-C-2011-11325-04"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-02",
+      "handoff": "present values become the baseline for local sensitivity and subsidy thresholds",
+      "to_model_id": "MU-C-2011-11325-05"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-05",
+      "handoff": "economic conditions are narratively encoded in scenario growth or competition parameters",
+      "to_model_id": "MU-C-2011-11325-03"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-04",
+      "handoff": "grid and environmental burdens trigger actor-specific infrastructure and policy actions",
+      "to_model_id": "MU-C-2011-11325-06"
+    },
+    {
+      "from_model_id": "MU-C-2011-11325-06",
+      "handoff": "investment and technology actions feed back as changed initial populations or coefficients",
+      "to_model_id": "MU-C-2011-11325-03"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "define the three populations",
+          "translate market competition into cross coefficients",
+          "set initial values and capacities",
+          "integrate with Cash-Karp Runge-Kutta-Fehlberg",
+          "compare crossing dates"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "three-population Lotka-Volterra competition model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-11325-001",
+          "label": "Eq.1 / ICE competition equation",
+          "normalized_latex": "\\frac{dG}{dt}=r_GG\\left[1-\\frac{G+\\alpha_EE+\\alpha_HH}{K_G}\\right]",
+          "page": 8,
+          "purpose": "rate of change of registered ICE vehicles under self- and cross-competition",
+          "source_expression": "dG/dt=r_G*G*[1-(G+alpha_E*E+alpha_H*H)/K_G]",
+          "source_note": "Reconciled against bounded page-group proxies; source signs, symbols, units, and apparent defects are retained rather than silently corrected.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E",
+            "G",
+            "H",
+            "K_G",
+            "alpha_E",
+            "alpha_H",
+            "dG",
+            "dt",
+            "r_G"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-11325-002",
+          "label": "Eq.2 / BEV competition equation",
+          "normalized_latex": "\\frac{dE}{dt}=r_EE\\left[1-\\frac{E+\\beta_GG+\\beta_HH}{K_E}\\right]",
+          "page": 8,
+          "purpose": "rate of change of registered BEVs under self- and cross-competition",
+          "source_expression": "dE/dt=r_E*E*[1-(E+beta_G*G+beta_H*H)/K_E]",
+          "source_note": "Reconciled against bounded page-group proxies; source signs, symbols, units, and apparent defects are retained rather than silently corrected.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E",
+            "G",
+            "H",
+            "K_E",
+            "beta_G",
+            "beta_H",
+            "dE",
+            "dt",
+            "r_E"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-11325-003",
+          "label": "Eq.3 / PHEV competition equation",
+          "normalized_latex": "\\frac{dH}{dt}=r_HH\\left[1-\\frac{H+\\gamma_EE+\\gamma_GG}{K_H}\\right]",
+          "page": 8,
+          "purpose": "rate of change of registered PHEVs under self- and cross-competition",
+          "source_expression": "dH/dt=r_H*H*[1-(H+gamma_E*E+gamma_G*G)/K_H]",
+          "source_note": "Reconciled against bounded page-group proxies; source signs, symbols, units, and apparent defects are retained rather than silently corrected.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E",
+            "G",
+            "H",
+            "K_H",
+            "dH",
+            "dt",
+            "gamma_E",
+            "gamma_G",
+            "r_H"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "G(t)",
+        "E(t)",
+        "H(t)",
+        "G=E crossing year"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "G(0)",
+        "E(0)",
+        "H(0)",
+        "r_G",
+        "r_E",
+        "r_H",
+        "K_G",
+        "K_E",
+        "K_H",
+        "alpha_E",
+        "alpha_H",
+        "beta_G",
+        "beta_H",
+        "gamma_E",
+        "gamma_G"
+      ],
+      "limitations": [
+        "The analogy, coefficients, capacities, and growth rates are not calibrated to a reproduced market series."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-01",
+      "objectives": [
+        "simulate ICE, BEV, and PHEV market populations competing for consumer spending"
+      ],
+      "outputs": [
+        "G(t)",
+        "E(t)",
+        "H(t)",
+        "G=E crossing year"
+      ],
+      "page": 8,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "G(0)",
+          "E(0)",
+          "H(0)",
+          "r_G",
+          "r_E",
+          "r_H",
+          "K_G",
+          "K_E",
+          "K_H",
+          "alpha_E",
+          "alpha_H",
+          "beta_G",
+          "beta_H",
+          "gamma_E",
+          "gamma_G"
+        ],
+        "status": "partial"
+      },
+      "purpose": "simulate ICE, BEV, and PHEV market populations competing for consumer spending",
+      "section": "2.1 Mathematical Model",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "three-population Lotka-Volterra competition model: simulate ICE, BEV, and PHEV market populations competing for consumer spending",
+      "validation_refs": [
+        "physical page 8 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "E",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity E(0); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e_0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E(0)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity E(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "E(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "G",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity G(0); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g_0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "G(0)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity G(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "G(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity G=E crossing year; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g_e_crossing_year",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "G=E crossing year",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "H",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity H(0); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h_0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H(0)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity H(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "H(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity K_E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k_e",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "K_E",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity K_G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k_g",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "K_G",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity K_H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k_h",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "K_H",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q166 source quantity alpha_E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "alpha_e",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "alpha_E",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity alpha_H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "alpha_h",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "alpha_H",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity beta_G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "beta_g",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "beta_G",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity beta_H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "beta_h",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "beta_H",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity dE; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "de",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dE",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity dG; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "dg",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dG",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity dH; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "dh",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dH",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity dt; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "dt",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dt",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity gamma_E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "gamma_e",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "gamma_E",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity gamma_G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "gamma_g",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "gamma_G",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Q166 source quantity r_E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r_e",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r_E",
+          "unit": "1/year"
+        },
+        {
+          "definition": "Q166 source quantity r_G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r_g",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r_G",
+          "unit": "1/year"
+        },
+        {
+          "definition": "Q166 source quantity r_H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r_h",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r_H",
+          "unit": "1/year"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "convert energy forecasts to annual operating cost",
+          "add maintenance",
+          "discount yearly flows",
+          "discount salvage",
+          "compare present values",
+          "perturb inputs"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "discounted vehicle present-worth model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-11325-004",
+          "label": "Eq.4 / present worth of vehicle ownership",
+          "normalized_latex": "PV=-C_0+L\\,SPPW(i,n)+\\sum_{t=1}^{n}\\frac{B_t-R_t}{(1+i)^t},\\quad i=i_{\\mathrm{eff}}=\\left(1+\\frac{I}{k}\\right)^k-1",
+          "page": 10,
+          "purpose": "discount capital, salvage, yearly benefits, and yearly costs to a common present value",
+          "source_expression": "PV=-C_0+L*SPPW(i,n)+sum_{t=1}^n[(B_t-R_t)/(1+i)^t]; i=i_eff=(1+I/k)^k-1",
+          "source_note": "Reconciled against bounded page-group proxies; source signs, symbols, units, and apparent defects are retained rather than silently corrected.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "B_t",
+            "C_0",
+            "I",
+            "L",
+            "PV",
+            "R_t",
+            "SPPW",
+            "i",
+            "i_eff",
+            "k",
+            "n",
+            "sum_",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "PV",
+        "Leaf-Civic cost differential"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "C_0",
+        "L",
+        "B_t",
+        "R_t",
+        "I",
+        "k",
+        "n",
+        "annual mileage",
+        "fuel/electricity price",
+        "maintenance"
+      ],
+      "limitations": [
+        "The sign convention, SPPW definition, no-subsidy replay, price-year consistency, and uncertainty are incomplete."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-02",
+      "objectives": [
+        "compare eight-year ownership economics of a Nissan Leaf and Honda Civic"
+      ],
+      "outputs": [
+        "PV",
+        "Leaf-Civic cost differential"
+      ],
+      "page": 10,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "C_0",
+          "L",
+          "B_t",
+          "R_t",
+          "I",
+          "k",
+          "n",
+          "annual mileage",
+          "fuel/electricity price",
+          "maintenance"
+        ],
+        "status": "partial"
+      },
+      "purpose": "compare eight-year ownership economics of a Nissan Leaf and Honda Civic",
+      "section": "2.2.2 Present Worth Model",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "discounted vehicle present-worth model: compare eight-year ownership economics of a Nissan Leaf and Honda Civic",
+      "validation_refs": [
+        "physical page 10 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity B_t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "b_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "B_t",
+          "unit": "US dollars/year"
+        },
+        {
+          "definition": "Q166 source quantity C_0; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "C_0",
+          "unit": "US dollars"
+        },
+        {
+          "definition": "Q166 source quantity I; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "I",
+          "unit": "dimensionless nominal annual rate"
+        },
+        {
+          "definition": "Q166 source quantity L; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "l",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "US dollars"
+        },
+        {
+          "definition": "Q166 source quantity Leaf-Civic cost differential; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "leaf_civic_cost_differential",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Leaf-Civic cost differential",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity PV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "pv",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "PV",
+          "unit": "US dollars"
+        },
+        {
+          "definition": "Q166 source quantity R_t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_t",
+          "unit": "US dollars/year"
+        },
+        {
+          "definition": "Q166 source quantity SPPW; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sppw",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "SPPW",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity annual mileage; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "annual_mileage",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "annual mileage",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity fuel/electricity price; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "fuel_electricity_price",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "fuel/electricity price",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "i",
+          "unit": "dimensionless effective annual rate"
+        },
+        {
+          "definition": "Q166 source quantity i_eff; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i_eff",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "i_eff",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity k; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "compounding periods/year"
+        },
+        {
+          "definition": "Q166 source quantity maintenance; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "maintenance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "maintenance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity n; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "years"
+        },
+        {
+          "definition": "Q166 source quantity sum_; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum_",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "define G=E as the common metric",
+          "run the base case",
+          "change initial populations or coefficients",
+          "plot on a semi-log scale",
+          "read crossing dates"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "market scenario and equivalence-time analysis",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "population trajectories",
+        "scenario crossing years"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "base populations",
+        "growth rates",
+        "competition coefficients",
+        "infrastructure investment",
+        "oil price",
+        "electricity price",
+        "battery performance"
+      ],
+      "limitations": [
+        "Scenario coefficients are narratively assigned and several reported crossing dates conflict with plots or summary text."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-03",
+      "objectives": [
+        "compare one base case and four changed market conditions using the G=E event"
+      ],
+      "outputs": [
+        "population trajectories",
+        "scenario crossing years"
+      ],
+      "page": 12,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "base populations",
+          "growth rates",
+          "competition coefficients",
+          "infrastructure investment",
+          "oil price",
+          "electricity price",
+          "battery performance"
+        ],
+        "status": "partial"
+      },
+      "purpose": "compare one base case and four changed market conditions using the G=E event",
+      "section": "3.2 Population Model Results",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "market scenario and equivalence-time analysis: compare one base case and four changed market conditions using the G=E event",
+      "validation_refs": [
+        "physical page 12 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity base populations; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "base_populations",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "base populations",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity battery performance; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "battery_performance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "battery performance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity competition coefficients; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "competition_coefficients",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "competition coefficients",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity electricity price; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "electricity_price",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "electricity price",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity growth rates; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "growth_rates",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "growth rates",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity infrastructure investment; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "infrastructure_investment",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "infrastructure investment",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity oil price; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "oil_price",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "oil price",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity population trajectories; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "population_trajectories",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "population trajectories",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity scenario crossing years; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "scenario_crossing_years",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "scenario crossing years",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "combine scenario populations with cited factors",
+          "compare pollutant changes",
+          "plot CO2",
+          "plot oil use",
+          "plot charging demand",
+          "carry burdens into Discussion"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "fleet consequence accounting",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "pollutant percent changes",
+        "CO2 trajectories",
+        "oil trajectories",
+        "electricity trajectories"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "scenario vehicle populations",
+        "GREET factors",
+        "generation mix",
+        "oil share",
+        "electricity baseline"
+      ],
+      "limitations": [
+        "No complete formulas, frozen series, distance accounting, uncertainty, or independent benchmark are supplied."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-04",
+      "objectives": [
+        "translate modeled vehicle populations into pollutant changes, CO2, oil use, and charging electricity"
+      ],
+      "outputs": [
+        "pollutant percent changes",
+        "CO2 trajectories",
+        "oil trajectories",
+        "electricity trajectories"
+      ],
+      "page": 17,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "scenario vehicle populations",
+          "GREET factors",
+          "generation mix",
+          "oil share",
+          "electricity baseline"
+        ],
+        "status": "partial"
+      },
+      "purpose": "translate modeled vehicle populations into pollutant changes, CO2, oil use, and charging electricity",
+      "section": "3.3-3.5 Emissions, Oil, and Electricity",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "fleet consequence accounting: translate modeled vehicle populations into pollutant changes, CO2, oil use, and charging electricity",
+      "validation_refs": [
+        "physical page 17 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity CO2 trajectories; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "co2_trajectories",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "CO2 trajectories",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity GREET factors; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "greet_factors",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "GREET factors",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity electricity baseline; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "electricity_baseline",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "electricity baseline",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity electricity trajectories; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "electricity_trajectories",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "electricity trajectories",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity generation mix; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "generation_mix",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "generation mix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity oil share; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "oil_share",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "oil share",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity oil trajectories; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "oil_trajectories",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "oil trajectories",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity pollutant percent changes; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "pollutant_percent_changes",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "pollutant percent changes",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity scenario vehicle populations; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "scenario_vehicle_populations",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "scenario vehicle populations",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "perturb one or paired inputs",
+          "read Table 3.1 signs",
+          "construct four scenarios",
+          "compare with and without tax credit",
+          "state directional validity boundary"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "local economic sensitivity and threshold analysis",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "percent cost differential",
+        "subsidy-free threshold",
+        "best-case savings"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "present values",
+        "salvage value",
+        "maintenance",
+        "electricity price",
+        "efficiency",
+        "gasoline price",
+        "interest rate",
+        "tax credit"
+      ],
+      "limitations": [
+        "The perturbation denominator, joint uncertainty, scenario provenance, and future-dollar validation are missing."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-05",
+      "objectives": [
+        "identify which resale, efficiency, energy-price, maintenance, and interest changes alter the ownership comparison"
+      ],
+      "outputs": [
+        "percent cost differential",
+        "subsidy-free threshold",
+        "best-case savings"
+      ],
+      "page": 12,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "present values",
+          "salvage value",
+          "maintenance",
+          "electricity price",
+          "efficiency",
+          "gasoline price",
+          "interest rate",
+          "tax credit"
+        ],
+        "status": "partial"
+      },
+      "purpose": "identify which resale, efficiency, energy-price, maintenance, and interest changes alter the ownership comparison",
+      "section": "3.1 and 4.7 Economics",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "local economic sensitivity and threshold analysis: identify which resale, efficiency, energy-price, maintenance, and interest changes alter the ownership comparison",
+      "validation_refs": [
+        "physical page 12 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity best-case savings; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "best_case_savings",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "best-case savings",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity efficiency; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "efficiency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "efficiency",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity electricity price; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "electricity_price",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "electricity price",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity gasoline price; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "gasoline_price",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "gasoline price",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity interest rate; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "interest_rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "interest rate",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity maintenance; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "maintenance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "maintenance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity percent cost differential; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "percent_cost_differential",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "percent cost differential",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity present values; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "present_values",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "present values",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity salvage value; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "salvage_value",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "salvage value",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity subsidy-free threshold; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "subsidy_free_threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "subsidy-free threshold",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity tax credit; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "tax_credit",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tax credit",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper mentions an error tolerance concept but reports no numeric tolerance, initial step, accepted-step history, residual criterion, or replication test.",
+        "software": [
+          "Runge-Kutta-Fehlberg with Cash-Karp coefficients is named for the ODEs; no executable code, version, or frozen environment is supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "read the burden",
+          "identify who controls timing or technology",
+          "separate commercial and public levers",
+          "qualify environmental tradeoffs",
+          "state calibration and research needs"
+        ]
+      },
+      "assumptions": [
+        "Use only the source-defined US passenger-vehicle, ownership-cost, generation, emissions, oil, electricity, and policy boundary.",
+        "Treat cited values and all simulated trajectories as source inputs or internal outputs rather than observed validation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, function evaluations, memory, calibration effort, infrastructure cost, health cost, or policy implementation cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The paper uses an aggregate US passenger-vehicle and electricity boundary with selected upstream generation effects."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "G=E is a reporting event, not a validated economic equilibrium; several dates conflict."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial populations, economic inputs, or scenario conditions are printed, but their machine-readable derivation is incomplete."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint coefficient, price, demand, technology, emissions, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle class, time basis, population units, coefficient meaning, energy source, price year, discounting, and downstream consumer.",
+        "Do not promote uncalibrated crossing dates, present values, pollutant changes, or policy effects to observed causal truth."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "actor-specific infrastructure and policy response chain",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "off-peak charging",
+        "smart control",
+        "battery exchange",
+        "renewable charging",
+        "public loans",
+        "subsidy and R&D actions"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations and reported plots are inspectable, but calibration data, coefficient identification, numerical settings, uncertainty, and independent validation are incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "electricity-demand curve",
+        "range and charging limits",
+        "emissions relocation",
+        "economic differential",
+        "market growth mechanism"
+      ],
+      "limitations": [
+        "Costs, authority, equity, monitoring, causal effect, and stopping or revision rules are not modeled."
+      ],
+      "missing_details": [
+        "Executable code, frozen datasets, coefficient estimation, solver settings, uncertainty propagation, benchmark validation, and policy review rules are absent."
+      ],
+      "model_id": "MU-C-2011-11325-06",
+      "objectives": [
+        "convert projected market, grid, emissions, and economic burdens into manufacturer, business, city, utility, and government actions"
+      ],
+      "outputs": [
+        "off-peak charging",
+        "smart control",
+        "battery exchange",
+        "renewable charging",
+        "public loans",
+        "subsidy and R&D actions"
+      ],
+      "page": 21,
+      "parameter_estimation": {
+        "method": "Cited values, narrative coefficient assignment, present-worth substitution, local perturbation, and scenario comparison.",
+        "parameters": [
+          "electricity-demand curve",
+          "range and charging limits",
+          "emissions relocation",
+          "economic differential",
+          "market growth mechanism"
+        ],
+        "status": "partial"
+      },
+      "purpose": "convert projected market, grid, emissions, and economic burdens into manufacturer, business, city, utility, and government actions",
+      "section": "4 Discussion and 5 Conclusions",
+      "strengths": [
+        "The source keeps the population, economic, emissions, resource, and policy handoffs visible and states major data limitations."
+      ],
+      "summary": "actor-specific infrastructure and policy response chain: convert projected market, grid, emissions, and economic burdens into manufacturer, business, city, utility, and government actions",
+      "validation_refs": [
+        "physical page 21 source text",
+        "seven bounded JPEG proxies covering physical pages 1-26",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q166 source quantity battery exchange; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "battery_exchange",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "battery exchange",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity economic differential; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "economic_differential",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "economic differential",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity electricity-demand curve; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "electricity_demand_curve",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "electricity-demand curve",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity emissions relocation; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "emissions_relocation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "emissions relocation",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity market growth mechanism; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "market_growth_mechanism",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "market growth mechanism",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity off-peak charging; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "off_peak_charging",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "off-peak charging",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity public loans; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "public_loans",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "public loans",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity range and charging limits; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "range_and_charging_limits",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "range and charging limits",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity renewable charging; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "renewable_charging",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "renewable charging",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity smart control; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "smart_control",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "smart control",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q166 source quantity subsidy and R&D actions; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "subsidy_and_r_d_actions",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "subsidy and R&D actions",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-C-2011-11325-4609137d",
+  "problem_type": "C",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "4609137d465ddf951532e19e5676f6947e92d6d8c8d7bbe7a1d3f8aa37e154db",
+  "team_control_number": "11325",
+  "title": "Electric cars as a widespread means of transportation: Exploring impacts on the environment and society using an adapted ecological competition model",
+  "year": "2011"
+}

@@ -1,0 +1,1296 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-E-2021-2119031-7da0a6d0",
+ "problem_type": "E",
+ "year": "2021",
+ "source_sha256": "7da0a6d08ecc9e9198c3ab1594c06f265d993f801ca49fead4ec2c13341ca937",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-E-2021-2119031-PROD",
+   "paper_id": "P-E-2021-2119031-7da0a6d0",
+   "name": "food production and calorie correction",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 7,
+   "section": "4 Model I",
+   "summary": "Regional food is plantation plus husbandry plus fishery. Plantation is yield times area. Husbandry adds unit meat, unit milk, and unit egg, then multiplies by headcount. Fishery is unit catch times area. The calorie block multiplies each of those terms by a rice-based ratio and by the rice benchmark.",
+   "purpose": "turn three food sources into a mass and then into a calorie total",
+   "inputs": [
+    "Yield",
+    "Area",
+    "Meat",
+    "Milk",
+    "Egg",
+    "Num",
+    "Fish",
+    "FishArea"
+   ],
+   "outputs": [
+    "Pi",
+    "Ptot",
+    "Phat"
+   ],
+   "objectives": [
+    "quantify production and the calories in that production"
+   ],
+   "constraints": [
+    "only food crops, and only meat, eggs, and milk, are counted"
+   ],
+   "assumptions": [
+    "Wikipedia's three sources stand for a national food system",
+    "rice per 100 grams is the benchmark 1"
+   ],
+   "variables": [
+    {
+     "symbol": "Pi",
+     "normalized_name": "region production",
+     "unit": "mass",
+     "definition": "food production of region i in month t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "A",
+     "normalized_name": "plantation mass",
+     "unit": "mass",
+     "definition": "plantation production of region i in month t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "husbandry mass",
+     "unit": "mass",
+     "definition": "animal-husbandry production of region i in month t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Cfish",
+     "normalized_name": "fishery mass",
+     "unit": "mass",
+     "definition": "fishery production of region i in month t, printed as C",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "upper count",
+     "unit": "1",
+     "definition": "upper index, redefined on each line as regions, crops, animals, or fishes",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ptot",
+     "normalized_name": "country production",
+     "unit": "mass",
+     "definition": "national food production in month t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Yield",
+     "normalized_name": "crop yield",
+     "unit": "mass/area",
+     "definition": "yield per unit area of crop p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Area",
+     "normalized_name": "crop area",
+     "unit": "area",
+     "definition": "planting area of crop p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Meat",
+     "normalized_name": "unit meat",
+     "unit": "mass/head",
+     "definition": "unit meat production of animal p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Milk",
+     "normalized_name": "unit milk",
+     "unit": "mass/head",
+     "definition": "unit milk production of animal p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Egg",
+     "normalized_name": "unit egg",
+     "unit": "mass/head",
+     "definition": "unit egg production of animal p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Num",
+     "normalized_name": "headcount",
+     "unit": "head",
+     "definition": "number of breeding of animal p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Fish",
+     "normalized_name": "unit fish",
+     "unit": "mass/area",
+     "definition": "unit fish production of fish p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "FishArea",
+     "normalized_name": "fish area",
+     "unit": "area",
+     "definition": "aquaculture area of fish p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Phat",
+     "normalized_name": "region calories",
+     "unit": "energy",
+     "definition": "calorie total of region i in month t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ahat",
+     "normalized_name": "crop calories",
+     "unit": "energy",
+     "definition": "plantation calories of region i in month t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Bhat",
+     "normalized_name": "herd calories",
+     "unit": "energy",
+     "definition": "husbandry calories of region i in month t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Chat",
+     "normalized_name": "fish calories",
+     "unit": "energy",
+     "definition": "fishery calories of region i in month t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "lam",
+     "normalized_name": "calorie ratio",
+     "unit": "1",
+     "definition": "correction against rice; the lines print lambda_1 through lambda_5 and the bullet prints one lambda",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ckcal",
+     "normalized_name": "rice benchmark",
+     "unit": "kJ/100g",
+     "definition": "caloric value of rice per 100 grams, printed as C",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2021-2119031-01",
+     "page": 7,
+     "source_expression": "P_{i,t} = A_{i,t} + B_{i,t} + C_{i,t}",
+     "normalized_latex": "P_{i,t}=A_{i,t}+B_{i,t}+C_{i,t}",
+     "purpose": "add the three sources in one region",
+     "variable_symbols": [
+      "Pi",
+      "A",
+      "B",
+      "Cfish"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(1)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-02",
+     "page": 7,
+     "source_expression": "P_t = sum_{i=1}^{n} P_{i,t}",
+     "normalized_latex": "P_t=\\sum_{i=1}^{n} P_{i,t}",
+     "purpose": "add the regions into a national total",
+     "variable_symbols": [
+      "Ptot",
+      "n",
+      "Pi"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(2)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-03",
+     "page": 7,
+     "source_expression": "A_{i,t} = sum_{p=1}^{n} Yield_{i,t}^p Area_{i,t}^p",
+     "normalized_latex": "A_{i,t}=\\sum_{p=1}^{n}\\mathrm{Yield}_{i,t}^{p}\\mathrm{Area}_{i,t}^{p}",
+     "purpose": "paper equation (1), plantation mass",
+     "variable_symbols": [
+      "A",
+      "n",
+      "Yield",
+      "Area"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(3)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-04",
+     "page": 8,
+     "source_expression": "B_{i,t} = sum_{p=1}^{n} (Meat_{i,t}^p + Milk_{i,t}^p + Egg_{i,t}^p) Num_{i,t}^p",
+     "normalized_latex": "B_{i,t}=\\sum_{p=1}^{n}(\\mathrm{Meat}_{i,t}^{p}+\\mathrm{Milk}_{i,t}^{p}+\\mathrm{Egg}_{i,t}^{p})\\mathrm{Num}_{i,t}^{p}",
+     "purpose": "paper equation (2), husbandry mass",
+     "variable_symbols": [
+      "B",
+      "n",
+      "Meat",
+      "Milk",
+      "Egg",
+      "Num"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(4)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-05",
+     "page": 8,
+     "source_expression": "C_{i,t} = sum_{p=1}^{n} Fish_{i,t}^p FishArea_{i,t}^p",
+     "normalized_latex": "C_{i,t}=\\sum_{p=1}^{n}\\mathrm{Fish}_{i,t}^{p}\\mathrm{FishArea}_{i,t}^{p}",
+     "purpose": "paper equation (3), fishery mass",
+     "variable_symbols": [
+      "Cfish",
+      "n",
+      "Fish",
+      "FishArea"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(5)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-06",
+     "page": 9,
+     "source_expression": "P-hat_{i,t} = A-hat_{i,t} + B-hat_{i,t} + C-hat_{i,t}",
+     "normalized_latex": "\\hat{P}_{i,t}=\\hat{A}_{i,t}+\\hat{B}_{i,t}+\\hat{C}_{i,t}",
+     "purpose": "add the three calorie sources",
+     "variable_symbols": [
+      "Phat",
+      "Ahat",
+      "Bhat",
+      "Chat"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(6)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-07",
+     "page": 9,
+     "source_expression": "A-hat_{i,t} = sum_{p=1}^{n} Yield_{i,t}^p Area_{i,t}^p lambda_1^p C",
+     "normalized_latex": "\\hat{A}_{i,t}=\\sum_{p=1}^{n}\\mathrm{Yield}_{i,t}^{p}\\mathrm{Area}_{i,t}^{p}\\lambda_{1}^{p} C",
+     "purpose": "scale plantation mass by a rice ratio and the rice benchmark",
+     "variable_symbols": [
+      "Ahat",
+      "n",
+      "Yield",
+      "Area",
+      "lam",
+      "Ckcal"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(7)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-08",
+     "page": 9,
+     "source_expression": "B-hat_{i,t} = sum_{p=1}^{n} (Meat lambda_2^p C + Milk lambda_3^p C + Egg lambda_4^p C) Num",
+     "normalized_latex": "\\hat{B}_{i,t}=\\sum_{p=1}^{n}(\\mathrm{Meat}_{i,t}^{p}\\lambda_{2}^{p} C+\\mathrm{Milk}_{i,t}^{p}\\lambda_{3}^{p} C+\\mathrm{Egg}_{i,t}^{p}\\lambda_{4}^{p} C)\\mathrm{Num}_{i,t}^{p}",
+     "purpose": "scale each husbandry yield before the headcount",
+     "variable_symbols": [
+      "Bhat",
+      "n",
+      "Meat",
+      "Milk",
+      "Egg",
+      "lam",
+      "Ckcal",
+      "Num"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(8)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-09",
+     "page": 9,
+     "source_expression": "C-hat_{i,t} = sum_{p=1}^{n} Fish_{i,t}^p FishArea_{i,t} lambda_5^p C",
+     "normalized_latex": "\\hat{C}_{i,t}=\\sum_{p=1}^{n}\\mathrm{Fish}_{i,t}^{p}\\mathrm{FishArea}_{i,t}\\lambda_{5}^{p} C",
+     "purpose": "scale fishery mass by a rice ratio and the rice benchmark",
+     "variable_symbols": [
+      "Chat",
+      "n",
+      "Fish",
+      "FishArea",
+      "lam",
+      "Ckcal"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "medium",
+     "label": "(9)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "read from the page, but the printed line does not match the symbols or the definitions around it"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "add the three sources inside each region",
+     "multiply yield by area, and add the three animal yields before the headcount",
+     "multiply the same terms by the rice ratio and the rice benchmark"
+    ],
+    "software": [],
+    "convergence_criteria": "no iterative stop is printed for the production sums"
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "rice per 100 grams is set to 1 and the other foods are ratios against that benchmark",
+    "parameters": [
+     "lam",
+     "Ckcal"
+    ]
+   },
+   "computational_cost": "closed monthly sums; no operation count is given",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the same n is a region count on one line and a species count on the next"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "no separate initial stock; the sums are monthly totals"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "plantation mass is an ordinary yield times area"
+   ],
+   "limitations": [
+    "equation (2) adds unit meat, unit milk, and unit egg before the headcount",
+    "the calorie lines index five lambdas and the bullet names one lambda"
+   ],
+   "missing_details": [
+    "the freight formula on the next model is not part of production"
+   ],
+   "handoff_outputs": [
+    "Ptot",
+    "Phat"
+   ],
+   "validation_refs": [
+    "Table 2 prints the calorie ratios, with rice at 1450.5 and ratio 1"
+   ]
+  },
+  {
+   "model_id": "MU-E-2021-2119031-HAUL",
+   "paper_id": "P-E-2021-2119031-7da0a6d0",
+   "name": "transporter profit and selection",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 11,
+   "section": "5 Model II",
+   "summary": "Acquisition cost is production times a share times a unit price. Sales revenue is volume times sale price. One trip's profit subtracts the origin acquisition cost and a freight term from the destination sales revenue. A greedy loop then sends each food toward the living area with the largest profit.",
+   "purpose": "choose a destination for each food by the transporter's profit",
+   "inputs": [
+    "Pfood",
+    "Qvol",
+    "qb",
+    "SS"
+   ],
+   "outputs": [
+    "AC",
+    "QB",
+    "TP"
+   ],
+   "objectives": [
+    "maximize the transporter's profit"
+   ],
+   "constraints": [
+    "one living area is one transporter",
+    "freight inside a living area is zero"
+   ],
+   "assumptions": [
+    "a transporter moves one food at a time",
+    "the acquired volume is said to equal production, while the line also multiplies by a share"
+   ],
+   "variables": [
+    {
+     "symbol": "AC",
+     "normalized_name": "acquisition cost",
+     "unit": "money",
+     "definition": "acquisition cost of region i in month t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Pfood",
+     "normalized_name": "acquired mass",
+     "unit": "mass",
+     "definition": "production of food p used as the acquired volume",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "rho",
+     "normalized_name": "acquisition share",
+     "unit": "1",
+     "definition": "acquisition proportion of production food",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "ac",
+     "normalized_name": "acquisition price",
+     "unit": "money/mass",
+     "definition": "unit acquisition price of food p",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "nfood",
+     "normalized_name": "food count",
+     "unit": "1",
+     "definition": "number of food types, printed as n",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "QB",
+     "normalized_name": "sales revenue",
+     "unit": "money",
+     "definition": "sales revenue of a region in month t",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qvol",
+     "normalized_name": "sales volume",
+     "unit": "mass",
+     "definition": "sales volume of food p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "qb",
+     "normalized_name": "sale price",
+     "unit": "money/mass",
+     "definition": "sale price of food p, defined in the price model",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "TP",
+     "normalized_name": "trip profit",
+     "unit": "money",
+     "definition": "profit of one haul from region i1 to region i2",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "SS",
+     "normalized_name": "freight",
+     "unit": "money",
+     "definition": "freight term subtracted in the profit line; the freight formula is on the previous page and was not cropped",
+     "role": "input",
+     "source_status": "inferred-from-equation"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2021-2119031-10",
+     "page": 11,
+     "source_expression": "AC_{i,t} = sum_{p=1}^{n} P_{i,t}^p rho_{i,t}^p ac_{i,t}^p",
+     "normalized_latex": "AC_{i,t}=\\sum_{p=1}^{n} P_{i,t}^{p}\\rho_{i,t}^{p} ac_{i,t}^{p}",
+     "purpose": "paper equation (5), acquisition cost",
+     "variable_symbols": [
+      "AC",
+      "nfood",
+      "Pfood",
+      "rho",
+      "ac"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(10)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-11",
+     "page": 11,
+     "source_expression": "QB_{i,t} = sum_{p=1}^{n} Q_{i,t}^p qb_{i,t}^p",
+     "normalized_latex": "QB_{i,t}=\\sum_{p=1}^{n} Q_{i,t}^{p} qb_{i,t}^{p}",
+     "purpose": "paper equation (6), sales revenue",
+     "variable_symbols": [
+      "QB",
+      "nfood",
+      "Qvol",
+      "qb"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(11)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-12",
+     "page": 11,
+     "source_expression": "TP_{i1,i2,t} = QB_{i2,t} - AC_{i1,t} - SS_{i1,i2}",
+     "normalized_latex": "TP_{i_1,i_2,t}=QB_{i_2,t}-AC_{i_1,t}-SS_{i_1,i_2}",
+     "purpose": "paper equation (7), one trip's profit",
+     "variable_symbols": [
+      "TP",
+      "QB",
+      "AC",
+      "SS"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(12)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute acquisition cost and sales revenue",
+     "subtract freight from the gap between destination revenue and origin cost",
+     "assign the shipment to the living area with the larger profit"
+    ],
+    "software": [],
+    "convergence_criteria": "the selection loop ends after every living area has been offered a destination"
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "2019 statistical yearbooks set the acquisition price and the sale price",
+    "parameters": [
+     "ac",
+     "rho"
+    ]
+   },
+   "computational_cost": "a triple loop over foods, months, and areas; no operation count is given",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "one trip is not separated from the regional all-food totals"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "no initial fleet; the loop starts from the monthly production"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the profit line is an ordinary revenue minus cost minus freight"
+   ],
+   "limitations": [
+    "the profit of one trip uses the all-food revenue and the all-food acquisition cost"
+   ],
+   "missing_details": [
+    "the freight formula itself was not cropped"
+   ],
+   "handoff_outputs": [
+    "TP"
+   ],
+   "validation_refs": [
+    "Table 3 is cited as the net calorie input after one year"
+   ]
+  },
+  {
+   "model_id": "MU-E-2021-2119031-PRICE",
+   "paper_id": "P-E-2021-2119031-7da0a6d0",
+   "name": "food price fluctuation",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 12,
+   "section": "6.1 Food Price Fluctuation Model",
+   "summary": "The price derivative equals the supply minus the demand, times alpha. The initial price is p0. The sentence above the line says the price falls when supply exceeds demand.",
+   "purpose": "move a food price with the supply-demand gap",
+   "inputs": [
+    "supply",
+    "demand",
+    "p0"
+   ],
+   "outputs": [
+    "qbp"
+   ],
+   "objectives": [
+    "quantify the monthly price path"
+   ],
+   "constraints": [
+    "one food has one price inside a living area",
+    "the price is constant inside a month"
+   ],
+   "assumptions": [
+    "alpha is a policy coefficient and is not given a sign"
+   ],
+   "variables": [
+    {
+     "symbol": "qbp",
+     "normalized_name": "market price",
+     "unit": "money/mass",
+     "definition": "price of food p in living area i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "supply",
+     "normalized_name": "market supply",
+     "unit": "mass",
+     "definition": "supply of food p in the living area",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "demand",
+     "normalized_name": "market demand",
+     "unit": "mass",
+     "definition": "demand of food p in the living area",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "alpha",
+     "normalized_name": "price response",
+     "unit": "money/(mass*time)",
+     "definition": "influence of the supply-demand gap on the price",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p0",
+     "normalized_name": "initial price",
+     "unit": "money/mass",
+     "definition": "initial price of food p, printed as p_0",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2021-2119031-13",
+     "page": 12,
+     "source_expression": "d qb_{i,t}^p / dt = (supply_{i,t}^p - demand_{i,t}^p) alpha",
+     "normalized_latex": "\\frac{d qb_{i,t}^{p}}{dt}=(\\mathrm{supply}_{i,t}^{p}-\\mathrm{demand}_{i,t}^{p})\\alpha",
+     "purpose": "tie the price change to the supply-demand gap",
+     "variable_symbols": [
+      "qbp",
+      "supply",
+      "demand",
+      "alpha"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(13)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-14",
+     "page": 12,
+     "source_expression": "qb_{i,t}^p(t_0) = p_0",
+     "normalized_latex": "qb_{i,t}^{p}(t_0)=p_0",
+     "purpose": "set the starting price",
+     "variable_symbols": [
+      "qbp",
+      "p0"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(14)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "read from the page, but the printed line does not match the symbols or the definitions around it"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "start the price at p0",
+     "step the price by the supply-demand gap times alpha",
+     "hand the new price back to the transporter's revenue"
+    ],
+    "software": [],
+    "convergence_criteria": "the price path starts at p0 and is not given a convergence test"
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "alpha is left as a policy coefficient and is not fitted in closed form",
+    "parameters": [
+     "alpha"
+    ]
+   },
+   "computational_cost": "a monthly price update; no operation count is given",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "alpha is unsigned, so the direction of the derivative is not identified"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the price at t0 equals p0"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the initial condition is an ordinary starting price"
+   ],
+   "limitations": [
+    "the derivative equals supply minus demand, while the sentence says price falls when supply exceeds demand"
+   ],
+   "missing_details": [
+    "the demand formula on the next page was not cropped"
+   ],
+   "handoff_outputs": [
+    "qbp"
+   ],
+   "validation_refs": [
+    "the sale price in the profit line is this price"
+   ]
+  },
+  {
+   "model_id": "MU-E-2021-2119031-SCORE",
+   "paper_id": "P-E-2021-2119031-7da0a6d0",
+   "name": "indicators and weighted objective",
+   "base_or_modification": "paper-specific",
+   "family": "evaluation",
+   "page": 15,
+   "section": "7 Indicator Definition",
+   "summary": "Entropy weights combine emissions, cultivated land, and water into a sustainability score. Equity is the hunger ratio. Profit is revenue minus production cost. The objective minimizes a gamma-weighted sum of the two scores divided by their five-year means, and one weight vector is printed for France and India.",
+   "purpose": "score the food system and minimize a mix of the hunger ratio and the sustainability score",
+   "inputs": [
+    "zij",
+    "Gco2",
+    "Gcul",
+    "Gwater",
+    "Hmat",
+    "PopSum",
+    "QBc",
+    "PCfood"
+   ],
+   "outputs": [
+    "Wj",
+    "Sustainable",
+    "Equity",
+    "Profit",
+    "Obj"
+   ],
+   "objectives": [
+    "minimize the weighted objective with profit kept at or above zero"
+   ],
+   "constraints": [
+    "profit during the optimization is not less than zero",
+    "gamma runs from 0 to 1 in steps of 0.1"
+   ],
+   "assumptions": [
+    "a larger equity score is a larger hunger share, and the objective minimizes it"
+   ],
+   "variables": [
+    {
+     "symbol": "pij",
+     "normalized_name": "sample share",
+     "unit": "1",
+     "definition": "share of sample i on indicator j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "zij",
+     "normalized_name": "indicator value",
+     "unit": "1",
+     "definition": "normalized value of sample i on indicator j",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "nsamp",
+     "normalized_name": "sample count",
+     "unit": "1",
+     "definition": "number of samples in the entropy sum, printed as n",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "ej",
+     "normalized_name": "entropy",
+     "unit": "1",
+     "definition": "information entropy of indicator j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Wj",
+     "normalized_name": "indicator weight",
+     "unit": "1",
+     "definition": "entropy weight of indicator j",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "dj",
+     "normalized_name": "information utility",
+     "unit": "1",
+     "definition": "one minus the entropy of indicator j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mind",
+     "normalized_name": "indicator count",
+     "unit": "1",
+     "definition": "number of indicators, printed as m",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Sustainable",
+     "normalized_name": "sustainability score",
+     "unit": "1",
+     "definition": "weighted emissions, cultivated land, and water",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Gco2",
+     "normalized_name": "emissions term",
+     "unit": "1",
+     "definition": "normalized greenhouse-gas term",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Gcul",
+     "normalized_name": "land term",
+     "unit": "1",
+     "definition": "normalized cultivated-land term",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Gwater",
+     "normalized_name": "water term",
+     "unit": "1",
+     "definition": "normalized water-use term",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PopH",
+     "normalized_name": "hungry population",
+     "unit": "person",
+     "definition": "hungry people summed over living areas",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Hmat",
+     "normalized_name": "hunger matrix",
+     "unit": "person",
+     "definition": "hungry people in living area i at time t",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Marea",
+     "normalized_name": "area count",
+     "unit": "1",
+     "definition": "number of living areas, printed as M",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Equity",
+     "normalized_name": "equity score",
+     "unit": "1",
+     "definition": "hungry population divided by national population",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PopSum",
+     "normalized_name": "national population",
+     "unit": "person",
+     "definition": "total population of the country",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "nfood",
+     "normalized_name": "food count",
+     "unit": "1",
+     "definition": "number of food types in the profit sum, printed as n",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Profit",
+     "normalized_name": "country profit",
+     "unit": "money",
+     "definition": "sales revenue minus production cost",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "QBc",
+     "normalized_name": "country revenue",
+     "unit": "money",
+     "definition": "sales revenue of food p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PCfood",
+     "normalized_name": "production cost",
+     "unit": "money",
+     "definition": "production cost of food p",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Wvec",
+     "normalized_name": "printed weights",
+     "unit": "1",
+     "definition": "the one weight vector printed for France and India",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "gamma",
+     "normalized_name": "priority",
+     "unit": "1",
+     "definition": "weight on the equity term in the objective",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ebar",
+     "normalized_name": "mean equity",
+     "unit": "1",
+     "definition": "five-year average of the equity score",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Sbar",
+     "normalized_name": "mean sustainability",
+     "unit": "1",
+     "definition": "five-year average of the sustainability score",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Obj",
+     "normalized_name": "objective",
+     "unit": "1",
+     "definition": "weighted sum of the two normalized scores",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2021-2119031-15",
+     "page": 15,
+     "source_expression": "p_{ij} = z_{ij} / sum_{i=1}^{n} z_{ij}",
+     "normalized_latex": "p_{ij}=z_{ij}/\\sum_{i=1}^{n} z_{ij}",
+     "purpose": "turn one indicator column into shares",
+     "variable_symbols": [
+      "pij",
+      "zij",
+      "nsamp"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(15)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-16",
+     "page": 15,
+     "source_expression": "e_j = -1/ln(n) sum_{i=1}^{n} p_{ij} ln(p_{ij})",
+     "normalized_latex": "e_j=-\\frac{1}{\\ln n}\\sum_{i=1}^{n} p_{ij}\\ln(p_{ij})",
+     "purpose": "compute the entropy of indicator j",
+     "variable_symbols": [
+      "ej",
+      "nsamp",
+      "pij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(16)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-17",
+     "page": 15,
+     "source_expression": "W_j = d_j / sum_{j=1}^{m} d_j, sum_{i=1}^{n} W_j = 1, d_j = 1 - e_j",
+     "normalized_latex": "W_j=d_j/\\sum_{j=1}^{m} d_j,\\quad \\sum_{i=1}^{n} W_j=1,\\quad d_j=1-e_j",
+     "purpose": "turn entropy into a weight and print a sum of that weight",
+     "variable_symbols": [
+      "Wj",
+      "dj",
+      "mind",
+      "nsamp",
+      "ej"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(17)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-18",
+     "page": 15,
+     "source_expression": "Sustainable_t = W_1 G_t^{co2} + W_2 G_t^{cul} + W_3 G_t^{water}",
+     "normalized_latex": "\\mathrm{Sustainable}_t=W_1\\widehat{G}_t^{\\mathrm{co}_2}+W_2\\widehat{G}_t^{\\mathrm{cul}}+W_3\\widehat{G}_t^{\\mathrm{water}}",
+     "purpose": "paper equation (8), sustainability score",
+     "variable_symbols": [
+      "Sustainable",
+      "Wj",
+      "Gco2",
+      "Gcul",
+      "Gwater"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(18)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-19",
+     "page": 15,
+     "source_expression": "Pop_hunger = sum_{i=1}^{M} H(i,t)",
+     "normalized_latex": "\\mathrm{Pop}_{\\mathrm{hunger}}=\\sum_{i=1}^{M} H(i,t)",
+     "purpose": "add hungry people across living areas",
+     "variable_symbols": [
+      "PopH",
+      "Marea",
+      "Hmat"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(19)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-20",
+     "page": 15,
+     "source_expression": "Equity_t = Pop_hunger / Pop_sum",
+     "normalized_latex": "\\mathrm{Equity}_t=\\mathrm{Pop}_{\\mathrm{hunger}}/\\mathrm{Pop}_{\\mathrm{sum}}",
+     "purpose": "paper equation (9), hunger ratio",
+     "variable_symbols": [
+      "Equity",
+      "PopH",
+      "PopSum"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(20)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-21",
+     "page": 15,
+     "source_expression": "Profit_t = sum_{p=1}^{n} (QB_t^p - PC_t^p)",
+     "normalized_latex": "\\mathrm{Profit}_t=\\sum_{p=1}^{n}(QB_t^{p}-PC_t^{p})",
+     "purpose": "paper equation (10), country profit",
+     "variable_symbols": [
+      "Profit",
+      "nfood",
+      "QBc",
+      "PCfood"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(21)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-22",
+     "page": 18,
+     "source_expression": "W = [0.5213, 0.2511, 0.2276]",
+     "normalized_latex": "W=[0.5213,\\ 0.2511,\\ 0.2276]",
+     "purpose": "print one weight vector for France and India",
+     "variable_symbols": [
+      "Wvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(22)"
+    },
+    {
+     "equation_id": "EQ-E-2021-2119031-23",
+     "page": 18,
+     "source_expression": "Min = gamma Equity / Equity_bar + (1-gamma) Sustainable / Sustainable_bar",
+     "normalized_latex": "\\mathrm{Min}=\\gamma\\mathrm{Equity}/\\overline{\\mathrm{Equity}}+(1-\\gamma)\\mathrm{Sustainable}/\\overline{\\mathrm{Sustainable}}",
+     "purpose": "minimize the weighted mix of the two scores",
+     "variable_symbols": [
+      "Obj",
+      "gamma",
+      "Equity",
+      "Ebar",
+      "Sustainable",
+      "Sbar"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "label": "(23)"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "read from the page, but the printed line does not match the symbols or the definitions around it"
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute entropy weights from the normalized indicators",
+     "form the hunger ratio and the profit gap",
+     "search the weighted objective with a genetic algorithm while profit stays nonnegative"
+    ],
+    "software": [
+     "Matlab"
+    ],
+    "convergence_criteria": "the genetic algorithm stops at an approximate minimum of the weighted objective"
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "entropy weights on ten years of indicator data, then a genetic algorithm in Matlab",
+    "parameters": [
+     "Wj",
+     "gamma",
+     "Wvec"
+    ]
+   },
+   "computational_cost": "a Matlab genetic algorithm on a monthly path out to 70 months",
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "one printed vector is used for both countries, and the sum index on W_j is not the indicator index"
+   },
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the five-year means are the divisors, and December 2019 is the start of the case path"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "strengths": [
+    "the objective divides each score by its own five-year mean"
+   ],
+   "limitations": [
+    "the weight brace sums W_j on an index i that does not appear in W_j"
+   ],
+   "missing_details": [
+    "the demand equation that feeds the hunger count was not cropped"
+   ],
+   "handoff_outputs": [
+    "Obj"
+   ],
+   "validation_refs": [
+    "the case study reports the land-area changes and the hunger counts after this minimization"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-E-2021-2119031-PROD",
+   "to_model_id": "MU-E-2021-2119031-HAUL",
+   "handoff": "the regional production is the mass the acquisition cost multiplies"
+  },
+  {
+   "from_model_id": "MU-E-2021-2119031-HAUL",
+   "to_model_id": "MU-E-2021-2119031-PRICE",
+   "handoff": "the shipment changes the supply that moves the price"
+  },
+  {
+   "from_model_id": "MU-E-2021-2119031-PRICE",
+   "to_model_id": "MU-E-2021-2119031-SCORE",
+   "handoff": "the sale price enters the revenue in the profit score and the purchases behind the hunger ratio"
+  },
+  {
+   "from_model_id": "MU-E-2021-2119031-PROD",
+   "to_model_id": "MU-E-2021-2119031-SCORE",
+   "handoff": "the planted area and the calorie total enter the sustainability score and the hunger count"
+  }
+ ]
+}

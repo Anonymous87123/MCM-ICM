@@ -1,0 +1,3233 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2020-2001334-a7774d36",
+  "problem_type": "A",
+  "year": "2020",
+  "source_sha256": "a7774d36bf8fc8a540668e82b32746843ce9bfc67a30fd66decd0d48695ae6bf",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-A-2020-2001334-001",
+      "page": 7,
+      "section": "3.2.2 Data Cleaning",
+      "family": "seasonal aggregation, interpolation, and reachability mask",
+      "purpose": "Transform monthly gridded sea-surface temperatures into 60 annual April-July fields and mask heavily missing columns.",
+      "base_or_modification": "paper-specific",
+      "summary": "seasonal aggregation, interpolation, and reachability mask maps u_raw, q_i, y to u_bar, u_interp, M_i through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "u_raw",
+          "normalized_name": "raw monthly sea-surface temperature",
+          "unit": "degree C",
+          "definition": "raw monthly sea-surface temperature used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_bar",
+          "normalized_name": "April-July annual mean temperature",
+          "unit": "degree C",
+          "definition": "April-July annual mean temperature used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_eff",
+          "normalized_name": "available month count",
+          "unit": "month",
+          "definition": "available month count used by this retained paper interface.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_interp",
+          "normalized_name": "linearly interpolated annual temperature",
+          "unit": "degree C",
+          "definition": "linearly interpolated annual temperature used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M_i",
+          "normalized_name": "invalid-grid mask",
+          "unit": "binary",
+          "definition": "invalid-grid mask used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_i",
+          "normalized_name": "missing annual value count",
+          "unit": "year",
+          "definition": "missing annual value count used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "calendar year index",
+          "unit": "year",
+          "definition": "calendar year index used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "u_raw",
+        "q_i",
+        "y"
+      ],
+      "outputs": [
+        "u_bar",
+        "u_interp",
+        "M_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-01-01",
+          "page": 7,
+          "label": null,
+          "source_expression": "u_bar(i,y)=mean of available u_raw(i,y,m), m=4,...,7",
+          "normalized_latex": "\\bar u_{i,y}=\\frac{1}{n_{eff}}\\sum_{m\\in\\{4,5,6,7\\}}u_{i,y,m}",
+          "purpose": "Aggregate the biologically selected months by year.",
+          "variable_symbols": [
+            "u_bar",
+            "u_raw",
+            "n_eff",
+            "y"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-01-02",
+          "page": 7,
+          "label": null,
+          "source_expression": "u_interp(y)=linear interpolation along time",
+          "normalized_latex": "u^{interp}_{i,y}=u_{i,y_0}+\\frac{y-y_0}{y_1-y_0}(u_{i,y_1}-u_{i,y_0})",
+          "purpose": "Fill a completely missing seasonal year between neighboring observations.",
+          "variable_symbols": [
+            "u_interp",
+            "u_bar",
+            "y"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-01-03",
+          "page": 7,
+          "label": null,
+          "source_expression": "M_i=1 if q_i>=4",
+          "normalized_latex": "M_i=\\mathbf 1\\{q_i\\ge4\\}",
+          "purpose": "Mark columns with four or more missing annual values as invalid and unreachable.",
+          "variable_symbols": [
+            "M_i",
+            "q_i"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Transform monthly gridded sea-surface temperatures into 60 annual April-July fields and mask heavily missing columns."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "April-July means summarize the relevant habitat season for both species.",
+        "Linear interpolation is adequate for missing annual fields."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "u_bar",
+        "u_interp",
+        "M_i"
+      ],
+      "validation_refs": [
+        "Physical page 7 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Uncertainty from aggregation and interpolation is not propagated.",
+        "Missingness is converted into a physical movement barrier."
+      ],
+      "missing_details": [
+        "Exact dataset identifiers, variable versions, missingness map, and cleaning sensitivity are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-002",
+      "page": 8,
+      "section": "3.3 Geographic Coordinate System",
+      "family": "GRS80 geodesic-to-planar coordinate approximation",
+      "purpose": "Create planar x-y coordinates so Euclidean displacements and distances can approximate geodesic movement over 50-75 N, 25 W-10 E.",
+      "base_or_modification": "paper-specific",
+      "summary": "GRS80 geodesic-to-planar coordinate approximation maps lon, lat to x, y_p, d_E through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "lon",
+          "normalized_name": "longitude",
+          "unit": "degree",
+          "definition": "longitude used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lat",
+          "normalized_name": "latitude",
+          "unit": "degree",
+          "definition": "latitude used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "projected east coordinate",
+          "unit": "m",
+          "definition": "projected east coordinate used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_p",
+          "normalized_name": "projected north coordinate",
+          "unit": "m",
+          "definition": "projected north coordinate used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_geo",
+          "normalized_name": "GRS80 geodesic distance",
+          "unit": "m",
+          "definition": "GRS80 geodesic distance used by this retained paper interface.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_E",
+          "normalized_name": "planar Euclidean distance",
+          "unit": "m",
+          "definition": "planar Euclidean distance used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "lon",
+        "lat"
+      ],
+      "outputs": [
+        "x",
+        "y_p",
+        "d_E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-02-01",
+          "page": 8,
+          "label": null,
+          "source_expression": "d_E approximately equals d_geo after projection",
+          "normalized_latex": "d_E((x_1,y_1),(x_2,y_2))\\approx d_{GRS80}((\\phi_1,\\lambda_1),(\\phi_2,\\lambda_2))",
+          "purpose": "Retain the stated distance-preserving intent of the projection.",
+          "variable_symbols": [
+            "d_E",
+            "d_geo",
+            "x",
+            "y_p",
+            "lon",
+            "lat"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Create planar x-y coordinates so Euclidean displacements and distances can approximate geodesic movement over 50-75 N, 25 W-10 E."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "The target spherical quadrilateral may be approximated by a plane."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "x",
+        "y_p",
+        "d_E"
+      ],
+      "validation_refs": [
+        "Physical page 8 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Projection equations, distortion diagnostics, and inverse-error bounds are not published."
+      ],
+      "missing_details": [
+        "The exact projection family and coordinate-unit ledger are absent from the prose."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-003",
+      "page": 9,
+      "section": "4.2 Autoregressive Prediction Model",
+      "family": "per-grid ARIMA(p,d,0) temperature forecast",
+      "purpose": "Forecast each of 690 annual temperature series and recursively construct future sea-surface temperature fields.",
+      "base_or_modification": "base",
+      "summary": "per-grid ARIMA(p,d,0) temperature forecast maps u_i_t, eps_i_t to mu_i_t, u_hat through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "u_i_t",
+          "normalized_name": "temperature at grid i and year t",
+          "unit": "degree C",
+          "definition": "temperature at grid i and year t used by this retained paper interface.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta_d_u",
+          "normalized_name": "d-th differenced temperature",
+          "unit": "degree C/year^d",
+          "definition": "d-th differenced temperature used by this retained paper interface.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_i_j",
+          "normalized_name": "grid-specific autoregressive coefficient",
+          "unit": "dimensionless",
+          "definition": "grid-specific autoregressive coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps_i_t",
+          "normalized_name": "forecast residual",
+          "unit": "degree C/year^d",
+          "definition": "forecast residual used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_i_t",
+          "normalized_name": "conditional forecast mean",
+          "unit": "degree C",
+          "definition": "conditional forecast mean used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_i",
+          "normalized_name": "conditional standard deviation",
+          "unit": "degree C",
+          "definition": "conditional standard deviation used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ar",
+          "normalized_name": "lag order",
+          "unit": "lag",
+          "definition": "lag order used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_ar",
+          "normalized_name": "difference order",
+          "unit": "order",
+          "definition": "difference order used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_hat",
+          "normalized_name": "simulated temperature forecast",
+          "unit": "degree C",
+          "definition": "simulated temperature forecast used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "u_i_t",
+        "eps_i_t"
+      ],
+      "outputs": [
+        "mu_i_t",
+        "u_hat"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-03-01",
+          "page": 9,
+          "label": null,
+          "source_expression": "Delta^d u_i,t = sum_j alpha_i,j Delta^d u_i,t-j + eps_i,t",
+          "normalized_latex": "\\Delta^d u_{i,t}=\\sum_{j=1}^{p}\\alpha_{i,j}\\Delta^d u_{i,t-j}+\\varepsilon_{i,t}",
+          "purpose": "Retain Equation (2), the per-grid differenced autoregression.",
+          "variable_symbols": [
+            "Delta_d_u",
+            "u_i_t",
+            "alpha_i_j",
+            "eps_i_t",
+            "p_ar",
+            "d_ar"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-03-02",
+          "page": 9,
+          "label": null,
+          "source_expression": "E(Delta^d u_i,t)=sum_j alpha_hat_i,j E(Delta^d u_i,t-j)",
+          "normalized_latex": "E(\\Delta^d u_{i,t})=\\sum_{j=1}^{p}\\hat\\alpha_{i,j}E(\\Delta^d u_{i,t-j})",
+          "purpose": "Retain Equation (3), the conditional expected difference forecast.",
+          "variable_symbols": [
+            "Delta_d_u",
+            "u_i_t",
+            "alpha_i_j",
+            "mu_i_t",
+            "p_ar",
+            "d_ar"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-03-03",
+          "page": 9,
+          "label": null,
+          "source_expression": "u_hat_i,t = E(Delta u_i,t)+u_hat_i,t-1+eps_i,t",
+          "normalized_latex": "\\hat u_{i,t}=E(\\Delta u_{i,t})+\\hat u_{i,t-1}+\\varepsilon_{i,t}",
+          "purpose": "Retain Equation (4), the recursively integrated stochastic forecast.",
+          "variable_symbols": [
+            "u_hat",
+            "mu_i_t",
+            "eps_i_t",
+            "u_i_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Forecast each of 690 annual temperature series and recursively construct future sea-surface temperature fields."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "alpha_i_j",
+          "sigma_i",
+          "p_ar",
+          "d_ar"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "A differenced autoregression is adequate for 50-year extrapolation.",
+        "Residual behavior remains stable over the forecast horizon."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "mu_i_t",
+        "u_hat"
+      ],
+      "validation_refs": [
+        "Physical page 9 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "The prose calls this vector autoregression, but coefficients are fit separately for each grid cell.",
+        "No reported stationarity or residual diagnostics support the long extrapolation."
+      ],
+      "missing_details": [
+        "Numeric coefficients, residual plots, trend/drift treatment, prediction intervals, and out-of-sample horizon checks are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-004",
+      "page": 10,
+      "section": "4.3.1 Parameter Estimation",
+      "family": "ordinary least-squares AR coefficient estimation",
+      "purpose": "Estimate grid-specific AR coefficients from lagged differenced temperatures.",
+      "base_or_modification": "base",
+      "summary": "ordinary least-squares AR coefficient estimation maps X, Y to alpha_hat through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "lagged design matrix",
+          "unit": "degree C",
+          "definition": "lagged design matrix used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "forecast response vector",
+          "unit": "degree C",
+          "definition": "forecast response vector used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_hat",
+          "normalized_name": "estimated AR coefficient vector",
+          "unit": "mixed",
+          "definition": "estimated AR coefficient vector used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "XTX",
+          "normalized_name": "normal-equation Gram matrix",
+          "unit": "mixed",
+          "definition": "normal-equation Gram matrix used by this retained paper interface.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X",
+        "Y"
+      ],
+      "outputs": [
+        "alpha_hat"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-04-01",
+          "page": 10,
+          "label": null,
+          "source_expression": "X^T X alpha = X^T Y",
+          "normalized_latex": "X^TX\\alpha=X^TY",
+          "purpose": "Retain Equation (5), the OLS normal equations.",
+          "variable_symbols": [
+            "X",
+            "Y",
+            "alpha_hat",
+            "XTX"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-04-02",
+          "page": 10,
+          "label": null,
+          "source_expression": "alpha_hat=(X^T X)^-1 X^T Y",
+          "normalized_latex": "\\hat\\alpha=(X^TX)^{-1}X^TY",
+          "purpose": "Retain Equation (6), the printed closed-form estimator.",
+          "variable_symbols": [
+            "X",
+            "Y",
+            "alpha_hat",
+            "XTX"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Estimate grid-specific AR coefficients from lagged differenced temperatures."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "The design matrix has sufficient rank and stable conditioning."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "alpha_hat"
+      ],
+      "validation_refs": [
+        "Physical page 10 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Direct normal-equation inversion can magnify conditioning error.",
+        "No coefficient uncertainty or regularization is reported."
+      ],
+      "missing_details": [
+        "Rank, condition number, residual degrees of freedom, and numeric coefficient tables are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-005",
+      "page": 10,
+      "section": "4.3.1 Six-Fold Model Selection",
+      "family": "blocked six-fold RMSE ARIMA order selection",
+      "purpose": "Choose among (p,d) in {(1,1),(1,2),(2,1),(2,2)} by pooled ten-year holdout errors.",
+      "base_or_modification": "modification",
+      "summary": "blocked six-fold RMSE ARIMA order selection maps e_m_k to RMSE_m, m_star through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "e_m_k",
+          "normalized_name": "forecast error for model m in fold k",
+          "unit": "degree C",
+          "definition": "forecast error for model m in fold k used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RMSE_m",
+          "normalized_name": "candidate root mean square error",
+          "unit": "degree C",
+          "definition": "candidate root mean square error used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_star",
+          "normalized_name": "selected ARIMA candidate",
+          "unit": "model index",
+          "definition": "selected ARIMA candidate used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "fold count",
+          "unit": "fold",
+          "definition": "fold count used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "e_m_k"
+      ],
+      "outputs": [
+        "RMSE_m",
+        "m_star"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-05-01",
+          "page": 10,
+          "label": null,
+          "source_expression": "RMSE_m=sqrt(mean(e_m,k^2))",
+          "normalized_latex": "RMSE_m=\\sqrt{\\frac{1}{n_m}\\sum_k e_{m,k}^2}",
+          "purpose": "Reconstruct the code's error aggregation for each candidate.",
+          "variable_symbols": [
+            "RMSE_m",
+            "e_m_k",
+            "K"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-05-02",
+          "page": 10,
+          "label": null,
+          "source_expression": "m_star=argmin_m RMSE_m",
+          "normalized_latex": "m^*=\\arg\\min_m RMSE_m",
+          "purpose": "Formalize selection of ARIMA(1,1,0) from Figure 6.",
+          "variable_symbols": [
+            "m_star",
+            "RMSE_m"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Choose among (p,d) in {(1,1),(1,2),(2,1),(2,2)} by pooled ten-year holdout errors."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "K"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Pooled ten-year-block RMSE ranks models for a 50-year forecast."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "RMSE_m",
+        "m_star"
+      ],
+      "validation_refs": [
+        "Physical page 10 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Each fold trains on observations later than the held-out decade for most folds.",
+        "Numeric fold errors and selection uncertainty are not reported."
+      ],
+      "missing_details": [
+        "A forward-chaining validation design and a long-horizon benchmark are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-006",
+      "page": 28,
+      "section": "B.2 Forecast Ensemble Code",
+      "family": "multivariate-normal residual field simulation with boolean switch",
+      "purpose": "Generate correlated residual fields for future temperatures when the code's bootstrap switch is enabled.",
+      "base_or_modification": "paper-specific",
+      "summary": "multivariate-normal residual field simulation with boolean switch maps z, u_state to eps_vec, N_sim, u_next through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "eps_vec",
+          "normalized_name": "spatial residual vector",
+          "unit": "degree C",
+          "definition": "spatial residual vector used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sigma",
+          "normalized_name": "cross-grid residual covariance",
+          "unit": "degree C^2",
+          "definition": "cross-grid residual covariance used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "multivariate-normal draw",
+          "unit": "degree C",
+          "definition": "multivariate-normal draw used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bs",
+          "normalized_name": "randomness switch",
+          "unit": "binary",
+          "definition": "randomness switch used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_sim",
+          "normalized_name": "simulation count",
+          "unit": "case",
+          "definition": "simulation count used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_next",
+          "normalized_name": "next simulated temperature field",
+          "unit": "degree C",
+          "definition": "next simulated temperature field used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_state",
+          "normalized_name": "current AR forecast state",
+          "unit": "degree C",
+          "definition": "current AR forecast state used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_i",
+          "normalized_name": "grid-specific fitted intercept used by the code",
+          "unit": "degree C/year",
+          "definition": "grid-specific fitted intercept used by the code used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "inferred-from-equation"
+        }
+      ],
+      "inputs": [
+        "z",
+        "u_state"
+      ],
+      "outputs": [
+        "eps_vec",
+        "N_sim",
+        "u_next"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-06-01",
+          "page": 28,
+          "label": null,
+          "source_expression": "eps_vec ~ N(0,Sigma)",
+          "normalized_latex": "\\varepsilon_t\\sim\\mathcal N(0,\\Sigma)",
+          "purpose": "Retain the code's parametric correlated residual generator.",
+          "variable_symbols": [
+            "eps_vec",
+            "Sigma",
+            "z"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-06-02",
+          "page": 28,
+          "label": null,
+          "source_expression": "N_sim=10000 if bs else 1",
+          "normalized_latex": "N_{sim}=\\begin{cases}10000,&bs=1\\\\1,&bs=0\\end{cases}",
+          "purpose": "Retain the published execution switch and case count.",
+          "variable_symbols": [
+            "N_sim",
+            "bs"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-06-03",
+          "page": 28,
+          "label": null,
+          "source_expression": "u_next=AR(u_state)+inception+bs*eps_vec",
+          "normalized_latex": "u_{i,t+1}=AR_i(u_t)+c_i+bs\\,\\varepsilon_{i,t}",
+          "purpose": "Retain the code-only fitted intercept and the path that removes all randomness when bs is false.",
+          "variable_symbols": [
+            "u_next",
+            "u_state",
+            "c_i",
+            "bs",
+            "eps_vec"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Generate correlated residual fields for future temperatures when the code's bootstrap switch is enabled."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "Sigma",
+          "bs",
+          "c_i"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Residual fields are multivariate normal with time-invariant covariance."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "eps_vec",
+        "N_sim",
+        "u_next"
+      ],
+      "validation_refs": [
+        "Physical page 28 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "About 59 residual years cannot identify a full 690-by-690 covariance matrix.",
+        "The published default is bs=false and one deterministic case."
+      ],
+      "missing_details": [
+        "A low-rank covariance method, covariance diagnostics, and the actual execution configuration that produced figures are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-007",
+      "page": 12,
+      "section": "5.3.1 Temperature Gradient",
+      "family": "printed and implemented spatial-temperature gradient",
+      "purpose": "Compute the local direction and magnitude used by the migration-velocity response.",
+      "base_or_modification": "paper-specific",
+      "summary": "printed and implemented spatial-temperature gradient maps u, dx, dy, dt to grad_u, du_dx, du_dy through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "u",
+          "normalized_name": "continuous temperature field",
+          "unit": "degree C",
+          "definition": "continuous temperature field used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "grad_u",
+          "normalized_name": "spatial temperature gradient",
+          "unit": "degree C/m",
+          "definition": "spatial temperature gradient used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "du_dx",
+          "normalized_name": "x temperature derivative",
+          "unit": "degree C/m",
+          "definition": "x temperature derivative used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "du_dy",
+          "normalized_name": "y temperature derivative",
+          "unit": "degree C/m",
+          "definition": "y temperature derivative used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dx",
+          "normalized_name": "x grid increment",
+          "unit": "m",
+          "definition": "x grid increment used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dy",
+          "normalized_name": "y grid increment",
+          "unit": "m",
+          "definition": "y grid increment used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dt",
+          "normalized_name": "time increment",
+          "unit": "year",
+          "definition": "time increment used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "u",
+        "dx",
+        "dy",
+        "dt"
+      ],
+      "outputs": [
+        "grad_u",
+        "du_dx",
+        "du_dy"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-07-01",
+          "page": 12,
+          "label": null,
+          "source_expression": "grad u=(partial u/partial x, partial u/partial y)",
+          "normalized_latex": "\\nabla u=(\\partial u/\\partial x,\\partial u/\\partial y)",
+          "purpose": "Retain Equation (10), the spatial gradient definition.",
+          "variable_symbols": [
+            "grad_u",
+            "du_dx",
+            "du_dy",
+            "u"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-07-02",
+          "page": 12,
+          "label": null,
+          "source_expression": "partial u/partial x=[u(x+dx,y,t+dt)-u(x,y,t)]/dt",
+          "normalized_latex": "\\frac{\\partial u}{\\partial x}=\\frac{u(x+dx,y,t+dt)-u(x,y,t)}{dt}",
+          "purpose": "Retain the first printed Equation (11) exactly for later warning.",
+          "variable_symbols": [
+            "du_dx",
+            "u",
+            "dx",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-07-03",
+          "page": 12,
+          "label": null,
+          "source_expression": "partial u/partial y=[u(x,y+dy,t+dt)-u(x,y,t)]/dt",
+          "normalized_latex": "\\frac{\\partial u}{\\partial y}=\\frac{u(x,y+dy,t+dt)-u(x,y,t)}{dt}",
+          "purpose": "Retain the second printed Equation (11) exactly for later warning.",
+          "variable_symbols": [
+            "du_dy",
+            "u",
+            "dy",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-07-04",
+          "page": 12,
+          "label": null,
+          "source_expression": "code grad uses diff(map)/diff(x) and diff(map)/diff(y)",
+          "normalized_latex": "\\partial_xu\\approx\\Delta_xu/\\Delta x,\\quad\\partial_yu\\approx\\Delta_yu/\\Delta y",
+          "purpose": "Retain the dimensionally spatial implementation in Appendix B.",
+          "variable_symbols": [
+            "du_dx",
+            "du_dy",
+            "u",
+            "dx",
+            "dy"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Compute the local direction and magnitude used by the migration-velocity response."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "A local planar gradient captures the relevant habitat direction."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "grad_u",
+        "du_dx",
+        "du_dy"
+      ],
+      "validation_refs": [
+        "Physical page 12 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "The displayed finite differences mix spatial and future temporal changes and divide by dt.",
+        "The code and paper equation do not match."
+      ],
+      "missing_details": [
+        "Interpolation error, grid convergence, and a consistent spatiotemporal derivative derivation are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-008",
+      "page": 12,
+      "section": "5.3.2 Thermal Migration Velocity",
+      "family": "temperature-gated saturating gradient velocity",
+      "purpose": "Move fish toward warmer water below 2 C, toward colder water above 6 C, and hold position inside the shared interval.",
+      "base_or_modification": "paper-specific",
+      "summary": "temperature-gated saturating gradient velocity maps grad_u, T to v, delta_u through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "v",
+          "normalized_name": "fish migration velocity",
+          "unit": "m/year",
+          "definition": "fish migration velocity used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "grad_u",
+          "normalized_name": "temperature gradient",
+          "unit": "degree C/m",
+          "definition": "temperature gradient used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_u",
+          "normalized_name": "thermal direction gate",
+          "unit": "signed indicator",
+          "definition": "thermal direction gate used by this retained paper interface.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "gradient scaling coefficient",
+          "unit": "degree C/m",
+          "definition": "gradient scaling coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_max",
+          "normalized_name": "maximum migration speed",
+          "unit": "m/year",
+          "definition": "maximum migration speed used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "local sea-surface temperature",
+          "unit": "degree C",
+          "definition": "local sea-surface temperature used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_min",
+          "normalized_name": "lower suitable threshold",
+          "unit": "degree C",
+          "definition": "lower suitable threshold used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_max",
+          "normalized_name": "upper suitable threshold",
+          "unit": "degree C",
+          "definition": "upper suitable threshold used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "grad_u",
+        "T"
+      ],
+      "outputs": [
+        "v",
+        "delta_u"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-08-01",
+          "page": 12,
+          "label": null,
+          "source_expression": "v=f(grad u)",
+          "normalized_latex": "v(x,y,t)=f(\\nabla u(x,y,t))",
+          "purpose": "Retain Equation (9), the migration-response hypothesis.",
+          "variable_symbols": [
+            "v",
+            "grad_u"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-08-02",
+          "page": 12,
+          "label": null,
+          "source_expression": "v=sign(Delta u) grad_u/(norm(grad_u)+beta) v_max",
+          "normalized_latex": "\\mathbf v=\\operatorname{sign}(\\Delta u)\\frac{\\nabla u}{\\|\\nabla u\\|+\\beta}v_{max}",
+          "purpose": "Retain Equation (12), the saturating gradient velocity.",
+          "variable_symbols": [
+            "v",
+            "delta_u",
+            "grad_u",
+            "beta",
+            "v_max"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-08-03",
+          "page": 12,
+          "label": null,
+          "source_expression": "delta_u=-1 if T>6, +1 if T<2, 0 otherwise",
+          "normalized_latex": "\\delta_u(T)=\\begin{cases}-1,&T>T_{max}\\\\0,&T_{min}\\le T\\le T_{max}\\\\1,&T<T_{min}\\end{cases}",
+          "purpose": "Retain the code-only thermal gate controlling direction and motion.",
+          "variable_symbols": [
+            "delta_u",
+            "T",
+            "T_min",
+            "T_max"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Move fish toward warmer water below 2 C, toward colder water above 6 C, and hold position inside the shared interval."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "beta",
+          "v_max",
+          "T_min",
+          "T_max"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Both species share a 2-6 C preferred surface-temperature interval.",
+        "Temperature gradient alone determines annual migration velocity."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "v",
+        "delta_u"
+      ],
+      "validation_refs": [
+        "Physical page 12 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Beta and v_max are derived from grid statistics rather than observed migration.",
+        "Currents, food, salinity, spawning, diffusion, density dependence, and species differences are omitted."
+      ],
+      "missing_details": [
+        "Species-specific calibration data, uncertainty, and independent trajectory validation are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-009",
+      "page": 13,
+      "section": "5.3.3 Particle Advection",
+      "family": "annual projected-coordinate particle update",
+      "purpose": "Advance every initialized ocean-grid particle under the thermal velocity field for 50 annual steps.",
+      "base_or_modification": "paper-specific",
+      "summary": "annual projected-coordinate particle update maps x_t, y_t, v_x, v_y to dx, dy, x_t, y_t, rho through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "x_t",
+          "normalized_name": "particle x position",
+          "unit": "m",
+          "definition": "particle x position used by this retained paper interface.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_t",
+          "normalized_name": "particle y position",
+          "unit": "m",
+          "definition": "particle y position used by this retained paper interface.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dx",
+          "normalized_name": "annual x displacement",
+          "unit": "m",
+          "definition": "annual x displacement used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dy",
+          "normalized_name": "annual y displacement",
+          "unit": "m",
+          "definition": "annual y displacement used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_x",
+          "normalized_name": "x migration velocity",
+          "unit": "m/year",
+          "definition": "x migration velocity used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_y",
+          "normalized_name": "y migration velocity",
+          "unit": "m/year",
+          "definition": "y migration velocity used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dt",
+          "normalized_name": "annual integration step",
+          "unit": "year",
+          "definition": "annual integration step used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "reported fish density field",
+          "unit": "normalized density",
+          "definition": "reported fish density field used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_t",
+        "y_t",
+        "v_x",
+        "v_y"
+      ],
+      "outputs": [
+        "dx",
+        "dy",
+        "x_t",
+        "y_t",
+        "rho"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-09-01",
+          "page": 13,
+          "label": null,
+          "source_expression": "(dx,dy)=v dt",
+          "normalized_latex": "(dx,dy)=\\mathbf v\\,dt",
+          "purpose": "Retain Equation (7), velocity-to-displacement conversion.",
+          "variable_symbols": [
+            "dx",
+            "dy",
+            "v_x",
+            "v_y",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-09-02",
+          "page": 13,
+          "label": null,
+          "source_expression": "(x_t,y_t)=(x_t-1,y_t-1)+(dx,dy)",
+          "normalized_latex": "(x_t,y_t)=(x_{t-1},y_{t-1})+(dx,dy)",
+          "purpose": "Retain Equation (8), the annual location update.",
+          "variable_symbols": [
+            "x_t",
+            "y_t",
+            "dx",
+            "dy"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-09-03",
+          "page": 13,
+          "label": null,
+          "source_expression": "code initializes px=x and py=y for every ocean grid cell",
+          "normalized_latex": "(x_0,y_0)=\\{(x_i,y_i):M_i=0\\}",
+          "purpose": "Retain the code's one-particle-per-grid initialization.",
+          "variable_symbols": [
+            "x_t",
+            "y_t",
+            "rho"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Advance every initialized ocean-grid particle under the thermal velocity field for 50 annual steps."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "dt"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "A one-year step resolves migration and all grid particles have equal initial weight."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "dx",
+        "dy",
+        "x_t",
+        "y_t",
+        "rho"
+      ],
+      "validation_refs": [
+        "Physical page 13 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "The code does not initialize observed herring or mackerel distributions and does not distinguish species.",
+        "No density-conserving advection, birth, death, boundary reflection, or stochastic fish behavior is defined."
+      ],
+      "missing_details": [
+        "Histogram reconstruction, particle weights, land-boundary policy, and convergence tests are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-010",
+      "page": 14,
+      "section": "6.1.1 Fishing Cost",
+      "family": "fixed-plus-distance fishing cost",
+      "purpose": "Estimate trip cost from a fixed component and a linear navigation-distance component.",
+      "base_or_modification": "base",
+      "summary": "fixed-plus-distance fishing cost maps d to C through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "C",
+          "normalized_name": "fishing cost",
+          "unit": "USD/trip",
+          "definition": "fishing cost used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_0",
+          "normalized_name": "fixed fishing cost",
+          "unit": "USD/trip",
+          "definition": "fixed fishing cost used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "variable navigation cost",
+          "unit": "USD/km",
+          "definition": "variable navigation cost used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "port-to-fishing-site distance",
+          "unit": "km",
+          "definition": "port-to-fishing-site distance used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d"
+      ],
+      "outputs": [
+        "C"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-10-01",
+          "page": 14,
+          "label": null,
+          "source_expression": "C(x,y)=C_0+a d(x,y)",
+          "normalized_latex": "C(x,y)=C_0+a\\,d(x,y)",
+          "purpose": "Retain Equation (13), trip cost as fixed plus distance-dependent cost.",
+          "variable_symbols": [
+            "C",
+            "C_0",
+            "a",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Estimate trip cost from a fixed component and a linear navigation-distance component."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "C_0",
+          "a"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Distance is the only variable cost driver and costs stay fixed for 50 years."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "C"
+      ],
+      "validation_refs": [
+        "Physical page 14 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Fuel price, trip duration, crew, effort, catch capacity, maintenance, and inflation are omitted."
+      ],
+      "missing_details": [
+        "Company heterogeneity and source-row calculations for C_0 and a are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-011",
+      "page": 14,
+      "section": "6.1.2 Fishing Income",
+      "family": "density-scaled exponential freshness income",
+      "purpose": "Estimate trip income from normalized fish density, a catch-price coefficient, and distance-related freshness decay.",
+      "base_or_modification": "paper-specific",
+      "summary": "density-scaled exponential freshness income maps rho, d to I through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "I",
+          "normalized_name": "fishing income",
+          "unit": "USD/trip",
+          "definition": "fishing income used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "fish density at target site",
+          "unit": "normalized density",
+          "definition": "fish density at target site used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "fishing income coefficient",
+          "unit": "USD/trip",
+          "definition": "fishing income coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "freshness decay coefficient",
+          "unit": "1/km",
+          "definition": "freshness decay coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "port-to-fishing-site distance",
+          "unit": "km",
+          "definition": "port-to-fishing-site distance used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rho",
+        "d"
+      ],
+      "outputs": [
+        "I"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-11-01",
+          "page": 14,
+          "label": null,
+          "source_expression": "I(x,y)=rho(x,y) theta exp(-lambda d(x,y))",
+          "normalized_latex": "I(x,y)=\\rho(x,y)\\theta e^{-\\lambda d(x,y)}",
+          "purpose": "Retain Equation (14), density income attenuated by distance and freshness.",
+          "variable_symbols": [
+            "I",
+            "rho",
+            "theta",
+            "lambda",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Estimate trip income from normalized fish density, a catch-price coefficient, and distance-related freshness decay."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "theta",
+          "lambda"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Catch is proportional to normalized local density and freshness decays exponentially with distance."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "I"
+      ],
+      "validation_refs": [
+        "Physical page 14 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "No fishing effort, catchability, quota, vessel capacity, market price, demand, or trip-time conversion is modeled."
+      ],
+      "missing_details": [
+        "Units and calibration for rho and theta and an observed freshness-price curve are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-012",
+      "page": 14,
+      "section": "6.1.3 Fishing Profit and Bankruptcy",
+      "family": "trip-profit and nonpositive-profit failure rule",
+      "purpose": "Subtract fishing cost from income and translate simulated profit trajectories into operating or bankruptcy times.",
+      "base_or_modification": "paper-specific",
+      "summary": "trip-profit and nonpositive-profit failure rule maps I, C, rho, d to P, B_t through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "P",
+          "normalized_name": "fishing profit",
+          "unit": "USD/trip",
+          "definition": "fishing profit used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "fishing income",
+          "unit": "USD/trip",
+          "definition": "fishing income used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "fishing cost",
+          "unit": "USD/trip",
+          "definition": "fishing cost used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "fish density",
+          "unit": "normalized density",
+          "definition": "fish density used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "income coefficient",
+          "unit": "USD/trip",
+          "definition": "income coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "freshness decay coefficient",
+          "unit": "1/km",
+          "definition": "freshness decay coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "fishing distance",
+          "unit": "km",
+          "definition": "fishing distance used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "variable cost coefficient",
+          "unit": "USD/km",
+          "definition": "variable cost coefficient used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_0",
+          "normalized_name": "fixed cost",
+          "unit": "USD/trip",
+          "definition": "fixed cost used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_t",
+          "normalized_name": "failure indicator",
+          "unit": "binary",
+          "definition": "failure indicator used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "I",
+        "C",
+        "rho",
+        "d"
+      ],
+      "outputs": [
+        "P",
+        "B_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-12-01",
+          "page": 14,
+          "label": null,
+          "source_expression": "printed I(x,y)=rho theta exp(-lambda d)-a d-C_0",
+          "normalized_latex": "P(x,y)=\\rho\\theta e^{-\\lambda d}-ad-C_0",
+          "purpose": "Normalize Equation (15) as profit while retaining the printed LHS mismatch for warning.",
+          "variable_symbols": [
+            "P",
+            "I",
+            "C",
+            "rho",
+            "theta",
+            "lambda",
+            "d",
+            "a",
+            "C_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-12-02",
+          "page": 14,
+          "label": null,
+          "source_expression": "B_t=1 if aggregate profit is nonpositive",
+          "normalized_latex": "B_t=\\mathbf 1\\{P_t\\le0\\}",
+          "purpose": "Reconstruct the implied annual failure rule used for the bankruptcy-time histogram.",
+          "variable_symbols": [
+            "B_t",
+            "P"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Subtract fishing cost from income and translate simulated profit trajectories into operating or bankruptcy times."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "theta",
+          "lambda",
+          "a",
+          "C_0"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Nonpositive modeled profit ends fishing operations and represents bankruptcy."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "P",
+        "B_t"
+      ],
+      "validation_refs": [
+        "Physical page 14 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Cash reserves, debt, assets, repeated trips, entry/exit, and company heterogeneity are absent.",
+        "The aggregation from site or particle profit to yearly company profit is not published."
+      ],
+      "missing_details": [
+        "The bankruptcy event definition and all Model III simulation code are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-013",
+      "page": 15,
+      "section": "6.2.1 Economic Parameter Estimation",
+      "family": "navigation, freshness, and income coefficient calibration",
+      "purpose": "Estimate maximum navigation range, distance decay, and income scale from navigation and financial aggregates.",
+      "base_or_modification": "paper-specific",
+      "summary": "navigation, freshness, and income coefficient calibration maps d_max_i, C_mean, P_mean, r_mean to L_hat, lambda_hat, theta_hat through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "L_hat",
+          "normalized_name": "average maximum navigation radius",
+          "unit": "km",
+          "definition": "average maximum navigation radius used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_max_i",
+          "normalized_name": "vessel maximum navigation radius",
+          "unit": "km",
+          "definition": "vessel maximum navigation radius used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "vessel count",
+          "unit": "vessel",
+          "definition": "vessel count used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_hat",
+          "normalized_name": "estimated freshness decay",
+          "unit": "1/km",
+          "definition": "estimated freshness decay used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_hat",
+          "normalized_name": "estimated income coefficient",
+          "unit": "USD/trip",
+          "definition": "estimated income coefficient used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_mean",
+          "normalized_name": "reported aggregate mean cost",
+          "unit": "USD",
+          "definition": "reported aggregate mean cost used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_mean",
+          "normalized_name": "distance-discount aggregate",
+          "unit": "dimensionless",
+          "definition": "distance-discount aggregate used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_mean",
+          "normalized_name": "social profit margin",
+          "unit": "dimensionless",
+          "definition": "social profit margin used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d_max_i",
+        "C_mean",
+        "P_mean",
+        "r_mean"
+      ],
+      "outputs": [
+        "L_hat",
+        "lambda_hat",
+        "theta_hat"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-13-01",
+          "page": 15,
+          "label": null,
+          "source_expression": "L_hat=(1/N) sum_i d_max_i",
+          "normalized_latex": "\\hat L=\\frac{1}{N}\\sum_{i=1}^{N}d_{max,i}",
+          "purpose": "Retain Equation (16), average maximum vessel range.",
+          "variable_symbols": [
+            "L_hat",
+            "d_max_i",
+            "N"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-13-02",
+          "page": 15,
+          "label": null,
+          "source_expression": "lambda_hat=ln(2)/L_hat",
+          "normalized_latex": "\\hat\\lambda=\\frac{\\ln2}{\\hat L}",
+          "purpose": "Retain Equation (17), half-price distance calibration.",
+          "variable_symbols": [
+            "lambda_hat",
+            "L_hat"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-13-03",
+          "page": 15,
+          "label": null,
+          "source_expression": "theta_hat=(C_mean/P_mean)(1+r_mean)",
+          "normalized_latex": "\\hat\\theta=\\frac{C_{mean}}{P_{mean}}(1+r_{mean})",
+          "purpose": "Retain Equation (18), income-scale calibration.",
+          "variable_symbols": [
+            "theta_hat",
+            "C_mean",
+            "P_mean",
+            "r_mean"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Estimate maximum navigation range, distance decay, and income scale from navigation and financial aggregates."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "N"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Price halves at the mean maximum range and aggregate financial ratios calibrate one representative company."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "L_hat",
+        "lambda_hat",
+        "theta_hat"
+      ],
+      "validation_refs": [
+        "Physical page 15 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "C_mean and P_mean are described as means but written as unnormalized spatial sums.",
+        "The reported lambda unit year/km conflicts with a distance-only exponent."
+      ],
+      "missing_details": [
+        "Sample sizes, individual vessel records, spatial domain cardinality, financial rows, and uncertainty are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-014",
+      "page": 18,
+      "section": "6.3 Management Strategies",
+      "family": "port relocation and territorial-exclusion refrigeration scenarios",
+      "purpose": "Compare status quo with an Iceland port relocation and with refrigeration after excluding Icelandic and Norwegian territorial blocks.",
+      "base_or_modification": "modification",
+      "summary": "port relocation and territorial-exclusion refrigeration scenarios maps p_0, p_I, A_legal, rho, lambda to d_0, d_I, rho_legal, lambda_ref, P_strategy through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "p_0",
+          "normalized_name": "Scottish departure port",
+          "unit": "projected coordinate",
+          "definition": "Scottish departure port used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_I",
+          "normalized_name": "Iceland departure port",
+          "unit": "projected coordinate",
+          "definition": "Iceland departure port used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_0",
+          "normalized_name": "status-quo fishing distance",
+          "unit": "km",
+          "definition": "status-quo fishing distance used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_I",
+          "normalized_name": "relocated fishing distance",
+          "unit": "km",
+          "definition": "relocated fishing distance used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_legal",
+          "normalized_name": "legally accessible sea mask",
+          "unit": "binary field",
+          "definition": "legally accessible sea mask used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "unrestricted fish density",
+          "unit": "normalized density",
+          "definition": "unrestricted fish density used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho_legal",
+          "normalized_name": "accessible fish density",
+          "unit": "normalized density",
+          "definition": "accessible fish density used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_ref",
+          "normalized_name": "refrigerated freshness decay",
+          "unit": "1/km",
+          "definition": "refrigerated freshness decay used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "unrefrigerated freshness decay",
+          "unit": "1/km",
+          "definition": "unrefrigerated freshness decay used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_strategy",
+          "normalized_name": "strategy profit",
+          "unit": "USD/trip",
+          "definition": "strategy profit used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p_0",
+        "p_I",
+        "A_legal",
+        "rho",
+        "lambda"
+      ],
+      "outputs": [
+        "d_0",
+        "d_I",
+        "rho_legal",
+        "lambda_ref",
+        "P_strategy"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-14-01",
+          "page": 18,
+          "label": null,
+          "source_expression": "d_I=distance(p_I,fish) and d_0=distance(p_0,fish)",
+          "normalized_latex": "d_s(x,y)=\\|p_s-(x,y)\\|,\\quad s\\in\\{0,I\\}",
+          "purpose": "Formalize the port-location change used by the relocation rerun.",
+          "variable_symbols": [
+            "d_I",
+            "d_0",
+            "p_I",
+            "p_0"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-14-02",
+          "page": 18,
+          "label": null,
+          "source_expression": "rho_legal=A_legal rho",
+          "normalized_latex": "\\rho_{legal}(x,y)=A_{legal}(x,y)\\rho(x,y)",
+          "purpose": "Formalize exclusion of foreign territorial blocks.",
+          "variable_symbols": [
+            "rho_legal",
+            "A_legal",
+            "rho"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-14-03",
+          "page": 18,
+          "label": null,
+          "source_expression": "lambda_ref < lambda",
+          "normalized_latex": "\\lambda_{ref}<\\lambda",
+          "purpose": "Retain the intended refrigeration effect on freshness decay.",
+          "variable_symbols": [
+            "lambda_ref",
+            "lambda"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Compare status quo with an Iceland port relocation and with refrigeration after excluding Icelandic and Norwegian territorial blocks."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Relocation changes only port distance and refrigeration changes only freshness decay.",
+        "Scottish vessels cannot fish in Icelandic or Norwegian territorial waters."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "d_0",
+        "d_I",
+        "rho_legal",
+        "lambda_ref",
+        "P_strategy"
+      ],
+      "validation_refs": [
+        "Physical page 18 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Relocation and refrigeration investment and operating costs are not included.",
+        "The requested proportion entering another country's territorial sea is not varied."
+      ],
+      "missing_details": [
+        "Legal access regimes, 12-nautical-mile construction, quota, fees, asset constraints, changed parameter values, and optimization are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-015",
+      "page": 19,
+      "section": "7.1 Sensitivity Analysis",
+      "family": "finite-difference survival sensitivity to profit margin and range",
+      "purpose": "Measure changes in 50-year company survival rate as social profit margin r and navigation range L change.",
+      "base_or_modification": "modification",
+      "summary": "finite-difference survival sensitivity to profit margin and range maps r, L to eta, S_r, S_L through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "eta",
+          "normalized_name": "50-year company survival rate",
+          "unit": "proportion",
+          "definition": "50-year company survival rate used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "social profit margin",
+          "unit": "dimensionless",
+          "definition": "social profit margin used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "maximum navigation radius",
+          "unit": "km",
+          "definition": "maximum navigation radius used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta_r",
+          "normalized_name": "profit-margin perturbation",
+          "unit": "dimensionless",
+          "definition": "profit-margin perturbation used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta_L",
+          "normalized_name": "range perturbation",
+          "unit": "km",
+          "definition": "range perturbation used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_r",
+          "normalized_name": "profit-margin sensitivity",
+          "unit": "proportion",
+          "definition": "profit-margin sensitivity used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_L",
+          "normalized_name": "range sensitivity",
+          "unit": "proportion/km",
+          "definition": "range sensitivity used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r",
+        "L"
+      ],
+      "outputs": [
+        "eta",
+        "S_r",
+        "S_L"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-15-01",
+          "page": 19,
+          "label": null,
+          "source_expression": "partial eta/partial r approximately [eta(r+Delta_r)-eta(r)]/Delta_r",
+          "normalized_latex": "\\frac{\\partial\\eta}{\\partial r}\\approx\\frac{\\eta(r+\\Delta r)-\\eta(r)}{\\Delta r}",
+          "purpose": "Retain the first Equation (19) finite difference.",
+          "variable_symbols": [
+            "eta",
+            "r",
+            "Delta_r",
+            "S_r"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-15-02",
+          "page": 19,
+          "label": null,
+          "source_expression": "printed partial eta/partial L approximately [eta(r+Delta_L)-eta(L)]/Delta_L",
+          "normalized_latex": "\\frac{\\partial\\eta}{\\partial L}\\approx\\frac{\\eta(r+\\Delta L)-\\eta(L)}{\\Delta L}",
+          "purpose": "Retain the printed second Equation (19) exactly for warning.",
+          "variable_symbols": [
+            "eta",
+            "r",
+            "L",
+            "Delta_L",
+            "S_L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Measure changes in 50-year company survival rate as social profit margin r and navigation range L change."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "Delta_r",
+          "Delta_L"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Local one-factor finite differences capture recommendation sensitivity."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "eta",
+        "S_r",
+        "S_L"
+      ],
+      "validation_refs": [
+        "Physical page 19 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "The second printed numerator mixes r and L.",
+        "Climate, ARIMA, migration, legal, cost, and strategy parameters are not varied jointly."
+      ],
+      "missing_details": [
+        "Step sizes, repeated-run uncertainty, interactions, and decision-reversal rates are absent."
+      ]
+    },
+    {
+      "model_id": "MU-A-2020-2001334-016",
+      "page": 20,
+      "section": "7.2 Robustness Analysis",
+      "family": "pairwise terminal-field RMSE with Q-Q diagnostic",
+      "purpose": "Compare final fish fields from different initial distributions and inspect the distribution of pairwise RMSE values.",
+      "base_or_modification": "paper-specific",
+      "summary": "pairwise terminal-field RMSE with Q-Q diagnostic maps phi_i, phi_j, q_N to RMSE_ij, q_R through the visually checked paper and code interfaces retained below.",
+      "variables": [
+        {
+          "symbol": "phi_i",
+          "normalized_name": "terminal fish distribution for run i",
+          "unit": "normalized density",
+          "definition": "terminal fish distribution for run i used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi_j",
+          "normalized_name": "terminal fish distribution for run j",
+          "unit": "normalized density",
+          "definition": "terminal fish distribution for run j used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RMSE_ij",
+          "normalized_name": "pairwise terminal-field RMSE",
+          "unit": "normalized density",
+          "definition": "pairwise terminal-field RMSE used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_grid",
+          "normalized_name": "compared grid count",
+          "unit": "cell",
+          "definition": "compared grid count used by this retained paper interface.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_R",
+          "normalized_name": "RMSE sample quantile",
+          "unit": "normalized density",
+          "definition": "RMSE sample quantile used by this retained paper interface.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_N",
+          "normalized_name": "standard-normal quantile",
+          "unit": "dimensionless",
+          "definition": "standard-normal quantile used by this retained paper interface.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "phi_i",
+        "phi_j",
+        "q_N"
+      ],
+      "outputs": [
+        "RMSE_ij",
+        "q_R"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2020-2001334-16-01",
+          "page": 20,
+          "label": null,
+          "source_expression": "RMSE_ij=sqrt((1/N) sum_(x,y) [phi_i-phi_j]^2)",
+          "normalized_latex": "RMSE_{ij}=\\sqrt{\\frac{1}{N}\\sum_{(x,y)\\in\\Omega}[\\phi_i(x,y)-\\phi_j(x,y)]^2}",
+          "purpose": "Retain Equation (20), the terminal-field pair distance.",
+          "variable_symbols": [
+            "RMSE_ij",
+            "phi_i",
+            "phi_j",
+            "N_grid"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2020-2001334-16-02",
+          "page": 20,
+          "label": null,
+          "source_expression": "Q-Q compares q_R with q_N",
+          "normalized_latex": "q_R(p)\\ \\text{versus}\\ q_N(p)",
+          "purpose": "Retain the normal-shape diagnostic in Figure 16.",
+          "variable_symbols": [
+            "q_R",
+            "q_N",
+            "RMSE_ij"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed formulas and necessary code/reconstructed interfaces are retained and marked by source type."
+      },
+      "objectives": [
+        "Compare final fish fields from different initial distributions and inspect the distribution of pairwise RMSE values."
+      ],
+      "constraints": [
+        "Operate within the paper's 1960-2019 April-July field, 50-year horizon, common two-species proxy, representative small company, and stated territorial scenarios."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper or appendix supplies a temperature field, coordinate grid, particle initialization, company parameter set, strategy state, or perturbed distribution."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The 50-75 N by 25 W-10 E domain, invalid masks, thermal thresholds, annual horizon, distance attenuation, or legal-access mask bounds the calculation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper evaluates finite-horizon forecasts and survival rather than a formal equilibrium; terminal-field similarity is treated separately."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are fitted by per-grid OLS, chosen from pooled blocked errors, derived from grid statistics, copied from broad financial sources, or set by scenario assumptions.",
+        "parameters": [
+          "N_grid"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Assemble and clean the gridded, biological, company, or policy inputs.",
+          "Evaluate the retained forecast, gradient, motion, cost, income, profit, sensitivity, or comparison interface.",
+          "Pass typed outputs through the declared dependency graph.",
+          "Inspect the selected map, trajectory, histogram, sensitivity curve, Q-Q plot, or code state."
+        ],
+        "software": [
+          "MATLAB R2019a is named; helper preprocessing functions, exact data, and all Model III strategy code are not published."
+        ],
+        "convergence_criteria": "No 50-year hindcast, covariance regularization, spatial or time-step convergence, Monte Carlo error, or strategy decision-convergence criterion is reported."
+      },
+      "assumptions": [
+        "Pairwise RMSE distribution shape can diagnose robustness."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "A selected forward output can be produced for some interfaces, but covariance identifiability, species calibration, economic aggregation, legal scenarios, uncertainty, and out-of-sample validity are incomplete."
+      },
+      "handoff_outputs": [
+        "RMSE_ij",
+        "q_R"
+      ],
+      "validation_refs": [
+        "Physical page 20 states, tabulates, plots, codes, or motivates this interface; full-page and detail-sheet visual review completed.",
+        "Formula/code reconciliation and independent dimensional or arithmetic checks were used where the printed inputs were sufficient; discrepancies are isolated in G7."
+      ],
+      "computational_cost": "Up to 690 per-grid AR fits, a nominal 690-dimensional residual field, annual particle advection for 50 years, and a claimed 10,000 strategy ensemble; runtime and memory are not reported.",
+      "strengths": [
+        "Creates an explicit field, transformation, state transition, probability, policy mask, or company output consumed by a later section."
+      ],
+      "limitations": [
+        "Q-Q linearity addresses approximate normality, not whether RMSE is small.",
+        "No threshold, confidence interval, or decision comparison is provided."
+      ],
+      "missing_details": [
+        "Initial-distribution generator, run count, RMSE values, acceptance threshold, and species-specific tests are absent."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2020-2001334-001",
+      "to_model_id": "MU-A-2020-2001334-002",
+      "handoff": "Cleaned gridded fields and valid-cell masks define the projected ocean domain."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-001",
+      "to_model_id": "MU-A-2020-2001334-003",
+      "handoff": "Sixty annual April-July series initialize each ARIMA fit."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-002",
+      "to_model_id": "MU-A-2020-2001334-007",
+      "handoff": "Projected coordinates supply spatial increments for gradient calculation."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-002",
+      "to_model_id": "MU-A-2020-2001334-009",
+      "handoff": "Projected coordinates supply particle positions and physical displacements."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-003",
+      "to_model_id": "MU-A-2020-2001334-004",
+      "handoff": "The ARIMA scaffold defines the coefficient vector estimated by OLS."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-004",
+      "to_model_id": "MU-A-2020-2001334-005",
+      "handoff": "Candidate coefficient fits produce holdout errors for order selection."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-005",
+      "to_model_id": "MU-A-2020-2001334-003",
+      "handoff": "The selected (1,1,0) order configures the final temperature model."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-003",
+      "to_model_id": "MU-A-2020-2001334-006",
+      "handoff": "AR residuals and forecasts supply covariance and recursive ensemble states."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-006",
+      "to_model_id": "MU-A-2020-2001334-007",
+      "handoff": "Each simulated temperature field is differentiated spatially."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-007",
+      "to_model_id": "MU-A-2020-2001334-008",
+      "handoff": "The spatial gradient supplies direction and normalized magnitude to migration velocity."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-008",
+      "to_model_id": "MU-A-2020-2001334-009",
+      "handoff": "Thermal velocity supplies annual particle displacement."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-009",
+      "to_model_id": "MU-A-2020-2001334-011",
+      "handoff": "Terminal and annual particle density supplies the income field."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-009",
+      "to_model_id": "MU-A-2020-2001334-014",
+      "handoff": "Migrated density is masked by territorial access in the policy scenario."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-010",
+      "to_model_id": "MU-A-2020-2001334-012",
+      "handoff": "Trip cost is subtracted in the profit interface."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-011",
+      "to_model_id": "MU-A-2020-2001334-012",
+      "handoff": "Density- and freshness-dependent income enters profit."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-013",
+      "to_model_id": "MU-A-2020-2001334-010",
+      "handoff": "Estimated C_0 and a configure the cost model."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-013",
+      "to_model_id": "MU-A-2020-2001334-011",
+      "handoff": "Estimated theta and lambda configure the income model."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-012",
+      "to_model_id": "MU-A-2020-2001334-015",
+      "handoff": "Profit-derived survival rate is perturbed in sensitivity analysis."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-013",
+      "to_model_id": "MU-A-2020-2001334-015",
+      "handoff": "r and L supply the two sensitivity axes."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-014",
+      "to_model_id": "MU-A-2020-2001334-012",
+      "handoff": "Strategy-specific distance, access, and freshness modify profit."
+    },
+    {
+      "from_model_id": "MU-A-2020-2001334-009",
+      "to_model_id": "MU-A-2020-2001334-016",
+      "handoff": "Alternate initial particle fields produce terminal distributions for robustness comparison."
+    }
+  ]
+}

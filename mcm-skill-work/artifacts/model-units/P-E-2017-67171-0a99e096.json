@@ -1,0 +1,1160 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-E-2017-67171-0a99e096",
+ "problem_type": "E",
+ "year": "2017",
+ "source_sha256": "0a99e096526c7d53d0356a88d256041154cc728758dfdc5340cc22ba3145386a",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-E-2017-67171-SGI",
+   "page": 7,
+   "section": "Smart Growth Index",
+   "family": "evaluation",
+   "purpose": "score both the direction and the speed of growth",
+   "base_or_modification": "paper-specific",
+   "summary": "The index adds the cosine of the angle between the current growth vector and the ideal vector to a weighted length of the current growth vector, then divides by 1 plus mu times root 3. The cosine says whether the city points the right way and the length says how fast it moves.",
+   "variables": [
+    {
+     "symbol": "SGI",
+     "normalized_name": "smart growth index",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the level of smart growth, normalized toward 0 to 1"
+    },
+    {
+     "symbol": "CG",
+     "normalized_name": "current growth vector",
+     "unit": "1",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the change from the previous state to the current state"
+    },
+    {
+     "symbol": "SG",
+     "normalized_name": "ideal growth vector",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the ideal smart growth vector, the diagonal of the cube at (1,1,1)"
+    },
+    {
+     "symbol": "mu",
+     "normalized_name": "rate weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "how much the policymaker weighs growth rate against growth direction"
+    }
+   ],
+   "inputs": [
+    "CG",
+    "mu"
+   ],
+   "outputs": [
+    "SGI"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-01",
+     "page": 7,
+     "label": "smart growth index",
+     "source_expression": "SGI=\\frac{\\cos\\langle\\overrightarrow{CG},\\overrightarrow{SG}\\rangle+\\mu|\\overrightarrow{CG}|}{1+\\mu\\sqrt{3}}",
+     "normalized_latex": "SGI=\\frac{\\cos\\langle\\overrightarrow{CG},\\overrightarrow{SG}\\rangle+\\mu|\\overrightarrow{CG}|}{1+\\mu\\sqrt{3}}",
+     "variable_symbols": [
+      "SGI",
+      "CG",
+      "SG",
+      "mu"
+     ],
+     "purpose": "direction enters as a cosine and speed as a length, and the denominator keeps the index near 0 to 1",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-E-2017-67171-02",
+     "page": 7,
+     "label": "current growth",
+     "source_expression": "\\overrightarrow{CG}=S_{current}-S_{previous}",
+     "normalized_latex": "\\overrightarrow{CG}=S_{current}-S_{previous}",
+     "variable_symbols": [
+      "CG"
+     ],
+     "purpose": "current growth is the change of state between two periods",
+     "visual_checked": true,
+     "transcription_confidence": "low",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "put direction and speed into one number"
+   ],
+   "constraints": [
+    "the ideal vector is the diagonal of the cube",
+    "mu is chosen by the policymaker"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the current and previous states are known before the index is computed"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "omitted-by-paper",
+    "method": "mu is set by the policymaker rather than fitted",
+    "parameters": [
+     "mu"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute the current growth vector",
+     "take its angle with the ideal",
+     "add the weighted length",
+     "normalize"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the formula is printed and each term is glossed in a table"
+   },
+   "assumptions": [
+    "a smaller angle means a more sustainable city",
+    "a longer vector means faster growth"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the formula is printed, but the prose and the formula disagree on the denominator"
+   },
+   "handoff_outputs": [
+    "SGI"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one cosine and one normalization",
+   "strengths": [
+    "the two goals are named separately before being combined",
+    "the recommended range for mu is stated"
+   ],
+   "limitations": [
+    "the prose writes the denominator as 1 plus mu cubed while the formula prints a square root",
+    "the cosine is written as cos of the two vectors rather than of their angle"
+   ],
+   "missing_details": [
+    "no fitted value of mu is given"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-EDI",
+   "page": 7,
+   "section": "Economic Development Index",
+   "family": "evaluation",
+   "purpose": "measure the economic state with three published numbers",
+   "base_or_modification": "modification",
+   "summary": "The economic index averages life expectancy, gdp per capita and expense as a share of gdp. It updates an income and distribution index by adding life expectancy.",
+   "variables": [
+    {
+     "symbol": "EDI",
+     "normalized_name": "economic development index",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the economic state of the city"
+    },
+    {
+     "symbol": "LE",
+     "normalized_name": "life expectancy",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "life expectancy, normalized"
+    },
+    {
+     "symbol": "GDP",
+     "normalized_name": "gdp per capita",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "gdp per capita, normalized"
+    },
+    {
+     "symbol": "EX",
+     "normalized_name": "expense share",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "expense as a share of gdp, normalized"
+    }
+   ],
+   "inputs": [
+    "LE",
+    "GDP",
+    "EX"
+   ],
+   "outputs": [
+    "EDI"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-03",
+     "page": 7,
+     "label": "economic development index",
+     "source_expression": "EDI=\\frac{1}{3}(LifeExpectancy+GDPperCapita+ExpenseofGDP)",
+     "normalized_latex": "EDI=\\frac{1}{3}(LifeExpectancy+GDPperCapita+ExpenseofGDP)",
+     "variable_symbols": [
+      "EDI",
+      "LE",
+      "GDP",
+      "EX"
+     ],
+     "purpose": "the economic index averages life expectancy, income and the expense share",
+     "visual_checked": true,
+     "transcription_confidence": "low",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "capture the economic state in one number"
+   ],
+   "constraints": [
+    "the three inputs count equally"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the three inputs are taken from the same period"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the three inputs are read from published statistics",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "normalize each input",
+     "average them"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the average is printed"
+   },
+   "assumptions": [
+    "income, spending and longevity together describe the economy"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "the average is printed"
+   },
+   "handoff_outputs": [
+    "EDI"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one average",
+   "strengths": [
+    "the source index is named and the change is stated"
+   ],
+   "limitations": [
+    "the three inputs are averaged with no normalization shown"
+   ],
+   "missing_details": [
+    "no scaling is given for mixing years with currency"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-SJI",
+   "page": 8,
+   "section": "Social Justice Index",
+   "family": "evaluation",
+   "purpose": "measure social equality with three weighted factors",
+   "base_or_modification": "base",
+   "summary": "The social index weights the gini coefficient at three sevenths and the number of study participants and the employment rate at two sevenths each, taken from a six dimension definition.",
+   "variables": [
+    {
+     "symbol": "SJI",
+     "normalized_name": "social justice index",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the social state of the city"
+    },
+    {
+     "symbol": "Gini",
+     "normalized_name": "gini coefficient",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the fairness of income distribution"
+    },
+    {
+     "symbol": "NSP",
+     "normalized_name": "study participants",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the number of study participants"
+    },
+    {
+     "symbol": "ER",
+     "normalized_name": "employment rate",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the employment rate"
+    }
+   ],
+   "inputs": [
+    "Gini",
+    "NSP",
+    "ER"
+   ],
+   "outputs": [
+    "SJI"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-04",
+     "page": 8,
+     "label": "social justice index",
+     "source_expression": "SJI=\\frac{3}{7}Gini+\\frac{2}{7}StudyParticipants+\\frac{2}{7}EmploymentRate",
+     "normalized_latex": "SJI=\\frac{3}{7}Gini+\\frac{2}{7}StudyParticipants+\\frac{2}{7}EmploymentRate",
+     "variable_symbols": [
+      "SJI",
+      "Gini",
+      "NSP",
+      "ER"
+     ],
+     "purpose": "gini carries three sevenths and the other two factors two sevenths each",
+     "visual_checked": true,
+     "transcription_confidence": "low",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "capture social equality in one number"
+   ],
+   "constraints": [
+    "the weights come from the cited definition"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the three factors are taken from the same period"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the weights are taken from the cited definition",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "weight the three factors",
+     "sum them"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the weighted sum is printed"
+   },
+   "assumptions": [
+    "gini stands for income fairness and employment for labor market access"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "the weighted sum is printed"
+   },
+   "handoff_outputs": [
+    "SJI"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one weighted sum",
+   "strengths": [
+    "the weights are traced to a published definition"
+   ],
+   "limitations": [
+    "a higher gini raises the index, which runs against the usual reading of gini"
+   ],
+   "missing_details": [
+    "no sign flip is shown for gini"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-EPI",
+   "page": 8,
+   "section": "Environment Performance Index",
+   "family": "evaluation",
+   "purpose": "measure the environment with three quantities",
+   "base_or_modification": "base",
+   "summary": "The environment index averages total greenhouse gas emissions, forest area and renewable energy consumption.",
+   "variables": [
+    {
+     "symbol": "EPI",
+     "normalized_name": "environment performance index",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the environment state of the city"
+    },
+    {
+     "symbol": "GHG",
+     "normalized_name": "greenhouse gas",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "total greenhouse gas emissions"
+    },
+    {
+     "symbol": "FA",
+     "normalized_name": "forest area",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "forest area"
+    },
+    {
+     "symbol": "RE",
+     "normalized_name": "renewable energy",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "renewable energy consumption"
+    }
+   ],
+   "inputs": [
+    "GHG",
+    "FA",
+    "RE"
+   ],
+   "outputs": [
+    "EPI"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-05",
+     "page": 8,
+     "label": "environment performance index",
+     "source_expression": "EPI=\\frac{1}{3}(GreenhouseGas+ForestArea+RenewableEnergy)",
+     "normalized_latex": "EPI=\\frac{1}{3}(GreenhouseGas+ForestArea+RenewableEnergy)",
+     "variable_symbols": [
+      "EPI",
+      "GHG",
+      "FA",
+      "RE"
+     ],
+     "purpose": "the environment index averages emissions, forest and renewable energy",
+     "visual_checked": true,
+     "transcription_confidence": "low",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "capture the environment state in one number"
+   ],
+   "constraints": [
+    "the three inputs count equally"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the three inputs are taken from the same period"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the three inputs are read from published statistics",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "normalize each input",
+     "average them"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the average is printed"
+   },
+   "assumptions": [
+    "emissions, forest and renewable energy cover the environment"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "the average is printed"
+   },
+   "handoff_outputs": [
+    "EPI"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one average",
+   "strengths": [
+    "the three aspects are named before the formula"
+   ],
+   "limitations": [
+    "emissions enter with a positive sign, so more emissions raise the index"
+   ],
+   "missing_details": [
+    "no sign flip is shown for emissions"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-MOD",
+   "page": 11,
+   "section": "Modified cube model",
+   "family": "optimization",
+   "purpose": "find the budget allocation that maximizes the index",
+   "base_or_modification": "modification",
+   "summary": "The modified model maximizes the index over a seven component budget, keeping every component nonnegative, the state change in the first octant, and the components summing to the total budget. The state change is linear in the budget through a 3 by 7 matrix fitted by least squares to past years.",
+   "variables": [
+    {
+     "symbol": "SGI",
+     "normalized_name": "smart growth index",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the objective being maximized"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "budget allocation",
+     "unit": "1",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the seven component budget vector"
+    },
+    {
+     "symbol": "dS",
+     "normalized_name": "state change",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the change in the three indexes"
+    },
+    {
+     "symbol": "TB",
+     "normalized_name": "total budget",
+     "unit": "currency",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the budget cap for the year"
+    },
+    {
+     "symbol": "b",
+     "normalized_name": "response matrix",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the 3 by 7 matrix linking budget to the change in the three indexes"
+    },
+    {
+     "symbol": "SG",
+     "normalized_name": "ideal growth vector",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the ideal smart growth vector"
+    },
+    {
+     "symbol": "mu",
+     "normalized_name": "rate weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the weight on growth rate"
+    },
+    {
+     "symbol": "bhat",
+     "normalized_name": "fitted response",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the least squares estimate of the response matrix"
+    },
+    {
+     "symbol": "Bk",
+     "normalized_name": "observed budgets",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the budget allocations over the past k years"
+    },
+    {
+     "symbol": "dSk",
+     "normalized_name": "observed changes",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the state changes over the past k years"
+    }
+   ],
+   "inputs": [
+    "Bk",
+    "dSk",
+    "TB",
+    "mu"
+   ],
+   "outputs": [
+    "SGI",
+    "B",
+    "bhat"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-06",
+     "page": 11,
+     "label": "budget optimization",
+     "source_expression": "\\max SGI,\\ \\vec{B}\\ge 0,\\ \\Delta\\vec{S}\\ge 0,\\ \\sum_{i=1}^{7}B_i=totalBudget",
+     "normalized_latex": "\\max SGI,\\ \\vec{B}\\ge 0,\\ \\Delta\\vec{S}\\ge 0,\\ \\sum_{i=1}^{7}B_i=totalBudget",
+     "variable_symbols": [
+      "SGI",
+      "B",
+      "dS",
+      "TB"
+     ],
+     "purpose": "the budget is chosen to make the index as large as possible inside the cap",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-E-2017-67171-07",
+     "page": 11,
+     "label": "state response",
+     "source_expression": "\\Delta\\vec{S}=\\frac{d}{dt}(EPI,SJI,EDI)^{T}=b\\,B",
+     "normalized_latex": "\\Delta\\vec{S}=\\frac{d}{dt}(EPI,SJI,EDI)^{T}=b\\,B",
+     "variable_symbols": [
+      "dS",
+      "b",
+      "B"
+     ],
+     "purpose": "the change in the three indexes is linear in the seven budget components",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-E-2017-67171-08",
+     "page": 11,
+     "label": "index of a budget",
+     "source_expression": "SGI=f(\\vec{B})=\\frac{\\cos\\langle\\overrightarrow{SG},\\Delta\\vec{S}\\rangle+\\mu|\\Delta\\vec{S}|}{1+\\sqrt{3}\\mu}",
+     "normalized_latex": "SGI=f(\\vec{B})=\\frac{\\cos\\langle\\overrightarrow{SG},\\Delta\\vec{S}\\rangle+\\mu|\\Delta\\vec{S}|}{1+\\sqrt{3}\\mu}",
+     "variable_symbols": [
+      "SGI",
+      "SG",
+      "dS",
+      "mu"
+     ],
+     "purpose": "the same index rewritten as a function of the budget through the state change",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-E-2017-67171-09",
+     "page": 12,
+     "label": "least squares fit",
+     "source_expression": "\\hat{b}=(B_k^{T}B_k)^{-1}B_k\\Delta S_k",
+     "normalized_latex": "\\hat{b}=(B_k^{T}B_k)^{-1}B_k\\Delta S_k",
+     "variable_symbols": [
+      "bhat",
+      "Bk",
+      "dSk"
+     ],
+     "purpose": "the response matrix is the least squares fit to the past years",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-E-2017-67171-10",
+     "page": 12,
+     "label": "observed change",
+     "source_expression": "\\Delta S_t=(EPI,SJI,EDI)_{t+1}^{T}-(EPI,SJI,EDI)_{t}^{T}",
+     "normalized_latex": "\\Delta S_t=(EPI,SJI,EDI)_{t+1}^{T}-(EPI,SJI,EDI)_{t}^{T}",
+     "variable_symbols": [
+      "dS"
+     ],
+     "purpose": "the observed change is the difference of the state between adjacent years",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "allocate a limited budget to raise the index most"
+   ],
+   "constraints": [
+    "the total budget is fixed for the year",
+    "no budget component can be negative",
+    "the state change stays in the first octant"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the budgets and states of the past years are known"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "least squares on the past years",
+    "parameters": [
+     "bhat"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "fit the response matrix",
+     "state the program",
+     "solve it",
+     "read off the allocation"
+    ],
+    "software": [
+     "Matlab"
+    ],
+    "convergence_criteria": "the program, the response and the least squares solution are all printed"
+   },
+   "assumptions": [
+    "budget is the major factor in the growth of a city",
+    "the response is linear"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the program is printed, but the derivative and the difference share a symbol"
+   },
+   "handoff_outputs": [
+    "B",
+    "bhat"
+   ],
+   "validation_refs": [
+    "Matlab"
+   ],
+   "computational_cost": "one least squares fit and one nonlinear program",
+   "strengths": [
+    "the constraints are written out beside the objective",
+    "the fit is a closed form"
+   ],
+   "limitations": [
+    "the same symbol is used for a derivative and for a plain difference",
+    "the cosine is again written on two vectors"
+   ],
+   "missing_details": [
+    "the solver settings are not given"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-REC",
+   "page": 12,
+   "section": "State recurrence",
+   "family": "forecasting",
+   "purpose": "roll the state forward over the decades",
+   "base_or_modification": "paper-specific",
+   "summary": "Next year's state is this year's state plus the change produced by the optimal budget, and repeating this gives the path over three decades.",
+   "variables": [
+    {
+     "symbol": "St",
+     "normalized_name": "state",
+     "unit": "1",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "the triple of EPI, SJI and EDI in a year"
+    },
+    {
+     "symbol": "dS",
+     "normalized_name": "state change",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the change produced by the optimal budget"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "optimal budget",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the optimal budget allocation"
+    },
+    {
+     "symbol": "b",
+     "normalized_name": "response matrix",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the fitted response matrix"
+    }
+   ],
+   "inputs": [
+    "St",
+    "B",
+    "b"
+   ],
+   "outputs": [
+    "St"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-11",
+     "page": 12,
+     "label": "state recurrence",
+     "source_expression": "(EPI,SJI,EDI)_{t+1}^{T}=\\Delta\\vec{S}+(EPI,SJI,EDI)_{t}^{T}",
+     "normalized_latex": "(EPI,SJI,EDI)_{t+1}^{T}=\\Delta\\vec{S}+(EPI,SJI,EDI)_{t}^{T}",
+     "variable_symbols": [
+      "St",
+      "dS"
+     ],
+     "purpose": "next year's state is this year's state plus the change from the optimal budget",
+     "visual_checked": true,
+     "transcription_confidence": "medium",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "see the indexes over the next three decades"
+   ],
+   "constraints": [
+    "the fitted response stays constant"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the current state is the starting point"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the response is taken from the fitted model",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "apply the optimal budget",
+     "add the change to the state",
+     "repeat"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the recurrence is printed"
+   },
+   "assumptions": [
+    "the response does not change over the decades"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "the recurrence is printed"
+   },
+   "handoff_outputs": [
+    "St"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one addition per year",
+   "strengths": [
+    "the step is one line"
+   ],
+   "limitations": [
+    "the printed line mixes a derivative with a difference"
+   ],
+   "missing_details": [
+    "no check against a held out year is given"
+   ]
+  },
+  {
+   "model_id": "MU-E-2017-67171-FT",
+   "page": 19,
+   "section": "F test",
+   "family": "testing",
+   "purpose": "test the regression behind the response matrix",
+   "base_or_modification": "base",
+   "summary": "The test forms the mean regression square and the mean residual square and takes their ratio, rejecting the null when it exceeds the critical value at the chosen probability.",
+   "variables": [
+    {
+     "symbol": "MSR",
+     "normalized_name": "regression mean square",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the regression sum of squares per degree"
+    },
+    {
+     "symbol": "MSE",
+     "normalized_name": "residual mean square",
+     "unit": "1",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "the residual sum of squares per degree"
+    },
+    {
+     "symbol": "SSR",
+     "normalized_name": "regression sum of squares",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the regression sum of squares"
+    },
+    {
+     "symbol": "SSE",
+     "normalized_name": "residual sum of squares",
+     "unit": "1",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "the residual sum of squares"
+    },
+    {
+     "symbol": "F",
+     "normalized_name": "f statistic",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "the ratio of the two mean squares"
+    },
+    {
+     "symbol": "k",
+     "normalized_name": "parameter count",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of fitted parameters"
+    },
+    {
+     "symbol": "T",
+     "normalized_name": "observation count",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of observations"
+    }
+   ],
+   "inputs": [
+    "SSR",
+    "SSE",
+    "k",
+    "T"
+   ],
+   "outputs": [
+    "F"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-E-2017-67171-12",
+     "page": 19,
+     "label": "f statistic",
+     "source_expression": "F=\\frac{MSR}{MSE}=\\frac{SSR/(k-1)}{SSE/(T-k)}",
+     "normalized_latex": "F=\\frac{MSR}{MSE}=\\frac{SSR/(k-1)}{SSE/(T-k)}",
+     "variable_symbols": [
+      "F",
+      "MSR",
+      "MSE",
+      "SSR",
+      "SSE",
+      "k",
+      "T"
+     ],
+     "purpose": "the regression is judged by the ratio of the two mean squares",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page"
+   },
+   "objectives": [
+    "judge whether the fitted response explains anything"
+   ],
+   "constraints": [
+    "the errors are those of a linear regression"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the regression has already been fitted"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": []
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "the sums of squares come from the fitted model",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute the two mean squares",
+     "take the ratio",
+     "compare with the critical value"
+    ],
+    "software": [
+     "none"
+    ],
+    "convergence_criteria": "the statistic and the rejection rule are both printed"
+   },
+   "assumptions": [
+    "a linear fit is the right thing to test"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the statistic is printed but never evaluated"
+   },
+   "handoff_outputs": [
+    "F"
+   ],
+   "validation_refs": [
+    "the equation is set off on its own line"
+   ],
+   "computational_cost": "one ratio",
+   "strengths": [
+    "the rejection rule is stated with an example probability"
+   ],
+   "limitations": [
+    "no computed value of the statistic is shown"
+   ],
+   "missing_details": [
+    "the degrees of freedom are not tied to the seven components"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-E-2017-67171-EDI",
+   "to_model_id": "MU-E-2017-67171-SGI",
+   "handoff": "the economic index is one axis of the growth vector"
+  },
+  {
+   "from_model_id": "MU-E-2017-67171-SJI",
+   "to_model_id": "MU-E-2017-67171-SGI",
+   "handoff": "the social index is one axis of the growth vector"
+  },
+  {
+   "from_model_id": "MU-E-2017-67171-EPI",
+   "to_model_id": "MU-E-2017-67171-SGI",
+   "handoff": "the environment index is one axis of the growth vector"
+  },
+  {
+   "from_model_id": "MU-E-2017-67171-SGI",
+   "to_model_id": "MU-E-2017-67171-MOD",
+   "handoff": "the index is the objective of the budget program"
+  },
+  {
+   "from_model_id": "MU-E-2017-67171-MOD",
+   "to_model_id": "MU-E-2017-67171-REC",
+   "handoff": "the optimal budget drives the state forward"
+  },
+  {
+   "from_model_id": "MU-E-2017-67171-MOD",
+   "to_model_id": "MU-E-2017-67171-FT",
+   "handoff": "the fitted response is what the test judges"
+  }
+ ]
+}
