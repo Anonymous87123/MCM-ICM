@@ -1,0 +1,52 @@
+Team # 2322645                                                                  Page 8 of 22
+
+               target word: bread                          n1        n
+                      guess: crumb                                          n2
+                                                        bread
+                C R U MB                                arbor           toast
+                                                        brans           wheat
+                                                                        bagel
+                                                           :            crabs
+
+                                                                            :
+
+Figure 3: Diagram representing the Subset Entropy method. For a target word bread, a guess crumb is made
+and Wordle tells the player that R must be in the second position and B is somewhere in the word, but not in the
+last position. Furthermore, Wordle tells the player that C, U and M are not in the target word. This information
+defines a subset of n1 words that are compatible with it.
+
+3.6 Representation of word difficulty
+
+To aid in modeling and interpretation, ideally the 7-vector data (of players who got the word in
+1 try, 2 tries, . . . , failed) which effectively represents the observed difficulty of a word, should
+be encapsulated with fewer numbers. We can view these seven categories as a discrete space
+and the observed proportion as a discrete probability mass function over them. By assuming
+an ordering of 1 < 2 < . . . < X, we then take the cumulative mass function that corresponds to
+the probability mass function. After embedding the domain into the interval [0, 1] by the map
+(i tries)→ i/7 and X → 1, it turns out that the Beta distribution, a two-parameter continuous
+distribution over [0, 1], has a cumulative distribution function that can fit the embedded cumu-
+lative mass function closely (see figure 4). We then model reader attempts with the cumulative
+distribution of the Beta distribution, whose probability density function is:
+
+                    f (x; α, β)     =  B   1      β  )  xα−1  (1  −  x)β−1,
+                                          (α,
+
+where B(α, β) is the Beta function. To figure out the exact values of α, β that best fit the
+embedded cumulative mass function, we use non-linear least-squares as implemented in scipy[7].
+By observing the figures above and from the properties of the Beta distribution, we can conclude
+a few properties of α and β:
+
+• As α ↑ while all else is held equal, the word is considered more difficult
+
+• As β ↑ while all else is held equal, the word is considered easier
+
+• α +β will give how concentrated the distribution is around the expected value, with higher
+  values being more concentrated.
+
+•  The  ratio    α  gives the expected value  of  the Beta distribution, which  is a representation
+               α+β
+   of the difficulty of a word, with higher values corresponding to a higher difficulty.
+
+Because of these properties, particularly the final one, α and β together are an effective and
+simple representation of the difficulty of a word. Figure 5 shows α/(α + β) computed from the
+observed reported distributions for all previous words.

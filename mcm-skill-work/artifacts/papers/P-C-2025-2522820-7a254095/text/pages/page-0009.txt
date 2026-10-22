@@ -1,0 +1,44 @@
+Team 2522820  Page 9
+
+                           ྘
+                         ଆ
+                       ࿐
+           ‫ݼ‬ğඔ odels Figure 2: DBSCAN Cluster Results
+ᇙ m 3.4.2 Mixed Linear Models and Hurdle Model
+ ‫ ܄‬H We will first describe the model for clusters 0 and -1, then for cluster 1. The Tobit model was a continuous
+ྐ T regression model, however since medal counts are discrete we chose to use a Negative Binomial Regression. A
+A Negative Binomial distribution is chosen over a Poisson since the Negative Binomial can account for cases where
+
+the variance is greater than the meain (Poisson is too restrictive). For countries in these clusters, we assumed
+
+ັ M there was close to negligible chance of them getting 0 medals. The Mixed Effects Model takes the following
+ğ form:
+
+            ‫ݼ‬yij ∼ NBinom(µij, θ)
+
+                                                  µij = exp(Xijβj + Zijbj)
+
+Here i is the index for individual country and j is the index for cluster. θ is a dispersion factor for the negative
+
+ྐ binomial distribution that is also fitted. Now, Zijbj is implementing group-wise random effects for each
+
+parameter in attempt to reduce heteroscedasticity (though this model suffers less from it since we are using
+
+ັ Negative Binomial). bj is a vector of random coefficients to apply to each cluster, and these random terms
+
+are normally distributed. The matrix Zij is the random-effects design matrix, with predictor inputs that get
+multiplied with the random effects variables in bj (so Zij is similar to Xij in this manner). This is a ’mixed’
+effects model as Xijβj is the fixed part and Zijbj is the random part of the model. Cluster 0 and -1 were fitted
+this way, with a slightly different process for Cluster 1.
+
+    The purpose of choosing the Tobit model was to account for censorship, but another way to deal with this is
+a Hurdle model. It is very similar, first using binary regression (Probit) to determine the probability a country
+gets 0 medals, and then a Negative Binomial model as previously described for the positive count model. The
+random effects modeling is identical for the Probit regression, but instead a different link function is used. This
+is implemented mathematically as follows:
+
+                                        P (Yij = 1|Xij, Zij) = Φ(Xijβj + Zijbj)
+
+The value P (Yij = 1) is what we are trying to predict in the binary regression (the probability a country gets
+any medals at all), and we take the cumulative normal distribution of the linear predictor for the probit model.
+In these mixed linear effects models, it’s useful to think of a link function that relates the linear predictor to the

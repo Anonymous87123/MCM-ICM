@@ -1,0 +1,78 @@
+Team # 2409961                                                                                  Page 5 of 24
+
+3.2 Data Cleaning
+
+        The available data were divided into 32 time-series data according to the belonging matches
+
+for subsequent model training. For the missing values (NaN) in the data, we filled them according
+
+to the distribution they belonged to: (1) The missing values of serve speed were sampled and filled
+
+྘ according to the player’s serving habits in other matches using a normal distribution. (2) Missing
+
+values for variables with two values, such as depth of return and serve position, were sampled
+to fill them based on the frequency of that player’s values for that data in other matches using a
+Bernoulli distribution. (3) Missing values for variables with multiple different values, such as depth
+of serve, were sampled and filled in based on a multinomial distribution based on the frequency of
+
+ଆ the player’s values of this data in other matches. (4) Missing values for distance run were sampled
+
+according to the player’s habits and filled in according to a uniform distribution. For the outlier 0
+
+࿐ in the tension value of the data, we constructed a new distribution using the frequency of tension
+ඔ 4 Instantaneous Scoring Rate Model
+values in other games and resampled it according to that distribution.
+
+      At the end of a tennis match, we can not only get the result of the match, but often also get
+
+ğ ls a lot of information about the tournament process, i.e. whether the player who serves first has an
+
+advantage over the player who serves later, which player performs better in the early part of the
+
+e match, which player performs better in the late part of the match and to what extent they are all
+‫ ݼ‬d better, etc. Due to the discrete characteristics of the data of the whole tournament process, in order
+
+to analyze the whole tournament process as well as to predict the tournament trend, we use the
+
+o cubic spline interpolation method to interpolate the original discrete data{(ti, yi)} into a quadratic
+ᇙ differentiable functionf in order to derive the Instantaneous Scoring Ratio at each point.
+                      ‫ ܄‬Hm ISRi
+ྐ T 4.1 Cubic spline interpolation        =  (  d   f  )(ti)                                              (1)
+                                                dt
+
+ A Cubic spline interpolation not only ensures smooth continuity of the curve through each given
+
+point, but also ensures continuity of the first- and second-order derivatives of the curve, avoiding the
+
+ັ M oscillations that are common to higher-order polynomial interpolation - the Longe phenomenon. Its
+
+ability to control locally means that adjusting a point will affect only a small part of the curve, not
+
+ğ the whole. Based on the above advantages, we utilize cubic spline interpolation for interpolation
+‫ ݼ‬to quadratic differentiable functions. The cubic spline interpolation formula is shown below:
+1           0         0                  ...     0                                0                    
+        2(h0 + h1)     h1
+h0               2(h1 + h2)              ...     0             m0               y2−y1      y1−y0     
+         ྐ h1                                     ...                                         y2h−0y1   
+  0     ັ 0           h2          h2     ...                   m1               − y3h−1y2  y3h−1y2   
+                      ...                ...   hn−1                             − y4h−2y3            
+                              2(h2 + h3)  1                     m2                            h2      
+                                                                                   −... h3             
+                                  ...                                                                   
+0                               hn−2                                    =  6                         
+                                                                                                         
+  ...                             0                            m3                                     
+                                                                       
+                                                                  ...  
+                                                                        
+                  0                                                               yn−yn−1  yn−1 −yn−2
+                                                                                   − hn−1       hn−2
+                                                                mn
+
+   0    ...                                                                          0
+
+                                                                                                          (2)
+
+                                                                                                       2  ܱᇿඔ࿐ଆ྘
+                                                                                                          ࠆ౼۷‫؟‬ሧ࿟
+                                                                                             MATHmodels

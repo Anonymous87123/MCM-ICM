@@ -1,0 +1,61 @@
+Team # 13855                                                                               Page 8 of 19
+
+
+pi of topic tx . According to Equation 1 in Section 4.3.2, we have
+                        ∪
+                Si =         Cki
+                      (k,i)∈M
+                        ∪
+                  =             Sk ∗ Rtki                                                             (2)
+                      (k,i)∈M
+                                       ∪                                   ∪
+                  = Sj ∗ Rx +                      Cki − Sj ∗ Rx ∗                   Cki
+                                   (k,i)∈M−{j}                         (k,i)∈M−{j}
+
+
+So we have
+                                                       ∪
+                                            Si −                 Cki
+                                                   (k,i)∈M−{j}
+                             Rx =                        ∪                                            (3)
+                                       Sj ∗ (1 −                   Cki )
+                                                     (k,i)∈M−{j}
+
+                                                                                             ∪
+   We could use Algorithm 2 described in Section 4.3.2 to calculate                                  Cki .
+                                                                                       (k,i)∈M−{j}
+
+    Since there may be many messages sharing a common topic tx , using Equation
+3 will yield one Rx for each message, producting several Rx . We then use the
+arithmatic average to modify Rx under the rule of the exponential decay.
+   Algorithm 3 shows how to calculate Rx at the T phase at a specific iteration.
+
+Algorithm 3 Algorithm for calculating Rx
+Initialization:
+   S and R values are those produced in the previous P phase and T phase
+   Result ← 0
+   Count ← 0 {Count is the number of messages on tx }
+Iterations:
+   for all edges (pj∪, pi ) where tji = x do
+     T emp ←                 Cki {Using the method in Algorithm 2}
+               (k,i)∈M−{j}
+                          i −T emp
+    Result ← Result + SjS∗(1−T  emp)
+                                     {Equation 3}
+    Count ← Count + 1
+  end for
+  Result ← Result/Count {Taking average over all messages}
+
+  return (1 − cRDR ) ∗ Rx + cRDR ∗ Result {Exponential decay, explained in Section 4.3.4}
+
+
+   The initial value of R is set as follows: All the known suspicious topics have
+R = 0.7 while all other topics have R = 0.05.
+   In Section 6.2, we discuss some more elaborate allocations of the initial value
+of R.
+
+
+4.3.4 Exponential Decay
+
+   As we mentioned, we exploit an exponential decay in the calculation of S and
+R to make the near people have a stronger influence than far ones.

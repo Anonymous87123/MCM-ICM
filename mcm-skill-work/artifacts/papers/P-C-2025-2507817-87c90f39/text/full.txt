@@ -1,0 +1,1639 @@
+Problem Chosen         2025    Team Control Number
+                  MCM/ICM
+     C          Summary Sheet     2507817
+
+                         Olympic Medals Unveiled:
+
+         A Mathematical Exploration of Achievement Trends
+
+                                          Summary
+
+      In the Olympic Games, the pinnacle of sports competition, the quest for medals reflects
+not only the physical prowess of athletes but also the overall strength of their countries. As
+competitive sports evolve, medal rankings shift over time. This paper analyzes the key factors
+
+྘ influencing Olympic performance and explores future trends in the medal competition
+
+landscape from various perspectives.
+
+ ଆ For Task 1, we developed a Grid-Search Random Forest (GSRF) prediction model
+
+using preprocessed data. Through Cross-Validation, we obtained correlation coefficients for
+
+࿐ predicting the number of gold medals and the total medals, which were 0.710 and 0.784,
+
+respectively, validating the model. Based on this model, we projected the gold and total medal
+standings for the 2028 Olympic Games, concluding that China and the United States are likely
+
+ඔ to continue leading in both categories. We also calculated prediction intervals using the t-
+
+distribution, as shown in Figure 9. Additionally, we identified the countries most likely to
+
+ğ ls advance and regress, which are illustrated in Figure 10.
+ e For Task 2, we established a Logistic Regression Model to classify countries that have
+
+‫ ݼ‬d not yet won medals in the 2028 Olympic Games into two categories: winners and non-winners.
+o This transformed the probability of winning a medal into a binary classification problem. We
+ᇙ selected appropriate feature variables and calculated the weights of each feature vector using
+m the maximum likelihood estimation method. By applying the sigmoid function and L1
+
+regularization, we identified countries with a higher likelihood of winning medals among
+
+‫ ܄‬H those yet to medal, as shown in Table 11.
+ ྐ T For Task 3, based on the results of Task 1, we calculated the number of medals won by
+
+A each country in each event and quantified the significance of each event’s contributions by
+
+calculating the ratio of medals in that event to total medals. We noted that some countries (e.g.,
+
+ັ M KOS in Judo) have achieved their only medals through specific programs that are particularly
+
+critical for them. Overall, countries tend to prioritize sports in which they have both strengths
+
+ğ and potential to optimize their chances of winning more medals.
+
+      For Task 4, we created a “Great Coach” Model. By quantifying the weights of medals
+
+‫ ݼ‬and calculating the scores of each country, we identified that there were “Great Coach” in
+
+women's gymnastics in Romania and the United States, and the Spearman's Correlation
+
+ྐ Coefficient between their scores and the scores of these two countries was 0.874. After
+
+building the model by using the Lasso Regression, we selected three countries and identify
+
+ັ sports and applied it to them. After the introduction of the “Great Coach” concept, the predicted
+
+scores for each country in 2028 are presented in Table 15, with Romania showing a remarkable
+increase from a score of 3 to 36.65.
+
+      Finally, we offer original insights for the IOC regarding the host effect and the impact of
+talented athletes. Additionally, we performed a sensitivity analysis that demonstrated the
+model's stability and robustness following perturbations.
+
+Keywords: Olympic；GSRF；Logistic Regression；Lasso Regression
+                                                                                Team#2507817            Page 3 of 25
+
+                                                                                1 Introduction
+
+                                                                                1.1 Background
+
+                                                                                      When viewers follow the Summer Olympics, they appreciate the performance of the
+
+                                                                                athletes as well as the medal standings. Since 1896, sports powerhouses such as the United
+
+                                                                                ྘ States have been at the top of the list, demonstrating their strength. Countries that have won
+
+                                                                                many gold medals are globally recognized, and countries that have won their first Olympic
+                                                                                medals are celebrated, marking historical milestones. Here are the top 10 medalists for the 2024
+                                                                                Summer Olympics:     ଆ
+
+                                                                                                  ࿐
+                                                                                      ‫ݼ‬ğඔ dels Figure 1 Medal list of 2024 Summer Olympic Games
+                                                                                ᇙ o 1.2 Clarifications and Restatements
+
+                                                                                 m In this problem, models need to be developed to predict the medal table using relevant
+                                                                                ‫ ܄‬H event and athlete data. Based on the data of previous years' Summer Olympics medal table,
+                                                                                ྐ T host country, number of events and participants, the analysis deals with the following problems:
+                                                                                A Task 1 Predicts the medal standings for the 2028 Summer Olympics based on a model, giving
+
+                                                                                     prediction intervals that include each statistic, indicating the countries most likely to make
+
+                                                                                 ັ M progress and regress.
+                                                                                 ğ  The feature values affecting the number of medals are counted and integrated into a
+                                                                                          dataset for model training and testing. After model validation, predict the number of
+
+                                                                                          gold medals and total medals for each country in 2028 based on 2024 data, calculate
+
+                                                                                  ‫ ݼ‬prediction intervals and visualize them.
+
+                                                                                Task 2 For countries that have not yet won a medal, predict how many countries will win their
+
+                                                                                 ྐ first medal at the next Olympic Games and calculate their probability
+
+                                                                                      Essentially, it is a classification problem that categorizes the predicted outcomes of
+
+                                                                                  ັ non-winning countries in 2028 into two categories: winning and not winning.
+                                                                                      Judgment calculates how probable it is that the country falls into the winning category.
+
+                                                                                Task 3 Consider the effect of the number and type of sports in previous Olympic Games on
+                                                                                     the number of medals won by each country. Determine the most important sport for each
+                                                                                     country and give reasons. Also consider the effect of the host country's choice of sport on
+                                                                                     the results.
+
+                                                                                       We sort out the cumulative number of medals for each country and analyze the
+                                                                                           relationship. Also introduce a concept that can quantify the importance of the program
+                                                                                           to the country. Use the data to make judgments and explain why.
+
+                                                                                Task 4 Predict the contribution of the "great coach" effect to the number of medals. Select
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team#2507817                     Page 4 of 25
+
+     three countries and consider the sports in which "great coaches" should be introduced and
+     estimate their impact.
+
+      First identify the countries and programs that have been impacted, and then calculate
+          the regression equation between the variables that include the impact of great coaches
+          and the final predicted values. Then identify countries and programs with potential to
+          predict changes in their performance
+
+Task 5 Given original insights on Olympic medal counts, analyze the information these
+     insights can provide to the NOC.
+
+      Find the eigenvalues from the previous Tasks that have some influence on the number
+          of gold medals & medals, and investigate them
+
+1.3 Our work
+
+                                              mmmmmmm          mmm                                          mm m mm                            mmmmm            mm
+
+                                              m           m    mm m m mmmmm                                                             m mm           mm
+
+                                              m mmm m                                             m               m              mm     m mm           mmm
+
+                                              m mmm m m mmmm                                                         mm          mmm            m      m mmm
+
+                                              m mmm m          m m m mmmmm                                                           mm        mmmmmm m
+
+                                              m           m                                          mm        mm                mm        mmm         mm
+
+                                              mmmmmmm          mm                                        m        mmmm               m     mm m m mmm
+
+                                                             mmm mm                                               mm             mm m mmm              m        mm
+
+                                                  m      mm    mmmm                                               mm          m mmm            mmmmmmmm
+
+                                              mm             mm m m m mmmm                                                           mmmmmmmm                      m
+
+                                                 m mmmm m m mmmmmm mm m m m mm                                                                         m           m
+
+                                              mmm m          m m mmm                                                    m        mmmm m mmmm mm m
+
+                                                          mm                                                   mm                m mmmmm mm               m
+
+                                                     mmm                                              mmmmm m m m                       m      m m mm mm
+
+                                                     m mm m                                           m        mmmmm mm mm                     m mmmmmmm
+
+                                                         m mmm                                              mm          mm           m          mm           m
+
+                                                     mm m                                            mm           m               m        mmm mmm              m
+
+                                              mmmm           mmm mm mm m m m mm                                                                 mmmm m m
+
+                                              mmmm             mm                                                    m        mm        m      mm         mmmm
+
+                                              mm        mm mm                                        mm mmm                mmm       m m mmm mmm m
+
+                                                 mm       m                                       mmmmm                          m mm      m mm           mm
+
+                                              m      m                                                m m mmmmmmmm mmmm                               mm        m
+
+                                              m mmm mmmmm m                                                    m           mmmmm mm             mm m m m
+
+                                              mmm              m m mmm                                                  mm              m          mm m mm
+
+                                              mm m        mmm m mm mmmm m mmmm m                                                                   mm              m
+
+                                              mm m           mmmm                                           m        m            m     mm            mm           m
+
+                                              mmmm mm m m m                                                    mmm            m      m         m mm m              m
+
+                                                     mm                                           m                  m mmmmm m                     mm m mm
+
+                                                     m    m                                           mm             mmm m           mm m             mmm mm
+
+                                                                                                  mm           mmmm               mmm
+
+                                              mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                                              m           m mm m                                            mm mmmmmm                      mmm m                   m
+
+                                              m mmm m mmm m m mm                                                              mmmmmmmmm m mmm m
+
+                                              m mmm m m                                               mm                   m               mmm m mmm m
+
+                                              m mmm m                                                mm           m mmm                    mm m mmm m
+
+                                              m           m mm                                        mm             m m mmmmmmm                   m               m
+
+                                              mmmmmmm mmmmm                                                       m        mmm             mm      mmmmmmm
+
+              Figure 2 Our Work
+
+                                           2                                                         ܱᇿඔ࿐ଆ྘
+                                                                                                     ࠆ౼۷‫؟‬ሧ࿟
+                                 MATHmodels
+                                                                                Team#2507817                                                        Page 5 of 25
+
+                                                                                2 Basic Assumption
+
+                                                                                 Hypothesis 1: Assume that the number of athletes participating in the 2028
+
+                                                                                     Olympics, the number of countries, and the number of events held are the same as
+                                                                                     in 2024.
+
+                                                                                     Legitimacy: The data review revealed that the number of countries participating in
+                                                                                recent Olympic Games and the number of events held have not changed much. To simplify
+                                                                                the calculation of the model, it is assumed that the number remains constant.
+
+                                                                                 Hypothesis 2: The variables are independent of each other and only affect the
+                                                                                     results.
+
+                                                                                      Justification: while these variables interact, considering them in the model adds
+
+                                                                                complexity and unpredictability. For extensive analysis, we focus more on measurable and
+
+                                                                                consistent factors
+                                                                                ྘  Assumption 3: Excluding the cost of investing in great coaches
+                                                                                      ଆ Justification: focuses on the direct impact of coaching quality on athlete performance,
+
+                                                                                      team performance, or overall sport system development.
+                                                                                3 Symbols࿐ Symbols
+
+                                                                                          Aij
+
+                                                                                      ඔ Gij
+                                                                                       ğ els Tij
+                                                                                       ‫ ݼ‬od Eij
+                                                                                       ᇙ m Yg
+                                                                                       ‫ ܄‬H Yt
+                                                                                       ྐ T ak
+                                                                                       A e k
+                                                                                       ັ ğM pk
+                                                                                                                                     Definition
+                                                                                               Total number of athletes from the i-th country in the j-th Olympic Games
+                                                                                              The number of gold medals won by the i-th country before the j-th Olympic
+
+                                                                                                                                       Games
+                                                                                              The total number of medals won by the i-th country before the j-th Olympic
+
+                                                                                                                                       Games
+                                                                                                               Total number of events in the j Olympic Games
+
+                                                                                                                       Number of gold medals predicted
+
+                                                                                                                       Total number of medals predicted
+                                                                                                                     Number of athletes in the kth country
+                                                                                                             Number of projects participated by the kth country
+                                                                                                               Number of historical entries of the kth country
+
+                                                                                4      Data Preprocessing
+
+                                                                                     ‫ ݼ‬Outlier handling: each country may have different teams for the same program, and the
+
+                                                                                      names of these teams contain markers representing the order of the teams, and there is
+
+                                                                                      ྐ garbled code after the name of the country. We dealt with cleaning these outliers.
+                                                                                ັ  Data standardization: In forecasting, to ensure that the data have relatively equal weights
+                                                                                     for each feature value, data standardization is used, where the mean ( x ) and standard
+                                                                                      deviation (SD) of each feature are to be calculated
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+           Team#2507817                                                                                  Page 6 of 25
+
+                                                                                           x'  (x  x)                                                                              (0)
+                                                                                           SD
+
+            Conversion of country and region names: To build the model, we utilized two files:
+                "summerOly_medal_counts.csv" and "summerOly_athletes.csv." Since these files
+                represent countries in different formats, we employed an ISO mapping table to convert the
+                full names of all countries and regions into standardized codes prior to data integration.
+                Data for countries that were dissolved or banned, such as the USSR and Russia, was
+                excluded.
+
+            Athlete & Event Counts: Athletes and events are categorized by country and year and
+                their total value is calculated. Individual Neutral Athletes (AIN) sport results do not
+                represent any one country and should also be cleared in the forecast.
+
+5 Task 1 Predicting Gold & Total Medals Based on GSRF Model
+
+           5.1 GSRF Prediction Model
+
+           5.1.1 ARIMA Model Initial Prediction
+
+                 The ARIMA model is widely used in time series analysis for its flexibility and powerful
+           forecasting ability to adapt to a wide range of data characteristics and make accurate
+           predictions.The ARIMA model integrates autoregressive (AR) and moving average (MA)
+           methods and incorporates differencing (I) to enhance data smoothing. By examining
+           autocorrelation in historical data, the model assumes that future trends will mimic historical
+           patterns and thus predicts future data points.ARIMA (p, d, q) can be expressed as equation (2):
+
+                                                                                     X t  c  1 X t1  2 X t2    p X t p  1t1  2t2    qtq  t               (1)
+
+                                         Among them:
+
+            Xt represents the time series data we are considering;
+
+            c is a constant term;
+
+mmmmmmm          mmm         mm m mm                          mmmmm            mm
+
+                                                       m mm           mm
+   , ,..., are the parameters of the AR model, which are used to describe the relationship m
+            m    mm m m mmmmm
+
+ m mmm m           m               m            mm     m mm           mmm
+
+m mmm m        m mmmm                 mm        mmm            m      m mmm
+
+ m mmm m         m m m mmmmm                        mm        mmmmmm m
+
+m           m         mm        1 m m           mm        2 m m m     m     m           p
+                                    mmmm        mm            mm m    m     mmm
+mmmmmmm          mm       m         mm              m     mmm         m
+                                                    m                           mm
+               mmm mm
+
+    m      mm    mmmm              mm        m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                        mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                      m           m
+
+mmm m          m m mmm                   m      mmmm m mmmm mm m
+
+            mm                  mm              m mmmmm mm               m
+
+       mmm             mmmmm m m m                     m      m m mm mm
+
+       m mm m          m        mmmmm mm mm                   m mmmmmmm
+
+                             mm          mm         m          mm
+           between the current value and the value at the past p time points; m mmmm
+
+       mm m           mm           m             m        mmm mmm              m
+
+ mmmm          mmm mm mm m m m mm                              mmmm m m
+
+mmmm             mm                   m      mm        m      mm         mmmm
+
+mm        mm mm       mm mmm                mmm     m m mmm mmm m
+
+   mm       m      mmmmm                        m mm      m mm           mm
+
+m      m               m m mmmmmmmm mmmm                             mm        m
+
+m mmm mmmmm m                   m           mmmmm mm           mm m m m
+
+ mmm             m m mmm                 mm            m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                mm              m
+
+mm m           mmmm          m        m          m     mm            mm           m
+
+mmmm mm m m m                   mmm          m      m         m mm m              m
+
+       mm          m                  m mmmmm m                   mm m mm
+
+       m    m          mm             mmm m         mm m             mmm mm
+
+                   mm           mmmm             mmm
+  , , are the parameters of the MA model that are used to describe the relationship mmmmmmm
+               mmmmmmmmmmm                                        mmmmmmm
+
+m           m  mm m          mm mmmmmm                    mmm     m               m
+
+m mmm m        mmm m m mm                    mmmmmmmmm            m mmm m
+
+m mmm m        m          mm                              mmm     m mmm m
+               mm     mm                    1 2 m                                    q
+m mmm m                            m mmm                  mm      m mmm m
+                          mm
+m           m                         m m mmmmmmm                 m               m
+
+mmmmmmm mmmmm                      m        mmm           mm      mmmmmmm
+
+                                   between the current value and the error at the past q time points;
+
+            t is the error term at time point t.
+
+                 Our initial ARIMA projections of the number of gold medals and the total number of
+           medals for the United States and China resulted in the projection charts shown below:
+
+                                                                                                                                                                                  2       ܱᇿඔ࿐ଆ྘
+                                                                                                                                                                                          ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                                                        MATHmodels
+Team#2507817                                                           Page 7 of 25
+
+a) United States Gold   b) United States Total Predict                            ྘
+
+                                         ࿐                             ଆ
+
+               ğඔ els c) China Gold Predict
+‫ ݼ‬d Figure 3 Prediction chart of medal numbers for the United States and China
+                                         d) China Total Predict
+ o The ARIMA (p, d, q) model corresponding to the above predictions and the correlation
+ᇙ coefficients R2 are shown in the table below:
+                        m Table 1 Relevant data for predictive models
+ྐ‫ ܄‬TH United States Gold Predict
+                        ARIMA (p, d, q)   R2
+United States Total Predict              0.218
+                        ARIMA (2, 0, 2)  0.257
+ A China Gold Predict   ARIMA (2, 1, 1)  0.430
+ ັ M China Total PredictARIMA (1, 1, 0)  0.494
+                        ARIMA (1, 1, 0)
+ğ The correlation coefficients derived from the prediction are small not close to 1, proving
+that the use of ARIMA model to predict the number of medals is not ideal, so we use the GSRF
+swing prediction model to make predictions
+
+‫ ݼ‬5.1.2 GSRF Prediction Modeling
+ ྐ First, we need to build a model for predicting the fluctuations in the number of medals
+ັ for each country, as well as finding the factors that are most relevant to this fluctuation. From
+
+this we use the GSRF swing prediction model.
+In order to predict the number of medals the country will win in the next Olympics, we start with
+
+the previous years' awards of the participating athletes and use the network search random forest
+
+algorithm to predict the number of gold medals won in the future and the total number of medals,
+
+respectively.
+
+Next, we describe the selected metrics data and explain the algorithmic process.
+
+1) Selected indicators
+Team#2507817  Page 8 of 25
+
+      Using the dataset from previous years, we selected four characteristic input indicators:
+
+ Total number of athletes from this country in the current Olympics: more athletes
+     means more opportunities to compete and a wider range of selections, increasing the
+     likelihood of winning medals. We denote the total number of athletes from country i in the
+     jth Olympics as: Aij
+
+ The number of gold medals and total medals won by the country up to the current
+     Olympics: The medal table of previous years gives a preliminary idea of the strength of
+     the country and the trend of its strength. We denote the total number of gold medals won
+     by country i before the jth Olympics as Gij and the total number of medals as T(ij).
+
+ Current total number of Olympic events: The total number of Olympic events
+     determines the basis of medal distribution, the more events the more medals. The more
+     programs a country participates in, the more chances it has to win. An increase in the
+     number of events results in a wider distribution of medals, with more countries having a
+     chance to win. We denote the total number of events in the jth Olympics as Ej
+
+ Is the country hosting the Games: As a host, the country has advantages in terms of
+     venues, facilities and logistics. The host can increase the number of events it specializes
+     in, decrease the number of events it does not specialize in, and automatically get more
+     places, increasing the chances of athletes to participate. If it is the host of the jth Olympic
+     Games, let Hij = 1, and vice versa, let Hij = 0.
+
+2) GSRF Algorithm
+
+      The GSRF algorithm optimizes the random forest model using a grid search algorithm.
+
+      Random forests are machine learning algorithms trained using multiple decision trees,
+with a randomly selected subset of features per tree, and voting to integrate the results when
+classifying. To prevent overfitting or underfitting, grid search optimization is used. The grid
+search algorithm traverses a grid of predefined parameters, trains and evaluates each
+combination, and outputs the best set of parameters and model performance.
+
+      Compared with the standard random forest algorithm, the GSRF algorithm uses an optimal
+combination of hyperparameters to train and predict the model. This improvement significantly
+improves the performance of the model and effectively mitigates problems such as overfitting
+or underfitting. The following figure illustrates the workflow of the GSRF algorithm.
+
+                               Figure 4 GSRF Algorithm Flow Diagram
+
+3) Make Predictions on Gold & Total Medals
+
+      According to the literature, it is known that a series of data such as the number of strengths
+of athletes, the number of types of events and so on have an impact on the number of medals
+in the next Olympic Games. Therefore, we use the above four characteristic input indicators as
+
+                        2                                                                             ܱᇿඔ࿐ଆ྘
+                                                                                                      ࠆ౼۷‫؟‬ሧ࿟
+              MATHmodels
+Team#2507817                                                                        Page 9 of 25
+
+the input parameters of the random forest model to predict the number of medals:
+
+                           ( Aij,g , Gij , E j,g , Hij,g ) GSRFYg                    (2)
+
+                           ( Aij,t ,Tij , E j,t , Hij,t ) GSRFYt
+
+Among them.
+
+      Aij,g , E j,g , Hij,g represent the total number of athletes from the country in the gold medal
+prediction model, the total number of Olympic events, and whether this country is the host of
+this Olympics, respectively. Yg Represents the number of gold medals predicted.
+
+Aij,t , E j,t , Hij,t Represent the total number of athletes from the country in the total medal
+
+count prediction model, the total number of Olympic events, and whether this country is the
+
+host of this Olympics, respectively. Yt Represents the number of gold medals predicted.
+
+ ྘ We use data prior to 2024 as the training set and 2024 as the test set. The k-fold cross-
+
+validation method is used, taking k to be 10. The training set is divided equally into 10 equal
+ଆ sized subsets. For each subset, that subset is used as the validation set and the rest use the
+
+remaining 9 subsets as the training set. The random forest model is trained on the training set
+and the model performance is evaluated on the validation set and the evaluation metrics are
+recorded. Finally, the average evaluation metrics of all the subsets are calculated, giving a
+
+࿐ comprehensive estimate of the model performance, as a way to assess the stability and
+
+generalization ability of the model. The schematic diagram is shown below:
+
+        ‫܄‬ᇙ‫ݼ‬ğඔHmodels Figure 5 10 Fold Cross Validation Diagram
+ ྐ T The Random Forest Regressor algorithm from the integration module in the scikit-learn
+A (sklearn) machine learning library[1] and the GridSearchCV algorithm from sklearn were used
+ັ M via . The optimal parameter combination obtained by GridSearchCV is as follows:
+
+    ğ Table 2 The impact of various indicators on the prediction results
+              ‫ ݼ‬Gij                                                    Total Medal
+              Gold Medals
+
+  Aij , g     E j,g          H ij , g    Aij ,t                        Tij  E j,t    H ij ,t
+74.10%        ྐ 1.71% 7.40%16.90%      85.70%                                       0.80%
+                                                                       7.20% 6.30%
+ັ We use radar charts to visualize the impact of each indicator on the forecast results as
+follows:
+Team#2507817                                                                                                                                                                                                                                                                                                                    Page 12 of 25
+
+               mmmmmmm          mmm        mm m mm                            mmmmm                                                                                                                                                                                                              mm
+
+               m          m     mm m m mmmmm                           m mm           mm
+
+               m mmm m          m                m              mm     m mm           mmm
+
+               m mmm m m mmmm                       mm          mmm            m      m mmm
+
+               m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+The above predictions are only the most likely scenarios, next we solve for the prediction mmmmmmmmmmmmm
+
+               mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+                              mmm mm             mm             mm m      mmm         m                                                                                                                                                                                                          mm
+
+                   m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+               mm             mm m m m mmmm                         mmmmmmmm                                                                                                                                                                                                                        m
+
+                  m mmmm m m mmmmmm mm m m m mm                                       m                                                                                                                                                                                                             m
+
+               mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+                                                                m mmmmm mm
+intervals at the 95% confidence level: m m    mm                                                                                                                                                                                                                                           m
+                                                                                                                                                                                                                                                                              mmm
+                                                                                                                                                                                                                                                                              m mm mm
+                                                                                                                                                                                                                                                                                      m mmm
+                                     mmmmm m m m                              m m mm mm
+
+                                     m        mmmmm mm mm                     m mmmmmmm
+
+                                           mm          mm           m          mm                                                                                                                                                                                                             m
+
+                      mm m          mm           m               m        mmm mmm                                                                                                                                                                                                                m
+
+               mmmm           mmm mm mm m m m mm                               mmmm m m
+
+               mmmm             mm                  m        mm        m      mm         mmmm
+
+               mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+                  mm      m     mmmmm                           m mm      m mm           mm
+
+                      m              m m mmmmmmmm mmmm                                                                                                                                                                                                                                           m
+5.2.2 Calculate the prediction interval m                                            mm
+
+               m mmm      mmmmm m             m           mmmmm mm             mm m m m
+
+               mmm              m m mmm                mm              m          mm m mm
+
+               mm m       mmm m mm mmmm m mmmm m                                  mm                                                                                                                                                                                                                m
+
+               mm m           mmmm         m        m            m     mm            mm                                                                                                                                                                                                             m
+
+               mmmm mm m m m                  mmm            m      m         m mm m                                                                                                                                                                                                                m
+
+                      mm        m                   m mmmmm m                     mm m mm
+
+                      m   m          mm             mmm m           mm m             mmm mm
+
+                                mm            mmmm               mmm
+
+               mmmmmmm m m m m m m m m m m m mmmmmmm
+
+               m          m mm m           mm mmmmmm                      mmm m                                                                                                                                                                                                                     m
+First, we determine whether the residuals of the two prediction models satisfy a normal m mmm m mmm m m mm
+                                                             mmmmmmmmm m mmm m
+
+               m mmm m m             mm                   m               mmm m mmm m
+
+               m mmm m              mm           m mmm                    mm m mmm m
+
+               m          m mm       mm             m m mmmmmmm                   m                                                                                                                                                                                                                 m
+
+               mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+
+distribution:
+
+      We plotted and fitted a histogram of residuals and also performed a Shapiro-Wilk test on
+the data, the results of which are shown below:
+
+a) Prediction of Gold Medals                                                                                                                                                                                                                                                                           b) Prediction of Total Medal Count
+
+                                                    Figure 9 histogram of residuals
+
+                              Table 7 Fitting data and SW test results
+
+Gold Medals    Standard Deviation                                                                                                                                                                                                                                                                      Skewness  Kurtosis  Shapiro-Wilk Test
+Total Medals           2.908                                                                                                                                                                                                                                                                             4.723   35.429           0.438
+                       7.123                                                                                                                                                                                                                                                                             -4.644  40.523           0.434
+
+      Based on the above graphs, it can be found that both predictive models have large peaks
+and skewness, and the significance of the Shapiro-Wilk test on the data is P<0.05, which
+indicates that both predictive models do not conform to a normal distribution.
+
+So we compute the prediction interval using the t distribution
+
+                                  Prediction Interval= y  t 2,n p  SE y                                                                                                                                                                                                                                                              (6)
+
+Among them.
+
+      y represents the predicted value, t 2,n p is the quantile of the t-distribution, n is the
+
+  number of samples, p is the number of parameters in the model, and SE y is the standard
+
+error of the prediction. The correlation results were calculated as shown below:
+
+               Table 8 Prediction Model T-Distribution Related Data
+
+                                                                                                                                                                                                                                                                                                                   t 2,n p
+                                                                                                                                                                                                                                                                                                                 SE y
+
+               Prediction of Gold Medals                                                                                                                                                                                                                                                                         2.404 2.908
+
+               Prediction of Total Medal Count 1.993 7.123
+
+     Then the prediction interval for the number of gold medals at the 95% confidence level is
+y  7 and the total prediction interval for the number of medals is y 15
+
+                                                                                                                                                                                                                                                                                                                                          2       ܱᇿඔ࿐ଆ྘
+                                                                                                                                                                                                                                                                                                                                                  ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                                                                                                                                                                                                                MATHmodels
+Team#2507817                                                       Page 13 of 25
+
+                                                                   ଆ྘
+
+              ࿐ Figure 10 Error bar chart of prediction model
+        (a) Prediction of Gold Medals  b) Prediction of Total Medal Count
+
+ ඔ The question asked us to predict the countries most likely to advance or retreat, we
+
+calculated the predicted number of gold medals & total medals and the difference between the
+
+ğ ls awards in 2024 to find the change in value, and plotted a histogram as shown below:
+5.2.3 Predicting progress and regressions in national performance
+
+ྐ‫܄‬ᇙ‫ ݼ‬ATHmode a) Gold medal, with fluctuations exceeding 2 b) Total medal, with fluctuations exceeding 5
+                Figure 11 Countries with significant fluctuations in medal numbers
+ ັ M The graphic shows that Great Britain had the most significant increase in gold medals and
+
+ğ Germany had the most significant increase in total medals, both making significant progress.
+South Korea had the largest decrease in gold medals and China had the largest decrease in total
+medals. With the exception of the United States, the countries with significant gold medal
+
+‫ ݼ‬growth also saw varying degrees of progress in total medals. The U.S. had more gold medal
+ྐ growth, but less significant total medal growth.
+ັ 6 Task 2 Projections for Non-Awarded Countries
+           The question asks us to predict whether or not a country that has never won a medal will
+win its first medal at the 2028 Summer Olympics and to predict the probability of winning. The
+
+question is essentially a binary classification problem. The predicted outcomes are categorized
+
+into those that will win and those that will not. Therefore, we build a binary logistic regression
+
+model.
+
+6.1 Bicategory Logistic Regression Modeling
+
+      We recorded non-winning countries as Category 1 if they could win at the 2028 Summer
+Olympics and Category 0 if they could not.
+
+6.1.1 Sigmoid Function (math.)
+
+      Logistic regression is a generalized linear regression that combines a nonlinear function
+with a linear function to map it. We use the Sigmoid function to map the output value of a linear
+function to a probability between 0 and 1. The Sigmoid function formula is as follows:
+Team#2507817                                                                             Page 14 of 25
+
+                                          (  z)       1                                                                                            (7)
+                                                     1 ez
+
+Among them:
+
+                              z  1ak  2ek  3 pk  b                                                                                            (8)
+
+ ak , ek , pk is the input eigenvalue
+
+ak : The number of athletes from the kth country in the 2028 Olympics. More athletes means
+    that more people can compete in more events, or more people can compete in the same
+    event, which greatly increases the probability of winning.
+
+ek : The number of events in which the kth country participates in the 2028 Olympics.
+
+Participating in more events increases the probability of winning to some extent compared mmmmmmm         mmm                                                             mm
+                                                                                                          mm m        mm m mm                            mmmmm
+
+                                                                                         m           m        m       m mmmmm                     m mm           mm
+
+                                                                                         m mmm m                            m              mm     m mm           mmm
+
+                                                                                         m mmm m m mmmm                        mm          mmm            m      m mmm
+
+                                                                                         m mmm m          m m m mmmmm                          mm        mmmmmm m
+
+                                                                                         m           m         mm        mm                mm        mmm         mm
+
+to concentrating on the same event.                                                      mmmmmmm          mm       m        mmmm               m     mm m m mmm
+
+                                                                                                        mmm mm              mm             mm m mmm              m        mm
+
+                                                                                             m      mm    mmmm              mm          m mmm            mmmmmmmm
+
+                                                                                         mm             mm m m m mmmm                          mmmmmmmm                      m
+
+                                                                                            m mmmm m m mmmmmm mm m m m mm                                        m           m
+
+                                                                                         mmm m          m m mmm                   m        mmmm m mmmm mm m
+
+                                                                                                     mm                  mm                m mmmmm mm               m
+
+                                                                                                mmm             mmmmm m m m                       m      m m mm mm
+
+                                                                                                m mm m          m        mmmmm mm mm                     m mmmmmmm
+
+                                                                                                    m mmm             mm          mm           m          mm           m
+
+                                                                                                mm m           mm           m               m        mmm mmm              m
+
+                                                                                         mmmm           mmm mm        mm m m m mm                         mmmm m m
+p : Historical participation of the kth country: the more a country participates in international k
+                                                                                         mmmm             mm                   m        mm        m      mm         mmmm
+
+                                                                                         mm        mm mm       mm     mmm            mmm       m m mmm mmm m
+
+                                                                                            mm       m      mm        mmm                  m mm      m mm           mm
+
+                                                                                         m      m               m     m mmmmmmmm mmmm                           mm        m
+
+                                                                                         m mmm mmmmm m                   m           mmmmm mm             mm m m m
+
+                                                                                         mmm              m m mmm                 mm              m          mm m mm
+
+                                                                                         mm m        mmm m mm mmmm m mmmm m                                  mm              m
+
+                                                                                         mm m           mmmm          m        m            m     mm            mm           m
+
+                                                                                                                         mmm
+events, the more experience it accumulates, which can largely increase its probability of mmmm mm m m m                                 m      m         m mm m              m
+
+                                                                                                mm          m                  m mmmmm m                     mm m mm
+
+                                                                                                m    m          mm             mmm m           mm m             mmm mm
+
+                                                                                                            mm           mmmm               mmm
+
+                                                                                         mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                                                                                         m           m mm m           mm mmmmmm                      mmm m                   m
+
+                                                                                         m mmm m mmm m m mm                             mmmmmmmmm m mmm m
+
+                                                                                         m mmm m m              mm                   m               mmm m mmm m
+
+winning.                                                                                 m mmm m               mm           m mmm                    mm      m mmm m
+
+                                                                                         m           m  mm      mm             m m mmmmmmm                   m               m
+
+                                                                                         mmmmmmm        mmmmm               m        mmm             mm      mmmmmmm
+
+ 1,2,,n are the weights and we calculate their values using gradient descent.
+
+ b is the bias term
+
+      When the output of the sigmoid function is close to 1, the probability that the country
+belongs to category 1 is considered higher, i.e. the probability of winning the prize is higher.
+When the output value is close to 0, the probability that the country belongs to category 0 is
+higher, i.e. the probability of not winning the prize is higher.
+
+6.1.2 Introducing the Loss Function
+
+Let  pi     (z)       1    , we get P  z  0 | x  1 P  z  1| x  1 pi , then
+                      1 ez
+
+                              P（y | x,)  ( pi )y (1 pi )1y                                                                                       (9)
+
+      To further optimize the model, we introduce a cross-entropy loss function (log loss) to
+measure the gap between the model's predicted probability and the true category, log loss is
+defined as follows:
+
+                              m
+
+                              L   zi ln  pi   1 zi  ln 1 pi                                                                     (10)
+
+                              i 1
+
+      where zi is the true category; pi is the predicted probability of the model; and m is the
+sample size.
+
+6.2 Bicategory Logistic Regression Results
+
+      The results of the parameters of the model were calculated using MATLAB as shown in
+the table below:
+
+                                                                                                                         2                                                   ܱᇿඔ࿐ଆ྘
+                                                                                                                                                                             ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                               MATHmodels
+Team#2507817                                                                 Page 15 of 25
+
+              Table 9 Parameter results of Binary Logistic Regression Model
+
+    Regression Coefficient  Standard Error             Waid                    P
+                                 0.098                607.134                <0.01
+b             2.425              0.004                                       <0.01
+                                 0.008                 10.62                 <0.01
+ak            -0.012             0.010                76.036                 0.197
+                                                       1.665
+ek            -0.068
+
+pk            -0.013
+
+      As can be seen from the table, pk corresponds to P>0.05, which indicates that pk has no
+
+effect on the predicted results. We stipulate that a dependent variable of 1 represents that the
+non-winning country can win at the 2028 Summer Olympics. A dependent variable of 0
+represents not being able to win a prize. The regression equation for whether or not the non-
+winning country wins the 2028 Olympics is derived:
+
+                      z  0.012ak  0.068ek  2.425                                (11)
+
+྘ 6.2.1 Model Evaluation and Modification
+      In order to evaluate the classification effectiveness of the model, we start with the
+sensitivity and specificity of the model:
+
+ ଆ  Sensitivity (TPR): the proportion of results that are actually positive samples that are
+          predicted to be positive samples.
+
+ ࿐  Specificity (FPR): the proportion of results that are actually negative samples that are
+          predicted to be positive samples.
+
+ ඔ  AUC: is the area under the ROC curve and is used to measure the overall performance
+          of the binary classification model.
+
+ ğ ls The ROC curve of the model is plotted as shown below:
+    ັྐ‫܄‬ᇙ‫ݼ‬ATHmode Figure 12 ROC curve
+ M The ROC plot combines sensitivity (TPR) and specificity (FPR), which can measure the
+ğ relationship simultaneously. Ideally, TPR should be close to 1, FPR should be close to 0, and
+                            Figure 13 Hybrid Matrix Thermodynamic Diagram
+
+‫ ݼ‬the AUC value should be close to 1. Calculation from the ROC graph shows that AUC = 0.918.
+
+It can be seen that the sensitivity of this model is good.
+ ྐ To further measure the classification effectiveness of logistic regression through
+
+quantitative metrics, a heat map of the confusion matrix was drawn as shown above. Based on
+ັ this, the classification evaluation metrics of the model are calculated as shown in the table
+
+below
+Team#2507817                                                                                                                             Page 16 of 25
+
+                          Table 10 Classification Evaluation Index
+
+   Accuracy               Recall                                                                                       Precision          F1
+     0.841                0.841                                                                                          0.848           0.839
+
+  Accuracy:The proportion of positive samples to the total samples, the greater the
+
+  accuracy, the better.  mmmmmmm           mmm        mm m mm                            mmmmm            mm
+
+                          m           m     mm m m mmmmm                           m mm           mm
+
+                          m mmm m            m               m              mm     m mm           mmm
+
+                          m mmm m m mmmm                        mm          mmm            m      m mmm
+
+                          m mmm m           m m m mmmmm                         mm        mmmmmm m
+
+                          m           m         mm        mm                mm        mmm         mm
+
+                          mmmmmmm           mm      m        mmmm               m     mm m m mmm
+
+   Recall:The proportion of results from actual positive samples that predict mmm mmmm            m        mm
+                                                                            mm m mmm                                                            positive
+                                                                                                                                                that are
+                              m      mm     mmmm             mm          m mmm            mmmmmmmm
+
+                          mm             mm m m m mmmm                          mmmmmmmm                      m
+
+                             m mmmm m m mmmmmm mm m m m mm                                        m           m
+
+                          mmm m          m m mmm                   m        mmmm m mmmm mm m
+
+                                      mm                  mm                m mmmmm mm               m
+
+                                 mmm             mmmmm m m m                       m      m m mm mm
+
+                                 m mm m          m        mmmmm mm mm                     m mmmmmmm
+   samples, the greater the recall the better. m mmm
+                                                       mm          mm           m          mm           m
+
+                                 mm m           mm           m               m        mmm mmm              m
+
+                          mmmm           mmm mm mm m m m mm                                mmmm m m
+
+                          mmmm              mm                  m        mm        m      mm         mmmm
+
+                          mm        mm mm       mm mmm                mmm       m m mmm mmm m
+
+                             mm       m      mmmmm                          m mm      m mm           mm
+
+                          m      m               m m mmmmmmmm mmmm                               mm        m
+
+                          m mmm mmmmm m                   m           mmmmm mm             mm m m m
+
+                          mmm               m m mmm                mm              m          mm m mm
+
+                          mm m        mmm m mm mmmm m mmmm m                                  mm              m
+
+                                         mmmm          m        m            m     mm
+   Precision:The proportion of the results of the predicted positive sample mm m                 mm           m
+
+                          mmmm mm m m m                   mmm            m      m         m mm m              m
+
+                                 mm          m                  m mmmmm m                     mm m mm
+
+                                 m    m          mm             mmm m           mm m             mmm mm
+
+                                             mm           mmmm               mmm
+
+                          mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                          m           m mm m           mm mmmmmm                      mmm m                   m
+
+   actually positive, the greater the precision the better. m mmm m
+                                         mmm m m             mm          mmmmmmmmm            m mmm m
+
+                          m mmm m        m       mm                   m               mmm     m mmm m
+
+                          m mmm m               mm           m mmm                    mm      m mmm m
+
+                          m           m  mm      mm             m m mmmmmmm                   m               m
+
+                          mmmmmmm        mmmmm               m        mmm             mm      mmmmmmm
+
+ F1:A reconciled average of precision and recall, where precision and recall are
+     mutually influential.
+
+      The above table shows that Accuracy, Recall and Precision are all larger and F1 is also
+larger, which indicates that this classification model ensures higher accuracy while recall is
+also high, and the classification effect of this classification model is better.
+
+6.2.2 The Classification Results are Given
+
+We need to solve for the probability p that the dependent variable is 1:
+
+                                                                             p                   1            1    z                                 (12)
+                                                                                                               e
+
+                          z  0.012ak  0.068ek  2.425
+
+      After calculating the results, we took only the countries with a probability of winning the
+prize greater than 0.2 as shown in the table below
+
+                       Table 11 Countries and Probability of Winning Medals
+
+              LBN         GUM                                                         PLE                              ANG        ESA
+              0.290       0.230                                                       0.220                            0.206      0.201
+
+The resulting visualization is shown below:
+
+                       Figure 14 Countries and Probability of Winning Medals
+
+      We found that these non-winning countries are mainly concentrated in the Middle East,
+the eastern and southern regions of Asia, sub-Saharan Africa, and some island regions. Some
+of these countries have suffered from wars due to political issues, while others do not have
+access to professional training grounds due to natural constraints. Some are economically
+backward and cannot afford to develop sports. However, they still have a chance to win medals
+in the 2028 Summer Olympics, and we look forward to their wonderful performance.
+
+                                                                                                                                                   2        ܱᇿඔ࿐ଆ྘
+                                                                                                                                                            ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                         MATHmodels
+Team#2507817                                                       Page 17 of 25
+
+7 Task 3 Relationship Between Sports and Medals
+
+      The question requires us to count the number of medals won by each country in each event
+based on the GSRF prediction model that we have built. Solve for the relationship between the
+sports and the number of medals won by each country. Identify the sports that are most
+important to each country and explore why. Host countries usually add events in sports that
+their country specializes in, and explore the effect of this on the medals won by other countries.
+
+7.1 Relationship of the Sports to gold medals & total medals
+
+      Based on the previously drawn radar Figure 6 , we found that programs have a non-
+negligible impact on the number of medals. We have selected the countries that have done well
+in the Olympics, counted the number of medals won, and selected the events in which they
+have won more medals as shown below:
+
+              Table 12 Some Countries and Sports They are Good at
+
+NOC              Sport    Medals     NOC  ྘Sport                   Medals
+              Swimming     1206                                      120
+                                          Swimming
+USA           Athletics   1190       CHN  ଆDiving                  119
+              Rowing      388               Gymnastics             109
+
+              Basketball  341             Table Tennis             94
+࿐ JPN
+              Gymnastics  166             Swimming                 505
+
+              Swimming    127             Hockey                   188
+                 Judo     102             Rowing                   162
+              ඔ Handball             AUS
+
+              Volleyball  101             Athletics                100
+ ğ els As can be seen from the table, these countries will win more medals in the events they
+KOR‫ ݼ‬specialize in        96         GBR  Athletics                393
+
+              Archery     90              Rowing                   319
+
+od 7.2 The most Important Sports for the Country
+ ᇙ m To assess the importance of the project for the country, we introduce the project
+
+importance I(j):
+              ྐ‫ ܄‬TH Ij
+A Among them:                       mk                                 (13)
+                                     Mk
+ ັ M mk stands for the number of medals won by the country in this event; Mk stands for the
+ğ total number of medals won by the country
+      For countries with strong comprehensive sports strength, they will achieve medals in
+many sports, and their program importance is not a single value, we take the United States and
+
+‫ ݼ‬China as an example, calculate the importance of each program to them, and plot the radial
+ྐ histogram as shown below:
+     ັ
+Team#2507817                                                  Page 18 of 25
+
+              a) USA  b) CHN
+
+              Figure 15 Radial Histogram of Sport Importance
+
+      From the figure we can easily see that the most important sport for both the United States
+and China is swimming. According to the related literature, it can be seen that China's
+performance in diving is better than that of swimming[2] , but the importance of swimming is
+higher than that of diving, which is because swimming has a lot of events, which greatly
+increases the probability of winning medals. This also aptly reflects the effect of the number of
+events on the results.
+
+      For countries that are weak in sports, they may have won medals in only one sport, which
+is the most important for that country when the importance of that sport is 1 and the importance
+of the rest of the sports is 0. The countries in this category and their corresponding sports in
+our statistics office are shown in the following chart.
+
+                       Figure 16 Countries that won medals in only one sport
+
+      The graph above shows that Athletics is the most important sport for many countries, this
+is because Athletics has a lot of events, which provides more chances to win prizes for countries
+that are weaker in sports. These countries are mostly African countries, which have an
+advantage in Athletics.
+
+7.3 Impact of Nationally Selected Sports on results
+
+      Preparation for the Olympic Games is a long and continuous process of fluctuation and
+adjustment, and the country will adjust its preparation program based on the combined results
+of previous Olympic Games and different international events.
+
+      The country will invest more time and energy in the development of this sport for those
+who already have an advantage, and more people will participate in this sport, providing more
+excellent human resources to promote the development of this sport, so as to achieve better
+
+                                                                        2                          ܱᇿඔ࿐ଆ྘
+                                                                                                   ࠆ౼۷‫؟‬ሧ࿟
+                                                              MATHmodels
+                                                                                Team#2507817                                               Page 19 of 25
+
+                                                                                results in the Olympic Games.
+
+                                                                                      For programs with high potential, which have had mediocre results in the past, the country
+                                                                                will increase funding and adopt a strategy appropriate to the program, thus improving Olympic
+                                                                                performance.
+
+                                                                                      In the case of projects that have never won an award, they are usually not prevalent in the
+                                                                                country, or the people of the country are generally not good at them. The country does not
+                                                                                invest much time and money in such programs.
+
+                                                                                8 Task 4 The Impact of Great Coach
+
+                                                                                 ྘ The question asks us to search for fluctuations in performance due to the hiring of "great
+
+                                                                                coaches" in previous years, to estimate the effect of this effect on the number of medals, and to
+                                                                                identify the countries that need to hire great coaches the most. We need to build a regression
+                                                                                model to measure the impact of this effect.  ࿐ଆ
+
+                                                                                8.1 Lasso Regression Model
+
+                                                                                8.1.1 Model Preparation
+
+                                                                                                               ඔ Table 13 Score table
+                                                                                      In order to further quantify the country's performance at each Olympic Games, we have
+                                                                                chosen to assign points to the different medals, with the following rules for assigning points:
+                                                                                      ğ ls Gold Medal
+                                                                                           10
+                                                                                 ‫ ݼ‬de We checked the famous and great coaches of history and found out that women'sSilver MedalBronze MedalNo Medal
+                                                                                o gymnastics coach Bela Karolyi coached many Olympic champions[3] . He coached in Romania630
+                                                                                ᇙ in the 1976 and 1980 Olympics, and in the USA in the Olympics from 1984~2016[4] . We
+                                                                                m counted the scores of Romania and USA in women's gymnastics in every Olympics between
+                                                                                ັྐ‫ ܄‬ğMATH 1952 and 2024, as shown below:
+                                                                                                 ‫ݼ‬
+                                                                                              ྐ
+                                                                                       ັ Figure 17 ROU vs USA Women's Gymnastics Scores
+
+                                                                                      We found a significant improvement in the country's women's gymnastics scores after this
+                                                                                coach began coaching. When he left ROU, ROU's scores improved slightly, but generally
+
+                                                                                trended slowly downward. When he came to USA, USA's gymnastics scores still fluctuated
+
+                                                                                significantly, but had an overall upward trend. The Spearman correlation coefficient was then
+
+                                                                                analyzed with the following formula:
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team#2507817                                                   Page 20 of 25
+
+                                 
+                            i xi  x yi  y                                 (14)
+
+                                  2          2
+                            i xi  x  i yi  y
+
+      The correlation coefficient between "great coaches" and the number of medals was
+calculated to be 0.874.
+
+      From the above analysis we can clearly realize that great coaches play a not insignificant
+role in improving sports performance, so we establish Lasso regression model for quantitative
+analysis
+
+8.1.2 Lasso Regression Modeling
+
+      Lasso regression is an alternative to least squares for compression estimation, and its main
+goal is to find a balance between model simplicity and accuracy.
+
+1) Linear Regression Model
+
+A linear regression model is developed as follows
+
+              y  0  1I  2V  3S  4 A  5H  6C                 (15)
+
+ I,V,S,H,C are the indicators of the regression
+
+I: Importance of the program to the state. According to the analysis in Task3, the state
+will use quality strategies to improve performance in programs of high importance,
+and these strategies include hiring great coaches.
+
+V: Average number of points scored by the country in the last two Olympic Games.
+This indicator represents the average of the sum of the total points of the two most
+recent editions and reflects the country's overall performance in the two most recent
+Olympic Games.
+
+S: theoretical points for the country on the program. s=I V is the program importance
+vs. average points score
+
+A: The number of participants from that country in the current Olympic Games. The
+more athletes that participate, the greater the probability of winning a prize
+
+H: The country's historical average points score for the project. This indicator reflects
+the level of the country's program and can reflect fluctuations in its performance.
+
+C: Coaching Impact. To quantify the impact of coaching on performance, we define:
+coaching the first year of coaching C = 1, the length of each increase in the number
+of Olympic cycles, the performance has a linear increase of 0.1, when the coach
+leaves, the performance of the exponential decline,t represents the number of
+Olympic cycles that have begun & have ceased to coach:
+
+                            1 0.1t Start Coaching
+              C  et                                                     (16)
+                                      Stop Coaching
+
+       y is the score obtained from the regression
+       βi is the coefficient to be estimated and ε is the error term
+2) L1 Regularization
+     In the regression, we introduce an L1 penalty term so that the regression does not prioritize
+the reduction of any particular model parameter, retaining a few important features and
+
+                                                                         2                          ܱᇿඔ࿐ଆ྘
+                                                                                                    ࠆ౼۷‫؟‬ሧ࿟
+                                                               MATHmodels
+                                                                                Team#2507817                                                Page 23 of 25
+
+                                                                                              a) USA                                b) JPN
+
+                                                                                              Figure 21 Change in number of medals
+
+                                                                                      We have found that when the United States and Japan are the hosts, there is a 1.4 to 1.9
+                                                                                times increase in the number of gold medals and the total number of medals . The IOC can
+
+                                                                                ྘ encourage countries to apply to host the Olympics based on this phenomenon.
+                                                                                ଆ 9.2 Talented Athletes
+
+                                                                                 ࿐ In competition, there are athletes who train hard and achieve good results, and there are
+
+                                                                                also highly talented competitors. If a country has been competing in an event for a long time
+                                                                                and has only won a medal once, the winner can be called a "gifted athlete". For example, in the
+                                                                                men's hurdles, China has been competing since 1984, and only Liu Xiang won the title in 2004;
+
+                                                                                ඔ the rest of the athletes have not won a medal.
+                                                                                     ྐ‫܄‬ᇙ‫ݼ‬ğTHmodels Figure 22 Chinese men's hurdles
+
+                                                                                 A Accordingly, the IOC could encourage countries to tap talent in such programs and invest
+
+                                                                                more in finding more talented players, who in turn could drive more hard-working players to
+
+                                                                                ັ M the Olympic podium.
+                                                                                ğ 10 Error Analysis and Sensitivity Analysis
+
+                                                                                      Based on the GSRF model established in the first problem, the sensitivity of athletes_num,
+
+                                                                                ‫ ݼ‬Total event to Model can be obtained by changing athletes_num Aij , Total event Eij in the
+                                                                                ྐ model and observing the corresponding changes in Model.
+                                                                                ັ 10.1 Definition of Sensitivity
+
+                                                                                      Define the result of this forecast as y , the difference between this result and the previous
+
+                                                                                forecast as y , and the average sensitivity is defined sp as:
+
+                                                                                                      sp  y y                             (20)
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm    This indicator reflects the magnitude of change in the projected number of medals
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team#2507817                                                 Page 24 of 25
+
+following a change in the indicator.
+
+10.2 Impact of Athletes Number, Gold & Total Medals on Predicted Results
+
+      In Task 1, we found that there are many eigenvalues that affect the prediction of the
+number of gold medals & medals. We control the other eigenvalues unchanged, respectively
+change the athletes_num Aij , the total number of events Eij , observe the corresponding
+
+changes in the predicted number of medals won, and get the average sensitivity: athletes_num:
+0.058329%; Total event: -1.2113%.
+
+               a) Total event         b) Athletes number
+
+                               Figure 23 Sentivity analysis
+
+      From the figure, it is found that the model basically does not fluctuate much after being
+perturbed, and the average sensitivity is also very low. It shows that our model has strong
+stability and robustness.
+
+11 Evaluation of Model
+
+(1) Strengths
+
+ GSRF uses an optimal combination of hyperparameters on top of the traditional
+     stochastic model to train and predict the model. It significantly improves the
+     performance of the model and effectively mitigates problems such as overfitting or
+     underfitting
+
+ Both the MAE and RMSE of the GSRF model are smaller, proving that the model is
+     more accurate and predicts more credible results
+
+ The binary logistic regression model has a larger F1 metric, which ensures that the
+     recall is also high while guaranteeing higher accuracy and better classification.
+
+ By changing the eigenvalues of the model, it is found that the model basically does
+     not fluctuate too much after being perturbed, indicating that the model has strong
+     stability and robustness.
+
+(2) Possible Improvements
+
+ It is assumed that the number of athletes, countries and sports at the 2028 Olympics
+     will be the same as in 2024, but the actual situation may change, which will affect the
+     model's predictions.
+
+ There may be interactions between variables, for example, there may be a positive
+     correlation between the number of athletes and the number of programs, which can
+     lead to biased model predictions.
+
+                                                                       2                         ܱᇿඔ࿐ଆ྘
+                                                                                                 ࠆ౼۷‫؟‬ሧ࿟
+                                                             MATHmodels
+Team#2507817  Page 25 of 25
+
+12 References
+
+[1] Christoph S ,L. S S ,Dominik S , et al. Forecasting the Olympic medal distribution - A
+     socioeconomic machine learning model[J]. Technological Forecasting &amp; Social
+     Change,2022,175
+
+[2] Tan Kaifeng, Zhang Qingyi. Analysis of World Sports Competition Pattern and China's
+     Athletic Level in Paris Olympics [J]. Liaoning Sports Science and
+     Technology,2025,47(01):56-62.DOI:10.13940/j.cnki.lntykj.2025.01.023.
+
+྘ [3] Coaching Team - Bela and Martha Karolyi, USA Gymnastic,
+     https://usagym.org/halloffame/inductee/coaching-team-bela-martha- karolyi/
+
+ଆ [4] [Nov 16, 2024] Bela Karolyi, famed yet polarizing U.S. gymnastics coach, dies, ESPN
+     News Services, https://www.espn.com/olympics/gymnastics/story /_/id/42433795/bela-
+ ັྐ‫܄‬ᇙğ‫ݼ‬MğATඔH࿐models karolyi-famed-us-gymnastics-coach-dies-82
+           ‫ݼ‬
+         ྐ
+      ັ
+

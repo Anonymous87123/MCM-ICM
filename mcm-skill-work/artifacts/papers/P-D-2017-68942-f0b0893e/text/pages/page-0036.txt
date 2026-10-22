@@ -1,0 +1,58 @@
+Team 68942  Page 35 of 36
+
+   set stage 6
+   let p [5 15 25 35 45 55]
+   facexy (item which-queue p) (15) ; once was (15 + queue-pos * .3)
+   set fd-speed (distancexy (item which-queue p) (15)) / int(3 * slow-factor)
+   ;show fd-speed
+   set stage stage + 1
+   set walking-time 0
+   set walking true
+end
+
+to patdown
+   ; join queue - represented by stage 201
+   ask my-links[die]
+   let p [41 44 47 50 53 56]
+   ifelse is-cutter and random 100 < cutting-prob[
+      set queue-pos 0
+   ][
+      set queue-pos item which-queue pd-length
+   ]
+   set pd-length replace-item (which-queue) pd-length (queue-pos + 1)
+   facexy (item which-queue p)(5 + queue-pos * .3)
+   set fd-speed (distancexy (item which-queue p)(5 + queue-pos * .3)) / int(3 * speed-factor)
+   set stage 201
+   set walking-time 0
+   set walking true
+
+end
+
+to record-data
+   set death-per-10m replace-item (length death-per-10m - 1) death-per-10m ((last death-per-10m) + 1)
+   set all-passengers all-passengers + 1
+   ifelse is-precheck[
+      set total-wait-queue-p0 lput wait-queue-0 total-wait-queue-p0
+      set total-wait-queue-p1 lput wait-queue-1 total-wait-queue-p1
+      set total-wait-queue-p2 lput wait-queue-2 total-wait-queue-p2
+      set total-wait-queue-p3 lput wait-queue-3 total-wait-queue-p3
+      set total-wait-queue-pd lput wait-queue-pd total-wait-queue-pd
+   ][
+      set total-wait-queue-n0 lput wait-queue-0 total-wait-queue-n0
+      set total-wait-queue-n1 lput wait-queue-1 total-wait-queue-n1
+      set total-wait-queue-n2 lput wait-queue-2 total-wait-queue-n2
+      set total-wait-queue-n3 lput wait-queue-3 total-wait-queue-n3
+      set total-wait-queue-pd lput wait-queue-pd total-wait-queue-pd
+   ]
+   set total-alive-time lput alive-time total-alive-time
+   set total-waiting-time lput waiting-time total-waiting-time
+   ;show waiting-time
+   die
+
+end
+
+to process-data
+   set avg-alive-time mean total-alive-time
+   set stddev-alive-time standard-deviation total-alive-time
+   set avg-waiting-time mean total-waiting-time
+   set stddev-waiting-time standard-deviation total-waiting-time

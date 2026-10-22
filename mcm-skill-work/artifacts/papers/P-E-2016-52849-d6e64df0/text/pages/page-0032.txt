@@ -1,0 +1,54 @@
+Team 52849  MCM/ICM  Page 31 of 31
+
+       [ set recipients recipients with [ water ¡ demand ] ]
+       ;; centers can never receive
+       set recipients recipients with [ breed != centers ]
+       ;; people only give to other people, not elite or gangs or distributors
+       if breed = nodes [
+
+           set recipients recipients with [ breed = nodes ]
+       ]
+       set total-weight-var 0
+       ;; ﬁnd the total weighted distance from the giver node to their recipients
+       ask recipients [
+
+           set total-weight-var total-weight-var + nw:weighted-distance-to giver “weight”
+       ]
+       set total-weight total-weight-var
+      ;; give recipients a fraction of the giver’s water (after they have taken their demand) dependent
+
+           upon the weight of their link
+       ask recipients [
+
+           if [ water ] of giver >[ demand ] of giver [
+               set water ( [ water ] of giver - [ demand ] of giver ) * ( nw:weighted-
+               distance-to giver “weight” / [ total-weight ] of giver )
+
+           ]
+       ]
+       if water >demand [
+
+           set water demand
+       ]
+       set given 1
+   ]
+   ;; to visually see who has how much water
+   ask turtles [
+       set size 1 + 4 * sqrt(water)
+   ]
+   ;; measures of centrality
+   set linear 0
+   set standard 0
+   ;; ask those who don’t have the amount they need
+   ;; by how much they do not have it
+   ;; for linear, sum these needs
+   ;; for standardized need, add the squares of individual needs and square root at end
+   ask nodes with [ water ¡ demand ] [
+       set linear linear + ( demand - water )
+       set standard standard + ( demand - water ) 2
+   ]
+   set theoretical-min common-demand * number-of-nodes - water-given
+   set linear ( linear - theoretical-min ) / number-of-nodes ;; average need not met per person
+   set standard sqrt(standard) / number-of-nodes ;; average need not met per person, amplifying
+       the need unmet of the person with the maximum need unmet
+end

@@ -1,0 +1,71 @@
+     Team 2003717                                                                   Page 41
+
+
+24   train_loss = []
+25   window_size = 500
+26
+27 if __name__ == ’__main__ ’:
+28     np. random .seed (0)
+29     torch . manual_seed (0)
+30
+31      for product in products :
+32           row_data = torch.load(’{}/{}. pt ’. format ( default_path , product ))
+33           original_seq_length = row_data .shape [1]
+34           pred_data = torch.load(’{}/{}. pt ’. format (output_path , product ))
+35           pred_data = de_standardization (pred_data , row_data )
+36           row_data = np. concatenate (( row_data , row_data [:, int(
+37                original_seq_length //1.1) :int( original_seq_length //1) , :]) , axis =1)
+38           row_data = np. concatenate (( row_data , row_data [:, int(
+39                original_seq_length //1.3) :int( original_seq_length //1.2) , :]) , axis =1)
+40           row_data = np. concatenate (( row_data , row_data [:, int(
+41                original_seq_length //1.2) :int( original_seq_length //1) , :]) , axis =1)
+42           row_data = np. concatenate (( row_data , row_data [:, int(
+43                original_seq_length //1.3) :int( original_seq_length //1) , :]) , axis =1)
+44           seq_length = row_data .shape [1]
+45           reputation = []
+46           for i in range ( seq_length - window_size ):
+47                rep = 0.0
+48                for j in range(i, i + window_size ):
+49                    help_rate = 0 if row_data [0, j,
+50                                                    2] == 0 else row_data [0, j, 1]/ row_data [0, j,
+         2]
+51                    vine = 1 if row_data [0, j, 3] else 0
+52                    verified = 1 if row_data [0, j, 4] else 0
+53                    t = float( row_data [0, j, 5])
+54                    rating = row_data [0, j, 0]
+55                    if j > original_seq_length :
+56                         if product == ’hair_dryer ’:
+57                              help_rate += 0.2
+58                              vine -= 0.2
+59                         elif product == ’microwave ’:
+60                              rating += 0.3
+61                              vine += 0.25
+62                         else:
+63                              vine -= 0.2
+64                              rating += 0.5
+65                    R = (( help_rate + 1) * (vine *0.2 + 0.8) *
+66                          ( verified *0.2 + 0.8) * rating ) / (t + 1)
+67                    rep += R
+68                rep /= window_size
+69                reputation . append (rep)
+70           print (len( reputation ))
+71           plt. title(’{} ’. format ( product ))
+72           plt.plot(np. arange ( original_seq_length - window_size ),
+73                      reputation [: original_seq_length - window_size ], linewidth =2.0)
+74           plt.plot(np. arange ( original_seq_length - window_size , len( reputation )),
+75                      reputation [ original_seq_length - window_size :], linewidth =2.0 , color=’
+        red ’)
+76           plt. xlabel (’time step ’)
+77           plt. ylabel (’reputaion metric ’)
+78           plt. savefig (’{}. png ’. format ( product ))
+79           plt. close ()
+
+
+
+
+                                                                                                 2
+                                                                                                     关注数学模型
+                                                                                        MATHmodels
+
+
+                                                                                                     获取更多资讯

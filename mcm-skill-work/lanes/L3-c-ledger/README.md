@@ -166,6 +166,10 @@ into one block.
 | 74 | `P-C-2023-2307166-ec54f9ce` | 10 | 40 | 170 | done, deltas: -1,0,0,0,0,0,+2,0,0,0; layout sha256 identical e55758ac |
 | 75 | `P-C-2023-2307946-61b646ed` | 12 | 57 | 242 | done, deltas: 0,0,0,0,0,0,0,0,0,0,0,0; layout sha256 identical d7510a00 |
 | 76 | `P-C-2023-2309397-285a4e67` | 15 | 58 | 236 | done, deltas: 0,-1,-2,-2 in introduction, assumptions, data-preprocessing, rest 0; layout sha256 identical e1c414bf |
+| 77 | `P-C-2023-2310767-2f955db2` | 11 | 83 | 232 | done, deltas: 0,0,0,0,0,0,+1,-1,0,+1,0 in results (Task 4 has no stored slot), sensitivity (motivation+method and reading+verdict each print as one paragraph), conclusion (extra features paragraph); layout sha256 identical 1461fc46 |
+| 78 | `P-C-2023-2311035-1b2bc274` | 11 | 67 | 233 | done, deltas: 0,0,0,0,0,-3,0,+1,0,+1,0 in problem-analysis (5.4 counted twice in stored: coded once in sensitivity), results (Task 4 has no stored slot), conclusion (extra findings paragraph); layout sha256 identical e86d884f |
+
+
 
 
 

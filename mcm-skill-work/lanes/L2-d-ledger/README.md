@@ -135,6 +135,41 @@ mid-sentence into many paragraphs in both the measured text and `full.txt`, so a
 opening clause runs into the splice cannot match; three units quote the prose clause, caption
 or sub-head that opens them for that reason.
 
+P-D-2018-80386-b757100d sets its symbol names in Symbol-font private-use codepoints and
+mixes prose into display formulas, so a paragraph whose opening runs straight into a formula
+(`Finally, we can get the regional difference coefficient: (x1, x2), i = 1, 2, 3 … n (5.3.1)`)
+reaches the layout in a different order than in `full.txt`; eight units quote the prose clause,
+heading or caption that opens them. It also repeats the same bookstore advertisement as paper 16,
+spliced into nine paragraphs.
+
+P-D-2018-81402-e1ca1921 sets its optimisation model as one display block of an objective plus
+seven numbered constraints, and the measured layout splits it into six fragments with no prose
+in five of them, so the block is coded as one unit quoting the sentence that introduces it; its
+figures and tables put captions under an advertisement splice, so four units name a caption, and
+one table's cell order differs from `full.txt`, so the unit quotes the prose that opens it.
+
+P-D-2018-82504-6cc63169 prints its whole summary as one 478-word block with no sentence break
+on a paragraph boundary, so the abstract is a single unit against a stored count of two; ten more
+units quote a table header, figure caption or prose clause because their cells reach `full.txt`
+in column order while the layout measures them in row order, or because a bookstore advertisement
+sits inside the sentence.
+
+P-D-2018-82794-47f05792 prints three numbered sections that the stored ten chapters never captured —
+1.3 Illustration, 2 Notations and 8 Comment on Heavy Trucks — so each is coded under its printed name
+with the absence named in the note. Two printed units mix a displayed formula with the prose that
+carries it, and each is coded as one group: the complete-graph sentence with display (10) and its
+`where` line, which the text layer interleaves with the formula itself, and the threshold paragraph
+with display (18), which has no prose of its own. Seven units quote the clause, caption or table
+header that opens them, because the formula fragment or the column header reaches the layout ahead
+of the words, and Table 4's rows reach `full.txt` with the row label under the header line rather
+than in front of it.
+
+D-lane stored layouts carry no page spans at all: every `chapter_layouts` entry in the 55
+`artifacts/language-units/P-D-*.json` files has an empty `start_page`/`end_page` and only a
+chapter name, a `paragraph_count` and `paragraph_functions`. So the page-window overlap that the
+model-chapter lane reports for B cannot arise here, and a D chapter's extent always comes from
+the printed section, never from the stored side.
+
 Two C-lane conventions carry over unchanged:
 
 - A stored label outside the thirteen-job vocabulary is kept verbatim in the record
@@ -162,3 +197,7 @@ Two C-lane conventions carry over unchanged:
 | 14 | P-D-2017-68942-f0b0893e | 12/12 | 99 | abstract vacated (−2, empty text layer), introduction +6, assumptions +19, data-preprocessing +1, notation +13, model-establishment +7, results +9, model-improvement +18, sensitivity-analysis +8, memo +4, strengths-limitations +1 | done |
 | 15 | P-D-2018-73156-1a30e830 | 10/10 | 153 | abstract +4, introduction +5, problem-restatement +4, assumptions +3, model-establishment +90, results +18, sensitivity-analysis +3, strengths-limitations +7, memo +3 | done |
 | 16 | P-D-2018-78826-ed3ee7b7 | 10/10 | 89 | abstract +5, introduction +2, problem-restatement +5, assumptions +1, model-establishment +22, results +26, model-improvement +7, strengths-limitations +4, memo +3 | done |
+| 17 | P-D-2018-80386-b757100d | 11/10 | 122 | abstract +4, introduction +1, problem-restatement +5, model-establishment +58, sensitivity-analysis +6, strengths-limitations +7, memo +7, model-improvement not in the stored layout | done |
+| 18 | P-D-2018-81402-e1ca1921 | 12/11 | 141 | abstract +3, introduction +2, problem-restatement +10, assumptions +2, model-establishment +41, data-preprocessing +6, results +32, sensitivity-analysis +12, memo +12, model-improvement not in the stored layout | done |
+| 19 | P-D-2018-82504-6cc63169 | 13/11 | 134 | abstract −1, introduction +5, problem-restatement +1, assumptions +2, model-establishment +26, results +43, model-improvement +11, sensitivity-analysis +7, strengths-limitations +6, memo +8, notation and technology-impact not in the stored layout | done |
+| 20 | P-D-2018-82794-47f05792 | 13/10 | 164 | abstract +4, introduction +1, problem-restatement +6, assumptions +2, model-establishment +69, results +51, sensitivity-analysis +2, strengths-limitations +3, memo +4, illustration, notation and heavy-trucks not in the stored layout | done |

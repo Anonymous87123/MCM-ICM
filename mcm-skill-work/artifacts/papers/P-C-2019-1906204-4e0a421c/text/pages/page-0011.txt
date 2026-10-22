@@ -1,0 +1,54 @@
+Team # 1906204                                                                  Page 9 of 38
+
+
+3.3     SVM Discriminator in Evaluate Drug Identification Threshold Levels
+
+In some counties, number of opioids drug identification counts is remarkably higher than other parts of the
+state. It reveals more severe drug abuse problem occurs in this county. A large number of drug incidents
+also reflect denser population, which has strong influence on drug spreads.
+In most cases, an outlier data reveals either a fault or should be highlighted. Here we assume that some
+counties are already facing opioid crisis. Through observation, a certain gap was found between counties
+with less drug reports and counties with more reports. So we use a SVM discriminator to separate these
+too kinds of counties. Counties in class with more drug reports are facing risk of opioid crisis
+
+
+3.3.1    SVM Discriminator
+
+SVM Discriminator is used to separate counties with risk of getting into opioid crisis from others, given
+predicted number of opioid incidents. For 2D value, SVM discriminator trained a line called hyperplane to
+separate two different classes. Hyperplane was given by ω T x + γ = 0 where  ωTis the normal vector to the
+                                                                               ω xi + γ > 0    for yi = 1
+hyperplane and x is the points on the plane. A valid hyperplane satisfies:
+                                                                               ω T xi + γ < 0 for yi = −1
+Support vector is points closest to hyperplane, they are edges of two different sets.
+
+
+3.3.2    One Class SVM
+
+SVM discriminator is a supervised learning models, but with no labeled training data given, an unsuper-
+vised version of SVM should be applied. So one-class-SVM was introduced. The goal of one class SVM
+method is to separate data points and origin at feature mapped space as far as possible. Firstly use Gaus-
+                                                 space, then we want to solve
+sian kernel to project data points on to feature                           Pn following quadratic program
+                                                  minw,ζi ,ρ 12 kwk 2+ 1
+                                                                         νn  i=1 ζi − ρ
+to separate projected data points from origin: s.t. wT φ (xi ) > ρ − ζi , i = 1, . . . , n , where ξi is slack,
+                                                                  
+
+                                                                    ζi > 0
+                                                 
+ν ∈ (0, 1) determines upper limits of outliers. A line in featured map space was finally trained to separate
+origin from data. Then transform the line and data back to unprojected space, outside the line are outliers.
+
+
+3.3.3    Threshold Identification
+
+Our SVM Discriminator combines one class SVM and linear SVM. We use one-class-SVM on opioid drug
+reports from 2010-2017 in total to determine outliers at first. These outliers indicates counties in the danger
+of opioid crisis. Then we use the labeled data from one class SVM to train a linear SVM as threshold for
+opioid abuse alert. Since the drug abuse problem is not only shown by opioid usage but also other drugs, a
+county with much opioid incidents compared with total drug reports or a large number of total drug report
+without opioid incidents should all be considered as facing crisis. Therefore, we use total drug report of a
+county as y-axis and total opioid use as x-axis to include the situation above. Later, we will use this trained
+model as filter, predicted drug reports number as input, dangerous level as output. The following picture
+is showing the process of training, highlighted line is hyperplane:

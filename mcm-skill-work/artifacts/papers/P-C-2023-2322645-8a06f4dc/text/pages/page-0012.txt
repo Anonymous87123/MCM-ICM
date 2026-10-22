@@ -1,0 +1,63 @@
+Team # 2322645                                                                                  Page 12 of 22
+
+4.2.1 Common components
+
+Word difficulty Each of the three Bayesian models takes in four predictors that somehow
+correspond with difficulty. Since the effect of difficulty on the try distribution, the number of
+reports and the number of hardmoders is not necessarily the same, we do a separate regression
+within each of these models:
+
+                                     dtry = a0 + a1x1 + a2x2 + a3x3 + a4x4                                   (1)
+
+                                dreports = b1x1 + b2x2 + b3x3 + b4x4                                         (2)
+
+                                dhardmoders = c1x1 + c2x2 + c3x3 + c4x4                                      (3)
+
+, where a’s b’s, and c’s are coefficients to be estimated, and xi’s are predictors. Note that the
+Try model has both dtry and the ai coefficients as 7-vectors. Note also that the Try model is
+the only one with an intercept in this component, as in the others the intercept is captured by
+other terms. Each of the coefficients has a prior of Normal(0, 20), which is wide enough to be
+uninformative.
+
+Day-of-week effects In both the number of reports and the proportion of hardmoders, there
+are periodic day-of-week effects. In the Reports and Hardmoders models, these are modeled
+similarly:
+
+                                                    7
+
+                                     Preports = θi · 1(ith day of week)                                      (4)
+
+                                     i=1
+
+                                                    7
+
+                                Phardmoders = ωi · 1(ith day of week)                                        (5)
+
+                                     i=1
+
+The θ and ω coefficients are modeled as having Normal(0, 1) prior distributions.
+
+4.2.2 Try model
+
+The model for the distribution of tries (the Try model) is fundamentally a Dirichlet-Multinomial
+model. For a given word on a given day, we model the vector (t1, t2, . . . , t7), where ti, i < 7 is
+the number of reports who got the word on the ith try, and t7 is the number of reported failures,
+as coming from the Multinomial distribution:
+
+                 (t1, t2, t3, t4, t5, t6, t7) ∼ Multinomial (n, 7, (p1, p2, p3, p4, p5, p7)) ,
+
+where n is the number of reports on that day, and p = (p1, p2, p3, p4, p5, p7) is a probability
+            7
+7-vector (  i=1  pi  =  1)  of  the  probabilities  that  a  report  reports  success  on  the  first  try,  second
+
+try, and so on. This vector itself is modeled as coming from the Dirichlet distribution, which is
+
+a distribution over discrete probability distributions:
+
+                     (p1, p2, p3, p4, p5, p7) ∼ Dirichlet(7, (A1, A2, A3, A4, A5, A6, A7)),
+
+where A = (A1, A2, A3, A4, A5, A6, A7) is the vector of concentration parameters for the Dirichlet
+distribution, Ai > 0. The logarithm of these concentration parameters is itself drawn from a
+Normal distribution:
+
+                                            ln(Ai) ∼ Normal(dtry,i, σ),

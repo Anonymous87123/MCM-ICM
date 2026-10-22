@@ -1,0 +1,47 @@
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+         Team #82150                           Page 27 of 36
+
+
+          # traindata
+          data_CA1.train<-data_CA1[1:28,];
+          data_CA1.train<-scale(data_CA1.train)
+          center.back=attr(data_CA1.train,"scaled:center")
+          scale.back=attr(data_CA1.train,"scaled:scale")
+          # stationary test
+          library(tseries)
+          for(i in 1:ncol(data_CA1.train))
+          {
+             pValue=adf.test(data_CA1.train[,i])$p.value
+             print(paste("",colnames(data_CA1.train)[i],"",pValue))
+          }
+          library(timeSeries)
+          data_CA1.train.diff=data_CA1[1:(dim(data_CA1.train)[1]-1),]
+          for(i in 1:ncol(data_CA1.train))
+          {
+             v0=diff(data_CA1.train[,i])
+             data_CA1.train.diff[,i]=v0
+             pValue=adf.test(v0)$p.value
+             print(paste("",colnames(data_CA1.train)[i],"",pValue))
+          }
+
+
+
+          rowCol=dim(data_CA1.train.diff)
+          aicList=NULL
+          lmList=list()
+          for(p in 1:3)
+          {
+             baseData=NULL
+             for(i in (p+1):rowCol[1])
+             {
+                baseData=rbind(baseData,c(as.vector(data_CA1.train.diff[i,]),
+                                               as.vector(data_CA1.train.diff[(i-1):(i-p),])))
+             }
+             X=cbind(1,baseData[,(rowCol[2]+1):ncol(baseData)])
+             Y=baseData[,1:rowCol[2]]
+             coefMatrix=solve(t(X)%*%X)%*%t(X)%*%Y
+             aic=log(det(cov(Y-X%*%coefMatrix)))+2*(nrow(coefMatrix)-1)^2*p/nrow(baseData)
+             aicList=c(aicList,aic)
+             lmList=c(lmList,list(coefMatrix))
+          }
+          data.frame(p=1:3,aicList)

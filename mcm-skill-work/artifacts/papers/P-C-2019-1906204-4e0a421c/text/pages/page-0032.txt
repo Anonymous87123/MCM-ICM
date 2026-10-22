@@ -1,0 +1,70 @@
+Team # 1906204                                                       Page 30 of 38
+
+
+
+
+def sparseMatrix(data, drug2num, num2drug):
+    ’’’
+    Matrix has 100 zones, each forms a row
+    each row represents the num of drug report in that zone for each drugs
+    initially, we set it all to zeros
+    ’’’
+    # len(num2drug) = 69
+    sparseMatrix = np.zeros([100, 69])
+    for row in range(len(data)):
+        zone = int(data[row][1])
+        drugName = data[row][2]
+        drugNum = drug2num[drugName]
+        drugReport = data[row][3]
+        sparseMatrix[zone][drugNum] += drugReport
+
+      return sparseMatrix
+
+
+’’’
+      find the similarity between any zones
+      alpha is the distance coefficient
+      we only care about pairs whose distance
+      is within alpha
+’’’
+def similarity(zone, data, center, alpha):
+    adjacentZones = []
+    for i in range(100):
+        if i != zone and haversine(center[i], center[zone]) < alpha:
+            Sum = np.sum(np.sum(np.array(data[i])))+np.sum(np.sum(np.array(data[zone])))
+            corr = 0
+            for j in range(69):
+                tendency_i = data[i][j]
+                tendency_zone = data[zone][j]
+                sum_i = np.sum(np.array(tendency_i))
+                sum_zone = np.sum(np.array(tendency_zone))
+                if sum_zone == 0 or sum_i == 0:
+                     continue
+                por = sum_i + sum_zone
+                coef = np.corrcoef(tendency_i, tendency_zone)[0,1]
+                if isnan(coef) or coef == 0:
+                     pass
+                else:
+                     corr += coef*1.0*por/Sum
+            adjacentZones.append([i, corr])
+    if len(adjacentZones) > 10:
+        adjacentZones.sort(key=lambda x: x[1])
+        return list(map(lambda x: x[0], adjacentZones[-10:]))
+    else:
+        return list(map(lambda x: x[0], adjacentZones))
+
+
+
+def normalization(array):
+    Sum = np.sum(np.array(array))
+    return list(map(lambda x: x*1.0/Sum, array))
+
+
+’’’
+      the purpose is to predict the drug spread tendency in following years
+      Note:
+      (1) for each zone and its every drug, if drug report is too smaller, we can’t
+      its tendency, we use the tendency from its similar zones to predict it
+      (2) if the specific drug in current zone has enough samples, then we combine
+      its tendency with that of its similar zones to predict
+’’’

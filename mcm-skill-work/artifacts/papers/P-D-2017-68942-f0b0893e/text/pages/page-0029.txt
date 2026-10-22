@@ -1,0 +1,57 @@
+Team 68942  Page 28 of 36
+
+      if delay-on [set delayer random 5 + 5]
+      patdown
+   ][
+      set is-waiting false
+      set stage 9
+   ]
+]
+if patdown-time = int(p-length * speed-factor) and stage = 201[
+   ;show "This happens!"
+   set is-waiting false
+   ask my-links[die]
+   set stage 5
+   set patdown-time patdown-time + 1
+   ifelse p-length = patdown-length[
+      repack
+   ][
+      set is-waiting false
+      set stage 9
+   ]
+]
+if stage = 4 and ((md-prob and scan-time = 1) or (not(md-prob) and scan-time >= scan-length))[
+   set is-waiting false
+   ;show "This other thing happens!"
+   ifelse random 100 < patdown-prob[
+      set stage 200
+      set p-length patdown-length
+      set patdown-time 0
+      patdown
+   ][
+      set stage 5
+      repack
+   ]
+   set scan-time scan-time + 1
+]
+if count my-unpack-links = 1[
+   set is-waiting false
+   set unpack-time unpack-time + 1
+]
+if count my-scan-links = 1 and walking = false[
+   set is-waiting false
+   set scan-time scan-time + 1
+]
+if count my-pack-links = 1[
+   set is-waiting false
+   set pack-time pack-time + 1
+]
+if count my-patdown-links = 1[
+   set is-waiting false
+   set patdown-time patdown-time + 1
+]
+if is-waiting[
+   ifelse stage = 0[set wait-queue-0 wait-queue-0 + 1][
+      ifelse stage = 2[set wait-queue-1 wait-queue-1 + 1][
+
+         ifelse stage = 4[set wait-queue-2 wait-queue-2 + 1][
