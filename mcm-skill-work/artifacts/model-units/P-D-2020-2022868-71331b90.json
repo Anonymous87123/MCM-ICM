@@ -1,0 +1,591 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2020-2022868-71331b90",
+  "problem_type": "D",
+  "year": "2020",
+  "source_sha256": "71331b9067093fc1168894eaf6b383e0118750351850bb9a7052e539b0ba73c2",
+  "models": [
+    {
+      "model_id": "MU-D-2020-2022868-DyadTriad",
+      "page": 3,
+      "section": "4.1 Dyadic and Triadic Configurations",
+      "family": "network-motif",
+      "purpose": "Score player chemistry by position-aware links, reciprocal links and triads",
+      "base_or_modification": "modification",
+      "summary": "Rejects motif counts because a triad of two fullbacks and a keeper is not the same object as a triad of two strikers and a midfielder. Defines link strength as the directed pass count, reciprocal strength as the sum both ways, and triad strength as the sum of the three reciprocal links. Tests the strongest of each, inside 50-pass and 100-pass windows, as predictors of shots. The regression fails, R-squared 0.0298, and the authors say so.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Count directed passes",
+          "Sum both directions for reciprocal strength",
+          "Sum three reciprocal strengths for a triad",
+          "Regress the strongest of each on shot count"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Ordinary least squares"
+      },
+      "assumptions": [
+        "Chemistry is specific to position, not to subgraph shape"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "Windows of 50 and 100 passes"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three strength definitions written explicitly"
+      },
+      "handoff_outputs": [
+        "L",
+        "R",
+        "T"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Each strength is a sum of observed counts."
+      },
+      "missing_details": [
+        "Relative-value weighting mentioned but not regressed"
+      ],
+      "objectives": [
+        "Test whether strong small groups predict shots"
+      ],
+      "parameter_estimation": {
+        "method": "Ordinary least squares",
+        "parameters": [
+          "coefficients"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Reports the failure instead of burying it"
+      ],
+      "validation_refs": [
+        "Table 2, all coefficients near zero"
+      ],
+      "variables": [
+        {
+          "symbol": "P",
+          "normalized_name": "pass_count",
+          "unit": "count",
+          "definition": "Passes from i to j",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "link_strength",
+          "unit": "count",
+          "definition": "One-way strength",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "reciprocal_strength",
+          "unit": "count",
+          "definition": "Strength both ways",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "triad_strength",
+          "unit": "count",
+          "definition": "Sum of three reciprocal strengths",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P"
+      ],
+      "outputs": [
+        "L",
+        "R",
+        "T"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2022868-01",
+          "page": 3,
+          "source_expression": "L_ij = P_ij",
+          "normalized_latex": "L_{ij}=P_{ij}",
+          "purpose": "One-way link",
+          "label": "Link strength",
+          "variable_symbols": [
+            "L",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2022868-02",
+          "page": 3,
+          "source_expression": "R_ij = P_ij + P_ji",
+          "normalized_latex": "R_{ij}=P_{ij}+P_{ji}",
+          "purpose": "Both directions",
+          "label": "Reciprocal strength",
+          "variable_symbols": [
+            "R",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2022868-03",
+          "page": 3,
+          "source_expression": "T_ijk = R_ij + R_ik + R_jk",
+          "normalized_latex": "T_{ijk}=R_{ij}+R_{ik}+R_{jk}",
+          "purpose": "Triple",
+          "label": "Triad strength",
+          "variable_symbols": [
+            "T",
+            "R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Failed predictively",
+        "Treats every pass as equal"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2022868-ShotRegression",
+      "page": 4,
+      "section": "4.2 Performance Indicators",
+      "family": "linear-regression",
+      "purpose": "Screen a large set of network and possession metrics against shot count",
+      "base_or_modification": "base",
+      "summary": "Shot count replaces goals because conversion depends on shooter and keeper, and 7.2 percent of Premier League goals come from free kicks or penalties. Candidate predictors include centroid, dispersion, advance ratio split by half, clustering, closeness, largest eigenvalue, betweenness, centralization, algebraic connectivity, plus three original ones: offensive and defensive duel centroids and average press time. Press time is the gap from the first opposing pass to the first duel, or to the regaining pass if that comes first. The joint regression reaches R-squared 0.4668 over halves and predicts within 1.5 shots 51.3 percent of the time.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Build the feature matrix per window, half and game",
+          "Regress on shot count",
+          "Rank predictors by p-value",
+          "Keep the top six"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Ordinary least squares, significance F reported"
+      },
+      "assumptions": [
+        "Shots measure teamwork better than goals",
+        "Premier League set-piece rates represent this league"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "Only linear terms",
+        "38 matches"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Dispersion, advance ratio, clustering, closeness, centralization and press time are written out"
+      },
+      "handoff_outputs": [
+        "press_time",
+        "closeness",
+        "duel_centroid",
+        "lambda1",
+        "pass_centroid"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Collinearity among the network indices is not checked."
+      },
+      "missing_details": [
+        "No variance inflation factors",
+        "Corner kicks excluded from the style model by judgment"
+      ],
+      "objectives": [
+        "Find which measures track shots"
+      ],
+      "parameter_estimation": {
+        "method": "Ordinary least squares",
+        "parameters": [
+          "coefficients"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Original metrics compete with published ones and win",
+        "Goals rejected with a cited percentage"
+      ],
+      "validation_refs": [
+        "Table 3 R-squared 0.3143",
+        "Table 4 R-squared 0.4668"
+      ],
+      "variables": [
+        {
+          "symbol": "C",
+          "normalized_name": "dispersion",
+          "unit": "length",
+          "definition": "Root mean square distance of players from the centroid",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "press_time",
+          "normalized_name": "press_time",
+          "unit": "seconds",
+          "definition": "Gap from opposing possession to the first duel or regain",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "closeness",
+          "normalized_name": "closeness",
+          "unit": "dimensionless",
+          "definition": "Mean inverse topological distance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "duel_centroid",
+          "normalized_name": "duel_centroid",
+          "unit": "length",
+          "definition": "Mean duel location, split by half",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda1",
+          "normalized_name": "largest_eigenvalue",
+          "unit": "dimensionless",
+          "definition": "Largest adjacency eigenvalue",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pass_centroid",
+          "normalized_name": "pass_centroid",
+          "unit": "length",
+          "definition": "Mean pass origin",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "shots",
+          "normalized_name": "shot_count",
+          "unit": "count",
+          "definition": "Shots in the window",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pass_events",
+          "normalized_name": "pass_events",
+          "unit": "event",
+          "definition": "Logged passes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "duel_events",
+          "normalized_name": "duel_events",
+          "unit": "event",
+          "definition": "Logged duels",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pass_events",
+        "duel_events"
+      ],
+      "outputs": [
+        "shots"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2022868-04",
+          "page": 4,
+          "source_expression": "C = 1/n sum sqrt((x_i-xbar)^2+(y_i-ybar)^2)",
+          "normalized_latex": "C=\\frac1n\\sum_i\\sqrt{(x_i-\\bar x)^2+(y_i-\\bar y)^2}",
+          "purpose": "Spread around the centroid",
+          "label": "Dispersion",
+          "variable_symbols": [
+            "C"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2022868-05",
+          "page": 6,
+          "source_expression": "t_press = t_duel - t_poss",
+          "normalized_latex": "t^{\\mathrm{press}}=t^{\\mathrm{duel}}-t^{\\mathrm{poss}}",
+          "purpose": "Time to contest regained possession",
+          "label": "Press time",
+          "variable_symbols": [
+            "press_time"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Linearity assumed",
+        "Individual skill deliberately omitted"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2022868-RockPaperScissors",
+      "page": 11,
+      "section": "4.4 Playing Styles",
+      "family": "classification",
+      "purpose": "Classify each half into one of four styles and estimate style-versus-style win rates",
+      "base_or_modification": "base",
+      "summary": "Four styles, Tiki-Taka, Long Ball, High Pressing and Park the Bus, are placed by hand in the six-dimensional metric space: two standard deviations from the mean for a defining trait, one for a secondary trait, zero otherwise. Each team-half is assigned the nearest centroid by Euclidean distance. Win, draw and loss rates are then tabulated for every pair of styles, and the table is reduced to three decisions: maximize a win, maximize a draw, or minimize a loss. The authors show that one extra game can move a rate by 11.9 percent.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set the four centroids in units of standard deviation",
+          "Compute six-dimensional distance for each half",
+          "Assign the nearest style",
+          "Tabulate outcomes by style pair"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Nearest centroid"
+      },
+      "assumptions": [
+        "Four named styles span the relevant variation",
+        "Standard-deviation offsets represent style intensity"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "Centroids fixed before classification",
+        "38 matches, so some cells are tiny"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The six-dimensional distance is written"
+      },
+      "handoff_outputs": [
+        "style_label",
+        "win_table"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Centroids are judgment, so labels are not identified from data."
+      },
+      "missing_details": [
+        "No cross-validation of the centroids",
+        "Entropy weighting proposed but not done"
+      ],
+      "objectives": [
+        "Tell a coach which style answers which opponent"
+      ],
+      "parameter_estimation": {
+        "method": "Judgment, then debated by the team",
+        "parameters": [
+          "centroid offsets"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Gives the coach a usable table",
+        "Quantifies its own fragility"
+      ],
+      "validation_refs": [
+        "Table 6",
+        "Table 8",
+        "Figure 4"
+      ],
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "style_distance",
+          "unit": "dimensionless",
+          "definition": "Euclidean distance from a half to a style centroid",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "style_centroid",
+          "unit": "mixed",
+          "definition": "Hand-set coordinate of a style",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "style_label",
+          "normalized_name": "style_label",
+          "unit": "category",
+          "definition": "Nearest style",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "win_table",
+          "normalized_name": "win_table",
+          "unit": "probability",
+          "definition": "Outcome rates by style pair",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "press_time",
+          "normalized_name": "press_time",
+          "unit": "seconds",
+          "definition": "Mean time to contest possession",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "closeness",
+          "normalized_name": "closeness",
+          "unit": "dimensionless",
+          "definition": "Mean inverse distance",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "duel_centroid",
+          "normalized_name": "duel_centroid",
+          "unit": "length",
+          "definition": "Mean duel location",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda1",
+          "normalized_name": "largest_eigenvalue",
+          "unit": "dimensionless",
+          "definition": "Largest adjacency eigenvalue",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pass_centroid",
+          "normalized_name": "pass_centroid",
+          "unit": "length",
+          "definition": "Mean pass origin",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "press_time",
+        "closeness",
+        "duel_centroid",
+        "lambda1",
+        "pass_centroid"
+      ],
+      "outputs": [
+        "style_label",
+        "win_table"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2022868-06",
+          "page": 11,
+          "source_expression": "d_iS = sqrt(sum_m (i_m - S_m)^2)",
+          "normalized_latex": "d_{i,S}=\\sqrt{\\sum_{m\\in M}(i_m-S_m)^2}",
+          "purpose": "Distance from a half to a style",
+          "label": "Style distance",
+          "variable_symbols": [
+            "d",
+            "S"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Hand-set centroids",
+        "Sparse matchup counts"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2020-2022868-ShotRegression",
+      "to_model_id": "MU-D-2020-2022868-RockPaperScissors",
+      "handoff": "The six metrics that survive the regression become the axes of the style space"
+    },
+    {
+      "from_model_id": "MU-D-2020-2022868-DyadTriad",
+      "to_model_id": "MU-D-2020-2022868-ShotRegression",
+      "handoff": "The failed dyad regression motivates screening a wider set of metrics"
+    }
+  ],
+  "review_status": "validated"
+}

@@ -1,0 +1,76 @@
+      Team 2003717                                                                    Page 29
+
+
+ 63       dataset [’helpful_rate ’] = dataset [’helpful_votes ’] / dataset [’total_votes ’]
+ 64       dataset [’review_length ’] = dataset [’review_headline ’]. str.len () + dataset [’
+          review_body ’]. str.len ()
+ 65
+ 66 data_process ( new_hair_dryer )
+ 67 data_process ( new_microwave )
+ 68 data_process ( new_pacifier )
+ 69 all = pd. concat ([ new_hair_dryer , new_microwave , new_pacifier ])
+ 70
+ 71
+ 72 # ######################################################
+ 73 ### 2.1. Plot 1
+ 74 # ######################################################
+ 75
+ 76
+ 77   import calendar
+ 78
+ 79   legend = [’all ’, ’hair_dryer ’, ’microwave ’, ’pacifier ’]
+ 80
+ 81 review_num_to_date = pd. concat ([ all. groupby (( ’year ’, ’month ’))[’star_rating ’]. count () ,
+ 82                                      new_hair_dryer . groupby (( ’year ’, ’month ’))[’star_rating ’
+        ]. count () ,
+ 83                                      new_microwave . groupby (( ’year ’, ’month ’))[’star_rating ’
+        ]. count () ,
+ 84                                      new_pacifier . groupby (( ’year ’, ’month ’))[’star_rating ’].
+        count ()], axis =1)
+ 85 review_num_to_date . columns = legend
+ 86 review_num_to_date = review_num_to_date . reset_index ()
+ 87 review_num_to_date [’date ’] = review_num_to_date [’year ’] + review_num_to_date [’month ’] /
+          12
+ 88 review_num_to_date = review_num_to_date .drop ([ ’year ’, ’month ’], axis =1). set_index (’date
+        ’)
+ 89 review_num_to_date .plot( legend =True , alpha =0.5)
+ 90 # plt.title (’ Review Amount per Month ’)
+ 91 plt. xlabel (’Date ’)
+ 92 plt. ylabel (’Amount ’)
+ 93 plt. savefig (" figure / Review Amount per Month.png",dpi =500 , bbox_inches = ’tight ’)
+ 94 plt.show ()
+ 95
+ 96
+ 97 def func( dataset ):
+ 98      series = dataset . groupby (( ’year ’, ’month ’))[’star_rating ’]. agg ([ ’count ’, ’mean ’])
+ 99      series [ series [’count ’]<3] = None
+100      series = series . reset_index ()
+101      series [’date ’] = series [’year ’] + series [’month ’] / 12
+102      series = series .drop ([ ’year ’, ’month ’, ’count ’], axis =1). set_index (’date ’)
+103      return series
+104 ser_all , ser_hair , ser_micro , ser_paci = func(all), func( new_hair_dryer ), func(
+        new_microwave ), func( new_pacifier )
+105 review_num_to_date = pd. concat ([ ser_hair , ser_micro , ser_paci ], axis =1)
+106 review_num_to_date . columns = legend [1:]
+107 review_num_to_date .plot( legend =True , alpha =0.5)
+108 # plt.title (’ Rating Score per Month ’)
+109 plt. xlabel (’Date ’)
+110 plt. ylabel (’Score ’)
+111 # plt. xticks (np. arange (0, 168, 30))
+112 plt. savefig (" figure / Rating Score per Month.png",dpi =500 , bbox_inches = ’tight ’)
+113 plt.show ()
+114
+115
+116   del legend , review_num_to_date , ser_all , ser_hair , ser_micro , ser_paci
+117
+118
+
+
+
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯

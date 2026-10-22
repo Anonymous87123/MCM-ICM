@@ -1,0 +1,76 @@
+Team 2003717                                                                                  Page 14
+
+
+
+                                       
+                                        𝑖 = 𝜎(𝑊𝑖𝑖 𝑥 + 𝑏 𝑖𝑖 + 𝑊ℎ𝑖 ℎ + 𝑏 ℎ𝑖 )
+                                       
+                                       
+                                       
+                                         𝑓 = 𝜎(𝑊𝑖 𝑓 𝑥 + 𝑏 𝑖 𝑓 + 𝑊ℎ 𝑓 ℎ + 𝑏 ℎ 𝑓 )
+                                       
+                                       
+                                        𝑔 = tanh(𝑊𝑖𝑔 𝑥 + 𝑏 𝑖𝑔 + 𝑊ℎ𝑜 ℎ + 𝑏 ℎ𝑜 )
+                                       
+                                                                                                               (6)
+                                       
+                                        𝑜 = 𝜎(𝑊𝑖𝑜 𝑥 + 𝑏 𝑖𝑜 + 𝑊ℎ𝑜 ℎ + 𝑏 ℎ𝑜 )
+                                       
+                                          ′
+                                       
+                                        𝑐 = 𝑓 ∗𝑐+𝑖∗𝑔
+                                       
+                                        ℎ′ = 𝑜 ∗ tanh(𝑐′ )
+                                       
+        The notations for equations above is shown in Table 4:
+
+                                       Table 4: Notations for one-layer LSTM
+           Symbol                                          Deﬁnition
+           𝑥 ∈ R206                       The concatenated input vector for the LSTM
+           ℎ ∈ R200          Hidden state, containing encoded information for the sequence ﬂow
+           𝑐 ∈ R200     Cell state, tracking dependencies between the elements in the input sequence
+           𝑖 ∈ R200      Input gate, controlling the extent to which a new value ﬂows into the cell
+           𝑓 ∈ R200        Forget gate, controlling the extent to which a value remains in the cell
+           𝑔 ∈ R200               Gathered input value from input 𝑥 and current hidden state
+           𝑜 ∈ R200    Output gate, controlling the extent to which the cell is used to compute outputs
+              𝑊                                 The weight matrix for transitions
+               𝑏                                    The bias for transitions
+               𝜎                                     The sigmoid function
+             tanh                               The hyperbolic tangent function
+
+        As for our nested two-layer LSTM, a LSTM unit is overlaid with another LSTM unit. We feed the
+        hidden state of the bottom LSTM into the upper LSTM again and use the hidden state from the upper
+        state as the input for the output module.
+
+  3. Output Module
+        In the output module, we simply feed the hidden state of the upper LSTM into a linear layer to make
+        predictions on the feature vector, which has the same structure as 𝑣 𝑖𝑛 𝑝𝑢𝑡 in the input module.
+
+                                                    𝑣 𝑝𝑟 𝑒𝑑 = 𝑊𝑣 ℎ + 𝑏                                         (7)
+
+
+5.2     Analysis on Potential Success of Products
+
+      Before we show the analysis results, there are several training details to be stated:
+
+  1. Loss function
+        During the training, we use mean square error (MSE) as the loss function:
+
+                                                              1 ∑
+                                                                  𝑁
+                                             𝑀𝑆𝐸 (𝑦, 𝑦ˆ ) =         (𝑦 𝑖 − 𝑦ˆ 𝑖 ) 2                            (8)
+                                                              𝑁 𝑖=1
+
+        where 𝑦 is the true target vector and 𝑦ˆ is the predicted feature vector and 𝑁 is the number of dimension.
+
+  2. Normalization
+        Due to diﬀerent domains of each dimension in the input vector 𝑣 𝑖𝑛 𝑝𝑢𝑡 , a normalization technique is
+        needed. Before we feed the input vector into the LSTM module, we apply the following per-feature
+        normalization operation:
+
+                                                                                                           2
+                                                                                                               关注数学模型
+                                                                                                  MATHmodels
+
+
+                                                                                                               获取更多资讯

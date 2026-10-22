@@ -1,0 +1,62 @@
+      Team # 15417                                                                                         Page 5 of 24
+
+
+143            // Now add more boats to the river
+144            addBoats(i);
+145        }
+146
+147        // Remove any boats from the schedule that didn’t make it back by the last day of the season.
+148        for (int i = 0; i < numSites; i++)
+149        {
+150            if (schedule[NUM_DAYS-1][i] != null)
+151            {
+152                reschedule(schedule[NUM_DAYS-1][i]);
+153            }
+154        }
+155   }
+
+          To begin, we assume that we have a method called addBoats()which adds boats to the river to fill any
+      empty spaces reachable from “First Launch,” and takes one parameter, the day on which to add the boats.
+      We will later propose a simple method by which this could be done, but there are many other ways in which
+      this process could take place. We call this method for day zero (April 1st) on line 3 to populate the river
+      with some boats.
+
+         Next we enter the main loop (line 6), which iterates from day 1 to 182, and make the schedule one day at a
+      time. A priority queue is the data structure which will determine which boat’s turn it is to “move.” A priority
+      queue, according to Weiss in Data Structures and Problem Solving using Java, supports three operations:
+      insert, findMin, and deleteMin.[2] insert behaves as expected, inserting an object into the priority
+      queue. findMin and deleteMin both find the item with highest priority in the queue, where deleteMin
+      removes it from the queue, but findMin leaves it at the front of the queue. We do not need to worry about
+      the details of how these methods would be implemented here, because Java provides an implementation of
+      PriorityQueue, where the corresponding methods are add(), peek(), and poll(), respectively.[3]
+
+         To begin with, we populate the priority queue with all the boats that were in the river on the previous
+      day of the schedule (lines 9 through 16). Next, an inner loop (line 19) iterates through all the boats in the
+      order they come out of the priority queue. We assume that each boat has a certain site it would “prefer”
+      to stop at, if there were no other boats in the river to compete with for the same site. We assume that
+      the Boat class correspondingly implements a method called getPreferredNextSite, taking as a parameter
+      the number of sites in the river. We call this method at line 25, and then, if it is not time for the boat to
+      conclude its trip, we enforce in lines 27-31 that the boat must stop at the last site on the river (numSites
+      - 1) until its trip is finished. For scenarios where the trips are pre-scheduled, so trip length is more or less
+      arbitrary, lines 27 through 31 could be omitted.
+
+          At this point we break into several cases:
+
+          1. The best case (line 33) is that the trip is over, and the “site” the boat is trying to move to is past
+             the end of the river. If the boat came out on time, we can add a point to our score by incrementing
+             tripCount, and mark the trip as completed by adding the boat to boatsOut. However, if the boat
+             was late (nextBoat.getDaysLeft() < 0), and the trip length is a hard deadline which must be met,
+             then the trip was unsuccessful. After updating our statistics to record the late trip, we must find a
+             way to fix our schedule so this late trip will not occur. We will discuss how this is done later, but for
+             now, we assume that there is a method called reschedule(), which takes as a parameter the boat
+             whose trip is to be rescheduled, and that after calling this method, the schedule will be in a legal state,
+             with no late or early trips, so that the algorithm can procede. (Once again, if the trip length is fairly
+             arbitrary, this line could be omitted).
+
+          2. The nearly best case (line 53) is that no boat currently occupies the site the current boat is trying to
+             move to. Since this boat has priority over every other boat still in the priority queue, we can assume
+             that this boat has the right to occupy this site. We update the boat to reflect another day passing and
+             the new site where it is resting, and write it into the schedule for this site.
+
+          3. The third case (line 60) is that there is a boat with higher priority at the site where the current boat
+             would like to rest, but there is an empty site between this site and the site where the current boat

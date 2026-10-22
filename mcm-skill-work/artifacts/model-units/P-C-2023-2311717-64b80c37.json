@@ -1,0 +1,598 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2023-2311717-64b80c37",
+  "problem_type": "C",
+  "year": "2023",
+  "source_sha256": "64b80c375d35a3846390ed6aff45e73bde3d52e25fe17457820375b7f8f57fae",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q239-001",
+      "page": 8,
+      "section": "5 Task 1: Report Number Prediction Model",
+      "family": "Gaussian regression + non-homogeneous Poisson process",
+      "purpose": "Predict number of reported Wordle results over time: 3rd-order Gaussian regression for trend, non-homogeneous Poisson for stochastic fluctuation, popularity relaxation function for correction.",
+      "base_or_modification": "base",
+      "summary": "Trend decomposition: 3rd-order Gaussian regression (R2=0.9988) for long-term trend. Non-homogeneous Poisson process for daily random fluctuation. Popularity relaxation function corrects intensity by game heat. Three lifecycle periods: Explosion, Fading, Dormant. 75% CI [7654, 20154] for March 1, 2023. Convergence 13904.",
+      "variables": [
+        {
+          "symbol": "N_t",
+          "normalized_name": "daily report count",
+          "unit": "count",
+          "definition": "Number of results reported on day t",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_t",
+          "normalized_name": "mean report count",
+          "unit": "count",
+          "definition": "Mean value of number of reports on day t",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_t",
+          "normalized_name": "arrival intensity",
+          "unit": "rate",
+          "definition": "Poisson process arrival intensity on day t",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_i",
+          "normalized_name": "Gaussian coefficients",
+          "unit": "dimensionless",
+          "definition": "3rd-order Gaussian regression coefficients",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_i",
+          "normalized_name": "Gaussian centers",
+          "unit": "days",
+          "definition": "Gaussian regression center parameters",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_i",
+          "normalized_name": "Gaussian widths",
+          "unit": "days",
+          "definition": "Gaussian regression width parameters",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "relaxation slope",
+          "unit": "dimensionless",
+          "definition": "Popularity relaxation function slope",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "relaxation intercept",
+          "unit": "dimensionless",
+          "definition": "Popularity relaxation function intercept",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "a_i",
+        "b_i",
+        "c_i",
+        "alpha",
+        "beta"
+      ],
+      "outputs": [
+        "N_t",
+        "mu_t"
+      ],
+      "handoff_outputs": [
+        "N_t",
+        "mu_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q239-001",
+          "page": 8,
+          "label": "(1)",
+          "source_expression": "sum(a_i * exp(-((t-b_i)/c_i)^2)) for i=1..3",
+          "normalized_latex": "\\hat{N}(t) = \\sum_{i=1}^{3} a_i \\exp\\left(-\\left(\\frac{t - b_i}{c_i}\\right)^2\\right)",
+          "purpose": "3rd-order Gaussian regression for trend prediction.",
+          "variable_symbols": [
+            "N_t",
+            "a_i",
+            "b_i",
+            "c_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-002",
+          "page": 8,
+          "label": "(2)",
+          "source_expression": "L = sum((N(t_i) - N_hat(t_i))^2)",
+          "normalized_latex": "L = \\sum_{i} (N(t_i) - \\hat{N}(t_i))^2",
+          "purpose": "Least squares loss for Gaussian regression.",
+          "variable_symbols": [
+            "N_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-003",
+          "page": 9,
+          "label": "(3)",
+          "source_expression": "P(N(t)=k) = (lambda_t^k * exp(-lambda_t)) / k!",
+          "normalized_latex": "P(N(t)=k) = \\frac{\\lambda_t^k \\cdot e^{-\\lambda_t}}{k!}",
+          "purpose": "Non-homogeneous Poisson probability for daily report count.",
+          "variable_symbols": [
+            "N_t",
+            "lambda_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-004",
+          "page": 9,
+          "label": "(4)",
+          "source_expression": "lambda'_t = lambda_t * (alpha * N(t) + beta)",
+          "normalized_latex": "\\lambda'_t = \\lambda_t \\cdot (\\alpha \\cdot N(t) + \\beta)",
+          "purpose": "Modified arrival intensity via popularity relaxation function.",
+          "variable_symbols": [
+            "lambda_t",
+            "alpha",
+            "beta",
+            "N_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-005",
+          "page": 10,
+          "label": "(5)",
+          "source_expression": "P'(N(t)=k) = (lambda'_t^k * exp(-lambda'_t)) / k!",
+          "normalized_latex": "P'(N(t)=k) = \\frac{{\\lambda'_t}^k \\cdot e^{-\\lambda'_t}}{k!}",
+          "purpose": "Corrected Poisson probability after popularity relaxation.",
+          "variable_symbols": [
+            "lambda_t",
+            "N_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-006",
+          "page": 10,
+          "label": "(6)",
+          "source_expression": "P(N_lower <= N(t) <= N_upper) >= confidence",
+          "normalized_latex": "P(N_{\\text{lower}} \\le N(t) \\le N_{\\text{upper}}) \\ge \\text{conf}",
+          "purpose": "Confidence-based prediction interval.",
+          "variable_symbols": [
+            "N_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations (1)-(6) from pp.8-10."
+      },
+      "objectives": [
+        "Predict interval for number of reported results on March 1, 2023."
+      ],
+      "constraints": [
+        "Prediction interval depends on confidence level."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 days of daily reported results."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Time series; no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Forecasting; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Least squares for Gaussian regression. Popularity relaxation fitted from fluctuation-heat relationship.",
+        "parameters": [
+          "a_i",
+          "b_i",
+          "c_i",
+          "alpha",
+          "beta"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Fit 3rd-order Gaussian regression to daily report count trend.",
+          "Use Gaussian result as Poisson mean function.",
+          "Divide lifecycle into Explosion, Fading, Dormant periods.",
+          "Fit linear popularity relaxation function from fluctuation-heat scatter.",
+          "Modify Poisson intensity with relaxation function.",
+          "Compute confidence-based prediction interval."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Least squares convergence for regression."
+      },
+      "assumptions": [
+        "Daily reports follow Poisson distribution.",
+        "Fluctuation magnitude linearly related to game heat."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "R2=0.9988. 75% CI [7654, 20154]."
+      },
+      "validation_refs": [
+        "Figure 5: Report number trends and prediction intervals.",
+        "Table 3: Prediction intervals."
+      ],
+      "computational_cost": "Gaussian regression + Poisson computation.",
+      "strengths": [
+        "Interpretable decomposition of trend and fluctuation.",
+        "Popularity relaxation captures heat-dependent volatility."
+      ],
+      "limitations": [
+        "Wide CI during popular phases.",
+        "75% confidence lower than standard 95%."
+      ],
+      "missing_details": [
+        "Exact alpha and beta values.",
+        "How lifecycle period boundaries determined."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q239-002",
+      "page": 14,
+      "section": "6 Task 2: Prediction Model for Distribution of Reported Results",
+      "family": "BP neural network + Bagging ensemble",
+      "purpose": "Predict distribution of reported results (7 attempt categories) for a given word using 7 features via Bagging-integrated BP neural network.",
+      "base_or_modification": "base",
+      "summary": "7-7-h architecture (h from empirical formula). 7 input features (5 letter positions + different letters + hard mode ratio). Training: 85% data, sub-sampling 85% for Bagging. Hard voting from K=20 networks. Correlation 0.84, 80%+ of errors within 5%. EERIE prediction: (0,1,6,25,31,25,13)%.",
+      "variables": [
+        {
+          "symbol": "x_i",
+          "normalized_name": "input features",
+          "unit": "dimensionless",
+          "definition": "7 data features including letter positions and hard mode ratio",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_j",
+          "normalized_name": "output distribution",
+          "unit": "proportion",
+          "definition": "Predicted percentage for j-th attempt category",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "hidden neurons",
+          "unit": "count",
+          "definition": "Number of hidden layer neurons from empirical formula",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_i"
+      ],
+      "outputs": [
+        "y_j"
+      ],
+      "handoff_outputs": [
+        "y_j"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q239-007",
+          "page": 16,
+          "label": "(7)",
+          "source_expression": "h = sqrt(n) + c",
+          "normalized_latex": "h = \\sqrt{n} + c",
+          "purpose": "Empirical formula for hidden layer neuron count.",
+          "variable_symbols": [
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Hidden layer formula (7) from p.16."
+      },
+      "objectives": [
+        "Predict 7-category distribution of guess attempts for any word."
+      ],
+      "constraints": [
+        "7 output percentages should sum to approximately 100%."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 words with 7 features."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Prediction task."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Prediction task."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "BP backpropagation with 85% training, Bagging with K=20 sub-networks.",
+        "parameters": [
+          "h"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Extract 7 features from word attributes and time.",
+          "Build 3-layer BP NN (7-h-7).",
+          "Random 85% sub-sampling for K sub-training sets.",
+          "Train K networks independently.",
+          "Hard voting for final prediction."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "BP backpropagation convergence."
+      },
+      "assumptions": [
+        "Historical data representative of future patterns.",
+        "Hard mode ratio predictable from time trend."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Correlation 0.84. 80%+ errors within 5%."
+      },
+      "validation_refs": [
+        "Figure 11: Mean comparison.",
+        "Figure 12: Error distribution."
+      ],
+      "computational_cost": "K=20 BP neural network trainings.",
+      "strengths": [
+        "Bagging reduces generalization error.",
+        "Hard voting robust to individual network errors."
+      ],
+      "limitations": [
+        "3-tries prediction has largest error.",
+        "Sub-training set homogeneity from small dataset."
+      ],
+      "missing_details": [
+        "Exact hidden layer size h.",
+        "Training epochs and learning rate."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q239-003",
+      "page": 17,
+      "section": "7 Task 3: Word Difficulty Classification Model",
+      "family": "K-Means clustering + Pearson correlation + Euclidean classification",
+      "purpose": "Classify words into 4 difficulty levels (Easy, Normal, Hard, Master) using K-Means on guess distribution, then Pearson correlation for attribute-difficulty association.",
+      "base_or_modification": "base",
+      "summary": "K-Means with Euclidean distance on 7-dim guess distribution. 4 difficulty levels. Pearson correlation identifies F2(0.81), WCN(0.82), VN(0.90) as highly correlated attributes (threshold 0.6). Two classification methods: distribution-based and attribute-based Euclidean distance to centroids. EERIR = Master (R4=0.625).",
+      "variables": [
+        {
+          "symbol": "d_ij",
+          "normalized_name": "Euclidean distance",
+          "unit": "dimensionless",
+          "definition": "Distance between guess distribution vectors",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "cluster count",
+          "unit": "count",
+          "definition": "Number of K-Means centers (4)",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_k",
+          "normalized_name": "Pearson coefficient",
+          "unit": "dimensionless",
+          "definition": "Correlation between attribute distance and cluster distance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_j",
+          "normalized_name": "letter position frequency",
+          "unit": "proportion",
+          "definition": "Frequency of letter at position j",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "WCN",
+          "normalized_name": "word class number",
+          "unit": "count",
+          "definition": "Number of word classes in solution word",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "VN",
+          "normalized_name": "vowel number",
+          "unit": "count",
+          "definition": "Number of vowels in pronunciation",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "F_j",
+        "WCN",
+        "VN"
+      ],
+      "outputs": [
+        "K",
+        "r_k"
+      ],
+      "handoff_outputs": [
+        "K"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q239-008",
+          "page": 18,
+          "label": "(8)",
+          "source_expression": "d(p,q) = sqrt(sum((p_i - q_i)^2))",
+          "normalized_latex": "d(p,q) = \\sqrt{\\sum_{i} (p_i - q_i)^2}",
+          "purpose": "Euclidean distance between guess distribution vectors.",
+          "variable_symbols": [
+            "d_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q239-009",
+          "page": 19,
+          "label": "(9)",
+          "source_expression": "min sum(d(x_i, c_k)^2)",
+          "normalized_latex": "\\min \\sum_{i} d(x_i, c_{k(i)})^2",
+          "purpose": "K-Means optimization objective.",
+          "variable_symbols": [
+            "d_ij",
+            "K"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Euclidean distance (8) and K-Means objective (9) from pp.18-19."
+      },
+      "objectives": [
+        "Classify words into difficulty levels and classify EERIR."
+      ],
+      "constraints": [
+        "Difficulty levels without duplication or omission."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 words with guess distributions and attributes."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Classification; no boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Classification; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "K-Means iterative centroid update. Pearson correlation threshold 0.6.",
+        "parameters": [
+          "K"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute pairwise Euclidean distance on guess distributions.",
+          "Run K-Means with K=4.",
+          "Label clusters Easy, Normal, Hard, Master.",
+          "Compute Pearson correlation between 7 attributes and cluster distance.",
+          "Select attributes with r > 0.6: F2, WCN, VN.",
+          "Classify new words by Euclidean distance to centroids."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "K-Means objective function convergence."
+      },
+      "assumptions": [
+        "Guess distribution reflects word difficulty.",
+        "Euclidean distance appropriate for distribution comparison."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "F2=0.81, WCN=0.82, VN=0.90 correlations. EERIR = Master."
+      },
+      "validation_refs": [
+        "Figure 13: Word cloud.",
+        "Figure 14: Classification bar chart.",
+        "Table 6: Correlation coefficients."
+      ],
+      "computational_cost": "K-Means + Pearson correlation on 359 samples.",
+      "strengths": [
+        "User-experience-based difficulty definition.",
+        "Dual classification method (distribution + attributes)."
+      ],
+      "limitations": [
+        "K=4 chosen by trial, no formal selection criterion.",
+        "Pearson measures linear correlation only."
+      ],
+      "missing_details": [
+        "Centroid values for each difficulty level.",
+        "Number of iterations to convergence."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q239-002",
+      "to_model_id": "MU-C-Q239-003",
+      "handoff": "BP NN predicted distribution used as input for K-Means difficulty classification."
+    }
+  ]
+}

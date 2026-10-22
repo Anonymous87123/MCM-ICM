@@ -1,0 +1,395 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2018-82794-47f05792",
+  "problem_type": "D",
+  "year": "2018",
+  "source_sha256": "47f05792d6b38bde533b2f00a5268860e720491bfeb869f16e8ef85fa469b968",
+  "models": [
+    {
+      "model_id": "MU-D-Q292-NETWORK",
+      "page": 6,
+      "section": "Double-layer network",
+      "family": "optimization",
+      "purpose": "Place destination chargers and superchargers on two layers.",
+      "base_or_modification": "paper-specific",
+      "summary": "The inner layer serves people who stay in one county. Six user groups by daily mileage each need a load L, and the destination count DTL is the maximum of the summed load over the day. Cities get a share proportional to traffic density. People who forget to charge, a share a, need superchargers scaled by a damage factor rd, so STL = DTL times a times rd. The outer layer serves long-distance travelers. A city is a hub by betweenness, Bi = sum of njl(i) over njl, weighted by the population and road length it connects. Superchargers sit every 130 miles on the shortest path. With US population 323.1 million, 0.766 vehicles per person and 43.4 miles a day, DTL is 8.08 million and superchargers are 2.16 million, 1.62 long-distance and 0.54 short-distance. Ireland gets 78 thousand and 20.8 thousand.",
+      "variables": [
+        {
+          "symbol": "nsum",
+          "normalized_name": "fleet",
+          "unit": "vehicles",
+          "definition": "holding number of electric vehicles",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "er",
+          "normalized_name": "range_anxiety",
+          "unit": "mile",
+          "definition": "distance at which a traveler charges, 130 miles",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dtl",
+          "normalized_name": "destination_count",
+          "unit": "stations",
+          "definition": "destination charging stations required",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "nsum"
+      ],
+      "outputs": [
+        "dtl"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q292-NETWORK-1",
+          "page": 9,
+          "source_expression": "Bi = sum njl(i) / njl",
+          "normalized_latex": "B_i=\\sum_{j<l}\\frac{n_{jl}(i)}{n_{jl}}",
+          "purpose": "betweenness of a city",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "nsum",
+            "er",
+            "dtl"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equations"
+      },
+      "objectives": [
+        "Place destination chargers and superchargers on two layers."
+      ],
+      "constraints": [
+        "a station holds exactly one charger"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "US inputs from cited statistics; a = 0.3 and rd = 0.25 for Ireland",
+        "parameters": [
+          "er"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "split users into six groups",
+          "sum the load",
+          "weight cities by betweenness",
+          "place a supercharger every 130 miles"
+        ],
+        "software": [
+          "C++"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "only personal passenger vehicles are counted",
+        "travelers take the shortest path"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "1.62 plus 0.54 million gives the stated 2.16 million superchargers"
+      },
+      "handoff_outputs": [
+        "dtl"
+      ],
+      "validation_refs": [
+        "counts compared with the summary"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "travelers are split before any station is placed"
+      ],
+      "limitations": [
+        "the summary says the switch takes 108 years for the constructed network and 36 for the growing one; the body text reverses the two"
+      ],
+      "missing_details": [
+        "the six mileage groups are named but their boundaries are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q292-SPREAD",
+      "page": 14,
+      "section": "SI epidemic",
+      "family": "evaluation",
+      "purpose": "Date the switch from satisfaction.",
+      "base_or_modification": "paper-specific",
+      "summary": "Satisfaction D mixes the long-trip share with the station counts already built, each divided by the final count times permeability. The daily contact rate is lambda = (D - X) P / D, positive only above a threshold X. The electric share then grows as di/dt = lambda i (1 - i). With w = 0.7, a = 0.3 and PT = 0.002 the threshold is 1.85. The current network reaches full electrification in 108 years and the growing network in 36, on the figure; the prose swaps them. For Ireland the fastest plan builds at twice the present scale and mixes city and rural at 3 to 2, matching an urbanization of 63.2 percent. Below 30 percent permeability build destination stations, between 30 and 50 build city superchargers, above 50 build road superchargers.",
+      "variables": [
+        {
+          "symbol": "pt",
+          "normalized_name": "permeability",
+          "unit": "dimensionless",
+          "definition": "current share of electric vehicles",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "contact_rate",
+          "unit": "per day",
+          "definition": "daily contact rate from satisfaction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yrs",
+          "normalized_name": "years_to_full",
+          "unit": "year",
+          "definition": "years to full electrification",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pt"
+      ],
+      "outputs": [
+        "yrs"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q292-SPREAD-1",
+          "page": 14,
+          "source_expression": "di/dt = lambda i (1 - i)",
+          "normalized_latex": "\\frac{di}{dt}=\\lambda i(1-i)",
+          "purpose": "electric share growing like an infection",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "pt",
+            "lam",
+            "yrs"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equations"
+      },
+      "objectives": [
+        "Date the switch from satisfaction."
+      ],
+      "constraints": [
+        "the share cannot exceed one"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "w = 0.7, a = 0.3, PT = 0.002 give a threshold of 1.85",
+        "parameters": [
+          "lam"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "compute satisfaction",
+          "set the contact rate",
+          "integrate the share"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "a satisfied owner convinces others at a constant daily rate"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "the two curves are plotted, but the prose assigns the years to the wrong curve"
+      },
+      "handoff_outputs": [
+        "yrs"
+      ],
+      "validation_refs": [
+        "counts compared with the summary"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "travelers are split before any station is placed"
+      ],
+      "limitations": [
+        "figure 8 marks 36 on the growing curve and 108 on the current curve; the prose says the opposite"
+      ],
+      "missing_details": [
+        "the six mileage groups are named but their boundaries are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q292-SENS",
+      "page": 22,
+      "section": "Contact-rate sweep",
+      "family": "evaluation",
+      "purpose": "Find which stage the contact rate moves.",
+      "base_or_modification": "paper-specific",
+      "summary": "Starting from i(0) = 0.01, the share is integrated at contact rates 0.27, 0.3 and 0.33. Early and late the three curves stay close; at year 15 they stand at about 0.4, 0.5 and 0.6. The middle stage is where a gain in satisfaction speeds the switch.",
+      "variables": [
+        {
+          "symbol": "i0",
+          "normalized_name": "initial_share",
+          "unit": "dimensionless",
+          "definition": "starting electric share, 0.01",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rate",
+          "normalized_name": "rate_set",
+          "unit": "per day",
+          "definition": "the three contact rates tested",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "mid_gap",
+          "unit": "dimensionless",
+          "definition": "spread of the three curves at year 15",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "i0"
+      ],
+      "outputs": [
+        "gap"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q292-SENS-1",
+          "page": 22,
+          "source_expression": "i(15) differs by about 0.2 across the three rates",
+          "normalized_latex": "i(15)\\in\\{0.4,0.5,0.6\\}",
+          "purpose": "mid-stage spread under a contact-rate sweep",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "i0",
+            "rate",
+            "gap"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from the printed equations"
+      },
+      "objectives": [
+        "Find which stage the contact rate moves."
+      ],
+      "constraints": [
+        "the contact rate is held constant within a run"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "three rates spaced 0.03 apart",
+        "parameters": [
+          "rate"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "integrate at each rate",
+          "read the share at year 15"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "satisfaction can be raised by policy"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "the three curves are plotted and the year-15 values are stated"
+      },
+      "handoff_outputs": [
+        "gap"
+      ],
+      "validation_refs": [
+        "counts compared with the summary"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "travelers are split before any station is placed"
+      ],
+      "limitations": [
+        "the year-15 values are read from the figure, not tabulated"
+      ],
+      "missing_details": [
+        "the six mileage groups are named but their boundaries are not printed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q292-NETWORK",
+      "to_model_id": "MU-D-Q292-SPREAD",
+      "handoff": "the final station counts that satisfaction is measured against"
+    },
+    {
+      "from_model_id": "MU-D-Q292-SPREAD",
+      "to_model_id": "MU-D-Q292-SENS",
+      "handoff": "the contact rate the sweep varies"
+    }
+  ],
+  "review_status": "validated"
+}

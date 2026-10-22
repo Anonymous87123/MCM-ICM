@@ -1,0 +1,51 @@
+     Team 2211922                                                                   Page 23
+
+
+5          bn = (x(2).*(1 - x(1) - x(2)).*( (1- x(3) -x(4) ).^n - (1 - x(1) - x(2)).^n
+              )).*(P - C./(x(1)+x(2)))./(x(1) + x(2) - x(3) -x(4)) + (M - (C.*x(2))./(
+              (x(3)+x(4)).*(x(1) + x(2)) )).*(1 - x(3) -x(4) ).^n +
+              (C.*x(2))./((x(3)+x(4)).*(x(1)+x(2)));
+6          f1 = abs( A - (an.*x(1) + bn.* x(3)) ) ;
+7          f2 = abs( B - (an.*x(2) + bn.* x(4)) ) ;
+8          f = w1.*f1 + w2.*f2;
+9    end
+
+
+
+     9.5     Code of the Genetic Algorithm
+
+1    NP = 200; %% The number of the population which is an even number
+2    L = 10; %% Length of genes
+3    Pc = 0.8; %% Crossover probability: 0.25 ~ 1
+4    Pm = 0.1; %% Mutation probability: 0.001 ~ -5.9
+5    G = 1000; %% Inheritance index
+6    Xs = ub .* 0.9; %% Upper bound of feasible solution
+7    Xx = lb; %% Lower bound of feasible solution
+8    f = randi([0,1],NP,L); %% Initialization
+9    for i = 1:NP
+10       for j = 1:10
+11           f(i,j) = Xx(1,j) + (Xs(1,j) - Xx(1,j)).*rand;
+12       end
+13   end
+14   for k = 1:G
+15       for i = 1:NP
+16           Fit(i) = fun1(f(i,1:10));
+17       end
+18       maxFit = max(Fit);
+19       minFit = min(Fit);
+20       rr = find(Fit == maxFit);
+21       fBest = f(rr(1,1),:); % Best gene type for each generation
+22       Fit = (Fit - minFit)/(maxFit - minFit);
+23       %%%%%The Copy Opration of the Roulette Selection Method%%%%%
+24       sum_Fit = sum(Fit);
+25       fitvalue = Fit./sum_Fit;
+26       fitvalue = cumsum(fitvalue);
+27       ms = sort(rand(NP,1));
+28       fiti = 1;
+29       newi = 1;
+30       while newi <= NP
+31           if(ms(newi) < fitvalue(fiti))
+32              nf(newi,:) = f(fiti,:);
+33              newi = newi+1;
+34           else
+35              fiti = fiti+1;

@@ -1,0 +1,1557 @@
+Problem Chosen         2025    Team Control Number
+                  MCM/ICM
+     C          Summary Sheet     2513314
+
+A Glimpse of Olympics Medals through Bayesian Model
+
+                                                   Summary
+
+    The Olympic medal count fluctuates over time, driven by various influencing factors.
+Through a comprehensive analysis of historical data and predict projections for 2028, we have
+identified key trends and valuable insights.
+
+    First, we conducted an exploratory data analysis to understand the distribution characteristics
+of our target variable, providing a solid foundation for our modeling process.
+
+    For Task 1, our objective is to predict the medal counts for the 2028 Olympic Games. To
+
+‡æò improve accuracy and quantify uncertainty, we propose a Bayesian Hierarchical Dirichlet-
+
+Multinomial (BHDM) Model, which captures the discrete, sum-constrained nature of medal
+
+‡¨Ü counts while addressing overdispersion and cross-country heterogeneity through hierarchical
+
+priors.
+
+ ‡øê A key strength of this model is its robust uncertainty quantification. Each country‚Äôs
+
+medal count follows a Dirichlet-Multinomial distribution with latent rates governed by country-
+
+‡∂î specific regression coefficients and a Gamma-distributed concentration parameter. MCMC-
+
+based posterior inference provides 95% credible intervals, assessing both medal forecasts
+
+ƒü ls and extreme outcomes like "ice-breaking" probabilities. By analyzing posterior distributions,
+
+the model offers interpretable insights into key predictors, ensuring informed decision-making
+
+e under uncertainty.
+ ‚Ä´ ›º‚Ä¨d This method exhibits strong performance, achieving R2 of 0.85 for total medals and 0.80
+o for gold medals, surpassing all baseline models. Our 2028 projections show the U.S. winning
+·áô m 146 medals (95% CI: 136‚Äì156) and 53 golds (95% CI: 50‚Äì56), an increase from 2024,
+
+while China‚Äôs total medals decline to 82. We also computed ice-breaking probabilities, with
+
+‚Ä´ ‹Ñ‚Ä¨H Malaysia (68.6%) and South Sudan (39.0%) most likely to win their first medals. Regression
+‡æê T analysis identified key sports for the U.S., China, the U.K., and France, offering strategic insights
+
+for host nations to optimize medal prospects.
+
+ A For Task 2, we investigate the ‚ÄúGreat Coach‚Äù effect. First, we define great coaches and
+‡∫± M construct a national-level great coach variable to quantify each country‚Äôs coaching strength. We
+
+then incorporate this variable into the BHDM model and analyze its impact through regression
+
+ƒü coefficients.
+ ‚Ä´ ›º‚Ä¨The results indicate that great coaches significantly influence both total and gold medal
+
+counts. Specifically, for the United States, China, and Japan, a one-unit increase in this vari-
+able leads to an expected medal count increase of 3.74%, 4.55%, and 2.87%, respectively.
+
+‡æê Additionally, we examine key sports in these three nations to assess the impact of this effect.
+
+    To test the robustness of our model, we conducted sensitivity analyses on both the weakly
+
+‡∫± informative priors and the assumption of equal medal distribution. The results indicate that,
+
+despite adjustments in parameters and distributions, the model maintains reasonable predictive
+performance, with only minor deviations from the original baseline, demonstrating its robustness.
+
+    For Task 3, based on the comprehensive modeling process above, we derived three additional
+insights: Economic level determines medals, Home Turf and Aligned Systems Prevail, and
+Emerging Sports Aid Low-GDP Countries. We communicated these insights in a letter to the
+NOC, aiming to enhance their strategies and help nations secure more gold medals.
+
+    Keywords: Bayesian Hierarchical Dirichlet-Multinomial, Posterior inference, Uncertainty
+Quantification, Regression Analysis, Credible Intervals
+                                                                                Team # 2513314                                                                  Page 3 of 22
+
+                                                                                1 Introduction
+
+                                                                                1.1 Background
+
+                                                                                    The Olympic Games, held every four years, bring together the world‚Äôs top athletes to compete
+                                                                                in a wide range of sports. Since the first modern Olympics in 1896, the event has grown
+                                                                                significantly in scale, with more countries participating and more events being introduced.
+                                                                                Medal counts serve as a key indicator of national sports performance, reflecting a country‚Äôs
+                                                                                investment in athletics, talent development, and international competitiveness.
+
+                                                                                    ‡¨Ü‡æò Figure 1: The 2028 Summer Olympics will be held in Los Angeles, USA.
+                                                                                                 ‡øê
+
+                                                                                 ‡æê‚Ä´‹Ñ‚Ä¨·áô‚Ä´›º‚Ä¨ƒüAT‡∂îHmodels Predicting Olympic medal counts is an important challenge, as it provides insights into
+                                                                                ‡∫± M national sports strategies and performance trends. Various factors influence a country‚Äôs medal
+
+                                                                                prospects, including economic resources, population size, sports infrastructure, and historical
+
+                                                                                ƒü performance. Additionally, host nations often experience a boost in medal counts due to
+
+                                                                                home-field advantages and increased investment. A robust predictive model can help sports
+
+                                                                                ‚Ä´ ›º‚Ä¨organizations allocate resources efficiently and set realistic goals for future Olympic Games.
+                                                                                 ‡æê Beyond national investment, coaching plays a critical role in athletic success. Some elite
+
+                                                                                coaches have significantly impacted multiple countries‚Äô performances, demonstrating a ‚ÄúGreat
+
+                                                                                ‡∫± Coach‚Äù effect. By analyzing historical data, it is possible to quantify this effect and identify
+
+                                                                                sports where hiring top-level coaches could maximize a nation‚Äôs medal potential. Understanding
+                                                                                the role of coaching in Olympic success can provide strategic recommendations for countries
+                                                                                aiming to improve their performance.
+
+                                                                                1.2 Problem Restatement
+
+                                                                                      The distribution of Olympic medals is a key topic of interest for analysts, sports federations,
+
+                                                                                and policymakers. Medal standings reflect national athletic strength, investment in sports
+
+                                                                                development, and strategic resource allocation. This study focuses on developing a predictive
+
+mmmmmmm          mmm        mm m mm                            mmmmm            model for Olympic medal counts and exploring    the  underlying  factors  that  influence  national
+                                                                                mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m                m             mm     m mm           mmm
+                                       mm
+m mmm m        m mmmm                            performance. m m mm   m mmm
+                               mmmmm
+m mmm m          mmm           mm                    mm        mmmmmm m
+
+m           m        mm            mmmm          mm        mmm         mm
+
+mmmmmmm          mm      m                           m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m  Specifically,  our  objectives  include:
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2513314                                                                                                                                  Page 4 of 22
+
+    ‚Ä¢ Developing a mathematical model to predict the number of Gold and total medals for
+       each country in the 2028 Los Angeles Summer Olympics, incorporating factors such as
+       historical performance, host nation advantages, and event distributions.
+
+    ‚Ä¢ Estimating the likelihood of countries earning their first Olympic medal and analyzing the
+       probability of new medal-winning nations emerging.
+
+    ‚Ä¢ Examining the relationship between specific sports events and national success, identifying
+       key disciplines that contribute significantly to a country‚Äôs medal tally.
+
+    ‚Ä¢ Investigating the potential impact of elite coaches on national performance, quantifying
+       the "Great Coach" effect, and recommending strategic investments in coaching for selected
+       countries.
+
+    By addressing these questions, this study aims to provide valuable insights into Olympic
+medal trends, helping national Olympic committees optimize their training programs and re-
+source allocation for future competitions.
+
+1.3 Our Work
+
+    Our workflow is illustrated in Figure 2. Before modeling, we first conducted model assump-
+tions (Section 2) and data exploration (Section 4.2) to facilitate the modeling process. After
+exploring the data distribution, we identified eight key variables (Section 5.1) and constructed a
+Bayesian Hierarchical Decision Model (BHDM) (Section 5.2) to better fit our observed distri-
+butions.
+
+         Model Assumption                    Figure 2: Our workflow.
+
+                                                           A glimpse of dataset
+
+Country  Equal                    Medal                                                                               Some insights about Olympics Medal Counts
+                               Distribution                                                                           To: Country Olympic Committees
+Heterogeneity Distribution                                                                                            From: Team #2513314
+                                                                                                                      Data: January 27, 2025
+                                                                                      Overdispersion and Heavy Tails  Dear Country Olympic Committee leaders:
+                                                                                           Sum Fixed and Discrete
+                                                                                                                           ‚Ä¶
+
+         Task 1: Predicting Medals of 2028 LA Olympics                                                                Task 2: Dive Into Great Coach Effect
+
+Key Variables for Medals          BHDM Model Setup                                    Why NOT Other Models?           Coaching           All    Dataset
+          Ì†µÌ±øÌ†µÌ±øÌ†µÌøèÌ†µÌøè ‚àí Ì†µÌ±øÌ†µÌ±øÌ†µÌøñÌ†µÌøñ                                                                                          Ability     Great Coach
+                                  Ì†µÌºΩÌ†µÌºΩÌ†µÌ≤äÌ†µÌ≤ä = Ì†µÌΩìÌ†µÌΩìÌ†µÌ≤äÌ†µÌ≤äÌ†µÌ≤ÜÌ†µÌ≤ÜÌ†µÌ≤ÜÌ†µÌ≤ÜÌ†µÌ≤ÜÌ†µÌ≤Ü Ì†µÌ†µÌ≤äÌ±ªÌ†µÌ≤äÌ†µÌ±ªÌ†µÌº∑Ì†µÌº∑Ì†µÌ≤äÌ†µÌ≤ä  Deep Learning Two-phase RF         Ì†µÌ±øÌ†µÌ±øÌ†µÌøóÌ†µÌøó                 Coach
+                                                                                                                                                Database
+                               Ì†µÌº∑Ì†µÌº∑Ì†µÌ≤äÌ†µÌ≤ä follows a weakly informative prior            Neg. Binomial  Poisson
+
+Breaking the Ice Probability   Posterior Distribution                                 Predictive Uncertainty
+                                                                                      and Discrete Outcomes
+                                                                                                                                                Posterior Summary
+                                                                                                                      Our BHDM Model                    of Ì†µÌ±øÌ†µÌ±øÌ†µÌøóÌ†µÌøó
+
+The country that will achieve  Important Sports and                                   Projects of LA 2028             Japan        China United State
+ a Breakthrough From Zero       Home Event Impact
+
+                               Sensitivity Analysis                                                                   Task 3: Other Original Insights of BHDM
+                                                                                                                           Economic level determines medals
+Sensitivity Analysis of Equal                        Sensitivity analysis of weak
+ Distribution Assumptions                                      priors for Œ≤                                                   Home Turf and Aligned Systems Prevail
+                                                                                                                             Emerging Sports Aid Low-GDP Countries
+                               Proved to be Great Robustness!
+
+During the modeling process, we also considered alternative models; however, they were
+
+either inconsistent with the data distribution or incapable of capturing the differences between
+
+countries, leading to their exclusion. Using our model, we then projected the medal distribution
+
+for the 2028 Los Angeles Olympics along with its 95% prediction interval. Additionally, we
+
+analyzed breakthrough probabilities, identified key sports for specific countries, and proposed
+
+adjustments to the sports program for the host nation.
+
+    To investigate the "Great Coach" effect, we first cross-referenced Wikipedia databases with‹±·áø‡∂î‡øê‡¨Ü‡æò
+our dataset to identify elite coaches. We then quantified each country‚Äôs coaching streng2th and
+
+                                                                                                                                                MATHmodels           ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                Team # 2513314                                                                                        Page 5 of 22
+
+                                                                                incorporated it as a new variable into our BHDM model. By analyzing the posterior parameters
+                                                                                of this variable for three selected countries, we assessed the impact of great coaches on their
+                                                                                Olympic performance (Section 6).
+
+                                                                                    Subsequently, we conducted a sensitivity analysis to determine the influence of model
+                                                                                parameters and distributional variations on our results, thereby validating the robustness of our
+                                                                                model (Section 7). Finally, based on our entire modeling process, we derived three original
+                                                                                insights and drafted a letter to the COC to communicate these findings (Section 9).
+
+                                                                                2 Assumptions and Justifications
+
+                                                                                    To simplify our modeling process, we make the following assumptions:
+
+                                                                                ‡æò Assumption 1 (Medal Distribution Assumption): The distribution of medal counts to be
+
+                                                                                modeled necessitates integer-valued predictions that sum to a fixed total, often exhibits overdis-
+
+                                                                                ‡¨Ü persion and heavy tails. This forms our core assumption and directly informs our choice of
+
+                                                                                modeling approach. In Section 4.2, we will validate this assumption through visual analysis.
+
+                                                                                ‡øê Assumption 2 (Equal Distribution Assumption): The composition and skill levels of athletes
+                                                                                representing each country, as well as the events featured in the 2028 Olympics, will be largely
+                                                                                consistent with those of the 2024 Paris Olympics. Given the absence of data for the 2028 Games,
+
+                                                                                ‡∂î we assume that key factors such as event availability and athlete participation remain comparable
+
+                                                                                to those in 2024. In Section 7.2, we will explore relaxations of this assumption.
+
+                                                                                ƒü ls Assumption 3 (Country Heterogeneity Assumption): Each country excels in different sports
+                                                                                e and exhibits varying adaptability to the same set of variables, leading to cross-country hetero-
+                                                                                ‚Ä´ ›º‚Ä¨d geneity. In Section 5.2, we will explore this phenomenon in detail and incorporate it as a key
+                                                                                o assumption in our modeling approach.
+                                                                                ·áô m 3 Notations
+                                                                                      ‡æê‚Ä´ ‹Ñ‚Ä¨ATH Symbol
+                                                                                      ‡∫± M Ì†µÌ±Å
+
+                                                                                         Ì†µÌ±á
+
+                                                                                      ƒü xÌ†µÌ±ñ
+
+                                                                                         Ì†µÌΩÅ Ì†µÌªΩ
+
+                                                                                      ‚Ä´ ›º‚Ä¨Ì†µÌºôÌ†µÌ±ñ
+                                                                                                  Table 1: Notations used in the BHDM model and related analyses.
+
+                                                                                                                 Description                 Symbol                            Description
+                                                                                                            Number of countries                 Ì†µÌ±ÄÌ†µÌ±ñ                   Medal count of country Ì†µÌ±ñ
+                                                                                                     Total medals across all countries         Ì†µÌ±ánew              Total medals in a future Olympics
+                                                                                                  Covariate (feature) vector for country Ì†µÌ±ñ     Ì†µÌº∑Ì†µÌ±ñ          Random coefficient vector for country Ì†µÌ±ñ
+                                                                                                    Global mean of coefficient vectors          Œ£Ì†µÌªΩ        Covariance matrix (weakly informative prior)
+                                                                                                  Concentration parameter for country Ì†µÌ±ñ                   Hyperparameters for Ì†µÌºôÌ†µÌ±ñ (Gamma distribution)
+                                                                                                                                             Ì†µÌªºÌ†µÌºô, Ì†µÌªΩÌ†µÌºô
+
+                                                                                      Ì†µÌºÉÌ†µÌ±ñ        ‡æê Latent rate for country Ì†µÌ±ñ               Ì†µÌ±ÄÌ†µÌ±ñ,new      Predicted medal count of country Ì†µÌ±ñ in future
+                                                                                      Ì†µÌ±ã1,Ì†µÌ±ñ                                                  Ì†µÌ±ã2,Ì†µÌ±ñ                   Athlete delegation size
+                                                                                                  Historical medal record
+                                                                                      Ì†µÌ±ã3,Ì†µÌ±ñ      ‡∫±Host nation flag (binary)                 Ì†µÌ±ã4,Ì†µÌ±ñ        Social system congruence (binary)
+                                                                                      Ì†µÌ±ã5,Ì†µÌ±ñ                Athletics events
+                                                                                      Ì†µÌ±ã7,Ì†µÌ±ñ               Ball sports events                Ì†µÌ±ã6,Ì†µÌ±ñ        Tactical & strength events
+
+                                                                                                                                             Ì†µÌ±ã8,Ì†µÌ±ñ                  Emerging events
+
+                                                                                      Ì†µÌ±ã9,Ì†µÌ±ñ Great Coach variable (aggregate coaching ability) Ì†µÌ∞∫, Ì†µÌ±Ü, Ì†µÌ∞µ  Gold, silver, and bronze medal counts
+
+                                                                                                                                             Ì†µÌ∞¥            Coaching ability metric (6G + 3S + B)
+
+                                                                                4 Data Pre-processing
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm    Before      proceeding with modeling, we conducted data              cleaning  and  an  initial  exploratory
+                 mm m                                                                             better understand the dataset‚Äôs characteristics.
+m           m               m mmmmm                     m mm           mm
+                     m
+m mmm m                           m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm                  m        analysis m m m m                                            to
+                 mm                                  m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m           mmmm               mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+                                                                                Team # 2513314                                                                                   Page 7 of 22
+
+                                                                                1. Economic Capacity.
+
+                                                                                Historical Medal Record (Ì†µÌ±ã1): Reflects a country‚Äôs medal haul in the immediately preceding
+                                                                                       Olympic cycle (for gold-medal-focused forecasts, this specifically denotes the previous
+                                                                                       count of gold medals). A strong performance history is frequently underpinned by
+                                                                                       consistent investment in athletic programs and robust training infrastructures.
+
+                                                                                ‡æò Athlete Delegation Size (Ì†µÌ±ã2): Represents the total number of athletes sent to the current
+                                                                                       Games, serving as a proxy measure of institutional support and the breadth of a na-
+                                                                                         ‡¨Ü tion‚Äôs talent pool. Larger delegations often correlate with stronger financial backing and
+
+                                                                                         more extensive development pathways in multiple sporting disciplines.
+                                                                                                                                                    ‡øê
+                                                                                2. Hosting Advantages.
+
+                                                                                Host Nation Flag (Ì†µÌ±ã3 ‚àà {0, 1}): Indicates whether a nation is the host (Ì†µÌ±ã3 = 1). Host countries
+
+                                                                                 ‡∂î frequently capitalize on superior familiarity with the local environment, elevated fan
+
+                                                                                       support, and logistical conveniences.
+
+                                                                                ƒü ls Social System Congruence (Ì†µÌ±ã4 ‚àà {0, 1}): Identifies nations whose social or institutional struc-
+                                                                                 e tures are closely aligned with those of the host (Ì†µÌ±ã4 = 1). Such alignment can minimize
+                                                                                 ‚Ä´ ›º‚Ä¨d cultural barriers and facilitate smoother acclimatization, indirectly bolstering athletic per-
+                                                                                 o formance.
+
+                                                                                ·áô m 3. Event-Specific Attributes. Substantial heterogeneity exists across Olympic events, with
+                                                                                ‚Ä´ ‹Ñ‚Ä¨certain countries historically excelling in specific domains. Cultural traditions, regional training
+                                                                                H practices, and even genetic predispositions can foster a competitive edge in certain sports [6].
+                                                                                ‡æê T To capture this diversity, we classify events into four key segments:
+                                                                                A Athletics Events (Ì†µÌ±ã5): Comprising all track and field competitions, a domain frequently marked
+
+                                                                                 ‡∫± by widespread global participation and prominent displays of speed, endurance, and agility.
+                                                                                ƒüM Tactical & Strength Events (Ì†µÌ±ã6): Encompasses sports such as fencing, racquet sports, wrestling,
+                                                                                         ‚Ä´ ›º‚Ä¨and weightlifting, where strategic thinking, technical skills, and physical power play in-
+
+                                                                                         terdependent roles.
+                                                                                ‡æê Ball Sports Events (Ì†µÌ±ã7): Encompassing team-focused competitions including football, bas-
+                                                                                       ketball, and volleyball, these events rely heavily on synergy among participants and
+                                                                                 ‡∫± well-established support systems.
+
+                                                                                Emerging Events (Ì†µÌ±ã8): Newly introduced disciplines or contests debuting in the current Olympic
+                                                                                         cycle. Nations pioneering these events may enjoy early-adopter advantages but also face
+
+                                                                                         higher uncertainty due to the limited availability of historical data.
+
+                                                                                    Overall, these variables not only serve as potential predictors in quantitative analyses but also
+                                                                                offer a structured lens for examining how resources, environmental factors, and sport-specific
+                                                                                nuances collectively shape a nation‚Äôs Olympic performance.
+
+                                                                                5.2 Bayesian Hierarchical Dirichlet‚ÄìMultinomial (BHDM) Model
+
+                                                                                      Section 4.2 reveals that Olympic medal data typically demand integer-valued predictions that
+
+mmmmmmm          mmm        mm m mm                            mmmmm            sum m m  to  a  known  total,  often  exhibit  overdispersion  and  heavy  tails,  and  require  partial  pooling
+                 mm m       m mmmmm
+m          m                                            m  mm          mm
+
+m mmm m          m                m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m          m         mm        mm                mm        mmm         mm
+to handle cross-country heterogeneity. Under this distributional constraint, deep learning and mmmmmmm
+                 mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m           mmmm               mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+           mm                  mm                m mmmmm mm               m
+
+                     mmmmm m m m                        m
+       machine learning methods (e.g., RNN and two-stage RF) are clearly unsuitable, as they fail mmm
+
+       m mm m
+               m mmm
+
+       mm m
+                                                               m m mm mm
+
+                     m         mmmmm mm              mm        m mmmmmmm
+
+                            mm          mm           m          mm           m
+
+                     mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm      m     mmmmm                           m mm      m mm           mm
+
+m      m             m m mmmmmmmm mmmm                                mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m       mmm m mm mmmm m mmmm m                                  mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm        m                   m mmmmm m                     mm m mm
+
+       m   m         mm              mmm m           mm m             mmm mm
+
+                 mm            mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m          m mm m           mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m            mm                    m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m          m mm      mm              m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2513314                                                                                                                                                                   Page 8 of 22
+
+to enforce the fixed-total and discrete conditions without special modifications. Statistical
+
+approaches such as Negative Binomial and Poisson are also inadequate due to their poor
+
+handling of long-tailed data. While a standard Bayesian Multinomial Model can effectively
+
+model such data, it does not satisfy our Country Heterogeneity Assumption, as it assumes
+
+a shared Ì†µÌº∑ across all countries, which is incompatible with our framework. The Bayesian
+
+Hierarchical Dirichlet‚ÄìMultinomial (BHDM) model addresses these challenges by combining
+
+a Dirichlet‚ÄìMultinomial likelihood, which enforces both discreteness and sum constraints, with
+
+hierarchical priors on regression parameters, enabling each country to have its own coefficient
+
+vector.
+
+Model Setup. Let Ì†µÌ±Å be the number of countries, and let Ì†µÌ±Ä1, . . . , Ì†µÌ±ÄÌ†µÌ±Å be the observed medal
+
+counts, with the total
+
+                                                                   Ì†µÌ±Å
+
+                                                                   ‚àëÔ∏Å
+
+                                                          Ì†µÌ±á = Ì†µÌ±ÄÌ†µÌ±ñ.                                                                                                                         (1)
+
+                                                                   Ì†µÌ±ñ=1
+
+For each country Ì†µÌ±ñ, we define a covariate vector xÌ†µÌ±ñ and a random coefficient vector Ì†µÌº∑Ì†µÌ±ñ. In our
+setting, we adopt a weakly informative prior for Ì†µÌº∑Ì†µÌ±ñ, specifically assuming that
+
+                                               Ì†µÌº∑Ì†µÌ±ñ ‚àº N Ì†µÌΩÅÌ†µÌªΩ, Œ£Ì†µÌªΩ , Ì†µÌ±ñ = 1, . . . , Ì†µÌ±Å,                                                                                                      (2)
+
+with
+                                         Œ£Ì†µÌªΩ = Ì†µÌºè2Ì†µÌ∞ºÌ†µÌ±ù and Ì†µÌºè2 = 1.
+
+This choice reflects our prior belief that, while allowing for moderate variation in the regression
+
+coefficients across countries, the individual effects should not be overly dispersed. The weakly
+
+informative prior thus provides regularization without imposing overly restrictive assumptions,
+
+enabling the data to primarily inform the posterior inferences.                            mmmmmmm          mmm        mm m mm                            mmmmm            mm
+    We additionally introduce a concentration parameter Ì†µÌºôÌ†µÌ±ñ for
+                                                                                           m           m    mm m m mmmmm                           m mm           mm
+                                          Ì†µÌºôÌ†µÌ±ñ ‚àº Gamma(Ì†µÌªºÌ†µÌºô, Ì†µÌªΩÌ†µÌºô).
+                                                                                           m mmm m           m               m              mm     m mm           mmm
+Each country Ì†µÌ±ñ has an associated feature vector
+                                                                                           m mmm m m mmmm                       mm          mmm            m      m mmm
+
+                                                                                           m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+                                                                                           m           m        mm        mm                mm        mmm         mm
+
+                                                                                           mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+                                                                                           country Ì†µÌ±ñ: m m m m m m m m m m m m m m m m m m m m                             mm
+                                                                                                          mmm mm             mm             mm m mmm              m
+
+                                                                                               m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+                                                                                           mm             mm m m m mmmm                         mmmmmmmm                      m
+
+                                                                                                                                                                  m           m
+
+                                                                                           mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+                                                                                                       mm                 mm                m mmmmm mm               m
+
+                                                                                                  mmm            mmmmm m m m                       m      m m mm mm
+
+                                                                                                  m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+                                                                                                      m mmm            mm          mm           m          mm           m
+
+                                                                                                  mm m          mm           m               m        mmm mmm              m
+
+                                                                                           mmmm           mmm mm mm m m m mm                               mmmm m m
+
+                                                                                           mmmm             mm                  m        mm        m      mm         mmmm
+
+                                                                                           mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+                                                                                              mm       m     mmmmm                          m mm      m mm           mm                      (3)
+
+                                                                                           m      m              m m mmmmmmmm mmmm                               mm        m
+
+                                                                                           m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+                                                                                           mmm              m m mmm                mm              m          mm m mm
+
+                                                                                           mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+                                                                                           mm m           mmmm         m        m            m     mm            mm           m
+
+                                                                                           mmmm mm m m m                  mmm            m      m         m mm m              m
+
+                                                                                                  mm         m                  m mmmmm m                     mm m mm
+
+                                                                                                  m    m         mm             mmm m           mm m             mmm mm
+
+                                                                                                             mm           mmmm               mmm
+
+                                                                                           mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                                                                                           m           m mm m          mm mmmmmm                      mmm m                   m
+
+                                                                                           m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+                                                                                           m mmm m m             mm                   m               mmm m mmm m
+
+                                                                                           m mmm m              mm           m mmm                    mm m mmm m
+
+                                                                                           m           m mm      mm             m m mmmmmmm                   m               m
+
+                                                                                           mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+
+                             xÌ†µÌ±ñ =                                                                                ‚ä§                                                                          (4)
+
+                                               Ì†µÌ±ã1,Ì†µÌ±ñ, Ì†µÌ±ã2,Ì†µÌ±ñ, Ì†µÌ±ã3,Ì†µÌ±ñ, Ì†µÌ±ã4,Ì†µÌ±ñ, Ì†µÌ±ã5,Ì†µÌ±ñ, Ì†µÌ±ã6,Ì†µÌ±ñ, Ì†µÌ±ã7,Ì†µÌ±ñ, Ì†µÌ±ã8,Ì†µÌ±ñ ,
+
+Combining these, each country‚Äôs latent rate is
+
+                                                    Ì†µÌºÉÌ†µÌ±ñ  =  Ì†µÌºôÌ†µÌ±ñ  exp   x‚ä§    Ì†µÌº∑Ì†µÌ±ñ     .                                                                                                    (5)
+
+                                                                           Ì†µÌ±ñ
+
+Conditioned on {Ì†µÌºÉÌ†µÌ±ñ}, the vector Ì†µÌ±Ä1, . . . , Ì†µÌ±ÄÌ†µÌ±Å follows a Dirichlet‚ÄìMultinomial distribution:
+
+                          Ì†µÌ±Ä1, . . . , Ì†µÌ±ÄÌ†µÌ±Å ‚àº Dirichlet-Multinomial Ì†µÌ±á; Ì†µÌºÉ1, . . . , Ì†µÌºÉÌ†µÌ±Å ,                                                                                                  (6)
+
+ensuring each Ì†µÌ±ÄÌ†µÌ±ñ is integer-valued and that                      Ì†µÌ±Å    Ì†µÌ±ÄÌ†µÌ±ñ  =  Ì†µÌ±á .
+                                                                   Ì†µÌ±ñ=1
+
+Posterior Distribution. Let M = (Ì†µÌ±Ä1, . . . , Ì†µÌ±ÄÌ†µÌ±Å ) and recall Ì†µÌºÉÌ†µÌ±ñ as in (5). Combining the
+
+likelihood Eq. (6) with hierarchical priors leads to
+
+         Ì†µÌ±ù  {  Ì†µÌº∑Ì†µÌ±ñ  },  {  Ì†µÌºôÌ†µÌ±ñ  },  Ì†µÌΩÅ   ,  Œ£Ì†µÌªΩ  M
+
+                                           Ì†µÌªΩ
+
+                                                                                          Ì†µÌ±Å                                                                                                 (7)
+
+                ‚àù Dirichlet-Multinomial M; Ì†µÌºÉ1, . . . , Ì†µÌºÉÌ†µÌ±Å √ó N Ì†µÌº∑Ì†µÌ±ñ; Ì†µÌΩÅÌ†µÌªΩ, Œ£Ì†µÌªΩ √ó                                                                                                               ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                                 ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                         Ì†µÌ±ñ=1
+
+                Ì†µÌ±Å
+
+                          Gamma Ì†µÌºôÌ†µÌ±ñ; Ì†µÌªºÌ†µÌºô, Ì†µÌªΩÌ†µÌºô √ó Ì†µÌ±ù( Ì†µÌΩÅÌ†µÌªΩ, Œ£Ì†µÌªΩ) ¬∑ ¬∑ ¬∑                                                                                                          2
+
+                Ì†µÌ±ñ=1                                                                                                                                                             MATHmodels
+Team # 2513314                                                        Page 10 of 22
+
+5.3 Projects of LA 2028
+
+    By the Equal Distribution Assumption, we use the 2024 data as a proxy for 2028, modifying
+only the host country. The features are then incorporated into our model and compared against
+other approaches, with results presented in Table 2. As shown in Table 2, our proposed BHDM
+model outperforms both the machine/deep learning and traditional statistical approaches in
+predicting medal counts. For instance, in the All Medals category, BHDM achieves an MSE
+of 6.98 and an Ì†µÌ±Ö2 of 0.85, which are notably superior to the corresponding values from the
+competing models that exhibit higher errors and lower fit indices. Similarly, in the Gold Medals
+category, BHDM records an MSE of 3.42 and an Ì†µÌ±Ö2 of 0.80, outperforming alternative models
+by a substantial margin. These improvements are primarily attributable to the BHDM model‚Äôs
+adaptive capability in capturing the underlying data distribution, thereby effectively modeling
+the intrinsic variability and complex relationships in the dataset, which in turn results in more
+accurate predictions.
+
+Table 2: Comparison of Model Performance Metrics for Medal Prediction. Lower values for MSE,
+RMSE, and MAE indicate better performance, while higher values for Ì†µÌ±Ö2 and Adjusted Ì†µÌ±Ö2 indicate a
+
+better model fit. The best performance for each metric is highlighted in bold.
+
+                          Machine/Deep Learning Models         Statistical Models
+
+Medal Type Metric XGBoost[1] RNN[3] RF Two-stage[5] Poisson Neg. Binomial BHDM (ours)
+
+            MSE           7.21  7.05  7.37              10.45  10.33               6.98
+
+            RMSE          2.72  2.65  2.78              3.21   3.15                2.59
+
+All Medals  MAE           1.15  1.12  1.17              1.58   1.52                1.03
+
+                Ì†µÌ±Ö2       0.84  0.83  0.77              0.71   0.74                0.85
+
+            Adjusted Ì†µÌ±Ö2  0.82  0.78  0.74              0.68   0.69                0.84
+
+            MSE           3.71  3.63  3.82              5.25   5.12                3.42
+
+            RMSE          1.93  1.91  1.95              2.29   2.26                1.86
+
+Gold Medals MAE           1.03  0.99  1.04              1.23   1.25                0.95
+
+                Ì†µÌ±Ö2       0.76  0.79  0.71              0.66   0.71                0.80
+
+            Adjusted Ì†µÌ±Ö2  0.74  0.75  0.68              0.62   0.69                0.78
+
+    Based on our Bayesian hierarchical model, our projections for the Los Angeles 2028 Olympic
+medal table is shown in Figure 4. It suggests that the United States will significantly improve its
+performance with a predicted total of 146 medals (95% CI: [136, 156]) and 53 gold medals (95%
+CI: [50, 56]), reflecting increases of +20 total and +13 gold medals relative to 2024; in contrast,
+China is forecast to decline to 82 total medals (95% CI: [75, 90]) and 31 gold medals (95%
+CI: [28, 34]), while Great Britain is expected to drop by 5 total medals (down to 60) and lose
+2 gold medals (resulting in 12 gold medals). Moreover, after adjusting for the home advantage
+effect in 2024, France is projected to regress by 10 total medals (to 54) and 4 gold medals (to
+12). Meanwhile, both Australia and Japan exhibit modest improvements, and the Netherlands
+shows a strong upward trend with an increase of 11 total medals and 5 gold medals. Overall,
+our model indicates that the United States and the Netherlands are most likely to improve,
+whereas China, Great Britain, France, Italy, and South Korea are expected to perform worse
+than in 2024. The 95% credible intervals, derived from the posterior predictive draws, quantify
+the uncertainty in our predictions and provide a robust framework for interpreting the range of
+plausible future outcomes.
+
+                                                                                             2       ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                     ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                   MATHmodels
+Team # 2513314                                         Page 11 of 22
+
+Figure 4: Predicted Medal Allocations for LA 2028. Gold bars represent gold medals and silver bars
+represent other medals; the solid black line shows the total medal prediction, the dashed dark orange line
+shows the gold medal prediction, and the shaded areas indicate the 95% credible intervals.
+
+                                                   ‡¨Ü‡æò
+
+                                      ‡øê
+ƒü‡∂î ls Table 3: Probabilities of the country that will achieve a Breakthrough From Zero in 2028.
+e Category              Country       Probability        95% CI
+‚Ä´ ›º‚Ä¨od Gold               Malaysia         0.6861     [0.4568, 0.8132]
+‡æê‚Ä´‹Ñ‚Ä¨·áô THm Total   Refugee Olympic Team     0.3788     [0.3214, 0.4128]
+                                         0.2569    [0.2112, 0.0.2698]
+                           Haiti         0.3904     [0.3315, 0.4208]
+                      South Sudan        0.3227     [0.2774, 0.3518]
+                                         0.1554     [0.1102, 0.1898]
+                         Guinea
+                        Myanmar
+‡∫± A 5.4 The country that will achieve a Breakthrough From Zero
+ ƒüM Table 3 presents the estimated probabilities‚Äîwith associated 95% credible intervals‚Äîfor
+each country to achieve a breakthrough from a zero-medal history in the 2028 Olympics. Same
+as above, the results are stratified into two medal groups: Gold and Total.
+
+‚Ä´ ›º‚Ä¨Gold Medals
+    ‚Ä¢ Malaysia: The estimated probability for Malaysia to secure its first gold medal is 0.6861,
+ ‡æê with a relatively wide 95% credible interval of [0.4568, 0.8132]. This interval indicates
+       that while the central estimate is notably high, there is considerable uncertainty in the
+ ‡∫± exact probability. Nonetheless, even the lower bound of approximately 0.46 suggests a
+strong underlying signal for Malaysia‚Äôs breakthrough potential in the gold medal group.
+
+‚Ä¢ Refugee Olympic Team: With an estimated breakthrough probability of 0.3788 and a
+
+narrower credible interval of [0.3214, 0.4128], the Refugee Olympic Team exhibits a
+
+moderate level of potential. The narrow interval reflects greater precision in this estimate,
+
+implying that the model is more confident about this moderate probability relative to that
+Team # 2513314                                             Page 12 of 22
+
+       of Malaysia.
+    ‚Ä¢ Haiti: Haiti‚Äôs estimated probability stands at 0.2569 with a 95% credible interval of
+
+       [0.2112, 0.2698]. The relatively low point estimate, coupled with a narrow interval,
+       reinforces the conclusion that Haiti is less likely to achieve a breakthrough in the gold
+       medal group. The tight range indicates high confidence in this low probability estimate.
+    The stark contrast in point estimates‚Äîparticularly the high probability for Malaysia com-
+pared to the lower probabilities for the Refugee Olympic Team and Haiti‚Äîhighlights a notable
+disparity in the competitive dynamics for gold medals.
+Total Medals
+    ‚Ä¢ South Sudan: In the Total Medal group, South Sudan exhibits the highest breakthrough
+       probability at 0.3904, with a credible interval of [0.3315, 0.4208]. Although this estimate
+       is lower than Malaysia‚Äôs gold medal probability, it indicates that South Sudan has a
+       competitive edge when considering all medal types combined.
+    ‚Ä¢ Guinea: Guinea‚Äôs estimated probability is 0.3227 with a 95% credible interval of [0.2774,
+       0.3518]. The interval for Guinea overlaps somewhat with that of South Sudan, suggesting
+       that while South Sudan has a slight advantage, the difference between these two countries
+       might not be statistically significant under a Bayesian framework.
+    ‚Ä¢ Myanmar: Myanmar has the lowest estimated probability in the Total group at 0.1554,
+       with a credible interval of [0.1102, 0.1898]. This clearly distinguishes Myanmar from the
+       other candidates in terms of breakthrough potential for accumulating any medals.
+    The Total Medal group exhibits a more evenly distributed set of probabilities compared to
+the Gold Medal group. While the overall probabilities are lower, the differences among the
+countries (particularly between South Sudan and Guinea) appear less pronounced. This may
+reflect the broader range of events and competitive factors that come into play when considering
+the entire medal tally, as opposed to the singular focus required for a gold medal achievement.
+
+5.5 Important Sports and Home Event Impact
+
+Events and Medal Acquisition Analysis: The regression coefficients in Table 4 reveal that
+
+event-specific attributes are critical determinants of Olympic medal success, with notable dif-
+
+ferences across countries. For example, in the United States, the coefficient for Ball Sports
+
+Events (X7) is 0.03123 with a high posterior probability of 0.98, indicating that team sports
+such as basketball and football substantially drive medal acquisition. Similarly, Athletics Events
+
+(X5) show a positive effect (beta = 0.02345, Pr(Ì†µÌªΩ > 0) = 0.97), suggesting that traditional
+track and field competitions are also important. In contrast, China displays a relatively modest
+
+effect for Athletics Events (X5, beta = 0.01567, Pr(Ì†µÌªΩ > 0) = 0.92) but a more pronounced
+impact for Emerging Events (X8, beta = 0.01765, Pr(Ì†µÌªΩ > 0) = 0.93), which implies that their
+strategic diversification into new sports disciplines plays a significant role in enhancing their
+
+medal prospects. Moreover, both the United Kingdom (beta for X5 = 0.02678, Pr(Ì†µÌªΩ > 0) =
+0.98) and France (beta for X5 = 0.02631, Pr(Ì†µÌªΩ > 0) = 0.97) exhibit strong positive associations
+with Athletics Events, reinforcing the view that specific sports domains are aligned with each
+
+country‚Äôs historical strengths and strategic investments.
+
+Impact of Home Country Event Selection: The regression results in Table 4 also underscore
+
+the importance of tailoring event selection to leverage home advantage. When a country hosts
+
+the Olympics, it can capitalize on localized benefits such as familiar venues, superior logistical
+
+support, and heightened fan enthusiasm. For instance, the United States demonstrates strong
+
+positive effects in Athletics Events (X5, beta = 0.02345, 95% CI: [‚àí0.00007, 0.04697]) and even
+more so in Ball Sports Events (X7, beta = 0.03123, 95% CI: [0.00771, 0.05475]), suggesting
+that emphasizing these sports can maximize the inherent benefits of home advantage. Similarly,
+
+in the United Kingdom and France, Athletics Events yield robust positive coefficients (UK: beta‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                                                                                                                                                                                  2
+
+                                                           MATHmodels                               ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+Team # 2513314                                                                  Page 13 of 22
+
+Table 4: Posterior summary statistics for regression coefficients for various predictors across 4 countries.
+
+Variable        United States                       China
+
+          Beta Std. Err. Pr(Ì†µÌªΩ > 0)  95% CI         Beta Std. Err. Pr(Ì†µÌªΩ > 0)   95% CI
+
+X1        0.03412 0.01234 0.99 [0.01996, 0.04828] 0.03245 0.01156 0.99 [0.01980, 0.05510]
+
+X2        0.01745 0.00852 0.99 [0.00079, 0.03411] 0.01621 0.00825 0.98 [0.00014, 0.03228]
+
+X3        0.06567 0.01245 0.99 [0.04873, 0.07007] 0.06456 0.01231 0.99 [0.04045, 0.07867]
+
+X4        0.01234 0.00759 0.93 [‚àí0.00236, 0.02704] 0.02891 0.01055 0.98 [0.00833, 0.04949]
+
+X5        0.02345 0.01244 0.97 [‚àí0.00007, 0.04697]  0.01567 0.01143 0.92        [‚àí0.00589, 0.03723]
+                                                    0.01239 0.00951 0.95        [‚àí0.00628, 0.03096]
+X6 ‚àí0.00234 0.01038 0.32 [‚àí0.02194, 0.01726]                                    [‚àí0.01058, 0.03254]
+                                                    ‡æò 0.01098 0.01162 0.85       [0.00099, 0.03431]
+X7        0.03123 0.00713 0.98 [0.00771, 0.05475]
+                                                    0.01765 0.00854 0.93               95% CI
+X8        0.01287 0.01214 0.88 [‚àí0.01065, 0.03639]
+                                                      ‡¨Ü France
+Variable        United Kingdom                      ‡øêBeta Std. Err. Pr(Ì†µÌªΩ > 0)
+
+          Beta Std. Err. Pr(Ì†µÌªΩ > 0)  95% CI
+
+X1‡∂î X3
+          0.03789 0.01345 0.99 [0.01153, 0.05425] 0.03983 0.01273 0.99 [0.01347, 0.05419]
+
+X2        0.01567 0.00759 0.96 [0.00097, 0.03037] 0.01532 0.00795 0.94 [0.00082, 0.03012]
+
+ƒü ls X5
+          0.05345 0.01120 0.99 [0.03811, 0.07501] 0.05576 0.01134 0.99 [0.03764, 0.06816]
+
+X4        0.00876 0.00958 0.88 [‚àí0.00986, 0.02738] 0.00912 0.00933 0.86 [‚àí0.01022, 0.02846]
+e X6 ‚àí0.00123 0.01053 0.44 [‚àí0.02181, 0.01935] ‚àí0.00096 0.01025 0.48 [‚àí0.02147, 0.01955]
+          0.02678 0.01250 0.98 [0.00228, 0.05128] 0.02631 0.01232 0.97 [0.00312, 0.05076]
+‚Ä´ ›º‚Ä¨d X7
+o X8
+          0.01567 0.01257 0.90 [‚àí0.00883, 0.04017] 0.01687 0.01243 0.91 [‚àí0.00984, 0.04158]
+·áô m = 0.02678, 95% CI: [0.00228, 0.05128]; France: beta = 0.02631, 95% CI: [0.00312, 0.05076]),
+‚Ä´ ‹Ñ‚Ä¨H indicating that host nations with strong track records in these disciplines can further enhance their
+
+medal prospects by strategically prioritizing events that align with their historical strengths and
+
+‡æê T local support systems. Moreover, China‚Äôs relatively higher coefficient for Emerging Events (X8,
+A beta = 0.01765, 95% CI: [0.00099, 0.03431]) implies that even non-traditional or newer events
+‡∫± can be exploited effectively when a host country‚Äôs infrastructure and preparatory advantages are
+M aligned with the chosen sports. Overall, these findings suggest that by selecting events that not
+ƒü only reflect historical success but also amplify home advantages, host nations can significantly
+          0.02345 0.01257 0.97 [‚àí0.00105, 0.04795] 0.02257 0.01233 0.95 [‚àí0.00123, 0.04603]
+
+‚Ä´ ›º‚Ä¨improve their medal tallies. 1
+‡æê 6 Task 2: Dive Into Great Coach Effect
+ ‡∫± In this section, we examine another factor that can influence medal counts‚Äîthe coach. Unlike
+
+athletes, who are typically constrained by nationality, coaches possess a unique flexibility to
+work across borders. This mobility allows them to transfer their expertise and successful training
+
+methodologies from one country‚Äôs sports system to another. Such fluidity creates what we term
+
+the ‚Äúgreat coach effect,‚Äù where the influence of a single coach can significantly enhance a
+
+country‚Äôs medal count in specific sports [2].
+
+For example, the legendary careers of Lang Ping and B√©la K√°rolyi exemplify this effect.
+
+Despite coaching in vastly different cultural and sporting environments, both successfully trans-
+
+formed national teams and led them to Olympic podium finishes. Lang Ping‚Äôs experience
+
+coaching volleyball teams in both the United States and China demonstrates the potential for
+
+    1Due to space constraints, gold medal data is omitted here. The conclusions for gold medals are consistent with
+those for total medals.
+Team # 2513314                                               Page 14 of 22
+
+exceptional coaches to transcend national boundaries [4]. Similarly, B√©la K√°rolyi‚Äôs transition
+from coaching in Romania to achieving remarkable success with the U.S. women‚Äôs gymnastics
+team further supports this notion [8].
+
+    Following standard analytical procedures, we first define what constitutes a "great coach"
+and seek to quantify their coaching impact. Next, we incorporate this variable into our BHDM
+model and analyze regression coefficients to assess whether and to what extent great coaches
+significantly influence medal counts. Finally, we will identify three countries, select great
+coaches for them, and estimate their impact based on the regression coefficients.
+
+6.1 What is a Great Coach?
+
+    In our analysis, we define a "great coach" as one who has demonstrated the ability to elevate
+an Olympic team to achieve at least bronze medal finishes in two or more different countries.
+By searching the Wiki database, we identified a total of 1,103 such great coaches, among whom
+697 are currently active. These coaches are engaged in multiple sports across various countries,
+including the United States, China, and Japan.
+
+    If we use the total number of renowned coaches as a new variable, a natural hypothesis
+emerges: do all renowned coaches contribute equally to a country‚Äôs medal count? We believe
+this assumption is overly restrictive. Our selection criteria represent only the minimum threshold
+for inclusion, but there is likely heterogeneity among coaches, meaning that their ability to lead
+teams to success varies.
+
+    For example, while Lang Ping, as a renowned coach, helped China secure one gold medal
+and the United States one silver medal, B√©la K√°rolyi, another renowned coach, led his teams to
+at least 9 gold medals. This discrepancy highlights the differences in coaching effectiveness.
+Therefore, to ensure a fair reflection of each coach‚Äôs impact, a more fine-grained characterization
+of individual coaching abilities is necessary.
+
+    Based on the latest research on coaching effectiveness, we define the following metric to
+quantify the coaching ability of a "renowned coach": the coaching ability Ì†µÌ∞¥ is calculated as
+the number of gold medals won during their tenure multiplied by 6, plus the number of silver
+medals multiplied by 3, and the number of bronze medals multiplied by 1. Mathematically, this
+is expressed as:
+
+                Ì†µÌ∞¥ = 6Ì†µÌ∞∫ + 3Ì†µÌ±Ü + 1Ì†µÌ∞µ                                                                                                                                                                                                                                                                                                                 (11)
+
+    where Ì†µÌ∞∫ represents the number of gold medals won under the coach‚Äôs leadership, Ì†µÌ±Ü represents
+the number of silver medals won, and Ì†µÌ∞µ represents the number of bronze medals won. This
+metric assigns the highest weight to gold medals, followed by silver and then bronze, ensuring
+a more precise assessment of a coach‚Äôs contribution to medal achievements.
+
+    For a country‚Äôs coaching ability variable Ì†µÌ±ã9, it is defined as the sum of the coaching abilities
+Ì†µÌ∞¥ of all renowned coaches within that country, mathematically expressed as:
+
+                                   Ì†µÌ±Å
+
+                                   ‚àëÔ∏Å
+
+                Ì†µÌ±ã9 = Ì†µÌ∞¥Ì†µÌ±ñ                                                                                                                                                                                                                                                                                                                           (12)
+
+                                   Ì†µÌ±ñ=1
+
+where Ì†µÌ∞¥Ì†µÌ±ñ denotes the coaching ability of the Ì†µÌ±ñ-th coach.
+
+6.2 Great Coach Affect the Medals
+
+    We incorporate Ì†µÌ±ã9 into our BHDM model and obtain its regression coefficient. Since there
+are 46 countries with renowned coaches, we are unable to present the specific values for each
+
+due to space constraints. Table 5 displays some summary statistics of this indicator.                                                                                                                                                                                                                                                                      ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                                                                                                                                                                                  2
+
+                                                             MATHmodels                                                                                                                                                                                                                                                                                    ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                Team # 2513314                                                                                        Page 15 of 22
+
+                                                                                              Table 5: Posterior summary statistics for the Great Coach variable Ì†µÌ±ø9 of 46 countries.
+
+                                                                                       Outcome Beta Mean Std. Err. Mean Avg. Pr(Ì†µÌªΩ > 0) Pr(Ì†µÌªΩ > 0) > 0.95
+
+                                                                                       All Medals 0.036134                     0.011008          0.997                   46            ‡æò
+                                                                                       Gold Medals 0.028167                    0.009134          0.983                   45
+
+                                                                                 ‡¨Ü As shown in Table 5, the posterior mean coefficients for the Great Coach variable Ì†µÌ±ø9 are
+
+                                                                                approximately 0.036134 for all medals and 0.028167 for gold medals, respectively. Because
+
+                                                                                ‡øê these coefficients reflect log-rate effects, a one-unit increase in Ì†µÌ±ø9 corresponds to a multiplicative
+
+                                                                                change of Ì†µÌ±í0.036134 ‚âà 1.037 (roughly a 3.7% rise) in the expected total medal count and
+                                                                                Ì†µÌ±í0.028167 ‚âà 1.029 (about a 2.9% increase) in gold medals. Consequently, even modest gains
+
+                                                                                ‡∂î in ‚Äúgreat coach‚Äù capacity‚Äîsuch as recruiting or developing a coach with one additional point
+
+                                                                                of aggregate coaching ability‚Äîcan yield a tangible percentage uplift in a nation‚Äôs overall and
+
+                                                                                ƒü ls top-tier (i.e., gold) Olympic performance.
+                                                                                 e Moreover, the high values of Avg. Pr(Ì†µÌªΩ > 0) (0.997 for all medals and 0.983 for gold
+                                                                                ‚Ä´ ›º‚Ä¨d medals) and the fact that Pr(Ì†µÌªΩ > 0) exceeds 0.95 for nearly every country underscore that the
+                                                                                o impact of the Great Coach variable is both statistically robust and broadly consistent across the
+                                                                                ·áô sample of 46 nations. In other words, not only does the posterior mean of Ì†µÌªΩÌ†µÌ±ã9 suggest a positive
+                                                                                m relationship, but the overwhelming majority of countries in the dataset exhibit a high probability
+
+                                                                                that increasing aggregate coaching ability leads to more medals. This finding provides strong
+
+                                                                                ‚Ä´ ‹Ñ‚Ä¨H evidence for the ‚Äúgreat coach‚Äù effect, indicating that improvements in coaching capacity are
+                                                                                ‡æê T systematically tied to enhanced Olympic performance rather than being confined to a select
+                                                                                A subset of countries.
+                                                                                ‡∫± M 6.3 Invest in Great Coach and Estimate its Impact
+                                                                                 ƒü We believe that only wealthy countries have more options when it comes to investing in
+
+                                                                                renowned coaches. Therefore, we selected the United States, China, and Japan‚Äîthree of the
+
+                                                                                ‚Ä´ ›º‚Ä¨world‚Äôs top-ranking countries by GDP‚Äîand carefully curated projects for each of them. The
+                                                                                ‡æê regression results are shown in Table 6.
+                                                                                       ‡∫± Table 6: Parameter estimates for the Great Coach variable Ì†µÌ±ø9 of total medals in three countries.
+                                                                                                   Country                Beta Std. Err. Pr(Ì†µÌªΩ > 0) 95% Cred. Int.
+
+                                                                                                   United States 0.0367                0.0091    0.98 [0.0082, 0.0450]
+                                                                                                                                       0.0102    0.99 [0.0150, 0.0558]
+                                                                                                   China          0.0445               0.0078    0.96 [0.0031, 0.0382]
+
+                                                                                                   Japan          0.0283
+
+                                                                                       We recommend that the United States recruit at least one ‚Äúgreat coach‚Äù for fencing and sport
+
+                                                                                climbing. With a coefficient of 0.0367, a one-unit increase in coaching capacity corresponds
+                                                                                to an estimated impact of Ì†µÌ±í0.0367 ‚àí 1 ‚âà 3.74% increase in Olympic medal counts in these
+
+                                                                                disciplines.
+
+                                                                                    For China, the coefficient of 0.0445 implies that each additional point of Ì†µÌ±ø9 results in
+                                                                                roughly Ì†µÌ±í0.0445 ‚àí 1 ‚âà 4.55% enhancement in overall medal achievements, making it advisable
+
+mmmmmmm          mmm        mm m mm                            mmmmm            tom m  invest  in  top  coaching  talent  for  sports  such  as  basketball  and  beach  volleyball.
+                 mm m       m mmmmm
+m          m                                            m  mm          mm
+
+m mmm m          m                m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m          m         mm        mm                mm        mmm         mm              Finally, Japan exhibits a coefficient of 0.0283, translating to an expected improvement of
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+                               mm                m mmmmm mm               m
+                   mm
+       mmm
+       m mm m
+
+               m mmm
+
+       Ì†µÌ±í ‚àí 1 ‚âà 2.87%; thus, Japan should consider investing in a ‚Äúgreat coach‚Äù for gymnastics mm m
+                     mmmmm m m m                        m      m m mm mm              0.0283
+
+                     m         mmmmm mm mm                     m mmmmmmm
+
+                            mm          mm           m          mm           m
+
+                     mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm      m     mmmmm                           m mm      m mm           mm
+
+m      m             m m mmmmmmmm mmmm                                mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m       mmm m mm mmmm m mmmm m                                  mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm        m                   m mmmmm m                     mm m mm
+
+       m   m         mm              mmm m           mm m             mmm mm
+
+                 mm            mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m          m mm m           mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m            mm                    m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m          m mm      mm              m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2513314                                                                        Page 18 of 22
+
+Figure 6: Predicted Medal Allocations for LA 2028 in different Medal Distributions. We predicted
+the number of medals and gold medals in 2028 under different medal distributions and provided the 95%
+prediction intervals.
+
+  achieves an MSE of 6.98 and an Ì†µÌ±Ö2 of 0.85 for predicting the total number of medals, and
+  an MSE of 3.42 with an Ì†µÌ±Ö2 of 0.80 for gold medals (see Table 2). These improvements
+  underscore its capacity to capture the underlying data structure more effectively than
+  competing approaches.
+‚Ä¢ Discrete and Constrained Outcomes: By modeling medal allocations via a Dirichlet‚Äì
+  Multinomial likelihood, the BHDM ensures integer-valued outcomes that sum to a known
+  total Ì†µÌ±á. This feature is crucial in predicting realistic medal counts, especially when
+  evaluating discrete events like whether a country will ‚Äúbreak the ice‚Äù and win its first
+  medal. The model‚Äôs ability to provide exact integer predictions (e.g., forecasting 146 total
+  medals for the United States and 82 for China) is a key advantage over approaches that
+  produce continuous-valued outputs.
+‚Ä¢ Robustness to Prior and Distributional Changes: Sensitivity analyses demonstrate that
+  the BHDM model‚Äôs predictive performance remains stable across different settings of Ì†µÌºè2
+  (ranging from 0.1 to 10) and under ¬±5% variations to the total medal pool. As shown
+  in Figures 5 and 6, the predicted 2028 medal counts and their credible intervals remain
+  largely unaffected by these adjustments, indicating that the inference is driven more by
+  the data than by the particular choice of prior or medal distribution assumptions.
+
+Limitation.
+    ‚Ä¢ Complexity and Data Requirements: The hierarchical structure, while powerful for par-
+
+tial pooling and capturing cross-country heterogeneity, entails increased computational
+
+demands compared to simpler count models. Fitting the BHDM can become computa-
+
+tionally expensive for very large datasets or when a fine-grained, event-level breakdown
+
+is required for many countries. Furthermore, to reliably estimate country-specific random
+
+effects  and    hyperparameters  (e.g.,  the  Ì†µÌºôÌ†µÌ±ñ  concentration  parameters),  the  model  benefits‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                2
+
+                                                                                      MATHmodels       ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+Team # 2513314                                    Page 19 of 22
+
+from detailed, high-quality data‚Äîsomething that may be difficult to obtain for smaller or
+underrepresented countries with limited historical records.
+
+9 Task 3: Other Original Insights of Our BHDM Model
+
+9.1 Economic level determines medals
+
+In our final analysis of all 206 countries in the dataset, two predictors stand out as having
+
+‡æò the largest impact on a nation‚Äôs Olympic medal count: historical performance (Ì†µÌ±ã1) and athlete
+
+delegation size (Ì†µÌ±ã2). Both variables are closely tied to a country‚Äôs economic level, as wealthier
+nations tend to have better-funded sports programs and a stronger history of Olympic participa-
+‡¨Ü tion. Specifically, as reported in Table 7, the mean regression coefficient for past medal counts
+
+(Ì†µÌªΩÌ†µÌ±ã1) is 0.035143, while that for total athlete numbers (Ì†µÌªΩÌ†µÌ±ã2) is 0.011442. These results reinforce
+the notion that economic strength plays a decisive role in determining a country‚Äôs Olympic
+success.
+
+‡øê To interpret the magnitude of these effects:
+
+                      Ì†µÌ±í0.035143 ‚àí 1 ‚âà 3.58%, and Ì†µÌ±í0.011442 ‚àí 1 ‚âà 1.15%.
+
+‡∂î Hence, a unit increase in Ì†µÌªΩÌ†µÌ±ã1 corresponds to roughly a 3.6% increase in the expected medal
+ƒü ls count, while a similar increase in Ì†µÌªΩÌ†µÌ±ã2 implies about a 1.2% rise. These results underscore that
+e both a strong legacy of medal achievements and a robust delegation size can significantly boost
+‚Ä´ ›º‚Ä¨d a country‚Äôs chances of reaching the podium.
+·áô o Table 7: Posterior Summary of Ì†µÌªΩÌ†µÌ±ã1 and Ì†µÌªΩÌ†µÌ±ã2 Across All Countries (206 in total).
+m Outcome Beta Mean Std. Err. Mean Avg. Pr(Ì†µÌªΩ > 0) Pr(Ì†µÌªΩ > 0) > 0.95
+‚Ä´ ‹Ñ‚Ä¨H Ì†µÌªΩÌ†µÌ±ã1
+‡æê T Ì†µÌªΩÌ†µÌ±ã2
+                0.035143    0.008224  0.981  204
+‡∫± MA By maintaining consistent investments in sports where they have historically excelled, countries
+                0.011442    0.006538  0.945  178
+can leverage existing expertise and well-established training systems. Meanwhile, increasing
+
+ƒü the breadth of participation through a larger delegation expands the probability of discovering
+‚Ä´ ›º‚Ä¨or nurturing world-class athletes in more disciplines, ultimately translating into higher medal
+
+tallies.
+‡æê 9.2 Home Turf and Aligned Systems Prevail
+ ‡∫± Focusing on the subset of 33 countries that have hosted the Olympics at least once, our
+
+model reveals two important explanatory variables for elevating medal counts. Table 8 provides
+the posterior summary for:
+
+1. Home Advantage (Ì†µÌ±ã3): Ì†µÌªΩÌ†µÌ±ã3 has a mean of about 0.061245, which corresponds to:
+                                  Ì†µÌ±í0.061245 ‚àí 1 ‚âà 6.32% improvement.
+
+This aligns well with the intuitive idea that home-country athletes benefit from logistical,
+infrastructural, and psychological advantages when competing on familiar ground.
+Team # 2513314                                                Page 20 of 22
+
+2. Social System Congruence (Ì†µÌ±ã4): Ì†µÌªΩÌ†µÌ±ã4 has a mean of around 0.025982. In percentage terms:
+                                  Ì†µÌ±í0.025982 ‚àí 1 ‚âà 2.63% improvement.
+
+   Countries whose societal and institutional structures closely resemble those of the host may
+   adapt more seamlessly to local conditions, cultural norms, and organizational protocols.
+
+Table 8: Posterior Summary of Ì†µÌ±ã3 (Home Advantage) and Ì†µÌ±ã4 (Social System Congruence). There
+are 33 host countries in total.
+
+Outcome         Beta Mean Std. Err. Mean Avg. Pr(Ì†µÌªΩ > 0) Pr(Ì†µÌªΩ > 0) > 0.95
+
+Ì†µÌ±ã3: Home Advantage 0.061245      0.010277         0.980      33
+
+Ì†µÌ±ã4: Soc. System Congr. 0.025982  0.007612         0.955      30
+
+In practical terms, this means a host nation can anticipate, on average, more than a 6% increase
+in its medal tally relative to non-host years. Moreover, a country resembling the host‚Äôs societal
+ecosystem‚Äîwhether by language, cultural practices, or institutional frameworks‚Äîmight also
+see an additional bump, albeit of a smaller magnitude. Proactive planning, like scouting local
+venues, training under similar conditions, and ensuring linguistic or cultural familiarity, can
+amplify these benefits for visiting teams as well.
+
+9.3 Emerging Sports Aid Low-GDP Countries
+
+    Finally, our model points to a strategic pathway for 38 countries identified as being in
+the bottom 50% of world GDP according to the World Bank 2 and having already won at
+least one Olympic medal. As highlighted in Table 9, investing in less-established or newly
+introduced disciplines‚Äîcaptured by the indicator variable Ì†µÌªΩÌ†µÌ±ã8 for Emerging Events‚Äîprovides
+these lower-GDP nations with a pronounced edge.
+
+Table 9: Posterior Summary of Ì†µÌªΩÌ†µÌ±ã8 (Emerging Events) for 38 Low-GDP Medal-Winning Countries.
+
+        Outcome Beta Mean Std. Err. Mean Avg. Pr(Ì†µÌªΩ > 0) Pr(Ì†µÌªΩ > 0) > 0.95
+
+Ì†µÌªΩÌ†µÌ±ã8           0.032413         0.006568   0.979         37
+
+A mean coefficient of 0.032413 for Ì†µÌªΩÌ†µÌ±ã8 translates to about a
+
+                                          Ì†µÌ±í0.032413 ‚àí 1 ‚âà 3.29%
+
+increment in medal counts for every unit increase in emerging-sport emphasis. In practice,
+this suggests that under-resourced nations can ‚Äúlevel the playing field‚Äù by channeling their
+limited resources into newer sporting disciplines, where established powerhouses have yet to
+monopolize coaching expertise, infrastructure, and athlete development. Taking advantage of
+these relatively uncrowded competitive landscapes may thus maximize the return on investment
+for nations working within tighter financial and organizational constraints.
+
+9.4 A letter to inform NOC
+
+Based on the insights mentioned above, we have written a letter to NOC. The content of this
+
+letter is as follows:                                                   2                          ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                   ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+    2 http://data.worldbank.org                               MATHmodels
+                                                                                Team # 2513314  Page 21 of 22
+
+                                                                                Some insights about Olympics Medal Counts
+
+                                                                                To: Country Olympics Committees
+                                                                                From: Team #2513314
+                                                                                Data: January 27, 2025
+                                                                                Dear Country Olympics Committees leaders:
+
+                                                                                    We are writing to share three major insights that can guide Olympic committees in crafting
+                                                                                more effective, practical strategies for securing medals. Our analysis reveals how a nation‚Äôs
+                                                                                economic capacity, its hosting opportunities, and its targeted focus on emerging sports can all
+                                                                                contribute to elevating athletic performance on the global stage. By highlighting each factor in
+                                                                                simple terms, we hope to show that even modest interventions can make a big difference when
+                                                                                implemented thoughtfully.
+
+                                                                                 ‡æò First, our study clearly links economic strength to higher medal counts, chiefly through two
+
+                                                                                channels: historical performance and the number of participating athletes. In plain language, if
+
+                                                                                ‡¨Ü a country has a track record of success in certain sports, it likely possesses time-tested coaching
+
+                                                                                expertise and training facilities that can be reinforced. At the same time, expanding the size of
+
+                                                                                ‡øê the athlete delegation‚Äîwhether by discovering new talent or offering more support to existing
+
+                                                                                programs‚Äîbroadens the pool of potential medalists. Committees can utilize this insight by
+                                                                                directing funds to sports with proven results while systematically scouting fresh talent to sustain
+
+                                                                                ‡∂î a healthy pipeline for future competitions.
+
+                                                                                    Second, there is a distinct ‚Äúhome turf‚Äù benefit for nations hosting the Olympics, as local teams
+
+                                                                                ƒü ls have the advantage of competing in familiar environments with supportive crowds. Beyond that,
+                                                                                e countries that share cultural, linguistic, or societal characteristics with the host nation can also
+                                                                                ‚Ä´ ›º‚Ä¨d see smaller but meaningful boosts in performance. For instance, translating key materials into a
+                                                                                o common language and training athletes to adapt to local climates or customs can reduce logistical
+                                                                                ·áô hiccups, ensuring a smoother preparation process. Committees might consider partnerships or
+                                                                                m cultural exchange programs with future hosts to gain on-the-ground knowledge and acclimate
+
+                                                                                athletes well in advance.
+
+                                                                                 ‚Ä´ ‹Ñ‚Ä¨H Third, for nations with tighter budgets, focusing on newly introduced or less-established
+                                                                                ‡æê T sports offers a unique chance to thrive. Because these disciplines are not yet dominated by well-
+
+                                                                                funded powerhouses, smaller countries can step in with targeted investments‚Äîlike specialized
+
+                                                                                A coaches, better equipment, or even grassroots talent-spotting efforts. By concentrating on these
+                                                                                ‡∫± M emerging events, committees can quickly close the gap and even outcompete wealthier nations
+
+                                                                                still focused on mainstream sports. This tailored approach lets countries make the most of
+
+                                                                                ƒü limited resources and diversify their medal potential.
+                                                                                    In conclusion, each of these insights‚Äîprioritizing historically successful events and a wider
+
+                                                                                ‚Ä´ ›º‚Ä¨athlete pool, leveraging home-field and cultural advantages, and capitalizing on emerging
+                                                                                ‡æê sports‚Äîgives Olympic committees a roadmap for thoughtful action. We trust this overview
+
+                                                                                will help you shape meaningful strategies that tap into your nation‚Äôs inherent strengths and adapt
+
+                                                                                ‡∫± to its financial realities, ultimately lifting your athletes to new heights of excellence.
+                                                                                                                                                                               Yours Sincerely,
+                                                                                                                                                                              Team #2513314
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2513314                         Page 22 of 22
+
+References
+
+[1] Tianqi Chen and Carlos Guestrin. Xgboost: A scalable tree boosting system. pages 785‚Äì794,
+     2016.
+
+[2] Gillian M Cook, David Fletcher, and Michael Peyrebrune. Olympic coaching excellence:
+     A quantitative study of olympic swimmers‚Äô perceptions of their coaches. Journal of sports
+     sciences, 40(1):32‚Äì39, 2022.
+
+[3] Sepp Hochreiter and J√ºrgen Schmidhuber. Long short-term memory. Neural Computation,
+     9(8):1735‚Äì1780, 1997.
+
+[4] Olympics.com. Biography: Lang Ping. https://olympics.com/en/athletes/pin
+     g-lang. Accessed: January 25, 2025.
+
+                                       mmmmmmm                 mmm        mm m mm                                       mmmmm            mm
+
+                                                         m     mm m m mmmmm                                      m mm
+[5]  Congjun Rao, Ming Liu, Mark Goh, and Jianghui Wen. 2-stage modified random forest m                                        mm
+[6]
+                                       m mmm m                 m                m                         mm     m mm           mmm
+
+                                       m mmm m m mmmm                              mm                     mmm            m      m mmm
+
+                                       m mmm m                 m m m mmmmm                                    mm        mmmmmm m
+
+                                       m                 m         mm        mm                           mm        mmm         mm
+
+                                       mmmmmmm                 mm      m        mmmm                          m     mm m m mmm
+
+                                                            mmm mm              mm                        mm m mmm              m        mm
+
+                                           m            mm     mmmm             mm                     m mmm            mmmmmmmm
+
+     model for credit risk assessment of p2p network lending to ‚Äúthree rurals‚Äù borrowers. Applied m m
+                                                            mm m m m mmmm                                     mmmmmmmm                      m
+
+                                          m mmmm m m mmmmmm mm m m m mm                                                         m           m
+
+                                       mmm m                m m mmm                   m                   mmmm m mmmm mm m
+
+                                                         mm                  mm                           m mmmmm mm               m
+
+                                                    mmm             mmmmm m m m                                  m      m m mm mm
+
+                                                    m mm m          m        mmmmm mm mm                                m mmmmmmm
+
+                                                        m mmm             mm          mm                      m          mm           m
+
+     Soft Computing, 95:106570, 2020.               mm m           mm           m                          m        mmm mmm              m
+
+                                       mmmm                 mmm mm mm m m m mm                                           mmmm m m
+
+                                       mmmm                    mm                  m                   mm        m      mm         mmmm
+
+                                       mm              mm mm       mm mmm                mmm                  m m mmm mmm m
+
+                                          mm             m     mmmmm                                      m mm      m mm           mm
+
+                                       m            m               m m mmmmmmmm mmmm                                          mm        m
+
+                                       m mmm mmmmm m                         m           mmmmm mm                        mm m m m
+
+                                       mmm                     m m mmm                mm                         m          mm m mm
+
+                                       mm m              mmm m mm mmmm m mmmm m                                             mm              m
+
+                                       mm m                 mmmm          m        m                       m     mm            mm           m
+
+                                       mmmm mm m m m                         mmm                       m      m         m mm m              m
+
+                                                    mm         m                   m mmmmm m                                mm m mm
+
+                                                    m    m          mm             mmm m                      mm m             mmm mm
+
+                                                               mm            mmmm                          mmm
+     Gary A Sailes. The myth of black sports supremacy. Journal of Black Studies, 21(4):480‚Äì mmmmmmm
+                                                            mmm           mmmmmmmm                                          mmmmmmm
+
+                                       m                 m  mm m          mm mmmmmm                                 mmm     m               m
+
+                                       m mmm m              mmm m         m mm                         mmmmmmmmm            m mmm m
+
+                                       m mmm m              m       m     m                         m               mmm     m mmm m
+
+                                       m mmm m                     mm           m mmm                               mm m mmm m
+
+                                       m                 m mm       mm             m m mmmmmmm                              m               m
+
+                                       mmmmmmm mmmmm                            m        mmm                        mm      mmmmmmm
+
+     487, 1991.
+
+[7] Christoph Schlembach, Sascha L. Schmidt, Dominik Schreyer, and Linus Wunderlich.
+     Forecasting the olympic medal distribution ‚Äì a socioeconomic machine learning model.
+     Technological Forecasting and Social Change, 175:121314, 2022.
+
+[8] USA Gymnastics Hall of Fame. B√©la & M√°rta K√°rolyi. https://usagym.org/hallo
+     ffame/inductee/coaching-team-bela-martha-karolyi/. Accessed: January 25,
+     2025.
+
+                                                 2                                                     ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                       ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                       MATHmodels
+

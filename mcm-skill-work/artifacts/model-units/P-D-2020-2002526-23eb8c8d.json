@@ -1,0 +1,1228 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2020-2002526-23eb8c8d",
+  "problem_type": "D",
+  "year": "2020",
+  "source_sha256": "23eb8c8d9e3795e9dcbc44bafafe8202edbcb49a5b5111b9477675885770c12a",
+  "models": [
+    {
+      "model_id": "MU-D-2020-2002526-PASSING-NETWORK",
+      "page": 5,
+      "section": "4.1-4.2.1",
+      "family": "directed weighted passing network",
+      "purpose": "Turn the raw event table into the graph object every later indicator reads, so that structural questions about a team can be asked of a matrix and a figure.",
+      "base_or_modification": "base",
+      "summary": "The paper splits the match events by team, numbers the players, places each node at the player's average pass position, and records the pass count from i to j as the weight of the directed edge from i to j. Node radius is drawn from degree, edge width from weight.",
+      "variables": [
+        {
+          "symbol": "i",
+          "normalized_name": "player index",
+          "unit": "1",
+          "definition": "Player identity inside one team's network, numbered from 1 as the preprocessing arranges them.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "player index",
+          "unit": "1",
+          "definition": "Receiving player identity, the column index of the weighted adjacency matrix.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_ij",
+          "normalized_name": "weighted adjacency element",
+          "unit": "passes",
+          "definition": "Number of passes player i made to player j in one match; the printed matrix calls it a_ij row i column j.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "weighted adjacency matrix",
+          "unit": "passes",
+          "definition": "Square matrix whose dimension is the number of players and whose entries are the pass counts. The symbol table defines A as the weighted adjacency matrix; the text-layer row order is scrambled and the raster is authoritative.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "normalized_name": "pass x coordinate",
+          "unit": "court units",
+          "definition": "X coordinate of one pass, on the printed range 0 to 100.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_i",
+          "normalized_name": "pass y coordinate",
+          "unit": "court units",
+          "definition": "Y coordinate of one pass, on the printed range 0 to 100.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_i",
+          "normalized_name": "degree centrality",
+          "unit": "passes",
+          "definition": "Number of passes made by a player, called the degree centrality of the node.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "i",
+        "j",
+        "x_i",
+        "y_i"
+      ],
+      "outputs": [
+        "A",
+        "d_i"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "The network is assembled by a stated procedure and displayed as a figure and a matrix; the paper prints no equation for the construction itself."
+      },
+      "objectives": [
+        "Represent a match as a weighted directed graph on the players of one team.",
+        "Give every later indicator a single object to read from."
+      ],
+      "constraints": [
+        "Passes are directed, so the edge from i to j is not the edge from j to i.",
+        "Only successful passes enter the network; the weakness list names this restriction later.",
+        "Players of each game are numbered from 1 for the adjacency matrix, and the two teams' networks are separated.",
+        "Court coordinates run from 0 to 100 on both axes."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The first match of the season is the worked example for the whole construction."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The court is printed as square with both coordinates confined to the interval from 0 to 100, which bounds every position and every distance."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is fitted; the weights are counted pass frequencies.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Separate the Huskies' events from the opponents' events.",
+          "Number the players of each team from 1 so the adjacency matrix has a row per player.",
+          "Place each node at the average of the coordinates of that player's passes.",
+          "Fill the weighted adjacency matrix with the count of passes from player i to player j.",
+          "Draw the node circle from the node degree and the link width from the edge weight."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration; the construction is a single pass over the event table."
+      },
+      "assumptions": [
+        "A pass between two players is the unit of interaction that stands for their cooperation.",
+        "The average position of a player's passes is a fair placing of that player on the court."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The construction is identifiable and demonstrated: the paper shows the network for one match and the adjacency matrix for another, both from the same event table."
+      },
+      "handoff_outputs": [
+        "A",
+        "d_i"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 5, Fig1 and Fig2.",
+        "Rendered PDF page 6, Fig3 weighted adjacency matrix of the first match."
+      ],
+      "computational_cost": "One pass over the event table plus the average position per player; negligible.",
+      "strengths": [
+        "One object carries the whole structural analysis, so every later number has a traceable source.",
+        "Direction and weight are both kept, which the later core-periphery and motif work needs."
+      ],
+      "limitations": [
+        "Only successful passes are represented, so a failed or intercepted pass leaves no trace in the object.",
+        "The player's position is a match average, so movement within the match is invisible."
+      ],
+      "missing_details": [
+        "The event table itself, the coordinate convention of the raw data, and any cleaning between raw events and the pass counts.",
+        "Whether drawn positions were smoothed or clipped."
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2002526-CENTROID-DISPERSION",
+      "page": 6,
+      "section": "4.2.2",
+      "family": "weighted centroid and weighted dispersion on a positioned network",
+      "purpose": "Place the team on the court and measure how far it is spread, so that coverage can be compared across games and teams.",
+      "base_or_modification": "modification",
+      "summary": "The centroid is the mean position of all passes. The dispersion is the weighted standard deviation of the player distances to that centroid, with each player's distance weighted by the number of passes the player made. The paper's reason for the weighting is stated at length: an unweighted standard deviation would give a bench player the same say as a player who passes constantly.",
+      "variables": [
+        {
+          "symbol": "x_0",
+          "normalized_name": "centroid x",
+          "unit": "court units",
+          "definition": "X coordinate of the network centroid, the average position of all passes.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_0",
+          "normalized_name": "centroid y",
+          "unit": "court units",
+          "definition": "Y coordinate of the network centroid, the average position of all passes.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "total passes",
+          "unit": "passes",
+          "definition": "One team's total number of passes in one match.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "normalized_name": "pass x coordinate",
+          "unit": "court units",
+          "definition": "X coordinate of pass i.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_i",
+          "normalized_name": "pass y coordinate",
+          "unit": "court units",
+          "definition": "Y coordinate of pass i.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cdw",
+          "normalized_name": "weighted centroid dispersion",
+          "unit": "court units",
+          "definition": "Weighted standard deviation of the player distances to the centroid; measures the network's coverage. The printed symbol is written `Cdw` in the notation table and again in the equation, lowercase wd.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_i",
+          "normalized_name": "passes by player i",
+          "unit": "passes",
+          "definition": "Number of passes made by player i, used as the weight of that player's distance.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_i0",
+          "normalized_name": "player distance to centroid",
+          "unit": "court units",
+          "definition": "Distance of player i from the network centroid, printed as d_i0 with the zero as a subscript and no comma.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_bar",
+          "normalized_name": "average player distance",
+          "unit": "court units",
+          "definition": "Average of the player distances to the network centroid. The equation prints d with no visible bar in the crop while the prose below prints d with a bar; the ambiguity is retained rather than repaired.",
+          "role": "intermediate",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "rm",
+          "normalized_name": "maximum network radius",
+          "unit": "court units",
+          "definition": "Maximum among the distances between each player and the network centroid. The symbol table defines rm as the maximum radius; the text-layer row order is scrambled and the raster is authoritative.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_i",
+        "y_i",
+        "N",
+        "n_i"
+      ],
+      "outputs": [
+        "x_0",
+        "y_0",
+        "Cdw",
+        "rm"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2002526-01",
+          "page": 6,
+          "source_expression": "(x0, y0) = (sum_i x_i / N, sum_i y_i / N)",
+          "normalized_latex": "(x_{0}, y_{0}) = \\left(\\frac{\\sum_{i} x_{i}}{N}, \\frac{\\sum_{i} y_{i}}{N}\\right)",
+          "purpose": "Locate the network centroid as the mean position of every pass.",
+          "label": "(1)",
+          "variable_symbols": [
+            "x_0",
+            "y_0",
+            "x_i",
+            "y_i",
+            "N"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2002526-02",
+          "page": 6,
+          "source_expression": "Cdw = sqrt( sum_i n_i (d_i0 - d) ^ 2 / N )",
+          "normalized_latex": "\\mathrm{Cdw} = \\sqrt{\\frac{\\sum_{i} n_{i}\\left(d_{i0}-\\bar{d}\\right)^{2}}{N}}",
+          "purpose": "Measure the spread of the players about the centroid, weighting each player's distance by that player's pass count.",
+          "label": "(2)",
+          "variable_symbols": [
+            "Cdw",
+            "n_i",
+            "d_i0",
+            "d_bar",
+            "N"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Both displayed equations are legible in the raster and were read from crops of pages 6."
+      },
+      "objectives": [
+        "Give the team a position and a spread that do not depend on how large the court drawing is.",
+        "Weight the spread by involvement so that a rarely involved player cannot set the scale."
+      ],
+      "constraints": [
+        "Both coordinates are confined to the printed range from 0 to 100.",
+        "The weighting uses the number of passes made by the player, so a player with no passes contributes nothing and cannot be weighted at all."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Positions are taken from the first match, where every pass in the constructed network has a coordinate."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The printed court square with coordinates from 0 to 100 bounds the centroid and bounds every distance from it, so the maximum radius is bounded too."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is fitted; the mean and the weighted standard deviation are computed from the pass positions.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Average the x and y coordinates of all passes to get the centroid.",
+          "Compute each player's distance to that centroid.",
+          "Take the average of those distances.",
+          "Weight each squared deviation from that average by the player's pass count, sum, divide by the total pass count, and take the square root.",
+          "Take the largest of the player distances as the maximum radius."
+        ],
+        "software": [],
+        "convergence_criteria": "Closed form; no iteration."
+      },
+      "assumptions": [
+        "The number of passes a player made is a fair weight for that player's importance in the spread.",
+        "Distance on the printed court square is the right notion of nearness for a passing network."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The centroid and the maximum radius are fully identifiable from the stated inputs. The dispersion carries a printed inconsistency: the equation shows the mean distance with no visible bar while the prose defines it with a bar, and the symbol is printed as Cdw in the notation table with a lowercase wd. Both are retained as printed rather than repaired, so a reproduction must decide which form was intended."
+      },
+      "handoff_outputs": [
+        "Cdw",
+        "rm"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 6, equations (1) and (2) read from a crop.",
+        "Rendered PDF page 4 notation table read from a crop, which shows A as the adjacency matrix and rm as the maximum radius."
+      ],
+      "computational_cost": "Closed form over the pass list; negligible.",
+      "strengths": [
+        "The weighting argument is argued from a concrete failure case rather than asserted, which makes the modification easy to justify in a new problem.",
+        "Both quantities are pure geometry, so a non-football instance transfers without change of meaning."
+      ],
+      "limitations": [
+        "A player's position is the average of that player's passes, so the centroid and the dispersion both describe a match as if it were static.",
+        "The printed dispersion symbol and the printed mean-distance notation disagree with the prose."
+      ],
+      "missing_details": [
+        "Whether the printed mean distance in equation (2) carries a bar.",
+        "Whether the wd in Cdw is intended as a two-letter subscript."
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2002526-LOCAL-STRUCTURE",
+      "page": 7,
+      "section": "4.2.2-4.2.3",
+      "family": "core-periphery decomposition and three-node motif census",
+      "purpose": "Describe the inside of the network: which players hold it together, and which small passing shapes the team repeats.",
+      "base_or_modification": "hybrid",
+      "summary": "The network is split into core and periphery by an imported core-periphery routine, then cut into three-node subgraphs whose directed shape is classified into one of thirteen motif types imported from protein work. R computes the frequency of each motif; the timeline then shows the cumulative passes against match time.",
+      "variables": [
+        {
+          "symbol": "A",
+          "normalized_name": "weighted adjacency matrix",
+          "unit": "passes",
+          "definition": "The network handed in from the passing network model; the graph the split and the census read.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_i",
+          "normalized_name": "degree centrality",
+          "unit": "passes",
+          "definition": "Per-player pass count handed in from the passing network model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "core",
+          "normalized_name": "core player",
+          "unit": "1",
+          "definition": "Player the core-periphery analysis keeps as a critical node connecting periphery players to other core players. Ten of the fourteen are core in match 1.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "periphery",
+          "normalized_name": "periphery player",
+          "unit": "1",
+          "definition": "Player the core-periphery analysis places outside the core. Four of the fourteen are periphery in match 1.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "motif_k",
+          "normalized_name": "motif type",
+          "unit": "1",
+          "definition": "One of the thirteen directed three-node motifs, numbered so that connectivity rises from 1 to 13. Motif 12 is almost completely connected, motif 13 completely connected.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "freq_k",
+          "normalized_name": "motif frequency",
+          "unit": "1",
+          "definition": "Number of times motif type k occurs in one team's passing network in one match.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_t",
+          "normalized_name": "cumulative passes over time",
+          "unit": "passes",
+          "definition": "Total passes counted up to elapsed time t, from which the timeline is drawn.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "elapsed match time",
+          "unit": "seconds",
+          "definition": "Time since the start of the match.",
+          "role": "input",
+          "source_status": "inferred-from-equation"
+        }
+      ],
+      "inputs": [
+        "A",
+        "d_i"
+      ],
+      "outputs": [
+        "core",
+        "periphery",
+        "freq_k",
+        "d_t"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "The decomposition and the census are run in named software and displayed as figures; the paper prints no equation for either."
+      },
+      "objectives": [
+        "Separate the players who connect the team from those who do not.",
+        "Give the repeated three-player passing shapes a countable form."
+      ],
+      "constraints": [
+        "Three nodes per motif, so only local structure can be seen at this resolution.",
+        "The motif vocabulary is the fixed set of thirteen directed three-node types."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The first match supplies the worked census; the paper later states that the season census used all thirty-eight games."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is solved; the census is over a finite graph."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "No parameter is fitted. Two software settings are named, Ucinet for the core-periphery split and R for the motif frequencies, and neither version nor setting is given.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Run the core-periphery routine on the weighted network to label each player as core or periphery.",
+          "Check the labels against Fig1 by eye, reading the link thickness and the number of links touching each player.",
+          "Enumerate the subgraphs on three nodes.",
+          "Classify each into one of the thirteen directed motif types, ordered by rising connectivity, with motif 12 nearly complete and motif 13 complete.",
+          "Count each motif's frequency over a match, and over all thirty-eight games for the season statistics.",
+          "Plot the cumulative pass count against elapsed match time for the timeline."
+        ],
+        "software": [
+          "Ucinet",
+          "R"
+        ],
+        "convergence_criteria": "No iteration; both steps are deterministic given the graph."
+      },
+      "assumptions": [
+        "A three-node subgraph is the right window onto a team's passing habits.",
+        "A motif vocabulary built for protein structure carries over to passing structure."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The counts are identifiable once the graph is fixed, and the paper reports them. The appendix R code in 1.4 does not reproduce them as described: it calls graph.motifs with size=4, which counts four-node subgraphs, while the paper's motif set is the thirteen three-node types; and it keeps only which.max, the single most frequent type, so it cannot produce the summed frequency of motifs 12 and 13 that the connected configuration ratio needs. No software version or motif-uniqueness rule is stated either."
+      },
+      "handoff_outputs": [
+        "core",
+        "freq_k"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 7, Fig4 core-periphery result and Fig5 the thirteen motifs.",
+        "Rendered PDF page 8, Fig6 and Fig7, and the check of the labels against Fig1."
+      ],
+      "computational_cost": "Domination of the three-node enumeration, which is cubic in the number of players; trivial at fourteen players.",
+      "strengths": [
+        "The imported vocabulary is justified by the shape of the object rather than by the source discipline, so the transfer is stated rather than smuggled.",
+        "The core-periphery labels are checked against the drawn network instead of being accepted from the software."
+      ],
+      "limitations": [
+        "Three nodes cannot show a team-wide passing shape.",
+        "Motif counts depend on an unstated treatment of overlapping subgraphs."
+      ],
+      "missing_details": [
+        "Software versions and the motif counting convention.",
+        "Whether the season census pools thirty-eight matches or averages per match."
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2002526-INDICATORS",
+      "page": 9,
+      "section": "4.3",
+      "family": "indicator construction from network attributes",
+      "purpose": "Turn the network objects into seven named quantities, three about individuals and four about the team, so that each can be tested against the match outcome.",
+      "base_or_modification": "paper-specific",
+      "summary": "Three individual indicators and four team level processes are defined and given symbols pi1 to pi3 and tp1 to tp4. Two of the seven carry a displayed equation: the pass-possession rate and the connected configuration ratio. The remaining five are definitions in prose, each tied to a network quantity built earlier.",
+      "variables": [
+        {
+          "symbol": "A",
+          "normalized_name": "weighted adjacency matrix",
+          "unit": "passes",
+          "definition": "The network handed in from the passing network model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_i",
+          "normalized_name": "degree centrality",
+          "unit": "passes",
+          "definition": "Per-player pass count handed in from the passing network model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "freq_k",
+          "normalized_name": "motif frequency",
+          "unit": "1",
+          "definition": "Per-motif frequency handed in from the local structure model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_1",
+          "normalized_name": "total passes indicator",
+          "unit": "passes",
+          "definition": "Total number of passes by the team in one match, printed pi1. Declared the first performance indicator.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_2",
+          "normalized_name": "contribution indicator",
+          "unit": "1",
+          "definition": "Coefficient of variation of the per-player pass counts, taken as the average contribution to the team. Pass counts below ten are excluded before it is computed. Printed pi2.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_3",
+          "normalized_name": "pass-possession rate",
+          "unit": "1",
+          "definition": "Ratio of the number of midfielders to the number of core players per game. Printed pi3.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "midfielders",
+          "normalized_name": "midfielder count",
+          "unit": "1",
+          "definition": "Number of players placed in the midfield among the core players of the game.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "core_players",
+          "normalized_name": "core player count",
+          "unit": "1",
+          "definition": "Number of core players of the game, taken from the core-periphery analysis and fixed as the denominator.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_1",
+          "normalized_name": "aggregation",
+          "unit": "court units",
+          "definition": "Weighted standard deviation of the player positions, read as how spread the catching of the ball is. Printed tp1.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_2",
+          "normalized_name": "extension",
+          "unit": "court units",
+          "definition": "Maximum radius of the passing network, read as how far the passing reaches. Printed tp2.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_3",
+          "normalized_name": "tempo",
+          "unit": "seconds",
+          "definition": "Time taken to reach the first fifty passes of a game. Printed tp3.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_4",
+          "normalized_name": "connected configuration ratio",
+          "unit": "1",
+          "definition": "Ratio of the summed frequency of motifs 12 and 13 to the total motif frequency, read as flexibility of communication inside small groups. Printed tp4.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "motif12_13",
+          "normalized_name": "connected motif frequency",
+          "unit": "1",
+          "definition": "Sum of the occurrence frequencies of motif 12 and motif 13 in one team's network.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "total_freq",
+          "normalized_name": "total motif frequency",
+          "unit": "1",
+          "definition": "Total occurrence frequency of all motif types counted for the team.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d_i",
+        "A",
+        "freq_k",
+        "midfielders",
+        "core_players",
+        "motif12_13",
+        "total_freq"
+      ],
+      "outputs": [
+        "pi_1",
+        "pi_2",
+        "pi_3",
+        "tp_1",
+        "tp_2",
+        "tp_3",
+        "tp_4"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2002526-03",
+          "page": 9,
+          "source_expression": "Pass - possess Rate = Number of Midfielders / Number of Core Players",
+          "normalized_latex": "\\mathrm{Pass-possess\\ Rate} = \\frac{\\mathrm{Number\\ of\\ Midfielders}}{\\mathrm{Number\\ of\\ Core\\ Players}}",
+          "purpose": "Define the pass-possession rate as the share of the core players who are placed in midfield.",
+          "label": "(3)",
+          "variable_symbols": [
+            "pi_3",
+            "midfielders",
+            "core_players"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2002526-04",
+          "page": 10,
+          "source_expression": "Connected Configuration Ratio = Frequency of Motif12 and Motif13 / Total Frequency",
+          "normalized_latex": "\\mathrm{Connected\\ Configuration\\ Ratio} = \\frac{\\mathrm{Frequency\\ of\\ Motif12\\ and\\ Motif13}}{\\mathrm{Total\\ Frequency}}",
+          "purpose": "Define the connected configuration ratio as the share of all three-node motifs that are the two nearly complete types.",
+          "label": "(4)",
+          "variable_symbols": [
+            "tp_4",
+            "motif12_13",
+            "total_freq"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Both displayed equations sit in the text layer as replacement characters on page 10 and as private-use glyphs on page 9, so both were read from raster crops."
+      },
+      "objectives": [
+        "Give every structural idea a single number that can enter a regression.",
+        "Cover the individual, the local group and the whole team in one set of seven."
+      ],
+      "constraints": [
+        "The pass-possession rate is fixed to the number of core players as denominator, so a team with few core players can score high on it without passing better.",
+        "The connected configuration ratio needs a nonzero total motif frequency, which a very sparse network may not have.",
+        "Per-player pass counts below ten are dropped before the coefficient of variation is taken."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The indicators are computed per match, on the network built for that match."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is solved; the definitions are ratios of counts."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "No parameter is fitted for six of the seven. The two unstated rules are actually printed in Appendix 1.2 and 1.3: Appendix 1.3 shows `num=find(person>=10)` before taking `cv=std(remain)/ave`, which is the ten-pass cut, and Appendix 1.2 averages the x coordinate of each core player's passes and counts the player when that average lies between 40 and 60, which is the midfield rule. Appendix 1.2 also fixes the denominator as a hard-coded twelve-player list, which is two names longer than the ten core players the text names from the core-periphery result.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Take the team total pass count as the first indicator.",
+          "Compute the coefficient of variation of per-player pass counts after dropping counts below ten, as the second.",
+          "Read the core players from the core-periphery result and their average positions from a Matlab step, count the midfielders among them, and divide by the core count as the third.",
+          "Carry the weighted dispersion over as the first team level process.",
+          "Carry the maximum radius over as the second.",
+          "Time the fiftieth pass of the match as the third.",
+          "Sum the frequencies of motif 12 and motif 13 and divide by the total motif frequency as the fourth."
+        ],
+        "software": [
+          "Matlab"
+        ],
+        "convergence_criteria": "Closed form per match; no iteration."
+      },
+      "assumptions": [
+        "A total pass count stands for how well a team cooperates in a match.",
+        "Uneven distribution of passes across players can be read as the configuration of individual ability.",
+        "A midfielder is a core player whose average pass position falls in midfield."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Six of the seven are identifiable from the stated definitions. The pass-possession rate is not fully recoverable because neither the ten-pass threshold nor the rule that decides which core players count as midfielders is stated, and both change the value."
+      },
+      "handoff_outputs": [
+        "pi_1",
+        "pi_2",
+        "pi_3",
+        "tp_1",
+        "tp_2",
+        "tp_3",
+        "tp_4"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 9, equation (3) read from a crop.",
+        "Rendered PDF page 10, equation (4) read from a crop; page 10's text layer is replacement characters."
+      ],
+      "computational_cost": "Closed form per match once the network and the motif census exist.",
+      "strengths": [
+        "The seven quantities are built from one object, so a surprising regression result can be traced back to a structural choice.",
+        "Two of the seven are ratios against a denominator the team controls, which keeps them comparable across teams of different size."
+      ],
+      "limitations": [
+        "The pass-possession rate moves with the number of core players rather than with passing quality.",
+        "The appendix hard-codes the core list as players 1 to 12, while the core-periphery result in the body names ten core players and puts players 8 and 9 in the periphery, so the two parts of the paper disagree about who is core.",
+        "The ten-pass cut and the midfield band are stated only inside appendix code, never in the body, so a reader of the body alone cannot reproduce the values."
+      ],
+      "missing_details": [
+        "The reason for the ten-pass threshold.",
+        "Whether the threshold and the midfield band are applied consistently to both teams across all thirty-eight games.",
+        "Why the appendix core list has twelve names where the body's analysis names ten."
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2002526-GOAL-REGRESSION",
+      "page": 11,
+      "section": "4.4",
+      "family": "multiple linear regression with heteroscedasticity-robust standard errors",
+      "purpose": "Test which of the seven indicators actually moves the goal difference, and by how much, so the advice can be issued from a tested subset.",
+      "base_or_modification": "base",
+      "summary": "Goal difference over one match is regressed on five standardised indicators with robust standard errors. Two variables, pi2 and tp1, are removed before the fit because the scatter grid shows no trend. The first fit, printed as `reg score pi1 pi3 tp2 tp3 tp4, r`, reports Number of obs = 38, F(5, 32) = 6.68, Prob > F = 0.0002, R-squared = 0.4656, Root MSE = 1.5117, with pi1 at -0.9696161 (p = 0.128), pi3 at 0.0116669 (p = 0.967), tp2 at 0.3989247 (p = 0.111), tp3 at -1.153789 (p = 0.002) and tp4 at 1.317863 (p = 0.023). The paper then discards pi1, whose coefficient is negative against the football reading, and pi3, whose p-value is above 0.9. The second fit, printed as `reg score tp2 tp3 tp4, r`, reports 38 observations, F(3, 34) = 13.05, Prob > F = 0.0000, R-squared = 0.4138, Root MSE = 1.536, with tp2 at 0.524801 (p = 0.013), tp3 at -0.8538361 (p = 0.001) and tp4 at 0.6204307 (p = 0.004). The discarded pi1 is then given a correlation of 0.32 with the outcome, inside a printed band 0.3 < 0.32 < 0.8, and pi3 a correlation of 0.05, which is given up.",
+      "variables": [
+        {
+          "symbol": "y",
+          "normalized_name": "goal difference",
+          "unit": "goals",
+          "definition": "Huskies goals minus the opponent's goals in one game. Never printed as a symbol; the equation spells it out as Goal Difference.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_0",
+          "normalized_name": "intercept",
+          "unit": "goals",
+          "definition": "Constant term of the regression.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_k",
+          "normalized_name": "slope coefficient",
+          "unit": "goals per unit",
+          "definition": "Coefficient on one standardised indicator, printed for k = 1 to 5.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_1",
+          "normalized_name": "total passes indicator",
+          "unit": "1",
+          "definition": "Standardised total passes, handed in from the indicator model. Kept in the printed form of the equation although the second regression discarded it.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_3",
+          "normalized_name": "pass-possession rate",
+          "unit": "1",
+          "definition": "Standardised pass-possession rate, handed in from the indicator model. Kept in the printed form although the second regression discarded it.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_2",
+          "normalized_name": "extension",
+          "unit": "1",
+          "definition": "Standardised maximum radius, handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_3",
+          "normalized_name": "tempo",
+          "unit": "1",
+          "definition": "Standardised time to fifty passes, handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_4",
+          "normalized_name": "connected configuration ratio",
+          "unit": "1",
+          "definition": "Standardised connected configuration ratio, handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "disturbance",
+          "unit": "goals",
+          "definition": "Disturbance term of the regression.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pi_1",
+        "pi_3",
+        "tp_2",
+        "tp_3",
+        "tp_4"
+      ],
+      "outputs": [
+        "y",
+        "beta_k"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2002526-05",
+          "page": 11,
+          "source_expression": "Goal Difference = b0 + b1 pi1 + b2 pi3 + b3 tp2 + b4 tp3 + b5 tp4 + e",
+          "normalized_latex": "\\mathrm{Goal\\ Difference} = \\beta_{0} + \\beta_{1}\\mathrm{pi}_{1} + \\beta_{2}\\mathrm{pi}_{3} + \\beta_{3}\\mathrm{tp}_{2} + \\beta_{4}\\mathrm{tp}_{3} + \\beta_{5}\\mathrm{tp}_{4} + \\varepsilon",
+          "purpose": "Relate the standardised indicators to the goal difference of a match, as printed before the two-variable and one-variable removals.",
+          "label": null,
+          "variable_symbols": [
+            "y",
+            "beta_0",
+            "beta_k",
+            "pi_1",
+            "pi_3",
+            "tp_2",
+            "tp_3",
+            "tp_4",
+            "epsilon"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The regression is displayed without an equation number on page 11; it was read from a crop because its subscripts are private-use glyphs in the text layer."
+      },
+      "objectives": [
+        "Keep the indicators that carry information about the match result.",
+        "Drop the indicators whose sign contradicts the football reading."
+      ],
+      "constraints": [
+        "The observations are match-level differences between two teams, which the paper calls sectional data and treats as a reason to use robust standard errors.",
+        "The displayed equation lists five predictors while the reported second fit uses three, so the printed equation and the reported fit do not cover the same set; Figure 9 shows both fits separately, which resolves which numbers belong to which.",
+        "Every variable is standardised to unit standard deviation before the fit, so coefficients are per standard deviation, not per pass or per second.",
+        "The appendix regression table repeats the header token tp1 in place of one of the predictor columns, so the printed column order cannot be trusted without the figure."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The dependent variable is the goal difference of a Huskies match, taken from the season results."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is solved; the fit is a linear least-squares problem."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Ordinary least squares with heteroscedasticity-robust standard errors, called the Robust method in the paper. Variables are removed across two fits by t-test significance at the 0.05 level, with one removal made for a sign that contradicted the football reading rather than for a p-value.",
+        "parameters": [
+          "beta_0",
+          "beta_k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Standardise every indicator so its standard deviation is one.",
+          "Fit the printed five-predictor equation and read each t-test.",
+          "Remove pi1 for a negative coefficient that contradicts the football reading, and tp2 for no visible trend in the scatter.",
+          "Remove pi3 for a p-value above 0.9.",
+          "Refit on the three remaining indicators.",
+          "Report the F statistic, the goodness of fit and the variance inflation factors.",
+          "Compute the root-mean-square error and the correlation coefficients of the two removed variables."
+        ],
+        "software": [],
+        "convergence_criteria": "Closed form least squares; the removal sequence is fixed by the significance rule."
+      },
+      "assumptions": [
+        "The relationship between each indicator and the goal difference is linear and additive.",
+        "Standardising to unit standard deviation makes the coefficients comparable across indicators.",
+        "Robust standard errors are enough to handle the sectional structure of the data."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The fit is identifiable and demonstrated: Figure 9 prints both regression tables with 38 observations, robust standard errors, t statistics, p-values and 95 percent confidence intervals, and the appendix prints the standardised row-level data, so the reported fit can be re-run. What is not reproducible is the paper's own removal logic: the text says the first fit left tp2 and tp4 significant while Figure 9 shows pi3 and tp4 significant and tp2 at p = 0.111, and the text calls the goodness of fit 0.4138 high while it is lower than the first fit's 0.4656."
+      },
+      "handoff_outputs": [
+        "beta_k"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 11, Figure 8 scatter grid and Figure 9 regression output.",
+        "Rendered PDF page 12, Figure 10 variance inflation factors, the goodness of fit, and the root-mean-square error."
+      ],
+      "computational_cost": "Closed form least squares over 38 match rows.",
+      "strengths": [
+        "A variable whose sign contradicts the reading is removed and the reason is written down, rather than being kept with the sign unexplained.",
+        "Collinearity is checked directly and reported, so the fit is defended on more than its significance.",
+        "The dropped variables are not abandoned: each is revisited with a correlation coefficient."
+      ],
+      "limitations": [
+        "The F statistic is described as significantly lower than 0.05, which reads as a p-value; a comparison of an F statistic to 0.05 is not the printed test.",
+        "The printed equation still carries pi1 and pi3 after the text says both were removed.",
+        "The printed band 0.3 < 0.32 < 0.8 is offered as the reason a 0.05 correlation was still considered, and 0.05 sits nowhere near the band.",
+        "The text calls the root-mean-square error 1.5 low and the goodness of fit 0.4138 high, while the printed tables show the second fit is worse on both than the first fit, at 1.536 against 1.5117 and 0.4138 against 0.4656; only the second fit's R-squared is quoted.",
+        "tp2 is kept in the second fit although its p-value in the first fit is 0.111, and the text names its removal reason only for pi1 and pi3."
+      ],
+      "missing_details": [
+        "The software call that produced the appendix column pi1sqr, which is computed but never discussed.",
+        "The exact significance rule applied at each removal step, since the text names different survivors than the printed table."
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2002526-PERFORMANCE-MODEL",
+      "page": 13,
+      "section": "4.5",
+      "family": "composite descriptive performance model",
+      "purpose": "Rank the team against the other nineteen on the three surviving aspects and pair the ranking with what the regression said about each aspect.",
+      "base_or_modification": "paper-specific",
+      "summary": "The network objects and the regression are combined into a named performance model of the passing network with three parts, structure, configuration and dynamic. Each part is reported as a value plus a rank against the other nineteen teams, and the two dynamic measures are read against each other, since the fast opening and the mediocre season pass total point in opposite directions.",
+      "variables": [
+        {
+          "symbol": "tp_2",
+          "normalized_name": "extension",
+          "unit": "court units",
+          "definition": "Standardised maximum radius handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_4",
+          "normalized_name": "connected configuration ratio",
+          "unit": "1",
+          "definition": "Standardised connected configuration ratio handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp_3",
+          "normalized_name": "tempo",
+          "unit": "seconds",
+          "definition": "Standardised time to the fiftieth pass handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_1",
+          "normalized_name": "total passes indicator",
+          "unit": "passes",
+          "definition": "Standardised season pass count handed in from the indicator model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "extension_rank",
+          "normalized_name": "structure rank",
+          "unit": "1",
+          "definition": "The team's rank on extension against the other nineteen teams. Printed as 43.42 and second of twenty.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "configuration_ratio",
+          "normalized_name": "configuration ratio",
+          "unit": "1",
+          "definition": "The team's average connected configuration ratio, printed 0.3658 and fifteenth of twenty.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "opening_time",
+          "normalized_name": "opening tempo",
+          "unit": "seconds",
+          "definition": "Average time to reach fifty passes, printed 803.87 seconds and seventh of twenty.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "season_passes",
+          "normalized_name": "season pass rate",
+          "unit": "passes per game",
+          "definition": "Average passes per game over the season, printed 287.24 over 38 games and ninth of twenty.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "tp_2",
+        "tp_4",
+        "tp_3",
+        "pi_1"
+      ],
+      "outputs": [
+        "extension_rank",
+        "configuration_ratio",
+        "opening_time",
+        "season_passes"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The section combines quantities already defined and prints no new equation. The composite model has no stated functional form; it is a named reading of three aspects."
+      },
+      "objectives": [
+        "Turn three fitted indicators into a description of this team that a coach can act on.",
+        "Separate what the team already does well from what it does poorly."
+      ],
+      "constraints": [
+        "The ranks are against the same nineteen opponents and carry no uncertainty statement.",
+        "The two dynamic measures disagree in direction, and the section keeps both rather than resolving them into one number."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "All figures are from last season, thirty-eight games against nineteen opponents."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is solved; the section is descriptive."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is solved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is fitted here; the values are carried over from the indicator and regression models.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Average the extension over the season and rank the team against the other nineteen.",
+          "Average the connected configuration ratio over the season and rank it.",
+          "Average the time to the fiftieth pass and rank it.",
+          "Average the total passes per game and rank it.",
+          "Read the two dynamic ranks against each other and state the tension."
+        ],
+        "software": [],
+        "convergence_criteria": "Averages over a fixed season; no iteration."
+      },
+      "assumptions": [
+        "A rank against the other nineteen teams is a meaningful description of this team's aspect.",
+        "The season average of a match-level indicator represents the team's habit."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The four values are printed and the ranks are printed, so the description is legible. It is not independently checkable, because the other nineteen teams' values are never shown and the season aggregation rule, pooled or averaged, is not stated."
+      },
+      "handoff_outputs": [
+        "extension_rank",
+        "configuration_ratio",
+        "opening_time",
+        "season_passes"
+      ],
+      "validation_refs": [
+        "Rendered PDF page 13, sections 4.5.1 Structure, 4.5.2 Configuration and 4.5.3 Dynamic."
+      ],
+      "computational_cost": "Season averages and a sort; negligible.",
+      "strengths": [
+        "Each aspect is given a rank as well as a value, so the reader learns whether a number is good or merely present.",
+        "The contradiction between the two dynamic ranks is printed instead of averaged away."
+      ],
+      "limitations": [
+        "The other nineteen teams' values are never shown, so the ranks cannot be verified.",
+        "The 4.5.2 explanation is printed in a broken form that reads as a sentence with its subject lost.",
+        "The 4.5.3 closing sentence is printed as 'The two measures resulted in a very contradictory facts'."
+      ],
+      "missing_details": [
+        "The season aggregation rule and the full league table of values.",
+        "Any uncertainty on a season average taken over thirty-eight matches."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2020-2002526-PASSING-NETWORK",
+      "to_model_id": "MU-D-2020-2002526-CENTROID-DISPERSION",
+      "handoff": "The positioned weighted network supplies the pass coordinates and the pass total N that the centroid and the dispersion divide by."
+    },
+    {
+      "from_model_id": "MU-D-2020-2002526-PASSING-NETWORK",
+      "to_model_id": "MU-D-2020-2002526-LOCAL-STRUCTURE",
+      "handoff": "The same network supplies the graph that the core-periphery split and the three-node census read."
+    },
+    {
+      "from_model_id": "MU-D-2020-2002526-CENTROID-DISPERSION",
+      "to_model_id": "MU-D-2020-2002526-INDICATORS",
+      "handoff": "The weighted dispersion becomes tp1 and the maximum radius becomes tp2, both carried with their court-unit scale intact."
+    },
+    {
+      "from_model_id": "MU-D-2020-2002526-LOCAL-STRUCTURE",
+      "to_model_id": "MU-D-2020-2002526-INDICATORS",
+      "handoff": "The motif frequencies supply the numerator and denominator of the connected configuration ratio tp4, and the core labels supply the denominator of the pass-possession rate pi3."
+    },
+    {
+      "from_model_id": "MU-D-2020-2002526-INDICATORS",
+      "to_model_id": "MU-D-2020-2002526-GOAL-REGRESSION",
+      "handoff": "All seven indicators enter standardised to unit standard deviation, so the handed-off scale is standard deviations rather than passes, seconds or court units."
+    },
+    {
+      "from_model_id": "MU-D-2020-2002526-GOAL-REGRESSION",
+      "to_model_id": "MU-D-2020-2002526-PERFORMANCE-MODEL",
+      "handoff": "The three surviving indicators and their coefficient signs are carried over as the three aspects the performance model ranks and reads."
+    }
+  ],
+  "review_status": "validated"
+}

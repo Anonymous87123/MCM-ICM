@@ -1,0 +1,1447 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2020-2013733-073f48f7",
+  "problem_type": "F",
+  "year": "2020",
+  "source_sha256": "073f48f7c5097d81d291c2244f1a4ebc9fcfdd11e5914a3b2ef3db80cf71a45d",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2020-2013733-SL",
+      "section": "2.3 Homeless people caused by sea level rise",
+      "family": "spatial-integration",
+      "summary": "An island is treated as a circle. Population density falls exponentially with distance from the center, following Clark (1951). The central density is the urban population over the inner tenth of the area, and the decay rate is fixed by matching the real population. The coast retreats by the sea-level rise divided by the nearshore slope, the slope read from the angle at the earth's center following Bruun (1962). People at risk are the integral of density over the flooded ring. Applied to the Maldives with World Bank and NOAA data; the yearly figures sit in a figure.",
+      "computational_cost": "not-stated",
+      "purpose": "Count how many people lose their land each year as the sea rises.",
+      "base_or_modification": "hybrid",
+      "page": 5,
+      "inputs": [
+        "A_t",
+        "U_t",
+        "R_t",
+        "v_s"
+      ],
+      "outputs": [
+        "P_t"
+      ],
+      "handoff_outputs": [
+        "P_t"
+      ],
+      "objectives": [
+        "Estimate the annual and cumulative number of people at risk on one island."
+      ],
+      "variables": [
+        {
+          "symbol": "A_t",
+          "normalized_name": "island_area",
+          "role": "input",
+          "unit": "area",
+          "definition": "The island's land area in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "U_t",
+          "normalized_name": "urban_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Urban population in year t, taken to occupy the central tenth",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_t",
+          "normalized_name": "island_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Total population of the island in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_s",
+          "normalized_name": "rise_speed",
+          "role": "input",
+          "unit": "length-per-time",
+          "definition": "Average speed of sea-level rise over the recent 15 years",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_0",
+          "normalized_name": "central_density",
+          "role": "intermediate",
+          "unit": "per-area",
+          "definition": "Population density at the geographic center",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_d",
+          "normalized_name": "density_decay",
+          "role": "parameter",
+          "unit": "per-length",
+          "definition": "Decay rate of the negative exponential density",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_t",
+          "normalized_name": "retreat",
+          "role": "intermediate",
+          "unit": "length",
+          "definition": "Landward retreat of the waterfront in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_t",
+          "normalized_name": "people_at_risk",
+          "role": "output",
+          "unit": "count",
+          "definition": "Number of people whose land is flooded in year t",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-SL-1",
+          "equation_label": "Negative exponential density",
+          "equation_text": "D(x) = D_0 * exp(-beta_d*x); D_0 = U_t / (0.1*A_t); 2*pi*integral of x*D(x) equals R_t",
+          "source_expression": "D(x) = D_0 * exp(-beta_d*x); D_0 = U_t / (0.1*A_t); 2*pi*integral of x*D(x) equals R_t",
+          "normalized_latex": "D(x) = D_0 e^{-\\beta x}",
+          "purpose": "Clark's density. Central density from the urban share, decay from the population identity.",
+          "variable_symbols": [
+            "D_0",
+            "beta_d",
+            "U_t",
+            "A_t",
+            "R_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013733-SL-2",
+          "equation_label": "People at risk",
+          "equation_text": "theta_t = v_s / slope; P_t = 2*pi*integral of D(x)*(radius - x) over the flooded ring",
+          "source_expression": "theta_t = v_s / slope; P_t = 2*pi*integral of D(x)*(radius - x) over the flooded ring",
+          "normalized_latex": "P_t = 2\\pi \\int D(x)\\,(r - x)\\,dx",
+          "purpose": "Integrate density over the ring the sea takes. The slope comes from the geocentric angle.",
+          "variable_symbols": [
+            "P_t",
+            "theta_t",
+            "v_s"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations are printed as images and reconstructed from the surrounding prose. The radius, density, Bruun retreat and risk integral are all described explicitly.",
+        "reason": "Section 2.3.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Island treated as circular. Density peaks at the center and falls evenly outward."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Urban area is the central 10 percent. Rise speed averaged over 15 years. Slope from the small-island approximation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Accounting integral, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Central density from urban population; decay rate by equating modeled and real population.",
+        "parameters": [
+          "beta_d"
+        ]
+      },
+      "algorithm": {
+        "description": "Fit the density, compute the coastal retreat, integrate over the flooded ring.",
+        "status": "implemented",
+        "steps": [
+          "Match the circle to the real area",
+          "Fit the density",
+          "Compute the retreat",
+          "Integrate"
+        ],
+        "software": [],
+        "convergence_criteria": "Modeled population equals recorded population."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Applied to the Maldives. Annual and cumulative counts are plotted but not printed."
+        ],
+        "analysis": "The procedure is reproducible. The numerical output lives only in the figure."
+      },
+      "constraints": [
+        "Island must be plausibly round.",
+        "Density must decline smoothly from the center."
+      ],
+      "validation_refs": [
+        "Figure 2 people at risk in the Maldives"
+      ],
+      "strengths": [
+        "Both borrowed models are credited and each does one job.",
+        "The time window for the rise speed is justified."
+      ],
+      "limitations": [
+        "A circular island with radial density is a strong idealization.",
+        "No printed numbers, so the Maldives result cannot be checked."
+      ],
+      "missing_details": [
+        "The numerical people-at-risk series.",
+        "The nearshore slope value used."
+      ],
+      "assumptions": [
+        "The island is round.",
+        "Residents gather at the center and thin out evenly."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-PE",
+      "section": "2.4 Perceptual Environment Model",
+      "family": "index-threshold",
+      "summary": "Six World Bank indicators plus a CPIA policy rating are reduced by principal components. The first four components, carrying over 80 percent, form a comprehensive index with printed coefficients and an added constant of 5. The probability of leaving is 1 below -2.825, falls linearly to 0 at 3.3786, and the paper says an exponential relates it to the index. The 95th percentile of each variable anchors the certain-departure end and the average anchors the near-zero end. Tested on the Maldives in 2014 the index is 62.66, which the paper reads as attraction rather than pressure to leave.",
+      "computational_cost": "not-stated",
+      "purpose": "Estimate the chance that worsening surroundings push people to leave, beyond visible flooding.",
+      "base_or_modification": "paper-specific",
+      "page": 7,
+      "inputs": [
+        "a_c",
+        "r_k",
+        "w_p",
+        "p_m",
+        "c_o",
+        "p_d"
+      ],
+      "outputs": [
+        "C_I",
+        "p_e"
+      ],
+      "handoff_outputs": [
+        "p_e"
+      ],
+      "objectives": [
+        "Turn six environmental indicators into a probability of leaving."
+      ],
+      "variables": [
+        {
+          "symbol": "a_c",
+          "normalized_name": "clean_fuel_access",
+          "role": "input",
+          "unit": "percent",
+          "definition": "Access to clean fuels and cooking technology",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_k",
+          "normalized_name": "policy_rating",
+          "role": "input",
+          "unit": "score",
+          "definition": "Environmental policy rating, proxy for national effort",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_p",
+          "normalized_name": "fresh_water",
+          "role": "input",
+          "unit": "volume",
+          "definition": "Renewable fresh water per person",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_m",
+          "normalized_name": "pm_exposure",
+          "role": "input",
+          "unit": "percent",
+          "definition": "Population exposed to excess fine particles",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_o",
+          "normalized_name": "emissions_per_head",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon dioxide emissions per person",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_d",
+          "normalized_name": "population_density",
+          "role": "input",
+          "unit": "per-area",
+          "definition": "Population density",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_I",
+          "normalized_name": "comprehensive_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the six indicators plus 5",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_e",
+          "normalized_name": "escape_probability",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Probability of leaving, from 1 below the low threshold to 0 above the high one",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-PE-1",
+          "equation_label": "Comprehensive index",
+          "equation_text": "C_I = -0.03577*a_c + 0.2768*r_k + 1.021*w_p + 0.6917*p_m + 0.8679*c_o + 1.283*p_d + 5",
+          "source_expression": "C_I = -0.03577*a_c + 0.2768*r_k + 1.021*w_p + 0.6917*p_m + 0.8679*c_o + 1.283*p_d + 5",
+          "normalized_latex": "C_I = \\sum_k \\lambda_k x_k + 5",
+          "purpose": "Linear index from the first four principal components. The constant smooths the next step.",
+          "variable_symbols": [
+            "C_I",
+            "a_c",
+            "r_k",
+            "w_p",
+            "p_m",
+            "c_o",
+            "p_d"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013733-PE-2",
+          "equation_label": "Probability of escape",
+          "equation_text": "p_e = 1 when C_I <= -2.825; p_e = 1.6559 - 1.160998*C_I between the thresholds; p_e = 0 when C_I > 3.3786",
+          "source_expression": "p_e = 1 when C_I <= -2.825; p_e = 1.6559 - 1.160998*C_I between the thresholds; p_e = 0 when C_I > 3.3786",
+          "normalized_latex": "p_e = 1.6559 - 1.161\\, C_I",
+          "purpose": "Piecewise probability. Certain departure at the low end, none at the high end.",
+          "variable_symbols": [
+            "p_e",
+            "C_I"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The index coefficients and the piecewise probability are printed and readable. The prose also calls the relation exponential, which contradicts the printed piecewise form.",
+        "reason": "Section 2.4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Six indicators plus one proxy. Individuals sense all three dimensions and maximize utility."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Thresholds at -2.825 and 3.3786. The 95th percentile anchors certainty, the mean anchors near zero."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Static index, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Principal components; first four kept for crossing 80 percent of variance.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Reduce the indicators, form the index, read the probability off the piecewise rule.",
+        "status": "implemented",
+        "steps": [
+          "Assemble indicators",
+          "Run principal components",
+          "Form the index",
+          "Apply the thresholds"
+        ],
+        "software": [],
+        "convergence_criteria": "Retained components explain over 80 percent."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Maldives 2014 index is 62.66, read as attraction. Component contributions judged even, so collinearity is weak."
+        ],
+        "analysis": "The index is fully specified. Its value for the Maldives falls far outside the threshold range, which the paper reports rather than forcing."
+      },
+      "constraints": [
+        "People are identical.",
+        "The index is the utility function."
+      ],
+      "validation_refs": [
+        "Figure 4 component eigenvalues",
+        "Figure 5 probability curves",
+        "Maldives 2014 index 62.66"
+      ],
+      "strengths": [
+        "The number of components and the added constant are both justified.",
+        "A result that cuts against the narrative is kept."
+      ],
+      "limitations": [
+        "The Maldives value of 62.66 sits far above a scale whose top is 3.38, so the thresholds and the index are not on one scale.",
+        "The text says exponential while the formula is piecewise linear."
+      ],
+      "missing_details": [
+        "How the principal component loadings become the six printed coefficients.",
+        "The unit scaling that puts the Maldives at 62.66."
+      ],
+      "assumptions": [
+        "People perceive the three dimensions.",
+        "The probability relates exponentially to the index."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-SC",
+      "section": "2.5 Stochastic Culture Index Model",
+      "family": "markov-chain",
+      "summary": "Culture moves each year among boom, stable and recession. The next state depends only on the current state and the current conditions. Education, development and a buffer term are drawn from Gaussians whose means fall with inundated land, centered near 0.51, 0.5 and 0.49. The index starts at 100. A thousand runs give a mean path with 95 percent borders. For the Maldives the culture falls to a tenth in 23 years normally, two years sooner or later if the climate effect moves 20 percent, and survives 60 years with no climate damage. The half-life is 14 to 22 years and, unprotected, the culture ends around year 43.",
+      "computational_cost": "not-stated",
+      "purpose": "Estimate how many years a culture survives under climate pressure.",
+      "base_or_modification": "paper-specific",
+      "page": 9,
+      "inputs": [
+        "I_L",
+        "s_0"
+      ],
+      "outputs": [
+        "C_t"
+      ],
+      "handoff_outputs": [
+        "C_t"
+      ],
+      "objectives": [
+        "Project the culture index and its half-life under three climate assumptions."
+      ],
+      "variables": [
+        {
+          "symbol": "I_L",
+          "normalized_name": "inundated_share",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Flooded land divided by remaining land, shifting the distribution means",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s_0",
+          "normalized_name": "start_state",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Starting culture state, benchmarked at 100",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_d",
+          "normalized_name": "education_draw",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Random draw for education, driving internal motivation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_d",
+          "normalized_name": "development_draw",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Random draw for the change in the growth rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z_d",
+          "normalized_name": "buffer_draw",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Random draw for the buffer term",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_t",
+          "normalized_name": "culture_index",
+          "role": "output",
+          "unit": "points",
+          "definition": "Culture index at year t, starting at 100",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-SC-1",
+          "equation_label": "State-dependent draws",
+          "equation_text": "In boom the three draws are normal with mean 0.51 - 0.05*I_L; in stable, mean 0.5 - 0.1*I_L; in recession, mean 0.49 - 0.15*I_L; all with spread 0.05",
+          "source_expression": "In boom the three draws are normal with mean 0.51 - 0.05*I_L; in stable, mean 0.5 - 0.1*I_L; in recession, mean 0.49 - 0.15*I_L; all with spread 0.05",
+          "normalized_latex": "X,Y,Z \\sim N(\\mu(s) - \\kappa I_L,\\, 0.05)",
+          "purpose": "Flooding pulls the mean down, hardest in recession. The Markov property drops all history but the current state.",
+          "variable_symbols": [
+            "X_d",
+            "Y_d",
+            "Z_d",
+            "I_L"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The transition distributions are printed in a table and are readable. The update rule that turns the draws into the next index value is not written.",
+        "reason": "Section 2.5.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Index starts at 100. One of three states occurs each year."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Draws are Gaussian and identically distributed across years. A culture disappears eventually."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Transient projection; the only long-run state is disappearance."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Distribution means set by assumption, shifted by inundated land. No fitting procedure is shown.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Draw the three variables from the state-dependent normal, update the index, repeat for 60 years, average a thousand runs.",
+        "status": "partial",
+        "steps": [
+          "Draw the variables",
+          "Update the state and index",
+          "Repeat",
+          "Average the runs"
+        ],
+        "software": [],
+        "convergence_criteria": "95 percent borders from the sample spread under the law of large numbers."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Tenth-of-origin at 23 years, plus or minus 2 for a 20 percent climate shift, 60 years with no damage. Half-life 14 to 22 years, 29 without sea rise. Down to a tenth by year 28 at 95 percent confidence, ended by year 43 unprotected."
+        ],
+        "analysis": "The reported horizons are specific and mutually consistent. The missing update rule means they cannot be reproduced exactly."
+      },
+      "constraints": [
+        "The next state ignores all history but the current one.",
+        "Education, development and the buffer share one distribution family."
+      ],
+      "validation_refs": [
+        "Figure 7 culture index under three scenarios",
+        "Figure 8 prediction with 95 percent borders"
+      ],
+      "strengths": [
+        "The no-damage case is reported and still shows decline, so the model does not blame everything on climate.",
+        "The interval comes from repeated simulation, not a single run."
+      ],
+      "limitations": [
+        "The rule mapping draws to the next index is never given.",
+        "The distribution means are assumed, not estimated."
+      ],
+      "missing_details": [
+        "The index update equation.",
+        "The source of the 0.51, 0.5 and 0.49 centers."
+      ],
+      "assumptions": [
+        "Three states only.",
+        "The future is fully random.",
+        "Every culture eventually disappears."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-DM",
+      "section": "3.3 Decision making process",
+      "family": "discrete-choice",
+      "summary": "A person at risk chooses among leaving with compensation, accepting the planned move, or staying for now. Action values are written for two states and two stages. Choosing freely delays the start of work by one period, so freedom costs a year of income. Comparing the values gives three rules: freedom wins when its weight exceeds the policy's convenience, the plan wins when convenience outweighs freedom, and staying wins when leaving looks too troublesome. The policy conclusion is to stress how hard self-arranged housing and work are.",
+      "computational_cost": "not-stated",
+      "purpose": "Find which relocation option a person picks, and how to shift that choice.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "inputs": [
+        "d_f",
+        "c_p",
+        "e_m"
+      ],
+      "outputs": [
+        "a_star"
+      ],
+      "handoff_outputs": [
+        "a_star"
+      ],
+      "objectives": [
+        "Determine the preferred action in each state and the lever that changes it."
+      ],
+      "variables": [
+        {
+          "symbol": "d_f",
+          "normalized_name": "freedom_value",
+          "role": "input",
+          "unit": "utility",
+          "definition": "How much the person values choosing a destination freely",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_p",
+          "normalized_name": "policy_convenience",
+          "role": "input",
+          "unit": "utility",
+          "definition": "Value of the housing and jobs the plan provides",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_m",
+          "normalized_name": "moving_trouble",
+          "role": "input",
+          "unit": "utility",
+          "definition": "Trouble of moving abroad, compared with staying a few years",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_y",
+          "normalized_name": "wage",
+          "role": "parameter",
+          "unit": "utility",
+          "definition": "Value of a period of earnings, lost if the person chooses freely",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_a",
+          "normalized_name": "action_value",
+          "role": "intermediate",
+          "unit": "utility",
+          "definition": "Value of an action in a given state and stage",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_star",
+          "normalized_name": "chosen_action",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "The action with the highest value: self-arranged, planned, or delayed",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-DM-1",
+          "equation_label": "Choice thresholds",
+          "equation_text": "Self-arranged if d_f > c_p + e_m + (2 - w_y)*w_y; planned if c_p + (2 - w_y)*w_y > d_f - e_m; delay if e_m < (1 - w_y)*(w_y - c_p)",
+          "source_expression": "Self-arranged if d_f > c_p + e_m + (2 - w_y)*w_y; planned if c_p + (2 - w_y)*w_y > d_f - e_m; delay if e_m < (1 - w_y)*(w_y - c_p)",
+          "normalized_latex": "a^{*} = \\arg\\max_a Q(s, a)",
+          "purpose": "Three inequalities read off the action values. Each names the belief that tips the choice.",
+          "variable_symbols": [
+            "d_f",
+            "c_p",
+            "e_m",
+            "w_y",
+            "a_star"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The action values are printed as images and the threshold inequalities appear in prose. Symbols are reconstructed from the prose definitions.",
+        "reason": "Section 3.3.2 and 3.3.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Two states, at risk and not. Two stages: choose a place, then work or be forced out."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Free choice delays work by one period. The planned option starts work immediately."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The chosen action maximizes the action value given personal weights."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameters are estimated. The weights are personal and unknown.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Write the action value for each state and stage, compare them, read off the condition for each choice.",
+        "status": "implemented",
+        "steps": [
+          "List states and actions",
+          "Write action values",
+          "Compare",
+          "Translate into conditions"
+        ],
+        "software": [],
+        "convergence_criteria": "None."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Three qualitative conditions are derived. No one's weights are measured."
+        ],
+        "analysis": "The direction of each lever is clear. The model cannot predict a population share."
+      },
+      "constraints": [
+        "The choice is two-stage.",
+        "Those not at risk may still opt into the plan but pay for housing."
+      ],
+      "validation_refs": [
+        "Figure 9 decision process"
+      ],
+      "strengths": [
+        "Each inequality is translated into what the person believes.",
+        "The recommended lever follows from the comparison rather than being asserted."
+      ],
+      "limitations": [
+        "With no measured weights the model sorts people but counts none.",
+        "The action-value notation is garbled in the images."
+      ],
+      "missing_details": [
+        "Any survey or distribution of the personal weights.",
+        "The clean algebraic form of the action values."
+      ],
+      "assumptions": [
+        "People maximize utility.",
+        "Preferences differ across individuals."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-MA",
+      "section": "3.4 Match Model",
+      "family": "similarity-index",
+      "summary": "A destination is scored on four things: cultural similarity from Hofstede's six dimensions, similarity of objective conditions on seven standardized dimensions, agglomeration from the density of the planned settlement, and employment from a blend of two industrial-structure indexes that point opposite ways. Each similarity is an inverse mean squared standardized gap. The four are combined with weights 0.365, 0.277, 0.125 and 0.233, the hierarchy process being skipped for space. For the economic dimensions, matching the island's level is preferred to being richer. The best-scoring candidate is selected.",
+      "computational_cost": "not-stated",
+      "purpose": "Choose the destination area that fits the displaced population best.",
+      "base_or_modification": "hybrid",
+      "page": 14,
+      "inputs": [
+        "h_i",
+        "o_i",
+        "n_e",
+        "n_l",
+        "a_k",
+        "b_k"
+      ],
+      "outputs": [
+        "I_m"
+      ],
+      "handoff_outputs": [
+        "I_m"
+      ],
+      "objectives": [
+        "Rank candidate areas and select the best match."
+      ],
+      "variables": [
+        {
+          "symbol": "h_i",
+          "normalized_name": "hofstede_score",
+          "role": "input",
+          "unit": "score",
+          "definition": "Score of cultural dimension i for the island and the candidate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "o_i",
+          "normalized_name": "objective_score",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Objective condition i, standardized between its lowest and highest",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_e",
+          "normalized_name": "settlement_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Displaced people on the planned housing land",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_l",
+          "normalized_name": "local_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Local people on the comparable land",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_k",
+          "normalized_name": "island_industry_share",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of industry k in the island's output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_k",
+          "normalized_name": "area_industry_share",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of industry k in the candidate area's output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "aspect_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of aspect j: 0.365, 0.277, 0.125, 0.233",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_m",
+          "normalized_name": "match_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the four aspect scores",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-MA-1",
+          "equation_label": "Similarity index",
+          "equation_text": "beta_1 = 1 over the mean across six dimensions of squared score gap divided by variance; beta_2 likewise over seven standardized dimensions",
+          "source_expression": "beta_1 = 1 over the mean across six dimensions of squared score gap divided by variance; beta_2 likewise over seven standardized dimensions",
+          "normalized_latex": "\\beta = 1 \\big/ \\overline{(z_A - z_B)^2}",
+          "purpose": "Inverse mean squared distance. Smaller gaps give higher similarity.",
+          "variable_symbols": [
+            "h_i",
+            "o_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013733-MA-2",
+          "equation_label": "Match index",
+          "equation_text": "I_m = 0.365*beta_1 + 0.277*beta_2 + 0.125*beta_3 + 0.233*beta_4",
+          "source_expression": "I_m = 0.365*beta_1 + 0.277*beta_2 + 0.125*beta_3 + 0.233*beta_4",
+          "normalized_latex": "I = \\sum_j w_j \\beta_j",
+          "purpose": "Weighted combination. Culture carries the most weight, clustering the least.",
+          "variable_symbols": [
+            "I_m",
+            "w_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The similarity formula, the agglomeration ratio, the blended employment index and the final weights are all printed. The hierarchy process behind the weights is omitted on purpose.",
+        "reason": "Section 3.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Candidate areas scored on Hofstede dimensions and seven objective conditions."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Agglomeration runs from 0 when scattered to 1 for a dedicated village. Economic dimensions reward equality of level, not advantage."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Ranking rule, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Analytic hierarchy process, with the working skipped and only the weights reported.",
+        "parameters": [
+          "w_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Standardize, compute four aspect scores, weight them, pick the maximum.",
+        "status": "implemented",
+        "steps": [
+          "Score both sides",
+          "Standardize",
+          "Compute similarities",
+          "Weight and rank"
+        ],
+        "software": [],
+        "convergence_criteria": "None."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "A figure compares countries with New Zealand by bubble size. No winning destination is named for the Maldives."
+        ],
+        "analysis": "The scoring rule is usable. The paper never applies it to produce a choice."
+      },
+      "constraints": [
+        "The receiving area, not the arrivals, chooses the exact housing site.",
+        "Organizations and the arrivals may only consult."
+      ],
+      "validation_refs": [
+        "Figure 10 cultural dimensions and cultural distance"
+      ],
+      "strengths": [
+        "The two industrial indexes are reconciled because they run in opposite directions, and the paper says so.",
+        "Equal development is preferred to higher development, with a reason."
+      ],
+      "limitations": [
+        "The weights cannot be checked because the derivation was cut.",
+        "No final matching result is given."
+      ],
+      "missing_details": [
+        "The pairwise comparisons behind the weights.",
+        "The chosen destination for the case country."
+      ],
+      "assumptions": [
+        "Higher cultural similarity eases both settlement and preservation.",
+        "Industrial similarity predicts ease of employment."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-CH",
+      "section": "3.5 Charging Model",
+      "family": "optimal-taxation",
+      "summary": "Each area's output per person is Cobb-Douglas in capital per person and emissions per person, with constant returns. The charge uses the same two inputs but punishes emissions more than proportionally and capital less than in production. Maximizing output minus charge gives a unique best emissions level that rises with capital at a diminishing rate, so richer areas emit more. Because capital is treated as constant, balanced emissions stand in fixed ratios across areas and one parameter sets the world total. Cultural spending is whatever the fees collect beyond housing and compensation. The same parameter absorbs emergency costs.",
+      "computational_cost": "not-stated",
+      "purpose": "Share the cost of relocation across countries and steer global emissions with one parameter.",
+      "base_or_modification": "modification",
+      "page": 16,
+      "inputs": [
+        "K_i",
+        "N_i"
+      ],
+      "outputs": [
+        "C_i",
+        "E_star"
+      ],
+      "handoff_outputs": [
+        "C_i"
+      ],
+      "objectives": [
+        "Set each area's fee so that its best emissions response hits a global target."
+      ],
+      "variables": [
+        {
+          "symbol": "K_i",
+          "normalized_name": "capital_per_head",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Capital stock per person in area i, treated as constant",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_i",
+          "normalized_name": "population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Population of area i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_y",
+          "normalized_name": "capital_exponent",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Capital exponent in the yield function, between 0 and 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_c",
+          "normalized_name": "charge_capital_exponent",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Capital exponent in the charge, smaller than in the yield",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_e",
+          "normalized_name": "emissions_exponent",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Emissions exponent in the charge, greater than 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_f",
+          "normalized_name": "charge_scale",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Scale of the charge, the knob that sets world emissions",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_star",
+          "normalized_name": "balanced_emissions",
+          "role": "output",
+          "unit": "mass",
+          "definition": "Emissions per person that maximize benefit",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "area_charge",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Fee paid by area i, population times the per-person charge",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-CH-1",
+          "equation_label": "Yield and charge",
+          "equation_text": "Y_i = K_i^alpha_y * E_i^(1 - alpha_y); C_i = k_f * K_i^gamma_c * E_i^beta_e",
+          "source_expression": "Y_i = K_i^alpha_y * E_i^(1 - alpha_y); C_i = k_f * K_i^gamma_c * E_i^beta_e",
+          "normalized_latex": "Y_i = K_i^{\\alpha} E_i^{1-\\alpha}",
+          "purpose": "Constant returns in output. The charge is harsher on emissions than on capital.",
+          "variable_symbols": [
+            "K_i",
+            "alpha_y",
+            "gamma_c",
+            "beta_e",
+            "k_f"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013733-CH-2",
+          "equation_label": "Best emissions",
+          "equation_text": "E_star = [(1 - alpha_y)/(beta_e*k_f)]^[1/(alpha_y + beta_e - 1)] * K_i^[(alpha_y - gamma_c)/(alpha_y + beta_e - 1)]",
+          "source_expression": "E_star = [(1 - alpha_y)/(beta_e*k_f)]^[1/(alpha_y + beta_e - 1)] * K_i^[(alpha_y - gamma_c)/(alpha_y + beta_e - 1)]",
+          "normalized_latex": "E_i^{*} \\propto K_i^{(\\alpha-\\gamma)/(\\alpha+\\beta-1)}",
+          "purpose": "Unique maximum. The exponent on capital lies between 0 and 1, so the response diminishes.",
+          "variable_symbols": [
+            "E_star",
+            "K_i",
+            "alpha_y",
+            "gamma_c",
+            "beta_e",
+            "k_f"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The yield, the charge, the first-order condition and the closed form are all printed and readable. The second-derivative line claims alpha is negative, which contradicts the stated range.",
+        "reason": "Section 3.5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Capital per person constant while global growth is slow. Emissions strictly positive."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Capital exponent in the charge below the yield exponent. Emissions exponent above 1."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Each area emits at the unique point where marginal yield equals marginal charge."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Exponents and the scale are free parameters, adjusted to hit the emissions target and the cultural budget. None is estimated.",
+        "parameters": [
+          "k_f",
+          "gamma_c",
+          "beta_e"
+        ]
+      },
+      "algorithm": {
+        "description": "Write benefit as yield minus charge, set the derivative to zero, solve for emissions, back out the fee.",
+        "status": "implemented",
+        "steps": [
+          "Write the benefit",
+          "Differentiate",
+          "Check the second derivative",
+          "Solve",
+          "Sum the fees"
+        ],
+        "software": [],
+        "convergence_criteria": "Second derivative negative, giving a unique maximum."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The exponent on capital is shown to lie between 0 and 1. No numerical fee is computed."
+        ],
+        "analysis": "The comparative statics are clean. Without values for the exponents the model sets no actual charge."
+      },
+      "constraints": [
+        "Direct costs are fixed. Cultural spending is the residual.",
+        "Burden and contribution cancel for similar areas, leaving only housing and compensation."
+      ],
+      "validation_refs": [
+        "Figure 11 yield and marginal curves",
+        "Figure 12 emissions against capital"
+      ],
+      "strengths": [
+        "The two exponents are each justified: capital softer than in production, emissions harder because damage must be paid for.",
+        "One parameter controls the global total, which is the policy point."
+      ],
+      "limitations": [
+        "No data and no calibrated numbers.",
+        "The concavity argument cites a wrong sign for the capital exponent."
+      ],
+      "missing_details": [
+        "Values for the exponents and the scale.",
+        "The fixed cost of housing and compensation."
+      ],
+      "assumptions": [
+        "Constant returns to scale.",
+        "Capital per person is constant.",
+        "Everyone maximizes benefit."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013733-SF",
+      "section": "4.3 Impact on Economy, Specific-Factor Model",
+      "family": "general-equilibrium",
+      "summary": "The receiving country has a high-end and a low-end industry, each Cobb-Douglas in labor and capital, with the price ratio fixed by the world market. Arrivals equal natives in labor quality and can enter either industry. In the short run capital is stuck, so extra labor shifts both industries' curves, output rises in both and the wage falls. In the long run factor ratios return to their original values, which pushes all the arrivals plus some capital into the low-end industry and shrinks the high-end one. Wages fall in both horizons.",
+      "computational_cost": "not-stated",
+      "purpose": "Show how an inflow changes wages and the two industries in the short and long run.",
+      "base_or_modification": "base",
+      "page": 19,
+      "inputs": [
+        "L_0",
+        "K_0",
+        "d_L"
+      ],
+      "outputs": [
+        "w_s",
+        "Q_h",
+        "Q_l"
+      ],
+      "handoff_outputs": [
+        "w_s"
+      ],
+      "objectives": [
+        "Sign the change in wages and in each industry's output at both horizons."
+      ],
+      "variables": [
+        {
+          "symbol": "L_0",
+          "normalized_name": "initial_labor",
+          "role": "input",
+          "unit": "count",
+          "definition": "Labor in the country before the arrivals",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K_0",
+          "normalized_name": "initial_capital",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Capital in the country, mobile only in the long run",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_L",
+          "normalized_name": "arriving_labor",
+          "role": "input",
+          "unit": "count",
+          "definition": "Labor added by the displaced population",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_r",
+          "normalized_name": "price_ratio",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "World relative price of the high-end good, fixed",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_s",
+          "normalized_name": "wage",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Wage, falling in both horizons",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_h",
+          "normalized_name": "high_end_output",
+          "role": "output",
+          "unit": "quantity",
+          "definition": "Output of the high-end industry, up in the short run and down in the long run",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_l",
+          "normalized_name": "low_end_output",
+          "role": "output",
+          "unit": "quantity",
+          "definition": "Output of the low-end industry, up in both horizons",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013733-SF-1",
+          "equation_label": "Two-sector output",
+          "equation_text": "Q_h = A_h * K_h^alpha_h * L_h^(1 - alpha_h); Q_l = A_l * K_l^alpha_l * L_l^(1 - alpha_l); prices fixed so marginal products equate across sectors",
+          "source_expression": "Q_h = A_h * K_h^alpha_h * L_h^(1 - alpha_h); Q_l = A_l * K_l^alpha_l * L_l^(1 - alpha_l); prices fixed so marginal products equate across sectors",
+          "normalized_latex": "Q_h = A_h K_h^{\\alpha_h} L_h^{1-\\alpha_h}",
+          "purpose": "Cobb-Douglas in each sector. Capital is fixed in the short run and mobile in the long run.",
+          "variable_symbols": [
+            "Q_h",
+            "Q_l",
+            "K_0",
+            "L_0"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The production functions are printed as images. The short-run and long-run results are argued through the figures and the prose rather than solved algebraically.",
+        "reason": "Section 4.3.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Both factors allocated across both industries at equilibrium before anyone arrives."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "World prices fixed. Short run: capital immobile. Long run: both factors mobile and factor ratios restored."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Wage and marginal products equate across industries at each horizon."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No estimation. The results are qualitative comparative statics.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Start from the integrated equilibrium, add labor with capital fixed, then let capital move until factor ratios return.",
+        "status": "implemented",
+        "steps": [
+          "State the initial equilibrium",
+          "Shift labor in the short run",
+          "Reallocate capital in the long run",
+          "Read off wages and output"
+        ],
+        "software": [],
+        "convergence_criteria": "Factor ratios back to their initial values in the long run."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Signs are derived: wage down always, both outputs up in the short run, low-end up and high-end down in the long run. No magnitudes."
+        ],
+        "analysis": "The direction of every effect is determined. Nothing is quantified."
+      },
+      "constraints": [
+        "Arrival labor matches native labor in quality.",
+        "Only two industries."
+      ],
+      "validation_refs": [
+        "Figure 13 initial equilibrium",
+        "Figure 14 short-run wage",
+        "Figure 15 short-run output",
+        "Figure 16 long-run factors",
+        "Figure 17 long-run output"
+      ],
+      "strengths": [
+        "The two horizons give opposite stories for the high-end industry, and both are kept.",
+        "The wage result is tied to a political consequence, local resentment."
+      ],
+      "limitations": [
+        "No numbers, so the size of the wage drop is unknown.",
+        "The production functions are not parameterized."
+      ],
+      "missing_details": [
+        "Factor shares for either industry.",
+        "The size of the inflow relative to the workforce."
+      ],
+      "assumptions": [
+        "World prices are fixed.",
+        "Arrivals can get jobs.",
+        "Capital cannot move in the short run."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2020-2013733-SL-1",
+      "model_id": "MU-F-2020-2013733-SL",
+      "page": 5,
+      "source_expression": "D(x) = D_0 * exp(-beta_d*x); D_0 = U_t / (0.1*A_t); 2*pi*integral of x*D(x) equals R_t"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-SL-2",
+      "model_id": "MU-F-2020-2013733-SL",
+      "page": 5,
+      "source_expression": "theta_t = v_s / slope; P_t = 2*pi*integral of D(x)*(radius - x) over the flooded ring"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-PE-1",
+      "model_id": "MU-F-2020-2013733-PE",
+      "page": 7,
+      "source_expression": "C_I = -0.03577*a_c + 0.2768*r_k + 1.021*w_p + 0.6917*p_m + 0.8679*c_o + 1.283*p_d + 5"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-PE-2",
+      "model_id": "MU-F-2020-2013733-PE",
+      "page": 7,
+      "source_expression": "p_e = 1 when C_I <= -2.825; p_e = 1.6559 - 1.160998*C_I between the thresholds; p_e = 0 when C_I > 3.3786"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-SC-1",
+      "model_id": "MU-F-2020-2013733-SC",
+      "page": 8,
+      "source_expression": "In boom the three draws are normal with mean 0.51 - 0.05*I_L; in stable, mean 0.5 - 0.1*I_L; in recession, mean 0.49 - 0.15*I_L; all with spread 0.05"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-DM-1",
+      "model_id": "MU-F-2020-2013733-DM",
+      "page": 12,
+      "source_expression": "Self-arranged if d_f > c_p + e_m + (2 - w_y)*w_y; planned if c_p + (2 - w_y)*w_y > d_f - e_m; delay if e_m < (1 - w_y)*(w_y - c_p)"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-MA-1",
+      "model_id": "MU-F-2020-2013733-MA",
+      "page": 13,
+      "source_expression": "beta_1 = 1 over the mean across six dimensions of squared score gap divided by variance; beta_2 likewise over seven standardized dimensions"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-MA-2",
+      "model_id": "MU-F-2020-2013733-MA",
+      "page": 14,
+      "source_expression": "I_m = 0.365*beta_1 + 0.277*beta_2 + 0.125*beta_3 + 0.233*beta_4"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-CH-1",
+      "model_id": "MU-F-2020-2013733-CH",
+      "page": 15,
+      "source_expression": "Y_i = K_i^alpha_y * E_i^(1 - alpha_y); C_i = k_f * K_i^gamma_c * E_i^beta_e"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-CH-2",
+      "model_id": "MU-F-2020-2013733-CH",
+      "page": 16,
+      "source_expression": "E_star = [(1 - alpha_y)/(beta_e*k_f)]^[1/(alpha_y + beta_e - 1)] * K_i^[(alpha_y - gamma_c)/(alpha_y + beta_e - 1)]"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013733-SF-1",
+      "model_id": "MU-F-2020-2013733-SF",
+      "page": 18,
+      "source_expression": "Q_h = A_h * K_h^alpha_h * L_h^(1 - alpha_h); Q_l = A_l * K_l^alpha_l * L_l^(1 - alpha_l); prices fixed so marginal products equate across sectors"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2020-2013733-SL",
+      "to_model_id": "MU-F-2020-2013733-DM",
+      "handoff": "The people counted as flooded are the ones who must choose among the three options"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013733-SC",
+      "to_model_id": "MU-F-2020-2013733-MA",
+      "handoff": "The culture-loss horizon is why the match rewards cultural similarity and clustering"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013733-MA",
+      "to_model_id": "MU-F-2020-2013733-SF",
+      "handoff": "The chosen destination is the country whose wages and industries the inflow then shifts"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013733-CH",
+      "to_model_id": "MU-F-2020-2013733-MA",
+      "handoff": "Separating the fee from the match is what makes the chosen area willing to accept people"
+    }
+  ]
+}

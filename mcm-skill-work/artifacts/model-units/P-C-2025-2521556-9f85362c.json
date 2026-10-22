@@ -1,0 +1,1610 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2025-2521556-9f85362c",
+  "problem_type": "C",
+  "year": "2025",
+  "source_sha256": "9f85362cc93e1dabc8533c137d676947188d1088932af6b7bb78fba08213cf54",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q273-001",
+      "page": 7,
+      "section": "5.1 TrueSkill Sports Performance Evaluation Model",
+      "family": "TrueSkill-style Gaussian skill rating",
+      "purpose": "Score each country in each traditional event before the 2028 forecast.",
+      "base_or_modification": "modification",
+      "summary": "Athletes are grouped by national team. Skill starts as a Gaussian draw, updates after each Olympics, and updates again after a gap. Match performance adds a team-size offset. Team performance is a time-weighted sum, then ranked. A two-case standard deviation and a team root-sum-square follow. The prose says the total variance is a sum of variances plus 2 beta squared.",
+      "variables": [
+        {
+          "symbol": "Skill_i",
+          "normalized_name": "athlete skill at a stated time",
+          "unit": "unspecified",
+          "definition": "athlete skill at a stated time",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m0",
+          "normalized_name": "initial skill mean",
+          "unit": "unspecified",
+          "definition": "initial skill mean",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v0",
+          "normalized_name": "initial skill variance",
+          "unit": "unspecified",
+          "definition": "initial skill variance",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "number of Olympics participated",
+          "unit": "unspecified",
+          "definition": "number of Olympics participated",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "skill-update scale",
+          "unit": "unspecified",
+          "definition": "skill-update scale",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "long-gap skill scale",
+          "unit": "unspecified",
+          "definition": "long-gap skill scale",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_i",
+          "normalized_name": "athlete performance in a match",
+          "unit": "unspecified",
+          "definition": "athlete performance in a match",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "teamOffset",
+          "normalized_name": "team-size offset",
+          "unit": "unspecified",
+          "definition": "team-size offset",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "game-randomness scale",
+          "unit": "unspecified",
+          "definition": "game-randomness scale",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_team",
+          "normalized_name": "team performance",
+          "unit": "unspecified",
+          "definition": "team performance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "timePlayed_i",
+          "normalized_name": "athlete participation time",
+          "unit": "unspecified",
+          "definition": "athlete participation time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_athlete",
+          "normalized_name": "athlete standard deviation",
+          "unit": "unspecified",
+          "definition": "athlete standard deviation",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_total",
+          "normalized_name": "total variance",
+          "unit": "unspecified",
+          "definition": "total variance",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "case-1 weight",
+          "unit": "unspecified",
+          "definition": "case-1 weight",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi_x",
+          "normalized_name": "density term in the case-1 weight",
+          "unit": "unspecified",
+          "definition": "density term in the case-1 weight",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Phi_x",
+          "normalized_name": "distribution term in the case-1 weight",
+          "unit": "unspecified",
+          "definition": "distribution term in the case-1 weight",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Delta_mu",
+          "normalized_name": "mean gap in the case-1 weight",
+          "unit": "unspecified",
+          "definition": "mean gap in the case-1 weight",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_team",
+          "normalized_name": "national-team standard deviation",
+          "unit": "unspecified",
+          "definition": "national-team standard deviation",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_player_i",
+          "normalized_name": "athlete standard deviation inside the team sum",
+          "unit": "unspecified",
+          "definition": "athlete standard deviation inside the team sum",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "m0",
+        "v0",
+        "timePlayed_i"
+      ],
+      "outputs": [
+        "Perf_team",
+        "sigma_team"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q273-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "Skill_i^{t0} ~ N(m0, v0)",
+          "normalized_latex": "\\mathrm{Skill}_{i}^{t_0}\\sim N(m_0,v_0)",
+          "purpose": "Initial skill draw.",
+          "variable_symbols": [
+            "Skill_i",
+            "m0",
+            "v0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-002",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "Skill_i^{t+L} ~ N(Skill_i^t, gamma^2); Skill_i^{t'} ~ N(Skill_i^t, tau^2 (t'-t)), where t' > t",
+          "normalized_latex": "\\mathrm{Skill}_{i}^{t+L}\\sim N(\\mathrm{Skill}_{i}^{t},\\gamma^{2});\\ \\mathrm{Skill}_{i}^{t'}\\sim N(\\mathrm{Skill}_{i}^{t},\\tau^{2}(t'-t)),\\ t'>t",
+          "purpose": "Two skill updates under one display number.",
+          "variable_symbols": [
+            "Skill_i",
+            "L",
+            "gamma",
+            "tau"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "Perf_i^t ~ N(skill_i^t + teamOffset(size of team), beta^2)",
+          "normalized_latex": "\\mathrm{Perf}_{i}^{t}\\sim N(\\mathrm{skill}_{i}^{t}+\\mathrm{teamOffset}(\\mathrm{size\\ of\\ team}),\\beta^{2})",
+          "purpose": "Match performance around skill plus a team-size offset.",
+          "variable_symbols": [
+            "Perf_i",
+            "Skill_i",
+            "teamOffset",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-004",
+          "page": 7,
+          "label": "(4)",
+          "source_expression": "Perf_team = sum_{i in team} (Perf_i * timePlayed_i / L)",
+          "normalized_latex": "\\mathrm{Perf}_{team}=\\sum_{i\\in team}\\frac{\\mathrm{Perf}_{i}\\cdot\\mathrm{timePlayed}_{i}}{L}",
+          "purpose": "Team performance as a time-weighted sum. The prose calls the weights proportional and does not name the division by L.",
+          "variable_symbols": [
+            "Perf_team",
+            "Perf_i",
+            "timePlayed_i",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-005",
+          "page": 7,
+          "label": "(5)",
+          "source_expression": "sigma_athlete = sqrt(sigma^2 (1 - sigma^2/v_total * w)) for case 1, with w = phi(x)/Phi(x) * (phi(x)/Phi(x) + Delta_mu/sqrt(v_total)); sigma_athlete = sqrt(sigma^2 + (tau * t)^2) for case 2",
+          "normalized_latex": "\\sigma_{athlete}=\\begin{cases}\\sqrt{\\sigma^{2}(1-\\frac{\\sigma^{2}}{v_{total}}w)},\\ w=\\frac{\\phi(x)}{\\Phi(x)}(\\frac{\\phi(x)}{\\Phi(x)}+\\frac{\\Delta\\mu}{\\sqrt{v_{total}}}) & \\text{case 1}\\\\ \\sqrt{\\sigma^{2}+(\\tau\\cdot t)^{2}} & \\text{case 2}\\end{cases}",
+          "purpose": "Two-case athlete standard deviation. Case 1 uses a weight the where-clause does not define.",
+          "variable_symbols": [
+            "sigma_athlete",
+            "v_total",
+            "w",
+            "phi_x",
+            "Phi_x",
+            "Delta_mu",
+            "tau"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q273-006",
+          "page": 8,
+          "label": "(6)",
+          "source_expression": "sigma_team = sqrt(sum_{i=1}^{n} sigma_player_i^2)",
+          "normalized_latex": "\\sigma_{team}=\\sqrt{\\sum_{i=1}^{n}\\sigma_{player,i}^{2}}",
+          "purpose": "Team standard deviation as an unweighted root sum of squares.",
+          "variable_symbols": [
+            "sigma_team",
+            "sigma_player_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (1) through (6) are printed. Display (2) holds two updates under one number."
+      },
+      "objectives": [
+        "Evaluate a country's performance and uncertainty in each event."
+      ],
+      "constraints": [
+        "Assumption 1 says performance in different sports does not affect each other.",
+        "Assumption 3 restricts each country to at most one medal per event."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The initial Skill is drawn from a Gaussian with mean m0 and variance v0."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The initial mean and variance are adjusted according to the actual results of that year. No numeric estimate is printed.",
+        "parameters": [
+          "m0",
+          "v0"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Group athletes by national team.",
+          "Draw and update skill.",
+          "Rank team performance in descending order.",
+          "Adjust the initial mean and variance to that year's results."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed."
+      },
+      "assumptions": [
+        "Assumption 2 treats athletes without medals as fourth-place finishers."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The ranking is said to determine medal winners. No fit statistic is printed in this section."
+      },
+      "handoff_outputs": [
+        "Perf_team",
+        "sigma_team"
+      ],
+      "validation_refs": [
+        "Figure 4 shows yearly performance for six named countries."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The section says we innovatively introduced the model.",
+        "Display (4) divides by L although the prose says proportional weights.",
+        "Display (5) case 1 is denser than its where-clause."
+      ],
+      "limitations": [
+        "The case-1 weight is not defined in the where-clause.",
+        "No software is named.",
+        "m0 and v0 numeric values are not printed."
+      ],
+      "missing_details": [
+        "Numeric values of m0, v0, gamma, tau, and beta.",
+        "A definition of the case-1 weight."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q273-002",
+      "page": 9,
+      "section": "5.2 SARIMAX-Bayesian Model: Predicting Future Medals",
+      "family": "SARIMAX forecast plus an Inverse-Gamma variance layer",
+      "purpose": "Predict 2028 performance and its standard deviation for traditional events.",
+      "base_or_modification": "hybrid",
+      "summary": "The target is donated as Perf_t. The host indicator is donated as Host_t and is the exogenous variable model use. Display (7) puts three component equations under one number and uses y in the AR and seasonal lines. Display (8) estimates gamma, which the Where clause does not define. Display (9) multiplies the host term by gamma_hat. Short series fall back to simple linear regression. Displays (10) through (12) put an Inverse-Gamma layer on the standard deviation. The prose attributes a standard deviation to the TrueSkill result.",
+      "variables": [
+        {
+          "symbol": "alpha",
+          "normalized_name": "SARIMAX constant",
+          "unit": "unspecified",
+          "definition": "SARIMAX constant",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_i",
+          "normalized_name": "autoregression coefficient",
+          "unit": "unspecified",
+          "definition": "autoregression coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_lag",
+          "normalized_name": "lagged target printed as y rather than Perf",
+          "unit": "unspecified",
+          "definition": "lagged target printed as y rather than Perf",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon_t",
+          "normalized_name": "current error",
+          "unit": "unspecified",
+          "definition": "current error",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_j",
+          "normalized_name": "moving-average coefficient",
+          "unit": "unspecified",
+          "definition": "moving-average coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi_k",
+          "normalized_name": "seasonal autoregression coefficient",
+          "unit": "unspecified",
+          "definition": "seasonal autoregression coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "seasonal upper limit",
+          "unit": "unspecified",
+          "definition": "seasonal upper limit",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s",
+          "normalized_name": "period of time",
+          "unit": "unspecified",
+          "definition": "period of time",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_t",
+          "normalized_name": "country performance on a typical event",
+          "unit": "unspecified",
+          "definition": "country performance on a typical event",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Host_t",
+          "normalized_name": "host-country indicator",
+          "unit": "unspecified",
+          "definition": "host-country indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_hat",
+          "normalized_name": "host coefficient, estimated but not defined in the Where clause",
+          "unit": "unspecified",
+          "definition": "host coefficient, estimated but not defined in the Where clause",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_hat",
+          "normalized_name": "predicted performance",
+          "unit": "unspecified",
+          "definition": "predicted performance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma2",
+          "normalized_name": "performance variance",
+          "unit": "unspecified",
+          "definition": "performance variance",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_T",
+          "normalized_name": "Inverse-Gamma shape after T observations",
+          "unit": "unspecified",
+          "definition": "Inverse-Gamma shape after T observations",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_T",
+          "normalized_name": "Inverse-Gamma scale after T observations",
+          "unit": "unspecified",
+          "definition": "Inverse-Gamma scale after T observations",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "mean inside the Inverse-Gamma update",
+          "unit": "unspecified",
+          "definition": "mean inside the Inverse-Gamma update",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_hat",
+          "normalized_name": "predicted standard deviation",
+          "unit": "unspecified",
+          "definition": "predicted standard deviation",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "game-randomness scale",
+          "unit": "unspecified",
+          "definition": "game-randomness scale",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Perf_t",
+        "Host_t",
+        "y_lag"
+      ],
+      "outputs": [
+        "Perf_hat",
+        "sigma_hat"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q273-007",
+          "page": 9,
+          "label": "(7)",
+          "source_expression": "Perf_t = alpha + sum_{i=1}^{p} beta_i y_{t-i}; Perf_t = epsilon_t + sum_{j=1}^{q} theta_j epsilon_{t-j}; Perf_t = sum_{k=1}^{S} phi_k y_{t-k*s}",
+          "normalized_latex": "\\mathrm{Perf}_{t}=\\alpha+\\sum_{i=1}^{p}\\beta_{i} y_{t-i};\\ \\mathrm{Perf}_{t}=\\epsilon_{t}+\\sum_{j=1}^{q}\\theta_{j}\\epsilon_{t-j};\\ \\mathrm{Perf}_{t}=\\sum_{k=1}^{S}\\phi_{k} y_{t-k\\cdot s}",
+          "purpose": "Three component equations under one display number. The AR and seasonal lines use y, not Perf.",
+          "variable_symbols": [
+            "Perf_t",
+            "alpha",
+            "beta_i",
+            "y_lag",
+            "epsilon_t",
+            "theta_j",
+            "phi_k",
+            "S",
+            "s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-008",
+          "page": 9,
+          "label": "(8)",
+          "source_expression": "beta_hat_i, theta_hat_j, phi_hat_k, gamma_hat = argmin sum_{t=1}^{T} (Perf_t - Perf_hat_t)^2",
+          "normalized_latex": "\\hat\\beta_{i},\\hat\\theta_{j},\\hat\\phi_{k},\\hat\\gamma=\\arg\\min\\sum_{t=1}^{T}(\\mathrm{Perf}_{t}-\\widehat{\\mathrm{Perf}}_{t})^{2}",
+          "purpose": "Joint least squares. Gamma is estimated here and is not in the Where clause.",
+          "variable_symbols": [
+            "beta_i",
+            "theta_j",
+            "phi_k",
+            "gamma_hat",
+            "Perf_t",
+            "Perf_hat"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-009",
+          "page": 9,
+          "label": "(9)",
+          "source_expression": "Perf_hat_{t+h} = alpha + sum_i beta_hat_i y_hat_{t+h-i} + sum_j theta_hat_j e_hat_{t+h-j} + sum_k phi_hat_k Perf_hat_{t+h-k*s} + Host_{t+h} gamma_hat",
+          "normalized_latex": "\\widehat{\\mathrm{Perf}}_{t+h}=\\alpha+\\sum_{i}\\hat\\beta_{i}\\hat y_{t+h-i}+\\sum_{j}\\hat\\theta_{j}\\hat e_{t+h-j}+\\sum_{k}\\hat\\phi_{k}\\widehat{\\mathrm{Perf}}_{t+h-k\\cdot s}+\\mathrm{Host}_{t+h}\\hat\\gamma",
+          "purpose": "Forecast equation. The AR term uses y_hat, the seasonal term uses Perf_hat, and the host term multiplies gamma_hat.",
+          "variable_symbols": [
+            "Perf_hat",
+            "alpha",
+            "beta_i",
+            "y_lag",
+            "theta_j",
+            "phi_k",
+            "Perf_t",
+            "Host_t",
+            "gamma_hat",
+            "s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-010",
+          "page": 9,
+          "label": "(10)",
+          "source_expression": "sigma^2 ~ InvGamma(alpha, beta)",
+          "normalized_latex": "\\sigma^{2}\\sim\\mathrm{InvGamma}(\\alpha,\\beta)",
+          "purpose": "Inverse-Gamma prior for the future variance.",
+          "variable_symbols": [
+            "sigma2",
+            "alpha",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-011",
+          "page": 9,
+          "label": "(11)",
+          "source_expression": "alpha_T = alpha_0 + T/2; beta_T = beta_0 + (1/2) sum_{t=1}^{T} (sigma_t^2 - mu)^2",
+          "normalized_latex": "\\alpha_{T}=\\alpha_{0}+T/2;\\ \\beta_{T}=\\beta_{0}+\\frac12\\sum_{t=1}^{T}(\\sigma_{t}^{2}-\\mu)^{2}",
+          "purpose": "Inverse-Gamma update. The prose says updaate.",
+          "variable_symbols": [
+            "alpha_T",
+            "beta_T",
+            "sigma2",
+            "mu",
+            "alpha",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-012",
+          "page": 9,
+          "label": "(12)",
+          "source_expression": "sigma_hat_{T+1}^2 = beta_T / (alpha_T - 1)",
+          "normalized_latex": "\\hat\\sigma_{T+1}^{2}=\\beta_{T}/(\\alpha_{T}-1)",
+          "purpose": "Predicted variance from the updated Inverse-Gamma parameters.",
+          "variable_symbols": [
+            "sigma_hat",
+            "beta_T",
+            "alpha_T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (7) through (12) are printed. Display (7) is three equations under one label."
+      },
+      "objectives": [
+        "Predict the 2028 performance level and its standard deviation."
+      ],
+      "constraints": [
+        "The host factor enters only as the exogenous term.",
+        "Short series use simple linear regression instead of SARIMAX."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares on the SARIMAX coefficients, then an Inverse-Gamma update for the variance. No numeric coefficient is printed.",
+        "parameters": [
+          "alpha",
+          "beta_i",
+          "theta_j",
+          "phi_k",
+          "gamma_hat"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Process the AR part.",
+          "Process the MA part.",
+          "Capture periodic patterns through seasonal auto-regression coefficients.",
+          "Fit by minimizing the sum of squared residuals.",
+          "Aggregate all parts and predict.",
+          "Update the Inverse-Gamma parameters."
+        ],
+        "software": [],
+        "convergence_criteria": "The printed criterion is the sum of squared residuals."
+      },
+      "assumptions": [
+        "The host country factor was considered in this step."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The section says SARIMAX performs very inaccurately on small datasets. No numeric fit is printed here."
+      },
+      "handoff_outputs": [
+        "Perf_hat",
+        "sigma_hat"
+      ],
+      "validation_refs": [
+        "Figure 6 and Figure 7 are heatmaps of predicted performance and predicted standard deviation."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "donated is printed twice.",
+        "model use has no verb agreement.",
+        "Gamma is estimated and not defined.",
+        "The AR line uses y and the forecast seasonal line uses Perf."
+      ],
+      "limitations": [
+        "No numeric SARIMAX order is printed.",
+        "No software is named.",
+        "The linear-regression fallback has no equation."
+      ],
+      "missing_details": [
+        "Numeric p, d, q, and seasonal order.",
+        "A definition of gamma.",
+        "The linear-regression equation."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q273-003",
+      "page": 10,
+      "section": "5.3 Random Forest Model: Predicting Medals in New Events",
+      "family": "random-forest regression",
+      "purpose": "Predict medal counts in events that have no TrueSkill history.",
+      "base_or_modification": "base",
+      "summary": "New events are called uncertain and independent, so TrueSkill and SARIMAX are rejected. The forest is defined as many trees averaged. Inputs are medal totals in new and traditional events, host medals in both, and other countries' medals. The test table prints three host MAE values and no MSE. The 2028 traditional-event predictions are then used as inputs.",
+      "variables": [
+        {
+          "symbol": "MAE_host_gold",
+          "normalized_name": "host-gold mean absolute error",
+          "unit": "unspecified",
+          "definition": "host-gold mean absolute error",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MAE_host_silver",
+          "normalized_name": "host-silver mean absolute error",
+          "unit": "unspecified",
+          "definition": "host-silver mean absolute error",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MAE_host_bronze",
+          "normalized_name": "host-bronze mean absolute error",
+          "unit": "unspecified",
+          "definition": "host-bronze mean absolute error",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "medal_new",
+          "normalized_name": "predicted medals in a new event",
+          "unit": "unspecified",
+          "definition": "predicted medals in a new event",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_hat",
+          "normalized_name": "predicted performance",
+          "unit": "unspecified",
+          "definition": "predicted performance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Perf_hat"
+      ],
+      "outputs": [
+        "medal_new",
+        "MAE_host_gold"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "No forest equation is printed. Table 2 prints MAE only."
+      },
+      "objectives": [
+        "Predict the number of medals in new events."
+      ],
+      "constraints": [
+        "New events are not passed through TrueSkill or SARIMAX."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The best-performing parameters are selected. The printed test errors are MAE 0.1988, 0.3460, and 0.2784.",
+        "parameters": [
+          "0.1988",
+          "0.3460",
+          "0.2784"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Determine the input variables.",
+          "Fit the forest.",
+          "Select the best-performing parameters.",
+          "Predict 2028 new-event medals from the traditional-event predictions."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed."
+      },
+      "assumptions": [
+        "Assumption 1 says events do not affect each other. The forest inputs still mix new and traditional medal totals."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The prose says the model does have a certain degree of accuracy. MSE is named and not printed."
+      },
+      "handoff_outputs": [
+        "medal_new"
+      ],
+      "validation_refs": [
+        "Table 2."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The body says random forest and the heading says Random Forest.",
+        "MSE is named and absent from the table."
+      ],
+      "limitations": [
+        "No tree count, depth, or forest equation.",
+        "MSE is not printed.",
+        "No software is named."
+      ],
+      "missing_details": [
+        "Forest hyperparameters.",
+        "The MSE value."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q273-004",
+      "page": 11,
+      "section": "5.4 Model Aggregation",
+      "family": "interval aggregation by swapped extremes",
+      "purpose": "Add traditional and new medal counts, then build a worst-case and a best-case table.",
+      "base_or_modification": "paper-specific",
+      "summary": "Medal counts from the two event classes are added. The interval uses Pref, not Perf, and says the actual value will always lie within three standard deviations. The worst case pairs one country's minimum with every other country's maximum. Both extremes are then called Prefextreme. The close says the two medal table, singular.",
+      "variables": [
+        {
+          "symbol": "Pref",
+          "normalized_name": "predicted performance, printed Pref rather than Perf",
+          "unit": "unspecified",
+          "definition": "predicted performance, printed Pref rather than Perf",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Prefmin",
+          "normalized_name": "worst performance",
+          "unit": "unspecified",
+          "definition": "worst performance",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Prefmax",
+          "normalized_name": "best performance",
+          "unit": "unspecified",
+          "definition": "best performance",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Prefextreme",
+          "normalized_name": "coined name for both extremes",
+          "unit": "unspecified",
+          "definition": "coined name for both extremes",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "medal_low",
+          "normalized_name": "worst-case medal count",
+          "unit": "unspecified",
+          "definition": "worst-case medal count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "medal_high",
+          "normalized_name": "best-case medal count",
+          "unit": "unspecified",
+          "definition": "best-case medal count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_hat",
+          "normalized_name": "predicted standard deviation",
+          "unit": "unspecified",
+          "definition": "predicted standard deviation",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Pref",
+        "sigma_hat"
+      ],
+      "outputs": [
+        "medal_low",
+        "medal_high"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The interval rule is stated in prose. No display number is printed."
+      },
+      "objectives": [
+        "Produce a medal table with prediction intervals."
+      ],
+      "constraints": [
+        "The interval is fixed at three standard deviations.",
+        "The worst case sets every other country to its maximum."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated in this section.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Add traditional and new medal counts.",
+          "Take the three-standard-deviation band.",
+          "Reorder under the worst case and the best case.",
+          "Combine the two tables."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed."
+      },
+      "assumptions": [
+        "The normal draw is taken from Section 5.1 and written Pref."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Section 5.5 says the 2024 actual values generally fall within the predicted intervals. No coverage count is printed."
+      },
+      "handoff_outputs": [
+        "medal_low",
+        "medal_high"
+      ],
+      "validation_refs": [
+        "Figure 8 compares the 2024 intervals with the actual values."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "Pref stands beside Perf.",
+        "will always lie within is stronger than the later generally.",
+        "medal table stays singular."
+      ],
+      "limitations": [
+        "No coverage count.",
+        "No display number for the interval rule."
+      ],
+      "missing_details": [
+        "A count of how many 2024 results fell inside the interval."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q273-005",
+      "page": 13,
+      "section": "6.2 First Ever Medal and 6.3 Task 1.3",
+      "family": "Monte Carlo medal probability plus sport-score normalization",
+      "purpose": "Estimate how many never-medaled countries win, then rank sports inside a country.",
+      "base_or_modification": "paper-specific",
+      "summary": "Never-medaled countries are sampled from a normal performance. A top-three rank is considered a medal. Display (14) is a frequency. Display (15) is a weighted sum that the prose calls the multiplication rule. Table 3 peaks at 2 countries with probability 0.25. The prose then says the expectation is 2.67 and, according to probability theory, two countries with probability 0.24. The summary says 0.25 and 2 countries. Displays (16) and (17) normalize event scores and average them by sport. A larger sport score is called more important, while a smaller rank is called better.",
+      "variables": [
+        {
+          "symbol": "P_j_E",
+          "normalized_name": "simulated medal probability for country j in event E",
+          "unit": "unspecified",
+          "definition": "simulated medal probability for country j in event E",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_j",
+          "normalized_name": "number of simulated medal wins",
+          "unit": "unspecified",
+          "definition": "number of simulated medal wins",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "number of simulation draws",
+          "unit": "unspecified",
+          "definition": "number of simulation draws",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_k",
+          "normalized_name": "event weight in the average",
+          "unit": "unspecified",
+          "definition": "event weight in the average",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_j_medal",
+          "normalized_name": "weighted medal probability across events",
+          "unit": "unspecified",
+          "definition": "weighted medal probability across events",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_prime",
+          "normalized_name": "min-max normalized performance",
+          "unit": "unspecified",
+          "definition": "min-max normalized performance",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_sport",
+          "normalized_name": "average normalized performance in a sport",
+          "unit": "unspecified",
+          "definition": "average normalized performance in a sport",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_ij",
+          "normalized_name": "rank of a country in an event",
+          "unit": "unspecified",
+          "definition": "rank of a country in an event",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Perf_i",
+          "normalized_name": "athlete performance in a match",
+          "unit": "unspecified",
+          "definition": "athlete performance in a match",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "mean inside the Inverse-Gamma update",
+          "unit": "unspecified",
+          "definition": "mean inside the Inverse-Gamma update",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma2",
+          "normalized_name": "performance variance",
+          "unit": "unspecified",
+          "definition": "performance variance",
+          "role": "state",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Perf_i",
+        "N_j",
+        "N"
+      ],
+      "outputs": [
+        "P_j_medal",
+        "Perf_sport"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q273-013",
+          "page": 13,
+          "label": "(13)",
+          "source_expression": "Perf_j ~ N(mu_j, sigma_j^2)",
+          "normalized_latex": "\\mathrm{Perf}_{j}\\sim N(\\mu_{j},\\sigma_{j}^{2})",
+          "purpose": "Monte Carlo draw for a never-medaled country.",
+          "variable_symbols": [
+            "Perf_i",
+            "mu",
+            "sigma2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q273-014",
+          "page": 14,
+          "label": "(14)",
+          "source_expression": "P_j(E) = N_j / N",
+          "normalized_latex": "P_{j}(E)=N_{j}/N",
+          "purpose": "Medal probability as a win frequency.",
+          "variable_symbols": [
+            "P_j_E",
+            "N_j",
+            "N"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-015",
+          "page": 14,
+          "label": "(15)",
+          "source_expression": "P_j(medal) = sum_{k=1}^{m} w_k P_j(E_k)",
+          "normalized_latex": "P_{j}(\\mathrm{medal})=\\sum_{k=1}^{m} w_{k} P_{j}(E_{k})",
+          "purpose": "Weighted average across events. The prose calls this the multiplication rule.",
+          "variable_symbols": [
+            "P_j_medal",
+            "w_k",
+            "P_j_E"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-016",
+          "page": 14,
+          "label": "(16)",
+          "source_expression": "Perf'_ij = (Perf_ij - min_j Perf_ij) / (max_j Perf_ij - min_j Perf_ij)",
+          "normalized_latex": "\\mathrm{Perf}'_{ij}=\\frac{\\mathrm{Perf}_{ij}-\\min_{j}\\mathrm{Perf}_{ij}}{\\max_{j}\\mathrm{Perf}_{ij}-\\min_{j}\\mathrm{Perf}_{ij}}",
+          "purpose": "Min-max normalization. A smaller rank is said to indicate better performance, while a larger normalized score is later called better.",
+          "variable_symbols": [
+            "Perf_prime",
+            "Perf_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-017",
+          "page": 14,
+          "label": "(17)",
+          "source_expression": "Perf_i^{Sport_k} = (1/q) sum_{j=1}^{q} Perf'_{ijk}",
+          "normalized_latex": "\\mathrm{Perf}_{i}^{Sport_{k}}=\\frac{1}{q}\\sum_{j=1}^{q}\\mathrm{Perf}'_{ijk}",
+          "purpose": "Sport score as the average of its event scores.",
+          "variable_symbols": [
+            "Perf_sport",
+            "Perf_prime"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (13) through (17) are printed. Display (13) was read through a watermark and is medium confidence."
+      },
+      "objectives": [
+        "Predict first medals for countries that have never won one, and name the most important sports."
+      ],
+      "constraints": [
+        "A top-three rank is treated as a medal.",
+        "Each country still has at most one medal per event."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The probabilities are simulation frequencies. No parameter fit is printed.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Draw performance for every country in the event.",
+          "Count top-three finishes.",
+          "Average event probabilities with weights.",
+          "Normalize event scores and average them by sport."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed. The draw count N is not given."
+      },
+      "assumptions": [
+        "Assumption 2 places non-medal athletes at fourth."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "AND and SOL are named as predicted first-medal countries. No hold-out check is printed for the Monte Carlo."
+      },
+      "handoff_outputs": [
+        "P_j_medal",
+        "Perf_sport"
+      ],
+      "validation_refs": [
+        "Table 3.",
+        "Figure 12 heatmap.",
+        "Figure 13 and Figure 14 host-share charts."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The weighted sum is called the multiplication rule.",
+        "0.25, 0.24, and 2.67 all stand.",
+        "larger score and smaller rank are both called better."
+      ],
+      "limitations": [
+        "The simulation count is not printed.",
+        "The event weights are not printed.",
+        "Display (13) symbols were watermarked."
+      ],
+      "missing_details": [
+        "The number of Monte Carlo draws.",
+        "The event weights w_k."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q273-006",
+      "page": 17,
+      "section": "7 Task 2: Great Coach Effect",
+      "family": "VARMAX residual screen plus an LR-SCAD medal regression",
+      "purpose": "Find coach anomalies, then price the coach term in medal counts.",
+      "base_or_modification": "hybrid",
+      "summary": "Four variables are screened. VARMAX is fit by maximum likelihood. A Mahalanobis distance past the .95 percentile and a CUSUM past 3 standard deviations are joined by a union. Lang Ping and Bela Karolyi are said to have anomalies in the years they coached. The medal regression keeps a coach coefficient that is still non-zero after SCAD selection. No penalty formula is printed. The contribution is a sum over events. USA is told to hire for Rowing, Fencing, and Canoeing, adding 0.8 medals. SWE is told Table Tennis, adding 0.9. CHN is told Football, adding 1.",
+      "variables": [
+        {
+          "symbol": "Y_t",
+          "normalized_name": "response vector",
+          "unit": "unspecified",
+          "definition": "response vector",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_i",
+          "normalized_name": "autoregressive coefficient matrix",
+          "unit": "unspecified",
+          "definition": "autoregressive coefficient matrix",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_t",
+          "normalized_name": "exogenous variable",
+          "unit": "unspecified",
+          "definition": "exogenous variable",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "exogenous coefficient matrix",
+          "unit": "unspecified",
+          "definition": "exogenous coefficient matrix",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon_t",
+          "normalized_name": "white-noise error",
+          "unit": "unspecified",
+          "definition": "white-noise error",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_i2",
+          "normalized_name": "squared Mahalanobis distance",
+          "unit": "unspecified",
+          "definition": "squared Mahalanobis distance",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sigma_inv",
+          "normalized_name": "inverse covariance",
+          "unit": "unspecified",
+          "definition": "inverse covariance",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_t",
+          "normalized_name": "cumulative sum of squared residuals",
+          "unit": "unspecified",
+          "definition": "cumulative sum of squared residuals",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_res",
+          "normalized_name": "mean of the residuals",
+          "unit": "unspecified",
+          "definition": "mean of the residuals",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_ik",
+          "normalized_name": "medal count of country i in event k",
+          "unit": "unspecified",
+          "definition": "medal count of country i in event k",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_coach",
+          "normalized_name": "coach-effect coefficient",
+          "unit": "unspecified",
+          "definition": "coach-effect coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Coach_ik",
+          "normalized_name": "coach-effect variable",
+          "unit": "unspecified",
+          "definition": "coach-effect variable",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Contribution",
+          "normalized_name": "summed coach contribution",
+          "unit": "unspecified",
+          "definition": "summed coach contribution",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Y_t",
+        "X_t",
+        "Coach_ik"
+      ],
+      "outputs": [
+        "D_i2",
+        "S_t",
+        "Contribution"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q273-018",
+          "page": 17,
+          "label": "(18)",
+          "source_expression": "Y_t = A_1 Y_{t-1} + A_2 Y_{t-2} + ... + A_p Y_{t-p} + B X_t + epsilon_t",
+          "normalized_latex": "Y_{t}=A_{1}Y_{t-1}+A_{2}Y_{t-2}+\\cdots+A_{p}Y_{t-p}+BX_{t}+\\epsilon_{t}",
+          "purpose": "VARMAX mean equation. The where-clause calls A_i the autoregressive coefficient matrix and also calls X_t the exogenous variable shown above.",
+          "variable_symbols": [
+            "Y_t",
+            "A_i",
+            "X_t",
+            "B",
+            "epsilon_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-019",
+          "page": 17,
+          "label": "(19)",
+          "source_expression": "D_i^2 = (epsilon_i^T Sigma^{-1} epsilon_i)",
+          "normalized_latex": "D_{i}^{2}=(\\epsilon_{i}^{\\top}\\Sigma^{-1}\\epsilon_{i})",
+          "purpose": "Squared Mahalanobis distance. The threshold is the .95 percentile.",
+          "variable_symbols": [
+            "D_i2",
+            "epsilon_t",
+            "Sigma_inv"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-020",
+          "page": 17,
+          "label": "(20)",
+          "source_expression": "S_t = sum_{i=1}^{t} (epsilon_i^2 - mu)",
+          "normalized_latex": "S_{t}=\\sum_{i=1}^{t}(\\epsilon_{i}^{2}-\\mu)",
+          "purpose": "CUSUM of squared residuals. The threshold is 3 times the standard deviation. The display subtracts mu inside the same parentheses as the square.",
+          "variable_symbols": [
+            "S_t",
+            "epsilon_t",
+            "mu_res"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-021",
+          "page": 18,
+          "label": "(21)",
+          "source_expression": "y_ik = beta_0 + beta_1 x_ik1 + ... + beta_n x_ikn + beta_coach Coach_ik + epsilon_ik",
+          "normalized_latex": "y_{ik}=\\beta_{0}+\\beta_{1}x_{ik1}+\\cdots+\\beta_{n}x_{ikn}+\\beta_{coach}\\mathrm{Coach}_{ik}+\\epsilon_{ik}",
+          "purpose": "Medal regression with a coach term. No SCAD penalty is printed.",
+          "variable_symbols": [
+            "y_ik",
+            "beta_coach",
+            "Coach_ik",
+            "epsilon_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q273-022",
+          "page": 19,
+          "label": "(22)",
+          "source_expression": "Contribution = sum_{k=1}^{n} beta_coach,k * Coach_ik",
+          "normalized_latex": "\\mathrm{Contribution}=\\sum_{k=1}^{n}\\beta_{coach,k}\\cdot\\mathrm{Coach}_{ik}",
+          "purpose": "Coach contribution summed over events.",
+          "variable_symbols": [
+            "Contribution",
+            "beta_coach",
+            "Coach_ik"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (18) through (22) are printed. The SCAD penalty is not printed."
+      },
+      "objectives": [
+        "Estimate the coach contribution to medal counts and name three investments."
+      ],
+      "constraints": [
+        "Significant means non-zero after selection.",
+        "The two anomaly rules are combined by a union."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Maximum likelihood for VARMAX. SCAD selection for the medal regression. No coefficient other than the three medal gains is printed.",
+        "parameters": [
+          "0.8",
+          "0.9",
+          "1"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Fit VARMAX.",
+          "Flag Mahalanobis outliers and CUSUM shift points.",
+          "Take the union.",
+          "Select coach terms with SCAD.",
+          "Sum the contributions.",
+          "Pick the sport with the highest benefit for each of three NOCs."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed. The anomaly rules are the .95 percentile and 3 standard deviations."
+      },
+      "assumptions": [
+        "The coach is called an unknown variable."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The named coaches are said to confirm the hypothesis. No hold-out error is printed for the regression."
+      },
+      "handoff_outputs": [
+        "Contribution"
+      ],
+      "validation_refs": [
+        "Figure 16 anomaly information.",
+        "Figure 17 coach contribution.",
+        "Figure 18 sport-level effects."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The where-clause of display (18) assigns the exogenous role to both X_t and the term shown above.",
+        "Display (20) writes the square and the subtraction in one parenthesis.",
+        "No SCAD penalty is printed.",
+        "Significant is defined as non-zero."
+      ],
+      "limitations": [
+        "No penalty formula.",
+        "No regression coefficient other than the three medal gains.",
+        "No software."
+      ],
+      "missing_details": [
+        "The SCAD penalty formula.",
+        "The fitted coach coefficients other than the three reported medal gains."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q273-001",
+      "to_model_id": "MU-C-Q273-002",
+      "handoff": "Yearly Performance and its team standard deviation enter the SARIMAX forecast."
+    },
+    {
+      "from_model_id": "MU-C-Q273-002",
+      "to_model_id": "MU-C-Q273-003",
+      "handoff": "Traditional-event medal predictions for 2028 are used as forest inputs."
+    },
+    {
+      "from_model_id": "MU-C-Q273-002",
+      "to_model_id": "MU-C-Q273-004",
+      "handoff": "Predicted performance and its standard deviation form the three-standard-deviation band."
+    },
+    {
+      "from_model_id": "MU-C-Q273-003",
+      "to_model_id": "MU-C-Q273-004",
+      "handoff": "New-event medal counts are added to traditional-event medal counts."
+    },
+    {
+      "from_model_id": "MU-C-Q273-001",
+      "to_model_id": "MU-C-Q273-005",
+      "handoff": "Event performance draws feed the first-medal simulation and the sport score."
+    },
+    {
+      "from_model_id": "MU-C-Q273-001",
+      "to_model_id": "MU-C-Q273-006",
+      "handoff": "Event performance is one of the four variables in the residual screen."
+    }
+  ]
+}

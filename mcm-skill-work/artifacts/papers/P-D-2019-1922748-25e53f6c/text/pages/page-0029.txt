@@ -1,0 +1,46 @@
+Stairs
+
+function [Graph Stairs] = Stairs(Stairs width, Stairs density, ac)
+v = 1 - 0.266.*1.08.*Stairs density;
+Graph Stairs = v.*ac.*Stairs width.*Stairs density;
+end
+
+Main
+
+function[Max ﬂow, Flow, Remain, Time] = Main(G,ac)%Stairs width, Stairs density, Chan-
+nel width, Channel density, Graph enter,
+Graph exit, ac)%, Emergency)
+Graph = G;%Channel(Channel width, Channel density, ac) + Stairs(Stairs width, Stairs density,
+ac) + Graph enter +
+(Graph exit./5.*ac);
+ROW = length(Graph);
+Graph(2:ROW,:) = Graph(2:ROW,:).*ac./5;
+Total = sum(Graph(1,:))
+% Emergency situation
+% Only leaving is allowed
+% Use this section by uncommenting all about this
+%{
+if ∼isempty(Emergency)
+Graph(2:ROW,Emergency) = 0;
+Ge = Graph;
+t = [];
+for i = 1:length(Emergency)
+v = sum(Graph(Emergency(i),:),2);
+t = [t, ac*Graph(1,Emergency(i))/v];
+end
+Graph(1, Emergency) = 0;
+Graph(Emergency, :) = 0;
+end
+%}
+i = 0;
+Max ﬂow = [];
+Flow = zeros(ROW, ROW, 1);
+Remain = zeros(ROW, ROW, 1);
+while Total¿0.5
+i = i+1;
+mf = 0;
+%{
+if ∼isempty(Emergency)
+for j = 1:length(Emergency)
+if i*ac-t(j)¡ac
+Graph(1,:) = Graph(1,:) + Ge(Emergency(j),:).*(min(t(j),i*ac)-i*ac+ac)./ac;

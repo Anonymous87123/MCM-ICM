@@ -1,0 +1,117 @@
+     Team # 64486                                                           Page 29 of 33
+
+158       %retire num_tx for the sake of avoiding duplicaton of variable’s
+
+159       %name
+
+160       if (database(id,2)>age_retire &&database(id,14)==1)
+
+161            database(id,14)=0;
+
+162            num_tx(t)=num_tx(t)+1;
+
+163       end
+
+164       %-----------------------------------------------
+
+165  end
+
+166  %===============================================
+
+167  %marrige and child generate
+
+168  %-----------------------------------------------
+
+169  %find target list
+
+170  temp=0;
+
+171  temp=find(database(:,12)==1);
+
+172  malistmale=temp(find(database(temp(:,1),3)==1),1);
+
+173  [temp_row,temp_col]=size(malistmale);
+
+174  num_ls_male=temp_row;
+
+175
+
+176  temp=0;
+
+177  temp=find(database(:,12)==1);
+
+178  malistfemale=temp(find(database(temp(:,1),3)==2),1);
+
+179  [temp_row,temp_col]=size(malistfemale);
+
+180  num_ls_female=temp_row;
+
+181  num_mar=min([num_ls_male,num_ls_female]);
+
+182  if num_mar>0
+
+183       %-----------------------------------------------
+
+184       %distance calculation
+
+185       mal_eco=database(malistmale(:,1),10);
+
+186       fem_eco=database(malistfemale(:,1),10);
+
+187       mal_age=database(malistmale(:,1),2);
+
+188       fem_age=database(malistfemale(:,1),2);
+
+189       for i=1:num_ls_male
+
+190                for j=1:num_ls_female
+
+191                     distance(i,j)=sqrt((mal_eco(i)-fem_eco(j))ˆ2+(mal_age(i)-fem_age(j))
+
+                             ˆ2);
+
+192                end
+
+193       end
+
+194       distance=distance/(max(max(distance)));
+
+195       for i=1:num_ls_male
+
+196                for j=1:num_ls_female
+
+197                     mar_p(i,j)=1-distance(i,j);
+
+198                end
+
+199       end
+
+200       %find partner
+
+201       while max(max(mar_p))˜=0
+
+202                [mar_row,mar_col]=find(mar_p==max(max(mar_p)));
+
+203                temp_rand=rand();
+
+204                if temp_rand>mar_p(mar_row,mar_col)
+
+205                     %marrige
+
+206                     [temp_row,temp_col]=size(mar_row);
+
+207                     if temp_row>1
+
+208                          mar_row=mar_row(1);
+
+209                          mar_col=mar_col(1);
+
+210                     end
+
+211                     mar_p(mar_row,:)=0;
+
+212                     mar_p(:,mar_col)=0;
+
+213                     temp_rand=rand();
+
+214                     if temp_rand<0.33%one child

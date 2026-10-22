@@ -1,0 +1,59 @@
+                                                               Team 68942  Page 26 of 36
+
+   setup-globals
+   setup-zones
+   setup-decor
+   let i 0
+   let t num-precheck-id + num-normal-id
+   create-officers t[
+
+      set shape "Officer"
+      set patters false
+      set id i
+      set i i + 1
+      set color 27
+      set size 2.5
+      setxy (id * (60 / t)) mod 60 + ((60 / t) / 2) 45
+      ifelse id < num-precheck-id[
+
+         set which-queue 0
+      ][
+
+         set which-queue 1
+      ]
+   ]
+   set i 0
+   create-officers 1[
+      set shape "Officer"
+      set patters true
+      set color 27
+      set size 2.5
+      setxy (i * 3) + 41 3
+      set which-queue i
+      set i i + 1
+   ]
+   set birth-per-10m []
+   set death-per-10m []
+end
+
+to go
+   if ticks mod 600 = 0[
+      set birth-per-10m lput 0 birth-per-10m
+      set death-per-10m lput 0 death-per-10m
+   ]
+   if ticks = 0[make-passenger]
+   if random 100 < gen-prob and ticks < 3600[make-passenger]
+   increment-queues ;; each officer calls the front of the queue
+   if count passengers = 0[
+      process-data
+      stop
+   ]
+   ask passengers[
+      set is-waiting true
+      if stage = 0 and walking-time = int(2 * speed-factor)[
+         set walking false
+         set is-waiting false
+      ]
+      if stage = 1 and walking-time = int(3 * speed-factor)[
+         set walking false
+         set stage 2

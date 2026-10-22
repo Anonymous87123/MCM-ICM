@@ -1,0 +1,991 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2418251-0c8c04e5",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "0c8c04e5e2ba966c152527a0c2cada1ab08943bdb748222da1a9456784e38d92",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q252-001",
+      "page": 5,
+      "section": "3.1 The RNN winning probability",
+      "family": "recurrent neural network for the game win probability",
+      "purpose": "Give each game a win probability that remembers the previous game, separately for serving and receiving.",
+      "base_or_modification": "base",
+      "summary": "Serving and receiving are split because the server wins more often. The server's inputs are the single-serve rate, the killing-shot rate, and the error rate, each a count divided by a count. The receiver replaces the single-serve rate with the break-of-serve rate. A plain network is refused because its output depends only on the current input, and the RNN is kept because the hidden state carries the previous moment, which the paper compares to a memory unit and to a chain that is not broken. The loss is the mean of the squared gaps. The fit is run in MATLAB on Djokovic's games in the final. Serving reaches a mean squared error of 0.012922 and an R-squared of 0.56119. Receiving reaches 0.017458 and 0.66442.",
+      "variables": [
+        {
+          "symbol": "t",
+          "normalized_name": "balls",
+          "unit": "1",
+          "definition": "The total number of balls in a single game.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tf",
+          "normalized_name": "first serves",
+          "unit": "1",
+          "definition": "The number of successful first serves.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X1",
+          "normalized_name": "single-serve rate",
+          "unit": "1",
+          "definition": "The first serves divided by the balls.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tace",
+          "normalized_name": "aces",
+          "unit": "1",
+          "definition": "The number of aces.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tw",
+          "normalized_name": "winners",
+          "unit": "1",
+          "definition": "The number of winning points.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X2",
+          "normalized_name": "killing-shot rate",
+          "unit": "1",
+          "definition": "The killing-shot rate, defined in the same way as the single-serve rate.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tuf",
+          "normalized_name": "unforced errors",
+          "unit": "1",
+          "definition": "The number of unforced errors.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X3",
+          "normalized_name": "error rate",
+          "unit": "1",
+          "definition": "The error rate. The printed fraction is crossed with the killing-shot line.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xt",
+          "normalized_name": "input vector",
+          "unit": "1",
+          "definition": "The input feature at time t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ht",
+          "normalized_name": "hidden state",
+          "unit": "1",
+          "definition": "The hidden layer state at time t.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wih",
+          "normalized_name": "input weights",
+          "unit": "1",
+          "definition": "The weight matrix from the input layer to the hidden layer.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Whh",
+          "normalized_name": "recurrent weights",
+          "unit": "1",
+          "definition": "The weight matrix from the hidden layer to itself.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bh",
+          "normalized_name": "hidden bias",
+          "unit": "1",
+          "definition": "The bias vector for the hidden layer.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Who",
+          "normalized_name": "output weights",
+          "unit": "1",
+          "definition": "The weight matrix from the hidden layer to the output layer.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "output bias",
+          "unit": "1",
+          "definition": "The bias vector for the output layer, printed as b0.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yt",
+          "normalized_name": "predicted rate",
+          "unit": "1",
+          "definition": "The winning probability the network emits.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhat",
+          "normalized_name": "predicted series",
+          "unit": "1",
+          "definition": "The predicted output series.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "actual series",
+          "unit": "1",
+          "definition": "The actual winning rate.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "loss",
+          "unit": "1",
+          "definition": "The mean of the squared gaps.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tbreak",
+          "normalized_name": "breaks",
+          "unit": "1",
+          "definition": "The number of successful breaks of serve.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tb",
+          "normalized_name": "break points faced",
+          "unit": "1",
+          "definition": "The number of times a breakpoint is reached.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X4",
+          "normalized_name": "break rate",
+          "unit": "1",
+          "definition": "The breaks divided by the break points faced.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t",
+        "tf",
+        "tace",
+        "tw",
+        "tuf",
+        "Xt",
+        "y",
+        "tbreak",
+        "tb"
+      ],
+      "outputs": [
+        "yt"
+      ],
+      "handoff_outputs": [
+        "yt"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q252-001",
+          "page": 5,
+          "label": "(1)",
+          "source_expression": "X1 = tf / t",
+          "normalized_latex": "X_1=t_f/t",
+          "purpose": "The single-serve rate.",
+          "variable_symbols": [
+            "X1",
+            "tf",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q252-002",
+          "page": 5,
+          "label": "(2)",
+          "source_expression": "X3 = tace / tw",
+          "normalized_latex": "X_3=t_{\\mathrm{ace}}/t_w",
+          "purpose": "The printed fraction. The killing-shot rate and the error rate are crossed on the line.",
+          "variable_symbols": [
+            "X3",
+            "tace",
+            "tw"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q252-003",
+          "page": 5,
+          "label": "(5)",
+          "source_expression": "ht = f(Wih Xt + Whh ht-1 + bh)",
+          "normalized_latex": "h_t=f(W_{ih}X_t+W_{hh}h_{t-1}+b_h)",
+          "purpose": "The hidden state, fed by the current input and the previous state.",
+          "variable_symbols": [
+            "ht",
+            "Wih",
+            "Xt",
+            "Whh",
+            "bh"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q252-004",
+          "page": 5,
+          "label": "(6)",
+          "source_expression": "yt = Who ht + b0",
+          "normalized_latex": "y_t=W_{ho}h_t+b_0",
+          "purpose": "The output. The bias is printed as b0.",
+          "variable_symbols": [
+            "yt",
+            "Who",
+            "ht",
+            "b0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q252-005",
+          "page": 5,
+          "label": "(9)",
+          "source_expression": "L = (1/t) sum_{i=1}^{t} (yhat_i - y_i)^2",
+          "normalized_latex": "L=\\frac{1}{t}\\sum_{i=1}^{t}(\\hat y_i-y_i)^2",
+          "purpose": "The mean squared loss. The sum and its limits are detached.",
+          "variable_symbols": [
+            "L",
+            "t",
+            "yhat",
+            "y"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q252-006",
+          "page": 7,
+          "label": "(10)",
+          "source_expression": "X4 = tbreak / tbreak_point",
+          "normalized_latex": "X_4=t_{\\mathrm{break}}/t_{\\mathrm{break\\_point}}",
+          "purpose": "The break-of-serve rate for the receiver.",
+          "variable_symbols": [
+            "X4",
+            "tbreak",
+            "tb"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Six formulas are printed. The killing-shot rate and the error rate share one scrambled block, and the loss has its sum detached."
+      },
+      "objectives": [
+        "Measure the winning probability of one game from a few rates, with the previous game remembered."
+      ],
+      "constraints": [
+        "Serving and receiving use different inputs.",
+        "The plain network is refused."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The hidden state at the first game has no previous moment stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The weights are updated in MATLAB by backpropagation, after outliers are removed. No weight is printed.",
+        "parameters": [
+          "Wih",
+          "Whh",
+          "Who",
+          "bh",
+          "b0"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Clean the data and remove outliers.",
+          "Compute the three rates for the server, and swap in the break rate for the receiver.",
+          "Propagate the hidden state from the previous moment.",
+          "Minimize the mean squared loss with the MATLAB optimizer."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Serving mean squared error 0.012922. Receiving mean squared error 0.017458."
+      },
+      "assumptions": [
+        "The server wins more often than the receiver.",
+        "The previous game is worth remembering."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The fit numbers are printed. The weights themselves are not."
+      },
+      "validation_refs": [
+        "Figure 3 and Figure 4: serving, MSE 0.012922, R-squared 0.56119.",
+        "Figure 5 and Figure 6: receiving, MSE 0.017458, R-squared 0.66442.",
+        "Figure 7: the server's line sits above the receiver's."
+      ],
+      "computational_cost": "One backpropagation fit on one player's games in one final.",
+      "strengths": [
+        "The split between serving and receiving is given its reason before the formulas."
+      ],
+      "limitations": [
+        "The killing-shot rate and the error rate cannot be separated on the printed page."
+      ],
+      "missing_details": [
+        "The network width, the activation, and the printed weights."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q252-002",
+      "page": 10,
+      "section": "4.2 The potential point and the SVM",
+      "family": "hand-scored index reduced by PCA and regressed by a support vector machine",
+      "purpose": "Turn five match events into one momentum number for each game.",
+      "base_or_modification": "paper-specific",
+      "summary": "A service game scores 2, every three consecutive points score 2 and may stack, a break scores 5, and each unforced error subtracts 0.5 and may stack. The four scores sum to the potential point of the game, and the games of a set sum to the set's potential point, which is reset to zero when the set ends. Running distance stands in for fitness, which the paper says cannot be scored. Five features are reduced by principal components until the cumulative contribution passes 0.85, which leaves three. A support vector regression with a Gaussian kernel maps the three components to the momentum. On the final the mean squared error is 0.1735 and the R-squared is 0.90142. The printed feature list names the service potential twice and omits the break.",
+      "variables": [
+        {
+          "symbol": "Mb",
+          "normalized_name": "break score",
+          "unit": "1",
+          "definition": "Fixed at 5 when a break is achieved.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ms",
+          "normalized_name": "serve score",
+          "unit": "1",
+          "definition": "Fixed at 2 for each service game.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mc",
+          "normalized_name": "run score",
+          "unit": "1",
+          "definition": "Fixed at 2 for every three consecutive points, and allowed to stack.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mu",
+          "normalized_name": "error score",
+          "unit": "1",
+          "definition": "Fixed at minus 0.5 for each unforced error, and allowed to stack.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mi",
+          "normalized_name": "game potential",
+          "unit": "1",
+          "definition": "The sum of the four scores in one game.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "set potential",
+          "unit": "1",
+          "definition": "The sum of the game potentials in one set, reset at the set break.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i",
+          "normalized_name": "game index",
+          "unit": "1",
+          "definition": "The current game number.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "games in set",
+          "unit": "1",
+          "definition": "The total number of games played in the set.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "aij",
+          "normalized_name": "sample",
+          "unit": "1",
+          "definition": "One reference data point before the reduction.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "muj",
+          "normalized_name": "sample mean",
+          "unit": "1",
+          "definition": "The mean of one feature. The printed line merges the mean with the deviation.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "components",
+          "unit": "1",
+          "definition": "The three principal components kept as the input matrix.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "normal vector",
+          "unit": "1",
+          "definition": "The normal vector of the hyperplane.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "bias",
+          "unit": "1",
+          "definition": "The bias of the hyperplane.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mo",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The momentum the regression emits for one game.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "n",
+        "aij",
+        "X"
+      ],
+      "outputs": [
+        "M",
+        "Mo"
+      ],
+      "handoff_outputs": [
+        "M",
+        "Mo"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q252-007",
+          "page": 10,
+          "label": "(11)",
+          "source_expression": "Mi = Mb + Ms + Mc + Mu",
+          "normalized_latex": "M_i=M_b+M_s+M_c+M_u",
+          "purpose": "The potential point of one game.",
+          "variable_symbols": [
+            "Mi",
+            "Mb",
+            "Ms",
+            "Mc",
+            "Mu"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q252-008",
+          "page": 10,
+          "label": "(12)",
+          "source_expression": "M = sum_{i=1}^{n} Mi",
+          "normalized_latex": "M=\\sum_{i=1}^{n}M_i",
+          "purpose": "The potential point of one set. The summation sign is detached from the line.",
+          "variable_symbols": [
+            "M",
+            "Mi",
+            "i",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q252-009",
+          "page": 11,
+          "label": "(13)",
+          "source_expression": "muj = (1/n) sum_{i=1}^{n} aij",
+          "normalized_latex": "\\mu_j=\\frac{1}{n}\\sum_{i=1}^{n}a_{ij}",
+          "purpose": "The feature mean. The deviation formula is merged onto the same line.",
+          "variable_symbols": [
+            "muj",
+            "n",
+            "aij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q252-010",
+          "page": 12,
+          "label": "(17)",
+          "source_expression": "Mo = W^T X + b",
+          "normalized_latex": "M_o=W^{\\top}X+b",
+          "purpose": "The momentum as a hyperplane in the three components.",
+          "variable_symbols": [
+            "Mo",
+            "W",
+            "X",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q252-011",
+          "page": 12,
+          "label": "(18)",
+          "source_expression": "min_{W,b} (1/2) ||W||^2 s.t. Mo = W^T X + b",
+          "normalized_latex": "\\min_{W,b}\\ \\tfrac12\\|W\\|^2",
+          "purpose": "The printed objective. The constraint is scrambled, and the Gaussian kernel is named only in prose.",
+          "variable_symbols": [
+            "W",
+            "b",
+            "Mo",
+            "X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Five formulas are printed. The correlation matrix and the kernel are not separable from the footer."
+      },
+      "objectives": [
+        "Give momentum a number built from events a coach can see."
+      ],
+      "constraints": [
+        "The four scores are chosen, not fitted.",
+        "The cumulative contribution must pass 0.85.",
+        "Tiebreaks are excluded.",
+        "The set sum resets to zero."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The set sum starts again at zero after each set."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The four scores are fixed by definition. The hyperplane is trained in MATLAB. The Gaussian kernel is named and not written out.",
+        "parameters": [
+          "Mb",
+          "Ms",
+          "Mc",
+          "Mu",
+          "W",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Score each game with the four fixed numbers.",
+          "Sum the games of a set and reset at the break.",
+          "Add the running distance and reduce five features to three once the contribution passes 0.85.",
+          "Regress the potential point on the three components with a Gaussian kernel."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Mean squared error 0.1735 and R-squared 0.90142 on the final."
+      },
+      "assumptions": [
+        "Momentum inside a game is discrete.",
+        "Fitness cannot be scored, so distance stands in for it."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The four scores are chosen. The fit of the hyperplane is printed and its weights are not."
+      },
+      "validation_refs": [
+        "Figure 10: potential points against momentum, MSE 0.1735, R-squared 0.90142.",
+        "Figure 12: the lead changes match the final described in the problem.",
+        "Table 5: the third component brings the cumulative contribution to 0.8680."
+      ],
+      "computational_cost": "One reduction and one regression on the games of one final.",
+      "strengths": [
+        "Each fixed number is given the event it belongs to, and the only negative number is the error."
+      ],
+      "limitations": [
+        "The feature list names the service potential twice and drops the break."
+      ],
+      "missing_details": [
+        "The Gaussian kernel's width, and which column of Table 4 belongs to which component."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q252-003",
+      "page": 15,
+      "section": "4.5 The Spearman checks",
+      "family": "rank correlation",
+      "purpose": "Test whether the momentum moves with the winning probability, and which of the five features moves with the momentum.",
+      "base_or_modification": "base",
+      "summary": "No formula is printed. Spearman's rank correlation between momentum and winning probability is 0.704 for player 1 and 0.729 for player 2, and the paper reads both as one close relationship. The same coefficient is then computed for the break score, the serve score, the run score, the error score, and the distance, separately for each player. The run score is the strongest, 0.868 and 0.871. The two players' momenta correlate at minus 0.654. The heading doubles the word coefficient.",
+      "variables": [
+        {
+          "symbol": "Mo",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The game momentum handed over from the regression.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yp",
+          "normalized_name": "winning probability",
+          "unit": "1",
+          "definition": "The game winning probability handed over from the network.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "rank correlation",
+          "unit": "1",
+          "definition": "The Spearman coefficient between the two series.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Mo",
+        "yp"
+      ],
+      "outputs": [
+        "rho"
+      ],
+      "handoff_outputs": [
+        "rho"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The coefficient is named and its values are printed. No formula is printed."
+      },
+      "objectives": [
+        "Decide whether success is random or related to momentum."
+      ],
+      "constraints": [
+        "Both players are reported, not one."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The two series are the games of the same final."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Nothing is fitted. The coefficient is computed on the printed series.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Pair each game's momentum with its winning probability.",
+          "Compute the rank correlation for each player.",
+          "Repeat the coefficient for each of the five features."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The two player coefficients are 0.704 and 0.729."
+      },
+      "assumptions": [
+        "A rank correlation is enough to refuse randomness."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The coefficient is a direct computation, and both values are printed."
+      },
+      "validation_refs": [
+        "Figure 13: the heatmap, 0.704 and 0.729.",
+        "Table 9 and Table 10: the run score at 0.868 and 0.871, the cross momentum at minus 0.654."
+      ],
+      "computational_cost": "One rank correlation per pair of columns.",
+      "strengths": [
+        "Both players are given, so the reading does not rest on one number."
+      ],
+      "limitations": [
+        "No threshold is stated for what counts as close."
+      ],
+      "missing_details": [
+        "The number of games that entered each coefficient."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q252-004",
+      "page": 16,
+      "section": "5.1 The ARIMA forecast",
+      "family": "ARIMA forecast of accumulated momentum",
+      "purpose": "Continue each player's accumulated momentum ten games past the final.",
+      "base_or_modification": "base",
+      "summary": "The accumulated momentum is said to have a time series and a cyclical volatility, so ARIMA is chosen and then divided into its three parts. The fluctuation fixes the orders at 4, 1, and 4. Five sets are fed in and ten further games are printed. The reading is hedged: Alcaraz may continue to lead. The forecast word is printed twice as accmulated.",
+      "variables": [
+        {
+          "symbol": "m",
+          "normalized_name": "past momentum",
+          "unit": "1",
+          "definition": "The accumulated momentum at the previous moments.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a0",
+          "normalized_name": "constant",
+          "unit": "1",
+          "definition": "The initial constant term.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "autoregressive coefficient",
+          "unit": "1",
+          "definition": "The effect of the past observations. The order is 4.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "error",
+          "unit": "1",
+          "definition": "The error term.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "moving-average coefficient",
+          "unit": "1",
+          "definition": "The effect of the past errors. The order is 4.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mp",
+          "normalized_name": "predicted momentum",
+          "unit": "1",
+          "definition": "The predicted accumulated momentum at the next moment.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "m"
+      ],
+      "outputs": [
+        "mp"
+      ],
+      "handoff_outputs": [
+        "mp"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q252-012",
+          "page": 16,
+          "label": "(19)",
+          "source_expression": "m'_t = a0 + sum_{i=1}^{p} alpha_i m_i + eps_t + sum_{i=1}^{q} beta_i eps_{t-i}",
+          "normalized_latex": "m'_t=\\alpha_0+\\sum_{i=1}^{p}\\alpha_i m_i+\\varepsilon_t+\\sum_{i=1}^{q}\\beta_i\\varepsilon_{t-i}",
+          "purpose": "The printed ARIMA. The sums are detached, and the autoregressive term is indexed by i rather than by t-i.",
+          "variable_symbols": [
+            "mp",
+            "a0",
+            "alpha",
+            "m",
+            "eps",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One formula is printed. The two sums and their limits are detached from the line."
+      },
+      "objectives": [
+        "Say who would hold the momentum if the final continued."
+      ],
+      "constraints": [
+        "The orders are fixed at 4, 1, and 4.",
+        "The continuation is ten games."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The forecast starts from the accumulated momentum of the five sets already played."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The orders are chosen from the fluctuation. The coefficients are fit in MATLAB and not printed.",
+        "parameters": [
+          "a0",
+          "alpha",
+          "beta"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Difference the accumulated momentum once.",
+          "Fit an autoregression of order 4 and a moving average of order 4.",
+          "Continue each player for ten games."
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The ten printed games leave Alcaraz ahead at the tenth, 34.3283 against 19.3927."
+      },
+      "assumptions": [
+        "The series is long enough for orders of 4, 1, and 4."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The orders are chosen. No fit statistic is printed for the forecast."
+      },
+      "validation_refs": [
+        "Table 11: ten games, Alcaraz 34.3283 and Djokovic 19.3927 at the tenth.",
+        "Figure 14: dark lines for the five sets, light lines for the ten games."
+      ],
+      "computational_cost": "One fit and a ten-step continuation for each player.",
+      "strengths": [
+        "The orders are given in words before they are given as symbols."
+      ],
+      "limitations": [
+        "No error is printed for the forecast, so the hedge in the prose has no number under it."
+      ],
+      "missing_details": [
+        "The fitted coefficients and any residual check."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q252-001",
+      "to_model_id": "MU-C-Q252-003",
+      "handoff": "The game winning probability is one series in the rank correlation."
+    },
+    {
+      "from_model_id": "MU-C-Q252-002",
+      "to_model_id": "MU-C-Q252-003",
+      "handoff": "The game momentum is the other series in the rank correlation."
+    },
+    {
+      "from_model_id": "MU-C-Q252-002",
+      "to_model_id": "MU-C-Q252-004",
+      "handoff": "The accumulated momentum of each set is the series the forecast continues."
+    }
+  ]
+}

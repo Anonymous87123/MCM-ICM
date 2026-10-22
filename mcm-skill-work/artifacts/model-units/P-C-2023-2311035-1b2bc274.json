@@ -1,0 +1,514 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2023-2311035-1b2bc274",
+  "problem_type": "C",
+  "year": "2023",
+  "source_sha256": "1b2bc274a98e4725e550833f4647b4d2ad80ad9300134a21f21f71fa07bbb6d6",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q238-001",
+      "page": 6,
+      "section": "4 Task 1: Fundamental Model for Predicting Results",
+      "family": "recurrent neural network (LSTM)",
+      "purpose": "Predict number of reported Wordle scores on March 1, 2023 using LSTM with recursive regression.",
+      "base_or_modification": "base",
+      "summary": "Single-layer LSTM (5 units, lookback=33) trained on 359 days of log-normalized reported scores. Recursive 60-day prediction. 150 independent training runs yield mean 21843.73, sd 560.21, 95% CI [20745.72, 22914.74].",
+      "variables": [
+        {
+          "symbol": "Ct",
+          "normalized_name": "long-term memory output",
+          "unit": "dimensionless",
+          "definition": "Cell state output at time t",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ht",
+          "normalized_name": "short-term memory output",
+          "unit": "dimensionless",
+          "definition": "Hidden state output at time t",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ft",
+          "normalized_name": "forget gate",
+          "unit": "dimensionless",
+          "definition": "Forget gate activation",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "it",
+          "normalized_name": "input gate",
+          "unit": "dimensionless",
+          "definition": "Input gate activation",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_tilde_t",
+          "normalized_name": "candidate cell",
+          "unit": "dimensionless",
+          "definition": "Candidate cell state",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "sample mean",
+          "unit": "count",
+          "definition": "Average of 150 predicted values",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sd",
+          "normalized_name": "standard deviation",
+          "unit": "count",
+          "definition": "Standard deviation of 150 predictions",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Ct",
+        "ht"
+      ],
+      "outputs": [
+        "mu",
+        "sd"
+      ],
+      "handoff_outputs": [
+        "mu",
+        "sd"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q238-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "Ct = ft * Ct-1 + it * C_tilde_t",
+          "normalized_latex": "C_t = f_t \\ast C_{t-1} + i_t \\ast \\tilde{C}_t",
+          "purpose": "LSTM cell state update: forget old + add new.",
+          "variable_symbols": [
+            "Ct",
+            "ft",
+            "it",
+            "C_tilde_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q238-002",
+          "page": 9,
+          "label": "(2)",
+          "source_expression": "[mu - |z| * sd, mu + |z| * sd]",
+          "normalized_latex": "[\\mu - |z| \\cdot sd, \\mu + |z| \\cdot sd]",
+          "purpose": "95% confidence interval from 150 training runs.",
+          "variable_symbols": [
+            "mu",
+            "sd"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "LSTM cell state (1) and CI formula (2) from pp.7,9."
+      },
+      "objectives": [
+        "Predict number of reported scores on March 1, 2023 with 95% CI."
+      ],
+      "constraints": [
+        "Input data must be log-normalized for gamma-distributed scores."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 days of daily reported scores."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Time series; no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Forecasting; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Cross-validation: 1 LSTM layer, 5 units, lookback=33. 150 independent training runs.",
+        "parameters": [
+          "ft",
+          "it",
+          "Ct",
+          "ht"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Log-transform reported scores.",
+          "Min-Max normalize.",
+          "Train LSTM (1 layer, 5 units, lookback=33).",
+          "Recursive regression: predict next day, append, repeat 60 times.",
+          "Repeat 150 independent training runs.",
+          "Compute mean and sd from 150 predictions for CI."
+        ],
+        "software": [
+          "Python",
+          "PyTorch"
+        ],
+        "convergence_criteria": "150 independent runs for statistical CI."
+      },
+      "assumptions": [
+        "Reported scores roughly follow gamma distribution.",
+        "Recursive regression error does not compound excessively over 60 days."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Mean 21843.73, sd 560.21. 95% CI [20745.72, 22914.74]."
+      },
+      "validation_refs": [
+        "Figure 8: Distribution of predicted results and average trend."
+      ],
+      "computational_cost": "150 LSTM training runs.",
+      "strengths": [
+        "Narrow CI compared to Q237's ARIMA-LSTM.",
+        "Multiple runs provide statistical rigor."
+      ],
+      "limitations": [
+        "Single LSTM layer may underfit complex patterns.",
+        "Recursive regression compounds errors over 60 steps."
+      ],
+      "missing_details": [
+        "Learning rate, epochs, loss function not specified."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q238-002",
+      "page": 11,
+      "section": "5 Task 2: Model for Predicting Percentage Distribution",
+      "family": "gradient boosting (XGBoost)",
+      "purpose": "Predict percentage distribution of 1-6 tries and X for a given word using 7 separate XGBoost models with 3 RFE-selected features.",
+      "base_or_modification": "base",
+      "summary": "7 XGBoost models for 7 attempt categories. Features: Daily frequency, CharNum, Initial letter (selected by RFE from 6 candidates). R2=0.68. EERIE prediction Ew=709.9076. Sensitivity: Ew variation <1% across similar words.",
+      "variables": [
+        {
+          "symbol": "wt",
+          "normalized_name": "weighted performance",
+          "unit": "dimensionless",
+          "definition": "Weighted average of attempt distribution",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ew",
+          "normalized_name": "unequal weighted average",
+          "unit": "dimensionless",
+          "definition": "Unequally weighted average of percentage distribution",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "itry",
+          "normalized_name": "percentage for i tries",
+          "unit": "proportion",
+          "definition": "Percentage of players solving in i tries",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "freq_rank",
+          "normalized_name": "daily frequency rank",
+          "unit": "dimensionless",
+          "definition": "Normalized rank from Leipzig Corpora",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "charNum",
+          "normalized_name": "max repeated letters",
+          "unit": "count",
+          "definition": "Maximum number of same letters in word",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "init_letter",
+          "normalized_name": "initial letter vowel",
+          "unit": "binary",
+          "definition": "Whether initial letter is vowel",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "freq_rank",
+        "charNum",
+        "init_letter"
+      ],
+      "outputs": [
+        "itry",
+        "Ew"
+      ],
+      "handoff_outputs": [
+        "itry",
+        "Ew"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q238-003",
+          "page": 12,
+          "label": "(3)",
+          "source_expression": "Ew = 1try + 3*2try + 5*3try + 6*4try + 7*5try + 9*6try + 11*Xtry",
+          "normalized_latex": "E_w = 1_{try} + 3 \\cdot 2_{try} + 5 \\cdot 3_{try} + 6 \\cdot 4_{try} + 7 \\cdot 5_{try} + 9 \\cdot 6_{try} + 11 \\cdot X_{try}",
+          "purpose": "Unequally weighted average of percentage distribution for difficulty comparison.",
+          "variable_symbols": [
+            "Ew",
+            "itry"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Ew formula (3) from p.12."
+      },
+      "objectives": [
+        "Predict percentage distribution of attempt outcomes for any word."
+      ],
+      "constraints": [
+        "7 predicted percentages should approximately sum to 100%."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 words with 6 features, 3 selected by RFE."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Cross-sectional prediction."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Prediction task."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Cross-validation for each XGBoost model hyperparameters.",
+        "parameters": [
+          "freq_rank",
+          "charNum",
+          "init_letter"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Extract 6 features from words.",
+          "RobustScaler normalization.",
+          "RFE selects 3 dominant features.",
+          "Train 7 XGBoost models for 7 attempt categories.",
+          "Cross-validation for hyperparameters.",
+          "Predict distribution; compute Ew."
+        ],
+        "software": [
+          "Python",
+          "xgboost",
+          "sklearn"
+        ],
+        "convergence_criteria": "R2 maximization via cross-validation."
+      },
+      "assumptions": [
+        "Word difficulty determined by 3 lexical features.",
+        "Time has no effect on distribution (p=0.457)."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "R2=0.68. Ew variation <1% in sensitivity analysis."
+      },
+      "validation_refs": [
+        "Table 3: Sensitivity analysis.",
+        "Figure 11: Sum of percentages."
+      ],
+      "computational_cost": "7 XGBoost models with cross-validation.",
+      "strengths": [
+        "RFE feature selection reduces dimensionality.",
+        "Sensitivity analysis with similar-difficulty words."
+      ],
+      "limitations": [
+        "R2=0.68 leaves 32% unexplained.",
+        "Only 3 features after RFE."
+      ],
+      "missing_details": [
+        "XGBoost hyperparameters per model.",
+        "Number of CV folds."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q238-003",
+      "page": 14,
+      "section": "6 Task 3: Classification of Words",
+      "family": "support vector machine (SVM-RBF)",
+      "purpose": "Classify Wordle words into 3 difficulty levels (easy, medium, hard) using SVM with RBF kernel based on 3 features.",
+      "base_or_modification": "base",
+      "summary": "Difficulty defined by Ew thresholds: easy(<600), medium(600-700), hard(>700). 3:1 train-test split. SVM-RBF on 3 features (freq_rank, charNum, letterFreq). Accuracy 0.6556, F1 0.6634. EERIE classified as hard (Ew=709.9076). Confusion matrix: easy/medium good, hard weak.",
+      "variables": [
+        {
+          "symbol": "Ew",
+          "normalized_name": "unequal weighted average",
+          "unit": "dimensionless",
+          "definition": "Difficulty score from weighted distribution",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "freq_rank",
+          "normalized_name": "daily frequency rank",
+          "unit": "dimensionless",
+          "definition": "Normalized Leipzig rank",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "charNum",
+          "normalized_name": "max repeated letters",
+          "unit": "count",
+          "definition": "Maximum same-letter count",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "letterFreq",
+          "normalized_name": "letter frequency",
+          "unit": "dimensionless",
+          "definition": "Average letter frequency from Oxford",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "freq_rank",
+        "charNum",
+        "letterFreq"
+      ],
+      "outputs": [
+        "Ew"
+      ],
+      "handoff_outputs": [
+        "Ew"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "SVM-RBF kernel formula not explicitly written; standard kernel assumed."
+      },
+      "objectives": [
+        "Classify words into easy/medium/hard and classify EERIE."
+      ],
+      "constraints": [
+        "Difficulty thresholds: 600 and 700 on Ew scale."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "359 words with Ew labels and 3 features."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Classification; no boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Classification; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "RBF kernel SVM with default or tuned parameters.",
+        "parameters": [
+          "freq_rank",
+          "charNum",
+          "letterFreq"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute Ew for each word.",
+          "Label: easy(<600), medium(600-700), hard(>700).",
+          "Split 3:1 train-test.",
+          "Train SVM with RBF kernel.",
+          "Predict EERIE difficulty.",
+          "Evaluate with precision/recall/F1/accuracy."
+        ],
+        "software": [
+          "Python",
+          "sklearn"
+        ],
+        "convergence_criteria": "SVM convergence via libsvm."
+      },
+      "assumptions": [
+        "Ew thresholds adequately separate difficulty levels.",
+        "3 features sufficient for SVM classification."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Accuracy 0.6556, F1 0.6634. ROC shows good average performance."
+      },
+      "validation_refs": [
+        "Table 5: Four evaluation metrics.",
+        "Figure 15: Confusion matrix and ROC."
+      ],
+      "computational_cost": "SVM training on 359 samples.",
+      "strengths": [
+        "RBF kernel handles non-linear boundaries.",
+        "Cross-task consistency with XGBoost results."
+      ],
+      "limitations": [
+        "Weak on hard words per confusion matrix.",
+        "Accuracy 65.56% is moderate."
+      ],
+      "missing_details": [
+        "SVM hyperparameters (C, gamma).",
+        "Whether grid search was used."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q238-002",
+      "to_model_id": "MU-C-Q238-003",
+      "handoff": "XGBoost-predicted Ew used as basis for SVM difficulty labeling."
+    }
+  ]
+}

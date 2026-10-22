@@ -1,0 +1,43 @@
+Control # 8362                                                                        16
+
+
+5.2     Predicting Location of the Next Crime
+5.2.1   Method
+In order to find the location of the next crime, we look for the point on the grid which
+most closely matches the pattern of the other crimes. If we consider the criminal
+location probability distribution produced after adding a crime event to our grid,
+the most probable location for the next crime would be the spot which generates a
+distribution most similar to the one produced before adding it. This gives us the most
+likely location for a future crime. Furthermore, for potential crime scenes other than
+the most probable, we estimate how much worse they are by measuring how much
+the produced distribution deviates from the original. This gives us a distribution over
+our search area which can be used to allocate resources for crime prevention.
+    Our algorithm works as follows: First we compute the criminal location proba-
+bility distribution for the search area. Next we iterate through all of the grid points
+in the search area, adding a new ”virtual crime scene” at each point, calculating the
+new criminal location probability distribution with the additional crime scene. We
+then compare each of these distributions to the original one by summing the squares
+of the differences between corresponding grid points, then assigning this pseudo prob-
+ability deviation number to the location of the ”virtual crime scene.” This gives us
+a distribution over the search area, where lower numbers mean the point is a more
+likely spot for the criminal’s next crime because adding this point as a crime location
+deviates less from the original probability distribution.
+
+5.2.2   Edge Behavior
+If all of the points on the mesh are tested as possible crime scenes, then there is a
+tendency for points near the edge to be rated higher than appropriate. This is because
+a point near the edge has fewer other points around it, so when a crime scene is added
+there it is effecting the criminal location probability distribution of fewer points, and
+thus has a smaller total effect on the produced distribution. To compensate for this,
+we add a buffer zone around our search area where the criminal location probability
+distribution is calculated but no crime scenes are added. This effectively removes the
+bad edge behavior.
+
+5.2.3   Complexity
+When adding each point as a virtual crime scene, we must calculate a different crimi-
+nal location probability distribution for every point in our search area, thus requiring
+approximately n2 operations, each of which is O(n2 ) (see Predicting Criminal Loca-
+tion - Computation). Therefore the algorithm for determining the location of the
+next crime has a complexity of O(n4 ). This is a polynomial time algorithm, but it
+can still become very slow as n increases. To keep our calculation time from getting
+out of control, we implement various optimizations.

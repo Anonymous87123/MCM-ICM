@@ -1,0 +1,396 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2016-54740-539566f6",
+  "problem_type": "D",
+  "year": "2016",
+  "source_sha256": "539566f6d1788943952dd5dedb55945157a47763ef129d4c7dcfdbef241bbe71",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q281-DIFF",
+      "page": 8,
+      "section": "Diffusion Model with Multiple Sources",
+      "family": "diffusion",
+      "purpose": "Track how many people know a news item, across topical communities.",
+      "base_or_modification": "paper-specific",
+      "summary": "The increment of informed people is a relevance factor times a sum over communities. Within a community the rate is beta; across communities it is eta. The paper orders them as beta_j < eta_ji < eta_ij < beta_i but never assigns numbers. R(t) rises and decays exponentially at a speed set by relevance, which runs from 1 to 10.",
+      "variables": [
+        {
+          "symbol": "r",
+          "normalized_name": "relevance_factor",
+          "unit": "index",
+          "definition": "external relevance, scaled from 1 to 10",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "within_rate",
+          "unit": "per time",
+          "definition": "spread rate inside the matching community",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "cross_rate",
+          "unit": "per time",
+          "definition": "spread rate between conflicting communities",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "informed_count",
+          "unit": "people",
+          "definition": "number of people who know the item",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r"
+      ],
+      "outputs": [
+        "y"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q281-DIFF-1",
+          "page": 8,
+          "source_expression": "dy = R(t) * sum_i sum_j [beta_i*y_i + eta_ij*y_j] * (N_i - y_i) * dt",
+          "normalized_latex": "\\Delta y = R(t)\\sum_i\\sum_{j\\ne i}[\\beta_i y_i(t)+\\eta_{ij} y_j(t)](N_i-y_i(t))\\Delta t",
+          "purpose": "informed count grows by within-community and cross-community terms",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "r",
+            "beta",
+            "eta",
+            "y"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Track how many people know a news item, across topical communities."
+      ],
+      "constraints": [
+        "relevance lies between 1 and 10",
+        "an item has already cleared both news thresholds"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "rates ordered by inequality, not fitted",
+        "parameters": [
+          "beta",
+          "eta"
+        ]
+      },
+      "algorithm": {
+        "status": "not-applicable",
+        "steps": [],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "topical distribution is uniform within an era",
+        "static traffic is disregarded"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "exponential decay fits are shown with R-squared, but the rates beta and eta have no values"
+      },
+      "handoff_outputs": [
+        "y"
+      ],
+      "validation_refs": [
+        "mention-volume series for Lincoln, Monroe, Berlin Wall, Rickman"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "one relevance factor carries all four characteristics"
+      ],
+      "limitations": [
+        "rates are ordered but never given numbers"
+      ],
+      "missing_details": [
+        "the values of beta and eta are not reported"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q281-NET",
+      "page": 10,
+      "section": "Network Model",
+      "family": "network",
+      "purpose": "Update what each node believes and what it shares.",
+      "base_or_modification": "paper-specific",
+      "summary": "A node notices a neighbor's message with probability PN, and the product over neighbors decides whether it absorbs the item. It shares only after a gestation period G, and only for one time step, enforced by a Kronecker delta. Forgetting is a second probability PV that drifts toward 1 as time passes. Printed states are 0 or 1.",
+      "variables": [
+        {
+          "symbol": "pn",
+          "normalized_name": "notice_probability",
+          "unit": "probability",
+          "definition": "chance a node registers a neighbor's message",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ps",
+          "normalized_name": "share_probability",
+          "unit": "probability",
+          "definition": "chance a node passes the item on",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "gestation",
+          "unit": "time steps",
+          "definition": "delay before a node shares what it absorbed",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "state",
+          "normalized_name": "node_state",
+          "unit": "binary",
+          "definition": "internal belief and outward share of one node",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "state"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q281-NET-1",
+          "page": 10,
+          "source_expression": "n(0,t) = delta(t, t0+G) * PS0 * I(0,t)",
+          "normalized_latex": "n_{0,t}=\\delta_{t,t_0+G}\\,PS_0\\,I_{0,t}",
+          "purpose": "outward share fires once, after the gestation delay",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "ps",
+            "g",
+            "state"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Update what each node believes and what it shares."
+      ],
+      "constraints": [
+        "a node shares with all of its neighbors or with none",
+        "time is discrete"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "probabilities drawn, not estimated",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "draw notice and share outcomes",
+          "apply the gestation delay",
+          "update forgetting"
+        ],
+        "software": [
+          "custom simulator, link given in appendix"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "sharing is random",
+        "a node holds one string until another overrides it"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "simulated entertainment news of relevance 9 reproduces the shape of the Marilyn Monroe mention series"
+      },
+      "handoff_outputs": [
+        "state"
+      ],
+      "validation_refs": [
+        "mention-volume series for Lincoln, Monroe, Berlin Wall, Rickman"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "one relevance factor carries all four characteristics"
+      ],
+      "limitations": [
+        "rates are ordered but never given numbers"
+      ],
+      "missing_details": [
+        "the values of beta and eta are not reported"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q281-GHOST",
+      "page": 10,
+      "section": "Network Versatility",
+      "family": "network",
+      "purpose": "Represent a slow connection without changing the node update.",
+      "base_or_modification": "paper-specific",
+      "summary": "A ghost node sits between two real nodes and has notice and share probabilities fixed at 1. A connection of speed v is a ghost node with gestation period v-1, so a newspaper on a train takes v steps. The device lets one update rule cover both instant and delayed edges.",
+      "variables": [
+        {
+          "symbol": "v",
+          "normalized_name": "edge_speed",
+          "unit": "time steps",
+          "definition": "steps needed to cross one edge",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delay",
+          "normalized_name": "ghost_gestation",
+          "unit": "time steps",
+          "definition": "gestation of the ghost node, v minus 1",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "v"
+      ],
+      "outputs": [
+        "delay"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q281-GHOST-1",
+          "page": 10,
+          "source_expression": "G_ghost = v - 1",
+          "normalized_latex": "G_{\\text{ghost}}=v-1",
+          "purpose": "slow edge represented as a ghost node gestation",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "v",
+            "delay"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Represent a slow connection without changing the node update."
+      ],
+      "constraints": [
+        "a ghost node has exactly one inward and one outward edge"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "delay is assigned, not fitted",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "insert a ghost node on each slow edge",
+          "set its gestation to v-1"
+        ],
+        "software": [
+          "custom simulator, link given in appendix"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "notice and share probabilities of a ghost node are both 1"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "island-mainland runs use the delay to keep island news isolated"
+      },
+      "handoff_outputs": [
+        "delay"
+      ],
+      "validation_refs": [
+        "mention-volume series for Lincoln, Monroe, Berlin Wall, Rickman"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "one relevance factor carries all four characteristics"
+      ],
+      "limitations": [
+        "rates are ordered but never given numbers"
+      ],
+      "missing_details": [
+        "the values of beta and eta are not reported"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q281-DIFF",
+      "to_model_id": "MU-D-Q281-NET",
+      "handoff": "the relevance factor that sets spread speed"
+    },
+    {
+      "from_model_id": "MU-D-Q281-NET",
+      "to_model_id": "MU-D-Q281-GHOST",
+      "handoff": "the node update rule reused by ghost nodes"
+    }
+  ]
+}

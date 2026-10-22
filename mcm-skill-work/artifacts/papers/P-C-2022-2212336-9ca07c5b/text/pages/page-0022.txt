@@ -1,0 +1,44 @@
+Appendices
+
+ Appendix 1
+ Introduce: Prediction code
+
+       a= xlsread('biteb.xlsx');
+       data=a(:,1)';
+       TTrain = floor(0.95*numel(data));
+       dataTrain = data(1:TTrain+1);
+       dataTest = data(TTrain+1:end);
+       sig = std(dataTrain);
+       Standardized = (dataTrain - mu) / sig;
+       XTrain = Standardized(1:end-1);
+       YTrain = Standardized(2:end);
+       numFeatures = 1;
+       numResponses = 1;
+       numHiddenUnits = 200;
+       layers = [ sequenceInputLayer(numFeatures) lstmLayer(numHiddenUnits)
+       fullyConnectedLayer(numResponses) regressionLayer];
+       options = trainingOptions('adam', ...
+
+             'MaxEpochs',250, ...
+             'GradientThreshold',1, ...
+             'InitialLearnRate',0.005, ...
+             'LearnRateSchedule','piecewise', ...
+             'LearnRateDropPeriod',125, ...
+             'LearnRateDropFactor',0.2, ...
+             'Verbose',0, ...
+             'Plots','training-progress');
+       dataTestStandardized = (dataTest - mu) / sig;
+       XTest = dataTestStandardized(1:end-1);
+       net = predictAndUpdateState(net,XTrain);
+       [net,YPred] = predictAndUpdateState(net,YTrain(end));
+       numTimeStepsTest = numel(XTest);
+       for i = 2:numTimeStepsTest
+             [net,YPred(:,i)] = predictAndUpdateState(net,YPred(:,i-1),'ExecutionEnviron
+             ment','cpu');
+       End
+       figure
+       plot(YTest)
+       hold on
+       plot(YPred,'.-')
+       hold off
+       legend(["Observed" "Forecast"])；ylabel("Cases") title("Forecast")

@@ -1,0 +1,1726 @@
+Problem Chosen         2025    Team Control Number
+                  MCM/ICM
+    C           Summary Sheet   2500759
+
+     Olympic Multi-dimensional Predictive Integrator
+
+                                               Summary
+
+     To ensure a systematic and multidimensional approach to Olympic medal prediction,
+this study constructs a dynamic and coupled comprehensive prediction framework. This
+framework integrates various objectives, including medal distribution prediction, break-
+through country identification, event performance evaluation, and the impact analysis of
+coaching resource allocation. By employing multi-source heterogeneous data fusion and
+machine learning integration methods, we achieve an in-depth analysis and reliable pre-
+
+྘ diction of the development patterns in competitive sports.
+ ଆ First, we develop a multidimensional predictive model to analyze Olympic medal
+
+patterns. Utilizing Principal Component Analysis (PCA) for dimensionality reduction
+and noise filtering of the Olympic event dataset, we combine Long Short-Term Mem-
+
+࿐ ory (LSTM) networks to mine temporal features and integrate home advantage effects.
+
+A dual-channel XGBoost-Bootstrap model is established to generate predictions with
+
+ඔ a 95% confidence interval. The results indicate an upward trend for countries such as
+
+the United States and the United Kingdom, while countries like France and China show a
+
+ğ ls decline. The model has a low MAE and MAPE, exhibiting a high accuracy and strong ro-
+
+bustness. Through non-parametric testing, potential breakthrough countries are identified,
+
+e with San Marino and Kuwait showing gold medal breakthrough probabilities of 84.7%
+‫ ݼ‬d and 68.4%, respectively. Event analysis reveals a strong correlation between swimming,
+o athletics, and medal counts, while SHapley Additive exPlanations (SHAP) quantifies
+ᇙ shooting as a core contributing event. Principal component analysis uncovers the positive
+m driving effects of swimming and wrestling on medal augmentation, informing optimal
+‫ ܄‬H sports event allocation.
+
+ ྐ T Subsequently, we develop a Difference-in-Differences (DID) model to quantify the
+
+competitive benefits of coaching replacement and conduct statistical significance tests as
+
+A well as parallel trends tests to ensure the reliability of our results. It is found that during
+ັ M the 2020-2024 period, Australia, South Korea, and Poland experienced significant "great
+
+coach" policy effects through strategic restructuring of their coaching teams. Based on
+
+ğ this, we recommend prioritizing investment in high-elasticity projects.
+
+     Finally, we synthesize all models and analyses to present new insights and corre-
+
+‫ ݼ‬sponding decision supports.
+ྐ Keywords: Prediction Model, PCA, LSTM, XGBoost, SHAP, DID
+
+    ັ
+                                                                                      Team # 2500759              Page 3 of 26
+
+                                                                                      1 Introduction
+
+                                                                                      1.1 Problem Background
+
+                                                                                           The medal standings of the 2024 Paris Summer Olympics illustrate the diversity of
+                                                                                      international sports competition: the United States led with 126 total medals, while China
+                                                                                      tied for the gold medal count. The host nation, France, underscores the advantages of
+                                                                                      hosting by securing the fourth position in total medal accumulation. Emerging powers
+                                                                                      such as Albania have achieved their first gold medal, whereas over 60 countries have
+                                                                                      yet to register any medals, reflecting the uneven distribution of competitive resources.
+                                                                                      Current predictions largely rely on pre-competition data6; however, key variables such as
+
+                                                                                      ྘ historical trends, adjustments to events, and coaching effects have not yet been adequately
+
+                                                                                      quantified. By constructing data-driven models2, it becomes possible to accurately iden-
+                                                                                      tify potential medal-winning events, optimize coaching resources, leverage host country
+                                                                                      advantages, and reveal the pathways to the emergence of "invisible champions". This ap-
+
+                                                                                      ଆ proach provides dynamic insights that can aid nations in formulating strategies and foster
+                                                                                      ࿐ a rebalancing of the Olympic landscape.
+
+                                                                                      1.2 Clarifications and Restatements
+
+                                                                                       ඔ Given the background information and constraints of the problem, we must complete
+
+                                                                                      the following tasks:
+
+                                                                                      ğ ls Task 1: Develop a model to predict gold and total medal counts for each country at the
+                                                                                      e 2028 Los Angeles Olympics and compare predictions with the 2024 Paris Olympics.
+                                                                                      ‫ ݼ‬d Task 2: Identify countries expected to win their first medals at the upcoming Olympics
+                                                                                      o using the model from Task 1, and estimate the likelihood of a "zero breakthrough".
+                                                                                      ᇙ Task 3: Analyze the relationship between Olympic sports and medal counts, considering
+                                                                                      m the impact of the host nation and selected sports.
+                                                                                      ‫ ܄‬H Task 4: Create a model to identify countries with the "great coach" effect in specific
+
+                                                                                      sports and provide contribution coefficients.
+
+                                                                                      ྐ T Task 5: Based on the topic and the work conducted, additional original insights are pre-
+                                                                                      A sented.
+                                                                                      ັ M 1.3 Our Work
+
+                                                                                       ğ First, dimensionality reduction is performed using PCA. Next, trend information
+                                                                                      ‫ ݼ‬is incorporated through LSTM, leading to the establishment of an XGBoost prediction
+
+                                                                                      model. Subsequently, the Wlicoxon signed rank test is employed to investigate which
+
+                                                                                      ྐ countries achieve a breakthrough in winning their first medals and to determine the cor-
+
+                                                                                      responding probabilities. Furthermore, Spearman correlation coefficients and SHAP are
+
+                                                                                      ັ utilized to conduct relationship and importance analyses. Finally, a DID approach is ap-
+
+                                                                                      plied to examine the "great coach" effect and provide new insights. For ease of description
+                                                                                      and visualization, we have drawn Fig. 1 to represent our work.
+
+                                                                                      2 Preparation for Modeling
+
+                                                                                      2.1 Model Assumptions
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm     Some fundamental assumptions are listed below.
+                                                                                      • Assumption 1: Athletes are in optimal physical condition throughout the competi-
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+                                                                                      Team # 2500759  Page 5 of 26
+
+                                                                                      can observe that the scale of information constitutes a small dataset. However, the data is
+                                                                                      lengthy and complex, with intricate relationships among different data points, represent-
+                                                                                      ing a type of data pertinent to decision-making in real-world scenarios.
+
+                                                                                          • For attachment 2, we will perform a natural join with the "summerOly_medal_counts"
+                                                                                             dataset to match the columns for country names and their abbreviations, thereby en-
+                                                                                             hancing the information provided.
+
+                                                                                          • During the data aggregation process, we will retrieve and consolidate data from
+                                                                                             attachment 2 based on the fields "Team," "Year," "Sport," and "Medal," calculating
+                                                                                             the medal counts for each country in every Olympic event. Furthermore, we will
+                                                                                             merge and compute data for various sports across different years, thereby deriving
+                                                                                             the types and counts of events for each Olympic Games, which will provide vital
+                                                                                             data support for subsequent medal predictions and trend analysis.
+
+                                                                                          • For attachment 5, we will address missing values in the columns "Code," "Sports
+                                                                                             Governing Body," and "Year" through interpolation methods and by removing rows
+
+                                                                                       ྘ or columns that contain missing values.
+                                                                                      ଆ 3 Problem 1: Medal Prediction
+
+                                                                                       ࿐ This study focuses on predicting medal counts for the 2028 Los Angeles Olympic
+
+                                                                                      Games. By considering the interval prediction of medal rankings and recognizing the
+                                                                                      memoryless characteristic of Olympic medal trends akin to Markov chains, we employ an
+
+                                                                                      ඔ innovative XGBoost5 algorithm enhanced by PCA8,9 and LSTM3,7 to model predictions
+
+                                                                                      for gold and total medal rankings while assessing model uncertainty. Using the PCA-
+
+                                                                                      ğ ls LSTM-enhanced dataset from 2024, we derive predictive intervals for the gold and total
+                                                                                      e medals by country for 2028, facilitating performance prediction analysis.
+
+                                                                                       ‫ ݼ‬d In terms of predicting the probability of nations "breaking the zero" for gold medals,
+                                                                                      o we analyze the interval prediction results from XGBoost. We perform a symmetric rank
+                                                                                      ᇙ sum test on Bootstrap samples where point estimates are greater than or equal to 1, con-
+                                                                                      m cluding that countries with a P -value less than 0.05 are likely to achieve at least one gold
+                                                                                      ‫ ܄‬H medal in 2028.
+
+                                                                                       ྐ T Additionally, we examine the correlation and importance of different Olympic events
+
+                                                                                      in relation to countries’ medal counts. We start with a Spearman correlation analysis be-
+
+                                                                                      A tween gold and total medal counts for each country in 2024 and the weighted values of
+                                                                                      ັ M key Olympic events. Building on our PCA-LSTM-enhanced XGBoost model, we utilize
+
+                                                                                      SHAP analysis to assess the importance of each sport based on principal component im-
+
+                                                                                      ğ portance values. Univariate dependence plots further explore the relationships between
+
+                                                                                      individual sports and overall gold and medal counts, while SHAP force plots provide
+
+                                                                                      ‫ ݼ‬insights into the interrelationships and significance of different sports within nations re-
+
+                                                                                      garding their gold and total medal counts.
+
+                                                                                      ྐ 3.1 Medal Ranking
+                                                                                      ັ 3.1.1 PCA: Reducing Dimensions
+                                                                                           In predicting Olympic gold medals and rankings, outcomes are closely linked to
+mmmmmmm          mmm        mm m mm                            mmmmm            mm    the medal counts and compositions from previous Games. Thus, we weighted the gold,
+                                                                                      silver, and bronze medals of each country in major sporting events at 50%, 30%, and 20%,
+m           m    mm m m mmmmm                           m mm           mm             respectively, to assess their potential impact on future medal standings.
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2500759                                             Page 6 of 26
+
+     Principal Component Analysis (PCA) was employed to reduce the dimensionality
+of the weighted medal count dataset across 45 sporting events. This approach effec-
+tively addresses multicollinearity among original metrics by utilizing uncorrelated prin-
+cipal components, thereby eliminating redundancy and improving the convergence speed
+and accuracy of subsequent algorithms. Subsequently, Figs. 2(a)-(b) illustrate the first
+two dimensions of the PCA results.
+
+                (a)                               (b)
+
+                           Figure 2: PCA Bioplot
+
+     In the five-dimensional principal components, the cumulative variance contributions
+reach 76.4%, effectively capturing most characteristics of the original data. This indicates
+that data can be reduced to five dimensions for analysis. Fig. 2(b) shows that shooting
+has the highest score on the principal components, indicating its significant influence
+among events. Following shooting, swimming, athletics, and wrestling also exhibit no-
+table medal weights. The remaining events cluster distinctly, likely due to their correlated
+medal weights. Collectively, swimming, athletics, wrestling, shooting, rhythmic gym-
+nastics, boxing, and diving significantly impact PC1, suggesting it represents a principal
+component for major sports. Conversely, the other components (PC2 to PC5) are influ-
+enced by fewer variables. This analysis yields five principal component characteristics
+regarding medal weights of sporting events at the 2020 Olympics through PCA dimen-
+sionality reduction.
+
+3.1.2 LSTM: Trends Based on Time
+
+     Predicting the Olympic medal tally can be framed as a time series forecasting prob-
+lem, as countries’ medal counts show temporal continuity. Strong sports powers often
+maintain high medal counts, while emerging nations may experience short-term break-
+throughs. Thus, the model must capture patterns and long-term trends across different
+Olympic Games.
+
+     LSTM is advantageous for handling long-range dependencies in time series data.
+For instance, if a country’s medal count has steadily increased over the last three Games,
+LSTM can identify this trend to predict further increases. The four-year gap between
+Olympics makes traditional models less effective; however, LSTM’s gating mechanisms
+help retain essential historical information, improving prediction accuracy.
+
+Additionally, Olympic medal data can be noisy, with some countries showing incon-
+
+sistent performances. LSTM mitigates this noise by learning broader trends. It can also
+
+incorporate extra features like host country metrics to enhance predictions. To tackle data mmmmmmmmmmmm m mm                  mmmmm            mm
+
+                                                           m        m    mm m m mmmmm                                   m mm           mm
+
+                                                           m mmm m        m               m                      mm     m mm           mmm
+
+                                                           m mmm m m mmmm                            mm          mmm            m      m mmm
+
+                                                           m mmm m       m m m mmmmm                                 mm        mmmmmm m
+
+                                                           m        m        mm        mm                        mm        mmm         mm
+
+                                                           mmmmmmm       mm      m        mmmm                       m     mm m m mmm
+
+                                                                       mmm mm             mm                     mm m mmm              m        mm
+
+sparsity, especially for smaller nations with limited data points, we have implemented a mmmmmmmmm            m mmm            mmmmmmmm
+
+                                                           mm          mm m m m mmmm                                 mmmmmmmm                      m
+
+                                                              m mmmm m m mmmmmm mm m m m mm                                            m           m
+
+                                                           mmm m       m m mmm                          m        mmmm m mmmm mm m
+
+                                                                    mm                 mm                        m mmmmm mm               m
+
+                                                               mmm            mmmmm m m m                               m      m m mm mm
+
+                                                               m mm m         m        mmmmm mm mm                             m mmmmmmm
+
+regularization technique.                                          m mmm            mm                  mm           m          mm           m
+
+                                                               mm m          mm           m                       m        mmm mmm              m
+
+                                                           mmmm        mmm mm mm m                         m m mm               mmmm m m
+
+                                                           mmmm          mm                          m        mm        m      mm         mmmm
+
+                                                           mm     mm mm      mm mmm                        mmm       m m mmm mmm m
+
+                                                              mm    m     mmmmm                                  m mm      m mm           mm
+
+                                                           m   m              m m mmmmmmmm mmmm                                       mm        m
+
+                                                           m mmm mmmmm m               m                   mmmmm mm             mm m m m
+
+                                                           mmm           m m mmm                        mm              m          mm m mm
+
+                                                           mm m     mmm m mm mmmm m mmmm m                                         mm              m
+
+                                                           mm m        mmmm         m                m            m     mm            mm           m
+
+                                                           mmmm mm m m m               mmm                    m      m         m mm m              m
+
+The process of constructing the LSTM model is as follows.      mm         m                          m mmmmm m                     mm m mm
+
+                                                               m    m         mm                     mmm m           mm m             mmm mm
+
+                                                                          mm           mmmm                       mmm
+
+                                                           mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                                                           m        m mm m          mm mmmmmm                              mmm m                   m
+
+                                                           m mmm m mmm m m mm                                 mmmmmmmmm m mmm m
+
+                                                           m mmm m m          mm                           m               mmm m mmm m
+
+                                                           m mmm m           mm           m mmm                            mm m mmm m
+
+                                                           m        m mm      mm                     m m mmmmmmm                   m               m
+
+                                                           mmmmmmm mmmmm                  m                mmm             mm      mmmmmmm
+
+                                                                                 ܱᇿඔ࿐ଆ྘
+
+                                                                       2
+
+                                                           MATHmodels                                                ࠆ౼۷‫؟‬ሧ࿟
+Team # 2500759                                            Page 8 of 26
+
+comparisons. As illustrated in Figs. 3(a) and 3(d) (circle is the minimum of error), the
+optimal configuration is 32×6. Figs. 3(b) and 3(e) indicate that both 64×8 and 64×10
+meet the objective; however, in Fig. 3(b), the model with 64×8 demonstrates a more sig-
+nificant reduction in error compared to the other parameter settings, leading us to select
+64×8. Figs. 3(c) and 3(f) reveal that 128×10 exhibits the best performance.
+
+     Subsequently, we conducted a direct comparison of these three models. As shown in
+Fig. 4, the performance of the configurations 32×6 and 128×10 is quite similar; nonethe-
+less, the overall error for 128×10 is lower. Therefore, we ultimately determined the pa-
+rameters to be hidden_size=128 and patience=10. This selection provides critical trends
+measures for subsequent research involving XGBoost.
+
+                WMAE_Gold or Total = wc|yc − yˆc|                      (6)
+                     wc
+
+where wc is the weight of country c’s gold medals or total medals, yc is the true and yˆc is
+the prediction.
+
+(a)             (b)                                  (c)
+
+(d)             (e)                                  (f)
+
+Figure 3: Variations in Parameter Tuning of WMAE_Gold and WMAE_Total
+
+                Figure 4: Comparison on Hidden_size
+
+                                                                    2                         ܱᇿඔ࿐ଆ྘
+                                                                                              ࠆ౼۷‫؟‬ሧ࿟
+                                                          MATHmodels
+Team # 2500759                                         Page 9 of 26
+
+3.1.3 XGBoost-Bootstrap Modeling
+
+     Based on the aforementioned PCA dimensionality reduction and LSTM trend mea-
+surement, we obtain the input data for XGBoost. Subsequently, we construct XGBoost
+prediction models based on gold medal counts and total medal counts, respectively. A key
+aspect of this model (Fig. 5) is the construction of a relatively optimal XGBoost model
+through 10-fold cross-validation grid parameter tuning, along with the estimation of con-
+fidence intervals for medal prediction values using the Bootstrap resampling strategy.
+
+                                                       ଆ྘
+
+                                                    ࿐
+                      ğඔ els Figure 5: Schematic of XGBoost-Bootstrap
+ ‫ ݼ‬od XGBoost is an ensemble learning algorithm based on gradient-boosted trees, which
+ᇙ centers on the incremental and parallel optimization of the loss function by constructing
+m multiple CART base classifiers. It employs a second-order Taylor expansion of the ob-
+‫ ܄‬H jective function, enhancing the efficiency of gradient descent while incorporating regular-
+
+ization into the objective function to effectively prevent model overfitting. This algorithm
+
+ྐ T aims to leverage these features to elucidate the nonlinear relationships among gold medal
+A counts, total medal counts, home advantage, weighted values for individual sport medals,
+ັ and medal trend values. The objective function is Equation 7.
+                       M n
+                       ğ L(θ) = l(yi, yˆi) + Ω(fk)K
+
+                       ‫ ݼ‬i=1                              (7)
+
+                              k=1
+
+ྐ where l(·) is the loss function, Ω(·) is the regularization term.
+     Bootstrap is a non-parametric resampling method. By employing this approach, we
+ັ independently run the constructed XGBoost model 1,000 times, allowing us to calculate
+
+the 95% confidence interval for each country’s fitted values of gold and total medals based
+on these iterations.
+
+3.1.4 Results Display
+
+     The hyperparameter tuning of the predictive models employed RMSE as the evalua-
+tion criterion, aimed at selecting the model with the minimum RMSE value (see section
+6.2 for a detailed analysis). During the training of the gold medal prediction model, the
+Team # 2500759              Page 10 of 26
+
+optimal combination of model parameters was determined through hyperparameter tun-
+ing, yielding: nrounds = 75, max_depth = 2, eta = 0.1, gamma = 0.5, colsample_bytree
+= 1, min_child_weight = 1, and subsample = 0.5. Notably, the subsample parameter re-
+mained constant throughout the tuning process, set at 0.5 to ensure a reasonable sampling
+proportion.
+
+     In the training process of the medal prediction model, the only change compared to
+the gold medal prediction model was the adjustment of the gamma parameter. In this
+model, the gamma value was set to 0.25 to optimize the model’s predictive ability for the
+number of medals. Consequently, the relatively optimal XGBoost model was utilized to
+perform Bootstrap resampling and interval estimation for "the trend values of gold and
+medal counts for various countries in 2028", "the five principal component dimensions
+of medal weights for various sports in 2024" and "the estimated home-field effect values
+for 2028." The results for the top 20 countries in both gold medal counts and total medal
+counts for the 2028 Los Angeles Olympic Games are illustrated in Figs. 6(a)-(b).
+
+                       (a)
+
+                       (b)
+
+Figure 6: Top 20 Predictions for Gold and Medal Counts at 2028 Olympics
+
+     Based on Figs. 6(a)-(b) and Table 2, it can be observed that as the host country, the
+United States is projected to see a significant increase in both gold and medal counts for
+the 2028 Olympic Games. Additionally, countries such as the United Kingdom, Australia,
+Canada, and Cuba may also experience an increase in their respective gold and medal
+counts. In contrast, France, the host of the 2024 Olympic Games, is expected to achieve
+unprecedented results due to home-field advantage, but model predictions suggest that its
+gold and medal counts will notably decrease in the subsequent Olympic Games. Similarly,
+countries like China, Italy, South Korea, Japan, and Uzbekistan are also likely to perform
+poorly in the next Olympic Games.
+
+3.2 Breaking the Zero
+
+     Based on the aforementioned analysis and the criteria for achieving a "breakthrough
+of zero," we identify the countries projected to achieve at least one gold medal in the 2028
+
+                                                                                   2          ܱᇿඔ࿐ଆ྘
+                                                                                              ࠆ౼۷‫؟‬ሧ࿟
+                                                                         MATHmodels
+                                                                                      Team # 2500759                                                      Page 11 of 26
+
+                                                                                           Table 2: Predicted Medal Counts & CI for Top 20 Countries at 2028 Olympics
+
+                                                                                                      Gold                                         Total
+
+                                                                                      NOC Gold_Pred CI_95% Trend NOC Total_Pred CI_95% Trend
+
+                                                                                      USA  51         (32.08,58.34) ↑ USA  133                     (79.60,147.35) ↑
+
+                                                                                      CHN  34         (23.33,40.19) ↓ CHN  90                      (59.13,103.51) ↓
+
+                                                                                      AUS  19         (10.41,16.13) ↑ GBR  69                      (43.12,75.84) ↑
+
+                                                                                      JPN  17         (11.88,18.80) ↓ JPN  55                      (38.19,64.94) ↓
+
+                                                                                      GBR  16         (11.92,19.12) ↑ AUS  49                      (33.37,63.77) ↑
+
+                                                                                      FRA  12         (9.00,14.86) ↓ FRA   41                      (29.86,60.60) ↓
+                                                                                                      (8.41,14.38) ↓ NED   34                      (24.58,39.30) ↑
+                                                                                      GER  12         (7.06,13.03) ↓ GER   33
+                                                                                                      (6.84,13.18) ↓ CAN   29                      ྘ (25.18,48.98) ↓
+                                                                                      ITA  11         (4.82,9.33) ↑ ITA    29
+                                                                                                      (5.73,11.70) ↑ KOR   25                      (21.72,33.68) ↑
+                                                                                      NED  11         (5.18,10.87) ↑ BRA   21
+                                                                                                                                                   ଆ (22.58,34.13) ↓
+                                                                                      NZL  11
+                                                                                                                                                   (18.08,34.28) ↓
+                                                                                      CAN  10
+                                                                                                                                                   ࿐ (14.67,24.32) ↑
+                                                                                      HUN  8
+
+                                                                                      ඔ ESP                                                        (13.98,23.86) ↓
+                                                                                      KOR  7          (5.69,9.38) ↓ NZL    18                      (13.00,22.69) ↓
+                                                                                                                                                   (10.91,18.57) ↑
+                                                                                      BRA  6          (3.70,8.06) ↓ HUN    17                      (8.84,19.47) ↓
+                                                                                                                                                   (7.06,14.99) ↑
+                                                                                           5          (3.08,6.72) ↓ CUB    15                      (8.45,13.61) ↓
+                                                                                                                                                   (7.63,14.35) ↓
+                                                                                                                                                   (6.96,11.12) ↓
+                                                                                      ğ ls KEN
+                                                                                      UKR  5          (3.39,7.88) ↑ ESP    14
+                                                                                      e UZB
+                                                                                           5          (2.51,6.01) ↓ SWE    12
+                                                                                      ‫ ݼ‬d TPE
+                                                                                      CUB  4          (2.36,5.92) ↑ UZB    11
+
+                                                                                      ᇙ mo Olympics as MKD, BFA, TKM, KSA, SMR, and KUW. We will conduct a signed rank4(1.96,5.83) ↓ KEN9
+
+                                                                                      test on the point estimates derived from Bootstrap resampling for these countries to sta-4(2.79,4.53) ↑ UKR9
+
+                                                                                      ‫ ܄‬H tistically assess whether they can achieve this gold medal breakthrough. The significance
+                                                                                      ྐ T of these observations will be further elucidated by considering the size of the P -values,
+                                                                                      A which indicate the probability of the events occurring.
+
+                                                                                           The decision to utilize the signed rank test, rather than employing a one-sample t-test
+
+                                                                                      ັ M or defining a binary variable for "having won a gold medal" to apply logistic regression
+                                                                                      ğ or binary classification machine learning algorithms, is based on the following consider-
+                                                                                      ‫ ݼ‬ations.
+                                                                                          • The signed rank test is a non-parametric method that does not require any assump-
+                                                                                             tions regarding the distribution of the underlying population. In contrast, the t-test
+                                                                                             is a parametric method that assumes that the data originate from a normally dis-
+                                                                                       ྐ tributed population or that the sample itself is normally distributed. As such, the
+                                                                                             non-parametric test is more aligned with real-world scenarios, thus minimizing the
+                                                                                       ັ likelihood of substantial errors.
+                                                                                      • Implementing a binary variable for "winning a gold medal" to design a classification
+
+                                                                                           algorithm and calculate the estimated probability of countries achieving a "break-
+
+                                                                                           through of zero" would replace the quantitative variable of gold medal counts with
+
+                                                                                           a qualitative variable. This approach neglects the correlation between feature vari-
+
+                                                                                           ables and may lead to biased and unreasonable results.
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm          Given the analysis outlined above, we will employ the signed rank test to statistically
+                                                                                      determine the significance of the gold medal breakthrough and to provide probability
+m           m    mm m m mmmmm                           m mm           mm             estimates.
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2500759                                                                       Page 12 of 26
+
+1) Hypothesis testing setup
+    Let dij represent the i-th Bootstrap prediction value for the j-th country, and θj denote
+    the symmetric center of the corresponding population. When the final prediction value
+    yˆj ≥ 1, we establish a left-sided signed rank test with a location parameter of 1:
+
+                                     H0 : θj = 1 vs. H1 : θj < 1
+
+2) Data transformation and statistic construction
+    We perform a shift transformation on the original data d∗ij = dij −1. Next, we compute
+    the absolute value ranks Ri+j and the indicator variable: uij = I{di∗j<0}(di∗j). After
+    excluding data points where di∗j = 0, we construct the signed rank sum statistic:
+
+                                                   nj
+
+                                         wj+ =          uij Ri+j
+
+                                                   i=1
+
+where nj is the adjusted effective sample size.
+
+3) Asymptotic distribution theory
+    Under large sample conditions, when the null hypothesis is true, wj follows a normal
+    distribution:
+
+                                         wj+  −L→   N   (µj ,  σj2)
+
+                                              H0
+
+                                         µj   =  nj(nj +       1)
+                                                      4
+
+                         σj2  =  nj (nj  +  1)(2nj  +   1)  −        ik=1(ti3 − ti)
+                                            24                          48
+
+4) P -value calculation
+
+                                 P -value = Φ wj+ − µj
+                                                        σj
+
+     If the P -value is less than or equal to 0.05, falling within the rejection region, it is
+concluded that the country is statistically unable to achieve a "breakthrough of zero" in
+gold medals at the 2028 Olympics. Conversely, if the P -value is greater than 0.05, it
+suggests that the country has a favorable chance of achieving a "breakthrough of zero" in
+gold medals. Furthermore, a larger P -value indicates a smaller probability of committing
+a Type II error, thereby increasing the likelihood of realizing the "breakthrough of zero"
+in gold medals. Based on the model established above, the results of the Wlicoxon signed
+rank test for the countries aiming to achieve this "breakthrough of zero" in gold medals
+are illustrated in Fig. 7 and Table 3 .
+
+     Based on the Table 2 and the gold medal counts from participating countries in 2024,
+it was determined that eight countries, which did not secure any gold medals in 2024,
+may potentially achieve a breakthrough in gold medals by 2028. Historical data shows
+that GHA and GRD achieved a breakthrough of zero gold medals in 1960 and 2012,
+respectively.
+
+     From Table 3, we can know only two countries, SMR and KWT, had test statistics
+corresponding to P -values greater than 0.05, indicating that they did not fall within the
+
+                                                                                               2  ܱᇿඔ࿐ଆ྘
+                                                                                                  ࠆ౼۷‫؟‬ሧ࿟
+                                                                                     MATHmodels
+Team # 2500759                                             Page 13 of 26
+
+                Figure 7: Violin-Raincloud Hybrid Plot
+
+                Table 3: Sign Rank Sum Test Table
+
+                NOC w+  p pred                             ଆ྘
+
+                GRD 538231 1  1
+
+                GHA 532048 1  1
+
+                SMR 498067 0.847 2                      ࿐
+
+                KWT 389859 0.684 1
+                SAU 222158 0.0011 1
+
+                                 TKM 197115 3.01e-09 1
+                                 MKD 153243 1.22e-26 1
+
+        ඔ BFA 153243 1.22e-26 1
+ğ ls rejection region. This suggests that the predicted gold medal counts for SMR and KWT at
+e the 2028 Olympics are significantly greater than 1, implying that both countries are likely
+‫ ݼ‬d to achieve a “breakthrough of zero” in gold medals, with probabilities of 0.847 and 0.684,
+o respectively.
+
+ ᇙ m According to Table 3, the predicted gold medal count for SMR at the 2028 Olympics
+
+is 2, with a 95% approximate confidence interval of [1, 3], indicating relatively stable
+
+‫ ܄‬H predictions. For KWT, the predicted gold medal count is 1, with a 95% approximate
+ྐ T confidence interval of [0, 2]. The violin plot in Fig. 7 illustrates that most of the prediction
+
+data for KWT falls within the range of 1 to 2.
+
+ັ A 3.3 Olympic Events and Medal Counts
+ M We have chosen to utilize SHAP1,10 analysis tools for the correlation analysis and
+
+ğ importance measurement between Olympic events and medal counts.
+‫ ݼ‬3.3.1 Spearman: A Mathematical Analysis
+     The Spearman correlation coefficient is a non-parametric measure of rank correla-
+
+ྐ tion. In contrast to the Pearson correlation coefficient, which is limited to characterizing
+
+linear relationships and requires data to follow a normal distribution, the Spearman corre-
+
+ັ lation is computed based on rank orders. This approach makes it less sensitive to outliers
+and allows for a more robust representation of the degree of correlation between variables.
+Team # 2500759                                                                                                                                Page 14 of 26
+
+The Spearman correlation coefficient is defined mathematically as follows:
+
+                    1n           R(xi) − R(x) R(yi) − R(y)
+
+                    n   i=1
+
+ρ=                                                                                                                                                         (8)
+
+                1n                                                                             2                     1n                    2
+
+                n       R(xi) − R(x) ·                                                                               n       R(yi) − R(y)
+
+                   i=1                                                                                                  i=1
+
+where R(·) denotes the rank of the variable within the sample.
+     Coming up with hypotheses:
+
+                        H0 : ρ = 0 vs. H1 : ρ ≠ 0
+
+The t-test statistic is constructed, and a judgment is made using the rejection region:
+
+                        t = |ρ| H∼0 t(n − 2)
+                                  ρ2
+
+                                n−2
+
+                             mmmmmmm          mmm          mm m mm                            mmmmm            mm
+
+                        w  = (x, y) t > tα(n − 2) m                                                   mm
+                                         m    mm m m mmmmm                             m mm
+
+                             m mmm m           m                 m              mm     m mm           mmm
+
+                             m mmm m m mmmm                         mm          mmm            m      m mmm
+
+                             m mmm m          m m m mmmmm                           mm        mmmmmm m
+
+                             m           m        mm          mm                mm        mmm         mm
+
+                             mmmmmmm          mm        m        mmmm               m     mm m m mmm
+
+                                            mmm mm               mm             mm m mmm              m        mm
+
+                                 m      mm    mmmm               mm          m mmm            mmmmmmmm
+
+                             mm             mm m m m mmmm                           mmmmmmmm                      m
+
+                                m mmmm m m mmmmmm mm m m m mm                                         m           m
+
+                             mmm m          m m mmm                    m        mmmm m mmmm mm m
+
+                                         mm                   mm                m mmmmm mm               m
+
+                                    mmm            mmmmm m m m                         m      m m mm mm
+
+                                    m mm m         m          mmmmm mm mm                     m mmmmmmm
+
+                                        m mmm              mm          mm           m          mm           m
+
+                                    mm m          mm             m               m        mmm mmm              m
+
+                             mmmm           mmm mm mm m m m mm                                 mmmm m m
+
+                             mmmm             mm                    m        mm        m      mm         mmmm
+
+                             mm        mm mm      mm mmm                  mmm       m m mmm mmm m
+
+                                mm       m     mmmmm                            m mm      m mm           mm
+
+                                    m              m m mmmmmmmm mmmm                                 mm
+Significance t-test is typically conducted at a significance level of 0.05. In this study, m                   m
+
+                             m mmm       mmmmm m              m           mmmmm mm             mm m m m
+
+                             mmm              m m mmm                  mm              m          mm m mm
+
+                             mm m        mmm m mm mmmm m mmmm m                                   mm              m
+
+                             mm m           mmmm           m        m            m     mm            mm           m
+
+                             mmmm mm m m m                    mmm            m      m         m mm m              m
+
+                                    mm         m                    m mmmmm m                     mm m mm
+
+                                    m    m         mm               mmm m           mm m             mmm mm
+
+we calculate the Spearman correlation coefficients and conduct hypothesis testing based mmmmmmmmmmmmmmmm
+                                            mmm
+                                            mm m           mmmmmmmm                               mmmmmmm
+                                            mmm m
+                             m           m                 mm mmmmmm                      mmm     m               m
+
+                             m mmm m                       m mm              mmmmmmmmm            m mmm m
+
+                             m mmm m m             mm                     m               mmm m mmm m
+
+                             m mmm m              mm             m mmm                    mm m mmm m
+
+                             m           m mm      mm               m m mmmmmmm                   m               m
+
+                             mmmmmmm mmmmm                       m        mmm             mm      mmmmmmm
+on the weighted values of the various sports in the 2024 Paris Olympics in relation to
+
+the number of gold medals and total medals won by each country. This analysis aims to
+
+explore the interrelationships between the different sports and their respective gold and
+
+medal counts from a mathematical perspective.
+
+3.3.2 SHAP: Revealing Correlations and Importance
+
+     SHAP is a game theory-based tool that enhances the interpretability of machine
+learning models. Its core advantages lie in providing consistent, precise, and fair expla-
+nations. The rationale for selecting SHAP analysis tools to examine the interrelationships
+and importance of each sport in relation to various countries is as follows:
+
+• Explanation of predictive models
+  The fundamental function of SHAP is to compute the contribution of each feature
+  to the final prediction outcome while also indicating the direction of this contribu-
+  tion—positive or negative. Utilizing the beeswarm plot and importance plot, SHAP
+  allows for the quantification of each sport’s significance regarding the number of
+  gold and total medals won, in conjunction with the PCA loading matrix.
+
+• Nonlinear processing and feature dependencies
+  SHAP can reveal the nonlinear relationships of each feature within the XGBoost
+  model when multiple features interact. It provides accurate contribution scores for
+  each feature, with univariate dependence plots illustrating the impact of different
+  sports’ principal components on gold and medal counts.
+
+• Local and global explanations
+  In addition to the aforementioned analyses, SHAP provides local explanations for
+
+                                                                                                                                                        2       ܱᇿඔ࿐ଆ྘
+                                                                                                                                                                ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                              MATHmodels
+                                                                                      Team # 2500759                                         Page 15 of 26
+
+                                                                                      individual samples, allowing for a detailed examination of the degree of contribu-
+                                                                                      tion from each feature. This facilitates an in-depth analysis of the associations be-
+                                                                                      tween different sports and various countries. Specifically, by leveraging the SHAP
+                                                                                      force plot for a single sample, one can observe which sports primarily influence the
+                                                                                      medal counts of a particular country.
+
+                                                                                      3.3.3 Analysis of Relationships and Importance
+
+                                                                                      Based on the formula for the Spearman correlation coefficient and hypothesis test-
+
+                                                                                      ing, sports with non-significant correlation coefficients, such as Wrestling, Beach Volley-
+
+                                                                                      ball, Handball, Trampoline Gymnastics, and Cycling, were excluded. Fig. 8 illustrates
+
+                                                                                      the correlation between gold medals, total medals, and various sports for the 2024 Paris
+
+                                                                                      Olympics.                                           ྘
+
+                                                                                                                                      ࿐  ଆ
+
+                                                                                           ඔ Figure 8: Spearman Correlation Coefficient Heatmap
+                                                                                       ğ ls The Spearman correlation analysis reveals several key insights: Sports such as Swim-
+
+                                                                                      ming, Athletics, and Shooting demonstrate a strong relationship between gold and total
+
+                                                                                      e medals, primarily due to their multiple events that enhance medal potential, with strong
+                                                                                      ‫ ݼ‬d nations particularly excelling in Swimming and Athletics. Conversely, team sports (e.g.,
+                                                                                      o Basketball, Volleyball) and some group sports (e.g., Rowing, Canoeing) exhibit weaker
+                                                                                      ᇙ correlations between gold and total medals, as their gold counts are less concentrated
+                                                                                      m despite higher total medal counts attributed to broader participation across nations. Addi-
+                                                                                      ‫ ܄‬H tionally, newly introduced sports like Skateboarding and Karate showcase a lower corre-
+
+                                                                                      lation for gold medals (0.210) but a higher correlation for total medals (0.496), indicating
+
+                                                                                      ྐ T a more dispersed gold distribution alongside increased total medals. The growth of these
+                                                                                      A sports likely stems from greater participation and competition, contributing to a more
+
+                                                                                      equitable medal distribution overall.
+
+                                                                                       ັ M The XGBoost prediction model for gold and total medals at the 2028 Olympics,
+                                                                                      ğ constructed previously, calculates SHAP values based on the training set, resulting in the
+                                                                                      ‫ ݼ‬hexagonal importance mix plot in Fig. 9 for five principal component features. In the gold
+
+                                                                                      medal prediction model, the two most important principal components are PC1 (0.8345)
+                                                                                      ྐ and PC2 (0.1055). For the total medal prediction model, the leading components are PC1
+
+                                                                                      (0.6242) and PC5 (0.3024), aligning with the highest variance contribution from PC1.
+                                                                                      ັ The absolute values of the loadings of individual items on the principal components are
+
+                                                                                      then weighted by the importance of the components, summed, and normalized to calculate
+                                                                                      their significance, as shown in Fig. 10.
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm         The PCA and SHAP analysis reveals important insights into sports. Shooting and
+                                                                                      Gymnastics rank among the top three in gold and total medal significance, emphasizing
+m           m    mm m m mmmmm                           m mm           mm             their vital Olympic roles. Shooting’s diversity and Gymnastics’ strong participation from
+                                                                                      countries like the USA and China contribute to their rankings. Swimming ranks third in
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+                                                 mm     m mm
+m mmm m           m            Team # 2500759 m                        mmm                                                             Page 16 of 26
+                                       mm
+m mmm m        m mmmm          mmmmm             mmm            m      m mmm
+                               mm
+m mmm m          mmm                                 mm        mmmmmm m
+
+m           m        mm                          mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+
+                                                                                      (a)  (b)
+
+                                                                                      Figure 9: Cellular-Importance Mixed Plot
+
+                                                                                      Figure 10: Top 15 Sports Event Importance Score
+
+                                  gold importance (0.9039) due to its variety and competition. Table Tennis, while lower
+                                  in gold importance, is second in total medals (0.95), reflecting its global popularity and
+                                  China’s dominance. Diving and Wrestling also hold significance, with Diving showcasing
+                                  China’s strength.
+
+                                       Next, we will create univariate dependence plots for PC1, which has the highest
+                                  SHAP importance. This analysis will illustrate the nonlinear relationship between PC1
+                                  and medal counts, highlighting contributions from sports such as Swimming, Athletics,
+                                  Wrestling, Gymnastics, and Basketball.
+
+                                       In the gold medal prediction model (Fig. 11(a)), the negative region of PC1 is closely
+                                  associated with sports that have high loadings, such as Swimming, Athletics, Wrestling,
+                                  Gymnastics, and Basketball, which perform well when PC1 is negative, significantly con-
+                                  tributing to the gold medal count. The upward trend in the dependence plot indicates that
+                                  outstanding performances in these sports lead to a considerable increase in gold medals,
+                                  highlighting their crucial impact, particularly in the negative PC1 area. As PC1 turns
+                                  positive, their influence diminishes, demonstrating that their effects on gold medal counts
+                                  are primarily concentrated in the negative region. Similarly, in the total medal prediction
+                                  model (Fig. 11(b)), these same sports significantly impact the total medal count; high
+                                  performance when PC1 is negative enhances both gold and overall medal tallies. The
+                                  ascent of SHAP values in the dependence plot signifies that their excellence contributes
+                                  notably not only to gold but also to silver and bronze medals. As PC1 becomes positive,
+                                  their influence on total medal counts weakens, further confirming their critical role in the
+                                  negative PC1 region.
+
+                                                                                                                                                 2  ܱᇿඔ࿐ଆ྘
+                                                                                                                                                    ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                       MATHmodels
+Team # 2500759                                                    Page 17 of 26
+
+                                                       ଆ  ྘
+
+                      ࿐
+                     ඔ Figure 11: PC1-SHAP Mixed Plot
+                (a)                                  (b)
+
+ ğ els Finally, this study incorporates SHAP values for individual samples to analyze the
+‫ ݼ‬d impact of different sports on gold and total medal predictions for the U.S. and France,
+o particularly focusing on the contributions of traditional powerhouses like Swimming and
+ᇙ Athletics. Additionally, it discusses the host country effect, exploring how the upcoming
+m host nations, France in 2024 and the USA in 2028, can positively influence predictions of
+ັྐ‫ ܄‬ğMATH gold and total medal counts through home advantage.
+                ‫(ݼ‬a)                                 (b)
+
+ྐ Figure 12: 2028 U.S. Medal and Gold Medal Prediction SHAP Plot
+ັ
+
+                (a)                                  (b)
+
+Figure 13: 2028 France Medal and Gold Medal Prediction SHAP Plot
+
+     Figs. 12(a)-(b) show that traditional power sports like Swimming and Athletics
+carry significant weight in the PCA components, particularly with high loadings in prin-
+cipal components PC1 and PC2, indicating their substantial contributions to the U.S. gold
+medal count. With a PC1 value of 18 for gold medal predictions, this confirms the driv-
+ing role of these sports. In contrast, the total medal count prediction for the U.S. is 133,
+Team # 2500759                                                      Page 20 of 26
+
+Figure 14: The Top 10 Countries by Contribution Coefficient
+
+Figure 15: Trends in Medals Acquisition in Japan from 1996 to 2016
+
+that certain countries display relatively stable performances across different Olympic cy-
+cles, while others experience significant fluctuations in their medal counts. For instance,
+some major nations show a limited range of variance in their medal counts, highlighting
+their sustained competitiveness across multiple events. In contrast, some smaller nations
+exhibit greater volatility in their medal counts, suggesting that their performance may be
+heavily influenced by specific events or sudden occurrences.
+
+     (2) Decision support: The findings can assist the Olympic committees in developing
+more flexible strategies for future Olympic cycles. If a country exhibits instability in its
+medal counts, the committee can mitigate uncertainty by diversifying resource allocation,
+thereby avoiding excessive reliance on any single event. For example, increasing train-
+ing investments in unstable events and enhancing the competitiveness of other promising
+sports can help ensure consistent performance across various disciplines. Additionally,
+for countries showing more stable performances, the Olympic committees could focus on
+maintaining existing advantages while bolstering research and technical support to ensure
+they remain competitive at the forefront.
+
+     2. Correlation Between Olympic Medal Counts and Specific Events
+
+     (1) Insight: The model, through the integration of PCA and LSTM, reveals the sig-
+nificance of certain specific events in predicting medal counts. The research demonstrates
+that disciplines such as swimming, athletics, and shooting play a crucial role in the medal
+contributions of many countries. These events are not only widely recognized and highly
+competitive at the Olympics but also serve as essential battlegrounds for countries vying
+for medals. In particular, swimming and athletics stand out as primary sources of medal
+counts for many nations due to their frequent competitions and high viewer engagement.
+
+                                                                              2               ܱᇿඔ࿐ଆ྘
+                                                                                              ࠆ౼۷‫؟‬ሧ࿟
+                                                                    MATHmodels
+                                                                                      Team # 2500759                   Page 21 of 26
+
+                                                                                           (2) Decision support: Olympic committees can leverage these analytical findings
+                                                                                      for strategic planning, particularly in resource allocation and event development. For
+                                                                                      events that display a strong competitive advantage, countries can increase their invest-
+                                                                                      ments by providing additional training facilities and financial support. For instance, in
+                                                                                      nations where swimming and athletics are particularly strong, committees could enhance
+                                                                                      athlete training by collaborating with top domestic and international coaches to refine
+                                                                                      skills and improve overall performance. Furthermore, informed by data analysis, coun-
+                                                                                      tries can identify potential medal-winning events in advance, enabling them to formulate
+                                                                                      effective athlete development programs and promotional strategies for these disciplines.
+
+                                                                                           3. Coaching Investment Directions in National Strategies
+
+                                                                                           (1) Insight: Through model analysis, some countries exhibit strong medal returns
+
+                                                                                      ྘ following coaching changes, as seen in Australia. Conversely, other nations experience
+                                                                                      ଆ minimal impact from such coaching transitions, despite implementing changes.
+
+                                                                                       ࿐ (2) Decision support: Olympic committees should develop personalized strategies
+
+                                                                                      based on the specific circumstances of different countries, prioritizing support for events
+                                                                                      that demonstrate significant improvements post-coaching changes. For countries such as
+                                                                                      Japan, Italy, and Australia, the committees could enhance investments in judo, athletics,
+
+                                                                                      ඔ and swimming to increase medal returns. Meanwhile, for events that show less pro-
+
+                                                                                      nounced results, committees could reduce excessive investments in those coaching staff
+
+                                                                                      ğ ls and reallocate resources to focus on areas more likely to yield medals.
+                                                                                      e 6 Sensitivity Analysis
+                                                                                      ‫ ݼ‬od 6.1 The Number of Principal Components
+
+                                                                                       ᇙ m To simplify the data structure and improve the efficiency of the prediction model,
+
+                                                                                      Principal Component Analysis (PCA) was used. PCA was performed on the Olympic
+
+                                                                                      ‫ ܄‬H event dataset, and the variance contribution rates of each principal component were cal-
+                                                                                      ྐ T culated. The selection of five principal components was based on their explanation of
+
+                                                                                      76.4% of the cumulative variance, effectively capturing most of the information in the
+
+                                                                                      A original dataset. This choice is supported by Fig. 16, which shows a steep drop-off after
+                                                                                      ັ M the first few components, validating the use of five components. This approach reduces
+
+                                                                                      data dimensionality while retaining essential information and eliminating redundant fea-
+
+                                                                                      ‫ݼ‬ğ tures.
+                                                                                               ྐ
+
+                                                                                             ັ
+
+                                                                                                         Figure 16: Scree Plot for Principal Component Selection
+
+                                                                                      6.2 Prediction Model Evaluation
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm         In the model evaluation, we examined both the predictive accuracy and robustness
+                                                                                      of the gold medal and total medal prediction models.
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm
+Team # 2500759                                                        Page 22 of 26
+
+     1. Predictive accuracy
+
+     Through 10-fold cross-validation and Bootstrap resampling, we obtained prediction
+intervals and confidence levels for both models. In the gold medal prediction model,
+the MSE of the test set was 6.83, and the RMSE was 2.61. Although these values were
+slightly higher compared to the training set, the MAE was 0.52, and the MAPE was
+14.47%, indicating that the model’s accuracy remains acceptable for new data. The total
+medal prediction model showed more stable performance, with lower MSE and RMSE,
+indicating higher predictive accuracy. These results are summarized in Table 5.
+
+                      Table 5: Model Evaluation Metrics
+
+                 MSE          Gold           Total
+                RMSE  Training Test  Training Test
+                MAE
+                MAPE    1.33 6.83      28.5 6.46
+                        1.16 2.61      5.34 2.54
+                        1.49 0.52      3.68 1.04
+                      17.50% 14.47%  18.63% 16.13%
+
+     2. Robustness evaluation
+
+     To assess the robustness of the model, we focused on the R² value and the R-squared
+line plot from 10-fold cross-validation, as shown in Figs. 17(a)-(b). The results showed
+that both the gold medal and total medal prediction models had R² values close to 1,
+indicating that the models fit the data well and demonstrate consistent performance across
+different datasets, showcasing strong generalizability.
+
+                (a)                  (b)
+
+                Figure 17: R2 Values Across 10-Fold Cross-Validation
+
+7 Model Analysis
+
+7.1 Strength
+
+     The innovation and advantages of this study lie in the development of a predictive                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ܱᇿඔ࿐ଆ྘
+model for Olympic medal counts by integrating the PCA-LSTM-enhanced XGBoost-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ࠆ౼۷‫؟‬ሧ࿟
+Bootstrap algorithm. Additionally, it conducts a comprehensive validation of the model’s
+accuracy and stability through various statistical methods, while employing a DID frame-
+work to assess the impact of coaching changes on Olympic medal counts. This is specifi-
+cally reflected in the following aspects:
+
+                                                                                                                                                                                                                                                                                                                                       2
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   MATHmodels
+Team # 2500759                               Page 23 of 26
+
+     • The introduction of the Bootstrap resampling method facilitates confidence interval
+       estimation for the predictive outcomes, quantifying the model’s uncertainty and
+       bolstering the credibility of the results. Additionally, the application of parallel
+       trend hypothesis testing ensures that the experimental and control groups exhibited
+       consistent medal trend patterns prior to coaching changes, further enhancing the
+       stability of the model and the accuracy of inferences.
+
+     • By integrating SHAP value analysis, this study conducts a thorough assessment of
+       the contributions of different sports to medal counts, revealing key factors that in-
+       fluence outcomes. Notably, when analyzing host nations, the findings illustrate the
+       home advantage’s significant effect on medal totals, thereby enhancing the model’s
+       interpretability and providing more actionable insights for decision-making.
+
+     • The use of the DID model allows for the evaluation of the causal effects of coach-
+
+     ing changes on medal counts, providing an accurate quantification of the impact
+
+7.2  of such changes on Olympic performance and ensuring the reliability of causal in-
+     ferences. Furthermore, the combination of PCA for dimensionality reduction and
+
+     ྘ LSTM for trend modeling enhances the predictive accuracy of medal counts, show-
+
+     casing strong modeling capabilities, particularly in addressing complex nonlinear
+
+     ଆ relationships and time series data.
+     ࿐ Weekness and Further Discussion
+     Our model has several limitations and incompatibilities. For instance, the computa-
+
+ඔ tional cost of the XGBoost and Bootstrap methods is relatively high, particularly when
+
+dealing with large datasets, which affects the model’s real-time applicability. Addition-
+
+ğ ls ally, the application of PCA for dimensionality reduction may lead to information loss,
+
+thereby impacting the model’s performance in capturing complex relationships. While
+
+e LSTM are capable of identifying trends, their predictive ability is limited when it comes
+‫ ݼ‬d to sudden events and drastic fluctuations, which reduces the robustness of the model. Fur-
+o thermore, the DID model assumes that the impact of coaching changes on medal counts
+ᇙ is linear; however, in reality, these effects may be nonlinear, resulting in a failure to ad-
+m equately capture the complex relationships present in the data and affecting the accuracy
+‫ ܄‬H of causal inferences.
+
+ ྐ T Future improvements to the model focus on two key areas. First, the Olympic medal
+A count prediction model will enhance its integration of fluctuations from the Games, po-
+
+litical factors, and athlete performance variations through advanced ensemble learning
+
+ັ M techniques. By optimizing weighted averaging and stacked modeling, the model will in-
+
+corporate a wider range of variables and improve short-term predictive accuracy via a
+
+ğ robust real-time data update mechanism. The use of reinforcement learning will further
+
+strengthen its long-term forecasting abilities, enhancing adaptability to sudden events and
+
+‫ ݼ‬policy changes, while also improving computational efficiency for better timeliness and
+ྐ accuracy in predictions. Second, the enhanced-DID model will merge differentiated im-
+
+pact analysis with deep learning techniques to refine medal predictions. By incorporating
+ັ stochastic simulations, this model will dynamically adjust the effects of coaching changes
+
+on medal counts, significantly boosting its adaptability in fluctuating environments and
+improving overall predictive effectiveness.
+Team # 2500759                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Page 24 of 26
+
+8 Memorandum
+
+To: International Olympic Committee
+From: Team #2500759
+Subject: 2028 Olympics Medal Prediction and Insights
+Date: January 26, 2025
+
+Dear Members of International Olympic Committee,
+
+     We are pleased to submit our solution to the medal prediction model for the 2028 Los
+Angeles Summer Olympics. Our team developed this model based on the data from the
+2024 Paris Olympics and additional background information, offering both precise medal
+predictions and valuable insights for improving Olympic performance.
+
+    To construct the model, we utilize historical medal data and employ a PCA-LSTM-
+
+enhanced XGBoost-Bootstrap approach for preliminary predictions. Subsequently, we
+
+adjust these predictions by considering the event configurations and competitive structures
+
+of  the  2024  Olympic  Games,  analyzing how these factors mmmmmmm                                                                                                                                                                                                                                                                                                                                                                                                                      influence  the  medal  counts       of
+                                                 mmm        mm m mm                                                                                                                                                                                                                                                                                                                                                                                            mmmmm              mm
+
+                                m          m     mm m m mmmmm                                                                                                                                                                                                                                                                                                                                                                                           m mm            mm
+
+                                m mmm m          m                m              mm                                                                                                                                                                                                                                                                                                                                                                     m mm            mmm
+
+                                m mmm m m mmmm                       mm          mmm                                                                                                                                                                                                                                                                                                                                                                              m     m mmm
+
+                                m mmm m          m m m mmmmm                                                                                                                                                                                                                                                                                                                                                                                         mm        mmmmmm m
+different countries. To estimate the uncertainty in our predictions, we provide confidence m
+                                           m         mm        mm                mm                                                                                                                                                                                                                                                                                                                                                                        mmm          mm
+
+                                mmmmmmm          mm      m        mmmm               m                                                                                                                                                                                                                                                                                                                                                                     mm m m mmm
+
+                                               mmm mm             mm             mm m                                                                                                                                                                                                                                                                                                                                                                      mmm          m         mm
+
+                                    m      mm    mmmm             mm          m mmm                                                                                                                                                                                                                                                                                                                                                                            mmmmmmmm
+
+                                mm             mm m m m mmmm                                                                                                                                                                                                                                                                                                                                                                                         mmmmmmmm                        m
+
+                                   m mmmm m m mmmmmm mm m m m mm                                                                                                                                                                                                                                                                                                                                                                                                        m            m
+
+                                mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+intervals for gold medals and total medal counts. m m          mm                m mmmmm mm                                                                                                                                                                                                                                                                                                                                                                                 m
+                                                                                                                                                                                                                                                                                                                                                                                                                                        mmm
+                                                                                                                                                                                                                                                                                                                                                                                                                                        m mm m
+                                                                                                                                                                                                                                                                                                                                                                                                                                                m mmm
+                                                      mmmmm m m m                                                                                                                                                                                                                                                                                                                                                                                       m      m m mm mm
+
+                                                      m        mmmmm mm mm                                                                                                                                                                                                                                                                                                                                                                                     m mmmmmmm
+
+                                                            mm          mm                                                                                                                                                                                                                                                                                                                                                                           m            mm           m
+
+                                       mm m          mm           m               m                                                                                                                                                                                                                                                                                                                                                                        mmm mmm                m
+
+                                mmmm           mmm mm mm m m m mm                                                                                                                                                                                                                                                                                                                                                                                                 mmmm m m
+
+                                mmmm             mm                  m        mm                                                                                                                                                                                                                                                                                                                                                                        m      mm           mmmm
+
+                                mm        mm mm      mm mmm                mmm                                                                                                                                                                                                                                                                                                                                                                       m m mmm mmm m
+
+                                   mm      m     mmmmm                           m mm                                                                                                                                                                                                                                                                                                                                                                      m mm             mm
+
+                                m      m              m m mmmmmmmm mmmm                                                                                                                                                                                                                                                                                                                                                                                                 mm        m
+
+                                m mmm mmmmm m                  m           mmmmm mm                                                                                                                                                                                                                                                                                                                                                                               mm m m m
+
+                                mmm              m m mmm                mm                                                                                                                                                                                                                                                                                                                                                                              m            mm m mm
+
+    An essential component of our model is the analysis of the "great coach" effect, mm mmmm m                                                                                                                                                                                                                                                                                                                                                             m         mm               m
+                                                      mm mmmm m mmmm                                                                                                                                                                                                                                                                                                                                                                                       m             mm           m
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      m
+                                mm m           mmmm         m        m            m                                                                                                                                                                                                                                                                                                                                                                     m      m     mm m         mm
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     mm m
+                                mmmm mm m m           m        mmm            m                                                                                                                                                                                                                                                                                                                                                                      m
+
+                                       mm        m                   m mmmmm m
+
+                                       m   m          mm             mmm m                                                                                                                                                                                                                                                                                                                                                                           mm m               mmm mm
+
+                                                 mm            mmmm               mmm
+
+                                mmmmmmm m m m m m m m m m m m mmmmmmm
+
+                                           m mm m
+which we integrate using the DID model. By comparing countries with and without m                                                                                                                                                                                                                                                                                                                                                                          mmm m                     m
+                                                            mm mmmmmm
+
+                                m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+                                m mmm m m             mm                   m                                                                                                                                                                                                                                                                                                                                                                               mmm m mmm m
+
+                                m mmm m              mm           m mmm                                                                                                                                                                                                                                                                                                                                                                                    mm m mmm m
+
+                                m          m mm       mm             m m mmmmmmm                                                                                                                                                                                                                                                                                                                                                                                     m               m
+
+                                mmmmmmm mmmmm                     m        mmm                                                                                                                                                                                                                                                                                                                                                                             mm        mmmmmmm
+
+coaching changes, we estimate the incremental impact of coaching transitions on medal
+
+outcomes. We fit the model using OLS and conduct statistical significance tests as well
+
+as parallel trends tests to ensure the reliability of our results.
+
+     Beyond simply predicting medal counts, our model also offers insights on optimizing
+Olympic performance. It highlights which countries are likely to make breakthroughs
+in specific sports by strategically increasing investments in those areas. Furthermore,
+our model suggests potential improvements in the types and settings of Olympic events,
+recommending adjustments that could help maximize medal outcomes. These findings
+can guide the decision-making processes of National Olympic Committees as they plan
+for the 2028 Olympics and beyond.
+
+     Thank you for providing the opportunity to participate in this important project. We
+look forward to your valuable feedback.
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Sincerely yours,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Team #2500759
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          2      ܱᇿඔ࿐ଆ྘
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ࠆ౼۷‫؟‬ሧ࿟
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                MATHmodels
+Team # 2500759  Page 25 of 26
+
+References
+
+ [1] SM Khorshed Alam, Peiyue Li, Mahbubur Rahman, Misbah Fida, and Vetrimu-
+      rugan Elumalai. Key factors affecting groundwater nitrate levels in the yinchuan
+      region, northwest china: Research using the extreme gradient boosting (xgboost)
+      model with the shapley additive explanations (shap) method. Environmental Pollu-
+      tion, 364:125336, 2025.
+
+ [2] Ruobing Chen, Mingxin Zhang, Xiao Xu, and Yongfeng Liu. Game-related statistics
+      for distinguishing winning and losing teams in olympic basketball: The impact of
+      game pace. Journal of Sports Sciences, pages 1–12, 2025.
+
+ [3] Yuejian Chen, Xuemei Liu, Meng Rao, Yong Qin, Zhipeng Wang, and Yuanjin Ji.
+      Explicit speed-integrated lstm network for non-stationary gearbox vibration repre-
+      sentation and fault detection under varying speed conditions. Reliability Engineering
+      & System Safety, 254:110596, 2025.
+
+྘ [4] Andrew Goodman-Bacon. Difference-in-differences with variation in treatment tim-
+ ଆ ing. Journal of econometrics, 225(2):254–277, 2021.
+࿐ [5] Jiangtao Li, Xingqin An, Qingyong Li, Chao Wang, Haomin Yu, Xinyuan Zhou, and
+
+      Yangli-ao Geng. Application of xgboost algorithm in the optimization of pollutant
+      concentration. Atmospheric Research, 276:106238, 2022.
+
+ [6] Wenlong Liao, Shouxiang Wang, Dechang Yang, Zhe Yang, Jiannong Fang, Chris-
+
+ ඔ tian Rehtanz, and Fernando Porté-Agel. Timegpt in load forecasting: A large time
+
+      series model perspective. Applied Energy, 379:124973, 2025.
+
+ğ els [7] Benjamin Lindemann, Benjamin Maschler, Nada Sahlab, and Michael Weyrich. A
+ ‫ ݼ‬d survey on anomaly detection for technical systems using lstm networks. Computers
+
+      in Industry, 131:103498, 2021.
+
+ᇙ o [8] Tui H Nolan, Jeff Goldsmith, and David Ruppert. Bayesian functional principal
+ m components analysis via variational message passing with multilevel extensions.
+ ‫ ܄‬H Bayesian Analysis, 20(1):1459–1485, 2025.
+ྐ T [9] Cheng-Hong Yang, Borcy Lee, Yi-In Lee, Yu-Fang Chung, and Yu-Da Lin. An
+ A autoencoder-based arithmetic optimization clustering algorithm to enhance principal
+
+      component analysis to study the relations between industrial market stock indices in
+
+ ັ M real estate. Expert Systems with Applications, 266:126165, 2025.
+ğ [10] Junyi Zhang, Xianglong Ma, Jialan Zhang, Deliang Sun, Xinzhi Zhou, Changlin
+
+      Mi, and Haijia Wen. Insights into geospatial heterogeneity of landslide suscepti-
+
+ ‫ ݼ‬bility based on the shap-xgboost model. Journal of environmental management,
+ ྐ 332:117357, 2023.
+  ັ
+Team # 2500759  Page 26 of 26
+
+Report on Use of AI
+
+     1. OpenAI ChatGPT (January 25, 2025 version, ChatGPT-4)
+
+     Query1: How PCA does reducing dimensions?
+
+     Output: Start with data normalization as this is a prerequisite for PCA. Next, cal-
+culate the covariance matrix or correlation matrix, this step is to capture the relationship
+between variables. Then, eigenvalue decomposition is performed, and choosing the num-
+ber of principal components is a key step. Finally, the data is projected into the new
+feature space, which is the reduced dimensionality.
+
+     2. OpenAI ChatGPT (January 25, 2025 version, ChatGPT-4)
+
+     Query2: How to use SHAP?
+
+     Output: SHAP is a game theory-based method for interpreting the predictions of a
+model. It helps to understand how the model makes a certain prediction by calculating the
+contribution of each feature to the model output. Assuming you have installed the SHAP
+library, you next need to choose a model to interpret. For example, you can use a trained
+random forest model and then use SHAP to interpret its predictions. The steps might
+include: loading the data, training the model, creating a SHAP interpreter, calculating the
+SHAP values, and finally visualizing the results. When loading data, you need to make
+sure that the data is preprocessed, such as normalized or coded categorical variables. Then
+train the model, e.g. with a random forest classifier. After that, create an interpreter object
+for SHAP, which may need to be passed in the model and data. When calculating SHAP
+values, you may need to pass in test samples using the interpreter’s shap_values method.
+
+     3. OpenAI ChatGPT (January 25, 2025 version, ChatGPT-4)
+
+     Query3: How do you quantify the impact of the great coach effect?
+
+     Output: Using the number of medals as the dependent variable, consider factors
+such as historical medal counts, host country advantage, number of athletes, economic
+indicators (if any), and whether or not to bring in good coaches (as a dummy variable).
+
+                          2                                                                      ܱᇿඔ࿐ଆ྘
+                                                                                                 ࠆ౼۷‫؟‬ሧ࿟
+                MATHmodels
+

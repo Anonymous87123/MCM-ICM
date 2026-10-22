@@ -1,0 +1,950 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2410482-2f099d31",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "2f099d3158fc5bfbd00902fa22abc94a6758e2d09d48cbbad89f532959ad173d",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q251-001",
+      "page": 5,
+      "section": "4.1 The Markov model",
+      "family": "Markov chain for the win probability",
+      "purpose": "Give every score a win probability that depends only on the current score.",
+      "base_or_modification": "base",
+      "summary": "Serving and receiving get separate rates, each the mean of the two players' career averages plus an amendment. The win probability at a score is the serving probability times the probability one point ahead plus the rest times the probability one point behind, computed by backward recursion. Advantage, deuce, and the six special scores collapse onto earlier cells, so they never enter the chart. The same recursion lifts from the game to the match.",
+      "variables": [
+        {
+          "symbol": "p",
+          "normalized_name": "service rate",
+          "unit": "1",
+          "definition": "A's service scoring rate against B.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "receive rate",
+          "unit": "1",
+          "definition": "A's receive scoring rate against B.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "amendment",
+          "unit": "1",
+          "definition": "A correction that changes with the two sides.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "score",
+          "unit": "1",
+          "definition": "A's points in the current game.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "opponent score",
+          "unit": "1",
+          "definition": "B's points in the current game.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "win probability",
+          "unit": "1",
+          "definition": "The probability of winning the game from the score (a, b).",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p",
+        "q"
+      ],
+      "outputs": [
+        "P"
+      ],
+      "handoff_outputs": [
+        "P"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q251-001",
+          "page": 5,
+          "label": "(1)",
+          "source_expression": "p_AB = (p_A + q_B)/2 + e",
+          "normalized_latex": "p_{AB}=\\frac{p_A+q_B}{2}+e",
+          "purpose": "The service rate as a mean plus an amendment.",
+          "variable_symbols": [
+            "p",
+            "e"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-002",
+          "page": 5,
+          "label": "(2)",
+          "source_expression": "q_AB = (q_A + p_B)/2 + e",
+          "normalized_latex": "q_{AB}=\\frac{q_A+p_B}{2}+e",
+          "purpose": "The receive rate, printed merged with the section heading.",
+          "variable_symbols": [
+            "q",
+            "e"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-003",
+          "page": 6,
+          "label": "(3)",
+          "source_expression": "P(a,b) = p P(a+1,b) + (1-p) P(a,b+1)",
+          "normalized_latex": "P(a,b)=p\\,P(a+1,b)+(1-p)\\,P(a,b+1)",
+          "purpose": "The one-step recursion.",
+          "variable_symbols": [
+            "P",
+            "p",
+            "a",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three formulas are printed. The receive rate is merged with the heading."
+      },
+      "objectives": [
+        "Measure the situation with no psychological factor in it."
+      ],
+      "constraints": [
+        "The next point depends only on the current score.",
+        "The six special scores collapse."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The recursion starts from the end of the game and runs backward."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The rates come from career averages. The amendment is said to change with the situation and is not fitted.",
+        "parameters": [
+          "e"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the two rates.",
+          "Collapse the special scores.",
+          "Recurse backward from the end of the game.",
+          "Lift the same recursion to the match."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Every score has one probability."
+      },
+      "assumptions": [
+        "The Markov property holds.",
+        "Career averages represent the two players."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The recursion is determined. The amendment is not identified."
+      },
+      "validation_refs": [
+        "Figure 4: the final, read game by game.",
+        "The chart agrees with the intuitive perception."
+      ],
+      "computational_cost": "One backward pass per game.",
+      "strengths": [
+        "The exclusion of psychology is stated, so the number means one thing."
+      ],
+      "limitations": [
+        "The amendment is never given a value."
+      ],
+      "missing_details": [
+        "The value of the amendment."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q251-002",
+      "page": 8,
+      "section": "4.2 The definition of momentum",
+      "family": "hand-weighted linear index",
+      "purpose": "Turn five factors into one momentum number.",
+      "base_or_modification": "paper-specific",
+      "summary": "Consecutive points enter through an odd function whose slope falls, borrowed from diminishing marginal utility. The leverage of a game is the win probability if it is won minus the probability if it is lost, and recent games are weighted exponentially with a fixed decay of 0.33. Three further factors are coded 1, 0, or minus 1. The five are standardized and combined with chosen weights 0.5, 0.2, 0, 1, minus 0.1, and 0.1, plus a normal disturbance. The weight list has six entries for five factors.",
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "consecutive points",
+          "unit": "1",
+          "definition": "The run of consecutive points, signed.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "point effect",
+          "unit": "1",
+          "definition": "The odd function of the run.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "leverage",
+          "unit": "1",
+          "definition": "The swing in win probability a game can cause.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "weighted leverage",
+          "unit": "1",
+          "definition": "The exponentially weighted leverage.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "decay",
+          "unit": "1",
+          "definition": "Fixed at 0.33.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "weights",
+          "unit": "1",
+          "definition": "The chosen coefficients.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "disturbance",
+          "unit": "1",
+          "definition": "Normal with mean zero.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The linear combination.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x"
+      ],
+      "outputs": [
+        "M"
+      ],
+      "handoff_outputs": [
+        "M"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q251-004",
+          "page": 8,
+          "label": "(4)",
+          "source_expression": "L_a = P(win match | win game) - P(win match | lose game)",
+          "normalized_latex": "L_a=P(\\mathrm{win}\\mid\\mathrm{win\\ game})-P(\\mathrm{win}\\mid\\mathrm{lose\\ game})",
+          "purpose": "The leverage as a difference of conditional probabilities.",
+          "variable_symbols": [
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-005",
+          "page": 8,
+          "label": "(5)",
+          "source_expression": "u_t = sum (1-alpha)^{k} L_{t-k} (-1)^{r} / sum (1-alpha)^{k}",
+          "normalized_latex": "u_t=\\frac{\\sum_k(1-\\alpha)^k L_{t-k}(-1)^{r_{t-k}}}{\\sum_k(1-\\alpha)^k}",
+          "purpose": "The exponentially weighted leverage. The sign term is scrambled.",
+          "variable_symbols": [
+            "u",
+            "L",
+            "alpha"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-006",
+          "page": 9,
+          "label": "(6)",
+          "source_expression": "M = w X + eps",
+          "normalized_latex": "M=w^{\\top}X+\\varepsilon",
+          "purpose": "The linear definition. Six weights are printed for five factors.",
+          "variable_symbols": [
+            "M",
+            "w",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three formulas are printed. The weighted sum and the weight list are scrambled."
+      },
+      "objectives": [
+        "Give momentum a number the data can move."
+      ],
+      "constraints": [
+        "Decay fixed at 0.33.",
+        "Running distance and serve speed are excluded."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The weighted sum runs back to the first game."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The weights and the decay are chosen, not fitted. The factors are standardized.",
+        "parameters": [
+          "w",
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the leverage of each game from the win probability.",
+          "Weight the games exponentially.",
+          "Code the three point factors.",
+          "Standardize and combine with the chosen weights."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The weights are fixed numbers."
+      },
+      "assumptions": [
+        "Recent games matter more.",
+        "The disturbance is normal with mean zero."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The weights are chosen. Nothing identifies them."
+      },
+      "validation_refs": [
+        "Figure 5: the momentum of the final, said to match the audience's intuition."
+      ],
+      "computational_cost": "One weighted sum per point.",
+      "strengths": [
+        "The borrowed law explains why the effect is not proportional."
+      ],
+      "limitations": [
+        "Six weights are printed for five factors, so the assignment is unclear."
+      ],
+      "missing_details": [
+        "Which weight belongs to which factor."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q251-003",
+      "page": 11,
+      "section": "5 The significance test",
+      "family": "logistic regression with a protected null",
+      "purpose": "Test whether momentum is related to the scoring probability.",
+      "base_or_modification": "base",
+      "summary": "The null is protected on principle: no significant relationship between momentum and the scoring probability. The log odds of winning a point depend on an intercept, the momentum, and four controls that do not affect momentum but may affect the score. The parameters maximize the log likelihood by gradient descent. The momentum coefficient has a t-statistic whose p-value is far below 0.05 and a 95 percent interval that excludes zero, so the null is rejected.",
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The momentum handed over from the definition.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "controls",
+          "unit": "1",
+          "definition": "Distance difference, serve speed, net points, winning rate.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "point won",
+          "unit": "1",
+          "definition": "One if the point is won.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "coefficients",
+          "unit": "1",
+          "definition": "The intercept, the momentum coefficient, and the four controls.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "step size",
+          "unit": "1",
+          "definition": "The gradient descent step.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ppt",
+          "normalized_name": "point probability",
+          "unit": "1",
+          "definition": "The fitted probability of winning the point.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "M",
+        "X",
+        "Y"
+      ],
+      "outputs": [
+        "Ppt"
+      ],
+      "handoff_outputs": [
+        "beta"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q251-007",
+          "page": 11,
+          "label": "(7)",
+          "source_expression": "ln P/(1-P) = beta0 + beta1 M + sum beta_i X_i",
+          "normalized_latex": "\\ln\\frac{P}{1-P}=\\beta_0+\\beta_1 M+\\sum_i\\beta_i X_i",
+          "purpose": "The logistic form. The sum is detached from its limits.",
+          "variable_symbols": [
+            "Ppt",
+            "beta",
+            "M",
+            "X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-008",
+          "page": 11,
+          "label": "(8)",
+          "source_expression": "l(beta) = sum [Y log P + (1-Y) log(1-P)]",
+          "normalized_latex": "\\ell(\\beta)=\\sum_i\\left[Y_i\\log P_i+(1-Y_i)\\log(1-P_i)\\right]",
+          "purpose": "The log likelihood. The index is scrambled.",
+          "variable_symbols": [
+            "beta",
+            "Y",
+            "Ppt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-009",
+          "page": 12,
+          "label": "(9)",
+          "source_expression": "P = 1 / (1 + exp(-(beta0 + ... + beta5 X5)))",
+          "normalized_latex": "P=(1+\\exp(-(\\beta_0+\\sum_j\\beta_j X_j)))^{-1}",
+          "purpose": "The fitted probability.",
+          "variable_symbols": [
+            "Ppt",
+            "beta",
+            "X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-010",
+          "page": 12,
+          "label": "(10)",
+          "source_expression": "beta_new = beta_old + gamma dl/dbeta",
+          "normalized_latex": "\\beta^{\\mathrm{new}}=\\beta^{\\mathrm{old}}+\\gamma\\,\\partial\\ell/\\partial\\beta",
+          "purpose": "The gradient step. The step size is named alpha in the prose.",
+          "variable_symbols": [
+            "beta",
+            "gamma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Four formulas are printed. The sum and the likelihood index are scrambled."
+      },
+      "objectives": [
+        "Answer the coach with a test."
+      ],
+      "constraints": [
+        "The null is the no-relationship statement.",
+        "Significance at 0.05."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each point is one observation."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Maximum likelihood by gradient descent.",
+        "parameters": [
+          "beta"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Write the log odds.",
+          "Maximize the log likelihood.",
+          "Read the t-statistic and the interval.",
+          "Reject if both conditions hold."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The p-value is below 0.05 and the interval excludes zero."
+      },
+      "assumptions": [
+        "The controls do not affect momentum.",
+        "The observations are independent."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The interval and the p-value are both printed."
+      },
+      "validation_refs": [
+        "The regression table: momentum t-statistic 35.347, p-value below 0.001, interval (1.0052, 1.9939)."
+      ],
+      "computational_cost": "One logistic fit.",
+      "strengths": [
+        "The rejection needs two conditions, not one."
+      ],
+      "limitations": [
+        "The table columns are misaligned, so some intervals cannot be paired with their variables."
+      ],
+      "missing_details": [
+        "The step size and the number of iterations."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q251-004",
+      "page": 14,
+      "section": "6.1 The state space model",
+      "family": "linear state space with a Kalman filter",
+      "purpose": "Predict the momentum as a hidden state and read its change.",
+      "base_or_modification": "paper-specific",
+      "summary": "The general state and observation equations are stated, then specialized. The momentum follows an autoregression with a baseline, and the swing in the win probability observes it with a service advantage correction that was added because it improved the fit. A Kalman filter predicts, observes, and updates. The swing of momentum is the derivative of the predicted series. On the final the mean square error is 0.0454 and the R-squared is 0.8902. For the women's final the correction is reset to 0.005 and the error rises to 0.051.",
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "The hidden state.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi",
+          "normalized_name": "autoregressive coefficient",
+          "unit": "1",
+          "definition": "The persistence of momentum.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "baseline",
+          "unit": "1",
+          "definition": "The constant term.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "win swing",
+          "unit": "1",
+          "definition": "The observed swing in win probability.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "service correction",
+          "unit": "1",
+          "definition": "Reset to 0.005 for the women's match.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "Kalman gain",
+          "unit": "1",
+          "definition": "The weight on the new residual.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "predicted swing",
+          "unit": "1",
+          "definition": "The derivative of the predicted momentum.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "W"
+      ],
+      "outputs": [
+        "S"
+      ],
+      "handoff_outputs": [
+        "M",
+        "S"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q251-011",
+          "page": 13,
+          "label": "(11)",
+          "source_expression": "x_{t+1} = A x_t + B u_t + w_t",
+          "normalized_latex": "x_{t+1}=Ax_t+Bu_t+w_t",
+          "purpose": "The general state equation.",
+          "variable_symbols": [
+            "M"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-012",
+          "page": 14,
+          "label": "(12)",
+          "source_expression": "y_t = C x_t + v_t",
+          "normalized_latex": "y_t=Cx_t+v_t",
+          "purpose": "The general observation equation.",
+          "variable_symbols": [
+            "W",
+            "M"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-013",
+          "page": 15,
+          "label": "(13)",
+          "source_expression": "predicted state and covariance",
+          "normalized_latex": "\\hat x_{t|t-1}=A\\hat x_{t-1}+Bu_{t-1},\\ P_{t|t-1}=AP_{t-1}A^{\\top}+Q",
+          "purpose": "The prediction phase. Two lines are printed as one block.",
+          "variable_symbols": [
+            "M",
+            "K"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-014",
+          "page": 15,
+          "label": "(14)",
+          "source_expression": "the update, the gain, and the covariance update",
+          "normalized_latex": "\\hat x_t=\\hat x_{t|t-1}+K_t(y_t-C\\hat x_{t|t-1})",
+          "purpose": "The update phase. Three lines are printed inside one brace.",
+          "variable_symbols": [
+            "M",
+            "K",
+            "W"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-015",
+          "page": 15,
+          "label": "(15)",
+          "source_expression": "M_t = c + phi M_{t-1} + w_t",
+          "normalized_latex": "M_t=c+\\phi M_{t-1}+w_t",
+          "purpose": "The momentum as an autoregression.",
+          "variable_symbols": [
+            "M",
+            "phi",
+            "c"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-016",
+          "page": 16,
+          "label": "(16)",
+          "source_expression": "W_t = delta + M_t + nu_t",
+          "normalized_latex": "W_t=\\delta+M_t+\\nu_t",
+          "purpose": "The observation with the service correction.",
+          "variable_symbols": [
+            "W",
+            "delta",
+            "M"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q251-017",
+          "page": 16,
+          "label": "(17)",
+          "source_expression": "the state equation and the observation equation together",
+          "normalized_latex": "M_t=c+\\phi M_{t-1}+w_t,\\ W_t=\\delta+M_t+\\nu_t",
+          "purpose": "The model in one block. The two equations are printed on one line.",
+          "variable_symbols": [
+            "M",
+            "W",
+            "phi",
+            "c",
+            "delta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-018",
+          "page": 16,
+          "label": "(18)",
+          "source_expression": "the prediction and the observation step",
+          "normalized_latex": "M_{t|t-1}=c+\\phi M_{t-1|t-1}",
+          "purpose": "The filter's first two steps. Several symbols are detached.",
+          "variable_symbols": [
+            "M",
+            "phi",
+            "c"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-019",
+          "page": 16,
+          "label": "(19)",
+          "source_expression": "the predicted observation, the gain, and the residual",
+          "normalized_latex": "\\hat y_t=\\delta+M_{t|t-1},\\ G_t=\\Sigma_{t|t-1}+\\sigma^2",
+          "purpose": "The observation step. The brace is scrambled.",
+          "variable_symbols": [
+            "W",
+            "delta",
+            "M",
+            "K"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q251-020",
+          "page": 16,
+          "label": "(20)",
+          "source_expression": "the updated state and the updated variance",
+          "normalized_latex": "M_{t|t}=M_{t|t-1}+\\hat r_t\\Sigma_{t|t-1}/G_t",
+          "purpose": "The update step.",
+          "variable_symbols": [
+            "M",
+            "K"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Ten formulas are printed. The filter steps are scrambled by the footer."
+      },
+      "objectives": [
+        "Predict a quantity the model says cannot be observed directly."
+      ],
+      "constraints": [
+        "Linear state and observation.",
+        "Normal disturbances."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The prior mean and variance are set from the baseline and the autoregressive coefficient."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The filter is run in R. The service correction is chosen, then reset to 0.005 for the women's match.",
+        "parameters": [
+          "phi",
+          "c",
+          "delta"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set the prior.",
+          "Predict the state and its variance.",
+          "Form the residual against the observed swing.",
+          "Update.",
+          "Differentiate the prediction to get the swing."
+        ],
+        "software": [
+          "R"
+        ],
+        "convergence_criteria": "Mean square error 0.0454 and R-squared 0.8902 on the final."
+      },
+      "assumptions": [
+        "The momentum is an autoregression.",
+        "The two players' momenta are opposites."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The fit is printed. The noise variances are not estimated in view."
+      },
+      "validation_refs": [
+        "Figure 9: the predicted momentum and its swing.",
+        "The evaluation table: MSE 0.0454, RMSE 0.2131, MAE 0.1660, R-squared 0.8902.",
+        "The women's final: MSE 0.051 after the correction."
+      ],
+      "computational_cost": "One filter pass over 334 points.",
+      "strengths": [
+        "The correction term is added only after it improves the fit, and the improvement is stated."
+      ],
+      "limitations": [
+        "The filter equations are too scrambled to rebuild the gain exactly."
+      ],
+      "missing_details": [
+        "The process and observation noise variances."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q251-001",
+      "to_model_id": "MU-C-Q251-002",
+      "handoff": "The win probability supplies the leverage of each game."
+    },
+    {
+      "from_model_id": "MU-C-Q251-002",
+      "to_model_id": "MU-C-Q251-003",
+      "handoff": "The defined momentum enters the logistic regression."
+    },
+    {
+      "from_model_id": "MU-C-Q251-001",
+      "to_model_id": "MU-C-Q251-004",
+      "handoff": "The swing in the win probability is the observed series."
+    },
+    {
+      "from_model_id": "MU-C-Q251-002",
+      "to_model_id": "MU-C-Q251-004",
+      "handoff": "The defined momentum is what the prediction is checked against."
+    }
+  ]
+}

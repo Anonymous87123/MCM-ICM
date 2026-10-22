@@ -1,0 +1,1170 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2022-2218144-2f85ee8c",
+  "problem_type": "E",
+  "year": "2022",
+  "source_sha256": "2f85ee8c6837c1e058af6223d4c02f71325871bb9b48acffab4a33c4b0ec73dc",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "section": "Forest and Harvested Wood Carbon",
+      "family": "evaluation",
+      "summary": "A stock-conversion account of the forest plus a stock-change account of the products. Carbon density is volume per hectare times an expansion coefficient, a volume coefficient, and a carbon content. Area in year i is the starting area times one minus the cut plus the planting, raised to i. Forest carbon is that area times the density times one plus an understory coefficient and a land coefficient, divided by 1000, and the 1000 sits on the next line. The lagged area feeds an inflow: cut area times a wood-conversion factor times four production ratios over total production, each times a carbon factor. The factors print as 0.225, 0.765, 0.294, and 0.45, under a header that runs the first two product names together. Product carbon is the 2000 stock, given as 10,530 kilotons, decayed by a first-order rate, plus a fraction of this year's inflow. Equation 6 prints the inflow as Infolw. Total carbon is the sum of the two pools. The prose also says the global product stock grows by about 139 hectares a year.",
+      "computational_cost": "A yearly area update and a one-step product decay, swept over cut and planting rates",
+      "purpose": "Turn a cut rate and a planting rate into forest plus product carbon.",
+      "base_or_modification": "hybrid",
+      "page": 6,
+      "inputs": [
+        "S0"
+      ],
+      "outputs": [
+        "Z"
+      ],
+      "handoff_outputs": [
+        "Z"
+      ],
+      "objectives": [
+        "Measure carbon in the stand and in harvested wood."
+      ],
+      "variables": [
+        {
+          "symbol": "V",
+          "normalized_name": "volume_per_area",
+          "role": "parameter",
+          "unit": "volume per area",
+          "definition": "Forest stock volume per hectare",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "expansion",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Biomass expansion coefficient",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "volume_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Volume coefficient in the density product",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "carbon_content",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Carbon content of the biomass",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "density",
+          "role": "intermediate",
+          "unit": "mass per area",
+          "definition": "Biomass carbon density",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S0",
+          "normalized_name": "initial_area",
+          "role": "input",
+          "unit": "area",
+          "definition": "Forest area in the starting year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "cut_rate",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Share of the forest cut in a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "plant_rate",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Share of the forest planted in a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Si",
+          "normalized_name": "area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Forest area in year i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "understory",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Carbon conversion coefficient of understory plants",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "land_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Carbon conversion coefficient of forest land",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CF",
+          "normalized_name": "forest_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon in trees, understory, and land",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "lag_index",
+          "role": "parameter",
+          "unit": "years",
+          "definition": "Year index in the lagged-area formula",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "U",
+          "normalized_name": "lagged_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Forest area used to size this year's cut",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "wood_conversion",
+          "role": "parameter",
+          "unit": "volume per area",
+          "definition": "Wood volume taken from a unit of cut area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "product_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of production going to one product",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "production",
+          "role": "parameter",
+          "unit": "volume",
+          "definition": "Total harvested-wood production",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Phi",
+          "normalized_name": "product_factor",
+          "role": "parameter",
+          "unit": "mass per volume",
+          "definition": "Carbon factor of one product",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Inflow",
+          "normalized_name": "inflow",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon entering the product pool this year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "decay",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "First-order decay of the product pool",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C0",
+          "normalized_name": "opening_stock",
+          "role": "parameter",
+          "unit": "mass",
+          "definition": "Product carbon stock in 2000, given as 10,530 kilotons",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CT",
+          "normalized_name": "product_store",
+          "role": "intermediate",
+          "unit": "mass",
+          "definition": "Carbon held in harvested wood",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "total_store",
+          "role": "output",
+          "unit": "mass",
+          "definition": "Forest carbon plus product carbon",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-1",
+          "equation_label": "Carbon density",
+          "equation_text": "Carbon density is volume per hectare times an expansion coefficient, a volume coefficient, and a carbon content.",
+          "source_expression": "Carbon density is volume per hectare times an expansion coefficient, a volume coefficient, and a carbon content.",
+          "normalized_latex": "C=V\\times delta\\times rho\\times gamma",
+          "purpose": "Turn a volume stock into a carbon density.",
+          "variable_symbols": [
+            "C",
+            "V",
+            "delta",
+            "rho",
+            "gamma"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-2",
+          "equation_label": "Forest area",
+          "equation_text": "Area in year i is the starting area times one minus the cut plus the planting, raised to i.",
+          "source_expression": "Area in year i is the starting area times one minus the cut plus the planting, raised to i.",
+          "normalized_latex": "Si=S0(1-n+m)^{i}",
+          "purpose": "Move the area by the two rates.",
+          "variable_symbols": [
+            "Si",
+            "S0",
+            "n",
+            "m"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-3",
+          "equation_label": "Forest carbon",
+          "equation_text": "Forest carbon is area times density times one plus the understory and land coefficients, over 1000.",
+          "source_expression": "Forest carbon is area times density times one plus the understory and land coefficients, over 1000.",
+          "normalized_latex": "CF=Si\\times C(1+alpha+beta)/1000",
+          "purpose": "Add the three forest pools.",
+          "variable_symbols": [
+            "CF",
+            "Si",
+            "C",
+            "alpha",
+            "beta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-4",
+          "equation_label": "Lagged area",
+          "equation_text": "The area that sizes this year's cut is the forest area times one minus the cut plus the planting, raised to r minus 1.",
+          "source_expression": "The area that sizes this year's cut is the forest area times one minus the cut plus the planting, raised to r minus 1.",
+          "normalized_latex": "U=Si(1-n+m)^{r-1}",
+          "purpose": "Lag the area one step behind the inflow.",
+          "variable_symbols": [
+            "U",
+            "Si",
+            "n",
+            "m",
+            "r"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-5",
+          "equation_label": "Product inflow",
+          "equation_text": "Carbon entering the product pool is lagged area times the cut times the wood conversion times the share-weighted carbon factors.",
+          "source_expression": "Carbon entering the product pool is lagged area times the cut times the wood conversion times the share-weighted carbon factors.",
+          "normalized_latex": "Inflow=U\\times n\\times H\\times (p/Q)\\times Phi",
+          "purpose": "Move the cut into the four products.",
+          "variable_symbols": [
+            "Inflow",
+            "U",
+            "n",
+            "H",
+            "p",
+            "Q",
+            "Phi"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-6",
+          "equation_label": "Product store",
+          "equation_text": "Product carbon is the decayed opening stock plus a fraction of this year's inflow.",
+          "source_expression": "Product carbon is the decayed opening stock plus a fraction of this year's inflow.",
+          "normalized_latex": "CT=e^{-k}C0+((1-e^{-k})/k)Inflow",
+          "purpose": "Carry the product pool forward.",
+          "variable_symbols": [
+            "CT",
+            "k",
+            "C0",
+            "Inflow"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-FHWP-7",
+          "equation_label": "Total store",
+          "equation_text": "Total carbon is forest carbon plus product carbon.",
+          "source_expression": "Total carbon is forest carbon plus product carbon.",
+          "normalized_latex": "Z=CF+CT",
+          "purpose": "Add the two pools.",
+          "variable_symbols": [
+            "Z",
+            "CF",
+            "CT"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 3 prints the divisor 1000 on the next line. Equation 5 prints each production total under its ratio. Equation 6 spells the inflow Infolw. Equation 4 uses an index r that the next page calls i.",
+        "reason": "Sections 3.1 and 3.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Area starts at S0, and the product pool starts at the 2000 stock of 10,530 kilotons."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is imposed on the account."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The account is a yearly recurrence, not an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The cut and the planting are the decision variables. The carbon factors are taken from the printed table.",
+        "parameters": [
+          "n",
+          "m",
+          "Phi"
+        ]
+      },
+      "algorithm": {
+        "description": "Update the area, form the inflow, decay the product pool, and add the forest pool.",
+        "status": "partial",
+        "steps": [
+          "Grow the area by the cut and the planting",
+          "Convert the cut into four products",
+          "Decay the opening stock and add the inflow",
+          "Add forest carbon and product carbon"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The account is a closed yearly step."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The four carbon factors print. The expansion, volume, and content coefficients do not."
+        ],
+        "analysis": "Table 2 prints 0.225, 0.765, 0.294, and 0.45."
+      },
+      "constraints": [
+        "The cut and the planting are yearly shares.",
+        "The opening product stock is fixed at the 2000 value."
+      ],
+      "validation_refs": [
+        "Table 2, product carbon factors",
+        "Figure 5, Russia carbon by year"
+      ],
+      "strengths": [
+        "The forest pool and the product pool are added only after each is defined.",
+        "The narrow pool and the broad pool are distinguished."
+      ],
+      "limitations": [
+        "A stock said to grow by 139 hectares a year is given an area unit.",
+        "The symbol table does not keep definitions on the same row as the symbols."
+      ],
+      "missing_details": [
+        "The numerical expansion, volume, and carbon-content coefficients.",
+        "Which of 0.225 and 0.765 belongs to logs once the header is read as four names."
+      ],
+      "assumptions": [
+        "The stand grows naturally, without disturbance.",
+        "Surface differences among stands inside one country can be ignored."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2218144-BAT",
+      "section": "Improved Bat Search",
+      "family": "decision",
+      "summary": "Yang's bat search, with a velocity weight added so the early flight teaches the later one. The weight falls from its maximum toward its minimum by an exponential in the squared fraction of the iteration budget, and that exponent is broken across the line. Frequency is a random point between the bat's minimum and maximum. Velocity is the weighted previous velocity plus loudness times the gap from the best position times the frequency. The printed velocity line has no parentheses around the gap. Position is the best position plus the new velocity, and a step outside the box is projected onto the boundary. Step 4 accepts a new solution when it is greater than itself. Algorithm 1 accepts a step when the new value is less than the current best and a random draw is below the loudness. One test maximizes and the other minimizes. On Russia the search returns a cut of 0.000105 and a planting of 0.003.",
+      "computational_cost": "A swarm of bats flown until the iteration budget, each step a velocity and a position update",
+      "purpose": "Search the cut and the planting for the largest carbon store.",
+      "base_or_modification": "modification",
+      "page": 9,
+      "inputs": [
+        "Z"
+      ],
+      "outputs": [
+        "Xstar"
+      ],
+      "handoff_outputs": [
+        "Xstar"
+      ],
+      "objectives": [
+        "Maximize the carbon store over the cut and the planting."
+      ],
+      "variables": [
+        {
+          "symbol": "Z",
+          "normalized_name": "total_store",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon store used as the fitness of a bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "velocity_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Inertia weight on the previous velocity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wmin",
+          "normalized_name": "weight_floor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Smallest velocity weight",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wmax",
+          "normalized_name": "weight_cap",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Largest velocity weight",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "weight_decay",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate in the exponent of the velocity weight",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "iteration",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Current iteration",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "budget",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Iteration budget",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "frequency",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Pulse frequency of one bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ymin",
+          "normalized_name": "frequency_floor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Lowest frequency assigned to a bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ymax",
+          "normalized_name": "frequency_cap",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Highest frequency assigned to a bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "random_draw",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Random number between 0 and 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "velocity",
+          "role": "state",
+          "unit": "position per step",
+          "definition": "Flight speed of one bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "loudness",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Loudness of the emitted pulse",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "position",
+          "role": "state",
+          "unit": "rate",
+          "definition": "Current cut and planting of one bat",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xstar",
+          "normalized_name": "best_position",
+          "role": "output",
+          "unit": "rate",
+          "definition": "Best cut and planting found by the swarm",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2218144-BAT-1",
+          "equation_label": "Velocity weight",
+          "equation_text": "The velocity weight falls from its cap toward its floor by an exponential in the squared fraction of the iteration budget. The print breaks that exponent across the line.",
+          "source_expression": "The velocity weight falls from its cap toward its floor by an exponential in the squared fraction of the iteration budget. The print breaks that exponent across the line.",
+          "normalized_latex": "w=wmin+(wmax-wmin)\\exp(-rho(t/T)^{2})",
+          "purpose": "Let the early search teach the later search.",
+          "variable_symbols": [
+            "w",
+            "wmin",
+            "wmax",
+            "rho",
+            "t",
+            "T"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-BAT-2",
+          "equation_label": "Frequency",
+          "equation_text": "Frequency is the floor plus a random draw times the gap up to the cap.",
+          "source_expression": "Frequency is the floor plus a random draw times the gap up to the cap.",
+          "normalized_latex": "y=ymin+(ymax-ymin)beta",
+          "purpose": "Set the pulse of one bat.",
+          "variable_symbols": [
+            "y",
+            "ymin",
+            "ymax",
+            "beta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-BAT-3",
+          "equation_label": "Velocity",
+          "equation_text": "Velocity is the weighted previous velocity plus loudness times the gap from the best position times the frequency. The print does not parenthesize the gap.",
+          "source_expression": "Velocity is the weighted previous velocity plus loudness times the gap from the best position times the frequency. The print does not parenthesize the gap.",
+          "normalized_latex": "V=wV+A(X-Xstar)y",
+          "purpose": "Steer the bat toward the best position.",
+          "variable_symbols": [
+            "V",
+            "w",
+            "A",
+            "X",
+            "Xstar",
+            "y"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-BAT-4",
+          "equation_label": "Position",
+          "equation_text": "Position is the best position plus the new velocity, projected back onto the allowed box.",
+          "source_expression": "Position is the best position plus the new velocity, projected back onto the allowed box.",
+          "normalized_latex": "X=Xstar+V",
+          "purpose": "Move the bat.",
+          "variable_symbols": [
+            "X",
+            "Xstar",
+            "V"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 8 breaks the exponent. Equation 10 has no parentheses around the gap from the best position. Step 4 compares a solution with itself, and Algorithm 1 uses the opposite inequality.",
+        "reason": "Section 3.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Bats start at random positions and random frequencies."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A step outside the box is replaced by its projection on the boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The search stops at the iteration budget, not at an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The weight cap, the weight floor, the loudness, and the swarm size are not given numerical values.",
+        "parameters": [
+          "wmin",
+          "wmax",
+          "A"
+        ]
+      },
+      "algorithm": {
+        "description": "Fly the bats, project them onto the box, and keep the best position.",
+        "status": "partial",
+        "steps": [
+          "Draw frequencies",
+          "Update velocity with the memory weight",
+          "Move, and project onto the box",
+          "Accept a step by a test that the prose and the pseudocode state differently"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The loop ends at the iteration budget."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The Russia result prints a cut and a planting. The swarm settings do not."
+        ],
+        "analysis": "The prose names n of 0.000105 and m of 0.003 as the carbon maximum."
+      },
+      "constraints": [
+        "Frequency lies between the bat's floor and cap.",
+        "A random draw lies between 0 and 1."
+      ],
+      "validation_refs": [
+        "Algorithm 1, the improved bat loop",
+        "The Russia rates in section 3.5"
+      ],
+      "strengths": [
+        "The reason for the weight is given: the early search should teach the later one.",
+        "A bat outside the box is sent to the boundary, and the rule is stated."
+      ],
+      "limitations": [
+        "Step 4 compares a solution with itself.",
+        "Algorithm 1 accepts a lower value while the prose accepts a higher one."
+      ],
+      "missing_details": [
+        "Swarm size, loudness, pulse rate, and the iteration budget.",
+        "Whether the search is a maximization or a minimization."
+      ],
+      "assumptions": [
+        "The carbon store is smooth enough for a swarm search.",
+        "The best position found is the management plan."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2218144-CEE",
+      "section": "Carbon, Economy, and Ecology",
+      "family": "evaluation",
+      "summary": "Twelve indicators in three axes, weighted by entropy, then read as a vector. Logs, forest food, and herbs are priced as quality times a price index times a unit price times a stock. Forest-land value is a present value of logging revenue, a fee, an interest rate, and a period, and equation 13 does not parse. Water value and water purification share one rainfall-minus-evaporation form. Scores are normalized as a benefit, a cost, or a band. Entropy weights print as 0.19, 0.18, 0.18, 0.45 on carbon, summing to 1, with wood products at 0.45. Economy prints 0.47, 0.12, 0.13, 0.26, summing to 0.98. Ecology prints 0.13, 0.20, 0.33, 0.16, summing to 0.82, while the prose points at water purification and water adjustment rather than at the largest weight. The three scores form a vector whose ideal is (1, 1, 1). The plan's score is the length of that vector. Equation 30 lists the axes as carbon, ecology, economy, and the vector is carbon, economy, ecology. On China the 2020 length is 0.9689 and the 2025 length is 0.8716. On Sudan after the plan the three scores are 0.9534, 0.9431, and 0.9583, and the length is 1.648.",
+      "computational_cost": "One entropy weighting of twelve indicators and one vector length",
+      "purpose": "Score a management plan by carbon, money, and ecological protection.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "inputs": [
+        "Z"
+      ],
+      "outputs": [
+        "Cmod"
+      ],
+      "handoff_outputs": [
+        "Cmod"
+      ],
+      "objectives": [
+        "Rank plans by the length of a three-axis score."
+      ],
+      "variables": [
+        {
+          "symbol": "Z",
+          "normalized_name": "total_store",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Carbon store used among the sequestration indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "quality",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Quality adjustment on a traded product",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Kb",
+          "normalized_name": "price_index",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Price-index adjustment",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "unit_price",
+          "role": "parameter",
+          "unit": "money per volume",
+          "definition": "Transaction price per unit of stock",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ms",
+          "normalized_name": "stockpile",
+          "role": "parameter",
+          "unit": "volume",
+          "definition": "Amount of the appraised asset",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "En",
+          "normalized_name": "asset_value",
+          "role": "intermediate",
+          "unit": "money",
+          "definition": "Appraised value of logs, food, or herbs",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Au",
+          "normalized_name": "logging_revenue",
+          "role": "parameter",
+          "unit": "money",
+          "definition": "Revenue of a logging selection",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "management_fee",
+          "role": "parameter",
+          "unit": "money",
+          "definition": "Management fee in the land formula",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "interest",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Interest rate in the land formula",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "period",
+          "role": "parameter",
+          "unit": "years",
+          "definition": "Logging-selection period",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Bu",
+          "normalized_name": "land_value",
+          "role": "intermediate",
+          "unit": "money",
+          "definition": "Present value of forest land",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ej",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "redundancy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "One minus the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Entropy weight of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CS",
+          "normalized_name": "carbon_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Score on the carbon axis",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EV",
+          "normalized_name": "economic_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Score on the economic axis",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EP",
+          "normalized_name": "ecology_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Score on the ecological axis",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cmod",
+          "normalized_name": "plan_length",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Length of the score vector",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2218144-CEE-1",
+          "equation_label": "Asset value",
+          "equation_text": "The appraised value is a quality factor times a price index times a unit price times the stock.",
+          "source_expression": "The appraised value is a quality factor times a price index times a unit price times the stock.",
+          "normalized_latex": "En=K\\times Kb\\times G\\times Ms",
+          "purpose": "Price logs, food, and herbs.",
+          "variable_symbols": [
+            "En",
+            "K",
+            "Kb",
+            "G",
+            "Ms"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-CEE-2",
+          "equation_label": "Land value",
+          "equation_text": "The present value of forest land is built from logging revenue, a management fee, an interest rate, and a period. The print does not parse.",
+          "source_expression": "The present value of forest land is built from logging revenue, a management fee, an interest rate, and a period. The print does not parse.",
+          "normalized_latex": "Bu=Bu(Au,V,P,n)",
+          "purpose": "Discount the land.",
+          "variable_symbols": [
+            "Bu",
+            "Au",
+            "V",
+            "P",
+            "n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-CEE-3",
+          "equation_label": "Entropy weight",
+          "equation_text": "Redundancy is one minus the entropy, and the weight is that redundancy over the sum of the redundancies.",
+          "source_expression": "Redundancy is one minus the entropy, and the weight is that redundancy over the sum of the redundancies.",
+          "normalized_latex": "w=D/\\sum D,\\quad D=1-Ej",
+          "purpose": "Weight the twelve indicators.",
+          "variable_symbols": [
+            "w",
+            "D",
+            "Ej"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2218144-CEE-4",
+          "equation_label": "Plan length",
+          "equation_text": "The score is the length of the vector of carbon, economy, and ecology, and the ideal vector is (1, 1, 1).",
+          "source_expression": "The score is the length of the vector of carbon, economy, and ecology, and the ideal vector is (1, 1, 1).",
+          "normalized_latex": "Cmod=\\sqrt{CS^{2}+EV^{2}+EP^{2}}",
+          "purpose": "Turn three scores into one length.",
+          "variable_symbols": [
+            "Cmod",
+            "CS",
+            "EV",
+            "EP"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 13 does not parse. Equations 27 and 28 are blank numbers above the redundancy formula. Equation 30 lists the axes in a different order from the vector.",
+        "reason": "Section 4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The score is a ranking of a plan, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Each axis is said to lie between 0 and 1, so the ideal length is the length of (1, 1, 1)."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Weights are entropy weights of the twelve indicators. Three of the four printed vectors do not sum to 1.",
+        "parameters": [
+          "w"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize, compute entropy, form the three scores, and take the length.",
+        "status": "partial",
+        "steps": [
+          "Normalize a benefit, a cost, or a band",
+          "Compute entropy and redundancy",
+          "Weight each axis",
+          "Take the length of the score vector"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The weights are a closed normalization."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The three weight vectors print. The economic vector sums to 0.98 and the ecological vector to 0.82."
+        ],
+        "analysis": "The carbon weights sum to 1, and wood products are 0.45."
+      },
+      "constraints": [
+        "Axis scores are described as lying in [0, 1].",
+        "The ideal plan is (1, 1, 1)."
+      ],
+      "validation_refs": [
+        "Figure 7, the three weight vectors",
+        "Figure 9 and Figure 10, the China isosurfaces",
+        "Table 3, Sudan before and after"
+      ],
+      "strengths": [
+        "The ideal plan is a direction as well as a length, and both meanings are stated.",
+        "The China drop is explained by the missing products."
+      ],
+      "limitations": [
+        "Two weight vectors do not sum to 1.",
+        "Equation 13 does not parse, and equation 30 orders the axes differently from the vector."
+      ],
+      "missing_details": [
+        "The Australia product ratios used for Sudan.",
+        "The planting rate the China prose says it solves for, which the summary prints and the body leaves blank."
+      ],
+      "assumptions": [
+        "Ignored indicators have little effect on the weights.",
+        "A market price from a similar species is a fair value."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-1",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 6,
+      "source_expression": "Carbon density is volume per hectare times an expansion coefficient, a volume coefficient, and a carbon content."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-2",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 6,
+      "source_expression": "Area in year i is the starting area times one minus the cut plus the planting, raised to i."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-3",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 6,
+      "source_expression": "Forest carbon is area times density times one plus the understory and land coefficients, over 1000."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-4",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 7,
+      "source_expression": "The area that sizes this year's cut is the forest area times one minus the cut plus the planting, raised to r minus 1."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-5",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 8,
+      "source_expression": "Carbon entering the product pool is lagged area times the cut times the wood conversion times the share-weighted carbon factors."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-6",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 8,
+      "source_expression": "Product carbon is the decayed opening stock plus a fraction of this year's inflow."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-FHWP-7",
+      "model_id": "MU-E-2022-2218144-FHWP",
+      "page": 9,
+      "source_expression": "Total carbon is forest carbon plus product carbon."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-BAT-1",
+      "model_id": "MU-E-2022-2218144-BAT",
+      "page": 9,
+      "source_expression": "The velocity weight falls from its cap toward its floor by an exponential in the squared fraction of the iteration budget. The print breaks that exponent across the line."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-BAT-2",
+      "model_id": "MU-E-2022-2218144-BAT",
+      "page": 9,
+      "source_expression": "Frequency is the floor plus a random draw times the gap up to the cap."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-BAT-3",
+      "model_id": "MU-E-2022-2218144-BAT",
+      "page": 9,
+      "source_expression": "Velocity is the weighted previous velocity plus loudness times the gap from the best position times the frequency. The print does not parenthesize the gap."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-BAT-4",
+      "model_id": "MU-E-2022-2218144-BAT",
+      "page": 10,
+      "source_expression": "Position is the best position plus the new velocity, projected back onto the allowed box."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-CEE-1",
+      "model_id": "MU-E-2022-2218144-CEE",
+      "page": 14,
+      "source_expression": "The appraised value is a quality factor times a price index times a unit price times the stock."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-CEE-2",
+      "model_id": "MU-E-2022-2218144-CEE",
+      "page": 14,
+      "source_expression": "The present value of forest land is built from logging revenue, a management fee, an interest rate, and a period. The print does not parse."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-CEE-3",
+      "model_id": "MU-E-2022-2218144-CEE",
+      "page": 17,
+      "source_expression": "Redundancy is one minus the entropy, and the weight is that redundancy over the sum of the redundancies."
+    },
+    {
+      "equation_id": "EQ-E-2022-2218144-CEE-4",
+      "model_id": "MU-E-2022-2218144-CEE",
+      "page": 18,
+      "source_expression": "The score is the length of the vector of carbon, economy, and ecology, and the ideal vector is (1, 1, 1)."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2022-2218144-FHWP",
+      "to_model_id": "MU-E-2022-2218144-BAT",
+      "handoff": "The total carbon store is the fitness the bats maximize."
+    },
+    {
+      "from_model_id": "MU-E-2022-2218144-FHWP",
+      "to_model_id": "MU-E-2022-2218144-CEE",
+      "handoff": "Forest carbon and product carbon feed the sequestration indicators that the vector scores."
+    }
+  ]
+}

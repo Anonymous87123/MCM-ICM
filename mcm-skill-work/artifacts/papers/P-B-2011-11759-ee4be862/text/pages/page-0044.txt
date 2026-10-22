@@ -1,0 +1,59 @@
+      Control Number: 11759                                                 Page 44 of 51
+
+
+103   elseif ((rep(1,1)≥targetloc(1))&&(rep(1,2)≥targetloc(2)))
+104        newrepang=2*pi-acos((targetloc(1)-rep(1,1))/newrepdist);
+105   elseif ((rep(1,1)≤targetloc(1))&&(rep(1,2)≥targetloc(2)))
+106        newrepang=2*pi-acos((targetloc(1)-rep(1,1))/newrepdist);
+107   else
+108        newrepang=acos((targetloc(1)-rep(1,1))/newrepdist);
+109   end
+110
+111   repno=1;
+112
+
+113   iteration=0;
+114   lastplaced=1;
+115
+116   %add repeater to make connection
+117   while connected<1000,
+118
+
+119       iteration=iteration+1;
+120       while newrepdist>sepdist,
+121           it=it+1;
+122           repno = repno+1;
+123           rep(repno,1)=rep(lastplaced,1)+sepdist*cos(newrepang);
+124           rep(repno,2)=rep(lastplaced,2)+sepdist*sin(newrepang);
+125           lastplaced=repno; %set the last placed to the current repeater
+126           newrepdist=sqrt((targetloc(1)-rep(repno,1))ˆ2+(targetloc(2)-rep(repno,2))ˆ2);
+127
+128              %Count covered and remove from dataset
+129              added=0;
+130              i=0;
+131              for j=1:numuncov,
+132                   if sqrt((rep(repno,1)-notcovered(j,2*it+1))ˆ2+(rep(repno,2)-notcovered(j,2*it+2
+133                       added=added+1;
+134                   else
+135                       i=i+1;
+136                       notcovered(i,2*it+3)=notcovered(j,2*it+1);
+137                       notcovered(i,2*it+4)=notcovered(j,2*it+2);
+138                   end
+139              end
+140
+141              coveragestat=0;
+142              for j=1:length(newx),
+143                  if sqrt((rep(repno,1)-newx(j))ˆ2+(rep(repno,2)-newy(j))ˆ2)≤sepdist
+144                      coveragestat=coveragestat+1;
+145                  end
+146              end
+147              repcoverage(repno)=coveragestat;
+148              numuncov=numuncov-added;
+149              connected = connected + added;
+150              disp('added'),disp(added);
+151              disp('adding another');
+152       end
+153       disp('iteration'),disp(iteration);
+154
+155
+156

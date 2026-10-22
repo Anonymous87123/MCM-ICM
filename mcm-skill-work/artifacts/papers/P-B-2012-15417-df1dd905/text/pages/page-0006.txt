@@ -1,0 +1,84 @@
+      Team # 15417                                                                                     Page 4 of 24
+
+
+ 62                  // Not best case: there is a boat in the site our boat would like to move to.
+ 63
+ 64                  // Keep track of whether we have found an alternate site.
+ 65                  boolean found = false;
+ 66
+ 67                  // Check every site, moving up the river, until we get where the boat stopped last night.
+ 68                  for (int j = nextSite - 1; !found && j >= nextBoat.getCurrentSite(); j--)
+ 69                  {
+ 70                      if (schedule[i][j] == null)
+ 71                      {
+ 72                          // If we find an alternate site, we are in luck; the problem does not percolate.
+ 73                          nextBoat.setCurrentSite(j);
+ 74                          schedule[i][j] = nextBoat;
+ 75                          found = true;
+ 76                      }
+ 77                  }
+ 78
+ 79                  // We are done moving this boat: either a site was found,
+ 80                  // or the boat cannot move forward and is stuck.
+ 81                  nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+ 82
+ 83                  if (!found)
+ 84                  {
+ 85                      // Worst case scenario: A site was not found, so our boat and the boat currently in the
+ 86                      // spot our boat had yesterday swap roles, since our boat can’t go backwards up the river.
+ 87                      Boat temp = nextBoat;
+ 88                      nextBoat = schedule[i][nextBoat.getCurrentSite()];
+ 89                      schedule[i][nextBoat.getCurrentSite()] = temp;
+ 90                  }
+ 91
+ 92                  while (!found) // Repeat until the issue is resolved
+ 93                  {
+ 94                      // Find the site where the boat we are dealing with now was yesterday.
+ 95                      int lastSite = -1;
+ 96                      for (int j = 0; j < numSites; j++)
+ 97                      {
+ 98                          if (schedule[i-1][j] == nextBoat)
+ 99                          {
+100                              lastSite = j;
+101                          }
+102                      }
+103
+104                      // Try to back up this boat until it finds an empty site or
+105                      // a boat with lower priority whom it can swap roles with.
+106                      boolean swapped = false;
+107                      for (int j = nextBoat.getCurrentSite() - 1; !found && !swapped && j >= lastSite; j--)
+108                      {
+109                          if (schedule[i][j] == null)
+110                          {
+111                              // Empty site: we’re done; set found to true so all the loops terminate.
+112                              nextBoat.setCurrentSite(j);
+113                              schedule[i][j] = nextBoat;
+114                              found = true;
+115                          }
+116                          else if (schedule[i][j].compareTo(nextBoat) > 0)
+117                          {
+118                              // Boat with lower priority: swap roles, but just break out of the
+119                              // inner loop since the lower priority boat still needs to find a site.
+120                              nextBoat.setCurrentSite(j);
+121
+122                              Boat temp = nextBoat;
+123                              nextBoat = schedule[i][j];
+124                              schedule[i][j] = temp;
+125                              swapped = true;
+126                          }
+127                      }
+128
+129                      if (!found && !swapped)
+130                      {
+131                          // No empty spots were found, and all boats have higher priority, so swap roles
+132                          // with the boat at the site our boat was at yesterday and continue with that boat.
+133                          nextBoat.setCurrentSite(lastSite);
+134
+135                          Boat temp = nextBoat;
+136                          nextBoat = schedule[i][lastSite];
+137                          schedule[i][lastSite] = temp;
+138                      }
+139                  }
+140             }
+141         }
+142

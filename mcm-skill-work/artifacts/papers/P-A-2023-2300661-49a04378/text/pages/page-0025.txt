@@ -1,0 +1,59 @@
+     Team # 2300661                                                                   Page 23 of 23
+
+
+31                    tmp0(count) = 0;
+32             else
+33                    tmp0(count) = x(j,count)/Ni(count);
+34             end
+35         end
+36         tmp1 = 1- sigma*(x(j,:)./Ni)’;
+37         dx = x(j,:).*ri.*(tmp1’);
+38   end
+
+
+                      Listing 4: Simulation considering the pollution and habitat reduction
+ 1   for j = 1:(NumofMonth-1)
+ 2   ri = 0.5*Li./(1+exp(-k*T(j)));
+ 3       sigma = -ksigma.*(T(j)-s0);
+ 4       PO = PO+delta(j)-mu*sum(x(j,:));
+ 5       if PO<0
+ 6           PO = 0;
+ 7       end
+ 8        T(j) = s(j)+PO;
+ 9       for counti = 1:4
+10           for countj = 1:4
+11               if countj == counti
+12                   sigma(countj,counti) = 1;
+13               end
+14           end
+15       end
+16        f = zeros(4,4);
+17       f(1,:) = fi(x,sigma,Ni,ri,j,0);
+18       f(2,:) = fi(x,sigma,Ni,ri,j,f(1, :));
+19       f(3,:) = fi(x,sigma,Ni,ri,j,f(2, :));
+20       f(4,:) = fi(x,sigma,Ni,ri,j,2*f(3, :));
+21
+22         x(j+1,:) = x(j,:) + 1/6*(f(1,:)+2*f(2,:)+2*f(3,:)+f(4,:));
+23         for count = 1:4
+24             if x(j+1,count)<0
+25                 x(j+1,count) = 0;
+26             end
+27         end
+28         Ni = H(j)*(1-0.6*(T(j)-0.5))*[200 153 137 36];
+29
+30   end
+31   function dx = fi(x,sigma,Ni,ri,j,f)
+32       x(j,:) = x(j,:) + 0.5*f;
+33
+34         tmp0 = zeros(1,4);
+35         for count = 1:4
+36             if Ni(count)<1
+37                  tmp0(count) = 0;
+38             else
+39                  tmp0(count) = x(j,count)/Ni(count);
+40             end
+41         end
+42
+43         tmp1 = 1- sigma*(x(j,:)./Ni)’;
+44         dx = x(j,:).*ri.*(tmp1’);
+45   end

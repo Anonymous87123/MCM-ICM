@@ -1,0 +1,1032 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2022-2229059-dacff43d",
+  "problem_type": "C",
+  "year": "2022",
+  "source_sha256": "dacff43d782b662ca5cbb58c7af6a4db45b07d29a0d80a88626e39480babb657",
+  "review_status": "validated",
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2022-2229059-MOMENTUM",
+      "to_model_id": "MU-C-2022-2229059-PROFIT",
+      "handoff": "The gradient sizes the momentum trade."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-REVERSION",
+      "to_model_id": "MU-C-2022-2229059-PROFIT",
+      "handoff": "The distance from the mean sizes the reversion trade."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-MOMENTUM",
+      "to_model_id": "MU-C-2022-2229059-EXTREME",
+      "handoff": "The gradient history triggers the override."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-EXTREME",
+      "to_model_id": "MU-C-2022-2229059-HOLDING",
+      "handoff": "An extreme episode followed by a sale starts the no-buy window."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-PROFIT",
+      "to_model_id": "MU-C-2022-2229059-WEIGHT",
+      "handoff": "The two profitability readings are compared through the weight."
+    },
+    {
+      "from_model_id": "MU-C-2022-2229059-SELL",
+      "to_model_id": "MU-C-2022-2229059-HOLDING",
+      "handoff": "A sale is blocked during the holding period."
+    }
+  ],
+  "models": [
+    {
+      "model_id": "MU-C-2022-2229059-MOMENTUM",
+      "page": 8,
+      "section": "3.1 Momentum trading",
+      "family": "momentum indicator",
+      "purpose": "Issue a buy or sell signal from the price gradient and the moving average.",
+      "base_or_modification": "base",
+      "summary": "The gradient is written two ways on one line, joined by or: a symbol form and a one-step discrete difference. The moving average is a weighted mean over the last n prices. A buy signal needs both the gradient and the price-minus-average gap to clear 1, and it stays active for exactly one step.",
+      "variables": [
+        {
+          "symbol": "P_t",
+          "normalized_name": "asset price",
+          "unit": "US dollars",
+          "definition": "Price of the asset at time t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time index",
+          "unit": "1",
+          "definition": "The current day.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "observation window",
+          "unit": "1",
+          "definition": "The number of days the metric looks back. The paper calls it the time interval observed.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "price gradient",
+          "unit": "US dollars",
+          "definition": "The symbol form of the gradient, printed as the gradient of P.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_t",
+          "normalized_name": "discrete gradient",
+          "unit": "US dollars",
+          "definition": "The n-day gradient at time t, printed as approximately the price now minus the price n-1 days back.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_i",
+          "normalized_name": "price weight",
+          "unit": "1",
+          "definition": "The weight given to the price i days back.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_t",
+          "normalized_name": "moving average",
+          "unit": "US dollars",
+          "definition": "The weighted average of the last n prices.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M_t",
+          "normalized_name": "momentum signal",
+          "unit": "US dollars",
+          "definition": "The braced quantity that is either the gradient or the gap between price and average.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_t",
+        "n",
+        "w_i"
+      ],
+      "outputs": [
+        "M_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2229059-01",
+          "page": 8,
+          "label": null,
+          "source_expression": "G = grad P or G_t(n) approx P_t - P_(t-n+1)",
+          "normalized_latex": "G = \\nabla P \\quad \\text{or} \\quad G_t(n) \\approx P_t - P_{t-n+1}",
+          "purpose": "Give the gradient in symbol form and in discrete form on one line.",
+          "variable_symbols": [
+            "G",
+            "P_t",
+            "G_t",
+            "t",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-2022-2229059-02",
+          "page": 8,
+          "label": null,
+          "source_expression": "A_t(n) = sum_{i=0}^{n-1} w_i P_{t-i} / sum_{i=0}^{n-1} w_i",
+          "normalized_latex": "A_t(n) = \\frac{\\sum_{i=0}^{n-1} w_i P_{t-i}}{\\sum_{i=0}^{n-1} w_i}",
+          "purpose": "The weighted moving average over the window.",
+          "variable_symbols": [
+            "A_t",
+            "n",
+            "w_i",
+            "P_t",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-2022-2229059-03",
+          "page": 8,
+          "label": null,
+          "source_expression": "M_t(n) = { G_t(n) (gradient); P_t - A_t(n) (difference) }",
+          "normalized_latex": "M_t(n) = \\begin{cases} G_t(n) \\\\ P_t - A_t(n) \\end{cases}",
+          "purpose": "The two cases the signal can take, each glossed in parentheses.",
+          "variable_symbols": [
+            "M_t",
+            "G_t",
+            "P_t",
+            "A_t",
+            "n",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three display formulas, all read off the page."
+      },
+      "objectives": [
+        "Capitalize on price increases by combining the gradient and the moving average."
+      ],
+      "constraints": [
+        "A buy signal requires both G_t(n) > 1 and P_t - A_t(n) > 1."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The threshold of 1 is stated with no derivation.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the gradient over the window.",
+          "Compute the weighted moving average.",
+          "Issue a buy signal if both exceed 1, and keep it active until t + 1.",
+          "Otherwise issue a sell signal."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration; the signal is a direct comparison."
+      },
+      "assumptions": [
+        "The technique is called common and is not cited."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The threshold 1 is never justified, so the signal level is not identifiable from the text."
+      },
+      "handoff_outputs": [
+        "M_t"
+      ],
+      "validation_refs": [
+        "Figure 4",
+        "section 5"
+      ],
+      "computational_cost": "Two sums and two comparisons per asset per day.",
+      "strengths": [
+        "The signal names its own lifespan: active until the next time period."
+      ],
+      "limitations": [
+        "The brace says or while the following sentence says both cases must be true."
+      ],
+      "missing_details": [
+        "No value is given for the weights w_i.",
+        "The threshold 1 has no derivation."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-REVERSION",
+      "page": 8,
+      "section": "3.2 Reversion to the mean",
+      "family": "mean reversion",
+      "purpose": "Add a buy signal for prices that fall below the moving average.",
+      "base_or_modification": "modification",
+      "summary": "Opened by conceding that momentum only sees breakouts above the average. The formula is an inequality of two integrals of the price density, and the paper translates it twice: once as an operational rule and once qualitatively.",
+      "variables": [
+        {
+          "symbol": "mu",
+          "normalized_name": "long-run mean",
+          "unit": "US dollars",
+          "definition": "The mean the price is assumed to revert to.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i_band",
+          "normalized_name": "wide band",
+          "unit": "US dollars",
+          "definition": "The wider integration half-width. Printed i.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j_band",
+          "normalized_name": "narrow band",
+          "unit": "US dollars",
+          "definition": "The narrower integration half-width. Printed j.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_x",
+          "normalized_name": "price density",
+          "unit": "1",
+          "definition": "The price distribution integrated over each band. Printed P(x).",
+          "role": "input",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "reversion_signal",
+          "normalized_name": "reversion buy",
+          "unit": "1",
+          "definition": "The qualitative conclusion: a price far below the average is a buy.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_x",
+        "mu"
+      ],
+      "outputs": [
+        "reversion_signal"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2229059-04",
+          "page": 8,
+          "label": null,
+          "source_expression": "integral_{mu-i}^{mu+i} P(x) dx > integral_{mu-j}^{mu+j} P(x) dx for i > j > 0",
+          "normalized_latex": "\\int_{\\mu-i}^{\\mu+i} P(x)\\,dx > \\int_{\\mu-j}^{\\mu+j} P(x)\\,dx, \\quad i > j > 0",
+          "purpose": "State that the wider band carries more probability mass than the narrower one.",
+          "variable_symbols": [
+            "mu",
+            "i_band",
+            "j_band",
+            "P_x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One display inequality, read off the page."
+      },
+      "objectives": [
+        "Catch downward moves that momentum trading ignores."
+      ],
+      "constraints": [
+        "The inequality is only asserted for i > j > 0."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is fitted; the relation is stipulated.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compare the price with the moving average.",
+          "Treat a large deviation below the average as a buy."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence claim; the rule is qualitative."
+      },
+      "assumptions": [
+        "The price reverts toward the moving average, as assumed in section 1.3.3."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "P(x) is never defined or estimated, so the integral cannot be computed from the given data."
+      },
+      "handoff_outputs": [
+        "reversion_signal"
+      ],
+      "validation_refs": [
+        "section 5"
+      ],
+      "computational_cost": "Not computed numerically; used as a qualitative rule.",
+      "strengths": [
+        "The formula is translated into prose twice, at two levels of formality."
+      ],
+      "limitations": [
+        "The integral is never evaluated."
+      ],
+      "missing_details": [
+        "P(x) has no definition.",
+        "No threshold converts the inequality into a trade size."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-PROFIT",
+      "page": 9,
+      "section": "3.3 Profitability",
+      "family": "position sizing",
+      "purpose": "Turn each buy signal into an amount.",
+      "base_or_modification": "paper-specific",
+      "summary": "Two stipulations, each introduced with we say that. Momentum profitability grows with the gradient. Reversion profitability grows with the square of the distance from the mean. Neither is written as a formula.",
+      "variables": [
+        {
+          "symbol": "profit_momentum",
+          "normalized_name": "momentum profitability",
+          "unit": "1",
+          "definition": "Said to be proportional to the price gradient.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "profit_reversion",
+          "normalized_name": "reversion profitability",
+          "unit": "1",
+          "definition": "Said to be proportional to the square of the distance from the mean.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_t",
+          "normalized_name": "discrete gradient",
+          "unit": "US dollars",
+          "definition": "The gradient from section 3.1, reused as the momentum metric.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "distance",
+          "normalized_name": "distance from the mean",
+          "unit": "US dollars",
+          "definition": "How far the price sits from the moving average.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "G_t",
+        "distance"
+      ],
+      "outputs": [
+        "profit_momentum",
+        "profit_reversion"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "Both rules are spoken proportionalities. No equation is printed."
+      },
+      "objectives": [
+        "Size the trade by how strong the signal is."
+      ],
+      "constraints": [
+        "The proportionality constants are never stated."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "No constant is estimated.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "For a momentum trade, scale the amount with the gradient.",
+          "For a reversion trade, scale the amount with the square of the distance from the mean.",
+          "Buy only if the profitability clears an unnamed threshold, as the flow chart states."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration."
+      },
+      "assumptions": [
+        "The price reverts to the mean, so a large drop is read as a crash and bought in size."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "Without the constants, the trade size is not determined by the text."
+      },
+      "handoff_outputs": [
+        "profit_momentum",
+        "profit_reversion"
+      ],
+      "validation_refs": [
+        "Figure 3"
+      ],
+      "computational_cost": "Two comparisons per day.",
+      "strengths": [
+        "The crash rule is stated as a recognition rather than a threshold."
+      ],
+      "limitations": [
+        "The threshold in the flow chart is unnamed."
+      ],
+      "missing_details": [
+        "No proportionality constant for either rule.",
+        "The buy threshold has no value."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-SELL",
+      "page": 9,
+      "section": "3.4 Selling",
+      "family": "sell rule",
+      "purpose": "Sell when the price clears the average cost paid, after fees and a margin.",
+      "base_or_modification": "paper-specific",
+      "summary": "Characterized up front as simple and conservative. The sell indicator subtracts the fee-adjusted average cost and a margin from the fee-adjusted price. The whole formula is then restated in prose with the gold fee substituted, and the rule ends in six words.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "sell indicator",
+          "unit": "US dollars",
+          "definition": "Positive when the model sells.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_a",
+          "normalized_name": "asset fee",
+          "unit": "1",
+          "definition": "The transaction fee rate for the asset.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "asset price",
+          "unit": "US dollars",
+          "definition": "The current price of the asset.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_ai",
+          "normalized_name": "historical fee",
+          "unit": "1",
+          "definition": "The fee rate paid on the i-th earlier purchase. Printed f with subscript a_i.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "historical cost",
+          "unit": "US dollars",
+          "definition": "The cost paid for the asset on the i-th purchase.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_lots",
+          "normalized_name": "lots held",
+          "unit": "1",
+          "definition": "The number of purchases averaged over. Printed n.",
+          "role": "state",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "margin",
+          "unit": "US dollars",
+          "definition": "The margin the profit must clear.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P",
+        "C_i",
+        "f_a"
+      ],
+      "outputs": [
+        "S"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2229059-05",
+          "page": 9,
+          "label": null,
+          "source_expression": "S = (1 - f_a) P - (sum_{i=0}^{n} (1 - f_{a_i}) C_i) / n - L",
+          "normalized_latex": "S = (1 - f_a) P - \\frac{\\sum_{i=0}^{n} (1 - f_{a_i}) C_i}{n} - L",
+          "purpose": "Compare the fee-adjusted price with the average fee-adjusted cost plus a margin.",
+          "variable_symbols": [
+            "S",
+            "f_a",
+            "P",
+            "f_ai",
+            "C_i",
+            "n_lots",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One display formula, read off the page and restated in the prose."
+      },
+      "objectives": [
+        "Sell only when the gain exceeds the average cost by a margin."
+      ],
+      "constraints": [
+        "The model sells only if S > 0."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The margin L is named but never valued.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the fee-adjusted sale proceeds.",
+          "Subtract the average fee-adjusted cost of the lots held.",
+          "Subtract the margin.",
+          "Sell if the result is positive."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration; one comparison."
+      },
+      "assumptions": [
+        "The price oscillates, so a rise is followed by a fall."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The fee rates are given elsewhere as 1 and 2 percent, but L is free."
+      },
+      "handoff_outputs": [
+        "S"
+      ],
+      "validation_refs": [
+        "Figure 4",
+        "section 5"
+      ],
+      "computational_cost": "One average and one comparison per asset per day.",
+      "strengths": [
+        "The formula is repeated in prose with a gloss after each term."
+      ],
+      "limitations": [
+        "The margin has no value."
+      ],
+      "missing_details": [
+        "L is never assigned a number."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-EXTREME",
+      "page": 10,
+      "section": "3.5 Extreme market conditions",
+      "family": "regime override",
+      "purpose": "Block selling during a rapid price rise.",
+      "base_or_modification": "paper-specific",
+      "summary": "The trigger is stated in prose as a gradient over five times the historical average, then printed with a free scaling factor C, and the two are not reconciled. While active, selling is forbidden until the price falls to a percentage of its peak or a fixed amount below it.",
+      "variables": [
+        {
+          "symbol": "E",
+          "normalized_name": "extreme indicator",
+          "unit": "US dollars",
+          "definition": "Positive when the extreme-market rule takes over.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_t",
+          "normalized_name": "discrete gradient",
+          "unit": "US dollars",
+          "definition": "The current gradient from section 3.1.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_scale",
+          "normalized_name": "scaling factor",
+          "unit": "1",
+          "definition": "Printed C. The prose says five times; the formula leaves it free.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "history length",
+          "unit": "1",
+          "definition": "The number of past gradients averaged.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_P",
+          "normalized_name": "peak drop",
+          "unit": "US dollars",
+          "definition": "The amount below the interval maximum that ends the override. Printed as a capital delta P.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "G_t",
+        "n"
+      ],
+      "outputs": [
+        "E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2229059-06",
+          "page": 10,
+          "label": null,
+          "source_expression": "E = G_t(n) - C (sum_{i=0}^{n} G_t(i)) / n",
+          "normalized_latex": "E = G_t(n) - C \\cdot \\frac{\\sum_{i=0}^{n} G_t(i)}{n}",
+          "purpose": "Compare the current gradient with a scaled average of past gradients.",
+          "variable_symbols": [
+            "E",
+            "G_t",
+            "C_scale",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One display formula, read off the page."
+      },
+      "objectives": [
+        "Avoid selling before a rapid rise has finished."
+      ],
+      "constraints": [
+        "No selling while E is positive, until the price regresses."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "C is called a scaling factor and the prose separately says five.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compare the current gradient with the scaled historical average.",
+          "If positive, hand control to the extreme-market rule and skip the rest of the day.",
+          "Resume selling only after the price falls to a percentage of its peak or delta P below it."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration."
+      },
+      "assumptions": [
+        "A rapid rise is followed by a regression rather than a further surge."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The prose factor of five and the symbol C disagree, and neither exit threshold is numbered."
+      },
+      "handoff_outputs": [
+        "E"
+      ],
+      "validation_refs": [
+        "section 5"
+      ],
+      "computational_cost": "One running average per asset per day.",
+      "strengths": [
+        "The rule names the failure it prevents: a premature sell."
+      ],
+      "limitations": [
+        "The scaling factor is stated two ways."
+      ],
+      "missing_details": [
+        "The percentage of the maximum is never given.",
+        "delta P has no value."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-HOLDING",
+      "page": 10,
+      "section": "3.6 and 3.7 No-buy and holding",
+      "family": "trade suppression",
+      "purpose": "Stop the model trading on small moves and on the way down from a peak.",
+      "base_or_modification": "paper-specific",
+      "summary": "Two prose rules with no formula. After an extreme episode and a sale, buying is barred for a number of days. After any purchase, selling is barred for z days. The reason is named in one word: fees.",
+      "variables": [
+        {
+          "symbol": "z",
+          "normalized_name": "holding period",
+          "unit": "1",
+          "definition": "Days after a purchase during which the model may not sell.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "no_buy_days",
+          "normalized_name": "no-buy window",
+          "unit": "1",
+          "definition": "Days after an extreme episode and a sale during which the model may not buy. The paper says a number of days.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "may_trade",
+          "normalized_name": "permission flag",
+          "unit": "1",
+          "definition": "Whether the model is allowed to buy or sell today.",
+          "role": "output",
+          "source_status": "inferred-from-equation"
+        }
+      ],
+      "inputs": [
+        "z"
+      ],
+      "outputs": [
+        "may_trade"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "Both rules are prohibitions written in prose. No equation is printed."
+      },
+      "objectives": [
+        "Keep fees from dominating the profit by suppressing small trades."
+      ],
+      "constraints": [
+        "No buying during the no-buy window.",
+        "No selling during the z days after a purchase."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "z is a symbol with no value and the no-buy window has no symbol.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Check the no-buy flag and the extreme-market flag first.",
+          "If neither blocks the day, evaluate the sell indicators.",
+          "Compare the buy indicators and store the decision.",
+          "Execute sells before buys."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration; the day is a fixed sequence."
+      },
+      "assumptions": [
+        "Small corrections during a large move should not trigger a sale.",
+        "Another surge immediately after a peak is unlikely."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "Neither duration is determined by the text."
+      },
+      "handoff_outputs": [
+        "may_trade"
+      ],
+      "validation_refs": [
+        "section 5"
+      ],
+      "computational_cost": "Two flag checks per day.",
+      "strengths": [
+        "The reason is labeled explicitly and the tempting alternative is conceded before it is overturned."
+      ],
+      "limitations": [
+        "The no-buy duration is deliberately vague."
+      ],
+      "missing_details": [
+        "z has no value.",
+        "The no-buy window has no number."
+      ]
+    },
+    {
+      "model_id": "MU-C-2022-2229059-WEIGHT",
+      "page": 11,
+      "section": "3.9 Noise cancellation",
+      "family": "signal weighting",
+      "purpose": "Shrink the influence of small late signals so the two assets can be compared.",
+      "base_or_modification": "paper-specific",
+      "summary": "Introduced by resemblance: a weight factor that goes like one over C t squared. It falls as time grows, which the paper calls drowning out small changes, and it makes the bitcoin signal count for more than the gold signal.",
+      "variables": [
+        {
+          "symbol": "W",
+          "normalized_name": "weight factor",
+          "unit": "1",
+          "definition": "The factor applied when the two assets' signals are compared.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_weight",
+          "normalized_name": "scalar constant",
+          "unit": "1",
+          "definition": "Printed C. A free scalar.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_days",
+          "normalized_name": "elapsed days",
+          "unit": "1",
+          "definition": "Time in days. Printed t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t_days"
+      ],
+      "outputs": [
+        "W"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2229059-07",
+          "page": 11,
+          "label": null,
+          "source_expression": "W = 1 / (C t^2)",
+          "normalized_latex": "W = \\frac{1}{C t^{2}}",
+          "purpose": "Down-weight signals as the record grows.",
+          "variable_symbols": [
+            "W",
+            "C_weight",
+            "t_days"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "One display formula, read off the page."
+      },
+      "objectives": [
+        "Compare gold and bitcoin on the same scale despite their different magnitudes."
+      ],
+      "constraints": [
+        "The weight is always positive and shrinks with time."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "C is called a scalar constant and never valued.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the weight from the day index.",
+          "Apply it when the profitability of the two assets is compared."
+        ],
+        "software": [],
+        "convergence_criteria": "No iteration."
+      },
+      "assumptions": [
+        "The two assets differ in the magnitude of their moves, as figure 2 shows."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The shape is fixed but the scale constant is free."
+      },
+      "handoff_outputs": [
+        "W"
+      ],
+      "validation_refs": [
+        "Figure 5"
+      ],
+      "computational_cost": "One division per day.",
+      "strengths": [
+        "The effect is stated as a limit in words before it is used."
+      ],
+      "limitations": [
+        "The same letter C was a scaling factor two subsections earlier."
+      ],
+      "missing_details": [
+        "C has no value.",
+        "The paper does not say which asset's signal the weight multiplies."
+      ]
+    }
+  ]
+}

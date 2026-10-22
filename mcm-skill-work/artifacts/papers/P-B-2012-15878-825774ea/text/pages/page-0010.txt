@@ -1,0 +1,63 @@
+Control # 15878                                                           Page 10 of 23
+
+
+7.1      The Visitor Object
+The visitor object is a central aspect of our model, as the movement rules from
+iteration to iteration of our one-dimensional automaton-like river will be determined by
+the unique characteristics of each object. We must thus state all of the relevant variables
+of the visitor object.
+      • The type of raft to be used - oar-powered or motor. The raft type deter-
+        mines the minimum and maximum distance that a visitor can move in any given
+        day.
+      • The anticipated trip length, Da . The anticipated trip length sets the initial
+        move conditions of the visitor and is used to determine whether the visitor is on
+        schedule upon finishing the trip.
+      • The current position of the visitor, y, where 1 < y ≤ Y , and distance that
+        the visitor will be moved in the next iteration, y∗. y∗ is recalculated at the
+        start of every iteration.
+      • The number of days traveled, Di , and the number of days left to complete
+        the trip, Dr . In the instance that Dr is 0 but y < Y (which occurs when the raft
+        is late), Dr is reset to 1; however, Di keeps track of this change and reports that
+        the raft was late.
+      • The bump coefficient, β. In the instance of conflicts, β is used to determine
+        which visitor is placed in the desired camp site and which visitor is placed in a
+        different site. β depends on how far the visitor must travel to reach the end of the
+        river as well as the number of days left in the trip.
+                                  Bump Coefficient. β = YD−y
+                                                           r
+
+        β is thus of equivalent form to the ideal number of camp sites that a visitor should
+        travel in a day. However, β is continuous, while ideal travel distance is
+        rounded up to produce a discrete value.
+      • The bump direction. Bump direction can either represent the upstream direction
+        or the downstream direction, and plays a role in resolving conflicts. The value of
+        bump direction is set based on the specific rules governing the model.
+
+
+7.2      Governing Rules for the Model
+We here consider the general outline of rules for scheduling of visitors in our cellular
+automaton-like model. This will serve as a template for generation of implementations of
+the model. Due to the highly flexible nature of the model, variants on rules can
+be quickly substituted to produce other implementations, which we will also test.
+In general, in any given iteration of the model, the following procedures are followed:
+
+   1. Queueing and Loading: The visitors to be loaded on to the river are defined
+      (based on raft type and Da ) and input into the model. To generate sample data
+      for our model, we used a Poisson distribution with mean λ. Different values of λ
+      were tested, with λ ranging from 1 to 15.
+   2. Moving: For each visitor, y∗ is calculated based on the move rules of the imple-
+      mentation. If this distance is between the moving constraints of the visitor (as
+      defined in Table 1), the visitor is moved y* camp sites downstream in the river ar-
+      ray. Otherwise, the visitor is moved according to the absolute minimum or absolute
+      maximum moving distance, based on the specific scenario.
+   3. Resolving Conflicts: For all cells with more than two visitors, the bump rules
+      of the implementation are used to resolve conflicts. These rules are implemented
+      until no conflicts remain.
+   4. Perform Calculations: The desired metrics are calculated. If any visitors have
+      y > Y , they are dequeued from the model.
+
+
+
+
+                                          Cellular Automaton Rafting Simulation
+                                         C.A.R.S

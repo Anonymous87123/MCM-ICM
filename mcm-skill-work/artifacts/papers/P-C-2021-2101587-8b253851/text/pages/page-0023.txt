@@ -1,0 +1,160 @@
+      Team # 2101587
+                                              微信公众号：数学模型                 Page 23 of 25
+
+
+
+      Appendices
+      Appendix A        Code
+
+      A.1   Convolutional Neural Network Training
+
+
+
+
+                                                                   型
+  1 import torch
+  2 import torchvision
+  3 import matplotlib.pyplot as plt
+    import numpy as np
+
+
+
+
+                                                      模
+  4
+  5 import os
+  6 from PIL import Image
+  7 import torchvision.models as models
+  8 import torch.nn as nn
+
+
+
+
+                                                     学
+  9 import torch.nn.functional as F
+ 10 import torchvision.datasets as normal_datasets
+ 11 import torchvision.transforms as transforms
+ 12 from torch.autograd import Variable
+ 13 from torch.optim.lr_scheduler import *
+
+
+
+
+                                                 数
+ 14 import torch.utils.data as data
+ 15 import random
+ 16 from utils import *
+ 17
+ 18 transform_train = transforms.Compose([
+                                    ：
+ 19      transforms.Resize((224, 224)),
+ 20      transforms.ToTensor(),
+
+
+
+
+                                                         els
+ 21      transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+ 22 trainset = loaddata(’C:\\Users\\wennitao\\Desktop\\MCM2021\\ProblemC\\ResNet\\
+        data\\eval_partition.txt’, ’C:\\Users\\wennitao\\Desktop\\MCM2021\\ProblemC\\
+                                   号
+        ResNet\\data\\attrs_TZ.csv’, ’0’, ’C:\\Users\\wennitao\\Desktop\\MCM2021\\
+        ProblemC\\ResNet\\train_data\\’, transform=transform_train)
+
+
+
+
+                                                       od
+ 23 trainloader = torch.utils.data.DataLoader(trainset, batch_size=32, shuffle=True,
+         num_workers=4)
+                            众
+
+ 24 resnet=models.resnet18(pretrained=True)
+ 25 num_ftrs = resnet.fc.in_features
+ 26 resnet.fc = nn.Linear(num_ftrs, 13)
+                                                      m
+ 27 cnn=resnet
+ 28 if torch.cuda.is_available():
+                       公
+
+
+
+ 29      cnn = cnn.cuda()
+                                              H
+ 30 num_epochs=30
+ 31 batch_size=64
+ 32 learning_rate=0.005
+                                           AT
+
+ 33 loss_func = nn.CrossEntropyLoss()
+         信
+
+
+
+
+ 34 optimizer = torch.optim.SGD(cnn.parameters(), lr=0.005,weight_decay=1e-4,
+        momentum=0.9)
+ 35 scheduler = StepLR(optimizer, step_size=3)
+ 36 scheduler.step()
+ 37 cnn.train()
+        微
+
+
+
+
+ 38 i=0
+                                        M
+
+
+
+ 39 for epoch in range(num_epochs):
+ 40      for batch_idx, (images, labels, id) in enumerate(trainloader):
+ 41          images = get_variable(images)
+             labels = torch.Tensor(np.array(labels,dtype=np.int64)).t()
+                              ：
+
+
+
+
+ 42
+ 43          labels = labels.cuda().type(torch.cuda.LongTensor)
+ 44          outputs = cnn(images)
+ 45          loss = loss_func(outputs, labels.squeeze())
+ 46          optimizer.zero_grad()
+                       号
+
+
+
+
+ 47          loss.backward()
+ 48          optimizer.step()
+ 49          i+=1
+ 50          if ((i-1) % 10 == 0):
+ 51               print(’Epoch [%d/%d], Iter [%d/%d] Loss: %.4f’ % (epoch + 1,
+             信
+
+
+
+
+        num_epochs, i, trainset.length // batch_size, loss.item()))
+ 52
+ 53   torch.save(cnn, ’resnet18.pkl’)
+            微
+
+
+
+
+      A.2   Convolutional Neural Network Evaluation
+  1   from sklearn.metrics import confusion_matrix
+  2   import torch
+  3   import torchvision
+  4   import torchvision.models as models
+  5   import torch.nn as nn
+  6   import torch.nn.functional as F
+
+微信号：MATHmodels                                                                     2
+
+                                                                          MATHmodels
+                                                                                       关注数学模型
+
+                                                                                       获取更多资讯

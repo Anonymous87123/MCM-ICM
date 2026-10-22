@@ -1,0 +1,49 @@
+Team # 1924588                                                        Page 26 of 29
+
+
+ Eta=1./D;
+ Tau=ones(n,n);     Tabu=zeros(m,n);
+ NC=1;
+ R_best=zeros(NC_max,n);
+ L_best=inf.*ones(NC_max,1);
+ L_ave=zeros(NC_max,1);
+
+
+
+ while NC<=NC_max
+ Randpos=[];
+ for i=1:(ceil(m/n))
+ Randpos=[Randpos,randperm(n)];
+ end
+ Tabu(:,1)=(Randpos(1,1:m))';
+
+
+
+
+ for j=2:n
+ for i=1:m
+ visited=Tabu(i,1:(j-1));
+ J=zeros(1,(n-j+1));
+ P=J;
+ Jc=1;
+ for k=1:n
+ if length(find(visited==k))==0
+ J(Jc)=k;
+ Jc=Jc+1;
+ end
+ end
+
+
+
+
+ for k=1:length(J)
+ P(k)=(Tau(visited(end),J(k))^Alpha)*(Eta(visited(end),J(k))^Beta);
+
+ end
+ P=P/(sum(P));
+ Pcum=cumsum(P);
+ Select=find(Pcum>=rand);
+ to_visit=J(Select(1));
+ Tabu(i,j)=to_visit;
+ end
+ end

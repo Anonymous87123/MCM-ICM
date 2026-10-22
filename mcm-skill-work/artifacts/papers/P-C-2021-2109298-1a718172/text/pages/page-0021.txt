@@ -1,0 +1,126 @@
+ Team #2109298                                          微信公众号：数学模型
+                                                               Page 21 of 25
+
+
+ probability score. We can then vary threshold for verifying the report from 0 to 1 while recording
+ false positive and true negative rates. The imbalanced nature of the dataset again allows us to evaluate
+ model performance, by the AUROC metric. We chooses dataset from 2020-05-16 to 2020-08-13 as
+ training dataset for tuning 𝑎, and remaining dataset from 2020-08-13 to 2020-10-01 as testing dataset.
+ AUROC for train set and test set is summarized in Figure 18.
+
+
+
+
+                                                                                     型
+     It could be concluded that as a sound strategy, we could assign a value for each report using the
+ weighting scheme with parameter 𝑎 = 0.1. This is a reasonable parameter as the image encompasses
+ more uncertainty and the model used for inference based on images is not as robust as CA. Given the
+
+
+
+
+                                                                     模
+ score, government officials could then deploy personnel to deal with possible AGH sightings associated
+ with the reports. Good luck!
+
+
+
+
+                                                                    学
+ 6      Further Improvements
+
+
+
+
+                                                           数
+ 6.1     Baum-Welch Update for CA
+
+                                           ：
+ Although previously described models produce fruitful results in report classification, a reliable update
+ routine for our Cellular Automata is yet to be designed. We draw insights from Baum Welch algorithm, a
+
+
+
+
+                                                                        els
+ model commonly used to estimate the parameters of a Hidden Markov Model given a set of observations.
+                                          号
+ In the scenario we are working with, the transition of bees can be modelled by a Markov Process,
+
+
+
+
+                                                                      od
+ whose parameter is unknown. However, we observe a series of reports, some of which are designated
+ as successfully identifying AGH. Taken together, one can describe the setup as a hidden Markov
+                                 众
+
+ Model tracing the travel of AGH, as well as a Bernoulli random variable with parameter depending
+                                                                     m
+ on the quantities given in Section 5.3, that generates a series of report in some regions. Recognising
+                         公
+
+
+ this similarity, we propose a novel paradigm that seeks to update the parameters of CA using fresh
+                                                       H
+ observations.
+     Recall that in the previous section, a set of transition rules for CA depends on the setting of a
+                                                    AT
+        信
+
+
+
+
+ suitability measure for each region given. At each initialization of CA, the suitability measure is drawn
+ from a prior distribution 𝑝(𝑆) of suitability values for each region, and the model evolves based on the
+       微
+
+
+
+
+ drawn set of parameters. Once we encounter an observation 𝑜𝑡 at time 𝑡, we need to update the prior
+                                             M
+
+
+ by a posterior probability distribution given by:
+                                        P(𝑜𝑡 |𝑆 = 𝑠)P(𝑆 = 𝑠)    P(𝑜𝑡 |𝑆 = 𝑠)P(𝑆 = 𝑠)
+                                   ：
+
+
+
+
+                       P(𝑆 = 𝑠|𝑜𝑡 ) =                        =∫                                              (16)
+                                                P(𝑜𝑡 )          P(𝑜𝑡 |𝑆 = 𝑠)P(𝑆 = 𝑠)𝑑𝑠
+ We could approximate the intractable integral in Equation 16 by Monte Carlo sampling. In fact,
+                          号
+
+
+
+
+ following [5], we propose the following procedure for Bayesian update, which is termed sequential
+ importance resampling (SIR) in the article:
+                  信
+
+
+
+
+       • Step 1: Draw 𝑁 unique samples from the initial probability distribution 𝑝(𝑠), suppose the unique
+         samples are {𝑠1 , ..., 𝑠 𝑁 } with corresponding probability 𝑝𝑖 = P(𝑆 = 𝑠𝑖 ), 𝑖 = 1, ..., 𝑁;
+         微
+
+
+
+
+       • Step 2: Evolve the model for a fixed time step 𝑡, collect all reports that are filed during this
+         period, denote this collection 𝑜𝑡 . Calculate P(𝑜𝑡 |𝑆 = 𝑠𝑖 ) for each 𝑠𝑖 , 𝑖 = 1, .., 𝑁. Update 𝑝𝑖 to 𝑝0𝑖
+         such that 𝑝0𝑖 /𝑝0𝑗 = P(𝑜𝑡 |𝑠𝑖 ) 𝑝𝑖 /P(𝑜𝑡 |𝑠 𝑗 ) 𝑝 𝑗 for any 𝑖, 𝑗.
+
+       • Step 3: iterate this process until the next time step and make similar updates.
+
+
+微信号：MATHmodels                                                                                          2
+
+                                                                                               MATHmodels
+                                                                                                            关注数学模型
+
+                                                                                                            获取更多资讯

@@ -1,0 +1,348 @@
+{
+  "algorithms_and_other_visuals": [
+    {
+      "page": 5,
+      "role": "Routes the paper from data preparation through the raster, Poisson, Tabu-search, sensitivity, and budget stages.",
+      "title": "Figure 3: Flow Chart of Our Work",
+      "type": "workflow flowchart",
+      "visual_status": "verified"
+    },
+    {
+      "page": 11,
+      "role": "Rebalances four high-score EOC candidates by penalizing excessive spatial concentration before reranking.",
+      "title": "Figure 8: Algorithm to select EOCs",
+      "type": "selection flowchart",
+      "visual_status": "verified"
+    },
+    {
+      "page": 14,
+      "role": "Traverses candidate event counts, evaluates a Poisson probability under the estimated rate, records the probability, and draws the distribution.",
+      "title": "Algorithm: Probability distribution of extreme fire events",
+      "type": "printed pseudocode",
+      "visual_status": "verified"
+    },
+    {
+      "page": 23,
+      "role": "Summarizes normal-event, extreme-event, and total requested costs for the eastern coast, mountains, and metropolis.",
+      "title": "Unnumbered budget summary table",
+      "type": "stakeholder budget table",
+      "visual_status": "verified"
+    },
+    {
+      "page": 25,
+      "role": "Provides a partial Python listing for grid marking and repeater-location plotting, but not the complete optimization or simulation pipeline.",
+      "title": "Appendix source-code listing",
+      "type": "code listing",
+      "visual_status": "verified"
+    }
+  ],
+  "equations": [
+    {
+      "number": 1,
+      "page": 8,
+      "role": "Computes great-circle distance between two longitude-latitude locations with the Haversine formula.",
+      "transcription": "d = 2*R*arcsin(sqrt(sin^2((phi_1-phi_2)/2) + cos(phi_1)*cos(phi_2)*sin^2((lambda_1-lambda_2)/2)))",
+      "visual_status": "verified"
+    },
+    {
+      "number": 2,
+      "page": 8,
+      "role": "Maps a geographic coordinate to a one-dimensional raster-grid label.",
+      "transcription": "N = INT((x-x_min)/G_size) + M*INT((y-y_min)/G_size)",
+      "visual_status": "verified"
+    },
+    {
+      "number": 3,
+      "page": 9,
+      "role": "Maps a raster label back to the longitude-latitude coordinates of its grid center.",
+      "transcription": "x_G = (N mod M)*G_size + x_min; y_G = INT(N/M)*G_size + y_min",
+      "visual_status": "verified"
+    },
+    {
+      "number": 4,
+      "page": 10,
+      "role": "Increments a wildfire-grid frequency when a VIIRS observation falls in that grid.",
+      "transcription": "N_i = N_i + 1 if (x_j,y_j) in Omega_i and j in {1,...,S_VIIRS}",
+      "visual_status": "verified"
+    },
+    {
+      "number": 5,
+      "page": 10,
+      "role": "Scores each roaming grid by combining fire frequency with inverse distance to wildfire grids.",
+      "transcription": "SC_k = sum_i N_i/d_ki, k in {1,...,33}",
+      "visual_status": "verified"
+    },
+    {
+      "number": 6,
+      "page": 12,
+      "role": "Minimizes the worst EOC-to-fire assignment distance across the four selected EOCs.",
+      "transcription": "min max_{k in {k_1,k_2,k_3,k_4}} sum_i d_ki*(a_ki^SSA + a_ki^RR)",
+      "visual_status": "verified"
+    },
+    {
+      "number": 7,
+      "page": 12,
+      "role": "Minimizes the total number of binary SSA and RR drone assignments.",
+      "transcription": "min sum_{k in {k_1,k_2,k_3,k_4}} sum_i (a_ki^SSA + a_ki^RR)",
+      "visual_status": "verified"
+    },
+    {
+      "number": 8,
+      "note": "The normalized transcription preserves the printed weighted combination and extreme-event factor; the paper does not fully define the optimization range, scaling, or all indices.",
+      "page": 12,
+      "role": "Combines the worst-distance and drone-count objectives by a simulation-selected weight and introduces the extreme-fire influence factor.",
+      "transcription": "min [omega*max_k sum_i d_ki*(a_ki^SSA+a_ki^RR) + (1-omega)*sum_{k,i}(a_ki^SSA+a_ki^RR)], 0<omega<1; extreme-event factor xi >= 1",
+      "visual_status": "verified"
+    },
+    {
+      "number": 9,
+      "page": 12,
+      "role": "Restricts flight plus hovering time to the stated single-charge endurance.",
+      "transcription": "t_fly + t_hover <= 2.5 h",
+      "visual_status": "verified"
+    },
+    {
+      "number": 10,
+      "note": "The displayed brace, drone-type subscripts, index ranges, and assignment semantics are typographically difficult and underdefined; no silent repair is applied.",
+      "page": 12,
+      "role": "Imposes the printed SSA and RR distance limits over wildfire grids and the four selected EOCs.",
+      "transcription": "d_ki^SSA <= 30 km; d_ki^RR <= 20 km; i in positive wildfire-grid indices; k in {k_1,k_2,k_3,k_4}",
+      "visual_status": "verified-with-source-ambiguity"
+    },
+    {
+      "number": 11,
+      "page": 13,
+      "role": "Gives the Poisson probability of n extreme-fire events in a time interval t.",
+      "transcription": "P(N(t)=n) = ((lambda*t)^n*exp(-lambda*t))/n!",
+      "visual_status": "verified"
+    },
+    {
+      "number": 12,
+      "page": 14,
+      "role": "Estimates the Poisson event rate from the available extreme-fire incident observations.",
+      "transcription": "lambda_hat = (1/m)*sum_{i=1}^m x_i",
+      "visual_status": "verified"
+    },
+    {
+      "number": 13,
+      "page": 15,
+      "role": "Computes the truncated mathematical expectation of extreme-fire events for counts one through ten.",
+      "transcription": "E[N(t)] = sum_{n=1}^{10} n*P(N(t)=n) = sum_{n=1}^{10} ((lambda*t)^n*exp(-lambda*t))/(n-1)!",
+      "visual_status": "verified"
+    },
+    {
+      "number": 14,
+      "page": 18,
+      "role": "Defines the four-neighbor grid mapping used to expand Tabu-search candidate paths.",
+      "transcription": "D -> D_i, i=1,2,3,4",
+      "visual_status": "verified"
+    },
+    {
+      "number": 15,
+      "page": 18,
+      "role": "Models available radio range as a linear decrease with altitude.",
+      "transcription": "l = l_0 - mu*h",
+      "visual_status": "verified"
+    },
+    {
+      "number": 16,
+      "note": "The printed sequence and index placement are typographically ambiguous; it is preserved as four increasing perturbation levels rather than silently normalized into a different formula.",
+      "page": 19,
+      "role": "Creates four one-sided increases of the extreme-fire factor for sensitivity simulation.",
+      "transcription": "xi_i in {xi+0.05, xi+0.10, xi+0.15, xi+0.20}, i=1,2,3,4",
+      "visual_status": "verified-with-source-ambiguity"
+    },
+    {
+      "number": 17,
+      "page": 20,
+      "role": "Applies independent five-percent random multiplicative perturbations to the two distance inputs.",
+      "transcription": "d_A* = d_A*(1 +/- 5%*epsilon_rand); d_ki* = d_ki*(1 +/- 5%*epsilon_rand)",
+      "visual_status": "verified"
+    },
+    {
+      "number": 18,
+      "note": "The printed percentage expression omits normalization by the original time; this is retained as a G7 warning, not repaired in the source transcription.",
+      "page": 20,
+      "role": "Prints the paper's time-error expression after distance perturbation.",
+      "transcription": "t_error = (t* - t)*100%",
+      "visual_status": "verified"
+    }
+  ],
+  "fact_checks": [
+    {
+      "disposition": "Retain 2.99431 as the paper's computed expectation and 3 as its simplifying integer scenario; do not treat the rounding as a measured forecast.",
+      "page": 15,
+      "printed_text": "Equation (13) is evaluated as 2.99431 extreme-fire events over the next decade and then simplified to three.",
+      "status": "text-and-formula verified"
+    },
+    {
+      "disposition": "Keep the operational fleet and charging-continuity fleet distinct.",
+      "page": 13,
+      "printed_text": "The worst-case route uses four SSA and four RR drones, while charging continuity doubles procurement to eight of each type.",
+      "status": "text-and-figure verified"
+    },
+    {
+      "disposition": "Treat 95.7% as an internal perturbation-simulation result, not external validation.",
+      "page": 20,
+      "printed_text": "Across 1,000 random-distance perturbation simulations, 95.7% of UAVs are reported to reach the destination.",
+      "status": "text-and-table verified"
+    },
+    {
+      "disposition": "Preserve the totals, but do not invent missing line-item decompositions.",
+      "page": 23,
+      "printed_text": "The budget table totals $1.13M for the eastern coast, $0.83M for mountains, and $0.57M for the metropolis; the latter two totals are not fully decomposed in table cells.",
+      "status": "visually verified incomplete decomposition"
+    }
+  ],
+  "figures": [
+    {"number": 1, "page": 3, "title": "Fire Situation in Australia (Feb 2020 - Feb 2021)", "visual_status": "verified"},
+    {"number": 2, "page": 4, "title": "Literature Review Framework", "visual_status": "verified"},
+    {"number": 3, "page": 5, "title": "Flow Chart of Our Work", "visual_status": "verified"},
+    {"number": 4, "page": 7, "title": "Data Screening", "visual_status": "verified"},
+    {"number": 5, "page": 8, "title": "Two Types of Drones", "visual_status": "verified"},
+    {"number": 6, "page": 9, "title": "Three types of grids", "visual_status": "verified"},
+    {"number": 7, "page": 10, "title": "Heat map after Rasterization", "visual_status": "verified"},
+    {"number": 8, "page": 11, "title": "Algorithm to select EOCs", "visual_status": "verified"},
+    {"key_result": "Four EOCs, four SSA drones, and four RR drones for the active worst-case route; eight of each drone type when charging continuity is included.", "number": 9, "page": 13, "title": "The results of Problem1", "visual_status": "verified"},
+    {"key_result": "Highest probability density lies approximately between two and four extreme-fire events.", "number": 10, "page": 14, "title": "The Probability Density Distribution of Extreme Fire Events", "visual_status": "verified"},
+    {"number": 11, "page": 15, "title": "Number of the two drones", "visual_status": "verified"},
+    {"key_result": "RR demand initially grows faster; around nine times the unit fire area, SSA demand exceeds RR demand.", "number": 12, "page": 16, "title": "Time to Cover and Ratio of RR to SSA", "visual_status": "verified"},
+    {"number": 13, "page": 17, "title": "Altitudinal Map of Victoria", "visual_status": "verified"},
+    {"key_result": "Mountain repeater coverage and a layered route with a stated maximum relay depth of three.", "number": 14, "page": 18, "title": "Mountain Areas", "visual_status": "verified"},
+    {"key_result": "Urban EOC and repeater placement around Melbourne, Geelong, and Cranbourne.", "number": 15, "page": 19, "title": "Urban Areas", "visual_status": "verified"},
+    {"key_result": "Four one-sided five-percent-step sensitivity scenarios retain broadly similar curve forms while increasing drone demand and the RR-to-SSA ratio.", "number": 16, "page": 20, "title": "Sensitivity analysis of the extreme-fire factor", "visual_status": "verified"}
+  ],
+  "g7_warnings": [
+    {
+      "id": "G7-Q136-01",
+      "target": "Summary and Problem Background, pages 1 and 3",
+      "warning": "The casualty language, including the claim that hundreds of millions of lives were killed, is not supported by a cited compatible statistic and appears factually or typographically unsafe."
+    },
+    {
+      "id": "G7-Q136-02",
+      "target": "Problem Background, page 3",
+      "warning": "The statement that the Australian fire season lasted 45 weeks needs source and definition checks before reuse."
+    },
+    {
+      "id": "G7-Q136-03",
+      "target": "Equations (2)-(5) and EOC selection flowchart",
+      "warning": "Grid origins, boundary conventions, zero-distance handling, score normalization, and the concentration penalty are not specified sufficiently for exact reproduction."
+    },
+    {
+      "id": "G7-Q136-04",
+      "target": "Equations (6)-(10)",
+      "warning": "The weighted optimization omits full index domains, units and scale reconciliation, solver settings, several stated terrain constraints, and a complete assignment-feasibility formulation; Equation (10) is especially ambiguous."
+    },
+    {
+      "id": "G7-Q136-05",
+      "target": "Section 5.4 simulation results",
+      "warning": "Intermediate optimization, parameter search, code, objective values, and convergence evidence are withheld, so the four-EOC and fleet results are not independently reproducible."
+    },
+    {
+      "id": "G7-Q136-06",
+      "target": "Poisson algorithm, page 14",
+      "warning": "The claim that Python has no direct Poisson-distribution function is false or at least poorly scoped; the custom random traversal is also unnecessary and incompletely specified."
+    },
+    {
+      "id": "G7-Q136-07",
+      "target": "Poisson verification, pages 13-16",
+      "warning": "The event definition, observation window, stationarity and independence assumptions, exposure normalization, and goodness-of-fit are missing, so the calculation does not validate the allocation model."
+    },
+    {
+      "id": "G7-Q136-08",
+      "target": "Figure 12 interpretation, page 16",
+      "warning": "Explanations for nonmonotone coverage time and the SSA/RR crossover are explicitly conjectural and are not supported by ablation, route output, or causal diagnostics."
+    },
+    {
+      "id": "G7-Q136-09",
+      "target": "Tabu-search model, pages 17-19",
+      "warning": "The claimed global-optimum effect is unsupported: the paper gives no complete objective, tabu tenure, aspiration rule, initialization, stopping rule, comparative baseline, or convergence evidence."
+    },
+    {
+      "id": "G7-Q136-10",
+      "target": "Equations (15)-(16)",
+      "warning": "The 800 m threshold, linear attenuation law, coefficient 0.4, and sensitivity sequence are asserted or typographically ambiguous without consistent units, calibration, or uncertainty."
+    },
+    {
+      "id": "G7-Q136-11",
+      "target": "Equations (17)-(18), Table 4, and Section 8.2",
+      "warning": "The section is mislabeled as sensitivity, Equation (18) omits a normalizing denominator, one table entry is UNFOUND, and 1,000 internal perturbations do not constitute independent robustness validation."
+    },
+    {
+      "id": "G7-Q136-12",
+      "target": "Budget Request, pages 22-23",
+      "warning": "Mountain and metropolis totals are not decomposed into auditable quantities and unit prices, and contingency, maintenance, staffing, replacement, and uncertainty are not consistently represented."
+    }
+  ],
+  "paper_id": "P-B-2021-2102199-f3e89239",
+  "review_scope": {
+    "algorithms_and_other_visuals": 5,
+    "files_deleted": 0,
+    "focused_proxy_bytes": 2227957,
+    "focused_proxy_count": 8,
+    "full_page_visual_coverage": "complete",
+    "model_visible_full_page_originals": 0,
+    "numbered_equations": 18,
+    "numbered_equations_verified": 18,
+    "numbered_figures": 16,
+    "numbered_figures_verified": 16,
+    "page_count": 25,
+    "tables": 4,
+    "tables_verified": 4
+  },
+  "source_identity": {
+    "detail_review_ledger": "tmp/q136-detail-review-v1/ledger.json",
+    "detail_review_ledger_sha256": "72f57abd41384464b563ab4119551272cd4afb40512df176e2c42d47c522a95a",
+    "extraction_stage": "tmp/q136-extraction-v1/P-B-2021-2102199-f3e89239",
+    "overview_review_ledger": "tmp/q136-review-v1/ledger.json",
+    "overview_review_ledger_sha256": "4e64cbaebca03792e6ffccea85f4c80d9a44fbaf622dac39d5aac9c055d6df10",
+    "pdf": "MCM-ICM-master/2021\u7f8e\u8d5b\u7279\u7b49\u5956/B/2102199.pdf",
+    "pdf_sha256": "f3e89239524c5317f05081c3b0f0b1f8dc35b4867d8ebc28869b8e8cca657af6"
+  },
+  "status": "complete",
+  "tables": [
+    {
+      "number": 1,
+      "page": 6,
+      "role": "Defines geographic, grid, score, distance, area, and binary drone-assignment notation.",
+      "title": "Notations used in this paper",
+      "visual_status": "verified"
+    },
+    {
+      "number": 2,
+      "page": 7,
+      "role": "Lists source websites used for fire, geography, equipment, and contextual data.",
+      "title": "Data and Database Websites",
+      "visual_status": "verified"
+    },
+    {
+      "number": 3,
+      "page": 10,
+      "role": "Shows sample VIIRS latitude, longitude, brightness, scan, instrument, version, and day/night fields.",
+      "title": "Latitude and longitude data of VIIRS",
+      "visual_status": "verified"
+    },
+    {
+      "number": 4,
+      "page": 20,
+      "role": "Reports example time deviations from random distance perturbations, including one UNFOUND run.",
+      "title": "Degree of Deviation from The Original Time",
+      "visual_status": "verified"
+    }
+  ],
+  "transport_audit": {
+    "context_segments": [
+      {
+        "distinct_proxy_bytes": 2227957,
+        "distinct_proxy_count": 8,
+        "segment": 1,
+        "scope": "five complete-page overview strips plus three focused equation, flowchart, table, budget, and code review proxies"
+      }
+    ],
+    "maximum_proxy_bytes": 447257,
+    "model_visible_bytes": 2227957,
+    "model_visible_image_count": 8,
+    "original_detail_images_returned": 0,
+    "status": "pass"
+  }
+}

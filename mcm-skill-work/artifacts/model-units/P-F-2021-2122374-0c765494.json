@@ -1,0 +1,483 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2021-2122374-0c765494",
+  "problem_type": "F",
+  "year": "2021",
+  "source_sha256": "0c7654949d8fb4b2fb9c3852ee1dd6a28347929a1e140b7f345c851af75d5f3e",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2021-2122374-TOP",
+      "section": "3.2 IEW-TOPSIS Evaluation Model",
+      "family": "composite-index",
+      "summary": "Health is split into performance and potential, and each gets its own indicator set and its own IEW-TOPSIS run. System A: coverage, fairness, achievement, 10 positive indicators. System B: input, output, efficiency, 11 indicators, of which the student-teacher ratio is negative. Entropy weights, then closeness to the ideal. Equal-interval grades: poor below 0.25, fair below 0.5, good below 0.75, excellent above. On performance, 11 countries exceed 0.5 and only 2 exceed 0.6; Slovak Republic 0.639816, Israel 0.264504. Chile scores 0.279497 on performance and 0.73439 on potential, the widest gap, and is the case.",
+      "computational_cost": "not-stated",
+      "purpose": "Rank countries twice, once on current benefit to youth and once on room to improve, so the case is the country worst on the first and best on the second.",
+      "base_or_modification": "hybrid",
+      "page": 11,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "C_i"
+      ],
+      "handoff_outputs": [
+        "C_i",
+        "w_j"
+      ],
+      "objectives": [
+        "Turn two qualitative evaluation systems into scores that can be compared across 21 countries."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "raw_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Value of indicator j for country i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_s",
+          "normalized_name": "standardized",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Min-max scaled value, direction flipped for a negative indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ij",
+          "normalized_name": "share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of country i in indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_j",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_j",
+          "normalized_name": "redundancy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "One minus the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy weight of indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z_ij",
+          "normalized_name": "normalized_entry",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entry of the vector-normalized decision matrix",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_p",
+          "normalized_name": "distance_best",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted distance from country i to the ideal solution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_m",
+          "normalized_name": "distance_worst",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted distance from country i to the worst solution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "closeness",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Closeness of country i to the ideal, between 0 and 1",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2021-2122374-TOP-1",
+          "equation_label": "Min-max standardization",
+          "equation_text": "positive: x_s = (x - min)/(max - min); negative: x_s = (max - x)/(max - min)",
+          "source_expression": "positive: x_s = (x - min)/(max - min); negative: x_s = (max - x)/(max - min)",
+          "normalized_latex": "x^{*} = \\frac{x - \\min}{\\max - \\min}",
+          "purpose": "Direction-aware scaling before the entropy. Only the student-teacher ratio is negative.",
+          "variable_symbols": [
+            "x_s",
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2021-2122374-TOP-2",
+          "equation_label": "Entropy and weight",
+          "equation_text": "p_ij = x_s / sum_i x_s; e_j = -k sum_i p_ij ln p_ij with k = 1/ln n; d_j = 1 - e_j; w_j = d_j / sum d",
+          "source_expression": "p_ij = x_s / sum_i x_s; e_j = -k sum_i p_ij ln p_ij with k = 1/ln n; d_j = 1 - e_j; w_j = d_j / sum d",
+          "normalized_latex": "e_j = -\\frac{1}{\\ln n}\\sum_i p_{ij}\\ln p_{ij},\\quad w_j = \\frac{1-e_j}{\\sum_j(1-e_j)}",
+          "purpose": "Shannon weight. The printed formulas are symbol-garbled and reconstructed in standard form.",
+          "variable_symbols": [
+            "p_ij",
+            "e_j",
+            "d_j",
+            "w_j",
+            "x_s"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2021-2122374-TOP-3",
+          "equation_label": "Vector normalization",
+          "equation_text": "z_ij = x_s / sqrt(sum_i x_s^2)",
+          "source_expression": "z_ij = x_s / sqrt(sum_i x_s^2)",
+          "normalized_latex": "z_{ij} = x^{*}_{ij} / \\sqrt{\\sum_i (x^{*}_{ij})^{2}}",
+          "purpose": "Second normalization, for the distance computation.",
+          "variable_symbols": [
+            "z_ij",
+            "x_s"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2021-2122374-TOP-4",
+          "equation_label": "Closeness",
+          "equation_text": "D_p = sqrt(sum_j w_j (z_best_j - z_ij)^2); D_m likewise to the worst; C_i = D_m / (D_p + D_m)",
+          "source_expression": "D_p = sqrt(sum_j w_j (z_best_j - z_ij)^2); D_m likewise to the worst; C_i = D_m / (D_p + D_m)",
+          "normalized_latex": "C_i = \\frac{D_i^{-}}{D_i^{+} + D_i^{-}}",
+          "purpose": "Closeness to the ideal. Grades cut at 0.25, 0.5 and 0.75.",
+          "variable_symbols": [
+            "C_i",
+            "D_p",
+            "D_m",
+            "w_j",
+            "z_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Every formula on pages 12 and 13 is printed with private-use glyphs, so the algebra is reconstructed as standard IEW-TOPSIS. The reported scores are readable.",
+        "reason": "Steps are numbered and the outputs are tabulated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "21 OECD countries, data for 2016, from OECD reports and databases. Missing values borrowed from within two years of the base year."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "System A has 10 indicators, all positive. System B has 11, one negative. Coverage is treated as the base of fairness, and fairness as the base of achievement."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Ranking model, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Entropy weights computed separately inside each system. No subjective weights.",
+        "parameters": [
+          "w_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Standardize, compute entropy weights, vector-normalize, measure weighted distances to the best and worst rows, convert to closeness, grade and rank.",
+        "status": "implemented",
+        "steps": [
+          "Standardize",
+          "Entropy",
+          "Weights",
+          "Vector normalize",
+          "Ideal and worst",
+          "Distances",
+          "Closeness",
+          "Grade"
+        ],
+        "software": [
+          "Python"
+        ],
+        "convergence_criteria": "Not applicable. The score is a closed computation."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Slovak Republic 0.639816, Israel 0.264504 on performance. Chile 0.279497 and 0.73439. After the vision is substituted, Chile's performance rises to 0.444658."
+        ],
+        "analysis": "The two rankings disagree, which is the point. A single index would have hidden Chile's combination of a bad present and a large ceiling."
+      },
+      "constraints": [
+        "21 countries.",
+        "Two separate runs, weights not shared.",
+        "Equal-interval grades."
+      ],
+      "validation_refs": [
+        "Table 3 performance scores",
+        "Figure 6 potential scores",
+        "Figure 9 paired comparison",
+        "Figure 13 scatter"
+      ],
+      "strengths": [
+        "Refusing AHP is argued from a named defect, reliance on one supervisor.",
+        "The scatter of the two scores is used as a check on the split itself."
+      ],
+      "limitations": [
+        "The entropy story is told backwards: high entropy is said to mean less change, then used as a reason for weight.",
+        "Shannon's paper is dated 1984.",
+        "No weight table is printed, so the ranking cannot be recomputed from the text."
+      ],
+      "missing_details": [
+        "The entropy weights themselves.",
+        "Which countries form the ten below 0.5 on performance."
+      ],
+      "assumptions": [
+        "Quantity can compensate a moderate quality gap.",
+        "Investment is measurable in money.",
+        "Unfairness comes from income and status.",
+        "Public institutions pursue justice and private ones efficiency.",
+        "No shocks, and slow change without a strong policy."
+      ]
+    },
+    {
+      "model_id": "MU-F-2021-2122374-GM",
+      "section": "4.3 Necessity of Policy, GM(1,1)",
+      "family": "grey-prediction",
+      "summary": "Chile's master-to-undergraduate ratio, the youngest in the sample, is forecast with GM(1,1) on Ministry of Education data from 2007 to 2018, after a level-ratio deviation test. From 2016 to 2028 the ratio rises only about 46 percent. That misses the vision, so a strong policy is called imperative. The same device later substitutes the vision values back into TOPSIS: Chile's performance moves from 0.279497 to 0.444658, still only fair, and the authors say the policy is not sufficient.",
+      "computational_cost": "not-stated",
+      "purpose": "Show that the chosen indicator will not reach its target on its own, and then show that even the target leaves the system short of healthy.",
+      "base_or_modification": "base",
+      "page": 19,
+      "inputs": [
+        "y_t"
+      ],
+      "outputs": [
+        "yh_t"
+      ],
+      "handoff_outputs": [
+        "yh_t"
+      ],
+      "objectives": [
+        "Forecast twelve years of one ratio and compare the endpoint with the vision."
+      ],
+      "variables": [
+        {
+          "symbol": "y_t",
+          "normalized_name": "observed_ratio",
+          "role": "input",
+          "unit": "ratio",
+          "definition": "Master-to-undergraduate ratio, Chile, 2007 to 2018",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_t",
+          "normalized_name": "accumulated",
+          "role": "intermediate",
+          "unit": "ratio",
+          "definition": "First-order accumulated series",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_g",
+          "normalized_name": "development_coef",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Development coefficient of GM(1,1)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_g",
+          "normalized_name": "grey_input",
+          "role": "parameter",
+          "unit": "ratio",
+          "definition": "Grey control parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yh_t",
+          "normalized_name": "forecast_ratio",
+          "role": "output",
+          "unit": "ratio",
+          "definition": "Predicted ratio through 2028",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2021-2122374-GM-1",
+          "equation_label": "GM(1,1) response",
+          "equation_text": "yh_t = (y_1 - b_g/a_g) exp(-a_g (t-1)) + b_g/a_g, then first difference restored",
+          "source_expression": "yh_t = (y_1 - b_g/a_g) exp(-a_g (t-1)) + b_g/a_g, then first difference restored",
+          "normalized_latex": "\\hat{y}^{(1)}(t) = \\left(y^{(0)}(1) - \\frac{b}{a}\\right) e^{-a(t-1)} + \\frac{b}{a}",
+          "purpose": "Standard GM(1,1). The printed equation is not legible; the model name, the test, and the 46 percent result are.",
+          "variable_symbols": [
+            "yh_t",
+            "y_t",
+            "a_g",
+            "b_g"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "No clean equation is printed. The model is named GM(1,1), the level-ratio test is said to pass, and the conclusion is a 46 percent rise over 12 years.",
+        "reason": "Named, tested, coded in Python, and plotted as Figure 11."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Annual ratio, 2007-2018, Chilean Ministry of Education. OECD and national calibers differ; the trend is assumed similar."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Forecast 2019-2028. Target is the 21-country mean of the ratio, 0.363, against Chile's 0.115."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Short forecast, no stated saturation."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares on the accumulated series, as usual for GM(1,1). The estimated a and b are not reported. A level-ratio deviation test is said to pass.",
+        "parameters": [
+          "a_g",
+          "b_g"
+        ]
+      },
+      "algorithm": {
+        "description": "Test the level ratio, fit GM(1,1), forecast to 2028, compare with the mean target.",
+        "status": "partial",
+        "steps": [
+          "Level-ratio test",
+          "Accumulate",
+          "Estimate",
+          "Forecast",
+          "Compare with vision"
+        ],
+        "software": [
+          "Python"
+        ],
+        "convergence_criteria": "Level-ratio deviation test passed. No error number is given."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "About 46 percent growth in twelve years, from the youngest starting point in the sample. Not enough to reach 0.363."
+        ],
+        "analysis": "The forecast does the job it was given, which is to fail. Its parameters and errors are not shown, so the size of the miss is not checkable."
+      },
+      "constraints": [
+        "One series only.",
+        "Caliber difference tolerated by assumption 9."
+      ],
+      "validation_refs": [
+        "Figure 11 GM(1,1) trend"
+      ],
+      "strengths": [
+        "The forecast is used before the policy, as a reason for acting, not as a decoration after it.",
+        "Three reasons for the grey model are stated: few data, grey causality, testable."
+      ],
+      "limitations": [
+        "No parameters, no fitted values, no residual.",
+        "The authors later concede the predicted series is not smooth enough and the error may be large."
+      ],
+      "missing_details": [
+        "Estimated a and b.",
+        "The level-ratio test statistic.",
+        "Year-by-year forecast values."
+      ],
+      "assumptions": [
+        "Different statistical calibers share a trend.",
+        "Without a strong policy, change stays slow.",
+        "Shocks are excluded."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2021-2122374-TOP-1",
+      "model_id": "MU-F-2021-2122374-TOP",
+      "page": 12,
+      "source_expression": "positive: x_s = (x - min)/(max - min); negative: x_s = (max - x)/(max - min)"
+    },
+    {
+      "equation_id": "EQ-F-2021-2122374-TOP-2",
+      "model_id": "MU-F-2021-2122374-TOP",
+      "page": 12,
+      "source_expression": "p_ij = x_s / sum_i x_s; e_j = -k sum_i p_ij ln p_ij with k = 1/ln n; d_j = 1 - e_j; w_j = d_j / sum d"
+    },
+    {
+      "equation_id": "EQ-F-2021-2122374-TOP-3",
+      "model_id": "MU-F-2021-2122374-TOP",
+      "page": 13,
+      "source_expression": "z_ij = x_s / sqrt(sum_i x_s^2)"
+    },
+    {
+      "equation_id": "EQ-F-2021-2122374-TOP-4",
+      "model_id": "MU-F-2021-2122374-TOP",
+      "page": 13,
+      "source_expression": "D_p = sqrt(sum_j w_j (z_best_j - z_ij)^2); D_m likewise to the worst; C_i = D_m / (D_p + D_m)"
+    },
+    {
+      "equation_id": "EQ-F-2021-2122374-GM-1",
+      "model_id": "MU-F-2021-2122374-GM",
+      "page": 19,
+      "source_expression": "yh_t = (y_1 - b_g/a_g) exp(-a_g (t-1)) + b_g/a_g, then first difference restored"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2021-2122374-TOP",
+      "to_model_id": "MU-F-2021-2122374-GM",
+      "handoff": "The master-ratio indicator and its 21-country mean, 0.363 against Chile's 0.115, are the target the grey forecast is shown to miss"
+    }
+  ]
+}

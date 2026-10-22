@@ -1,0 +1,116 @@
+Team # 88508                                                      Page 24 of 29
+
+25 else
+
+26            disp('Failed,try again.');
+
+27 end
+
+No.3 DBSCAN.m
+
+Function: The code realized the DBSCAN classification algorithm
+
+Input:        X : data to be classified(data of each person)
+
+              Epsilon : the epsilon of Density-based Clustering
+
+              MinPts : the MinPts of Density-based Clustering
+
+Output: ID : The result(Group name) according to DBSCAN
+
+              Noise : The Noise point
+
+1 function [ID,noise]=DBSCAN(X,epsilon,MinPts)
+
+2             C=0;
+
+3             n=size(X,1);
+
+4             ID=zeros(n,1);
+
+5             D=pdist2(X,X);
+
+6             visited=false(n,1);
+
+7             noise=false(n,1);
+
+8             for i=1:n
+
+9                  if ~visited(i)
+
+10                      visited(i)=true;
+
+11                      Neighbors=RegionQuery(i);
+
+12                      if numel(Neighbors)<MinPts
+
+13                           noise(i)=true;
+
+14                      else
+
+15                           C=C+1
+
+16                           ExpandCluster(i,Neighbors,C);
+
+17                      end
+
+18                 end
+
+19            end
+
+20            function ExpandCluster(i,Neighb,C)
+
+21                 ID(i)=C;
+
+22                 k = 1;
+
+23                 while true
+
+24                      j = Neighb(k);
+
+25                      if ~visited(j)
+
+26                           visited(j)=true;
+
+27                           Neighbors2=RegionQuery(j);
+
+28                           if numel(Neighbors2)>=MinPts
+
+29                                temp = Neighb;
+
+30                                Neighb=[temp,Neighbors2];
+
+31                           end
+
+32                      end
+
+33                      if ID(j)==0
+
+34                           ID(j)=C;
+
+35                      end
+
+36
+
+37                      k = k + 1;
+
+38                      if k > numel(Neighb)
+
+39                           break;
+
+40                      end
+
+41                 end
+
+42            end
+
+43
+
+44            function Neighbors=RegionQuery(i)
+
+45                 Neighbors=find(D(i,:)<=epsilon);
+
+46            end
+47      end
+
+                                                              24

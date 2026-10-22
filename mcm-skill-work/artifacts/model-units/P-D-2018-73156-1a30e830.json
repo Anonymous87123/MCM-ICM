@@ -1,0 +1,408 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2018-73156-1a30e830",
+  "problem_type": "D",
+  "year": "2018",
+  "source_sha256": "1a30e830d8b456ce5833e5a4c35ec038ef077b60446c37a37243e7cb7f85e857",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q287-QUEUE",
+      "page": 6,
+      "section": "All-electric evaluation",
+      "family": "queueing",
+      "purpose": "Judge whether the existing stations can serve a fully electric fleet.",
+      "base_or_modification": "paper-specific",
+      "summary": "Vehicles in a region equal density times area times ownership per capita times electric share. Arrivals are Poisson and each supercharger is an M/M/1 desk, so the mean queue is lambda squared over mu times mu minus lambda. A convenience index compares vehicles needing a charge with what the stations can serve; below 1 the area is convenient. Ownership per capita is 0.94 urban, 0.83 suburban, 0.60 rural, and a station covers 170 miles.",
+      "variables": [
+        {
+          "symbol": "rho",
+          "normalized_name": "density",
+          "unit": "people per square kilometer",
+          "definition": "population density of the region",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "own",
+          "normalized_name": "ownership",
+          "unit": "cars per person",
+          "definition": "cars owned per person in the region",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ci",
+          "normalized_name": "convenience_index",
+          "unit": "dimensionless",
+          "definition": "demand divided by station capacity",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rho"
+      ],
+      "outputs": [
+        "ci"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q287-QUEUE-1",
+          "page": 6,
+          "source_expression": "Lq = lambda^2 / (mu (mu - lambda))",
+          "normalized_latex": "L_q=\\frac{\\lambda^2}{\\mu(\\mu-\\lambda)}",
+          "purpose": "mean queue length at one supercharger",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "rho",
+            "own",
+            "ci"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Judge whether the existing stations can serve a fully electric fleet."
+      ],
+      "constraints": [
+        "a station is convenient only when the index is below 1"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "ownership taken from a cited US statistic, utilization 35 percent from General Motors",
+        "parameters": [
+          "own"
+        ]
+      },
+      "algorithm": {
+        "status": "not-applicable",
+        "steps": [],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "arrivals follow a Poisson distribution",
+        "a built station is never removed"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "the convenience map covers most of the US but mu is not numbered"
+      },
+      "handoff_outputs": [
+        "ci"
+      ],
+      "validation_refs": [
+        "connectivity rate of 71 percent against the Tesla map"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "each region is solved separately and then summed"
+      ],
+      "limitations": [
+        "the service rate mu is used but never given a value"
+      ],
+      "missing_details": [
+        "the service rate mu of the M/M/1 station is not given a number"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q287-ALLOC",
+      "page": 8,
+      "section": "Distribution optimization",
+      "family": "optimization",
+      "purpose": "Split charging stations across three regions at minimum cost and minimum wait.",
+      "base_or_modification": "paper-specific",
+      "summary": "Two objectives: building cost of destination and supercharging stations, and a weighted average of their waiting times. Distance, convenience and vehicle constraints close the model. Solved in MATLAB with 8.8 chargers per station, the result is 1,704,500 stations: 1,142,015 urban, 392,035 suburban, 170,450 rural. The summary rounds this to about 1.7 million and a 67 to 23 to 10 split. The sensitivity table reprints the total as 1,704,500 and also as 1704500.",
+      "variables": [
+        {
+          "symbol": "rsc",
+          "normalized_name": "superchargers",
+          "unit": "stations",
+          "definition": "number of supercharging stations",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rdc",
+          "normalized_name": "destination",
+          "unit": "stations",
+          "definition": "number of destination charging stations",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "total",
+          "normalized_name": "station_count",
+          "unit": "stations",
+          "definition": "stations required nationwide",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rsc",
+        "rdc"
+      ],
+      "outputs": [
+        "total"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q287-ALLOC-1",
+          "page": 8,
+          "source_expression": "min Z = r_DC * C_DC + r_SC * C_SC",
+          "normalized_latex": "\\min Z=r_{DC}C_{DC}+r_{SC}C_{SC}",
+          "purpose": "building cost of both station types",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "rsc",
+            "rdc",
+            "total"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Split charging stations across three regions at minimum cost and minimum wait."
+      ],
+      "constraints": [
+        "convenience index at most 1",
+        "superchargers tied to destination stations by an efficiency ratio"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "8.8 chargers per station from the cited statistics",
+        "parameters": [
+          "rsc",
+          "rdc"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "set the two objectives",
+          "add the three constraints",
+          "solve per region",
+          "sum"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "station prices differ by type and are treated as constants"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "one solution per region, summed to 1,704,500"
+      },
+      "handoff_outputs": [
+        "total"
+      ],
+      "validation_refs": [
+        "connectivity rate of 71 percent against the Tesla map"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "each region is solved separately and then summed"
+      ],
+      "limitations": [
+        "the summary says about 1.7 million while the body prints 1,704,500 and 15 million chargers"
+      ],
+      "missing_details": [
+        "the service rate mu of the M/M/1 station is not given a number"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q287-GROWTH",
+      "page": 14,
+      "section": "Logistic model",
+      "family": "evaluation",
+      "purpose": "Predict the electric share from the indexes that survive a significance test.",
+      "base_or_modification": "paper-specific",
+      "summary": "Six indexes are defined. A logistic regression in SAS keeps three: wealth distribution, policy orientation and government investment. For the whole country the log odds equal 0.1110 plus 1.7137 times wealth plus 1.5000 times policy plus 1.614 times investment. The fitted timeline puts a 10 percent share in 2024 and 90 to 100 percent in 2069. A lag index is introduced to compare charger construction with sales, but its definition is not consistent across the section.",
+      "variables": [
+        {
+          "symbol": "wd",
+          "normalized_name": "wealth",
+          "unit": "index",
+          "definition": "wealth distribution, proxied by GDP",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "po",
+          "normalized_name": "policy",
+          "unit": "index",
+          "definition": "policy orientation, proxied by the subsidy",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gi",
+          "normalized_name": "investment",
+          "unit": "index",
+          "definition": "government investment in supporting facilities",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "share",
+          "normalized_name": "electric_share",
+          "unit": "fraction",
+          "definition": "predicted market share of electric vehicles",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "wd",
+        "po",
+        "gi"
+      ],
+      "outputs": [
+        "share"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q287-GROWTH-1",
+          "page": 14,
+          "source_expression": "ln(p/(1-p)) = 0.1110 + 1.7137*WD + 1.5000*PO + 1.614*GI",
+          "normalized_latex": "\\ln\\frac{p}{1-p}=0.1110+1.7137\\,WD+1.5000\\,PO+1.614\\,GI",
+          "purpose": "log odds of the electric share for the whole country",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "wd",
+            "po",
+            "gi",
+            "share"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Predict the electric share from the indexes that survive a significance test."
+      ],
+      "constraints": [
+        "share lies between 0 and 1"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "maximum likelihood, indexes dropped when they fail the SAS test",
+        "parameters": [
+          "wd",
+          "po",
+          "gi"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "fit all six indexes",
+          "drop those that fail",
+          "refit the three survivors"
+        ],
+        "software": [
+          "SAS"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "the six indexes capture the drivers of adoption"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "three of six indexes survive; the timeline is tabulated but not back-tested"
+      },
+      "handoff_outputs": [
+        "share"
+      ],
+      "validation_refs": [
+        "connectivity rate of 71 percent against the Tesla map"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "each region is solved separately and then summed"
+      ],
+      "limitations": [
+        "the lag index is defined three ways in one section and the three do not agree"
+      ],
+      "missing_details": [
+        "the service rate mu of the M/M/1 station is not given a number"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q287-QUEUE",
+      "to_model_id": "MU-D-Q287-ALLOC",
+      "handoff": "the waiting time that becomes an objective of the allocation"
+    },
+    {
+      "from_model_id": "MU-D-Q287-ALLOC",
+      "to_model_id": "MU-D-Q287-GROWTH",
+      "handoff": "the station plan whose timeline the regression dates"
+    }
+  ]
+}

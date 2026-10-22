@@ -1,0 +1,74 @@
+     Team 2003717                                                                    Page 37
+
+
+     C.3    Sentimental Score
+
+ 1   import plotly . graph_objects as go
+ 2
+ 3 c = CountVectorizer ( stop_words =’english ’)
+ 4 pacifier_pol = pacifier [ pacifier [’star_rating ’] != 3]
+ 5 X = pacifier_pol [’review_body ’]
+ 6 y_dict = {1: 0, 2: 0, 4: 1, 5: 1}
+ 7 y = pacifier_pol [’star_rating ’]. map( y_dict )
+ 8
+ 9
+10   def text_fit (X, y, model , clf_model ):
+11
+12         X_c = model. fit_transform (X)
+13         print(’# features : {} ’. format (X_c. shape [1]))
+14         X_train , X_test , y_train , y_test = train_test_split (X_c , y, random_state =0)
+15         print(’# train records : {} ’. format ( X_train . shape [0]))
+16         print(’# test records : {} ’. format ( X_test .shape [0]))
+17         clf = clf_model .fit(X_train , y_train )
+18         acc = clf.score (X_test , y_test )
+19         print(’Model Accuracy : {} ’. format (acc))
+20
+21         w = model. get_feature_names ()
+22         coef = clf.coef_ . tolist () [0]
+23         coeff_df = pd. DataFrame ({ ’Word ’: w, ’Coefficient ’: coef })
+24         coeff_df = coeff_df . sort_values ([ ’Coefficient ’, ’Word ’], ascending =[0, 1])
+25         # print (’’)
+26         # print(’-Top 20 positive -’)
+27         # print ( coeff_df .head (100) . to_string ( index =False))
+28         # print (’’)
+29         # print(’-Top 20 negative -’)
+30         # print ( coeff_df .tail (100) . to_string ( index =False))
+31         return coeff_df
+32
+33
+34 coeff_df = text_fit (X, y, c, LogisticRegression ())
+35 senti_mark_p = [[] , [], [], [], []]
+36 for i in range (len( p_body1 )):
+37     senti_mark_p [0]. append (0)
+38 for i in range (len( p_body2 )):
+39     senti_mark_p [1]. append (0)
+40 for i in range (len( p_body3 )):
+41     senti_mark_p [2]. append (0)
+42 for i in range (len( p_body4 )):
+43     senti_mark_p [3]. append (0)
+44 for i in range (len( p_body5 )):
+45     senti_mark_p [4]. append (0)
+46
+47 for i in range (len( p_body1 )):
+48     words = jieba.cut( p_body1 [i], cut_all =True)
+49     for s in words:
+50         if s. strip () in add_punc :
+51             pass
+52         else:
+53             if s. strip () in list( coeff_df .Word):
+54                  senti_mark_p [0][i] += coeff_df .iloc[list(
+55                       coeff_df .Word).index (s.strip ())]. Coefficient
+56 for i in range (len( p_body2 )):
+57     words = jieba.cut( p_body2 [i], cut_all =True)
+58     for s in words:
+59         if s. strip () in add_punc :
+60             pass
+61         else:
+
+
+                                                                                                  2
+                                                                                                      关注数学模型
+                                                                                         MATHmodels
+
+
+                                                                                                      获取更多资讯

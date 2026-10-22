@@ -1,0 +1,688 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2023-2314151-c97576e4",
+  "problem_type": "C",
+  "year": "2023",
+  "source_sha256": "c97576e4c92ed30e94c109c275b657642a72ed5b914bb7f4085438906b4cd6fa",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q240-001",
+      "page": 7,
+      "section": "4.1 Prophet algorithm",
+      "family": "additive time-series model (Prophet)",
+      "purpose": "Forecast the 1 March 2023 report count from trend, weekly seasonality, and holiday effects.",
+      "base_or_modification": "base",
+      "summary": "Prophet additive model y=g+s+h+epsilon. Segmented linear trend with 25 changepoints and prior scale 0.05. Seasonality and holiday prior scales 10. Interval width 0.80. Series cut after 5 May 2022. Point forecast 14426 with band [10355, 18742]. Weekly peak on Wednesday.",
+      "variables": [
+        {
+          "symbol": "y_t",
+          "normalized_name": "reported count",
+          "unit": "count",
+          "definition": "Observed number of reports on day t",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g_t",
+          "normalized_name": "trend term",
+          "unit": "count",
+          "definition": "Nonperiodic trend, segmented linear in this fit",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s_t",
+          "normalized_name": "seasonal term",
+          "unit": "count",
+          "definition": "Fourier weekly seasonal component",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_t",
+          "normalized_name": "holiday term",
+          "unit": "count",
+          "definition": "Holiday indicator effect",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "growth rate",
+          "unit": "per day",
+          "definition": "Base growth rate of the trend",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "residual",
+          "unit": "count",
+          "definition": "Gaussian residual not captured by the three terms",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "k"
+      ],
+      "outputs": [
+        "y_t",
+        "eps"
+      ],
+      "handoff_outputs": [
+        "y_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q240-001",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "y(t)=g(t)+s(t)+h(t)+eps",
+          "normalized_latex": "y(t)=g(t)+s(t)+h(t)+\\epsilon",
+          "purpose": "Additive Prophet decomposition.",
+          "variable_symbols": [
+            "y_t",
+            "g_t",
+            "s_t",
+            "h_t",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-002",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "g(t)=C(t)/(1+exp(-(k+a(t)^T delta)(t-(m+a(t)^T gamma))))",
+          "normalized_latex": "g(t)=C(t)/(1+\\exp(-(k+a(t)^T\\delta)(t-(m+a(t)^T\\gamma))))",
+          "purpose": "Saturating logistic trend, stated but not selected.",
+          "variable_symbols": [
+            "g_t",
+            "k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-003",
+          "page": 7,
+          "label": "(4)",
+          "source_expression": "g(t)=(k+a(t)^T delta)t+(m+a(t)^T gamma)",
+          "normalized_latex": "g(t)=(k+a(t)^T\\delta)t+(m+a(t)^T\\gamma)",
+          "purpose": "Selected segmented linear trend.",
+          "variable_symbols": [
+            "g_t",
+            "k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-004",
+          "page": 8,
+          "label": "(6)",
+          "source_expression": "s(t)=sum_n (a_n cos(2 pi n t/P)+b_n sin(2 pi n t/P))",
+          "normalized_latex": "s(t)=\\sum_n(a_n\\cos(2\\pi nt/P)+b_n\\sin(2\\pi nt/P))",
+          "purpose": "Fourier seasonality.",
+          "variable_symbols": [
+            "s_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-005",
+          "page": 8,
+          "label": "(7)",
+          "source_expression": "h(t)=Z(t) kappa",
+          "normalized_latex": "h(t)=Z(t)\\kappa",
+          "purpose": "Holiday effect as indicators times amplitudes.",
+          "variable_symbols": [
+            "h_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Prophet components (2)-(7) on pages 7-8."
+      },
+      "objectives": [
+        "Give an interval for the report count on 1 March 2023."
+      ],
+      "constraints": [
+        "Series restricted to dates after 5 May 2022."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Daily report counts from the cleaned 2022 file."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Time series; no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Forecast, not an equilibrium model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Prophet defaults with stated priors: 25 changepoints, scales 0.05 and 10, interval width 0.80, 1000 uncertainty samples.",
+        "parameters": [
+          "k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Drop pre-May data as a different magnitude.",
+          "Fit segmented linear trend, Fourier seasonality, and holiday indicators.",
+          "Draw the 80% predictive band.",
+          "Read the weekly seasonal component."
+        ],
+        "software": [
+          "Python",
+          "prophet"
+        ],
+        "convergence_criteria": "Prophet MAP fit; MCMC samples set to 0."
+      },
+      "assumptions": [
+        "Residuals are Gaussian.",
+        "External environment does not change abruptly."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "1 March 2023 point 14426, band [10355, 18742]."
+      },
+      "validation_refs": [
+        "Figure 4: forecast and weekly trend.",
+        "Table 6: yhat and bounds."
+      ],
+      "computational_cost": "One Prophet fit with 1000 uncertainty samples.",
+      "strengths": [
+        "Separates trend, week, and holidays on a short series."
+      ],
+      "limitations": [
+        "80% band is wide.",
+        "Start date is chosen by eye."
+      ],
+      "missing_details": [
+        "Holiday calendar actually passed to the model."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q240-002",
+      "page": 10,
+      "section": "4.2 Higher-order partial correlation",
+      "family": "partial correlation",
+      "purpose": "Measure word-attribute association with the hard-mode share after controlling other attributes.",
+      "base_or_modification": "base",
+      "summary": "Pearson correlations with hard-mode share are weak. Higher-order partial correlations then give moderate negative vowels (-0.320), moderate positive consonants (0.320) and non-repeated consonants (0.306). Author bands: 0-0.09 none, 0.1-0.3 weak, 0.3-0.5 moderate, 0.5-1 strong.",
+      "variables": [
+        {
+          "symbol": "r_ij",
+          "normalized_name": "simple correlation",
+          "unit": "dimensionless",
+          "definition": "Pearson correlation between two variables",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_ij_h",
+          "normalized_name": "partial correlation",
+          "unit": "dimensionless",
+          "definition": "Correlation of i and j after removing h",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r_ij"
+      ],
+      "outputs": [
+        "r_ij_h"
+      ],
+      "handoff_outputs": [
+        "r_ij_h"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q240-006",
+          "page": 10,
+          "label": "(8)",
+          "source_expression": "r_ij.h=(r_ij-r_ih r_jh)/sqrt((1-r_ih^2)(1-r_jh^2))",
+          "normalized_latex": "r_{ij\\cdot h}=(r_{ij}-r_{ih}r_{jh})/\\sqrt{(1-r_{ih}^2)(1-r_{jh}^2)}",
+          "purpose": "First-order partial correlation.",
+          "variable_symbols": [
+            "r_ij",
+            "r_ij_h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-007",
+          "page": 10,
+          "label": "(9)",
+          "source_expression": "r_ij.L=(r_ij.Lprev-r_il.Lprev r_jl.Lprev)/sqrt((1-r_il.Lprev^2)(1-r_jl.Lprev^2))",
+          "normalized_latex": "r_{ij\\cdot L}=(r_{ij\\cdot L'}-r_{il\\cdot L'}r_{jl\\cdot L'})/\\sqrt{(1-r_{il\\cdot L'}^2)(1-r_{jl\\cdot L'}^2)}",
+          "purpose": "Order-g partial correlation recurrence.",
+          "variable_symbols": [
+            "r_ij_h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Partial-correlation formulas (8)-(9) on page 10."
+      },
+      "objectives": [
+        "Sign and rank attribute links to the hard-mode percentage."
+      ],
+      "constraints": [
+        "Control set is the other word attributes."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "One row per puzzle word with attribute columns."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Cross-sectional correlation."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No fitted parameter; correlations computed from the sample.",
+        "parameters": [
+          "r_ij"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute Pearson correlations.",
+          "Reject them as weak.",
+          "Compute higher-order partial correlations.",
+          "Label bands and read the heat map."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Closed-form correlation."
+      },
+      "assumptions": [
+        "Linear association after linear controls is the target."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Partial r about -0.32 for vowels and 0.32 for consonants, p much below 0.05."
+      },
+      "validation_refs": [
+        "Table 8 and Figure 5."
+      ],
+      "computational_cost": "Sample correlations on about 359 rows.",
+      "strengths": [
+        "Shows why raw Pearson and partial correlation disagree."
+      ],
+      "limitations": [
+        "Switching methods because Pearson was 'not satisfactory' invites selection."
+      ],
+      "missing_details": [
+        "Exact control order g."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q240-003",
+      "page": 14,
+      "section": "5.2 Lasso regression",
+      "family": "penalized linear regression (Lasso)",
+      "purpose": "Predict the seven-bin attempt distribution from word attributes and date.",
+      "base_or_modification": "base",
+      "summary": "A six-model framework selects Lasso by mean RMSE 0.80. L1 penalty drives weak coefficients to zero. EERIE prediction rounded to (0, 4, 17, 34, 30, 13, 2). Permutation importance ranks consonants 4.226, vowels 3.993, frequency 1.253.",
+      "variables": [
+        {
+          "symbol": "y_i",
+          "normalized_name": "attempt share",
+          "unit": "percent",
+          "definition": "Observed share in one attempt bin",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "coefficient",
+          "unit": "dimensionless",
+          "definition": "Lasso coefficient, possibly zero",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "penalty weight",
+          "unit": "dimensionless",
+          "definition": "L1 penalty multiplier",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "beta",
+        "lam"
+      ],
+      "outputs": [
+        "y_i"
+      ],
+      "handoff_outputs": [
+        "y_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q240-008",
+          "page": 14,
+          "label": "(10)",
+          "source_expression": "min sum e_i^2 + lambda ||beta||_1",
+          "normalized_latex": "\\min \\sum e_i^2+\\lambda\\|\\beta\\|_1",
+          "purpose": "Lasso objective.",
+          "variable_symbols": [
+            "y_i",
+            "beta",
+            "lam"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-009",
+          "page": 14,
+          "label": "(11)",
+          "source_expression": "J(w,b)=1/(2m) sum (yhat-y)^2 + alpha sum |w_i|",
+          "normalized_latex": "J(w,b)=\\frac{1}{2m}\\sum(\\hat y_i-y_i)^2+\\alpha\\sum |w_i|",
+          "purpose": "Equivalent squared-loss plus L1 form.",
+          "variable_symbols": [
+            "y_i",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-010",
+          "page": 16,
+          "label": "(12)",
+          "source_expression": "RMSE=sqrt(1/n sum (y_i-yhat_i)^2)",
+          "normalized_latex": "\\mathrm{RMSE}=\\sqrt{\\frac1n\\sum(y_i-\\hat y_i)^2}",
+          "purpose": "Selection and reliability metric.",
+          "variable_symbols": [
+            "y_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Lasso objectives (10)-(11) and RMSE (12)."
+      },
+      "objectives": [
+        "Predict attempt shares for a named future word."
+      ],
+      "constraints": [
+        "Rounded shares are reported as if they sum to 100."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Cleaned daily rows and engineered word attributes."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Regression."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Regression."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Grid search inside the multi-model framework; repeated fits averaged.",
+        "parameters": [
+          "beta",
+          "lam"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Split and scale.",
+          "Fit six regressors.",
+          "Pick the lowest mean RMSE.",
+          "Average repeated Lasso fits for EERIE.",
+          "Permute each column to score importance."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Subgradient solution of the L1 problem."
+      },
+      "assumptions": [
+        "Attempt shares are linear in the scaled attributes."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Mean RMSE 0.80; three repeated RMSEs stay under 0.85."
+      },
+      "validation_refs": [
+        "Figure 8 and Figure 11."
+      ],
+      "computational_cost": "Grid search over six model families.",
+      "strengths": [
+        "Model choice is tied to a reported error."
+      ],
+      "limitations": [
+        "RMSE units are unclear after scaling.",
+        "Shares need not sum to 100."
+      ],
+      "missing_details": [
+        "Chosen lambda and which coefficients were zero."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q240-004",
+      "page": 17,
+      "section": "6.1 K-means clustering",
+      "family": "k-means clustering",
+      "purpose": "Cut predicted average attempt counts into easy, medium, and hard words.",
+      "base_or_modification": "base",
+      "summary": "Lasso, without the time variable, scores 12,974 dictionary words. K-means uses Euclidean distance. Silhouette and DBI both fall slightly from K=3 to K=5, so K=3. Cuts: high at least 4.37, medium 4.13-4.37, low below 4.13. EERIE mean attempts 4.385, hard. Attribute-interval match accuracy 91.36%.",
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "Euclidean distance",
+          "unit": "dimensionless",
+          "definition": "Distance from a word vector to a center",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SSE",
+          "normalized_name": "within-cluster sum of squares",
+          "unit": "dimensionless",
+          "definition": "K-means objective",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "cluster center",
+          "unit": "dimensionless",
+          "definition": "Mean of members of cluster i",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "C_i"
+      ],
+      "outputs": [
+        "SSE"
+      ],
+      "handoff_outputs": [
+        "C_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q240-011",
+          "page": 17,
+          "label": "(13)",
+          "source_expression": "d(x,C_i)=sqrt(sum_j (x_j-C_ij)^2)",
+          "normalized_latex": "d(x,C_i)=\\sqrt{\\sum_j(x_j-C_{ij})^2}",
+          "purpose": "Euclidean assignment distance.",
+          "variable_symbols": [
+            "d",
+            "C_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q240-012",
+          "page": 17,
+          "label": "(14)",
+          "source_expression": "SSE=sum_i sum_{x in C_i} d(x,C_i)^2",
+          "normalized_latex": "\\mathrm{SSE}=\\sum_i\\sum_{x\\in C_i}d(x,C_i)^2",
+          "purpose": "K-means objective.",
+          "variable_symbols": [
+            "SSE",
+            "d",
+            "C_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Distance (13) and SSE (14) on page 17."
+      },
+      "objectives": [
+        "Assign EERIE and dictionary words to a difficulty class."
+      ],
+      "constraints": [
+        "K chosen from the set {3,4,5}."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Predicted attempt distributions for 12,974 five-letter words."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Clustering."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Clustering."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Compare silhouette and DBI for K=3,4,5; keep K=3.",
+        "parameters": [
+          "C_i"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Drop time and predict dictionary distributions.",
+          "Compute average attempts.",
+          "Run K-means for K=3,4,5.",
+          "Cut classes with quartiles at k=0.5.",
+          "Score EERIE and the 405-word hit rate."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Standard K-means iteration; stop rule not stated."
+      },
+      "assumptions": [
+        "Average attempts are a difficulty proxy."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "EERIE 4.385 falls in the hard cut; hit rate 91.36%."
+      },
+      "validation_refs": [
+        "Table 13, Figure 12, Table 15."
+      ],
+      "computational_cost": "K-means on 12,974 predicted rows.",
+      "strengths": [
+        "K is compared on two indices before the cut."
+      ],
+      "limitations": [
+        "Labels come from the same predictor later used as confirmation."
+      ],
+      "missing_details": [
+        "Initialization and iteration count."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q240-003",
+      "to_model_id": "MU-C-Q240-004",
+      "handoff": "Lasso attempt distributions, with time removed, supply the average-attempt feature for K-means."
+    }
+  ]
+}

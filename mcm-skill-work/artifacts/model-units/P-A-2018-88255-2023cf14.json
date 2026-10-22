@@ -382,6 +382,14 @@
           "source_status": "explicit-defined"
         },
         {
+          "symbol": "epsilon_n",
+          "normalized_name": "terminal-layer relative permittivity",
+          "unit": "dimensionless",
+          "definition": "terminal-layer relative permittivity",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
           "symbol": "f",
           "normalized_name": "radio frequency",
           "unit": "unspecified in Equation 6",
@@ -472,6 +480,7 @@
           "purpose": "Convert electron density and frequency to the upper angle bound.",
           "variable_symbols": [
             "theta_j",
+            "epsilon_n",
             "theta_max",
             "N_n",
             "f"
@@ -644,9 +653,9 @@
           "equation_id": "EQ-A-2018-88255-008",
           "page": 7,
           "label": "8",
-          "source_expression": "S(omega)=alpha g^2/omega^5 exp[-beta (g/(U_19.5 omega))^4]",
-          "normalized_latex": "S(\\omega)=\\alpha\\frac{g^2}{\\omega^5}\\exp\\!\\left[-\\beta\\left(\\frac{g}{U_{19.5}\\omega}\\right)^4\\right]",
-          "purpose": "Generate the frequency spectrum for the wind-driven sea.",
+          "source_expression": "S(omega)=alpha g^2/omega^5 exp[-beta (g/(U_19.5 omega))^(-4)]",
+          "normalized_latex": "S(\\omega)=\\alpha\\frac{g^2}{\\omega^5}\\exp\\!\\left[-\\beta\\left(\\frac{g}{U_{19.5}\\omega}\\right)^{-4}\\right]",
+          "purpose": "Transcribe the paper's printed wind-driven spectrum; the negative fourth power is retained verbatim and audited separately.",
           "variable_symbols": [
             "S_omega",
             "omega",
@@ -763,6 +772,14 @@
           "source_status": "explicit-defined"
         },
         {
+          "symbol": "omega_n",
+          "normalized_name": "normal-direction variable introduced in Equations 11-13",
+          "unit": "dimensionless vector or angular coordinate",
+          "definition": "normal-direction variable introduced in Equations 11-13",
+          "role": "input",
+          "source_status": "unspecified"
+        },
+        {
           "symbol": "n_ref",
           "normalized_name": "reference vertical normal",
           "unit": "dimensionless vector",
@@ -787,6 +804,14 @@
           "source_status": "explicit-defined"
         },
         {
+          "symbol": "theta",
+          "normalized_name": "incidence angle appearing in Equation 13's lower bound",
+          "unit": "rad",
+          "definition": "incidence angle appearing in Equation 13's lower bound",
+          "role": "input",
+          "source_status": "unspecified"
+        },
+        {
           "symbol": "G",
           "normalized_name": "geometrical shadow attenuation",
           "unit": "dimensionless",
@@ -805,8 +830,10 @@
       ],
       "inputs": [
         "omega_h",
+        "omega_n",
         "n_ref",
         "e_exp",
+        "theta",
         "G"
       ],
       "outputs": [
@@ -856,7 +883,7 @@
           "purpose": "State the paper's printed normalized distribution.",
           "variable_symbols": [
             "D_h",
-            "omega_h",
+            "omega_n",
             "n_ref",
             "e_exp"
           ],
@@ -873,7 +900,7 @@
           "purpose": "Apply the geometrical shadow attenuation.",
           "variable_symbols": [
             "D_h",
-            "omega_h",
+            "omega_n",
             "n_ref",
             "e_exp",
             "G"
@@ -892,7 +919,8 @@
           "variable_symbols": [
             "rho",
             "D_h",
-            "omega_h"
+            "omega_n",
+            "theta"
           ],
           "source_type": "paper",
           "visual_checked": true,
@@ -1066,13 +1094,31 @@
           "definition": "turbulent-surface attenuation",
           "role": "output",
           "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_min",
+          "normalized_name": "lower incidence-angle integration bound",
+          "unit": "degree",
+          "definition": "lower incidence-angle integration bound",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_max",
+          "normalized_name": "upper incidence-angle integration bound",
+          "unit": "degree",
+          "definition": "upper incidence-angle integration bound",
+          "role": "input",
+          "source_status": "explicit-defined"
         }
       ],
       "inputs": [
         "U",
         "f",
         "theta",
-        "R_h"
+        "R_h",
+        "theta_min",
+        "theta_max"
       ],
       "outputs": [
         "R_tur",
@@ -1111,7 +1157,9 @@
             "rho_ccir",
             "R_h",
             "L_tur",
-            "theta"
+            "theta",
+            "theta_min",
+            "theta_max"
           ],
           "source_type": "paper",
           "visual_checked": true,
@@ -3019,6 +3067,11 @@
       "from_model_id": "MU-A-2018-88255-004",
       "to_model_id": "MU-A-2018-88255-006",
       "handoff": "Wind speed/roughness context supplies the disturbed sea state."
+    },
+    {
+      "from_model_id": "MU-A-2018-88255-003",
+      "to_model_id": "MU-A-2018-88255-006",
+      "handoff": "Ionosphere geometry supplies theta_min and theta_max to the turbulent attenuation integral."
     },
     {
       "from_model_id": "MU-A-2018-88255-007",

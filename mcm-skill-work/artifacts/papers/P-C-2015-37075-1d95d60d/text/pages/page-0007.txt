@@ -1,0 +1,56 @@
+Team # 37075                                                                     Page 6 of 20
+
+
+4.1.2     Modeling the Churn Rate
+
+In light of this, we introduce a novel method to model the churn rate, which is concep-
+tually similar to the above Bayesian learning process. Specifically, we view leaving the
+position as a decision making process: suppose an individual i decides whether to leave
+                                                               (t)                (t)
+or to stay in a particular month t based on a random variable ui ∈ {0, 1}, where ui = 0
+                          (t)
+indicates to leave, and ui = 1 indicates to stay.
+        (t)                                                             (t)     (t)
+     ui is drawn as follows: First, we assume two hyperparameters αi and βi for i, and
+         (t)          (t)   (t)              (t)            (t)
+draw pi ∼ Beta(αi , βi ); then we draw ui ∼ Bernoulli(pi ); finally, we determine i
+               (t)
+is to stay if ui = 1; to leave otherwise.
+                                                        (t)                             (t)
+    Integrating out the random variable pi , we notice that the distribution of ui is
+a specification of the Beta-Binomial distribution3 with mean α/(α + β) and variance
+(αβ)/((α + β)2 ), which has some nice properties for modeling the churn process: on the
+                                                                              (t)  (t) (t)
+one hand, we can easily estimate i’s probability to leave, which is equal to βi /(αi +βi );
+on the other hand, an increase in αi decreases i’s tendency to leave, while an increase in
+βi increases the tendency to stay. However, three problems remain: How to determine
+the prior αi and βi ? How to update the hyperparameters? How to take the network
+structure into account? We will explain these problems in the following paragraphs.
+
+
+Determining the Prior Given a churn rate p, we can easily model the effect of a churn
+rate of p per year by setting β/(α + β) = p/12. We further observe that the variance of the
+                               αβ
+Beta distribution is                      , so that larger (α + β) leads to smaller variance,
+                     (α + β)2 (α + β + 1)
+indicating better estimation of p, and more knowledge to the company status. Thus, it
+is safe to assume that people on high level positions have a larger (α + β) compared to
+others, and their decisions are less volatile.
+
+                 (t)        (t)
+Updating αi and βi         We notice that in ICM, an individual is more likely to churn
+if he is connected to other individuals who have churned. This can be described as a
+learning process for the individual: each month, he observes the decision made by other
+individuals in last month. For every observation of "to stay", the individual increases his
+α; for every observation of "to leave", the individual increases his β. We normalize the
+update values, so that every month, an individual’s (α + β) increases by 1.
+
+
+Information Reduction The impact of churn information vary upon the distances be-
+tween the source and destination. From an individual’s perspective, the resignation of
+someone in the same department should have a greater impact than that of someone
+from another department. We take this into account by reducing the update value of the
+hyperparameters. Empirically, we reduce the update by d2 if the information takes at
+least d steps to transmit.
+  3
+      For simplicity, we call this the Beta-Bernoulli distribution.

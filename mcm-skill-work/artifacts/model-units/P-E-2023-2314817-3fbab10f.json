@@ -1,0 +1,945 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2023-2314817-3fbab10f",
+  "problem_type": "E",
+  "year": "2023",
+  "source_sha256": "3fbab10f4ef4e0e7816f002a08b8613ae202d9e9fdc5b63a4d5a357ea14d9a18",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2023-2314817-ESE",
+      "section": "Economic-Social-Ecological Model",
+      "family": "evaluation",
+      "summary": "A three-part account of how much light pollution a place produces. The raw night-light grayscale is first cleaned by dropping negative readings and correcting the rest with a cubic, two times ten to the minus ten times the grayscale cubed. The economic part starts from population. It grows logistically, in proportion to itself and to the gap below a ceiling, and the separated equation gives the population at any date from its starting value. That population is then split across the primary, secondary, and tertiary sectors, whose shares are assumed fixed and checked against a decade of data, and the economic total multiplies population by each sector's share, by the light pollution per person in that sector, and by the hours the sector keeps its lights on. The social part divides land into commercial, residential, administrative, green, and other, and gives each a brightness band taken from night-lighting design, for example 10 to 20 for commerce and 3 to 6 for housing. Land lit below its band is blamed for crime and land lit above it for traffic accidents, and the social score is the share of area falling outside every band. The ecological part counts seven kinds of organism grouped into terrestrial, aquatic, and human, each with a light threshold from the melatonin literature, zero for trees because night lighting makes them leaf out early. An organism counts only where the light exceeds its threshold, the count is scaled by the land or water fraction and by the area, and the three groups are added. The three totals later become the risk levels of the assessment model.",
+      "computational_cost": "One logistic projection, one weighted sum over three sectors, and one threshold count over seven species",
+      "purpose": "Measure light pollution in money, in land, and in living things.",
+      "base_or_modification": "hybrid",
+      "page": 6,
+      "inputs": [
+        "DN",
+        "N0"
+      ],
+      "outputs": [
+        "EC",
+        "SC",
+        "EN"
+      ],
+      "handoff_outputs": [
+        "EC",
+        "SC",
+        "EN"
+      ],
+      "objectives": [
+        "Score a place on its economic, social, and ecological light pollution."
+      ],
+      "variables": [
+        {
+          "symbol": "DN",
+          "normalized_name": "grayscale_value",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Raw night-light grayscale from the source imagery",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "corrected_radiance",
+          "role": "intermediate",
+          "unit": "radiance",
+          "definition": "Radiance after the cubic correction",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Population of the location at a given time",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N0",
+          "normalized_name": "initial_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Population at the start of the projection",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nm",
+          "normalized_name": "population_ceiling",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Largest population the location can hold",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "per-year",
+          "definition": "Natural rate of population growth",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PC",
+          "normalized_name": "sector_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of the primary, secondary, or tertiary sector",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PLP",
+          "normalized_name": "pollution_per_capita",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Light pollution per person in a sector",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tm",
+          "normalized_name": "lighting_hours",
+          "role": "parameter",
+          "unit": "hours",
+          "definition": "Hours a sector runs artificial light",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EC",
+          "normalized_name": "economic_pollution",
+          "role": "output",
+          "unit": "mixed",
+          "definition": "Total light pollution attributed to the economy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Aout",
+          "normalized_name": "area_outside_band",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Land whose brightness falls outside its band",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Atot",
+          "normalized_name": "total_area",
+          "role": "parameter",
+          "unit": "area",
+          "definition": "Area of all land types together",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SC",
+          "normalized_name": "social_pollution",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Share of land outside its brightness band",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dens",
+          "normalized_name": "species_density",
+          "role": "parameter",
+          "unit": "per-area",
+          "definition": "Density of one of the seven organism groups",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pf",
+          "normalized_name": "surface_fraction",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Fraction of the surface that is land or water",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thr",
+          "normalized_name": "light_threshold",
+          "role": "parameter",
+          "unit": "lux",
+          "definition": "Illumination above which the organism is affected",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lg",
+          "normalized_name": "light_level",
+          "role": "intermediate",
+          "unit": "lux",
+          "definition": "Illumination at the location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EN",
+          "normalized_name": "affected_organisms",
+          "role": "output",
+          "unit": "count",
+          "definition": "Organisms affected across all three groups",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2314817-ESE-1",
+          "equation_label": "Radiance correction",
+          "equation_text": "L = 2e-10 * DN^3, after negative readings are removed.",
+          "source_expression": "L = 2e-10 * DN^3, after negative readings are removed.",
+          "normalized_latex": "L = 2\\times10^{-10}\\,DN^{3}",
+          "purpose": "Turn the raw grayscale into a radiance.",
+          "variable_symbols": [
+            "L",
+            "DN"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-ESE-2",
+          "equation_label": "Logistic population",
+          "equation_text": "dN/dt = r*N*(1 - N/Nm), solved as N(t) = Nm / (1 + (Nm/N0 - 1)*exp(-r*t)).",
+          "source_expression": "dN/dt = r*N*(1 - N/Nm), solved as N(t) = Nm / (1 + (Nm/N0 - 1)*exp(-r*t)).",
+          "normalized_latex": "N(t)=N_m/(1+(N_m/N_0-1)e^{-rt})",
+          "purpose": "Project the population that drives the lights.",
+          "variable_symbols": [
+            "N",
+            "N0",
+            "Nm",
+            "r"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-ESE-3",
+          "equation_label": "Economic light pollution",
+          "equation_text": "EC = N * sum over three sectors of PC*PLP*tm.",
+          "source_expression": "EC = N * sum over three sectors of PC*PLP*tm.",
+          "normalized_latex": "EC = N\\sum_{i=1}^{3} PC_i\\,PLP_i\\,tm_i",
+          "purpose": "Charge the economy for the light it burns.",
+          "variable_symbols": [
+            "EC",
+            "N",
+            "PC",
+            "PLP",
+            "tm"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-ESE-4",
+          "equation_label": "Social exposure",
+          "equation_text": "SC = (sum of area outside each land type's band) / total area.",
+          "source_expression": "SC = (sum of area outside each land type's band) / total area.",
+          "normalized_latex": "SC = \\sum A_{out}/A_{total}",
+          "purpose": "Measure the land lit too bright or too dim.",
+          "variable_symbols": [
+            "SC",
+            "Aout",
+            "Atot"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-ESE-5",
+          "equation_label": "Affected organisms",
+          "equation_text": "EN adds, over species, density times surface fraction times an indicator that the light exceeds the threshold, times area.",
+          "source_expression": "EN adds, over species, density times surface fraction times an indicator that the light exceeds the threshold, times area.",
+          "normalized_latex": "EN = \\sum_i dens_i\\,p_i\\,1_{l_g\\ge thr_i}\\,Area",
+          "purpose": "Count the organisms the light disturbs.",
+          "variable_symbols": [
+            "EN",
+            "dens",
+            "pf",
+            "thr",
+            "lg"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 9 print with broken fractions and split subscripts. The recorded forms follow the prose beside each equation.",
+        "reason": "Sections 4.1 to 4.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The logistic projection starts from the recorded population N0."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population is bounded by the ceiling Nm, and each land type has a brightness band."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The logistic population settles at its ceiling."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Sector shares are read from a decade of national accounts and treated as constant. Species thresholds come from published melatonin studies. The growth rate and the pollution per person are not estimated in view.",
+        "parameters": [
+          "PC",
+          "thr",
+          "r"
+        ]
+      },
+      "algorithm": {
+        "description": "Correct the imagery, project the population, and score the three subsystems.",
+        "status": "implemented",
+        "steps": [
+          "Drop negative grayscale readings and apply the cubic correction",
+          "Project the population with the logistic equation",
+          "Sum population, sector share, pollution per person, and hours",
+          "Divide the off-band area by the total area",
+          "Count organisms whose light exceeds their threshold"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The logistic curve has a closed form, so no tolerance is needed."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The four case cities receive subsystem scores."
+        ],
+        "analysis": "The formulas are usable, but the pollution per person and the growth rate are never tabulated, so a score cannot be rebuilt from scratch."
+      },
+      "constraints": [
+        "Sector shares stay fixed.",
+        "Agricultural lighting is excluded.",
+        "An organism counts only above its threshold."
+      ],
+      "validation_refs": [
+        "Figures 3 and 4, the population and sector shares",
+        "Figure 11, the four cities"
+      ],
+      "strengths": [
+        "Each subsystem is built from a quantity a reader can measure.",
+        "The fixed-share assumption is checked against ten years of data before it is used."
+      ],
+      "limitations": [
+        "The social bands and the species thresholds come from other studies and are not re-estimated.",
+        "The notation swaps the economic and ecological symbols between the table and the text."
+      ],
+      "missing_details": [
+        "The growth rate and the pollution per person for each sector.",
+        "The brightness bands' source measurements."
+      ],
+      "assumptions": [
+        "Organism densities stay constant.",
+        "Sector shares do not change.",
+        "Farm lighting is negligible.",
+        "Regions do not affect one another."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2314817-LPRA",
+      "section": "Light Pollution Risk Assessment",
+      "family": "evaluation",
+      "summary": "A single risk level for a place, and a scale to read it on. The three subsystem totals have different units, so each is scaled by its own minimum and maximum onto the range from zero to one, using the benefit form because more pollution means more risk. The weights are not chosen by the authors. They take the Google search volumes for the words economy, society, and ecology, which come back as 63.41, 65.46, and 68.47, and fill the comparison matrix with the ratios of those volumes. Its normalized eigenvector is 0.3214, 0.3316, and 0.3469, so ecology carries slightly the most weight. The risk level is the weighted sum of the three normalized subsystem levels, and it passes a consistency check that the paper does not quantify. Applied to 284 regions of China and clustered with K-means, the scores fall into four ranks: slight from 0.0443 to 0.1678 with 64 regions, moderate from 0.1705 to 0.2542 with 159, serious from 0.2568 to 0.3698 with 46, and severe from 0.3976 to 0.6186 with 15. The mass sits in the middle. Four places are then scored in full. Ordos, standing for protected land, gets 0.1332 and ranks slight, with ecology far above the rest. Zhaotong, rural, gets 0.1778 and ranks moderate. Qingyuan, suburban, gets 0.2574 and ranks serious. Guangzhou, urban, gets 0.5154 and ranks severe, high on economy and society and low on ecology.",
+      "computational_cost": "One normalization, one eigenvector, and one clustering of 284 regions",
+      "purpose": "Rank a place's light pollution on a four-level scale.",
+      "base_or_modification": "modification",
+      "page": 11,
+      "inputs": [
+        "EC",
+        "SC",
+        "EN"
+      ],
+      "outputs": [
+        "RL"
+      ],
+      "handoff_outputs": [
+        "RL"
+      ],
+      "objectives": [
+        "Put every region on one comparable risk scale."
+      ],
+      "variables": [
+        {
+          "symbol": "EC",
+          "normalized_name": "economic_pollution",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Economic light pollution from the first model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SC",
+          "normalized_name": "social_pollution",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of land outside its brightness band",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EN",
+          "normalized_name": "affected_organisms",
+          "role": "input",
+          "unit": "count",
+          "definition": "Organisms affected by the light",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmin",
+          "normalized_name": "sample_minimum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Smallest value of a subsystem score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmax",
+          "normalized_name": "sample_maximum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Largest value of a subsystem score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ECL",
+          "normalized_name": "economic_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized economic risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SCL",
+          "normalized_name": "social_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized social risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ENL",
+          "normalized_name": "ecological_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized ecological risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gs",
+          "normalized_name": "search_volume",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Google search volume for a subsystem's keyword",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "subsystem_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight vector 0.3214, 0.3316, 0.3469",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RL",
+          "normalized_name": "risk_level",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted risk level of the location",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2314817-LPRA-1",
+          "equation_label": "Normalization",
+          "equation_text": "x' = (x - xmin) / (xmax - xmin).",
+          "source_expression": "x' = (x - xmin) / (xmax - xmin).",
+          "normalized_latex": "x'=(x-x_{min})/(x_{max}-x_{min})",
+          "purpose": "Put the three subsystems on one scale.",
+          "variable_symbols": [
+            "ECL",
+            "SCL",
+            "ENL",
+            "xmin",
+            "xmax",
+            "EC",
+            "SC",
+            "EN"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-LPRA-2",
+          "equation_label": "Risk level",
+          "equation_text": "RL = 0.3214*ECL + 0.3316*SCL + 0.3469*ENL.",
+          "source_expression": "RL = 0.3214*ECL + 0.3316*SCL + 0.3469*ENL.",
+          "normalized_latex": "RL = 0.3214\\,ECL + 0.3316\\,SCL + 0.3469\\,ENL",
+          "purpose": "Combine the three levels into one.",
+          "variable_symbols": [
+            "RL",
+            "W",
+            "ECL",
+            "SCL",
+            "ENL",
+            "gs"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 10 prints with the fraction split across lines and equation 11 is intact. The recorded forms follow the printed matrix and the prose.",
+        "reason": "Sections 5.1 and 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The score uses current data, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The four ranks meet at 0.1705, 0.2542, and 0.3977."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Weights are the normalized eigenvector of a comparison matrix filled with ratios of Google search volumes. The four ranks come from a K-means clustering of 284 regions.",
+        "parameters": [
+          "W",
+          "gs"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize, weight, sum, and cluster.",
+        "status": "implemented",
+        "steps": [
+          "Scale each subsystem by its minimum and maximum",
+          "Build the comparison matrix from search volumes",
+          "Take the normalized eigenvector as the weights",
+          "Sum the weighted levels",
+          "Cluster the 284 scores into four ranks"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The clustering is run to give four clusters. The consistency test is mentioned without a reported ratio."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "All 284 regions and the four case cities receive a rank."
+        ],
+        "analysis": "The weights are reproducible from the printed search volumes, and the four scores are stated."
+      },
+      "constraints": [
+        "All three indicators are treated as benefits.",
+        "The weights are positive and sum to one."
+      ],
+      "validation_refs": [
+        "Table 3, the four ranks",
+        "Figure 10, the heat map"
+      ],
+      "strengths": [
+        "The weights come from public search behavior rather than from the authors.",
+        "The scale is anchored to 284 regions, not to the four examples."
+      ],
+      "limitations": [
+        "Search volume is a weak proxy for importance.",
+        "The text says the data were clustered into three and divided into four."
+      ],
+      "missing_details": [
+        "The consistency ratio of the comparison matrix.",
+        "The cluster centers for the slight rank, whose row is misaligned."
+      ],
+      "assumptions": [
+        "Search interest reflects the relative importance of the three subsystems.",
+        "A region's score does not depend on its neighbors."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2314817-IESE",
+      "section": "Interconnected ESE Model",
+      "family": "decision",
+      "summary": "A way to spend a fixed budget so that cutting one subsystem's risk pulls the others down with it. The three risk levels are not independent: the economic level falls as the ecological level rises, and the fitted link is a quadratic, 0.279 minus 1.774 times the ecological level plus 2.686 times its square. The economic level and the social level are tied by a power curve, 0.044 times 9.472 to the power of the social level, with a logarithm running the other way. A budget is set at 8.43 ten-thousandths of local GDP, the share reported for environmental treatment. Each strategy spends that budget on a different lever. The first buys hours of darkness for the secondary and tertiary sectors, the hours being the budget divided by their hourly output, and the economic total drops by population times the two sectors' shares and pollution rates times those hours. The second buys smart lamps, the count being the budget divided by the lamp price plus installation, and the social score drops by the brightness saved per lamp times the count. The third buys protected area, the area being the budget divided by the cost per unit area, and the ecological count drops for the plants and animals inside it. Whichever level is cut directly, the fitted curves update the other two, and the weighted sum gives the new risk. Over twenty years the best pair takes Guangzhou from 0.5153 to 0.0309 and Zhaotong from 0.1678 to 0.0885. Guangzhou is told to lead with smart lighting and back it with shorter night hours; Zhaotong to lead with smart lighting and back it with dark-sky reserves.",
+      "computational_cost": "Four fitted curves and a twenty-year projection of three strategies",
+      "purpose": "Choose the intervention that lowers a city's light pollution most.",
+      "base_or_modification": "modification",
+      "page": 15,
+      "inputs": [
+        "RL"
+      ],
+      "outputs": [
+        "RLnew"
+      ],
+      "handoff_outputs": [
+        "RLnew"
+      ],
+      "objectives": [
+        "Pick the strategy pair that minimizes the risk level after twenty years."
+      ],
+      "variables": [
+        {
+          "symbol": "RL",
+          "normalized_name": "risk_level",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Current risk level from the assessment model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ECL",
+          "normalized_name": "economic_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Economic risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SCL",
+          "normalized_name": "social_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Social risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ENL",
+          "normalized_name": "ecological_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Ecological risk level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cost",
+          "normalized_name": "treatment_budget",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Spending on light pollution, 0.000843 times local GDP",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GDP",
+          "normalized_name": "local_output",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Gross product of the location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dt",
+          "normalized_name": "hours_cut",
+          "role": "intermediate",
+          "unit": "hours",
+          "definition": "Night hours of production switched off",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ph",
+          "normalized_name": "hourly_output",
+          "role": "parameter",
+          "unit": "currency-per-hour",
+          "definition": "Hourly output of the secondary or tertiary sector",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nlamp",
+          "normalized_name": "lamps_replaced",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Smart lamps the budget can buy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Plamp",
+          "normalized_name": "lamp_price",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Price of a smart lamp plus its installation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sq",
+          "normalized_name": "reserve_area",
+          "role": "intermediate",
+          "unit": "area",
+          "definition": "Protected area the budget can buy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cp",
+          "normalized_name": "protection_cost",
+          "role": "parameter",
+          "unit": "currency-per-area",
+          "definition": "Cost of protecting one unit of area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RLnew",
+          "normalized_name": "reduced_risk",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Risk level after the strategy",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2314817-IESE-1",
+          "equation_label": "Subsystem links",
+          "equation_text": "ECL = 0.279 - 1.774*ENL + 2.686*ENL^2, and ECL = 0.044*9.472^SCL.",
+          "source_expression": "ECL = 0.279 - 1.774*ENL + 2.686*ENL^2, and ECL = 0.044*9.472^SCL.",
+          "normalized_latex": "ECL=0.279-1.774\\,ENL+2.686\\,ENL^{2},\\ ECL=0.044\\times9.472^{SCL}",
+          "purpose": "Let a change in one subsystem move the others.",
+          "variable_symbols": [
+            "ECL",
+            "SCL",
+            "ENL"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-IESE-2",
+          "equation_label": "Updated risk",
+          "equation_text": "The new level rescales the reduced subsystem score, and the risk is recomputed from the three updated levels.",
+          "source_expression": "The new level rescales the reduced subsystem score, and the risk is recomputed from the three updated levels.",
+          "normalized_latex": "X'_{new}=(X-\\Delta X-X_{min})/(X_{max}-X_{min})",
+          "purpose": "Score the place again after the intervention.",
+          "variable_symbols": [
+            "RLnew",
+            "RL",
+            "ECL",
+            "SCL",
+            "ENL"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2314817-IESE-3",
+          "equation_label": "What the budget buys",
+          "equation_text": "Hours cut equal the budget over hourly output, lamps equal the budget over the lamp price, and reserve area equals the budget over the cost per unit area.",
+          "source_expression": "Hours cut equal the budget over hourly output, lamps equal the budget over the lamp price, and reserve area equals the budget over the cost per unit area.",
+          "normalized_latex": "\\Delta t = Cost/P_h,\\ N = Cost/P_{lamp},\\ S = Cost/C_p",
+          "purpose": "Turn one budget into three physical quantities.",
+          "variable_symbols": [
+            "dt",
+            "Nlamp",
+            "Sq",
+            "Cost",
+            "Ph",
+            "Plamp",
+            "Cp",
+            "GDP"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 12 to 18 print with numerators detached from their denominators. The recorded forms follow Table 4 and the prose definitions.",
+        "reason": "Sections 7.1 to 7.5."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The projection starts from the current risk levels of the two cities."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "The curves are fitted relationships, not boundary-value problems."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The result is a projection, not an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The four cross-subsystem curves are fit by nonlinear regression to the 284 regions. The budget share, 8.43 ten-thousandths, is taken from the 2021 environmental statistics report.",
+        "parameters": [
+          "Cost",
+          "GDP"
+        ]
+      },
+      "algorithm": {
+        "description": "Spend the budget, update the linked levels, and compare.",
+        "status": "implemented",
+        "steps": [
+          "Fit the curves between the three subsystem levels",
+          "Set the budget as a share of local output",
+          "Convert the budget into hours, lamps, or protected area",
+          "Update the other two levels through the fitted curves",
+          "Recompute the risk and pick the strategy pair with the lowest result"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "No fitting tolerance is stated. Strategies are compared over a twenty-year horizon."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Both cities receive a strategy pair and a reduced risk."
+        ],
+        "analysis": "The endpoint risks are stated, but the hourly output, lamp price, and protection cost behind them are not printed."
+      },
+      "constraints": [
+        "The budget is the same share of output in every region.",
+        "A strategy acts on one subsystem and the curves move the others."
+      ],
+      "validation_refs": [
+        "Table 4, the fitted curves",
+        "Figures 19 and 20, the two cubes"
+      ],
+      "strengths": [
+        "Each strategy is costed in physical units before its effect is claimed.",
+        "The two cities are given different pairs, so the answer depends on the place."
+      ],
+      "limitations": [
+        "The fitted curves are quoted without their goodness of fit.",
+        "The residual term in each reduction is never estimated."
+      ],
+      "missing_details": [
+        "The R squared of the four fitted curves.",
+        "The lamp price and the protection cost per unit area."
+      ],
+      "assumptions": [
+        "The fitted links between subsystems hold for both cities.",
+        "The whole budget is spent on a single lever at a time."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2023-2314817-ESE-1",
+      "model_id": "MU-E-2023-2314817-ESE",
+      "page": 6,
+      "source_expression": "L = 2e-10 * DN^3, after negative readings are removed."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-ESE-2",
+      "model_id": "MU-E-2023-2314817-ESE",
+      "page": 6,
+      "source_expression": "dN/dt = r*N*(1 - N/Nm), solved as N(t) = Nm / (1 + (Nm/N0 - 1)*exp(-r*t))."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-ESE-3",
+      "model_id": "MU-E-2023-2314817-ESE",
+      "page": 6,
+      "source_expression": "EC = N * sum over three sectors of PC*PLP*tm."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-ESE-4",
+      "model_id": "MU-E-2023-2314817-ESE",
+      "page": 8,
+      "source_expression": "SC = (sum of area outside each land type's band) / total area."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-ESE-5",
+      "model_id": "MU-E-2023-2314817-ESE",
+      "page": 9,
+      "source_expression": "EN adds, over species, density times surface fraction times an indicator that the light exceeds the threshold, times area."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-LPRA-1",
+      "model_id": "MU-E-2023-2314817-LPRA",
+      "page": 10,
+      "source_expression": "x' = (x - xmin) / (xmax - xmin)."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-LPRA-2",
+      "model_id": "MU-E-2023-2314817-LPRA",
+      "page": 11,
+      "source_expression": "RL = 0.3214*ECL + 0.3316*SCL + 0.3469*ENL."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-IESE-1",
+      "model_id": "MU-E-2023-2314817-IESE",
+      "page": 15,
+      "source_expression": "ECL = 0.279 - 1.774*ENL + 2.686*ENL^2, and ECL = 0.044*9.472^SCL."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-IESE-2",
+      "model_id": "MU-E-2023-2314817-IESE",
+      "page": 15,
+      "source_expression": "The new level rescales the reduced subsystem score, and the risk is recomputed from the three updated levels."
+    },
+    {
+      "equation_id": "EQ-E-2023-2314817-IESE-3",
+      "model_id": "MU-E-2023-2314817-IESE",
+      "page": 17,
+      "source_expression": "Hours cut equal the budget over hourly output, lamps equal the budget over the lamp price, and reserve area equals the budget over the cost per unit area."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2023-2314817-ESE",
+      "to_model_id": "MU-E-2023-2314817-LPRA",
+      "handoff": "The three subsystem totals are normalized and weighted into the risk level."
+    },
+    {
+      "from_model_id": "MU-E-2023-2314817-LPRA",
+      "to_model_id": "MU-E-2023-2314817-IESE",
+      "handoff": "The risk level and its three components are the levels the strategies reduce."
+    }
+  ]
+}

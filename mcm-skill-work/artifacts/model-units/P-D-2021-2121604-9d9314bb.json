@@ -1,0 +1,420 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2021-2121604-9d9314bb",
+  "problem_type": "D",
+  "year": "2021",
+  "source_sha256": "9d9314bb5743a55d4b527f933f5ef7c63cf98d783c73769a605658cb0e19295e",
+  "models": [
+    {
+      "model_id": "MU-D-2021-2121604-CoolingInfluence",
+      "page": 6,
+      "section": "3.2 Musical Influence",
+      "family": "decay-model",
+      "purpose": "Model the fading of musical influence as exponential cooling",
+      "base_or_modification": "base",
+      "summary": "Influence falls the way a hot object cools, fast then slow, and like a hot drink it stays strong through the first decade. The rate of decline is proportional to the gap from the floor. Integrating and setting the floor to zero gives a pure exponential in the elapsed time. The decay constant is chosen by the authors. A smoothing spline on follower counts supplies the delay.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Write the proportional rate",
+          "Integrate",
+          "Set the floor to zero",
+          "Fit a smoothing spline to follower counts"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Closed form"
+      },
+      "assumptions": [
+        "Decay depends on the gap, not the calendar year",
+        "The floor is zero"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Influence starts at MI(t0)"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Decays toward zero"
+          ]
+        }
+      },
+      "constraints": [
+        "Alpha chosen, not fitted"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The rate, the integral and the simplification are all written"
+      },
+      "handoff_outputs": [
+        "MI"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The form is fixed; alpha is not identified."
+      },
+      "missing_details": [
+        "Alpha assigned by hand",
+        "The derivative is written as a level"
+      ],
+      "objectives": [
+        "A time-weighted influence"
+      ],
+      "parameter_estimation": {
+        "method": "Alpha chosen, spline fitted",
+        "parameters": [
+          "alpha"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "The analogy is carried all the way to an equation"
+      ],
+      "validation_refs": [
+        "Figure 4"
+      ],
+      "variables": [
+        {
+          "symbol": "MI",
+          "normalized_name": "music_influence",
+          "unit": "dimensionless",
+          "definition": "Influence at time t",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "decay_constant",
+          "unit": "per-year",
+          "definition": "Cooling rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t0",
+          "normalized_name": "start_time",
+          "unit": "year",
+          "definition": "Debut decade",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t0"
+      ],
+      "outputs": [
+        "MI"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2021-2121604-01",
+          "page": 6,
+          "source_expression": "dMI/dt = -alpha (MI - MI_0)",
+          "normalized_latex": "\\frac{dMI}{dt}=-\\alpha(MI-MI_0)",
+          "purpose": "Cooling rate",
+          "label": "Influence decay",
+          "variable_symbols": [
+            "MI",
+            "alpha"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2021-2121604-02",
+          "page": 6,
+          "source_expression": "MI(t)=MI(t0) exp(-alpha(t-t0))",
+          "normalized_latex": "MI(t)=MI(t_0)e^{-\\alpha(t-t_0)}",
+          "purpose": "Pure decay",
+          "label": "Cooled influence",
+          "variable_symbols": [
+            "MI",
+            "alpha"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Alpha is a guess",
+        "Floor of zero is strong"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2121604-CosinePCA",
+      "page": 8,
+      "section": "3.4 Similarity",
+      "family": "dimensionality-reduction",
+      "purpose": "Measure similarity as cosine distance in a four-factor PCA space",
+      "base_or_modification": "base",
+      "summary": "Overlapping features make the raw space unsafe, so PCA keeps four factors, with KMO 0.782 and a significant Bartlett test. Cosine is preferred because it ignores magnitude and needs no scaling. Within-genre similarity peaks near 0.6 and between-genre near zero or below. Contagion is tested by removing one feature at a time and seeing which removal hurts.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Drop non-musical fields",
+          "Run PCA to four factors",
+          "Compute cosine",
+          "Remove each feature and recompute"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Standard PCA"
+      },
+      "assumptions": [
+        "Four factors suffice",
+        "One genre per artist"
+      ],
+      "computational_cost": "Moderate",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Influence starts at MI(t0)"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Decays toward zero"
+          ]
+        }
+      },
+      "constraints": [
+        "Four components"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The cosine of two factor vectors is written"
+      },
+      "handoff_outputs": [
+        "sim"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "PCA and cosine are determined given the data."
+      },
+      "missing_details": [
+        "Variance retained not reported"
+      ],
+      "objectives": [
+        "A similarity that matches genre structure"
+      ],
+      "parameter_estimation": {
+        "method": "PCA",
+        "parameters": [
+          "components"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "The choice of cosine is justified against Euclidean distance",
+        "Leave-one-out contagion test"
+      ],
+      "validation_refs": [
+        "Figure 5",
+        "Figure 7"
+      ],
+      "variables": [
+        {
+          "symbol": "F",
+          "normalized_name": "factor_vector",
+          "unit": "dimensionless",
+          "definition": "Four principal factors of an artist",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sim",
+          "normalized_name": "cosine_similarity",
+          "unit": "dimensionless",
+          "definition": "Cosine of two factor vectors",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "features",
+          "normalized_name": "features",
+          "unit": "mixed",
+          "definition": "Normalized musical characteristics before reduction",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "features"
+      ],
+      "outputs": [
+        "sim"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2021-2121604-03",
+          "page": 8,
+          "source_expression": "sim = (F_i . F_j) / (|F_i| |F_j|)",
+          "normalized_latex": "sim_{ij}=\\frac{F_i\\cdot F_j}{|F_i||F_j|}",
+          "purpose": "Directional similarity",
+          "label": "Cosine similarity",
+          "variable_symbols": [
+            "sim",
+            "F"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Information loss admitted",
+        "Four factors untested against three or five"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2121604-GravityGenre",
+      "page": 12,
+      "section": "4.2.3 Evolution",
+      "family": "gravity-model",
+      "purpose": "Pick each year's dominant genre by a gravity-style pull of similarity and popularity",
+      "base_or_modification": "base",
+      "summary": "Each year is a vector. Its similarity to each genre center is combined with that genre's popularity in the manner of a gravitational pull, and the strongest pull names the dominant genre. Year-to-year similarity then flags revolutions where it drops, giving the 1940s, 1960s and 1980s, with the Beatles and Bob Dylan for 1965-1967.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Build a vector per year",
+          "Compare with each genre center",
+          "Weight by popularity",
+          "Mark year-to-year drops"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Direct computation"
+      },
+      "assumptions": [
+        "Popularity and similarity combine like a gravitational pull"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Influence starts at MI(t0)"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Decays toward zero"
+          ]
+        }
+      },
+      "constraints": [
+        "One dominant genre per year"
+      ],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The gravity model is named and used but never written out"
+      },
+      "handoff_outputs": [
+        "dominant_genre"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Without the formula the weighting cannot be reproduced."
+      },
+      "missing_details": [
+        "The gravity formula itself"
+      ],
+      "objectives": [
+        "A genre timeline and revolution dates"
+      ],
+      "parameter_estimation": {
+        "method": "Not stated",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "strengths": [
+        "Gives a single dominant genre per year"
+      ],
+      "validation_refs": [
+        "Section 4.3"
+      ],
+      "variables": [
+        {
+          "symbol": "u",
+          "normalized_name": "dominant_genre",
+          "unit": "category",
+          "definition": "Genre with the strongest pull in a year",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sim",
+          "normalized_name": "cosine_similarity",
+          "unit": "dimensionless",
+          "definition": "Similarity used as closeness",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dominant_genre",
+          "normalized_name": "dominant_genre",
+          "unit": "category",
+          "definition": "The year's leading genre",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "sim"
+      ],
+      "outputs": [
+        "dominant_genre"
+      ],
+      "governing_equations": [],
+      "limitations": [
+        "Formula absent",
+        "Small errors conceded in some years"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2021-2121604-CosinePCA",
+      "to_model_id": "MU-D-2021-2121604-GravityGenre",
+      "handoff": "Cosine similarity is the closeness in the pull"
+    },
+    {
+      "from_model_id": "MU-D-2021-2121604-CoolingInfluence",
+      "to_model_id": "MU-D-2021-2121604-GravityGenre",
+      "handoff": "Cooled influence supplies the popularity weight"
+    }
+  ],
+  "review_status": "validated"
+}

@@ -1,0 +1,398 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2018-78826-ed3ee7b7",
+  "problem_type": "D",
+  "year": "2018",
+  "source_sha256": "ed3ee7b716f1278850924ae8252cacdd40789bb0b458e5ee38488daffa3d612b",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q288-COVER",
+      "page": 8,
+      "section": "Elecomb",
+      "family": "optimization",
+      "purpose": "Cover a country with the fewest charging stations at least cost.",
+      "base_or_modification": "paper-specific",
+      "summary": "Vehicle density is population density times 0.77 cars per person. Honeycomb cells cover each region so overlap is smallest. Along interstates a fast charger sits every 50 miles on 3,951,098 miles of main road, giving 0.08 million rural superchargers. The US total is 6.55 million stations: 2.23 urban, 3.00 suburban, 1.28 rural, of which 5.56 million are destination chargers. Ireland, treated as two regions, needs 87.70 thousand.",
+      "variables": [
+        {
+          "symbol": "dens",
+          "normalized_name": "vehicle_density",
+          "unit": "vehicles per area",
+          "definition": "population density times ownership",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "station_gap",
+          "unit": "mile",
+          "definition": "distance between chargers on a highway, 50 miles",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nst",
+          "normalized_name": "station_count",
+          "unit": "stations",
+          "definition": "stations needed for full coverage",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "dens"
+      ],
+      "outputs": [
+        "nst"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q288-COVER-1",
+          "page": 8,
+          "source_expression": "highway stations = road miles / 50",
+          "normalized_latex": "N_{\\mathrm{hwy}}=\\frac{L}{50}",
+          "purpose": "one fast charger per fifty miles of main road",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "dens",
+            "gap",
+            "nst"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Cover a country with the fewest charging stations at least cost."
+      ],
+      "constraints": [
+        "cells may not overlap more than the honeycomb forces"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "ownership 0.77 from the cited census figure, road length from the cited highway list",
+        "parameters": [
+          "gap"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "compute density per region",
+          "tile with honeycomb cells",
+          "place highway chargers every 50 miles"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "distance is the straight line between two points",
+        "vehicles of one class are spread evenly"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "US total of 6.55 million matches the sum of the three regions"
+      },
+      "handoff_outputs": [
+        "nst"
+      ],
+      "validation_refs": [
+        "station counts checked against the summary totals"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the same coverage rule is reused for a second country"
+      ],
+      "limitations": [
+        "table 4.1 totals 6.47 million inside states while the summary and table 4.3 say 6.55"
+      ],
+      "missing_details": [
+        "the fitted coefficients of the growth curve are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q288-URGENT",
+      "page": 11,
+      "section": "Urgency index",
+      "family": "evaluation",
+      "purpose": "Order construction by a single urgency index.",
+      "base_or_modification": "paper-specific",
+      "summary": "Service capacity, population density and wealth are normalized and combined into one urgency score, and stations are built from the most urgent down. At 30 percent coverage Ireland has 26.31 thousand stations, at 50 percent 43.85 thousand, at full coverage 87.70 thousand. A cost term is added later, and the country-level index AI decides the order: below 0.2 rural first, above 0.65 urban first, otherwise both.",
+      "variables": [
+        {
+          "symbol": "svc",
+          "normalized_name": "service",
+          "unit": "index",
+          "definition": "vehicles served per unit area, normalized",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ai",
+          "normalized_name": "priority_index",
+          "unit": "dimensionless",
+          "definition": "country index comparing urban and rural urgency",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "order",
+          "normalized_name": "build_order",
+          "unit": "label",
+          "definition": "which region is built first",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "svc",
+        "ai"
+      ],
+      "outputs": [
+        "order"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q288-URGENT-1",
+          "page": 1,
+          "source_expression": "order = rural if AI<0.2, urban if AI>0.65, else both",
+          "normalized_latex": "\\mathrm{order}=\\begin{cases}\\mathrm{rural}&AI<0.2\\\\ \\mathrm{urban}&AI>0.65\\\\ \\mathrm{both}&\\mathrm{else}\\end{cases}",
+          "purpose": "construction order from two cutoffs on the priority index",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "svc",
+            "ai",
+            "order"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Order construction by a single urgency index."
+      ],
+      "constraints": [
+        "the three factors count equally"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "weights described as equal after normalization, not fitted",
+        "parameters": [
+          "ai"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "normalize each factor",
+          "sum them",
+          "sort stations by the score"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "a more urgent station is always built before a less urgent one"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "the ordering is tabulated for Ireland but the weights are not estimated"
+      },
+      "handoff_outputs": [
+        "order"
+      ],
+      "validation_refs": [
+        "station counts checked against the summary totals"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the same coverage rule is reused for a second country"
+      ],
+      "limitations": [
+        "the cost formula is printed with missing symbols, so the optimized index cannot be recomputed"
+      ],
+      "missing_details": [
+        "the fitted coefficients of the growth curve are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q288-GROWTH",
+      "page": 12,
+      "section": "Logistic growth",
+      "family": "evaluation",
+      "purpose": "Date Ireland's full coverage from a US growth curve rescaled by two ratios.",
+      "base_or_modification": "paper-specific",
+      "summary": "US electric-vehicle growth from 2005 to 2016 is fit by a logistic curve. Ireland is the same curve with coefficients scaled by two ratios: US population density is 0.5 of Ireland's and US GDP per capita is 0.93 of Ireland's. The rescaled curve reaches full coverage in about 18.1 years. The handout quotes a world average of about 163 years, which is not derived in the body.",
+      "variables": [
+        {
+          "symbol": "r1",
+          "normalized_name": "density_ratio",
+          "unit": "dimensionless",
+          "definition": "US population density divided by Ireland's, printed as 0.5",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r2",
+          "normalized_name": "income_ratio",
+          "unit": "dimensionless",
+          "definition": "US GDP per capita divided by Ireland's, printed as 0.93",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yrs",
+          "normalized_name": "years_to_full",
+          "unit": "year",
+          "definition": "years until electric vehicles cover the fleet",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r1",
+        "r2"
+      ],
+      "outputs": [
+        "yrs"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q288-GROWTH-1",
+          "page": 12,
+          "source_expression": "years_Ireland = logistic(US data, scaled by 0.5 and 0.93)",
+          "normalized_latex": "T_{IE}=f(T_{US};0.5,0.93)",
+          "purpose": "Irish timeline as the US curve rescaled by two ratios",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "r1",
+            "r2",
+            "yrs"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Date Ireland's full coverage from a US growth curve rescaled by two ratios."
+      ],
+      "constraints": [
+        "vehicle ownership in Ireland is treated as fixed"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "curve fit to 2005-2016 US data, ratios taken from Wikipedia",
+        "parameters": [
+          "r1",
+          "r2"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "fit the US curve",
+          "scale the coefficients",
+          "read off the year of full coverage"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "the two countries differ only by the two ratios"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "18.1 years is read from a figure, not tabulated"
+      },
+      "handoff_outputs": [
+        "yrs"
+      ],
+      "validation_refs": [
+        "station counts checked against the summary totals"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "the same coverage rule is reused for a second country"
+      ],
+      "limitations": [
+        "the fitted coefficients are not printed, so the 18.1 years cannot be recomputed"
+      ],
+      "missing_details": [
+        "the fitted coefficients of the growth curve are not printed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q288-COVER",
+      "to_model_id": "MU-D-Q288-URGENT",
+      "handoff": "the full set of stations that the urgency index orders"
+    },
+    {
+      "from_model_id": "MU-D-Q288-URGENT",
+      "to_model_id": "MU-D-Q288-GROWTH",
+      "handoff": "the coverage stages the growth curve dates"
+    }
+  ]
+}

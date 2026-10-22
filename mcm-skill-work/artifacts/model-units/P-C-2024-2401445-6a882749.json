@@ -1,0 +1,952 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2401445-6a882749",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "6a8827491ea83f28c83aa5189b8b7b248665a1b773528478cfa6e99f430f5515",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q244-001",
+      "page": 6,
+      "section": "4 Model I: DPI",
+      "family": "weighted play index",
+      "purpose": "Score the flow of one tennis match from performance, strength, and the serve.",
+      "base_or_modification": "paper-specific",
+      "summary": "DPI is a linear combination of a gradient-boosting win probability, a six-indicator strength score, and a binary serve flag. Weights 0.28, 0.32, 0.4. The trees use learning rate 0.2, depth 5, 300 estimators, and the reported accuracy on the final is 82.4 percent. The printed sum in formula (2) sits beside the formula.",
+      "variables": [
+        {
+          "symbol": "DPI",
+          "normalized_name": "dynamic play index",
+          "unit": "1",
+          "definition": "Weighted flow score, updated at each point.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PE",
+          "normalized_name": "performance",
+          "unit": "1",
+          "definition": "Probability of winning the current game from the score state.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PS",
+          "normalized_name": "personal strength",
+          "unit": "1",
+          "definition": "Weighted strength on a 60 to 100 scale.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SA",
+          "normalized_name": "serving advantage",
+          "unit": "1",
+          "definition": "One when this player is serving, else zero.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "performance weight",
+          "unit": "1",
+          "definition": "Set to 0.28.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "strength weight",
+          "unit": "1",
+          "definition": "Set to 0.32.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "serve weight",
+          "unit": "1",
+          "definition": "Set to 0.4.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "score state",
+          "unit": "1",
+          "definition": "Sets, games, points, and the server.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "boosted model",
+          "unit": "1",
+          "definition": "Sum of trees.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Tm",
+          "normalized_name": "tree",
+          "unit": "1",
+          "definition": "The m-th tree.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Theta",
+          "normalized_name": "tree parameters",
+          "unit": "1",
+          "definition": "Parameters of one tree.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "tree count",
+          "unit": "1",
+          "definition": "Number of trees. The reported fit uses 300.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lr",
+          "normalized_name": "learning rate",
+          "unit": "1",
+          "definition": "Step size of each tree. The reported fit uses 0.2.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "label",
+          "unit": "1",
+          "definition": "Win or loss of the game.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "loss",
+          "unit": "1",
+          "definition": "Exponential loss.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PWOL",
+          "normalized_name": "pwol weight",
+          "unit": "1",
+          "definition": "Share of matches where the winner outscored the loser on one indicator.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IS",
+          "normalized_name": "index score",
+          "unit": "1",
+          "definition": "An indicator mapped onto 60 to 100.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x",
+        "y",
+        "SA"
+      ],
+      "outputs": [
+        "DPI",
+        "PE",
+        "PS"
+      ],
+      "handoff_outputs": [
+        "PE",
+        "PS",
+        "SA"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q244-001",
+          "page": 6,
+          "label": "(1)",
+          "source_expression": "DPI = alpha*PE + beta*PS + gamma*SA",
+          "normalized_latex": "\\mathrm{DPI}=\\alpha\\,\\mathrm{PE}+\\beta\\,\\mathrm{PS}+\\gamma\\,\\mathrm{SA}",
+          "purpose": "Flow score. The sentence that introduces it is broken around the word equation.",
+          "variable_symbols": [
+            "DPI",
+            "alpha",
+            "beta",
+            "gamma",
+            "PE",
+            "PS",
+            "SA"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q244-002",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "F(x) = sum_{m=1}^{M} T_m(x; Theta_m)",
+          "normalized_latex": "F(x)=\\sum_{m=1}^{M} T_m(x;\\Theta_m)",
+          "purpose": "Additive tree model. The sum is printed beside the formula, not under it.",
+          "variable_symbols": [
+            "F",
+            "Tm",
+            "Theta",
+            "M",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q244-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "F_m(x) = F_{m-1}(x) + alpha T_m(x; Theta_m)",
+          "normalized_latex": "F_m(x)=F_{m-1}(x)+\\alpha T_m(x;\\Theta_m)",
+          "purpose": "One boosting step. Alpha is the learning rate.",
+          "variable_symbols": [
+            "F",
+            "Tm",
+            "Theta",
+            "lr",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q244-004",
+          "page": 8,
+          "label": "(4)",
+          "source_expression": "L(y, y') = exp(-y y')",
+          "normalized_latex": "L(y,y')=\\exp(-yy')",
+          "purpose": "Exponential loss for the binary game outcome.",
+          "variable_symbols": [
+            "L",
+            "y"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q244-005",
+          "page": 8,
+          "label": "(5)",
+          "source_expression": "Grid Search = min over Theta of L(F(x; Theta), y)",
+          "normalized_latex": "\\min_{\\Theta} L(F(x;\\Theta), y)",
+          "purpose": "Grid search written as a minimization. The min sits under the loss.",
+          "variable_symbols": [
+            "L",
+            "F",
+            "Theta",
+            "y",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q244-006",
+          "page": 9,
+          "label": "(6)",
+          "source_expression": "PS = sum_i IndexScore_i * PWOL_i / sum_i PWOL_i",
+          "normalized_latex": "\\mathrm{PS}=\\sum_i \\mathrm{IndexScore}_i\\,\\mathrm{PWOL}_i\\big/\\sum_i \\mathrm{PWOL}_i",
+          "purpose": "Strength as a weighted average. The formula is split and the where-clause follows it.",
+          "variable_symbols": [
+            "PS",
+            "IS",
+            "PWOL"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q244-007",
+          "page": 9,
+          "label": "(7)",
+          "source_expression": "SA = 1 if player i is serving, else 0",
+          "normalized_latex": "\\mathrm{SA}=\\mathbf{1}\\{\\text{player }i\\text{ serving}\\}",
+          "purpose": "Binary serve flag.",
+          "variable_symbols": [
+            "SA"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (1) through (7) are printed. (2) and (6) are scrambled."
+      },
+      "objectives": [
+        "Track which player is ahead at each point of one match."
+      ],
+      "constraints": [
+        "The index is linear.",
+        "Performance is a probability, not the class label.",
+        "Strength indicators are mapped to 60-100 before weighting."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each point carries the current sets, games, points, and the server."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Grid search on the trees. Reported optimum: learning rate 0.2, max depth 5, 300 trees. Weights 0.28, 0.32, 0.4 come from literature and tuning, with no search grid printed.",
+        "parameters": [
+          "lr",
+          "M",
+          "alpha",
+          "beta",
+          "gamma"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Impute speed and rally count by the median.",
+          "Fit the trees on the score state.",
+          "Read the win probability as performance.",
+          "Weight six strength indicators by PWOL.",
+          "Add the binary serve flag.",
+          "Apply the three weights."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Reported accuracy 82.4 percent on the final, trained on earlier matches."
+      },
+      "assumptions": [
+        "Ability stays constant inside a match.",
+        "The server has an advantage."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The tree sum and the strength average are printed with their pieces separated."
+      },
+      "validation_refs": [
+        "Figure 5: Alcaraz performance, bold above 0.5.",
+        "Figure 6: DPI of the final, five sets."
+      ],
+      "computational_cost": "One grid search and one pass over the points of the final.",
+      "strengths": [
+        "The class label is refused and the probability is kept."
+      ],
+      "limitations": [
+        "The three weights are not tied to a printed loss."
+      ],
+      "missing_details": [
+        "The grid that produced 0.28, 0.32, and 0.4 is not printed."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q244-002",
+      "page": 11,
+      "section": "5 Task 2: contradiction",
+      "family": "dynamic time warping",
+      "purpose": "Test momentum by seeing whether a match with no momentum can look like the real one.",
+      "base_or_modification": "base",
+      "summary": "One hundred simulations per match use Gaussian noise, strength, and the serve, and ignore momentum. Dynamic time warping compares score-difference sequences of unequal length. Seven matches are compared. The random paths leave the diagonal. Rublev against Djokovic is the stated exception. The summary's 50 percent is not printed in the body.",
+      "variables": [
+        {
+          "symbol": "PS",
+          "normalized_name": "personal strength",
+          "unit": "1",
+          "definition": "Strength taken from model I.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SA",
+          "normalized_name": "serving advantage",
+          "unit": "1",
+          "definition": "Serve flag taken from model I.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "dtw matrix",
+          "unit": "1",
+          "definition": "Distance matrix between two score-difference sequences.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i",
+          "normalized_name": "index",
+          "unit": "1",
+          "definition": "Position in the first sequence.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "index",
+          "unit": "1",
+          "definition": "Position in the second sequence.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dist",
+          "normalized_name": "point distance",
+          "unit": "1",
+          "definition": "Distance between one pair of points.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "PS",
+        "SA",
+        "i",
+        "j"
+      ],
+      "outputs": [
+        "D"
+      ],
+      "handoff_outputs": [
+        "D"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q244-008",
+          "page": 11,
+          "label": null,
+          "source_expression": "D[i,j] = distance(i,j) + min of the three preceding cells",
+          "normalized_latex": "D[i,j]=\\mathrm{dist}(i,j)+\\min\\{D[i-1,j],D[i,j-1],D[i-1,j-1]\\}",
+          "purpose": "DTW recurrence. Printed without a number.",
+          "variable_symbols": [
+            "D",
+            "dist",
+            "i",
+            "j"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The recurrence is printed. It has no equation number."
+      },
+      "objectives": [
+        "Show that a memoryless simulation matches the real score worse than model I."
+      ],
+      "constraints": [
+        "Best of five sets.",
+        "One hundred runs.",
+        "Momentum is absent from the simulation."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each run starts at zero sets."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Nothing is fitted. Strength and serve come from model I.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Draw a point from strength, serve, and Gaussian noise.",
+          "Update games and sets under tennis rules.",
+          "Repeat for one hundred runs.",
+          "Align each simulated sequence with the real one by DTW.",
+          "Read the path against the diagonal."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A smaller total distance is read as a closer match."
+      },
+      "assumptions": [
+        "A match with no momentum is a random score that still obeys the rules."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The recurrence is the standard one and is legible."
+      },
+      "validation_refs": [
+        "Figure 7: alignment paths and total distances for seven matches."
+      ],
+      "computational_cost": "One hundred simulations on each of seven matches.",
+      "strengths": [
+        "The one match that does not fit is named."
+      ],
+      "limitations": [
+        "Closer is not a proof, and the paper calls it one."
+      ],
+      "missing_details": [
+        "The distance inside the recurrence is not specified.",
+        "The summary's 50 percent is not in the body."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q244-003",
+      "page": 13,
+      "section": "6.2 Random forest",
+      "family": "random forest classifier",
+      "purpose": "Predict who holds momentum and rank the indicators that move it.",
+      "base_or_modification": "base",
+      "summary": "Momentum is labeled from model I by a threshold omega that is never given a value. The printed definition says binary and then lists three states. Fifteen variables are claimed and the appendix lists seventeen. Grid search gives depth 10, min leaf 4, min split 10, 300 trees, accuracy 77.6 percent. Consecutive scores rank first.",
+      "variables": [
+        {
+          "symbol": "PE",
+          "normalized_name": "performance",
+          "unit": "1",
+          "definition": "Win probability from model I, one value per player.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega",
+          "normalized_name": "threshold",
+          "unit": "1",
+          "definition": "Cutoff on the performance gap. No value is printed.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "Mom",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "1, 2, or 0, as printed.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "depth",
+          "normalized_name": "max depth",
+          "unit": "1",
+          "definition": "Grid-search result, 10.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "leaf",
+          "normalized_name": "min samples leaf",
+          "unit": "1",
+          "definition": "Grid-search result, 4.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "split",
+          "normalized_name": "min samples split",
+          "unit": "1",
+          "definition": "Grid-search result, 10.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ntree",
+          "normalized_name": "tree count",
+          "unit": "1",
+          "definition": "Grid-search result, 300.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "PE"
+      ],
+      "outputs": [
+        "Mom"
+      ],
+      "handoff_outputs": [
+        "Mom"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q244-009",
+          "page": 13,
+          "label": "(8)",
+          "source_expression": "Momentum = 1 when player 1 leads, 2 when player 2 leads, 0 otherwise",
+          "normalized_latex": "\\mathrm{Momentum}\\in\\{0,1,2\\}",
+          "purpose": "Three-way label. The braces are broken and the cases are out of order. The prose calls it binary.",
+          "variable_symbols": [
+            "Mom"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formula (8) is printed with broken braces."
+      },
+      "objectives": [
+        "Name the indicators that precede a change of momentum."
+      ],
+      "constraints": [
+        "The label is taken from model I.",
+        "The threshold has no printed value."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "A point is labeled 1 when player 1's performance exceeds player 2's by more than omega."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Grid search. Printed best set: max depth 10, min samples leaf 4, min samples split 10, 300 trees. Omega is not estimated in print.",
+        "parameters": [
+          "depth",
+          "leaf",
+          "split",
+          "ntree"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Label each point from the performance gap.",
+          "Keep the filtered variables.",
+          "Search the four hyperparameters.",
+          "Rank indicators by contribution."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Reported accuracy 77.6 percent."
+      },
+      "assumptions": [
+        "A performance gap above omega is momentum."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "Omega is used and never valued, so the label cannot be rebuilt."
+      },
+      "validation_refs": [
+        "Table 3: the winning hyperparameter row.",
+        "Table 4 and Figure 8: five indicators."
+      ],
+      "computational_cost": "One grid search over the filtered point table.",
+      "strengths": [
+        "The ranking is read in words, not left as a bar chart."
+      ],
+      "limitations": [
+        "Fifteen variables are claimed and seventeen are listed."
+      ],
+      "missing_details": [
+        "The value of omega.",
+        "Which two of the seventeen were dropped, if any."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q244-004",
+      "page": 15,
+      "section": "6.3 HMM and leverage",
+      "family": "hidden markov model",
+      "purpose": "Let each pair of players react to momentum in its own way, and score how much one point matters.",
+      "base_or_modification": "hybrid",
+      "summary": "One HMM per match before the quarterfinals, with states P1 upper, P2 upper, and Equal. Emission matrices are drawn, not filled. The initial distribution is printed as a three-vector that splits the priors with one half. Situational leverage is the change in performance if the point is won rather than lost. The final is decided by hard voting. Women's matches and the US Open have no HMM and fall back to the forest plus leverage.",
+      "variables": [
+        {
+          "symbol": "B1",
+          "normalized_name": "emission",
+          "unit": "1",
+          "definition": "Emission probabilities in the P1-upper state.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B2",
+          "normalized_name": "emission",
+          "unit": "1",
+          "definition": "Emission probabilities in the P2-upper state.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B3",
+          "normalized_name": "emission",
+          "unit": "1",
+          "definition": "Emission probabilities in the equal state.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P1",
+          "normalized_name": "prior",
+          "unit": "1",
+          "definition": "Prior weight for P1 upper.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P2",
+          "normalized_name": "prior",
+          "unit": "1",
+          "definition": "Prior weight for P2 upper.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pi",
+          "normalized_name": "initial distribution",
+          "unit": "1",
+          "definition": "Printed three-vector.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SL",
+          "normalized_name": "situational leverage",
+          "unit": "1",
+          "definition": "Change in performance caused by winning the next point.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pe",
+          "normalized_name": "performance",
+          "unit": "1",
+          "definition": "Performance of player i in game j.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "win event",
+          "unit": "1",
+          "definition": "Player i wins point t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "o",
+          "normalized_name": "loss event",
+          "unit": "1",
+          "definition": "Player i loses point t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mom",
+          "normalized_name": "momentum",
+          "unit": "1",
+          "definition": "State prediction handed to the vote.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pe",
+        "w",
+        "o"
+      ],
+      "outputs": [
+        "Pi",
+        "SL",
+        "Mom"
+      ],
+      "handoff_outputs": [
+        "SL",
+        "Mom"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q244-010",
+          "page": 16,
+          "label": null,
+          "source_expression": "Pi = [P1/(P1+P2)*0.5, 0.5, P2/(P1+P2)*0.5]",
+          "normalized_latex": "\\Pi=\\big(P_1/(P_1+P_2)\\cdot 0.5,\\; 0.5,\\; P_2/(P_1+P_2)\\cdot 0.5\\big)",
+          "purpose": "Initial distribution as printed. The three entries are an odd split of the two priors.",
+          "variable_symbols": [
+            "Pi",
+            "P1",
+            "P2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q244-011",
+          "page": 16,
+          "label": "(9)",
+          "source_expression": "SL_{i,j} = P(pe_{i,j} | w_{i,t}) - P(pe_{i,j} | o_{i,t})",
+          "normalized_latex": "\\mathrm{SL}_{i,j}=P(\\mathrm{pe}_{i,j}\\mid w_{i,t})-P(\\mathrm{pe}_{i,j}\\mid o_{i,t})",
+          "purpose": "Situational leverage. The where-clause is printed before the formula.",
+          "variable_symbols": [
+            "SL",
+            "pe",
+            "w",
+            "o"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The initial distribution and formula (9) are printed. The distribution has no number."
+      },
+      "objectives": [
+        "Predict the state sequence of one match from models trained on earlier matches of the same players."
+      ],
+      "constraints": [
+        "One HMM per pre-quarterfinal match.",
+        "Hard voting, not a probability average.",
+        "No HMM for the women's match or the US Open."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The chain starts from the printed initial distribution."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "A separate HMM is trained on each pre-quarterfinal match. No fitting algorithm is named. Transition probabilities are said to be essential and are not shown.",
+        "parameters": [
+          "B1",
+          "B2",
+          "B3",
+          "P1",
+          "P2"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Train one HMM per earlier match.",
+          "Emit from the current state.",
+          "Vote the state by hard voting.",
+          "Score each point by the change in performance."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Table 5 reports precision, recall, and F1 for three statuses."
+      },
+      "assumptions": [
+        "Matches of the same two players share their reaction to momentum."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The emission matrices are shapes. No entry is filled in, and the transitions are omitted."
+      },
+      "validation_refs": [
+        "Table 5: no swing 0.74/0.77/0.76 on 142; player 1 0.81/0.88/0.84 on 82; player 2 0.84/0.74/0.79 on 110.",
+        "Figure 10: turning points sit after the next point, not at the peaks."
+      ],
+      "computational_cost": "One HMM per pre-quarterfinal match, then one vote.",
+      "strengths": [
+        "The marks are defended against the obvious reading of the figure."
+      ],
+      "limitations": [
+        "The fallback for two of the three test matches drops the HMM entirely."
+      ],
+      "missing_details": [
+        "Every emission probability.",
+        "The transition matrix.",
+        "How the priors P1 and P2 were set."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q244-001",
+      "to_model_id": "MU-C-Q244-002",
+      "handoff": "Strength and the serve flag are the only inputs of the memoryless simulation."
+    },
+    {
+      "from_model_id": "MU-C-Q244-001",
+      "to_model_id": "MU-C-Q244-003",
+      "handoff": "The performance gap labels momentum for the forest."
+    },
+    {
+      "from_model_id": "MU-C-Q244-003",
+      "to_model_id": "MU-C-Q244-004",
+      "handoff": "The forest's momentum state is what the HMM and the advice start from."
+    },
+    {
+      "from_model_id": "MU-C-Q244-001",
+      "to_model_id": "MU-C-Q244-004",
+      "handoff": "Leverage is a difference of the same performance the index uses."
+    }
+  ]
+}

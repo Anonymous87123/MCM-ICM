@@ -1,0 +1,442 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2021-2124497-1be43b7c",
+  "problem_type": "D",
+  "year": "2021",
+  "source_sha256": "1be43b7c48c4443da967559d3e090dc8c572ba1da76d9ad293aa37ed86bef5e2",
+  "models": [
+    {
+      "model_id": "MU-D-2021-2124497-InfluenceProduct",
+      "page": 5,
+      "section": "4.1 Influence",
+      "family": "network-weighting",
+      "purpose": "Weight each influence edge by the product of a period share, a genre share and the out-degree",
+      "base_or_modification": "base",
+      "summary": "A directed graph from influencer to follower. For each edge three numbers are multiplied: the share of all links from the influencer's decade to the follower's, the share from the influencer's genre to the follower's, and the influencer's out-degree. The product is the edge weight. An example gives 11 out of 37, about 0.2973, constant for a genre pair.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Count decade-pair and genre-pair links",
+          "Divide by the follower's total",
+          "Multiply by out-degree"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Closed form"
+      },
+      "assumptions": [
+        "The three factors combine by multiplication"
+      ],
+      "computational_cost": "Low",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "One genre and one decade per artist"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The product is written"
+      },
+      "handoff_outputs": [
+        "I"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Every term is a count."
+      },
+      "missing_details": [
+        "No justification for multiplying rather than adding"
+      ],
+      "objectives": [
+        "A weighted influence network"
+      ],
+      "parameter_estimation": {
+        "method": "None",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "strengths": [
+        "A worked numerical example"
+      ],
+      "validation_refs": [
+        "Figure 2",
+        "Example 1"
+      ],
+      "variables": [
+        {
+          "symbol": "k",
+          "normalized_name": "period_share",
+          "unit": "dimensionless",
+          "definition": "Share of links between two decades",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "genre_share",
+          "unit": "dimensionless",
+          "definition": "Share of links between two genres",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "O",
+          "normalized_name": "out_degree",
+          "unit": "count",
+          "definition": "Number of followers of an influencer",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "influence",
+          "unit": "dimensionless",
+          "definition": "Product of the three",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "O"
+      ],
+      "outputs": [
+        "I"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2021-2124497-01",
+          "page": 5,
+          "source_expression": "I = k * m * O",
+          "normalized_latex": "I_{ij}=k_{ij}\\,m_{ij}\\,O_i",
+          "purpose": "Edge influence",
+          "label": "Influence product",
+          "variable_symbols": [
+            "I",
+            "k",
+            "m",
+            "O"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "limitations": [
+        "Multiplication is unmotivated",
+        "Shares are constant inside a pair of groups"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2124497-MRDE",
+      "page": 8,
+      "section": "4.2 Similarity",
+      "family": "ensemble-embedding",
+      "purpose": "Estimate similarity as the expected rough similarity over random three-feature embeddings",
+      "base_or_modification": "modification",
+      "summary": "Instead of one projection, many random embeddings of three features out of thirteen are drawn. Each gives a rough similarity of one minus a normalized distance. The true similarity is the expectation over that distribution. Distributions within and between genres are compared by the Bayes error rate, reported as 0.486 and 0.916 for two figures. The same leave-one-out idea, watched through a Kruskal-Wallis p-value, ranks contagious traits.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Drop the non-musical count",
+          "Draw random triples",
+          "Compute rough similarities",
+          "Take the expectation",
+          "Compare distributions by Bayes error"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Expectation over a finite sample"
+      },
+      "assumptions": [
+        "Three features per embedding, chosen empirically",
+        "The expectation represents the distribution"
+      ],
+      "computational_cost": "Linear in the number of embeddings",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "Embedding dimension fixed at 3"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The rough similarity and the expectation are written"
+      },
+      "handoff_outputs": [
+        "S"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The expectation depends on how many embeddings are drawn."
+      },
+      "missing_details": [
+        "Number of embeddings sampled not stated",
+        "Aggregation admitted to be crude"
+      ],
+      "objectives": [
+        "A similarity that keeps feature interactions"
+      ],
+      "parameter_estimation": {
+        "method": "Embedding size taken from a cited experiment",
+        "parameters": [
+          "e"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Avoids committing to one projection"
+      ],
+      "validation_refs": [
+        "Figure 7",
+        "Figure 8"
+      ],
+      "variables": [
+        {
+          "symbol": "sr",
+          "normalized_name": "rough_similarity",
+          "unit": "dimensionless",
+          "definition": "Similarity from one triple",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "similarity",
+          "unit": "dimensionless",
+          "definition": "Expected rough similarity",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "embedding_count",
+          "unit": "count",
+          "definition": "Number of triples",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "features",
+          "normalized_name": "features",
+          "unit": "mixed",
+          "definition": "The thirteen musical characteristics",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "features"
+      ],
+      "outputs": [
+        "S"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2021-2124497-02",
+          "page": 9,
+          "source_expression": "sr = 1 - ||C_i - C_j||_2",
+          "normalized_latex": "s_r=1-\\lVert C_i-C_j\\rVert_2",
+          "purpose": "One embedding",
+          "label": "Rough similarity",
+          "variable_symbols": [
+            "sr"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-D-2021-2124497-03",
+          "page": 9,
+          "source_expression": "S = E(sr)",
+          "normalized_latex": "S_{ij}=\\mathbb{E}[s_r]",
+          "purpose": "Aggregate",
+          "label": "Expected similarity",
+          "variable_symbols": [
+            "S",
+            "sr"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "limitations": [
+        "Aggregation called inaccurate by the authors",
+        "Bayes error reported without the formula"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2124497-ClosenessRevolution",
+      "page": 14,
+      "section": "4.4 Revolutionary",
+      "family": "centrality",
+      "purpose": "Rank revolutionary artists by the gap between outward and inward closeness",
+      "base_or_modification": "modification",
+      "summary": "A revolutionary artist is defined as one who influences many and is influenced by few. Out-closeness and in-closeness are computed on the directed network and combined into one score. The top twelve include Bob Dylan, Chuck Berry and the Beatles. The definition is checked by redefining similarity relative to the central node, which drops the mean from about 0.85 to about 0.45 as predicted. Low-frequency content of the trait series is then read with a discrete Fourier transform.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute in-closeness and out-closeness",
+          "Combine them",
+          "Rank",
+          "Check against the predicted similarity drop"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Closed form"
+      },
+      "assumptions": [
+        "Revolution equals large outward and small inward closeness"
+      ],
+      "computational_cost": "All-pairs shortest paths",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium"
+          ]
+        }
+      },
+      "constraints": [
+        "Directed distances"
+      ],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The synthesized centrality is named but its formula is not displayed"
+      },
+      "handoff_outputs": [
+        "C"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The combination rule is not shown."
+      },
+      "missing_details": [
+        "How in-closeness and out-closeness are synthesized"
+      ],
+      "objectives": [
+        "A ranking of revolutionary artists"
+      ],
+      "parameter_estimation": {
+        "method": "None",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "strengths": [
+        "The definition predicts a shift that is then observed"
+      ],
+      "validation_refs": [
+        "Figure 13"
+      ],
+      "variables": [
+        {
+          "symbol": "CCo",
+          "normalized_name": "out_closeness",
+          "unit": "dimensionless",
+          "definition": "Closeness along outgoing links",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CCi",
+          "normalized_name": "in_closeness",
+          "unit": "dimensionless",
+          "definition": "Closeness along incoming links",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "synthesized_closeness",
+          "unit": "dimensionless",
+          "definition": "Combined score",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "influence",
+          "unit": "dimensionless",
+          "definition": "Edge influence the closeness is computed on",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "I"
+      ],
+      "outputs": [
+        "C"
+      ],
+      "governing_equations": [],
+      "limitations": [
+        "Combination rule absent",
+        "Closeness is expensive and unstable on disconnected graphs"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2021-2124497-InfluenceProduct",
+      "to_model_id": "MU-D-2021-2124497-ClosenessRevolution",
+      "handoff": "The weighted network is where closeness is computed"
+    },
+    {
+      "from_model_id": "MU-D-2021-2124497-MRDE",
+      "to_model_id": "MU-D-2021-2124497-ClosenessRevolution",
+      "handoff": "Similarity tests the central-node definition"
+    }
+  ],
+  "review_status": "validated"
+}

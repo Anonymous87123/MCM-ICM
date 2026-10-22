@@ -1,0 +1,41 @@
+Control # 8362                                                                          14
+
+
+5.1.1   Computation
+As it is infeasible to calculate the value at every single point and extremely difficult to
+model analytically, our algorithm instead discretizes the problem by transforming the
+candidate search area into a grid and calculating the criminal location probability at
+each grid point. When increasing the fineness of the grid, which is allowed for in the
+input to our model, our algorithm better approximates the ideal, smooth, solution.
+Because the algorithm makes l calculations of f per grid point, it has O(nml) runtime
+where n is the number of lines on the grid parallel to the Prime Meridian, m is
+the number of lines parallel to the equator, and l is the number of unlawful acts
+perpetrated by the criminal. As l is generally relatively small and, at least in our
+simulations, we often set m and n to be equal, this algorithm can essentially be
+considered to be O(n2 ), which is going to be very fast for any reasonable mesh size
+— consider that a single 2GHz machine can use this algorithm to partition an area
+the size of England into 36 × 36 meter blocks and create a corresponding probability
+distribution using some interesting distance functions in only a matter of minutes!
+
+5.1.2   Pseudocode
+To clear up any ambiguities, we provide some pseudocode below for the criminal-
+finding function.
+
+
+Program 1 Criminal Location Finding Algorithm
+1 G is the set of grid points after the search area is partitioned by the mesh
+1 C is the set of past crimes, each of which has a location and date
+1 f (d) is the distance decay function which returns a higher number for more
+probable locations
+1 Prob is the probability of the killer location based on distance decay affects for the
+grid
+
+1 Function criminalLocationProb (crimes C, function f ):
+1 1 Let Prob be a mapping from G into R
+1 1 for g ∈ G do
+1 1 1 /*Calculate cumulative distance effect from all c ∈ C*/
+1 1 1 Prob[g] = 0
+1 1 1 for c ∈ C do
+1 1 1 1 Prob[g] = Prob[g] + f (distance between c and g)
+1 1 Normalize the values of Prob so that the sum of the values is 1
+1 1 return Prob

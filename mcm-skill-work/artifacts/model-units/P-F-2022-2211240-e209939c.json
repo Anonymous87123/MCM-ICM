@@ -1,0 +1,620 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2022-2211240-e209939c",
+  "problem_type": "F",
+  "year": "2022",
+  "source_sha256": "e209939c58d49b68daccd99935c4134506ed6b7feb3b781434e921f713617fc6",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "section": "3 D&E Model and DAEA Model",
+      "family": "composite-index",
+      "summary": "Development and Equity Model: 3 superior indicators (economy, technology, ecology), 12 inferior. EWM weights inferior indicators, CVM weights superior indicators into Development Index. DAEA Model converts dispersion of DI into Global Equity Index via Mahalanobis distance.",
+      "computational_cost": "not-stated",
+      "purpose": "Quantify each country's development and the dispersion between countries as a single equity index.",
+      "base_or_modification": "paper-specific",
+      "page": 7,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "GEI"
+      ],
+      "handoff_outputs": [
+        "GEI",
+        "DI_i"
+      ],
+      "objectives": [
+        "Produce a Development Index per country and a Global Equity Index measuring dispersion."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Value of jth inferior indicator for ith country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_ij",
+          "normalized_name": "normalized_value",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Orientation-normalized indicator value",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_j",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy of jth inferior indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_j",
+          "normalized_name": "ewm_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy weight within a superior category",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EMDI",
+          "normalized_name": "economy_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Economy Development Index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TDI",
+          "normalized_name": "technology_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Technology Development Index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EGDI",
+          "normalized_name": "ecology_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Ecology Development Index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V_j",
+          "normalized_name": "variation_coeff",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Coefficient of variation of superior indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_j",
+          "normalized_name": "cvm_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "CVM weight of superior indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DI_i",
+          "normalized_name": "development_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Comprehensive Development Index of country i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_ic",
+          "normalized_name": "mahalanobis_distance",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Mahalanobis distance from country i to center",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Score",
+          "normalized_name": "dispersion_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted dispersion of distances",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GEI",
+          "normalized_name": "global_equity_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "GEI = 1000 / Score",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2211240-DEQ-1",
+          "equation_label": "Entropy weight",
+          "equation_text": "q_j = (1 - E_j) / sum_j(1 - E_j)",
+          "source_expression": "q_j = (1 - E_j) / sum_j(1 - E_j)",
+          "normalized_latex": "q_j = \\frac{1 - E_j}{\\sum_{j=1}^{m}(1 - E_j)}",
+          "purpose": "Normalized entropy weight of inferior indicator",
+          "variable_symbols": [
+            "q_j",
+            "E_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-DEQ-2",
+          "equation_label": "Superior indicator score",
+          "equation_text": "score_i = sum_j(v_ij * q_j)",
+          "source_expression": "score_i = sum_j(v_ij * q_j)",
+          "normalized_latex": "\\mathrm{score}_i = \\sum_{j=1}^{m} v_{ij} q_j",
+          "purpose": "Category score from entropy-weighted indicators",
+          "variable_symbols": [
+            "EMDI",
+            "v_ij",
+            "q_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-DEQ-3",
+          "equation_label": "Development Index",
+          "equation_text": "DI = W1*EMDI + W2*TDI + W3*EGDI",
+          "source_expression": "DI = W1*EMDI + W2*TDI + W3*EGDI",
+          "normalized_latex": "DI = W_1 \\cdot EMDI + W_2 \\cdot TDI + W_3 \\cdot EGDI",
+          "purpose": "CVM-weighted combination of three superior indices",
+          "variable_symbols": [
+            "DI_i",
+            "W_j",
+            "EMDI",
+            "TDI",
+            "EGDI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-DEQ-4",
+          "equation_label": "Mahalanobis distance",
+          "equation_text": "d(x, y) = (x - y)^T S^{-1} (x - y)",
+          "source_expression": "d(x, y) = (x - y)^T S^{-1} (x - y)",
+          "normalized_latex": "d(x,y) = (x-y)^{T} S^{-1}(x-y)",
+          "purpose": "Scale-invariant distance between country points",
+          "variable_symbols": [
+            "d_ic"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-DEQ-5",
+          "equation_label": "Global Equity Index",
+          "equation_text": "GEI = 1000 / Score, Score = beta1*d_bar + beta2*d_max/d_bar + beta3*sd",
+          "source_expression": "GEI = 1000 / Score, Score = beta1*d_bar + beta2*d_max/d_bar + beta3*sd",
+          "normalized_latex": "GEI = \\frac{1000}{\\beta_1 \\bar{d} + \\beta_2 d_{\\max}/\\bar{d} + \\beta_3 sd}",
+          "purpose": "Inverse dispersion score as equity index",
+          "variable_symbols": [
+            "GEI",
+            "Score",
+            "d_ic"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (1)-(15) on pages 9-12.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "35 countries, 2010-2020 panel, 12 inferior indicators."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index model."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EWM within each superior category, CVM across the three superior indicators",
+        "parameters": [
+          "q_j",
+          "W_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize indicators, EWM per category, CVM across categories, compute DI, embed countries in 3D, compute Mahalanobis dispersion, invert to GEI.",
+        "status": "implemented",
+        "steps": [
+          "Normalize 12 indicators",
+          "EWM weights per category",
+          "Category scores EMDI TDI EGDI",
+          "CVM weights",
+          "DI per country",
+          "Mahalanobis distances to center",
+          "Dispersion score",
+          "GEI = 1000/Score"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "GEI before mining = 66.80."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "GEI = 66.80 before mining. Technology dimension shows lowest equity."
+        ],
+        "analysis": "Dimensionally adaptive: works in 1D, 2D, 3D."
+      },
+      "constraints": [
+        "3 superior indicators.",
+        "12 inferior indicators.",
+        "35 countries."
+      ],
+      "validation_refs": [
+        "Figure 5 index weights",
+        "Figure 6 DI map",
+        "Figure 8 equity scores by dimension"
+      ],
+      "strengths": [
+        "Mahalanobis distance is scale-invariant.",
+        "Two-stage weighting separates within-category and between-category importance."
+      ],
+      "limitations": [
+        "Beta coefficients in the dispersion score are not derived.",
+        "Composite score hides structure."
+      ],
+      "missing_details": [
+        "Exact beta values in equation (14)."
+      ],
+      "assumptions": [
+        "Equity equals balanced development.",
+        "Three dimensions suffice."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2211240-PAM",
+      "section": "4-5 Asteroid Mining and P&A Model",
+      "family": "dynamic-allocation",
+      "summary": "Ward clustering splits 35 countries into 4 development groups. Production and Allocation Model: development index evolves by diminishing returns plus a production boost for mining countries and an AMO redistribution term. Short-run inequity, long-run recovery in 27 years, GEI 74.67 after 50 years.",
+      "computational_cost": "not-stated",
+      "purpose": "Simulate how asteroid mining and redistribution change each country's development and global equity over time.",
+      "base_or_modification": "paper-specific",
+      "page": 13,
+      "inputs": [
+        "DI_i",
+        "lam",
+        "R_t"
+      ],
+      "outputs": [
+        "GEI_t"
+      ],
+      "handoff_outputs": [
+        "GEI_t"
+      ],
+      "objectives": [
+        "Show the time path of global equity under mining with redistribution."
+      ],
+      "variables": [
+        {
+          "symbol": "DI_i",
+          "normalized_name": "development_index",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Initial Development Index from D&E model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SDI_it",
+          "normalized_name": "sub_development_index",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "One of EMDI, TDI, EGDI for country i at year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "diminishing_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Diminishing-returns adjustment, less than 0",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_it",
+          "normalized_name": "production_effect",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Mining boost, zero for non-mining countries",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_it",
+          "normalized_name": "allocation_effect",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Redistribution transfer from AMO fund",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_t",
+          "normalized_name": "fund_pool",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Size of the AMO redistribution pool",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_it",
+          "normalized_name": "allocation_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Country share of the pool, signed",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GEI_t",
+          "normalized_name": "equity_over_time",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Global Equity Index at year t",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2211240-PAM-1",
+          "equation_label": "Ward distance",
+          "equation_text": "D_KL^2 = W_M - W_K - W_L",
+          "source_expression": "D_KL^2 = W_M - W_K - W_L",
+          "normalized_latex": "D_{KL}^{2} = W_M - W_K - W_L",
+          "purpose": "Increase in within-cluster sum of squares on merge",
+          "variable_symbols": [
+            "DI_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-PAM-2",
+          "equation_label": "Natural development",
+          "equation_text": "delta_SDI_it = (1 + lambda) * delta_SDI_it-1",
+          "source_expression": "delta_SDI_it = (1 + lambda) * delta_SDI_it-1",
+          "normalized_latex": "\\Delta SDI_{it} = (1+\\lambda)\\Delta SDI_{i,t-1}",
+          "purpose": "Diminishing growth without mining",
+          "variable_symbols": [
+            "SDI_it",
+            "lam"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-PAM-3",
+          "equation_label": "Development with mining",
+          "equation_text": "delta_SDI_it = (1+lambda)*delta_SDI_it-1 + P_it + A_it",
+          "source_expression": "delta_SDI_it = (1+lambda)*delta_SDI_it-1 + P_it + A_it",
+          "normalized_latex": "\\Delta SDI_{it} = (1+\\lambda)\\Delta SDI_{i,t-1} + P_{it} + A_{it}",
+          "purpose": "Growth plus production boost plus redistribution",
+          "variable_symbols": [
+            "SDI_it",
+            "lam",
+            "P_it",
+            "A_it"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2211240-PAM-4",
+          "equation_label": "Allocation share",
+          "equation_text": "A_it = a_it * R_t",
+          "source_expression": "A_it = a_it * R_t",
+          "normalized_latex": "A_{it} = a_{it} R_t",
+          "purpose": "Transfer proportional to development gap",
+          "variable_symbols": [
+            "A_it",
+            "a_it",
+            "R_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (16)-(22) on pages 13-16.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "DI from D&E model. First two Ward groups mine initially."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Lambda < 0 by diminishing marginal utility. Non-mining countries have zero production effect."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "GEI recovers to baseline in about 27 years, reaches 74.67 at year 50."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Ward clustering on TDI and EMDI; lambda varied in sensitivity; fund pool size varied in scenarios",
+        "parameters": [
+          "lam",
+          "R_t"
+        ]
+      },
+      "algorithm": {
+        "description": "Ward clustering into 4 groups. Iterate the difference equation with production and allocation terms. Recompute GEI each year. Repeat for larger fund pools and for medium countries joining.",
+        "status": "implemented",
+        "steps": [
+          "Ward clustering on TDI and EMDI",
+          "Assign first two groups as miners",
+          "Iterate difference equation",
+          "Recompute GEI yearly",
+          "Vary fund pool size",
+          "Add medium countries after 10 or 20 years"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "GEI returns to 66.80 in 27 years."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "GEI falls then rises. 74.67 at year 50. Three mining groups restore baseline in 21.5 to 25 years."
+        ],
+        "analysis": "Redistribution and diminishing returns both drive the reversal."
+      },
+      "constraints": [
+        "Four country groups.",
+        "Mining countries contribute, non-mining receive.",
+        "Lambda negative."
+      ],
+      "validation_refs": [
+        "Figure 12 GEI over time",
+        "Figure 16 fund pool scenarios",
+        "Figure 17 third group joining"
+      ],
+      "strengths": [
+        "Separates production from allocation so each lever can be tested.",
+        "Gives a concrete recovery time."
+      ],
+      "limitations": [
+        "Second-order difference equation is a simplification.",
+        "Allocation shares are proportional rules, not optimized."
+      ],
+      "missing_details": [
+        "Exact production percentage p_i.",
+        "Exact beta values feeding the yearly GEI."
+      ],
+      "assumptions": [
+        "Only asteroid mining changes the natural development rate.",
+        "All countries obey AMO rules."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2022-2211240-DEQ-1",
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "page": 9,
+      "source_expression": "q_j = (1 - E_j) / sum_j(1 - E_j)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-DEQ-2",
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "page": 9,
+      "source_expression": "score_i = sum_j(v_ij * q_j)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-DEQ-3",
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "page": 10,
+      "source_expression": "DI = W1*EMDI + W2*TDI + W3*EGDI"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-DEQ-4",
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "page": 11,
+      "source_expression": "d(x, y) = (x - y)^T S^{-1} (x - y)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-DEQ-5",
+      "model_id": "MU-F-2022-2211240-DEQ",
+      "page": 12,
+      "source_expression": "GEI = 1000 / Score, Score = beta1*d_bar + beta2*d_max/d_bar + beta3*sd"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-PAM-1",
+      "model_id": "MU-F-2022-2211240-PAM",
+      "page": 13,
+      "source_expression": "D_KL^2 = W_M - W_K - W_L"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-PAM-2",
+      "model_id": "MU-F-2022-2211240-PAM",
+      "page": 16,
+      "source_expression": "delta_SDI_it = (1 + lambda) * delta_SDI_it-1"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-PAM-3",
+      "model_id": "MU-F-2022-2211240-PAM",
+      "page": 16,
+      "source_expression": "delta_SDI_it = (1+lambda)*delta_SDI_it-1 + P_it + A_it"
+    },
+    {
+      "equation_id": "EQ-F-2022-2211240-PAM-4",
+      "model_id": "MU-F-2022-2211240-PAM",
+      "page": 16,
+      "source_expression": "A_it = a_it * R_t"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2022-2211240-DEQ",
+      "to_model_id": "MU-F-2022-2211240-PAM",
+      "handoff": "Development Index and GEI definition drive the mining simulation"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+     Team # 2300661                                                                Page 21 of 23
+
+
+
+     Appendices
+         Here are some partial key code we used in our model as follow.
+                       Listing 1: Prediction of changes in the number of four plants
+ 1   for j = 1:(NumofMonth-1)
+ 2   ri = 0.5*Li./(1+exp(k*D(j)));
+ 3       ksigma = 0.002*ones(4,4);
+ 4       s0 = 0.5*ones(4,4);
+ 5       sigma = -ksigma.*(s(j)-s0);
+ 6       for counti = 1:4
+ 7           for countj = 1:4
+ 8               if countj == counti
+ 9                   sigma(countj,counti) = 1;
+10               end
+11           end
+12       end
+13       tmp1 = 1- sigma*(x(j,:)./Ni)’;
+14         Ni = (1-0.6*(s(j+1)-0.5))*[200 153 137 36];
+15       x(j+1,:) = x(j,:) + x(j,:).*ri.*(tmp1’);
+16   end
+
+
+            Listing 2: Generate precipitation data with greater frequency and degree of drought
+ 1   clear
+ 2   % genarate a new kind of climate
+ 3   P = xlsread("T and rainfall.xlsx",’sheet2’,’E2:E49’);
+ 4
+ 5    h = histogram(P,0:5:120);
+ 6   times = h.Values;
+ 7
+ 8   f0 = times/sum(times);
+ 9   % stem(2.5:5:117.5,f0)
+10   reference0 = cumsum(f0);
+11   myrand = rand(60,1);
+12   myrainfall0 = zeros(60,1);
+13   for i = 1:60
+14       for j = 1:24
+15           if myrand(i)<=reference0(j)
+16           myrainfall0(i) = unifrnd(5*(j-1),5*j);
+17           break
+18           end
+19       end
+20   end
+21
+22   plot(myrainfall0)
+23
+24   f1 = f0;
+25   f1(24) = 0;
+26   f1(18) = 0.1*f0(18);
+27   f1(3) = f0(3)+0.9*f0(18)+f0(24);
+28   reference1 = cumsum(f1);
+29   myrand = rand(60,1);
+30   myrainfall1 = zeros(60,1);
+31   for i = 1:60
+32       for j = 1:24

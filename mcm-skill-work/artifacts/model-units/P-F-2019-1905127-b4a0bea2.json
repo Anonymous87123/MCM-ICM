@@ -1,0 +1,896 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2019-1905127-b4a0bea2",
+  "problem_type": "F",
+  "year": "2019",
+  "source_sha256": "b4a0bea28af6f4cf93309e5d1aabe7b5715722262290a76f8f8289e2390d3fa5",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2019-1905127-SM",
+      "section": "3.1 Search and matching under two currencies",
+      "family": "search-and-matching",
+      "summary": "An extension of the Diamond-Mortensen-Pissarides search model to a market where legal tender and a digital currency circulate together. Fisher's equation prices the digital currency and Keynes's speculative demand explains its swings: velocity is fixed by the technology, so the price falls as more goods are settled in it and rises when speculative demand surges, and the risk is largest when few accept it. In a one-period closed market nobody holds both currencies. Buyers and sellers match at random, the match probability is the ratio of goods kinds, and the value of holding nothing, legal tender or digital currency satisfies three Bellman equations with storage costs and a discount rate. Sellers accept a currency exactly when holding it beats holding nothing plus the production cost. Each currency then has a threshold acceptance. At equilibrium one currency can sit at full acceptance while the other holds steady, so the two can coexist; if the second falls below its threshold it spirals out, and if it sits above it oscillates until it balances. Because digital storage is cheap, its threshold is low. Zimbabwe, which has already dropped its own currency, anchors the legal-tender threshold, and the United States, birthplace of many digital currencies, anchors the digital one. Acceptance probabilities for 130 countries are computed from real parameters and checked by an OLS regression on 53 countries, R-squared 0.282.",
+      "computational_cost": "not-stated",
+      "purpose": "Find whether the two currencies coexist or one drives the other out.",
+      "base_or_modification": "modification",
+      "page": 7,
+      "inputs": [
+        "f_share",
+        "d_share"
+      ],
+      "outputs": [
+        "lam",
+        "mu"
+      ],
+      "handoff_outputs": [
+        "lam",
+        "mu"
+      ],
+      "objectives": [
+        "Derive the acceptance thresholds for both currencies."
+      ],
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "money_stock",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Digital currency in circulation, valued in legal tender",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "velocity",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Velocity, fixed by the technology once storage is controlled",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "output",
+          "role": "state",
+          "unit": "goods",
+          "definition": "Goods settled in the digital currency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_share",
+          "normalized_name": "legal_share",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of buyers holding legal tender",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_share",
+          "normalized_name": "digital_share",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of buyers holding digital currency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_m",
+          "normalized_name": "match_probability",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Probability a random search matches",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_buy",
+          "normalized_name": "buyer_utility",
+          "role": "parameter",
+          "unit": "utility",
+          "definition": "Utility from buying one unit, normalized to 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_prod",
+          "normalized_name": "production_cost",
+          "role": "parameter",
+          "unit": "utility",
+          "definition": "Cost of producing one unit",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "discount_rate",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Discount rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "legal_acceptance",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Probability a seller accepts legal tender",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "digital_acceptance",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Probability a seller accepts digital currency",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2019-1905127-SM-1",
+          "equation_label": "Price and demand split",
+          "equation_text": "P*Y = M*v, so a small change gives dP = d(Mv)/Y. Demand splits as M = M_business + M_speculate.",
+          "source_expression": "P*Y = M*v, so a small change gives dP = d(Mv)/Y. Demand splits as M = M_business + M_speculate.",
+          "normalized_latex": "PY=Mv,\\quad M=M_{business}+M_{speculate}",
+          "purpose": "Price the digital currency and separate the two demands.",
+          "variable_symbols": [
+            "M",
+            "v",
+            "Y"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-SM-2",
+          "equation_label": "Values of holding each currency",
+          "equation_text": "r*V0 = (1 - p_of - p_od)*delta^2*(u-c) + p_of*lam*delta*(Vf-V0-c) + p_od*mu*delta*(Vd-V0-c); r*Vf = p_fo*lam*delta*(u+V0-Vf) - pc_f; r*Vd = p_do*mu*delta*(u+V0-Vd) - pc_d",
+          "source_expression": "r*V0 = (1 - p_of - p_od)*delta^2*(u-c) + p_of*lam*delta*(Vf-V0-c) + p_od*mu*delta*(Vd-V0-c); r*Vf = p_fo*lam*delta*(u+V0-Vf) - pc_f; r*Vd = p_do*mu*delta*(u+V0-Vd) - pc_d",
+          "normalized_latex": "rV_0=(1-p_{of}-p_{od})\\delta^2(u-c)+p_{of}\\lambda\\delta(V_f-V_0-c)+p_{od}\\mu\\delta(V_d-V_0-c)",
+          "purpose": "Bellman values for holding nothing, legal tender and digital currency.",
+          "variable_symbols": [
+            "r",
+            "delta_m",
+            "u_buy",
+            "c_prod",
+            "lam",
+            "mu"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-SM-3",
+          "equation_label": "Acceptance thresholds",
+          "equation_text": "lam = 1 when Vf > V0 + c, 0 when Vf < V0 + c, and anything between when equal. The interior threshold mu-hat is solved from the value equations, and likewise lam-hat.",
+          "source_expression": "lam = 1 when Vf > V0 + c, 0 when Vf < V0 + c, and anything between when equal. The interior threshold mu-hat is solved from the value equations, and likewise lam-hat.",
+          "normalized_latex": "\\lambda=1 \\iff V_f>V_0+c",
+          "purpose": "Sellers accept a currency only when it beats holding nothing.",
+          "variable_symbols": [
+            "lam",
+            "mu",
+            "c_prod"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (1) to (3) and the threshold formulas are printed. The threshold algebra is watermark-flattened and read from the prose cases.",
+        "reason": "Section 3.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Shares f and d in [0,1], with f+d at most 1. Nobody holds both."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Match probabilities are capped at 1 by the min operator."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Acceptance is 1 or equals its threshold. Coexistence, exclusion and oscillation are the three cases."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Utility normalized to 1. Match rate from log GDP. Storage cost from one minus the profit margin. Shares from world monetary weights. OLS on 53 countries.",
+        "parameters": [
+          "u_buy",
+          "delta_m"
+        ]
+      },
+      "algorithm": {
+        "description": "Solve the value equations, back out the thresholds, compare each country.",
+        "status": "partial",
+        "steps": [
+          "Price the currency with Fisher",
+          "Write the three value equations",
+          "Solve the acceptance thresholds",
+          "Estimate parameters for 130 countries",
+          "Compare with the Zimbabwe and US benchmarks",
+          "Check signs by regression"
+        ],
+        "software": [
+          "Stata"
+        ],
+        "convergence_criteria": "Acceptance equals 1 or the solved threshold."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Table 3 reports the regression, R-squared 0.282, price and attention significant."
+        ],
+        "analysis": "The thresholds sort 130 countries. The risk coefficients are not statistically significant."
+      },
+      "constraints": [
+        "One search per period.",
+        "The two currencies do not affect each other's value."
+      ],
+      "validation_refs": [
+        "Table 3 regression results",
+        "Figure 3 world monetary equilibrium"
+      ],
+      "strengths": [
+        "One comparison generates three distinct long-run cases.",
+        "The benchmarks are real countries, not invented numbers."
+      ],
+      "limitations": [
+        "Only 53 of 130 countries enter the regression.",
+        "Bitcoin stands in for a currency that does not exist."
+      ],
+      "missing_details": [
+        "The solved numerical thresholds for Zimbabwe and the United States."
+      ],
+      "assumptions": [
+        "Matching is random and efficiency is normalized to one.",
+        "Velocity is fixed worldwide."
+      ]
+    },
+    {
+      "model_id": "MU-F-2019-1905127-TX",
+      "section": "3.2 Government intertemporal tax",
+      "family": "public-finance",
+      "summary": "The government maximizes the discounted sum of tax revenue. Digital adoption raises recognition, which raises output and the tax base, but it also shifts the base from legal tender to digital currency and adds supervision costs, concealment and the loss of macro control. Current revenue taxes each currency's matched trades at its own rate and subtracts a cost that grows with digital acceptance. Because willingness to switch payment methods moves slowly, the rates can only be optimized over time, so the government picks a pair of rates each period to nudge the mix until the present value of revenue net of supervision and risk is largest.",
+      "computational_cost": "not-stated",
+      "purpose": "Explain why a government taxes the two currencies differently.",
+      "base_or_modification": "paper-specific",
+      "page": 10,
+      "inputs": [
+        "mu"
+      ],
+      "outputs": [
+        "g_t"
+      ],
+      "handoff_outputs": [
+        "g_t"
+      ],
+      "objectives": [
+        "Maximize discounted tax revenue net of supervision cost."
+      ],
+      "variables": [
+        {
+          "symbol": "mu",
+          "normalized_name": "digital_acceptance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Acceptance of digital currency, carried from the matching model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tf",
+          "normalized_name": "legal_tax_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Tax rate on legal-tender transactions",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "td",
+          "normalized_name": "digital_tax_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Tax rate on digital transactions",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "discount_rate",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Discount rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g_t",
+          "normalized_name": "tax_revenue",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Government revenue in period t, net of supervision cost",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2019-1905127-TX-1",
+          "equation_label": "Current revenue",
+          "equation_text": "g_t = tf*p_of*lam*e(GDP(mu))*m(i,j)*|Vf-V0-c| + td*p_od*mu*e(GDP(mu))*m(i,j)*|Vd-V0-c| - C(mu)",
+          "source_expression": "g_t = tf*p_of*lam*e(GDP(mu))*m(i,j)*|Vf-V0-c| + td*p_od*mu*e(GDP(mu))*m(i,j)*|Vd-V0-c| - C(mu)",
+          "normalized_latex": "g_t=t_f p_{of}\\lambda e(GDP(\\mu))m|V_f-V_0-c|+t_d p_{od}\\mu e(GDP(\\mu))m|V_d-V_0-c|-C(\\mu)",
+          "purpose": "Tax on matched trades in each currency, minus supervision cost.",
+          "variable_symbols": [
+            "g_t",
+            "tf",
+            "td",
+            "mu"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-TX-2",
+          "equation_label": "Intertemporal objective",
+          "equation_text": "max sum over t of g_t/(1+r)^t",
+          "source_expression": "max sum over t of g_t/(1+r)^t",
+          "normalized_latex": "\\max\\sum_t g_t/(1+r)^t",
+          "purpose": "Present value of revenue net of cost.",
+          "variable_symbols": [
+            "g_t",
+            "r"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The revenue function and the discounted sum are printed. The derivative condition is garbled and read as revenue net of cost rising with acceptance.",
+        "reason": "Section 3.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Acceptance and the tax base start from the matching equilibrium."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Tax rates are chosen each period. Cost rises with digital acceptance."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The discounted tax take net of supervision and risk is maximized."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "No rates are estimated. The model stays qualitative.",
+        "parameters": [
+          "tf",
+          "td"
+        ]
+      },
+      "algorithm": {
+        "description": "Choose the two rates each period to steer the payment mix.",
+        "status": "partial",
+        "steps": [
+          "Write current revenue",
+          "Add the supervision cost",
+          "Discount over time",
+          "Pick rates to maximize"
+        ],
+        "software": [],
+        "convergence_criteria": "Discounted net revenue at its maximum. No tolerance stated."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "No numerical solution is reported."
+        ],
+        "analysis": "The trade-off is stated. It is not solved."
+      },
+      "constraints": [
+        "The government can tax the two modes at different rates.",
+        "Some of the added activity may be illegal."
+      ],
+      "validation_refs": [
+        "The revenue function in section 3.2.2"
+      ],
+      "strengths": [
+        "The same acceptance variable drives both the tax base and the cost.",
+        "The shift of the base is separated from the growth of the total."
+      ],
+      "limitations": [
+        "No solved tax rates.",
+        "The cost function is unnamed."
+      ],
+      "missing_details": [
+        "The form of the supervision cost C and any calibrated rates."
+      ],
+      "assumptions": [
+        "The government maximizes long-run revenue.",
+        "A larger economy raises matching efficiency."
+      ]
+    },
+    {
+      "model_id": "MU-F-2019-1905127-FX",
+      "section": "3.3.1 Trade profit under exchange-rate fluctuation",
+      "family": "international-trade",
+      "summary": "Following Bacchetta and van Wincoop, an exporter's profit is written when the price is set in the exporter's currency and when it is set in the importer's, with the exchange rate random and normal. The gap in expected profit is proportional to the variance times the curvature of profit, so both sides pick the exporter's currency when profit is convex in the rate. Adding the digital currency as a third unit, the same comparison says it wins whenever its rate against the importer swings less than the rate between the two countries. Controlling its risk is therefore enough to make it the settlement currency of trade.",
+      "computational_cost": "not-stated",
+      "purpose": "Show when the digital currency becomes the trade settlement unit.",
+      "base_or_modification": "modification",
+      "page": 11,
+      "inputs": [
+        "sig2"
+      ],
+      "outputs": [
+        "gap"
+      ],
+      "handoff_outputs": [
+        "gap"
+      ],
+      "objectives": [
+        "Rank the three settlement currencies by expected profit."
+      ],
+      "variables": [
+        {
+          "symbol": "eps",
+          "normalized_name": "exchange_rate",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Rate of the exporter's currency against the importer's",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sig2",
+          "normalized_name": "rate_variance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Variance of the exchange rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_exp",
+          "normalized_name": "export_price",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Price in the exporter's currency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "profit_gap",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Difference in expected profit between settlement choices",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2019-1905127-FX-1",
+          "equation_label": "Profit in two currencies",
+          "equation_text": "Pi_p = p_p*D(p_p/eps) - C(D(p_p/eps)); Pi_L = eps*p_L*D(p_L) - C(D(p_L))",
+          "source_expression": "Pi_p = p_p*D(p_p/eps) - C(D(p_p/eps)); Pi_L = eps*p_L*D(p_L) - C(D(p_L))",
+          "normalized_latex": "\\Pi_p=p_p D(p_p/\\varepsilon)-C(D(p_p/\\varepsilon))",
+          "purpose": "Exporter profit under each of the two national currencies.",
+          "variable_symbols": [
+            "eps",
+            "p_exp"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-FX-2",
+          "equation_label": "Expected-profit gap",
+          "equation_text": "EU(Pi_p) - EU(Pi_L) = (1/2)*U''*d2(Pi_p-Pi_L)/deps^2 * sig2. The digital currency wins when its own variance against the importer is smaller.",
+          "source_expression": "EU(Pi_p) - EU(Pi_L) = (1/2)*U''*d2(Pi_p-Pi_L)/deps^2 * sig2. The digital currency wins when its own variance against the importer is smaller.",
+          "normalized_latex": "EU(\\Pi_p)-EU(\\Pi_L)=\\tfrac12 U''\\partial_\\varepsilon^2(\\Pi_p-\\Pi_L)\\,\\sigma^2",
+          "purpose": "Curvature times variance ranks the settlement choices.",
+          "variable_symbols": [
+            "gap",
+            "sig2",
+            "eps"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (4) to (6) and the three-currency comparison are printed. The second-derivative notation is flattened and read from the convexity claim.",
+        "reason": "Section 3.3.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Exchange rates are normal with a computed mean."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Profit convex in the rate favors the exporter's currency."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The settlement currency is the one with the highest expected profit."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Qualitative ranking. No estimation.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Compare expected profits under three settlement units.",
+        "status": "partial",
+        "steps": [
+          "Write profit in each currency",
+          "Take the expectation under normal rates",
+          "Add the digital currency",
+          "Rank by variance"
+        ],
+        "software": [],
+        "convergence_criteria": "None. The ranking is analytic."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The ranking is derived, not estimated."
+        ],
+        "analysis": "The condition is clear. No variance is measured."
+      },
+      "constraints": [
+        "One commodity, firms in two countries.",
+        "Rates move normally."
+      ],
+      "validation_refs": [
+        "Equation (6) and the three-currency comparison"
+      ],
+      "strengths": [
+        "The whole conclusion reduces to one comparison of variances.",
+        "A published model is extended by a single added currency."
+      ],
+      "limitations": [
+        "Convexity is assumed, not tested.",
+        "No measured variances."
+      ],
+      "missing_details": [
+        "Estimates of the three exchange-rate variances."
+      ],
+      "assumptions": [
+        "Exchange-rate changes are normal.",
+        "Demand and cost functions are smooth."
+      ]
+    },
+    {
+      "model_id": "MU-F-2019-1905127-SN",
+      "section": "3.3.2 Supranational monetary system",
+      "family": "optimal-currency-area",
+      "summary": "A two-track system keeps both a supranational digital currency and national currencies, against the textbook optimal-currency-area advice to drop the national ones. A world body issues the digital currency, allocates it to central banks in proportion to demand, and each central bank issues it onward. Its cross-country rate is fixed at one and its velocity is uniform. Supply follows estimated world output through Fisher, and the body targets inflation inside 1.5 to 2.5 percent, setting the nominal rate from the real rate plus the target. It also adjusts each country's supply by a weighted trade gap and capital gap, cutting supply when a deficit comes with capital inflow. National central banks keep an independent policy and a floating rate against the digital currency, given by purchasing-power parity, and capital runs to where the real rate is higher. A Monte Carlo simulation of US trade from 1994 to 2016 puts the digital share near 65.21 percent after ten years regardless of the start, unless the world body loses control, in which case the share collapses.",
+      "computational_cost": "not-stated",
+      "purpose": "Design the world monetary system and test its trade share.",
+      "base_or_modification": "modification",
+      "page": 13,
+      "inputs": [
+        "Y_imp"
+      ],
+      "outputs": [
+        "z_t",
+        "eps_t"
+      ],
+      "handoff_outputs": [
+        "z_t"
+      ],
+      "objectives": [
+        "Keep the digital currency stable while leaving national policy free."
+      ],
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "digital_supply",
+          "role": "state",
+          "unit": "currency",
+          "definition": "Digital currency supplied to country i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "velocity",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Velocity, identical between countries",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_imp",
+          "normalized_name": "import_demand",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Demand for imported goods and services",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_t",
+          "normalized_name": "inflation_target",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Inflation target, held between 1.5 and 2.5 percent",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "real_rate",
+          "role": "state",
+          "unit": "per-time",
+          "definition": "Real interest rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps_t",
+          "normalized_name": "exchange_rate",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Floating rate of the national currency against the digital one",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z_t",
+          "normalized_name": "digital_trade_share",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Share of a country's trade settled in digital currency",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2019-1905127-SN-1",
+          "equation_label": "Supply and allocation",
+          "equation_text": "Sum of national digital supply = P*Y/v. Country i's demand is the sum over partners of (imports/eps + capital flow)/velocity, and supply matches demand.",
+          "source_expression": "Sum of national digital supply = P*Y/v. Country i's demand is the sum over partners of (imports/eps + capital flow)/velocity, and supply matches demand.",
+          "normalized_latex": "\\sum_i M(d_i)=PY/v,\\quad M(d_i)\\approx D_{di}",
+          "purpose": "World supply from output, national supply from demand share.",
+          "variable_symbols": [
+            "M",
+            "v",
+            "Y_imp"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-SN-2",
+          "equation_label": "Inflation target and parity rate",
+          "equation_text": "The growth of digital supply is held inside the inflation band. Nominal rate = real rate + target. The national rate follows eps = (1+r_f)/(1+r_d) * (1+pi_f)/(1+pi_d) * eps_0.",
+          "source_expression": "The growth of digital supply is held inside the inflation band. Nominal rate = real rate + target. The national rate follows eps = (1+r_f)/(1+r_d) * (1+pi_f)/(1+pi_d) * eps_0.",
+          "normalized_latex": "R_d=r_d+\\pi^{target},\\quad \\varepsilon_{t}=\\frac{1+r_f}{1+r_d}\\frac{1+\\pi_f}{1+\\pi_d}\\varepsilon_0",
+          "purpose": "The rate rule and purchasing-power parity.",
+          "variable_symbols": [
+            "M",
+            "pi_t",
+            "r",
+            "eps_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2019-1905127-SN-3",
+          "equation_label": "Trade-share recursion",
+          "equation_text": "z_t(z_t-1, change in digital rate, change in flat rate) = D_dt*v(d)/Y_t. Simulated from a quadratic fit of US trade, 1994 to 2016.",
+          "source_expression": "z_t(z_t-1, change in digital rate, change in flat rate) = D_dt*v(d)/Y_t. Simulated from a quadratic fit of US trade, 1994 to 2016.",
+          "normalized_latex": "z_t(z_{t-1},\\Delta\\varepsilon_{dig},\\Delta\\varepsilon_f)=D_{dt}v(d)/Y_t",
+          "purpose": "The digital trade share evolves with the previous share and the two rate changes.",
+          "variable_symbols": [
+            "z_t",
+            "v"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The supply rule, the parity rate and the share recursion are printed. Several are watermark-flattened and read from the surrounding prose.",
+        "reason": "Section 3.3.2 and 4.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "US trade fitted from 1994 to 2016. The starting digital share is random."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Inflation held between 1.5 and 2.5 percent. The cross-country digital rate is fixed at 1."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The trade share converges near 65.21 percent. It collapses if the world body stops regulating."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Quadratic fit of US trade, then Monte Carlo over random initial shares.",
+        "parameters": [
+          "pi_t"
+        ]
+      },
+      "algorithm": {
+        "description": "Fit trade, then simulate the share forward ten years.",
+        "status": "implemented",
+        "steps": [
+          "Fit a quadratic to US trade",
+          "Draw a random initial share",
+          "Update the share from the rate changes",
+          "Repeat over initial values",
+          "Remove the regulator and rerun"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Share stabilizes. Reported near 65.21 percent."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Figures 4 and 5 show the stable and the collapsed paths."
+        ],
+        "analysis": "The convergence is shown across initial values. The fit and the rate processes are not tabulated."
+      },
+      "constraints": [
+        "National currencies remain in domestic use.",
+        "The world body can cut a country's supply."
+      ],
+      "validation_refs": [
+        "Figure 4 stable digital share",
+        "Figure 5 share after loss of regulation"
+      ],
+      "strengths": [
+        "The result is shown to be independent of the starting share.",
+        "The failure mode is simulated, not only the success."
+      ],
+      "limitations": [
+        "One country's trade stands for the world.",
+        "The eurozone caveat says capital does not flow as the model claims."
+      ],
+      "missing_details": [
+        "The fitted coefficients and the distribution used for the rate shocks."
+      ],
+      "assumptions": [
+        "Purchasing-power parity holds more tightly for the digital currency.",
+        "Velocity is the same between every pair of countries."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2019-1905127-SM-1",
+      "model_id": "MU-F-2019-1905127-SM",
+      "page": 7,
+      "source_expression": "P*Y = M*v, so a small change gives dP = d(Mv)/Y. Demand splits as M = M_business + M_speculate."
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-SM-2",
+      "model_id": "MU-F-2019-1905127-SM",
+      "page": 8,
+      "source_expression": "r*V0 = (1 - p_of - p_od)*delta^2*(u-c) + p_of*lam*delta*(Vf-V0-c) + p_od*mu*delta*(Vd-V0-c); r*Vf = p_fo*lam*delta*(u+V0-Vf) - pc_f; r*Vd = p_do*mu*delta*(u+V0-Vd) - pc_d"
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-SM-3",
+      "model_id": "MU-F-2019-1905127-SM",
+      "page": 9,
+      "source_expression": "lam = 1 when Vf > V0 + c, 0 when Vf < V0 + c, and anything between when equal. The interior threshold mu-hat is solved from the value equations, and likewise lam-hat."
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-TX-1",
+      "model_id": "MU-F-2019-1905127-TX",
+      "page": 11,
+      "source_expression": "g_t = tf*p_of*lam*e(GDP(mu))*m(i,j)*|Vf-V0-c| + td*p_od*mu*e(GDP(mu))*m(i,j)*|Vd-V0-c| - C(mu)"
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-TX-2",
+      "model_id": "MU-F-2019-1905127-TX",
+      "page": 11,
+      "source_expression": "max sum over t of g_t/(1+r)^t"
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-FX-1",
+      "model_id": "MU-F-2019-1905127-FX",
+      "page": 12,
+      "source_expression": "Pi_p = p_p*D(p_p/eps) - C(D(p_p/eps)); Pi_L = eps*p_L*D(p_L) - C(D(p_L))"
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-FX-2",
+      "model_id": "MU-F-2019-1905127-FX",
+      "page": 12,
+      "source_expression": "EU(Pi_p) - EU(Pi_L) = (1/2)*U''*d2(Pi_p-Pi_L)/deps^2 * sig2. The digital currency wins when its own variance against the importer is smaller."
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-SN-1",
+      "model_id": "MU-F-2019-1905127-SN",
+      "page": 13,
+      "source_expression": "Sum of national digital supply = P*Y/v. Country i's demand is the sum over partners of (imports/eps + capital flow)/velocity, and supply matches demand."
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-SN-2",
+      "model_id": "MU-F-2019-1905127-SN",
+      "page": 14,
+      "source_expression": "The growth of digital supply is held inside the inflation band. Nominal rate = real rate + target. The national rate follows eps = (1+r_f)/(1+r_d) * (1+pi_f)/(1+pi_d) * eps_0."
+    },
+    {
+      "equation_id": "EQ-F-2019-1905127-SN-3",
+      "model_id": "MU-F-2019-1905127-SN",
+      "page": 19,
+      "source_expression": "z_t(z_t-1, change in digital rate, change in flat rate) = D_dt*v(d)/Y_t. Simulated from a quadratic fit of US trade, 1994 to 2016."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2019-1905127-SM",
+      "to_model_id": "MU-F-2019-1905127-TX",
+      "handoff": "The acceptance probabilities set the tax base the government steers"
+    },
+    {
+      "from_model_id": "MU-F-2019-1905127-FX",
+      "to_model_id": "MU-F-2019-1905127-SN",
+      "handoff": "The variance ranking is why trade settles in the supranational currency"
+    },
+    {
+      "from_model_id": "MU-F-2019-1905127-SM",
+      "to_model_id": "MU-F-2019-1905127-SN",
+      "handoff": "The domestic matching equilibrium still governs use inside each country"
+    }
+  ]
+}

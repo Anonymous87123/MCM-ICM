@@ -1,0 +1,1119 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2022-2203489-75977cc9",
+  "problem_type": "E",
+  "year": "2022",
+  "source_sha256": "75977cc9e4c1053cdf3e47774cc123dc210a47d1b8750aed709c728b7f18dbba",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "section": "Carbon sequestration model",
+      "family": "evaluation",
+      "summary": "A tree grows by a logistic whose unconstrained form is written first and then blocked by a maximum biomass. The closed form on the page has lost its exponential. The species rate in equation 5 does not parse. The forest is a 90 km grid whose coverage comes from a vegetation-versus-soil NDVI split. Products decay by a half-life whose service-life subscript is a missing glyph. Dioxide over a period is carbon times 44 over 12, adding the living store to the product store.",
+      "computational_cost": "One logistic, one coverage fraction, one half-life, and one 44-over-12 conversion",
+      "purpose": "Turn seedling biomass, coverage, and product life into a dioxide total.",
+      "base_or_modification": "hybrid",
+      "page": 5,
+      "inputs": [
+        "p0"
+      ],
+      "outputs": [
+        "CDC"
+      ],
+      "handoff_outputs": [
+        "CDC"
+      ],
+      "objectives": [
+        "Raise the dioxide total by planting high-carbon species and making solid wood."
+      ],
+      "variables": [
+        {
+          "symbol": "p0",
+          "normalized_name": "seedling_biomass",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Biomass of a tree just starting to grow, the initial value of the logistic",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pmax",
+          "normalized_name": "max_biomass",
+          "role": "parameter",
+          "unit": "mass",
+          "definition": "Maximum biomass, the blocking factor in the logistic",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Growth rate. Called constant, then given per species. Equation 5 does not parse",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "biomass",
+          "role": "state",
+          "unit": "mass",
+          "definition": "Biomass at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Time since the seedling",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "coverage",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Vegetation coverage on the grid, not equal to 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NDVI",
+          "normalized_name": "ndvi",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Normalized difference vegetation index of the cell. The fraction bar is not on the line",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NDVIv",
+          "normalized_name": "ndvi_vegetation",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "NDVI of a cell covered only by vegetation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NDVIs",
+          "normalized_name": "ndvi_soil",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "NDVI of a cell covered only by soil",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "layer_biomass",
+          "role": "parameter",
+          "unit": "mass",
+          "definition": "Biomass of one species in one carbon layer",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cj",
+          "normalized_name": "carbon_content",
+          "role": "parameter",
+          "unit": "mass per mass",
+          "definition": "Biomass carbon content of species j. Dry wood is said to be half carbon",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Css",
+          "normalized_name": "product_store",
+          "role": "parameter",
+          "unit": "mass",
+          "definition": "Carbon stored in forest products",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "remaining_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of a product still in use. The print uses t, which is also the year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "product_age",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Time from production to the end of the statistics",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lsvc",
+          "normalized_name": "service_life",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Service life. The subscript glyphs are missing",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "CDC",
+          "normalized_name": "dioxide_total",
+          "role": "output",
+          "unit": "mass",
+          "definition": "Carbon dioxide expected over the period. The summary calls the same letters a containment",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-1",
+          "equation_label": "Blocked growth",
+          "equation_text": "After an unconstrained line, biomass growth is the rate times biomass times one minus biomass over the maximum biomass.",
+          "source_expression": "After an unconstrained line, biomass growth is the rate times biomass times one minus biomass over the maximum biomass.",
+          "normalized_latex": "dP/dt=r*P*(1-P/Pmax)",
+          "purpose": "Block the exponential with a ceiling.",
+          "variable_symbols": [
+            "P",
+            "t",
+            "r",
+            "Pmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-2",
+          "equation_label": "Closed form",
+          "equation_text": "The printed closed form multiplies the seedling biomass by the maximum biomass and then by the maximum biomass plus the seedling times an exponential minus one. The exponential of rate times time is not on the line.",
+          "source_expression": "The printed closed form multiplies the seedling biomass by the maximum biomass and then by the maximum biomass plus the seedling times an exponential minus one. The exponential of rate times time is not on the line.",
+          "normalized_latex": "P=P(p0,Pmax)",
+          "purpose": "Name the closed form without supplying it.",
+          "variable_symbols": [
+            "P",
+            "p0",
+            "Pmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-3",
+          "equation_label": "Species rate",
+          "equation_text": "Equation 5 is printed as two r glyphs and an equals sign. The operator between them is a missing glyph. Four rates are listed beside it: 3.08, 2.57, 2.74, and 2.41.",
+          "source_expression": "Equation 5 is printed as two r glyphs and an equals sign. The operator between them is a missing glyph. Four rates are listed beside it: 3.08, 2.57, 2.74, and 2.41.",
+          "normalized_latex": "r=r()",
+          "purpose": "Leave the species rate unparsed.",
+          "variable_symbols": [
+            "r"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-4",
+          "equation_label": "Coverage",
+          "equation_text": "Coverage is the cell NDVI minus the soil NDVI, divided by the vegetation NDVI minus the soil NDVI.",
+          "source_expression": "Coverage is the cell NDVI minus the soil NDVI, divided by the vegetation NDVI minus the soil NDVI.",
+          "normalized_latex": "F=(NDVI-NDVIs)/(NDVIv-NDVIs)",
+          "purpose": "Split the pixel into vegetation and soil.",
+          "variable_symbols": [
+            "F",
+            "NDVI",
+            "NDVIs",
+            "NDVIv"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-5",
+          "equation_label": "Product half-life",
+          "equation_text": "The share still in use is an exponential of minus ln 2 times product age over service life. The service-life subscript is a missing glyph. The print uses t for that share.",
+          "source_expression": "The share still in use is an exponential of minus ln 2 times product age over service life. The service-life subscript is a missing glyph. The print uses t for that share.",
+          "normalized_latex": "theta=\\exp(-\\ln(2)*W/Lsvc)",
+          "purpose": "Decay the product by a half-life.",
+          "variable_symbols": [
+            "theta",
+            "W",
+            "Lsvc"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-SEQ-6",
+          "equation_label": "Dioxide total",
+          "equation_text": "Dioxide over the period is 44 over 12 times coverage times layer biomass times carbon content, plus the product store. The living sum is written inside the brackets.",
+          "source_expression": "Dioxide over the period is 44 over 12 times coverage times layer biomass times carbon content, plus the product store. The living sum is written inside the brackets.",
+          "normalized_latex": "CDC=(44/12)*(F*B*Cj+Css)",
+          "purpose": "Convert carbon to dioxide and add products.",
+          "variable_symbols": [
+            "CDC",
+            "F",
+            "B",
+            "Cj",
+            "Css"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 4 drops the exponential. Equation 5 drops an operator. Equation 7 drops the NDVI fraction bar. Equation 11 is used twice. The service-life subscript is a missing glyph.",
+        "reason": "Sections 4.1 to 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The seedling biomass is the value at time zero."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "The grid is a bookkeeping device, not a spatial boundary-value problem."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "The logistic ceiling is named and not solved as a steady state."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Four species rates are listed. MATLAB fitting is named later for the Canada run. No fit residual is printed.",
+        "parameters": [
+          "r",
+          "Pmax",
+          "Lsvc"
+        ]
+      },
+      "algorithm": {
+        "description": "Solve the logistic, estimate coverage from NDVI, decay the products, and scale by 44 over 12.",
+        "status": "partial",
+        "steps": [
+          "Block the growth with a ceiling",
+          "Estimate coverage",
+          "Add the product store"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "No convergence test is stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The 44-over-12 factor and the coverage fraction print. The closed form and the species rate do not."
+        ],
+        "analysis": "Equation 12 is the total the summary points at."
+      },
+      "constraints": [
+        "Forest area is held fixed.",
+        "Product service life is held fixed.",
+        "Coverage is not 1."
+      ],
+      "validation_refs": [
+        "Equation 12, the dioxide total",
+        "Table 2, four species rates",
+        "Table 3, densities and service lives"
+      ],
+      "strengths": [
+        "Living carbon and product carbon are added in one line.",
+        "The coverage fraction is the readable part of the NDVI argument."
+      ],
+      "limitations": [
+        "The closed form has lost its exponential.",
+        "Equation 5 and the service-life subscript do not parse."
+      ],
+      "missing_details": [
+        "The operator in equation 5.",
+        "The NDVI fraction as printed.",
+        "Which of the two equation 11 lines is the objective."
+      ],
+      "assumptions": [
+        "Accidental factors during growth are ignored.",
+        "Environmental factors do not change.",
+        "Product service life does not change."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2203489-PRI",
+      "section": "Priority sequence model",
+      "family": "decision",
+      "summary": "Two first-grade weights are printed, 0.6145 for ecological effects and 0.3855 for economic effects. Seven second-grade weights sit off their names. Goals are ranked by priority factors that dwarf the next factor. The goal program itself is an empty display numbered 14. A plus deviation is defined as missing the target and a minus deviation as exceeding it. The comprehensive optimized index is 100 times a signed sum of min-max normalized indexes, with a stated range from -5.77 to 94.26. A special forest is forced back to ecology even when money ranks first.",
+      "computational_cost": "An empty goal program plus one signed sum of seven normalized indexes",
+      "purpose": "Rank ecology against economy and score the ranking.",
+      "base_or_modification": "paper-specific",
+      "page": 11,
+      "inputs": [
+        "wE"
+      ],
+      "outputs": [
+        "COI"
+      ],
+      "handoff_outputs": [
+        "COI"
+      ],
+      "objectives": [
+        "Choose the priority order whose index sits closer to 94.26."
+      ],
+      "variables": [
+        {
+          "symbol": "wE",
+          "normalized_name": "ecological_weight",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "First-grade weight of ecological effects, printed 0.6145",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wM",
+          "normalized_name": "economic_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "First-grade weight of economic effects, printed 0.3855",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pk",
+          "normalized_name": "priority_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Priority factor of goal k. Each factor is said to dwarf the next",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pnext",
+          "normalized_name": "next_priority",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Priority factor of goal k+1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GP",
+          "normalized_name": "goal_program",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "The goal program. Display 14 is empty",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "dplus",
+          "normalized_name": "plus_deviation",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Deviation the prose allows to fall short of the target",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dminus",
+          "normalized_name": "minus_deviation",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Deviation the prose allows to exceed the target",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wi",
+          "normalized_name": "second_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "A second-grade weight. The column is not locked to the names",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ui",
+          "normalized_name": "normalized_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Min-max normalized second-grade index, between 0 and 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xi",
+          "normalized_name": "raw_index",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Raw second-grade value before normalization",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmin",
+          "normalized_name": "index_min",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Minimum of the raw index over the set",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmax",
+          "normalized_name": "index_max",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Maximum of the raw index over the set",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "COI",
+          "normalized_name": "optimized_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Comprehensive optimized index. Stated range -5.77 to 94.26",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2203489-PRI-1",
+          "equation_label": "Priority order",
+          "equation_text": "If there are n priority factors, they satisfy a chain in which each factor is much greater than the next.",
+          "source_expression": "If there are n priority factors, they satisfy a chain in which each factor is much greater than the next.",
+          "normalized_latex": "pk\\gg pnext",
+          "purpose": "Rank the goals.",
+          "variable_symbols": [
+            "pk",
+            "pnext"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-PRI-2",
+          "equation_label": "Empty program",
+          "equation_text": "The target program is announced and the display contains only the number 14. The prose says the objective minimizes a weighted sum of plus and minus deviations.",
+          "source_expression": "The target program is announced and the display contains only the number 14. The prose says the objective minimizes a weighted sum of plus and minus deviations.",
+          "normalized_latex": "GP=GP(dplus,dminus)",
+          "purpose": "Name the program without printing it.",
+          "variable_symbols": [
+            "GP",
+            "dplus",
+            "dminus"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-PRI-3",
+          "equation_label": "Optimized index",
+          "equation_text": "The index is 100 times a sum of signed products of a second-grade weight and a normalized index. The sign is printed as plus or minus, not assigned term by term.",
+          "source_expression": "The index is 100 times a sum of signed products of a second-grade weight and a normalized index. The sign is printed as plus or minus, not assigned term by term.",
+          "normalized_latex": "COI=100*\\sum \\pm wi*ui",
+          "purpose": "Score the priority order.",
+          "variable_symbols": [
+            "COI",
+            "wi",
+            "ui"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-PRI-4",
+          "equation_label": "Min-max normalization",
+          "equation_text": "A normalized index is the raw value minus the minimum, divided by the maximum minus the minimum, and it lies between 0 and 1.",
+          "source_expression": "A normalized index is the raw value minus the minimum, divided by the maximum minus the minimum, and it lies between 0 and 1.",
+          "normalized_latex": "ui=(xi-xmin)/(xmax-xmin)",
+          "purpose": "Scale each second-grade index.",
+          "variable_symbols": [
+            "ui",
+            "xi",
+            "xmin",
+            "xmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Display 14 is empty. The plus deviation is defined as a shortfall. The index sign is an unspecified plus or minus. The stated range is -5.77 to 94.26.",
+        "reason": "Section 5.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The index is a score of one priority order, not an initial-value problem."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The index is said to lie between -5.77 and 94.26, and the endpoints can only be approached."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No steady state is claimed for the index."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Weights are said to come from the analytic hierarchy process. No pairwise matrix is printed.",
+        "parameters": [
+          "wE",
+          "wM",
+          "wi"
+        ]
+      },
+      "algorithm": {
+        "description": "Rank ecology and economy, score the ranking, and force a marked forest back to ecology.",
+        "status": "partial",
+        "steps": [
+          "Read the first-grade weights",
+          "Score the order",
+          "Override a special forest"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The preferred order is the one closer to the right endpoint."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The two first-grade weights and the index range print. The goal program does not."
+        ],
+        "analysis": "Saihanba is scored at 46.35 and Canada at 35.69."
+      },
+      "constraints": [
+        "A special forest marked 1 is not allowed to take the economic priority.",
+        "The endpoints of the index are not attainable."
+      ],
+      "validation_refs": [
+        "Table 4, the two first-grade weights",
+        "Figure 6, the Saihanba index chart",
+        "Figure 8, the Canada index chart"
+      ],
+      "strengths": [
+        "The two first-grade weights are printed and sum to 1.",
+        "A forest that cannot be replaced is forced off the money-first plan."
+      ],
+      "limitations": [
+        "Display 14 is empty.",
+        "The second-grade names are not on the weight rows.",
+        "The plus deviation is defined as a shortfall."
+      ],
+      "missing_details": [
+        "The algebraic form of display 14.",
+        "Which second-grade name owns which weight.",
+        "Which terms in the index sum are negative."
+      ],
+      "assumptions": [
+        "The error of parameter estimation is assumed to have a controllable influence. The printed explanation is the product-life paragraph."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2203489-CUT",
+      "section": "Intermediate cutting and the transition area",
+      "family": "decision",
+      "summary": "Cutting intensity is a count ratio and a volume ratio. Their quotient picks crown, low, or geometric thinning, and a table grades the cut from weak to extremely high. A single-rotation income is turned into an infinite-horizon income by cancelling the time limit. The discount exponent is blank on the page. Douglas fir is priced, taxed, and given a period of 12.510 years, printed as about 13. The carbon benefit uses 12 over 44, the reverse of the sequestration model. The transition area is equation 25, a normal-looking exponential whose sigma operator is missing. A disturbance coefficient is the gap between actual area and planned area, over actual area.",
+      "computational_cost": "A ratio of two intensities, an infinite-horizon income, and one disturbance coefficient",
+      "purpose": "Choose a thinning grade, a rotation, and a transition area.",
+      "base_or_modification": "modification",
+      "page": 14,
+      "inputs": [
+        "CDC"
+      ],
+      "outputs": [
+        "tp",
+        "ST"
+      ],
+      "handoff_outputs": [
+        "tp"
+      ],
+      "objectives": [
+        "Maximize forest-land income over an infinite sequence of plantings without letting forest function decline."
+      ],
+      "variables": [
+        {
+          "symbol": "CDC",
+          "normalized_name": "dioxide_total",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Dioxide total from the sequestration model, priced by the carbon tax",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cn",
+          "normalized_name": "count_intensity",
+          "role": "parameter",
+          "unit": "percent",
+          "definition": "Trees cut divided by trees standing, times 100",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cv",
+          "normalized_name": "volume_intensity",
+          "role": "parameter",
+          "unit": "percent",
+          "definition": "Volume cut divided by stand volume, times 100",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "intensity_ratio",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Volume intensity over count intensity. Above 1 means crown thinning, below 1 means low thinning, equal means geometric",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "En",
+          "normalized_name": "net_income",
+          "role": "intermediate",
+          "unit": "money",
+          "definition": "Net income. The single-rotation line and the infinite-horizon line are both printed with a blank discount exponent",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "carbon_benefit",
+          "role": "intermediate",
+          "unit": "money",
+          "definition": "Benefit from carbon sequestration of the wood",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "price",
+          "normalized_name": "timber_price",
+          "role": "parameter",
+          "unit": "money per volume",
+          "definition": "Douglas fir price, printed 1500 per cubic meter with no currency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "logging_cost",
+          "role": "parameter",
+          "unit": "money",
+          "definition": "Marginal logging cost",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C0",
+          "normalized_name": "planting_cost",
+          "role": "parameter",
+          "unit": "money per tree",
+          "definition": "Planting cost, printed as 6 dollars per plant",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "dbh",
+          "role": "intermediate",
+          "unit": "length",
+          "definition": "Diameter, the left side of the log fit. The print drops the left side",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "height",
+          "role": "parameter",
+          "unit": "length",
+          "definition": "Tree height, the argument of the logarithm",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tax",
+          "normalized_name": "carbon_tax",
+          "role": "parameter",
+          "unit": "money per mass",
+          "definition": "Printed as 150 dollars per c",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tp",
+          "normalized_name": "optimal_period",
+          "role": "output",
+          "unit": "year",
+          "definition": "Optimal thinning period, printed 12.510 and taken as about 13",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ST",
+          "normalized_name": "transition_area",
+          "role": "output",
+          "unit": "area",
+          "definition": "Optimal planted area during the transition. Equation 25 does not parse",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "area_center",
+          "role": "parameter",
+          "unit": "area",
+          "definition": "Center of the unparsed area curve",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "area_spread",
+          "role": "parameter",
+          "unit": "area",
+          "definition": "Spread of the unparsed area curve. The operator between the two sigma glyphs is missing",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "disturbance",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Gap between actual area and the planned area, divided by actual area, said to lie in 0 to 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "actual_area",
+          "role": "parameter",
+          "unit": "area",
+          "definition": "Actual planted area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sdot",
+          "normalized_name": "planned_area",
+          "role": "parameter",
+          "unit": "area",
+          "definition": "Planned area, written as a dotted S equal to a coefficient",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-1",
+          "equation_label": "Intensity ratio",
+          "equation_text": "The ratio of volume intensity to count intensity is above 1 for crown thinning, below 1 for low thinning, and equal to 1 for geometric thinning.",
+          "source_expression": "The ratio of volume intensity to count intensity is above 1 for crown thinning, below 1 for low thinning, and equal to 1 for geometric thinning.",
+          "normalized_latex": "d=Cv/Cn",
+          "purpose": "Choose the thinning type.",
+          "variable_symbols": [
+            "d",
+            "Cv",
+            "Cn"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-2",
+          "equation_label": "Infinite income",
+          "equation_text": "Net income of one rotation is multiplied by 1 over 1 minus an exponential. The exponent is blank. The time limit of the single-rotation line is cancelled.",
+          "source_expression": "Net income of one rotation is multiplied by 1 over 1 minus an exponential. The exponent is blank. The time limit of the single-rotation line is cancelled.",
+          "normalized_latex": "En=En(h,price,c,C0)",
+          "purpose": "Extend one harvest to an infinite sequence.",
+          "variable_symbols": [
+            "En",
+            "h",
+            "price",
+            "c",
+            "C0"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-3",
+          "equation_label": "Log fit",
+          "equation_text": "Diameter is 5.78 plus 36.79 times the natural log of height. The print drops the left side and writes the fit as 2 equal to 0.761, said to exceed 0.732.",
+          "source_expression": "Diameter is 5.78 plus 36.79 times the natural log of height. The print drops the left side and writes the fit as 2 equal to 0.761, said to exceed 0.732.",
+          "normalized_latex": "Y=5.78+36.79*\\ln(X)",
+          "purpose": "Relate diameter to height.",
+          "variable_symbols": [
+            "Y",
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-4",
+          "equation_label": "Taxed carbon benefit",
+          "equation_text": "The carbon benefit is 12 over 44 times the dioxide total times 150 dollars per c. The sequestration model had used 44 over 12.",
+          "source_expression": "The carbon benefit is 12 over 44 times the dioxide total times 150 dollars per c. The sequestration model had used 44 over 12.",
+          "normalized_latex": "h=(12/44)*CDC*tax",
+          "purpose": "Price the dioxide total.",
+          "variable_symbols": [
+            "h",
+            "CDC",
+            "tax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-5",
+          "equation_label": "Transition area",
+          "equation_text": "Equation 25 sets the transition area equal to a sum that looks like a normal density. The operator between the two sigma glyphs is missing, and the left side of the density is broken.",
+          "source_expression": "Equation 25 sets the transition area equal to a sum that looks like a normal density. The operator between the two sigma glyphs is missing, and the left side of the density is broken.",
+          "normalized_latex": "ST=ST(mu,sigma)",
+          "purpose": "Name the planted area without supplying it.",
+          "variable_symbols": [
+            "ST",
+            "mu",
+            "sigma"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 22,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2203489-CUT-6",
+          "equation_label": "Disturbance",
+          "equation_text": "The disturbance coefficient is actual area minus planned area, divided by actual area, and it is said to lie between 0 and 1.",
+          "source_expression": "The disturbance coefficient is actual area minus planned area, divided by actual area, and it is said to lie between 0 and 1.",
+          "normalized_latex": "delta=(S-Sdot)/S",
+          "purpose": "Measure how far the area plan has moved.",
+          "variable_symbols": [
+            "delta",
+            "S",
+            "Sdot"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 22,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The discount exponent is blank. Equation 25 does not parse. Equation 23 uses 12 over 44. Equation numbers 13, 14, and 16 are reused from earlier sections.",
+        "reason": "Sections 5.2 and 6."
+      },
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": [
+            "The infinite-horizon line cancels the time limit and does not state an initial stand."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The disturbance coefficient is said to lie in 0 to 1.",
+            "The income derivative is taken under the condition that planting cost is below the net price times volume."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "No steady rotation is derived beyond the printed 12.510 years."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "MATLAB is named for the income curve and for the disturbance fit. Monte Carlo is named for initializing the disturbance. No residual is printed.",
+        "parameters": [
+          "price",
+          "C0",
+          "tax"
+        ]
+      },
+      "algorithm": {
+        "description": "Grade the cut, extend the income to infinite time, price the dioxide, and fit the disturbance.",
+        "status": "partial",
+        "steps": [
+          "Form the intensity ratio",
+          "Cancel the time limit",
+          "Fit the disturbance coefficient"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The printed period is 12.510 years, taken as about 13."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The log fit, the tax line, and the disturbance ratio print. Equation 25 and the discount exponent do not."
+        ],
+        "analysis": "The summary recommends 13 years and 35 percent. The body also prints 21.280 percent."
+      },
+      "constraints": [
+        "Planting cost must sit below the net price times volume before the optimal period is stated.",
+        "The carbon price must exceed the logging cost before the ecological period is stated."
+      ],
+      "validation_refs": [
+        "Table 5, the four intensity grades",
+        "Table 6, height and diameter by team",
+        "Figure 11, income against the cycle",
+        "Table 7, the dioxide total"
+      ],
+      "strengths": [
+        "Count intensity and volume intensity are kept separate and then combined.",
+        "The infinite-horizon move is stated as cancelling a time limit."
+      ],
+      "limitations": [
+        "The discount exponent is blank.",
+        "Equation 25 does not parse.",
+        "The tax line inverts 44 over 12."
+      ],
+      "missing_details": [
+        "The discount rate.",
+        "The operator in equation 25.",
+        "The currency of the 1500 per cubic meter."
+      ],
+      "assumptions": [
+        "After a harvest, new trees can be planted, so the horizon is infinite.",
+        "The optimal cycle is assumed 10 years longer than the current cycle when the transition strategy is argued."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-1",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 5,
+      "source_expression": "After an unconstrained line, biomass growth is the rate times biomass times one minus biomass over the maximum biomass."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-2",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 5,
+      "source_expression": "The printed closed form multiplies the seedling biomass by the maximum biomass and then by the maximum biomass plus the seedling times an exponential minus one. The exponential of rate times time is not on the line."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-3",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 6,
+      "source_expression": "Equation 5 is printed as two r glyphs and an equals sign. The operator between them is a missing glyph. Four rates are listed beside it: 3.08, 2.57, 2.74, and 2.41."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-4",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 7,
+      "source_expression": "Coverage is the cell NDVI minus the soil NDVI, divided by the vegetation NDVI minus the soil NDVI."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-5",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 9,
+      "source_expression": "The share still in use is an exponential of minus ln 2 times product age over service life. The service-life subscript is a missing glyph. The print uses t for that share."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-SEQ-6",
+      "model_id": "MU-E-2022-2203489-SEQ",
+      "page": 10,
+      "source_expression": "Dioxide over the period is 44 over 12 times coverage times layer biomass times carbon content, plus the product store. The living sum is written inside the brackets."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-PRI-1",
+      "model_id": "MU-E-2022-2203489-PRI",
+      "page": 11,
+      "source_expression": "If there are n priority factors, they satisfy a chain in which each factor is much greater than the next."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-PRI-2",
+      "model_id": "MU-E-2022-2203489-PRI",
+      "page": 12,
+      "source_expression": "The target program is announced and the display contains only the number 14. The prose says the objective minimizes a weighted sum of plus and minus deviations."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-PRI-3",
+      "model_id": "MU-E-2022-2203489-PRI",
+      "page": 12,
+      "source_expression": "The index is 100 times a sum of signed products of a second-grade weight and a normalized index. The sign is printed as plus or minus, not assigned term by term."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-PRI-4",
+      "model_id": "MU-E-2022-2203489-PRI",
+      "page": 12,
+      "source_expression": "A normalized index is the raw value minus the minimum, divided by the maximum minus the minimum, and it lies between 0 and 1."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-1",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 14,
+      "source_expression": "The ratio of volume intensity to count intensity is above 1 for crown thinning, below 1 for low thinning, and equal to 1 for geometric thinning."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-2",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 15,
+      "source_expression": "Net income of one rotation is multiplied by 1 over 1 minus an exponential. The exponent is blank. The time limit of the single-rotation line is cancelled."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-3",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 18,
+      "source_expression": "Diameter is 5.78 plus 36.79 times the natural log of height. The print drops the left side and writes the fit as 2 equal to 0.761, said to exceed 0.732."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-4",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 19,
+      "source_expression": "The carbon benefit is 12 over 44 times the dioxide total times 150 dollars per c. The sequestration model had used 44 over 12."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-5",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 22,
+      "source_expression": "Equation 25 sets the transition area equal to a sum that looks like a normal density. The operator between the two sigma glyphs is missing, and the left side of the density is broken."
+    },
+    {
+      "equation_id": "EQ-E-2022-2203489-CUT-6",
+      "model_id": "MU-E-2022-2203489-CUT",
+      "page": 22,
+      "source_expression": "The disturbance coefficient is actual area minus planned area, divided by actual area, and it is said to lie between 0 and 1."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2022-2203489-SEQ",
+      "to_model_id": "MU-E-2022-2203489-CUT",
+      "handoff": "The dioxide total is priced by the carbon tax and enters net income."
+    },
+    {
+      "from_model_id": "MU-E-2022-2203489-PRI",
+      "to_model_id": "MU-E-2022-2203489-CUT",
+      "handoff": "The priority order decides whether the economic plan may run, and a marked forest is forced back to ecology."
+    }
+  ]
+}

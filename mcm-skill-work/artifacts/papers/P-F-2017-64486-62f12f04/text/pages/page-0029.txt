@@ -1,0 +1,117 @@
+     Team # 64486                                                  Page 28 of 33
+
+100  num_dead(t)=0;
+
+101  num_un(t)=0;
+
+102  num_re(t)=0;%re for rehire
+
+103  num_tx(t)=0;%tx for tuixiu(retire)
+
+104  num_child(t)=0;
+
+105  num_par(t)=0;
+
+106  % for people alive
+
+107  %age+1
+
+108  database(livepeople(:,1),2)=database(livepeople(:,1),2)+1;
+
+109  %===============================================
+
+110  for i=1:live_row
+
+111       id=livepeople(i,1);
+
+112       %-----------------------------------------------
+
+113       %renew FOD
+
+114       if database(id,2)>50
+
+115                database(id,11)=1;
+
+116       end
+
+117       %-----------------------------------------------
+
+118       %death penalty
+
+119       if database(id,11)==1;
+
+120                temp_rand=rand();
+
+121                %dig=database(id,2);
+
+122                temp_live=1/(1+exp(-0.3*(database(id,2)-75)));
+
+123                if temp_rand<temp_live%then dead
+
+124                     database(id,11)=2;
+
+125                     num_dead(t)=num_dead(t)+1;
+
+126                end
+
+127       end
+
+128  end
+
+129  %===============================================
+
+130  %-----------------------------------------------
+
+131  %find people still alive
+
+132  stlivepeople=find(database(:,11)<2);
+
+133  [stlive_row,stlive_cow]=size(stlivepeople);
+
+134  num_live(t)=stlive_row;
+
+135  %------------------------------------------------
+
+136  %===============================================
+
+137  % JOB experience
+
+138  %-----------------------------------------------
+
+139  for i=1:stlive_row
+
+140       id=stlivepeople(i,1);
+
+141       %-----------------------------------------------
+
+142       %lose job naturally
+
+143       if database(id,14)==1
+
+144                temp_rand=rand;
+
+145                if temp_rand<rate_u
+
+146                     database(id,14)=0;
+
+147                     num_un=num_un+1;
+
+148                end
+
+149       end
+
+150       %gain job naturally
+
+151       if (database(id,14)==0 && database(id,2)<=age_retire)
+
+152                temp_rand=rand;
+
+153                if temp_rand<rate_re
+
+154                     database(id,14)=1;
+
+155                     num_re=num_re+1;
+
+156                end
+
+157       end

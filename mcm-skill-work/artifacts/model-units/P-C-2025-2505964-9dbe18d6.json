@@ -1,320 +1,973 @@
 {
-  "schema_version": 2,
-  "paper_id": "P-C-2025-2505964-9dbe18d6",
-  "problem_type": "C",
-  "year": "2025",
-  "source_sha256": "9dbe18d63d9f58da62cdf0f8faeb50cd5de319e057e7d6e43a119210b38ebe7d",
-  "models": [
+ "schema_version": 2,
+ "paper_id": "P-C-2025-2505964-9dbe18d6",
+ "problem_type": "C",
+ "year": "2025",
+ "source_sha256": "9dbe18d63d9f58da62cdf0f8faeb50cd5de319e057e7d6e43a119210b38ebe7d",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-C-Q261-001",
+   "page": 8,
+   "section": "3.1.3 Four-Dimensional Capability Features",
+   "family": "random forest",
+   "purpose": "Score each 2024 athlete's chance of a medal and of a gold.",
+   "base_or_modification": "paper-specific",
+   "summary": "Two random forests, one for any medal and one for gold, take four lagged athlete features plus year, sex, NOC, and event.",
+   "variables": [
     {
-      "model_id": "MU-C-2025-2505964-HIST-FEATURES",
-      "page": 8,
-      "section": "3.1.3 Four-Dimensional Capability Features of Athletes",
-      "family": "cutoff-lagged athlete history feature construction",
-      "purpose": "Convert prior Olympic outcomes into four athlete or team capability features for the medal classifiers.",
-      "base_or_modification": "paper-specific",
-      "summary": "For each athlete or consolidated team, the paper accumulates prior medal and gold indicators, takes a lagged cumulative best ordinal result, and divides prior ordinal-score mass by prior appearances. Every definition uses shift(1) to exclude the current row.",
-      "variables": [
-        {"symbol":"M_{i,s}","normalized_name":"medal_binary","role":"input","unit":"binary","definition":"Indicator that athlete or team i won any medal at Games s.","source_status":"explicit-defined"},
-        {"symbol":"G_{i,s}","normalized_name":"gold_binary","role":"input","unit":"binary","definition":"Indicator that athlete or team i won gold at Games s.","source_status":"explicit-defined"},
-        {"symbol":"R_{i,s}","normalized_name":"ordinal_result","role":"input","unit":"ordinal score 0-3","definition":"Olympic result score with gold 3, silver 2, bronze 1, and no medal 0.","source_status":"explicit-defined"},
-        {"symbol":"N_{i,t}^{past}","normalized_name":"prior_appearance_count","role":"intermediate","unit":"Games appearances","definition":"Number of appearances for i before cutoff Games t.","source_status":"inferred-from-equation"},
-        {"symbol":"PTM_{i,t}","normalized_name":"past_total_medals","role":"output","unit":"medal indicators","definition":"Cumulative MedalBinary total before Games t.","source_status":"explicit-defined"},
-        {"symbol":"PGM_{i,t}","normalized_name":"past_gold_medals","role":"output","unit":"gold indicators","definition":"Cumulative GoldBinary total before Games t.","source_status":"explicit-defined"},
-        {"symbol":"PBR_{i,t}","normalized_name":"past_best_result","role":"output","unit":"ordinal score 0-3","definition":"Best ordinal result before Games t.","source_status":"explicit-defined"},
-        {"symbol":"PWR_{i,t}","normalized_name":"past_weighted_ratio","role":"output","unit":"ordinal score per appearance","definition":"Mean prior ordinal result before Games t.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["M_{i,s}","G_{i,s}","R_{i,s}"],
-      "outputs": ["PTM_{i,t}","PGM_{i,t}","PBR_{i,t}","PWR_{i,t}"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-001","page":8,"label":"prose definition 1","source_expression":"PastTotalMedals is calculated by summing MedalBinary values and applying shift(1) to exclude the current year.","normalized_latex":"PTM_{i,t}=\\sum_{s<t}M_{i,s}","purpose":"Count prior medal-winning appearances without the current row.","variable_symbols":["PTM_{i,t}","M_{i,s}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-002","page":8,"label":"prose definition 2","source_expression":"PastGoldMedals is derived by summing GoldBinary values and applying shift(1).","normalized_latex":"PGM_{i,t}=\\sum_{s<t}G_{i,s}","purpose":"Count prior gold-winning appearances.","variable_symbols":["PGM_{i,t}","G_{i,s}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-003","page":8,"label":"prose definition 3","source_expression":"PastBestResult is the cumulative maximum of the 3/2/1/0 score, shifted once.","normalized_latex":"PBR_{i,t}=\\max_{s<t}R_{i,s}","purpose":"Retain the best result observed before the prediction cutoff.","variable_symbols":["PBR_{i,t}","R_{i,s}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-004","page":8,"label":"prose definition 4","source_expression":"PastWeightedRatio is cumulative previous score divided by the number of previous participations, using shift(1).","normalized_latex":"PWR_{i,t}=\\frac{\\sum_{s<t}R_{i,s}}{N_{i,t}^{past}}","purpose":"Measure average prior ordinal performance.","variable_symbols":["PWR_{i,t}","R_{i,s}","N_{i,t}^{past}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"Four prose definitions on PDF page 8 were visually checked and normalized without adding a new statistical claim."},
-      "objectives": ["Represent experience, gold history, peak performance, and average ordinal performance using only prior rows."],
-      "constraints": ["Rows must be ordered within athlete or consolidated team before shift(1).", "The current Games must not enter any cumulative feature."],
-      "conditions": {"initial":{"status":"present","details":["Athletes with no prior appearance require an explicit zero or missing-value convention."]},"boundary":{"status":"present","details":["PBR lies in 0-3 and PWR requires a nonzero prior-appearance denominator."]},"equilibrium":{"status":"not-applicable","details":["These are historical summaries rather than a dynamic equilibrium model."]}},
-      "parameter_estimation": {"status":"not-applicable","method":"The four features are deterministic transforms; no fitted parameter is stated.","parameters":[]},
-      "algorithm": {"status":"partial","steps":["Group rows by athlete or consolidated team.","Order rows by Olympic year.","Compute cumulative medal, gold, maximum-result, and score totals.","Apply shift(1) and divide the score total by prior appearances."],"software":["pandas operations are implied by shift(1), but code is not supplied."],"convergence_criteria":"Not applicable to deterministic cumulative transforms."},
-      "assumptions": ["Historical athlete identity is reconciled across Games.","The 3/2/1/0 score is treated as an informative numeric ordering.","A one-row shift is sufficient to enforce the cutoff after correct grouping and sorting."],
-      "identifiability_feasibility": {"status":"partial","analysis":"Definitions are executable, but the paper does not show the entity keys, same-Games row handling, zero-history convention, or tests proving that shift(1) prevents within-Games leakage."},
-      "handoff_outputs": ["PTM_{i,t}","PGM_{i,t}","PBR_{i,t}","PWR_{i,t}"],
-      "validation_refs": ["Figure 4 shows two athlete radar profiles but no feature-level predictive ablation.","The later random-fold diagnostics test the classifier, not cutoff correctness."],
-      "computational_cost": "Linear in athlete-event rows after grouping and year ordering; exact grouping cost and row count are omitted.",
-      "strengths": ["Makes the temporal cutoff explicit through lagging.","Separates experience, gold history, peak, and average performance."],
-      "limitations": ["The ordinal result scale is treated as cardinal.","Multiple rows in one Games can leak unless grouping and ordering are exact."],
-      "missing_details": ["Entity-key and team-consolidation code.","Treatment of duplicate same-year event rows.","Cold-start values and missing-data policy."]
+     "symbol": "PastTotalMedals",
+     "normalized_name": "lagged count of any medal",
+     "unit": "medal",
+     "definition": "lagged count of any medal",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-SPORT-RF",
-      "page": 8,
-      "section": "3.1.4-3.1.5 Random Forest Model and Model Solution",
-      "family": "per-sport binary random forest classification",
-      "purpose": "Estimate medal and gold probabilities for each 2028 athlete or consolidated team.",
-      "base_or_modification": "hybrid",
-      "summary": "A separate model is fit for each sport, with parallel MedalBinary and GoldBinary targets. Encoded NOC, event, sex, year, and lagged capability features feed predict_proba; samples below five rows or with one training class receive historical-average fallback probabilities.",
-      "variables": [
-        {"symbol":"x_i","normalized_name":"encoded_athlete_features","role":"input","unit":"mixed encoded feature vector","definition":"One-hot identity fields and numeric athlete or team history features.","source_status":"explicit-defined"},
-        {"symbol":"Y_i^M","normalized_name":"medal_binary_target","role":"input","unit":"binary","definition":"Whether sample i wins any medal.","source_status":"explicit-defined"},
-        {"symbol":"Y_i^G","normalized_name":"gold_binary_target","role":"input","unit":"binary","definition":"Whether sample i wins gold.","source_status":"explicit-defined"},
-        {"symbol":"p_i^M","normalized_name":"medal_probability","role":"output","unit":"probability","definition":"Random-forest or fallback probability of any medal.","source_status":"explicit-defined"},
-        {"symbol":"p_i^G","normalized_name":"gold_probability","role":"output","unit":"probability","definition":"Random-forest or fallback probability of gold.","source_status":"explicit-defined"},
-        {"symbol":"s_i","normalized_name":"sport","role":"input","unit":"category","definition":"Sport used to select the per-sport model.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["x_i","Y_i^M","Y_i^G","s_i"],
-      "outputs": ["p_i^M","p_i^G"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-005","page":9,"label":"predict_proba medal","source_expression":"Call predict_proba to obtain Prob_Medal from the sport-specific medal model or fallback rate.","normalized_latex":"p_i^M=\\widehat{P}(Y_i^M=1\\mid x_i,s_i)","purpose":"Define the medal probability consumed by allocation.","variable_symbols":["p_i^M","Y_i^M","x_i","s_i"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-006","page":9,"label":"predict_proba gold","source_expression":"Call predict_proba to obtain Prob_Gold from the sport-specific gold model or fallback rate.","normalized_latex":"p_i^G=\\widehat{P}(Y_i^G=1\\mid x_i,s_i)","purpose":"Define the gold probability consumed by allocation.","variable_symbols":["p_i^G","Y_i^G","x_i","s_i"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The paper gives probability semantics and predict_proba pseudocode rather than a random-forest tree equation; both outputs were normalized from that source."},
-      "objectives": ["Classify medal and gold outcomes separately within each sport.","Provide athlete-level probabilities for deterministic and stochastic medal allocation."],
-      "constraints": ["Training and 2028 feature columns must match.","Sparse or one-class sports use the stated fallback instead of a fitted forest."],
-      "conditions": {"initial":{"status":"present","details":["The 2028 candidate roster is copied from 2024 because the future roster is unknown."]},"boundary":{"status":"present","details":["Both probability outputs lie in 0-1; fallback behavior activates below five entries or with one class."]},"equilibrium":{"status":"not-applicable","details":["Static supervised classifiers have no equilibrium condition."]}},
-      "parameter_estimation": {"status":"omitted-by-paper","method":"Random-forest hyperparameters, class weighting, calibration settings, seeds, and the exact historical-average fallback estimator are not reported.","parameters":[]},
-      "algorithm": {"status":"partial","steps":["Group training samples by sport.","Encode categorical and numeric features.","Attempt a stratified random split and fall back to a standard split when needed.","Fit separate medal and gold forests when data permit.","Call predict_proba for 2028 candidates or assign a historical-average fallback."],"software":["RandomForestModel and encode_features pseudocode are shown; no executable code or library version is supplied."],"convergence_criteria":"Random-forest training controls and stopping settings are omitted."},
-      "assumptions": ["Sport-specific patterns are more stable than a pooled model.","2024 participants and events represent 2028.","Random row splits are suitable for a future-Games forecast.","Fallback historical rates are usable probabilities."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"The target grain alternates among athlete, team, and NOC records; no row counts, key contract, temporal split, class balance, or probability calibration protocol establishes forecast validity."},
-      "handoff_outputs": ["p_i^M","p_i^G"],
-      "validation_refs": ["Figure 7 provides equestrian ROC, PR, and calibration folds.","Figure 9 reports sport-level Accuracy and F1 for the first-medal branch."],
-      "computational_cost": "One pair of forests per sport plus encoded prediction; tree count, depth, sample sizes, runtime, and memory are omitted.",
-      "strengths": ["Keeps sport heterogeneity visible.","Defines a fallback for sparse and one-class training sets."],
-      "limitations": ["Random row splits leak eras and repeated entities into a prospective task.","Known high-probability overprediction is not recalibrated before simulation."],
-      "missing_details": ["Forest hyperparameters and seeds.","Exact feature matrix and target grain.","Temporal backtest and out-of-fold calibration.","Fallback formula by sport."]
+     "symbol": "MedalBinary",
+     "normalized_name": "indicator that the athlete medaled",
+     "unit": "dimensionless",
+     "definition": "indicator that the athlete medaled",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-MEDAL-SIM",
-      "page": 10,
-      "section": "3.1.6-3.1.7 Medal Distribution and Monte Carlo Simulation",
-      "family": "constrained weighted medal allocation simulation",
-      "purpose": "Translate athlete probabilities into country gold and total-medal forecasts and intervals.",
-      "base_or_modification": "paper-specific",
-      "summary": "The point procedure assigns gold to the maximum Prob_Gold athlete and the remaining two medal slots to the highest Prob_Medal athletes. The simulation instead draws one gold and then two remaining medalists without replacement, aggregates awards by NOC, and reports empirical 2.5 and 97.5 percent quantiles.",
-      "variables": [
-        {"symbol":"p_i^M","normalized_name":"medal_probability","role":"input","unit":"probability weight","definition":"Any-medal weight for athlete or team i.","source_status":"explicit-defined"},
-        {"symbol":"p_i^G","normalized_name":"gold_probability","role":"input","unit":"probability weight","definition":"Gold weight for athlete or team i.","source_status":"explicit-defined"},
-        {"symbol":"A_{i,e}^{(m)}","normalized_name":"simulated_award_indicator","role":"state","unit":"binary","definition":"Indicator that entrant i receives a medal in event e during simulation m.","source_status":"inferred-from-equation"},
-        {"symbol":"G_{i,e}^{(m)}","normalized_name":"simulated_gold_indicator","role":"state","unit":"binary","definition":"Indicator that entrant i receives gold in event e during simulation m.","source_status":"inferred-from-equation"},
-        {"symbol":"T_n^{(m)}","normalized_name":"noc_total_medals","role":"output","unit":"medals","definition":"Total simulated medals for NOC n in simulation m.","source_status":"explicit-defined"},
-        {"symbol":"Q_n^{(m)}","normalized_name":"noc_gold_medals","role":"output","unit":"gold medals","definition":"Total simulated gold medals for NOC n in simulation m.","source_status":"explicit-defined"},
-        {"symbol":"w_{i,e}","normalized_name":"normalized_draw_weight","role":"intermediate","unit":"probability","definition":"Probability of selecting entrant i among remaining entrants in event e.","source_status":"inferred-from-equation"}
-      ],
-      "inputs": ["p_i^M","p_i^G"],
-      "outputs": ["T_n^{(m)}","Q_n^{(m)}"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-007","page":11,"label":"weighted draw","source_expression":"Randomly select medal winners using Prob_Gold or normalized Prob_Medal and set a selected winner's probability to zero.","normalized_latex":"w_{i,e}=\\frac{p_i}{\\sum_{j\\in R_e}p_j},\\quad i\\in R_e","purpose":"Normalize the relevant probability over entrants still eligible for a slot.","variable_symbols":["w_{i,e}","p_i^M","p_i^G"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-008","page":11,"label":"NOC total aggregation","source_expression":"Summarize the total medals for each country from all event drawing results.","normalized_latex":"T_n^{(m)}=\\sum_e\\sum_{i:NOC(i)=n}A_{i,e}^{(m)}","purpose":"Aggregate simulated event awards to the requested country total.","variable_symbols":["T_n^{(m)}","A_{i,e}^{(m)}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-009","page":11,"label":"NOC gold aggregation","source_expression":"Summarize gold medals for each country from all event drawing results.","normalized_latex":"Q_n^{(m)}=\\sum_e\\sum_{i:NOC(i)=n}G_{i,e}^{(m)}","purpose":"Aggregate simulated event gold awards to the requested country gold total.","variable_symbols":["Q_n^{(m)}","G_{i,e}^{(m)}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The allocation and aggregation equations are faithful normalizations of the visually checked page 10-11 procedure."},
-      "objectives": ["Produce point medal assignments.","Estimate conditional country medal-count distributions and empirical intervals."],
-      "constraints": ["Within each event, selected entrants are removed before later draws.","The described rule assigns one gold and two other medal slots per event.","All country totals must equal the allocated event slots after team handling."],
-      "conditions": {"initial":{"status":"present","details":["Every simulation starts from the same fixed 2028 roster and fitted probabilities."]},"boundary":{"status":"present","details":["Drawing stops after three distinct winners or when no positive weight remains."]},"equilibrium":{"status":"not-applicable","details":["Independent repeated draws do not seek an equilibrium."]}},
-      "parameter_estimation": {"status":"not-applicable","method":"Probabilities are inherited from the classifiers; M is chosen as 1000 for the reported Task 1 run, with 5000 or 10000 mentioned as alternatives.","parameters":[]},
-      "algorithm": {"status":"partial","steps":["For every event, draw one gold winner with Prob_Gold.","Remove the selected entrant.","Draw two further medalists with normalized Prob_Medal without replacement.","Aggregate gold and total medals by NOC.","Repeat M times and compute empirical summaries and quantiles."],"software":["Monte Carlo pseudocode is described, but executable code and random seeds are absent."],"convergence_criteria":"No Monte Carlo error target or quantile-stability diagnostic is reported; only example repeat counts are given."},
-      "assumptions": ["Fitted probabilities remain fixed across repetitions.","The fixed roster and event program are known.","A common three-winner rule is adequate across sports and team events."],
-      "identifiability_feasibility": {"status":"partial","analysis":"The simulation is operationally reconstructable, but team awards, ties, double-bronze sports, quotas, event-specific rules, and probability calibration are not reconciled."},
-      "handoff_outputs": ["T_n^{(m)}","Q_n^{(m)}"],
-      "validation_refs": ["Figure 5 shows point country forecasts.","Figure 6 and Table 1 show leading-country interval outputs.","Figure 7 shows input-probability diagnostics rather than country-total backtests."],
-      "computational_cost": "Approximately linear in simulations times events times entrants used in weighted draws; actual entrant count, runtime, and seed policy are omitted.",
-      "strengths": ["Enforces no repeat winner within an event draw.","Connects entrant probabilities to official NOC totals and intervals."],
-      "limitations": ["Intervals vary only outcome draws conditional on fixed inputs and therefore omit roster, program, parameter, calibration, and structural uncertainty.","A universal award rule does not match every Olympic sport."],
-      "missing_details": ["Seed and implementation.","Team and relay deduplication.","Event-specific award constraints.","Monte Carlo convergence and all-country intervals."]
+     "symbol": "PastGoldMedals",
+     "normalized_name": "lagged count of gold medals",
+     "unit": "medal",
+     "definition": "lagged count of gold medals",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-FIRST-MEDAL",
-      "page": 14,
-      "section": "3.2 Task 2 and 3.2.3 Monte Carlo Simulation for 2028",
-      "family": "static ever-medaled classifier plus weighted first-medal simulation",
-      "purpose": "Estimate which nominally zero-medal NOCs may win a first medal and the expected number of such NOCs in 2028.",
-      "base_or_modification": "hybrid",
-      "summary": "The branch labels an NOC zero when every athlete-file Medal entry is No medal, repeats that static label across rows, trains sport random forests, then draws three distinct event medalists with Prob_Medal. The fraction of 500 runs in which each candidate NOC appears becomes its alleged first-medal probability, and those probabilities imply an expected count of 4.78.",
-      "variables": [
-        {"symbol":"Z_n","normalized_name":"never_medaled_label","role":"input","unit":"binary","definition":"Paper label equal to zero when every athlete-file Medal row for NOC n is No medal.","source_status":"explicit-defined"},
-        {"symbol":"p_i^M","normalized_name":"medal_probability","role":"input","unit":"probability weight","definition":"Fitted or fallback medal probability for candidate entrant i.","source_status":"explicit-defined"},
-        {"symbol":"B_n^{(m)}","normalized_name":"first_medal_indicator","role":"state","unit":"binary","definition":"Indicator that candidate NOC n receives at least one simulated medal in run m.","source_status":"inferred-from-equation"},
-        {"symbol":"p_n^{first}","normalized_name":"first_medal_probability","role":"output","unit":"probability","definition":"Simulation frequency of at least one medal for candidate NOC n.","source_status":"explicit-defined"},
-        {"symbol":"K^{(m)}","normalized_name":"new_medal_noc_count","role":"output","unit":"NOCs","definition":"Number of candidate NOCs receiving at least one medal in run m.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["Z_n","p_i^M"],
-      "outputs": ["p_n^{first}","K^{(m)}"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-010","page":14,"label":"static cohort label","source_expression":"If all Medal entries for an NOC are No medal, MedalBinary is 0; otherwise it is 1.","normalized_latex":"Z_n=\\mathbb{1}\\{\\text{all athlete-file medal rows for }n\\text{ are No medal}\\}","purpose":"Construct the paper's nominal at-risk cohort.","variable_symbols":["Z_n"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-011","page":15,"label":"simulation probability","source_expression":"Aggregate repeated simulations to calculate each country's probability of winning its first medal in 2028.","normalized_latex":"p_n^{first}=\\frac{1}{M}\\sum_{m=1}^{M}B_n^{(m)}","purpose":"Estimate the run frequency of a candidate NOC receiving a medal.","variable_symbols":["p_n^{first}","B_n^{(m)}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-012","page":15,"label":"new-country count","source_expression":"For each simulation, count the number of zero-medal countries winning a medal.","normalized_latex":"K^{(m)}=\\sum_{n:Z_n=1}B_n^{(m)}","purpose":"Count simulated new medal-winning NOCs in each run.","variable_symbols":["K^{(m)}","Z_n","B_n^{(m)}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The cohort and repeated-simulation definitions were normalized from the visually checked Task 2 procedure."},
-      "objectives": ["Rank candidate NOCs by simulated medal probability.","Estimate the distribution and mean count of new medal-winning NOCs."],
-      "constraints": ["Only NOCs labeled never-medaled enter the cohort.","Each event draw selects at most three distinct entrants.","A candidate is counted once per simulation even if it wins multiple medals."],
-      "conditions": {"initial":{"status":"present","details":["The at-risk cohort is fixed before the 500 simulations."]},"boundary":{"status":"present","details":["B is binary and K cannot exceed the cohort size."]},"equilibrium":{"status":"not-applicable","details":["Repeated event draws have no equilibrium condition."]}},
-      "parameter_estimation": {"status":"partial","method":"Sport-level random forests or historical-average fallbacks supply p_i^M; 500 simulation runs are used without a Monte Carlo error target.","parameters":[]},
-      "algorithm": {"status":"partial","steps":["Derive the zero-medal cohort from athlete-file Medal strings.","Encode 2028 candidates and obtain medal weights.","Draw up to three distinct medalists per event.","Mark candidate NOCs receiving any medal.","Repeat 500 times and aggregate unit probabilities and the count distribution."],"software":["The paper names encode_features and random forest operations but supplies no runnable implementation."],"convergence_criteria":"No stability or standard-error criterion for 500 runs is stated."},
-      "assumptions": ["The athlete-file label correctly identifies all historically medaled NOCs.","A static ever-medaled label is a valid target for a future first-medal event.","2024 candidates and events carry to 2028."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"The target is not a time-indexed first-occurrence label, the cohort is not reconciled to medal-count history, and Samoa's retroactive 2008 medal remains incorrectly at risk."},
-      "handoff_outputs": ["p_n^{first}","K^{(m)}"],
-      "validation_refs": ["Figure 9 reports intermediate Accuracy/F1 by sport.","Figure 10 reports the 500-run count histogram and candidate probabilities.","No rolling historical first-medal backtest is provided."],
-      "computational_cost": "Five hundred repetitions of all event draws plus classifier prediction; sample sizes, runtime, and seeds are omitted.",
-      "strengths": ["Reports both unit probabilities and an aggregate expected count.","Uses without-replacement event selection."],
-      "limitations": ["The cohort includes an already-medaled NOC and invalidates the headline expected count.","The classifier target and claimed future transition are semantically different."],
-      "missing_details": ["Reconciled historical NOC medal table.","Time-indexed at-risk construction.","Rolling-origin calibration and uncertainty.","Seed and probability denominator details."]
+     "symbol": "GoldBinary",
+     "normalized_name": "indicator that the athlete won gold",
+     "unit": "dimensionless",
+     "definition": "indicator that the athlete won gold",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-POISSON-EVENTS",
-      "page": 17,
-      "section": "3.3.3-3.3.5 Event Count Analyses for USA Swimming and China Table Tennis",
-      "family": "log-link Poisson count regression",
-      "purpose": "Relate athlete-row medal totals to the number of events in a sport and compare USA swimming with China table tennis.",
-      "base_or_modification": "base",
-      "summary": "Separate Poisson regressions use sport-year medal totals as outcomes and event count as the predictor. USA swimming is reported first with beta1 0.0517, then with a conflicting 0.1912 sensitivity fit; China table tennis reports beta1 0.1273 with p=0.59. The paper exponentiates beta1, plots predictions, defines elasticity beta1 times event count, and performs leave-one-year-out refits.",
-      "variables": [
-        {"symbol":"Y_t","normalized_name":"sport_year_medal_total","role":"output","unit":"athlete-row medal records","definition":"Total medals recorded for the selected NOC-sport at Games t.","source_status":"explicit-defined"},
-        {"symbol":"E_t","normalized_name":"sport_event_count","role":"input","unit":"events","definition":"Number of program events in the selected sport at Games t.","source_status":"explicit-defined"},
-        {"symbol":"\\mu_t","normalized_name":"expected_medal_total","role":"intermediate","unit":"expected athlete-row medal records","definition":"Poisson conditional mean for Games t.","source_status":"inferred-from-equation"},
-        {"symbol":"\\beta_0","normalized_name":"intercept","role":"parameter","unit":"log medals","definition":"Log expected count when event count is zero.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_1","normalized_name":"event_count_coefficient","role":"parameter","unit":"per event","definition":"Log-link coefficient for NumEvents.","source_status":"explicit-defined"},
-        {"symbol":"\\eta_t","normalized_name":"elasticity","role":"output","unit":"dimensionless","definition":"Paper's point elasticity beta1 times NumEvents.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["E_t"],
-      "outputs": ["Y_t","\\eta_t"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-013","page":17,"label":"Poisson log link","source_expression":"The logarithmic expected number of medals is described by an intercept and NumEvents coefficient.","normalized_latex":"\\log(\\mu_t)=\\beta_0+\\beta_1E_t,\\qquad Y_t\\sim\\operatorname{Poisson}(\\mu_t)","purpose":"Specify the sport-year event-count regression.","variable_symbols":["Y_t","E_t","\\mu_t","\\beta_0","\\beta_1"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-014","page":18,"label":"expected count","source_expression":"Calculate the Poisson predicted medal count over sampled NumEvents values.","normalized_latex":"\\widehat{\\mu}(E)=\\exp(\\widehat{\\beta}_0+\\widehat{\\beta}_1E)","purpose":"Generate the plotted expected medal curve.","variable_symbols":["\\mu_t","E_t","\\beta_0","\\beta_1"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-015","page":18,"label":"multiplicative effect","source_expression":"For each additional event, expected medals are multiplied by exp(beta1).","normalized_latex":"\\frac{\\mu(E+1)}{\\mu(E)}=e^{\\beta_1}","purpose":"Interpret the log-link coefficient as a one-event multiplicative ratio.","variable_symbols":["\\mu_t","E_t","\\beta_1"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-016","page":19,"label":"elasticity","source_expression":"Elasticity = beta1 x NumEvents.","normalized_latex":"\\eta_t=\\beta_1E_t","purpose":"Record the elasticity definition used in Figure 14.","variable_symbols":["\\eta_t","\\beta_1","E_t"],"source_type":"paper","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The log-link meaning, prediction curve, exponent interpretation, and printed elasticity equation were visually checked on pages 17-19."},
-      "objectives": ["Estimate association between event opportunities and recorded medal totals.","Compare coefficient direction and significance across two NOC-sport cases.","Inspect leave-one-year-out coefficient sensitivity."],
-      "constraints": ["Counts are assumed Poisson conditional on NumEvents.","The USA analysis uses observations only through 1964.","The outcome grain must be fixed before coefficient interpretation."],
-      "conditions": {"initial":{"status":"not-applicable","details":["Static sport-year regressions have no dynamic initial state."]},"boundary":{"status":"present","details":["Predicted means are positive; extrapolation is plotted over event counts 0-20."]},"equilibrium":{"status":"not-applicable","details":["No equilibrium interpretation is used."]}},
-      "parameter_estimation": {"status":"partial","method":"Poisson maximum-likelihood estimates and p-values are reported, with LOO refits; the analysis does not report exposure offsets, residual diagnostics, standardization, or exact software configuration.","parameters":["\\beta_0","\\beta_1"]},
-      "algorithm": {"status":"partial","steps":["Aggregate selected NOC-sport rows by Olympic year.","Count sport events for each year.","Fit a Poisson log-link model.","Exponentiate beta1 and plot predicted means and elasticity.","Refit after omitting each USA year."],"software":["A Poisson regression implementation is implied; package, optimizer, and code are absent."],"convergence_criteria":"MLE convergence criteria and numerical diagnostics are omitted."},
-      "assumptions": ["Athlete-row medal totals are a valid country-event count outcome.","NumEvents is an adequate predictor without exposure or time controls.","Observations are independent and conditionally Poisson.","A positive coefficient can be interpreted as event-program influence."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"Relay and team rows double count awards, NumEvents mechanically expands opportunity and trends with time, and the sparse case regressions do not identify a causal event addition effect."},
-      "handoff_outputs": ["\\beta_1","\\eta_t"],
-      "validation_refs": ["Figure 13 extrapolates predicted means.","Figure 14 plots the defined elasticity.","Figure 15 performs leave-one-year-out coefficient refits.","Table 6 and the China p-value provide a contrasting case."],
-      "computational_cost": "Small maximum-likelihood fits and one refit per Olympic year; exact observations, iterations, and runtime are omitted.",
-      "strengths": ["Keeps coefficient, multiplicative interpretation, prediction curve, and sensitivity view connected.","Contrasts a positive USA result with a nonsignificant China case."],
-      "limitations": ["USA medal totals violate event-level award bounds because athlete rows are summed.","The paper reports incompatible USA coefficients 0.0517 and 0.1912 and prints exp(0.912) for the latter."],
-      "missing_details": ["Correct event-NOC-medal aggregation.","Reason for the 1964 cutoff.","Which USA coefficient is authoritative.","Time/exposure controls and out-of-sample comparison."]
+     "symbol": "PastBestResult",
+     "normalized_name": "lagged best score",
+     "unit": "score",
+     "definition": "lagged best score",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-COUNT-SPECS",
-      "page": 20,
-      "section": "Model Specification Sensitivity: Negative Binomial and Zero-Inflated Poisson",
-      "family": "Poisson, Negative Binomial, and ZIP specification comparison",
-      "purpose": "Check whether the positive USA NumEvents coefficient persists under over-dispersion and excess-zero count specifications.",
-      "base_or_modification": "base",
-      "summary": "Table 5 compares Poisson, Negative Binomial with alpha 0.1307, and ZIP fits. Their NumEvents coefficients are 0.1912, 0.2378, and 0.1626; log likelihoods are -54.73, -51.92, and -42.16; AIC values are 113.45, 109.84, and 92.33. ZIP has the lowest in-sample AIC.",
-      "variables": [
-        {"symbol":"Y_t","normalized_name":"sport_year_medal_total","role":"output","unit":"athlete-row medal records","definition":"Same USA swimming count outcome used by the Poisson branch.","source_status":"explicit-defined"},
-        {"symbol":"E_t","normalized_name":"sport_event_count","role":"input","unit":"events","definition":"NumEvents predictor shared by all specifications.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_1","normalized_name":"event_count_coefficient","role":"output","unit":"per event","definition":"Reported NumEvents coefficient under each count specification.","source_status":"explicit-defined"},
-        {"symbol":"\\alpha","normalized_name":"negative_binomial_dispersion","role":"parameter","unit":"unspecified","definition":"Negative Binomial dispersion estimate reported as 0.1307.","source_status":"explicit-defined"},
-        {"symbol":"AIC","normalized_name":"akaike_information_criterion","role":"output","unit":"criterion units","definition":"In-sample information criterion used to compare the three fitted specifications.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["E_t"],
-      "outputs": ["Y_t","\\beta_1","AIC"],
-      "governing_equations": [],
-      "equation_status": {"status":"omitted-by-paper","reason":"The paper names the Negative Binomial and ZIP families and gives fitted coefficients, alpha, log likelihood, and AIC, but prints no probability mass or zero-inflation equations."},
-      "objectives": ["Compare coefficient direction under alternative count distributions.","Compare in-sample fit by log likelihood and AIC."],
-      "constraints": ["All specifications use the same outcome grain and predictor.","AIC comparisons require fits to the same observations and likelihood convention."],
-      "conditions": {"initial":{"status":"not-applicable","details":["Static count regressions have no initial state."]},"boundary":{"status":"present","details":["Negative Binomial dispersion is positive and ZIP requires a valid zero-inflation probability, though its submodel is not stated."]},"equilibrium":{"status":"not-applicable","details":["No equilibrium condition applies."]}},
-      "parameter_estimation": {"status":"partial","method":"Maximum likelihood is named for the Negative Binomial fit; Table 5 reports point estimates and information criteria but no ZIP inflation covariates, standard errors, likelihood convention, or convergence diagnostics.","parameters":["\\beta_1","\\alpha"]},
-      "algorithm": {"status":"omitted-by-paper","steps":[],"software":[],"convergence_criteria":"No package, optimizer, start values, or convergence criteria are reported."},
-      "assumptions": ["The three models are fitted to identical observations.","Negative Binomial addresses over-dispersion and ZIP addresses excess zeros.","Coefficient sign stability is meaningful despite the unchanged outcome grain."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"The ZIP inflation process is unspecified, sample size is small, and all specifications inherit athlete-row double counting and time/opportunity confounding."},
-      "handoff_outputs": ["\\beta_1","AIC"],
-      "validation_refs": ["Figure 15 checks LOO sensitivity only for Poisson.","Table 5 provides the three-specification coefficient, logLik, and AIC comparison."],
-      "computational_cost": "Three small maximum-likelihood fits; iteration count and convergence status are omitted.",
-      "strengths": ["Tests distributional alternatives instead of relying on Poisson alone.","Reports coefficient, likelihood, and AIC side by side."],
-      "limitations": ["In-sample AIC is not a held-out predictive comparison.","Changing the count distribution does not repair the invalid outcome grain or causal interpretation."],
-      "missing_details": ["Negative Binomial variance convention.","ZIP count and inflation equations.","Standard errors and diagnostics for all fits.","Held-out comparison on corrected counts."]
+     "symbol": "Score",
+     "normalized_name": "medal score with gold 3, silver 2, bronze 1",
+     "unit": "score",
+     "definition": "medal score with gold 3, silver 2, bronze 1",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-HOST-REG",
-      "page": 21,
-      "section": "3.3.6 Host Country Effect",
-      "family": "country-specific multiple linear regression",
-      "purpose": "Associate country medal totals with host status, event count, and recent historical performance.",
-      "base_or_modification": "base",
-      "summary": "Separate USA and China regressions use total or gold medals as the response, a host dummy, event count, and the mean medals over the prior three Games. The paper reports host coefficients 74.7636 for USA and 24.6836 for China and narrates them as increases caused by hosting.",
-      "variables": [
-        {"symbol":"Y_i","normalized_name":"country_medal_outcome","role":"output","unit":"total or gold medals","definition":"Medals won by the selected country in Olympic observation i.","source_status":"explicit-defined"},
-        {"symbol":"X_{1i}","normalized_name":"host_dummy","role":"input","unit":"binary","definition":"One when the selected country hosts observation i, otherwise zero.","source_status":"explicit-defined"},
-        {"symbol":"X_{2i}","normalized_name":"event_count","role":"input","unit":"events","definition":"Number of events for the host country at observation i.","source_status":"explicit-defined"},
-        {"symbol":"X_{3i}","normalized_name":"prior_three_medal_mean","role":"input","unit":"medals","definition":"Mean medal total over the country's previous three Olympic Games.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_0","normalized_name":"intercept","role":"parameter","unit":"medals","definition":"Baseline intercept.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_1","normalized_name":"host_coefficient","role":"output","unit":"medals","definition":"Coefficient on host status.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_2","normalized_name":"event_coefficient","role":"parameter","unit":"medals per event","definition":"Coefficient on event count.","source_status":"explicit-defined"},
-        {"symbol":"\\beta_3","normalized_name":"history_coefficient","role":"parameter","unit":"medals per prior mean medal","definition":"Coefficient on recent historical performance.","source_status":"explicit-defined"},
-        {"symbol":"\\epsilon_i","normalized_name":"regression_error","role":"state","unit":"medals","definition":"Unexplained regression variation.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["X_{1i}","X_{2i}","X_{3i}"],
-      "outputs": ["Y_i","\\beta_1"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-017","page":21,"label":"host regression","source_expression":"Y_i = beta_0 + beta_1 X_1i + beta_2 X_2i + beta_3 X_3i + epsilon_i","normalized_latex":"Y_i=\\beta_0+\\beta_1X_{1i}+\\beta_2X_{2i}+\\beta_3X_{3i}+\\epsilon_i","purpose":"Specify the country-specific host association model.","variable_symbols":["Y_i","X_{1i}","X_{2i}","X_{3i}","\\beta_0","\\beta_1","\\beta_2","\\beta_3","\\epsilon_i"],"source_type":"paper","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The displayed regression equation and variable definitions were visually checked on PDF pages 21-22."},
-      "objectives": ["Quantify a host-status coefficient separately for USA and China.","Control descriptively for event count and recent medal history."],
-      "constraints": ["Host status is binary.","The historical mean uses the previous three Games.","The USA and China fits use separate small time series."],
-      "conditions": {"initial":{"status":"present","details":["The first observations without three prior Games require an unstated missing-history convention."]},"boundary":{"status":"not-applicable","details":["The linear model imposes no nonnegative count boundary."]},"equilibrium":{"status":"not-applicable","details":["No equilibrium interpretation is used."]}},
-      "parameter_estimation": {"status":"partial","method":"Country-specific linear regression coefficients, p-values, sample sizes, and R-squared are reported selectively; standard errors, residual diagnostics, and exact observation windows are incomplete.","parameters":["\\beta_0","\\beta_1","\\beta_2","\\beta_3"]},
-      "algorithm": {"status":"partial","steps":["Construct host dummy and event count by Games.","Compute prior-three-Games medal mean.","Fit separate linear models for USA and China.","Report R-squared, host coefficient, and p-value."],"software":[],"convergence_criteria":"Closed-form or numerical fitting details and diagnostics are not stated."},
-      "assumptions": ["Recent medal mean and event count adequately control time-varying strength.","Host timing is exogenous after included covariates.","Linear errors and small-sample p-values are reliable.","Host coefficients can be interpreted as medal increases."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"Hosting is selected, occurs rarely, coincides with time and program changes, and lacks panel controls, pretrends, placebos, clustered errors, or a comparison design."},
-      "handoff_outputs": ["\\beta_1"],
-      "validation_refs": ["Table 7 compares USA and China R-squared, sample size, and stated limitations.","No out-of-sample or causal-design validation is reported."],
-      "computational_cost": "Two small linear regressions; exact rows and diagnostics are omitted.",
-      "strengths": ["Keeps host status, program size, and recent performance explicit.","Reports separate country cases rather than one pooled coefficient."],
-      "limitations": ["Sparse observational associations are narrated causally.","The reported USA effect of about 75 medals is implausibly large relative to omitted trends and sample design."],
-      "missing_details": ["Exact years and missing-history handling.","Full coefficient tables and residual diagnostics.","Panel/event-study comparison and pretrend checks.","Host-selected event mechanism test."]
+     "symbol": "PastWeightedRatio",
+     "normalized_name": "lagged mean of past scores",
+     "unit": "score",
+     "definition": "lagged mean of past scores",
+     "role": "input",
+     "source_status": "explicit-defined"
     },
     {
-      "model_id": "MU-C-2025-2505964-GREAT-COACH",
-      "page": 23,
-      "section": "3.4 Great Coach Model",
-      "family": "ordinal before-after residual attribution model",
-      "purpose": "Attribute the difference between current podium score and the prior-three-Games mean to a great coach.",
-      "base_or_modification": "paper-specific",
-      "summary": "Country-event-year capability is decomposed into an athlete baseline, coach enhancement, and uncertainty on a 0-3 podium scale. The baseline is the prior-three-Games mean, uncertainty is set to zero, and the coach effect is the current score minus baseline; multiple events are averaged.",
-      "variables": [
-        {"symbol":"P_{n,y,e}","normalized_name":"observed_winning_capability","role":"output","unit":"ordinal score 0-3","definition":"Observed podium-category score for country n, year y, event e.","source_status":"explicit-defined"},
-        {"symbol":"P_{n,y,e|a}","normalized_name":"athlete_baseline_capability","role":"intermediate","unit":"ordinal score 0-3","definition":"Athlete capability represented by the prior-three-Games average.","source_status":"explicit-defined"},
-        {"symbol":"P_{n,y,e|c}","normalized_name":"coach_enhancement","role":"output","unit":"ordinal-score difference","definition":"Capability enhancement assigned to the great coach.","source_status":"explicit-defined"},
-        {"symbol":"\\epsilon_{n,y,e}","normalized_name":"competition_uncertainty","role":"state","unit":"ordinal-score difference","definition":"Unexplained competition uncertainty, set to zero for analysis.","source_status":"explicit-defined"},
-        {"symbol":"\\bar P_c","normalized_name":"average_coach_enhancement","role":"output","unit":"ordinal-score difference","definition":"Mean coach enhancement across separately evaluated events.","source_status":"explicit-defined"}
-      ],
-      "inputs": ["P_{n,y,e}"],
-      "outputs": ["P_{n,y,e}","P_{n,y,e|c}","\\bar P_c"],
-      "governing_equations": [
-        {"equation_id":"EQ-C-2025-2505964-018","page":23,"label":"coach decomposition","source_expression":"P_n,y,e = P_n,y,e|a + P_n,y,e|c + epsilon_n,y,e","normalized_latex":"P_{n,y,e}=P_{n,y,e\\mid a}+P_{n,y,e\\mid c}+\\epsilon_{n,y,e}","purpose":"Decompose observed ordinal capability into athlete, coach, and residual terms.","variable_symbols":["P_{n,y,e}","P_{n,y,e|a}","P_{n,y,e|c}","\\epsilon_{n,y,e}"],"source_type":"paper","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-019","page":23,"label":"ordinal map","source_expression":"P is classified as 0 no medal, 1 bronze, 2 silver, 3 gold.","normalized_latex":"P=\\begin{cases}0&\\text{no medal}\\\\1&\\text{bronze}\\\\2&\\text{silver}\\\\3&\\text{gold}\\end{cases}","purpose":"Map podium categories to the numeric capability scale.","variable_symbols":["P_{n,y,e}"],"source_type":"paper","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-020","page":23,"label":"athlete baseline","source_expression":"P_n,y,e|a = (P_n-1,y,e|a + P_n-2,y,e|a + P_n-3,y,e|a) / 3","normalized_latex":"P_{n,y,e\\mid a}=\\frac{P_{n-1,y,e\\mid a}+P_{n-2,y,e\\mid a}+P_{n-3,y,e\\mid a}}{3}","purpose":"Define baseline capability from the three Games before coach arrival.","variable_symbols":["P_{n,y,e|a}"],"source_type":"paper","visual_checked":true,"transcription_confidence":"medium"},
-        {"equation_id":"EQ-C-2025-2505964-021","page":23,"label":"coach residual","source_expression":"For convenience epsilon_n,y,e = 0; therefore P_n,y,e|c = P_n,y,e - P_n,y,e|a.","normalized_latex":"\\epsilon_{n,y,e}=0,\\qquad P_{n,y,e\\mid c}=P_{n,y,e}-P_{n,y,e\\mid a}","purpose":"Assign the entire current-minus-baseline residual to the coach.","variable_symbols":["\\epsilon_{n,y,e}","P_{n,y,e|c}","P_{n,y,e}","P_{n,y,e|a}"],"source_type":"paper","visual_checked":true,"transcription_confidence":"high"},
-        {"equation_id":"EQ-C-2025-2505964-022","page":23,"label":"multi-event average","source_expression":"Calculate each event separately and take the average to determine average medal enhancement capability.","normalized_latex":"\\bar P_c=\\frac{1}{|\\mathcal E|}\\sum_{e\\in\\mathcal E}P_{n,y,e\\mid c}","purpose":"Aggregate coach effects across multiple events.","variable_symbols":["\\bar P_c","P_{n,y,e|c}"],"source_type":"reconstructed","visual_checked":true,"transcription_confidence":"high"}
-      ],
-      "equation_status": {"status":"present","reason":"The decomposition, ordinal map, prior-three mean, zero-residual effect, and multi-event averaging rule were visually checked on PDF page 23."},
-      "objectives": ["Produce a scalar coach enhancement for a country-event-year.","Average enhancement across events and use it to recommend coach investments."],
-      "constraints": ["Observed capability and epsilon are stated to lie in 0-3.","Baseline uses exactly the three Games before coach arrival.","The analysis fixes epsilon to zero."],
-      "conditions": {"initial":{"status":"present","details":["Three pre-coach Olympic results are required for the baseline."]},"boundary":{"status":"present","details":["The 0-3 observed scale is bounded, but the difference assigned to the coach can be negative or positive."]},"equilibrium":{"status":"not-applicable","details":["This is a before-after attribution, not an equilibrium model."]}},
-      "parameter_estimation": {"status":"not-applicable","method":"No fitted coefficient is estimated; the coach effect is an arithmetic residual after fixing epsilon to zero.","parameters":[]},
-      "algorithm": {"status":"partial","steps":["Verify coach tenure and select the country-event-year.","Encode the current podium outcome on the 0-3 scale.","Average the three pre-coach outcomes.","Set residual uncertainty to zero and subtract the baseline.","Average separate event effects when applicable."],"software":[],"convergence_criteria":"Not applicable to arithmetic residual attribution."},
-      "assumptions": ["Podium categories form an equal-interval numeric scale.","The prior-three-Games mean measures athlete capability.","Coach contribution is constant.","All unexplained current change can be set to zero and assigned to the coach."],
-      "identifiability_feasibility": {"status":"not-demonstrated","analysis":"There is no comparison group, verified treatment dataset, pretrend, placebo, or residual model. Timing errors and the equal-interval ordinal assumption prevent causal coach identification."},
-      "handoff_outputs": ["P_{n,y,e|c}","\\bar P_c"],
-      "validation_refs": ["The Lang Ping USA and China examples are worked applications, not independent validation.","No counterfactual or out-of-sample coach test is provided."],
-      "computational_cost": "Constant arithmetic per coach-event case; data verification cost is unstated.",
-      "strengths": ["Separates baseline, coach, and residual concepts explicitly.","Provides a simple event-by-event calculation and aggregation rule."],
-      "limitations": ["Setting epsilon to zero makes coach effect an unexplained residual by construction.","The USA effects 2 and 1.33 average to about 1.67, not the reported 1.16, and 2012 is outside the stated tenure window."],
-      "missing_details": ["Verified coach-tenure table.","Outcome and ranking data beyond podium category.","Comparison groups and uncertainty.","Fitted impacts for India, Sweden, and Romania recommendations."]
+     "symbol": "Participations",
+     "normalized_name": "number of previous participations",
+     "unit": "count",
+     "definition": "number of previous participations",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_positive",
+     "normalized_name": "predicted probability of the positive class",
+     "unit": "dimensionless",
+     "definition": "predicted probability of the positive class",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_negative",
+     "normalized_name": "predicted probability of the negative class",
+     "unit": "dimensionless",
+     "definition": "predicted probability of the negative class",
+     "role": "output",
+     "source_status": "explicit-defined"
     }
-  ],
-  "dependency_edges": [
-    {"from_model_id":"MU-C-2025-2505964-HIST-FEATURES","to_model_id":"MU-C-2025-2505964-SPORT-RF","handoff":"Four cutoff-lagged capability features join encoded identity and event fields."},
-    {"from_model_id":"MU-C-2025-2505964-SPORT-RF","to_model_id":"MU-C-2025-2505964-MEDAL-SIM","handoff":"Prob_Medal and Prob_Gold weight event-level allocation draws."},
-    {"from_model_id":"MU-C-2025-2505964-SPORT-RF","to_model_id":"MU-C-2025-2505964-FIRST-MEDAL","handoff":"Sport-level medal probabilities or fallback rates weight nominal first-medal candidates."},
-    {"from_model_id":"MU-C-2025-2505964-POISSON-EVENTS","to_model_id":"MU-C-2025-2505964-COUNT-SPECS","handoff":"The USA swimming outcome, NumEvents predictor, and Poisson beta1 baseline are reused for NB and ZIP comparison."}
-  ],
-  "review_status": "validated"
+   ],
+   "inputs": [
+    "MedalBinary",
+    "GoldBinary",
+    "Score",
+    "Participations"
+   ],
+   "outputs": [
+    "p_positive",
+    "p_negative",
+    "PastTotalMedals",
+    "PastBestResult",
+    "PastWeightedRatio"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-001",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastTotalMedals is the sum of MedalBinary, then shift(1) to drop the current year.",
+     "normalized_latex": "PastTotalMedals = shift_1(\\sum MedalBinary)",
+     "purpose": "Lagged medal count.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastTotalMedals",
+      "MedalBinary"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-002",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastBestResult is the cumulative maximum of Score (gold 3, silver 2, bronze 1, none 0), then shift(1).",
+     "normalized_latex": "PastBestResult = shift_1(\\max Score)",
+     "purpose": "Lagged best score.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastBestResult",
+      "Score"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-003",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastWeightedRatio is the cumulative sum of previous scores divided by the number of previous participations, then shift(1).",
+     "normalized_latex": "PastWeightedRatio = shift_1(\\sum Score / Participations)",
+     "purpose": "Lagged mean score.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastWeightedRatio",
+      "Score",
+      "Participations"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-004",
+     "page": 10,
+     "label": null,
+     "source_expression": "Usually, p_positive + p_negative = 1",
+     "normalized_latex": "p_{positive} + p_{negative} = 1",
+     "purpose": "The two class probabilities sum to one.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "p_positive",
+      "p_negative"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Predict whether an athlete wins a medal and whether that medal is gold."
+   ],
+   "constraints": [
+    "A sport with fewer than 5 rows, or a single class, falls back to the historical average."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "random forest class probabilities, with a historical-average fallback",
+    "parameters": [
+     "PastTotalMedals",
+     "PastGoldMedals",
+     "PastBestResult",
+     "PastWeightedRatio"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Build four lagged features with shift(1).",
+     "Fit one forest for MedalBinary and one for GoldBinary.",
+     "Fall back to the historical rate when a sport is too small or has one class.",
+     "Call predict_proba for Prob_Medal and Prob_Gold."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "Athletes in the 2024 roster reappear in 2028.",
+    "The 2024 event program stands in for the unpublished 2028 program."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "p_positive"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "A separate forest per sport can follow that sport's own pattern.",
+    "The lag keeps the current Games out of the feature."
+   ],
+   "limitations": [
+    "The point allocation gives gold to the single highest Prob_Gold and does not use the forest as a draw.",
+    "The paper later calls the same split one model per event."
+   ],
+   "missing_details": [
+    "Tree count, depth, and the split criterion are not stated.",
+    "The host-country and coach equations on later pages were read from the text layer after the proxy cap."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-002",
+   "page": 10,
+   "section": "3.1.6 Medal Distribution",
+   "family": "monte carlo allocation",
+   "purpose": "Turn athlete probabilities into a 2028 medal table and a 95 percent interval.",
+   "base_or_modification": "paper-specific",
+   "summary": "Gold goes to the athlete with the highest Prob_Gold. Silver and bronze go to the next two by Prob_Medal. A Monte Carlo redraws the table.",
+   "variables": [
+    {
+     "symbol": "Prob_Gold",
+     "normalized_name": "probability of gold",
+     "unit": "dimensionless",
+     "definition": "probability of gold",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Prob_Medal",
+     "normalized_name": "probability of any medal",
+     "unit": "dimensionless",
+     "definition": "probability of any medal",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PredictedGold",
+     "normalized_name": "indicator of the assigned gold",
+     "unit": "dimensionless",
+     "definition": "indicator of the assigned gold",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PredictedMedal",
+     "normalized_name": "indicator of any assigned medal",
+     "unit": "dimensionless",
+     "definition": "indicator of any assigned medal",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M",
+     "normalized_name": "number of Monte Carlo repetitions",
+     "unit": "count",
+     "definition": "number of Monte Carlo repetitions",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "Prob_Gold",
+    "Prob_Medal",
+    "M"
+   ],
+   "outputs": [
+    "PredictedGold",
+    "PredictedMedal"
+   ],
+   "governing_equations": [],
+   "equation_status": {
+    "status": "omitted-by-paper",
+    "reason": "The paper gives a procedure and no displayed equation."
+   },
+   "objectives": [
+    "Produce a point table and a 95 percent interval for 2028."
+   ],
+   "constraints": [
+    "Each event awards one gold and two further medals."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "percentile interval of repeated medal draws",
+    "parameters": [
+     "M"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Assign gold to the maximum Prob_Gold.",
+     "Sort the rest by Prob_Medal and assign two medals.",
+     "Repeat the draw M times and read the 2.5 and 97.5 percentiles."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The 2024 roster is the 2028 roster."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "PredictedMedal"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The interval shows the draw, not only the point table.",
+    "The point rule and the random rule are both written down."
+   ],
+   "limitations": [
+    "The prose uses 1000 draws, while the step list also offers 5000 and 10000.",
+    "The first-medal simulation later uses 500 draws and a different selection rule."
+   ],
+   "missing_details": [
+    "The random-number generator and the percentile method are not named."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-003",
+   "page": 16,
+   "section": "3.3.2 Poisson regression",
+   "family": "poisson regression",
+   "purpose": "Relate a strong sport's medal count to its number of events.",
+   "base_or_modification": "base",
+   "summary": "A log-linear Poisson mean is fit for USA swimming and, separately, for China table tennis. A second USA fit, a negative binomial, and a zero-inflated Poisson are used as checks.",
+   "variables": [
+    {
+     "symbol": "TotalMedals",
+     "normalized_name": "medal count in the sport",
+     "unit": "medal",
+     "definition": "medal count in the sport",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta0",
+     "normalized_name": "intercept of the log mean",
+     "unit": "dimensionless",
+     "definition": "intercept of the log mean",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta1",
+     "normalized_name": "log effect of one more event",
+     "unit": "dimensionless",
+     "definition": "log effect of one more event",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "NumEvents",
+     "normalized_name": "number of events in the sport",
+     "unit": "count",
+     "definition": "number of events in the sport",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Elasticity",
+     "normalized_name": "beta1 times the event count",
+     "unit": "dimensionless",
+     "definition": "beta1 times the event count",
+     "role": "output",
+     "source_status": "inferred-from-equation"
+    }
+   ],
+   "inputs": [
+    "NumEvents"
+   ],
+   "outputs": [
+    "TotalMedals",
+    "Elasticity"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-005",
+     "page": 16,
+     "label": null,
+     "source_expression": "log(E[TotalMedals]) = β0 + β1 × (NumEvents) + …",
+     "normalized_latex": "\\log(E[TotalMedals]) = \\beta_0 + \\beta_1 \\times NumEvents",
+     "purpose": "Log-linear Poisson mean.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "TotalMedals",
+      "beta0",
+      "beta1",
+      "NumEvents"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-006",
+     "page": 18,
+     "label": null,
+     "source_expression": "e^{0.0517} ≈ 1.053, about 5.3 percent more medals per added swimming event.",
+     "normalized_latex": "e^{0.0517} \\approx 1.053",
+     "purpose": "Multiplicative reading of the narrative swimming coefficient.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "beta1"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-007",
+     "page": 18,
+     "label": null,
+     "source_expression": "e^{0.912} ≈ 1.211, about 21.1 percent, printed beside β1 = 0.1912.",
+     "normalized_latex": "e^{0.912} \\approx 1.211",
+     "purpose": "Multiplicative reading printed for the Table 4 coefficient.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "beta1"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-008",
+     "page": 19,
+     "label": null,
+     "source_expression": "Elasticity = β1 × (NumEvents), equal to 0 at 0 events, 1.912 at 10, and about 3.824 at 20.",
+     "normalized_latex": "Elasticity = \\beta_1 \\times NumEvents",
+     "purpose": "Elasticity of medals with respect to events.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "Elasticity",
+      "beta1",
+      "NumEvents"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Test whether more events in a strong sport raise that country's medals."
+   ],
+   "constraints": [
+    "Medal counts are non-negative integers.",
+    "The mean is log-linear in the event count."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "Poisson maximum likelihood, with negative binomial and zero-inflated checks",
+    "parameters": [
+     "beta0",
+     "beta1"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Fit the Poisson mean.",
+     "Read the coefficient as a percent.",
+     "Re-fit with a negative binomial and a zero-inflated Poisson and compare AIC."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The same sport keeps its meaning from 1896 to 1964 for swimming and from 1988 to 2024 for table tennis."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "TotalMedals"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The sign of the event coefficient is stated before the number.",
+    "Three distributions are compared on the same coefficient."
+   ],
+   "limitations": [
+    "The narrative fit (2.4595 and 0.0517) and Table 4 (0.7933 and 0.1912) are not the same regression.",
+    "The printed exponent 0.912 drops a digit from 0.1912."
+   ],
+   "missing_details": [
+    "The link function beyond the displayed log mean is not written.",
+    "Which years enter Table 4 is not stated."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-004",
+   "page": 21,
+   "section": "3.3.6 Host Country Effect",
+   "family": "multiple linear regression",
+   "purpose": "Estimate how many extra medals a host gains.",
+   "base_or_modification": "base",
+   "summary": "Medals or golds are regressed on a host dummy, the host's event count, and the average medal count over the last three Games. The United States and China are reported separately.",
+   "variables": [
+    {
+     "symbol": "Y_i",
+     "normalized_name": "total medals or gold medals for country i",
+     "unit": "medal",
+     "definition": "total medals or gold medals for country i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b0",
+     "normalized_name": "intercept",
+     "unit": "medal",
+     "definition": "intercept",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b1",
+     "normalized_name": "host-dummy coefficient",
+     "unit": "medal",
+     "definition": "host-dummy coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X1_i",
+     "normalized_name": "host dummy, 1 if host and 0 otherwise",
+     "unit": "dimensionless",
+     "definition": "host dummy, 1 if host and 0 otherwise",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b2",
+     "normalized_name": "event-count coefficient",
+     "unit": "medal per event",
+     "definition": "event-count coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X2_i",
+     "normalized_name": "number of events for the host",
+     "unit": "count",
+     "definition": "number of events for the host",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b3",
+     "normalized_name": "historical-mean coefficient",
+     "unit": "dimensionless",
+     "definition": "historical-mean coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X3_i",
+     "normalized_name": "average medals over the last three Games",
+     "unit": "medal",
+     "definition": "average medals over the last three Games",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps_i",
+     "normalized_name": "error term",
+     "unit": "medal",
+     "definition": "error term",
+     "role": "state",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "X1_i",
+    "X2_i",
+    "X3_i"
+   ],
+   "outputs": [
+    "Y_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-009",
+     "page": 21,
+     "label": null,
+     "source_expression": "Y_i = β0 + β1 · X1_i + β2 · X2_i + β3 · X3_i + ε_i",
+     "normalized_latex": "Y_i = \\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + \\beta_3 X_{3i} + \\epsilon_i",
+     "purpose": "Host-country medal regression.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "Y_i",
+      "b0",
+      "b1",
+      "X1_i",
+      "b2",
+      "X2_i",
+      "b3",
+      "X3_i",
+      "eps_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Estimate the host increment for the United States and for China."
+   ],
+   "constraints": [
+    "The host effect is linear in the dummy and the two covariates.",
+    "Errors are additive."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "ordinary least squares reported through R-squared and one coefficient",
+    "parameters": [
+     "b0",
+     "b1",
+     "b2",
+     "b3"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Code the host dummy.",
+     "Average the last three Games.",
+     "Fit the regression separately by country."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "No force majeure and no large external shock, as in Assumptions 3 and 4."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "Y_i"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The United States increment and the China increment are reported side by side.",
+    "A p-value of 0.055 is described as close to significant rather than rounded down."
+   ],
+   "limitations": [
+    "Only the host coefficient is given; the event-count and history coefficients are discussed as not significant without their values.",
+    "The United States uses 25 observations and China 9."
+   ],
+   "missing_details": [
+    "Standard errors for the host coefficients are not printed.",
+    "The equation was read from the text layer, not from a page raster."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-005",
+   "page": 23,
+   "section": "3.4 The Great Coach Model",
+   "family": "additive medal-score decomposition",
+   "purpose": "Separate a coach's medal points from the team's previous level.",
+   "base_or_modification": "paper-specific",
+   "summary": "Winning capability is the athlete baseline plus a constant coach contribution. The baseline is the average of the three previous Games, and the coach term is the difference. Noise is set to zero.",
+   "variables": [
+    {
+     "symbol": "P",
+     "normalized_name": "winning capability on a 0 to 3 scale",
+     "unit": "score",
+     "definition": "winning capability on a 0 to 3 scale",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_a",
+     "normalized_name": "athlete baseline, the mean of the three previous Games",
+     "unit": "score",
+     "definition": "athlete baseline, the mean of the three previous Games",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_c",
+     "normalized_name": "coach contribution",
+     "unit": "score",
+     "definition": "coach contribution",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps",
+     "normalized_name": "competition noise, set to zero",
+     "unit": "score",
+     "definition": "competition noise, set to zero",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_prev",
+     "normalized_name": "sum of the three previous capabilities",
+     "unit": "score",
+     "definition": "sum of the three previous capabilities",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "P_prev",
+    "P"
+   ],
+   "outputs": [
+    "P_c",
+    "P"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-010",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e} = P_{n,y,e|a} + P_{n,y,e|c} + ε, with both P and ε in [0, 3].",
+     "normalized_latex": "P = P_a + P_c + \\epsilon",
+     "purpose": "Capability is baseline plus coach plus noise.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P",
+      "P_a",
+      "P_c",
+      "eps"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q261-011",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e|a} = (P_{n-1} + P_{n-2} + P_{n-3}) / 3",
+     "normalized_latex": "P_a = P_{prev} / 3",
+     "purpose": "Baseline is the three-Games average before the coach.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_a",
+      "P_prev"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q261-012",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e|c} = P_{n,y,e} - P_{n,y,e|a}, after setting ε to 0.",
+     "normalized_latex": "P_c = P - P_a",
+     "purpose": "Coach contribution is the residual.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_c",
+      "P",
+      "P_a"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Estimate the coach contribution and spend it on three countries."
+   ],
+   "constraints": [
+    "The coach contribution is a constant.",
+    "The noise term is set to zero during the coach's tenure.",
+    "Capability is 0, 1, 2, or 3 for none, bronze, silver, and gold."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "three-Games average subtracted from the observed score",
+    "parameters": [
+     "P_c"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Score the three previous Games.",
+     "Average them.",
+     "Subtract the average from the Games under the coach.",
+     "Average across events when the coach leads more than one."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The three Games before the coach represent the team without that coach."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "P_c"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The baseline window is stated.",
+    "A worked case, Lang Ping, is calculated in public."
+   ],
+   "limitations": [
+    "The printed average of the two American contributions is 1.16, which is not the mean of 2 and 1.33.",
+    "The 2012 American term is printed without the three Games that would produce it."
+   ],
+   "missing_details": [
+    "Ranking data are absent, so the paper cannot score places below a medal.",
+    "The formulas were read from the text layer, not from a page raster."
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-C-Q261-001",
+   "to_model_id": "MU-C-Q261-002",
+   "handoff": "Prob_Medal and Prob_Gold"
+  },
+  {
+   "from_model_id": "MU-C-Q261-003",
+   "to_model_id": "MU-C-Q261-004",
+   "handoff": "the claim that a host can add events in its strong sports"
+  }
+ ]
 }

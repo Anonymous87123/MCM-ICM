@@ -1,0 +1,58 @@
+Team # 2229059                                                                Page 5 of 21
+
+3 Calculating and Simplifying the Model
+
+3.1 Momentum Trading
+
+We use the common trading technique called momentum trading in our model. We cal-
+
+culate the momentum of the asset using the price gradient of an asset and the moving
+
+average. The price gradient is a simple calculation. At a time t, we calculate the gradient
+
+G by
+
+                     G = ∇P    or       Gt(n) ≈ Pt − Pt−n+1
+
+where Pt is the price of the asset at time t. The moving average is given by
+
+                               At(n) =  n−1  wi  Pt−i
+                                        i=0
+
+                                        n−1  wi
+                                        i=0
+
+where wi is the weight given to the price and Pt is the same as before. For both metrics,
+n is the time interval we observe. The model then decides whether to buy or sell an asset
+at a time t like
+
+      Mt(n)  =  Gt(n)      (gradient)
+                Pt − At(n)  (difference between price and moving average)
+
+Both cases must be true for Mt(n) to return a buy signal. If both Gt(n) > 1 and Pt −At(n) >
+1 then Mt(n) > 1 and a buy signal is issued and remains active until the next time period
+t + 1. Otherwise, a sell signal is issued. Combining the two techniques allows us to
+capitalize on price increases more efficiently.
+
+3.2 Reversion-to-Mean
+
+Momentum trading is a good method if the price tends to break out above a moving
+average. We want our model to be conscious of movements below the moving-average
+as well, and thus we implement reversion-to-mean strategies. We write
+
+                µ+i            µ+ j
+
+                     P(x)dx >        P(x)dx for i > j > 0
+
+                µ−i            µ− j
+
+For our model, this says that the farther the price deviates from the moving average, the
+more likely it is on the next time step to be closer to the moving average. This can be
+interpreted qualitatively by noting that as the price of an asset falls far below the moving
+average, it is likely to make positive moves in the future and thus the signal is a buy.
+
+3.3 Calculating Profitability
+
+Figure 3 describes the general logic that we use to determine buy/sell indicators. We
+extend this by adding a ’profitability’ metric to each indicator that is returned. For mo-
+mentum trades, we say that the profitability is proportional to the gradient of the price.

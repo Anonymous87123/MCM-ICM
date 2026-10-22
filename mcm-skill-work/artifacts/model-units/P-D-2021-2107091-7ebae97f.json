@@ -1,0 +1,445 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2021-2107091-7ebae97f",
+  "problem_type": "D",
+  "year": "2021",
+  "source_sha256": "7ebae97f2c0ad2ccad5b1b5d8d80f927f4a5498a76b8710fc7be1ac75fcbbd9b",
+  "models": [
+    {
+      "model_id": "MU-D-2021-2107091-WeightedInfluence",
+      "page": 5,
+      "section": "3.3 Network",
+      "family": "network-ranking",
+      "purpose": "Weight influence by time direction and genre crossing, then score nodes with a patched eigenvector centrality",
+      "base_or_modification": "modification",
+      "summary": "Each musician is a node. An edge from junior to predecessor is up-weighted because that direction is rare, and a cross-genre edge is up-weighted because styles rarely overlap. Weights combine the two with an exponential of the normalized time gap. Importance starts as weighted out-degree and is then iterated with a PageRank-style mix of neighbor score and own score. The result is scaled by its maximum. The distribution fits a power law with R-squared 0.9931.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the time gap and the genre flag",
+          "Form the edge weight",
+          "Iterate the mixed centrality",
+          "Scale by the maximum"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Iteration to a fixed value"
+      },
+      "assumptions": [
+        "The reverse time direction is rarer and therefore stronger",
+        "Cross-genre influence is stronger"
+      ],
+      "computational_cost": "One sparse iteration",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Iteration stops when the score converges"
+          ]
+        }
+      },
+      "constraints": [
+        "Time gap normalized by 80 years",
+        "Beta greater than 1"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The weight, the degree and the iteration are written"
+      },
+      "handoff_outputs": [
+        "MI"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The iteration converges; beta is set, not estimated."
+      },
+      "missing_details": [
+        "Beta never given a value",
+        "The degree indicator appears inverted in one line"
+      ],
+      "objectives": [
+        "Rank musicians by influence"
+      ],
+      "parameter_estimation": {
+        "method": "Beta chosen, power-law fit by maximum likelihood",
+        "parameters": [
+          "beta",
+          "alpha"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Every weight traces back to a stated likelihood",
+        "Checked against an external list"
+      ],
+      "validation_refs": [
+        "Table 2",
+        "Table 3",
+        "Figure 3"
+      ],
+      "variables": [
+        {
+          "symbol": "w",
+          "normalized_name": "edge_weight",
+          "unit": "dimensionless",
+          "definition": "Combined time and genre weight",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "time_factor",
+          "unit": "dimensionless",
+          "definition": "Signed, asymmetric time-gap factor",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "genre_flag",
+          "unit": "boolean",
+          "definition": "One when the edge crosses genres",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DC",
+          "normalized_name": "degree_centrality",
+          "unit": "dimensionless",
+          "definition": "Weighted out-degree",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EC",
+          "normalized_name": "eigenvector_centrality",
+          "unit": "dimensionless",
+          "definition": "Iterated mixed score",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MI",
+          "normalized_name": "music_influence",
+          "unit": "dimensionless",
+          "definition": "Score scaled by its maximum",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "a",
+        "T"
+      ],
+      "outputs": [
+        "MI"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2021-2107091-01",
+          "page": 6,
+          "source_expression": "w=(1+a) exp(T/80)",
+          "normalized_latex": "w_{ij}=(1+a_{ij})e^{T/80}",
+          "purpose": "Edge weight",
+          "label": "Influence weight",
+          "variable_symbols": [
+            "w",
+            "a",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-D-2021-2107091-02",
+          "page": 7,
+          "source_expression": "EC=lambda sum d EC +(1-lambda) EC",
+          "normalized_latex": "EC_i=\\lambda\\sum_j d_{ij}EC_j+(1-\\lambda)EC_i",
+          "purpose": "Mixed update",
+          "label": "Patched centrality",
+          "variable_symbols": [
+            "EC"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "limitations": [
+        "Beta unspecified",
+        "Direction coding is easy to misread"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2107091-Similarity",
+      "page": 9,
+      "section": "4 Similarity",
+      "family": "similarity",
+      "purpose": "Score music similarity globally, locally and with a fashion adjustment",
+      "base_or_modification": "base",
+      "summary": "Global similarity uses cosine, local similarity uses Euclidean distance on selected features, and a third term accounts for the fashion of the release period. A separate feature-combination search picks the sets of features that best separate genres. Within-genre similarity comes out higher than between-genre.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute cosine and Euclidean similarities",
+          "Adjust for the period",
+          "Search feature combinations for genre separation"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Direct computation"
+      },
+      "assumptions": [
+        "Genre labels are fixed for a musician"
+      ],
+      "computational_cost": "Quadratic in artists",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Iteration stops when the score converges"
+          ]
+        }
+      },
+      "constraints": [
+        "Genre does not change"
+      ],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The three-part score is described in prose and notation but not assembled into one displayed equation"
+      },
+      "handoff_outputs": [
+        "MS"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The parts are defined; their combination rule is not fully shown."
+      },
+      "missing_details": [
+        "Weights of the three parts unstated"
+      ],
+      "objectives": [
+        "Separate genres and compare within against between"
+      ],
+      "parameter_estimation": {
+        "method": "Feature combinations searched",
+        "parameters": [
+          "feature set"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Two geometries instead of one"
+      ],
+      "validation_refs": [
+        "Section 4.3"
+      ],
+      "variables": [
+        {
+          "symbol": "MS",
+          "normalized_name": "music_similarity",
+          "unit": "dimensionless",
+          "definition": "Combined similarity",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sglobal",
+          "normalized_name": "global_similarity",
+          "unit": "dimensionless",
+          "definition": "Cosine similarity",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Spart",
+          "normalized_name": "partial_similarity",
+          "unit": "dimensionless",
+          "definition": "Euclidean similarity on chosen features",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Sglobal",
+        "Spart"
+      ],
+      "outputs": [
+        "MS"
+      ],
+      "governing_equations": [],
+      "limitations": [
+        "Combination weights missing",
+        "Genre assumed fixed"
+      ]
+    },
+    {
+      "model_id": "MU-D-2021-2107091-SlidingWindow",
+      "page": 16,
+      "section": "5 Sliding Window",
+      "family": "time-series",
+      "purpose": "Test whether influencers really shape followers by comparing work before and after, in a window",
+      "base_or_modification": "base",
+      "summary": "Only songs released before the follower's current year can count. A window gives a short-term and a long-term similarity, combined into an influence degree score with a threshold. Closeness of individual traits then ranks which characteristics spread. The same score, summed over ten-year cohorts, becomes the dynamic influencer index.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Restrict to earlier releases",
+          "Compute short- and long-window similarity",
+          "Apply the threshold",
+          "Sum over a decade"
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Direct computation"
+      },
+      "assumptions": [
+        "Later releases cannot influence earlier work"
+      ],
+      "computational_cost": "Moderate",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Iteration stops when the score converges"
+          ]
+        }
+      },
+      "constraints": [
+        "Ten-year cohorts",
+        "A fixed threshold"
+      ],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The score is named and used but its formula is not displayed"
+      },
+      "handoff_outputs": [
+        "IDS",
+        "DII"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The threshold is chosen, so the positive rate is not identified."
+      },
+      "missing_details": [
+        "Threshold value not reported",
+        "Window lengths not reported"
+      ],
+      "objectives": [
+        "Confirm real influence and name contagious traits and leaders"
+      ],
+      "parameter_estimation": {
+        "method": "Threshold set by inspection",
+        "parameters": [
+          "threshold"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Respects time order, unlike a pooled comparison"
+      ],
+      "validation_refs": [
+        "Section 5.2"
+      ],
+      "variables": [
+        {
+          "symbol": "IDS",
+          "normalized_name": "influence_degree_score",
+          "unit": "dimensionless",
+          "definition": "Windowed influence of one source on one follower",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DC",
+          "normalized_name": "closeness",
+          "unit": "dimensionless",
+          "definition": "Closeness of one trait between source and follower",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DII",
+          "normalized_name": "dynamic_influencer_index",
+          "unit": "dimensionless",
+          "definition": "Decade sum of influence scores",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MS",
+          "normalized_name": "music_similarity",
+          "unit": "dimensionless",
+          "definition": "Combined similarity compared inside the window",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "MS"
+      ],
+      "outputs": [
+        "IDS",
+        "DII"
+      ],
+      "governing_equations": [],
+      "limitations": [
+        "Threshold and window lengths unreported",
+        "Decade debut proxy"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2021-2107091-Similarity",
+      "to_model_id": "MU-D-2021-2107091-SlidingWindow",
+      "handoff": "The similarity score is what the window compares"
+    },
+    {
+      "from_model_id": "MU-D-2021-2107091-WeightedInfluence",
+      "to_model_id": "MU-D-2021-2107091-SlidingWindow",
+      "handoff": "The ranked influencers are the ones tested for real effect"
+    }
+  ],
+  "review_status": "validated"
+}
