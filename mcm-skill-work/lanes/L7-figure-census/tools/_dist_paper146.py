@@ -458,7 +458,7 @@ FIGURES = [
 
 TABLES = [
     table("t0",
-          cap("", "none"),
+          cap("", "none", position="above"),
           mention(7, first=None, style=[]),
           grid(16, 2, header=1, numeric=0, txt=2, zebra=True,
                note="P.s. Other symbols instruction will be given in the text."),

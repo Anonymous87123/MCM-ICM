@@ -2224,3 +2224,41 @@ below except where a figure opens a page" survives the aggregate.
 
 #139 is the control case: 25 figures all below and 5 recorded tables all above, no exception, so its
 per-paper rule is uniform and needs no licence.
+
+## Checkpoint 144-146: page order, uncaptioned caption side, repeated exhibits
+
+Three papers closed back to back (#144 P-A-2018-76271-27d535ab, #145 P-A-2018-77845-746864a6,
+#146 P-A-2018-86103-6d21eb9d) were re-read against their records, and the cross-paper pass found
+two field-level defects that no single-paper check could have caught.
+
+**Page order against a side-by-side pair.** #144 p17 prints Figure 3 and Figure 4 in the two
+columns of one band, and the record had assigned `place.page_order` by bbox top, which put the
+right-hand exhibit first (Figure 4 = 1, Figure 3 = 2) while `place.doc_order` kept the reading
+order (Figure 3 = 7, Figure 4 = 8). Two orderings of the same page contradicting each other is
+never a reading of the page, it is a tie-break bug: within one band the left column is read
+first, so both fields must agree. Both exhibits now read 1 and 2 on the page and 7 and 8 in the
+document. The lesson generalises - `doc_order` and `page_order` are computed by different passes
+and will silently disagree wherever two regions share a band, so the audit must compare them
+rather than trust either.
+
+**Caption side for a grid with no caption.** #146's p7 notation glossary is the one grid in that
+paper that prints no caption at all, and the payload's `cap()` default had recorded
+`caption.position = below` for it. That is a value about nothing: the glossary's title is its
+section heading, printed above the grid, and a `below` there made the record's table side read
+"one below, five above" while the paper's rule is uniformly tables-above. The rule text was not
+wrong and the aggregate would have been. Recorded as `above`, matching the side the paper uses
+for every grid it does caption, so a null caption no longer smuggles a counter-example into the
+side counts. #144 and #145 had already set their uncaptioned grids to their paper's side by
+hand, which is why the defect appeared exactly once.
+
+**What the three papers say together.** Their caption-side rules are all different and all
+correct: #144 figures below and tables above, #145 figures below and tables BELOW (the only
+paper so far whose grid captions sit under the grid), #146 figures below and tables above again.
+So the field is a per-paper rule, not a house rule, and the corrected #146 aggregate (18 below,
+5 above, one uncaptioned recorded on the paper's side) is the value to compare future papers
+against. Two more cross-paper facts worth keeping: #146 prints the same Excel chart three times
+(abstract Figure 2, Figure 10, Figure 12) and each printed instance keeps its own row - the
+census records exhibits as printed, and a duplicate is a fact about the paper, not a reason to
+merge rows; and all three papers paste their display mathematics as images, which is now five
+papers running, so "equation rendered as a picture" is a stable property of this batch rather
+than an accident of any one detector run.

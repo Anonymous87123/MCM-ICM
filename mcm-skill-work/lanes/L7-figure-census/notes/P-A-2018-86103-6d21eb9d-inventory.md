@@ -198,7 +198,7 @@ figure 18 p20: sec=6.1 Maximum time(tmax) using the same multi-hop path [result]
 table 1 p7: sec=3 Notation [symbols] zone=middle order=3/1 area=0.2065 solo=False
   family=table-grid panels=1 layout=- shared=- legend=- cbar=- 3d=- printed=-
   mention: first=None lead=None count=0 read=0 gap=None pattern=none style=[]
-  caption: none words=0 sent=0 units=False vars=0 cond=False concl=False voice=none pos=below
+  caption: none words=0 sent=0 units=False vars=0 cond=False concl=False voice=none pos=above
   table: 16x2 header=1 rules=booktabs zebra=True merged=False diag=False units_hdr=False dec=False num=0 txt=2 width=full orient=portrait cont=False
 
 table 2 p16: sec=4 Radio propagation on sea surface model > 4.4 First reflection intensity [result] zone=middle order=17/2 area=0.0311 solo=False
