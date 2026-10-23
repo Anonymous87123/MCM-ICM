@@ -2489,6 +2489,7 @@ same defect is not re-diagnosed paper by paper.
 | 152 | P-B-2018-91566-2607f7ec | 26 | 24 | 7 | 5 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 24 measured regions on 15 of 26 pages = 12 exhibit rows + 12 exclusions, because the paper pastes nearly every formula as a raster (pages 12, 13, 14 are each one page-sized screenshot of prose plus math) so half the regions are displays. Caption side is kind-driven with no exception: 7 of 7 figures below, 5 of 5 tables above. Numbering is the colon form 'Figure N:' / 'Table N:' - the first paper in this lane to print it - and three appendix fragments go unlabelled. All five grids are booktabs, horizontal rules only: the first zero-vertical-rule paper here. Families: composite-panel 5, flowchart-or-schematic 1, node-link-network 1; no 3-D, no colourbar. ONE region holds TWO printed figures four times over (3+4, 5+6, 7+8, 9+10), so region counting understates the printed figure count by four, and the paired caption lines are physically broken (no separator on p16/p18, 'Proportions inFigure 6' plus a wrapped '2068' on p17) - map captions to panels by horizontal position, never by line adjacency. No table is ever cited by number. Coverage gap: Table 2 and Tables A1/A2/A5/A6/A8 are native text columns the region pass never boxes |
 | 153 | P-C-2018-72969-f2349d15 | 30 | 57 | 13 | 8 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 57 measured regions on 23 of 30 pages = 21 exhibit rows + 36 exclusions, split into 19 panel fragments (the detector boxes each panel of a composed figure separately) and 17 non-exhibits (ten pasted 87-92 dpi strips of prose and display maths on pp9/11/12/13/15/16/17/18/19, plus the three MATLAB appendix listings on pp26-30 boxed as seven table-like regions). Region count is more than double exhibit count. Caption side is kind-driven with no exception: 13 of 13 figures below the artwork, 8 of 8 grids above. Numbering is the colon form on all 21 and 17 of the 21 captions run under twelve words. All eight grids are booktabs with no vertical rule and no zebra; two grids carry two header rows and both are stacked blocks over one shared stub set (Table 3 ten item names twice, Table 4 eight factor names twice); merged cells appear once (Table 8's NM/TX spans); nothing is decimal-aligned and no unit sits in a header. Families: line 5, flowchart-or-schematic 3, scatter 2, heatmap-or-contour 1, bar 1, other 1 (four radars, a type the vocabulary does not name). 10 of 13 figures are multi-panel and the 1x3 row is the standard, used five times. Nothing is three-dimensional; one figure carries colourbars. Mentions: 12 of 13 cited, six same page, four one page early, two one page late (Figures 2 and 9 cited AFTER they print); Figure 6 never cited; three figures get no reading sentence. Coverage gap, declared not patched: Table 2 (p7) and Table 7 (p20) print with captions but own no region, so 8 of 10 printed tables are recorded, and Figure 2's swatch key, Figure 11's shared legend and Figure 12's legend plus fourth radar all fall outside every box. Traps: panel indices are not reading order (p18 stored right-to-left, p13 row-major by x only, so panel (a) is region 3 on both); p12 r1 is a second placement of p11 r2's image, which is why equations (11) and (12) are printed nowhere |
 | 154 | P-C-2018-73767-a72d3a8a | 29 | 35 | 19 | 10 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 35 measured regions on 20 of 29 pages = 29 exhibit rows + 6 exclusions, and here the surplus runs the other way: the six are display maths and pasted prose (equation (1) p8, equation (2) p11, the three-equation block (3) p12, the standardisation block (4) p14, the fifteen-line prose-plus-equations raster p15, and p17 as one 0.555-area strip), and NO region holds two printed exhibits. Caption side is NOT kind-driven: 19 of 19 figures and 9 of 10 grids are captioned below, Table 16 alone above. Numbering is the colon form on all 29 and every caption is a verbless lower-case noun phrase of 2-8 words. Eight of the ten grids are closed boxes with full-height verticals; one plain frame (Table 2, side rules and no internal vertical) and one booktabs grid (Table 8); zebra shades exactly one (Table 9, also the only decimal-aligned one); six grids merge header cells; five carry two header rows and all five are group-spanner blocks; no unit ever enters a header - the three appendix grids put it inside every cell. Families: line 6, bar 4, other 4 (four pies - a chart type the closed vocabulary does not name), scatter 2, flowchart-or-schematic 2, map-or-plan-view 1; nothing 3-D, no colourbar anywhere. Legends 8 inside, 7 absent, 4 outside-right, and the two bars with no key are the same chart as the bar that has one. Mentions: only 7 of 29 exhibits are cited by number and 22 are read cold, every appendix exhibit among them; six citations land on the exhibit's own page and Figure 5 is the exception, cited at the foot of p12 and printed atop p13. Coverage gap, declared not patched: eighteen tables print with captions, ten are boxed - Tables 3/13/15/17 are one boxless 'cutline' key plate four times (stale 'in Figure 2 and Figure 3', misspelt 'Fuel enthanol'), Tables 4/11/12 are native text grids, Table 7 prints above the p15 raster's box edge, and Table 8 has a region only because a page-sized prose strip swallows it AND its caption - p18's text layer loses its whole upper half, so that caption is typed from the crop. Traps: the key plates reuse figure numbers already spent on pp9/10/24/25/27/28/29, so eight numbers appear twice in a naive caption scan; 'Appendix C Profiles of Texas' prints at the foot of p26, four pages before its exhibits; p19's two scenario boxes share 95 per cent of their y extent and separate only in x; Table 16 reprints California's numbers under a New Mexico caption and Table 18 alone drops the 'Data from 1960 to 2009' spanner |
+| 155 | P-C-2018-78577-919f0d0f | 27 | 36 | 20 | 7 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 36 measured regions on 16 of 23 pages = 27 exhibit rows + 9 exclusions, the surplus coming from BOTH directions at once: six rows are panel boxes (p9 boxes each four-panel strip as four separate bitmaps, so Figures 1 and 2 spend eight regions for two printed exhibits) and the nine exclusions are five raster strips that are not exhibits (two Summary paragraphs p1, equations (2)(3)(4) p13, equation (5) p14, prose plus equation (6) p16, equations (7)(8) p20) against four duplicate detections of an already-claimed exhibit (p10 r3/r4 the raster layer inside Figure 3's axis box, p15 r3 over Figure 9 at IoU 0.93, p18 r3 nested 96 per cent inside Figure 13). Fourteen printed figures and nine printed tables fill 21 boxes; Tables 4 and 5 print above every box on p15 and are declared unboxed. Caption side is kind-driven without exception - 20 figure rows below, 7 table rows above - and numbering is the colon form on all 27, every caption a verbless 4-8 word noun phrase, only Figure 12 naming a variable symbol, which is why Figures 13 and 14 share one caption verbatim. Families: bar 10 (8 of them strip panels), line 9, flowchart-or-schematic 1; nothing 3-D, no colourbar, printed numbers on every chart but the schematic. Legends 11 inside (ten upper-right, one upper-left on the only stacked bar), 9 absent, and in five of those nine the gap is the defect. Tables split 4 booktabs / 3 with an internal vertical, 2 full-measure / 5 at 0.49-0.81, one unit-in-header (Table 2) against two unit-in-stub grids, two decimal-aligned, and zero zebra, merged cells, diagonal headers, landscape grids or continuations. All 14 figures and 6 of 9 tables are cited by number; the glossary never is; three pointer shapes - figure first, figure as subject, figure last - plus two exhibits reached from inside a subordinate clause. Defects: Figures 4 and 9 print 0.000 per cent data ink while the prose ranks four states from Figure 9; Figure 14 reuses Figure 13's caption; x ticks of Figures 3/4/9 are unreadable glyph clusters and the fuel category is misspelt 'PATROLEUM' in all eight panels; Table 8 glues wind and solar into one row label; Table 9's two totals both fail to foot. Traps: page 1 is a letter-format cover against 595.5x842 elsewhere, so two page geometries; p1, p16 and p20 lose whole blocks from the text layer and Figures 12/13 bake their ticks into the bitmap; p9's region indices are not reading order (Figure 1 runs r2, r1, r3, r4); p15's Table 4/5 captions and bodies sit above every detected box |
 
 Two more classes are not caption defects but are recorded the same way, because the text
 layer cannot reconstruct the sentence: a caption whose glyphs are mangled math italics
@@ -2677,9 +2678,55 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #154 closed, next #155. The 153-155 checkpoint falls due after #155
-closes and is not written yet; the 150-152 checkpoint sits directly below, and the
-146-148 and 145-147 checkpoints further down.
+Queue position: #155 closed, next #156. The 153-155 checkpoint is written directly
+below; the 150-152 checkpoint sits under it, and the 146-148 and 145-147
+checkpoints further down.
+
+## Checkpoint 153-155: region count runs both ways at once, and the caption side is a habit to verify, not a law to apply
+
+Three consecutive 2018 C papers on the same problem, 128 measured regions, 77 exhibit rows and 25
+grid rows. Five findings.
+
+**Region count can overstate and understate in the same paper.** #155 is both cases at once: six of
+its 27 rows are panel boxes for two four-panel strips, so eight regions buy two printed figures, and
+four more regions are duplicate detections of exhibits already claimed - the raster plot layer inside
+a vector axis box (p10), a second box over the same artwork (p15, IoU 0.93), a bitmap nested 96 per
+cent inside its frame (p18). #152 had the opposite failure, one region holding two printed figures.
+#154 had neither. So the reconciliation has to be run both directions every time: printed caption
+numbers against region count, and region count against claimed rows. Claiming panels as items with
+`is_panel_of` keeps the coverage honest and makes the family aggregate count panels - state that in
+the note, because the number no longer equals printed figures.
+
+**The caption side is kind-driven on two of three papers, and the exception is one row.** #153: 13 of
+13 figures below, 8 of 8 tables above. #155: 20 of 20 below, 7 of 7 above. #154: 28 of 29 below,
+Table 16 alone above. Three papers, one violation, and the violation is a 13-word appendix caption
+that prints above its grid. Read it as a default that gets checked per paper, never as an invariant
+that lets you skip the crop.
+
+**The grid recipe is a paper constant only in the strong cases.** #153 is all booktabs, five of five
+in #152 too. #154 is the opposite extreme: eight of ten closed boxes with full-height verticals.
+#155 is neither - four booktabs against three with a stub divider, and the split follows the kind of
+grid rather than the paper (definition and data grids booktabs, coefficient grids with a divider).
+Reading one grid gives the recipe for the papers that have a recipe; #155 and #150 are the papers
+where you must read every grid.
+
+**Table citation is not decaying, it is bimodal.** #153 cites no table by number, #151 cites no
+exhibit at all, #154 cites 7 of 29, and #155 cites all 14 figures and 6 of 9 tables. The same batch
+contains "figures referenced, tables ignored" and "everything referenced". Citation discipline is a
+property of the team, not of the year.
+
+**The unboxed native table is now a standing gap, and it comes in two shapes.** #153: ten printed
+tables, eight boxed. #154: eighteen printed, ten boxed. #155: nine printed, seven boxed, and its two
+missing ones print side by side above every detected box on the page - so the gap is not only
+"native text the detector cannot see" but also "grid above the first artwork of the page, where the
+region pass has nothing to anchor to". Declare both, patch neither.
+
+Two smaller things worth carrying forward. #155 is the first paper in the lane with two page
+geometries (a letter-format cover at 612x792 against 595.5x842 for the body), so any area fraction on
+page 1 is computed against a different frame than the rest and the note must say so. And the
+display-mathematics stream has grown a companion: pasted strips of typeset PROSE. #155 loses both
+Summary paragraphs on p1 to a bitmap, plus a prose-plus-equation band on p16 - text that the text
+layer never contains, so a quote from that region cannot be verified and must not be attempted.
 
 ## Checkpoint 150-152: region count is not exhibit count, and the grid recipe is a paper-level constant
 
