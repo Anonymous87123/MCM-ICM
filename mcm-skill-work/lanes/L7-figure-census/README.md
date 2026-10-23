@@ -1686,3 +1686,47 @@ Because all three are excluded rather than recorded, none of them reaches `famil
 and the paper's own table count stays what the prose cites. That is the point: an exclusion
 is a claim that a printed thing exists and is not an exhibit, so it needs a `reason`, a
 bbox and a note, and the note has to name which of these faces it is.
+
+## A value one position off is an extraction artefact until a crop says otherwise
+
+Four independent papers now print a table whose extracted text puts a value on the wrong row while
+the raster is clean. The shapes differ, so this is a class, not a one-off:
+
+- one cell goes missing and every value below it shifts up a row - #138 P-E-2017-71672-f2a1a712,
+  where Table 3 loses the P7 value on p14 and Table 4 loses the P5 value on p17;
+- a symbol stub and its description column come back as two separate blocks, so every symbol is
+  paired with the description of the row above - #292 (mcm-65), Table 4;
+- three columns each lose one value at the same row and shift down together - #292, Table 5;
+- a row label comes back alone with its two cells dropped to the next line - #292, Table 3.
+
+The rule these four give: a numeric or paired column in which exactly one row disagrees with its
+neighbours is an extraction artefact until a crop contradicts it, and the crop decides. Writing a
+misalignment into a record from the text layer alone is the failure mode, because a one-row shift
+is always plausible - it looks like a printing error, not like a parser error.
+
+## The caption printed inside the header line
+
+#292 (mcm-65) prints `Symbols` and `Table N: Notations / Variable parameters` on one baseline with
+`Descripition` pushed to the next line, so the caption and the first header cell share a line and
+the second header cell lands below both. `caption.position` stays `above` - the caption is above the
+grid - but the header is split by it, so a header-row read keeps one column name and silently loses
+the other, and a `header_rows: 1` record made from that read describes a table that does not exist.
+The check that catches it: the caption line must contain no cell text, and the header block must
+account for every printed column before the first body row.
+
+#139 P-F-2017-64486-62f12f04 has the mirror shape - its Table 6 prints the stub header cell `Class`
+before the caption line in the text layer - and is recorded the same way: caption verbatim without
+the stray token, the stray token described in the row note.
+
+## Caption side: per paper, with one licensed exception
+
+The rule holds - the side is decided per paper and never inferred from exhibit type - but it needs
+its sub-case. #292 (mcm-65) prints 18 figure captions below and 8 table captions above without a
+single exception, then breaks once: Figure 16's caption is the first line of a back-matter memo page
+and genuinely sits above its artwork. So the statement to record is "one side per paper by default,
+and a figure that opens a fresh back-matter page takes the side the page forces". A record that says
+"figures below" flatly is falsified by that one row; a record that says "this paper puts its figures
+below except where a figure opens a page" survives the aggregate.
+
+#139 is the control case: 25 figures all below and 5 recorded tables all above, no exception, so its
+per-paper rule is uniform and needs no licence.
