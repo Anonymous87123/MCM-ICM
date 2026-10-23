@@ -42,6 +42,7 @@ LANE = Path(__file__).resolve().parents[1]
 PROXY = LANE / ".proxy"
 PAPERS = LANE.parents[1] / "artifacts" / "papers"
 MAX_WORDS = 25
+TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9'.,%/()-]*")
 
 NUMBERING = (
     (re.compile(r"^FIGURE\s+\d+"), "FIGURE N"),
@@ -57,7 +58,7 @@ NUMBERING = (
 
 
 def word_list(text: str) -> list[str]:
-    return re.findall(r"[A-Za-z0-9][A-Za-z0-9'.,%/()-]*", text)
+    return TOKEN.findall(text)
 
 
 def sentence_count(text: str) -> int:
@@ -89,7 +90,7 @@ def pick_line(pid: str, page: int, prefix: str, label: str, nth: int | None = No
     if len(hits) > 1 and nth is None:
         raise SystemExit(f"{label}: {len(hits)} lines on page {page} start with "
                          f"{prefix!r}; pass an occurrence index")
-    if nth >= len(hits):
+    if nth is not None and nth >= len(hits):
         raise SystemExit(f"{label}: page {page} has {len(hits)} line(s) starting with "
                          f"{prefix!r}, occurrence {nth} does not exist")
     return hits[nth]
@@ -97,11 +98,10 @@ def pick_line(pid: str, page: int, prefix: str, label: str, nth: int | None = No
 
 def trim(text: str) -> str:
     """Cut a quote to the word limit at a word boundary, right end only."""
-    words = word_list(text)
-    if len(words) <= MAX_WORDS:
+    spans = list(TOKEN.finditer(text))
+    if len(spans) <= MAX_WORDS:
         return text
-    end = text.find(words[MAX_WORDS - 1]) + len(words[MAX_WORDS - 1])
-    return text[:end].rstrip(" ,;:-")
+    return text[:spans[MAX_WORDS - 1].end()].rstrip(" ,;:-")
 
 
 def quoted(pid: str, spec, label: str) -> str:
