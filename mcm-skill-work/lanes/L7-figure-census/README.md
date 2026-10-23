@@ -2503,5 +2503,45 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #147 closed, next #148. The 145-147 checkpoint is the one this goal asks for after
-every three papers; 144-146 was closed earlier today and is recorded above.
+Queue position: #149 closed, next #150. The 146-148 checkpoint is below; 145-147 was written
+thirty records ago and is recorded above.
+
+## Checkpoint 146-148: the above-caption turns out to be a heading, and three kinds of box that are not exhibits
+
+#146 and #147 agreed so exactly on caption side - 18 figures below and 6 grids above, then 19 below
+and 1 above - that the rule looked settled: where a paper carries both kinds, side follows kind.
+#148 breaks it in one page-pair: 12 grids captioned below and 7 recorded above, and the split does
+not track section kind. It tracks `caption_source`. All seven "above" grids are unnumbered and
+uncaptioned - three symbol grids, three office grids and the section 5 grid - and all five "below"
+grids print a "Table N:" line. So on an uncaptioned grid the recorded position is not a caption
+side at all, it is where the identifying HEADING sits; the census may not average the two states
+together. #149, closed today, repeats the phenomenon on the figure side at four times the scale:
+15 of its 56 figure captions sit above the artwork and every one of them is an appendix plate whose
+"caption" is the Appendix heading over the frame. Rule of the batch so far: a caption above the
+artwork is a heading above the block until a page shows otherwise, and the field that says which is
+`caption_source`.
+
+The exclusion list stopped being one thing. #146, #147 and #148 carry 10, 15 and 23 exclusions, and
+display mathematics is the bulk of each (8, 8 and 23 recorded as such) - the detector reads typeset
+equations as artwork in every paper in this batch that has more than two of them, which is now six
+papers in a row. But each paper also added a class that has nothing to do with mathematics: #146
+boxed two MATLAB code bands, #147 boxed four raster duplicates of its own vector figures and two
+caption bands plus a rule band, and #149 boxed six caption bands and five column slices of two
+pasted panel tables. `not-an-exhibit` therefore says only "not an exhibit"; the note has to say
+which kind of not-exhibit, or the exclusion counts across papers will not be comparable. Duplicate,
+fragment-of-other and caption-background are the labels that keep #147 legible; #149's column
+slices needed a fourth and are filed as not-an-exhibit with the object named, because the slice is
+neither a duplicate nor a fragment of another exhibit but the same raster measured in overlapping
+windows.
+
+The gap on the other side widened too. #147 showed one table the layout cannot see (a fifteen-row
+abbreviation glossary with printed rules and no box). #148 has three: Tables 2, 3 and 5 are native
+text tables, and the region pass boxed only Table 4 on p25 because that one happens to be raster,
+while the p25 box runs from Table 3's caption through Table 4 into Table 5's header and the p20 and
+p21 boxes each hold one office grid plus four rows of the next. So the detector follows images, and
+where two printed objects touch it returns one box that belongs to neither. A census that claims
+"every measured region is one exhibit" is false for that page; what it can honestly claim is that
+every region is accounted for exactly once, with the note naming the printed objects it spans.
+Everything this notebook has recorded since #144 rests on that weaker claim, and #149 is the
+cleanest illustration of why the weaker one is the true one: its two 54-row appendix panel tables
+are each measured three or four times because the raster is wider than any single box.
