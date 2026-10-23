@@ -2681,9 +2681,71 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #158 closed, next #159. The 153-155 checkpoint is written directly
-below; the 150-152 checkpoint sits under it, and the 146-148 and 145-147
-checkpoints further down.
+Queue position: #158 closed, next #159. The 156-158 checkpoint is written directly
+below; the 153-155 checkpoint sits under it, the 150-152 checkpoint under that, and
+the 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 156-158: the surplus moves from the box to the caption, and two ways to get a caption wrong
+
+Three papers, three quarters of the same failure with three different mechanisms: 121 measured
+regions on 67 pages for 156-158. Five findings, then the traps that belong to a single paper but
+will bite the next one.
+
+**Region surplus now comes from the caption, not from the box.** #156 had four boxes holding two
+separately captioned figures; #158 takes the mirror form: Tables 5 and 6 are each ONE caption over
+TWO separately boxed grids (a goodness-of-fit block and a maximum-likelihood block, 30 pt apart), so
+p24's four boxes hold two printed tables and 16 printed exhibits produce 18 rows. #157 goes the
+other way - three printed tables own no row at all, two of them because one appendix box fuses two
+complete grids. The reconciliation is no longer "count boxes against printed numbers"; it is "walk
+each printed caption to its grid" **grid by grid, never box by box**, and the walk has to run in
+both directions.
+
+**Headerless grids are the norm in half the batch, and the contract has no value for them.** #263's
+KMO plate prints no header row at all and the KMO value sits in the slot a header would occupy; #158
+prints six of eight table rows with no header (the stub column is the header: Degree/Year,
+Index/Country, NAV/NCS/AST/NSC). `header_rows >= 1` forces those rows to record one and put the fact
+in the note, which is the honest form of a field that cannot express zero. Say so in the
+table note every time, or the next reader will believe the header count.
+
+**Caption side is a per-paper property and the per-paper answer is not guessable.** #157: 12 tables
+above, 13 of 14 figures below. #158: all 8 table rows above, all 10 figures below, no exception -
+including Figure 8 and Figure 10, which open their pages with the box in the margin ABOVE the ink
+and still keep their captions underneath, where the text layer's order makes the caption look as
+though it precedes the art. #265 is the third arrangement: all 16 captions BELOW, tables included,
+the mirror image of #264 where every table caption printed above. Three consecutive papers, three
+different answers, one of them not even type-driven. Read every caption's ink position.
+
+**Two ways for a caption detector to lie, and both are cheap to catch.** #157's appendix is not
+images at 0.5 pt vector frames round live code; #158 is a watermarked resale scan whose Chinese shop
+line prints above nine region-bearing pages and is read as `caption_above` four times over a raster
+and five times over a code frame. In the first case the caption pass sees a frame and calls it art;
+in the second it sees the same repeated string nine times and calls it a caption nine times. The
+tell in both is repetition: a caption that appears verbatim on ten pages is not a caption.
+
+**Citation discipline keeps splitting, and the backward reference is now the minority.** #158 names
+two of sixteen exhibits in the prose and both on the page that prints them; the rest arrive by deixis
+("as follows", "as below"). #157 named 8 of 26 but placed two of those AFTER the artwork, giving
+lead_pages 0 and -1; #158's longest forward lead is 9, where the prose points at the appendix
+("the test results are shown in the appendix") fifteen pages before Tables 5 and 6 print. So
+`lead_pages` needs its sign checked per paper, not assumed.
+
+Three single-paper traps worth carrying. #264: a spanning table and a page-foot banner fused into one
+measured box, an unnumbered notation table whose numbering starts at 2, and a printed order that
+disagrees with the order the citing sections would imply - so document order has to be read off the
+page, not off the prose. #265: four tables print their rank ordinals in an unruled left gutter
+OUTSIDE the first vertical rule, so a crop or bbox tight to that rule silently loses column 1, and
+p11's Table 4 box starts at y54.07 and swallows the 2 pt page-header band, showing a spurious double
+top rule that is the bbox's fault and not the grid's. #157: two figures whose numbered references
+arrive after the art.
+
+**The detector gap that stays open.** #262, paper `P-D-2021-2107091-7ebae97f`, Table 4 on p12: the
+table is printed and drawn and owns no measured region, because tol-based stroke clustering fuses
+each rule pair with its cell verticals into a 17.2 pt cluster that is too tall to seed on
+(`h <= RULE_HEIGHT_PT` = 12.0) and too short for the ordinary region path
+(`h < MIN_SIDE_PT` = 25.0), so both paths miss it. The loss happens in the clustering step before
+the seed, gap-grouping and alignment filters ever see a rule box. No detector change was made from
+this lane; a real fix means seeding on per-drawing strokes instead of clusters, which moves every
+paper already closed and is the tool owner's call.
 
 ## Checkpoint 153-155: region count runs both ways at once, and the caption side is a habit to verify, not a law to apply
 
