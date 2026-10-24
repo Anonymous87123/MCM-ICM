@@ -898,3 +898,88 @@ within a few points and whose left and right edges agree to a fraction of a poin
 block until the text flow says otherwise - here the body line continues the sentence started
 above the rule. Record the pair as one refusal plus one fragment-of-other, never as two
 `not-an-exhibit` rows that a later aggregation would read as two separate objects.
+
+## Two captions can share one printed baseline, and then x is the only key
+
+Found in #312. Pages 8 and 9 print two panels side by side and set the two captions on the
+SAME baseline - "Figure 2: BP neural network structure   Figure 3: Training result" - so a
+caption scan that reads one line per baseline returns a run of text holding two designators,
+and the trailing words of the left caption attach to the right one. Nothing in the text layer
+says which caption belongs to which panel.
+
+Consequence: when a baseline carries two designators, pair them with the regions by x, never
+by caption order and never by region index. On p8 the pair is inverted with respect to
+reading order in a second way: region 1 (x 85.8) is a pasted raster and carries Figure 2,
+region 2 (x 310.7) is a vector scatter and carries Figure 3, while on p19 region 1 prints to
+the LEFT with the HIGHER number (Figure 7 at x 342.1, Figure 6 at x 74.4).
+
+## Captions set in parallel columns are not substrings of any printed line
+
+Found in #312. The two p19 captions wrap in facing columns of equal width, so the text layer
+interleaves them line by line: line 1 is the head of Figure 6 plus the head of Figure 7, line
+2 is their second thirds. Neither caption exists as a contiguous run anywhere on the page,
+which makes the presence check that `resolve_caption` performs unfalsifiable in both
+directions - it cannot find the caption, and a partial match can splice two captions.
+
+Consequence: `typed-from-crop` is the right mode when a caption's lines are interleaved with
+another caption's, and the record must print BOTH assembled strings so the interleaving can
+be undone by eye. Two rows in one paper is enough to check: if both captions come back
+non-contiguous on the same page, suspect parallel columns before suspecting the OCR.
+
+## The cached text layer can merge a centred caption into a left-margin cell
+
+Found in #312. Table 1's caption prints on its own baseline at y 425.6, centred, with the
+table's header cells at y 442.4, and the table's first header cell is "Symbol" at x 72. The
+cached page text joins the two into one line, "Symbol ... Table 1: Notations", which reads
+exactly like a prose pointer.
+
+Consequence: a pointer scan over the cached text layer reports a citation for a table that
+nothing in the paper cites. Scan the PDF word layer, group words into baselines by y, and
+mark a caption only when the designator opens its line or follows a gap wide enough to be a
+cell boundary; the cached text file cannot be trusted for baseline structure at all.
+
+## A caption colon with no following space reads as no caption
+
+Found in #312. Tables 3 and 5 print "Table 3:Stepwise regression model coefficients" and
+"Table 5:The variable coding and assignment of the model". A detector written as
+`Table\s*\d+\s*[:.]\s+` matches neither, so both pages report a table-shaped grid with no
+caption.
+
+Consequence: the separator run after the number must be allowed to be empty. The same paper
+prints the other eight tables with a space, so the defect is per-paragraph typesetting, not
+per-paper idiom - one grid per page is enough to fix the regex.
+
+## A shaded table body is not always striped
+
+Found in #312. Table 7's body carries three tints and only two interior rules, and each tint
+spans two body rows: the shading follows the drawn slope-group rules (0-15, 15-25, 26-35
+degrees) rather than alternating per row. Counting distinct body tints alone cannot separate
+this from a striped table with a dark header, because both come out at three tints.
+
+Consequence: the discriminating test is WHERE the tint changes. A striped body changes tint
+at row boundaries with no rule drawn there; a group-shaded body changes tint ON its group
+rules and touches at most `bands = number of groups` for `rows = 2 x groups`. Count bands
+below the header rule, require at least three bands for zebra true, and require every band
+boundary to fall off the drawn rules.
+
+## A continuation grid repeats neither its caption nor its header
+
+Found in #312 (and again in #311's neighbouring papers). Tables 6 and 10 break across pages
+7 and 8 lines above their closing rule; the continuation prints bare rows, with no caption
+line, no repeated header band and no "(continued)" marker. The layout pass still emits the
+remainder as a measured region.
+
+Consequence: a region holding rule ink and rows but no caption line inside a couple of pages
+of a captioned grid is a continuation, not a new exhibit. Refuse it as `split-across-pages`,
+record `continued: true` on the captioned row, and count only the rows under the caption -
+otherwise the recount's row total doubles and the printed-designator deficit goes negative.
+
+## A table region can hold eight tiny raster images
+
+Found in #312. Table 8's units row renders its "/" and its em dash as eight separate bitmaps
+(10x18 and 17x18 px) inside the table box while every other glyph on the page is text.
+
+Consequence: "the region holds a raster, therefore it is a figure" is false at the region
+level. Family has to be decided from ink and structure - rules, cells, header band - and the
+raster count used only as corroboration, never as the classifier.
+
