@@ -186,3 +186,118 @@ Consequence: baseline clustering over-counts Table 1 by fourteen rows and misrea
 Table 3's header as a data row. Both row counts were taken from the rule geometry
 instead (5 rules over a 307.3 pt block at 18 pt per row = 17; 4 rules over 67.6 pt = 3),
 which is the only reading that agrees with what the page prints.
+
+## A caption can be a bare label with no words at all
+
+P-A-2022-2200289-b3e3573b, pp16, 18, 19, 20. Four of the twenty-one exhibits are
+captioned with nothing but a number and a colon - "Figure 10:", "Figure 15:", "Figure
+16:", "Figure 18:" - and the description they are missing is printed as (a)/(b)
+sub-labels 6.66-6.89 pt under the panel boxes, outside every measured region.
+
+Consequence: a caption test that wants a noun phrase, three words, or a capitalised
+title drops a fifth of this paper's exhibits and reports twenty-one captions as
+seventeen. `caption.words` is 2 on those four rows and 4-11 on the other seventeen, so
+the field is populated correctly and only the acceptance rule is wrong. The words
+themselves have to be taken from the sub-labels if a census wants to describe what the
+figure shows.
+
+## A wrapped body mention can sit hundreds of points above its own art
+
+Same paper, pp15 and 17. The body writes "Therefore, we smooth it as shown in" and "the
+optimization process curve is shown in", and the wrap leaves "Figure 9." and "Figure
+13." alone at the start of the next line - 217 pt above Figure 9's art on the following
+page, 459 pt above Figure 13's art on its own page. Both are body pointers, not
+captions, and both are closer to the top of a page than to any box.
+
+Consequence: a detector keyed on a line that begins with "Figure N." produces two
+phantom captions and, in the p17 case, two candidate captions for one exhibit. The
+discriminator here is punctuation: all twenty real captions take an ASCII colon and
+these two take a full stop. It cannot be position alone, because one of the two sits
+near the top of a page where a real caption above a table would also sit.
+
+## Distortion can be a pairing artefact rather than a scaling policy
+
+Same paper. All four two-panel figures are squeezed into 212.6x141.7 pt (aspect 1.500)
+boxes from rasters of aspect 1.334 (875x656) and 2.341-2.462 (1557x665, 1551x630) or
+2.071 (2400x1159), so x and y dpi disagree - 296x333, 527x338, 525x320, 813x589 - while
+all sixteen single-panel rasters match their box aspect to three decimals.
+
+Consequence: an aspect test that samples a few figures can conclude the file has no
+scaling problem, since every standalone figure is pixel-exact. The failure is confined
+to the paired layout, where the two panels were scaled to a fixed width and the height
+allowed to follow. Recording panel_count is what makes it visible: the aspect mismatch
+and panel_count == 2 are the same eleven exhibits here, with no counterexample.
+
+## A heading printed below an exhibit cannot own that exhibit
+
+Same paper, eleven of 21 regions, and 19 of 21 paths. The context extractor assigns a
+region to the last heading at or above its box, but this paper prints section headings
+after the art, so Figure 1 on p5 is filed under "2 Assuptions and Justifications"
+although it sits in "1.3 Our Work", Figure 3 on p9 under "5.1.2" although it belongs to
+"5.1.1 Power Curve", Figure 12 on p17 under "6.1 Weather Conditions" although it is in
+"5.4", Figure 16 on p19 under 6.2 although it belongs to 6.1, and Table 1 on p7 under
+"5.1.1 Power Curve" although "4 Notations" prints under it.
+
+Consequence: every place assignment in this file needed hand replacement, and the
+context section paths also carry TOC debris ("5 Analysis and Modeling 6", where the 6 is
+the TOC page number) and the parent heading echoed twice. The record's 21 place fields
+come from a text-layer scan, not from the context file; the override has to supply
+section_path, section_numbered and section_kind together because the merge reads the
+region's own key eagerly.
+
+## Table rules can be drawn past the edge of the sheet
+
+Same paper, p7. Table 1 is booktabs - three horizontal strokes at y 107.3, 122.1 and
+512.6, no vertical rule, no box - and all three run from x 72.0 to x 612.6 on a 595.3 pt
+page, so 17.3 pt of every rule is off-sheet and clipped.
+
+Consequence: a detector that trusts the drawn extent measures a table 540.6 pt wide whose
+right edge does not exist, and a column fit derived from that extent puts the third
+column entirely outside the printable area. The body text column here is 72.0-523.3; the
+table's rules are the outlier, not the text. The width came from the text extents in the
+record, and the rule span is reported as measured rather than corrected.
+
+## Row counts in this table cannot come from text baselines
+
+Same paper. Table 1 has 28 rows (a header and 27 symbols) laid out over 390.5 pt at a
+14.46 pt pitch, but its 80 text lines collapse to only 55 distinct baselines at 0.1 pt
+precision - the symbol, its description and its unit share a line - and superscripts
+shift some baselines by 0.3 pt.
+
+Consequence: clustering lines into rows by baseline yields 55 rows, and clustering with a
+0.5 pt tolerance yields 28 only by accident of the pitch. The reading taken here is the
+rule geometry (three rules over 390.5 pt = 27 data rows, confirmed by 27 text lines in
+the x 120-160 symbol column) and it agrees with what the page prints.
+
+## A zero-height header rule makes every page look furnished
+
+Same paper, all 25 pages. There is no stamp, no watermark and no background raster
+anywhere in the file, but every page carries one drawing: a hairline of zero height
+running x 72.0-523.3 at y 48.9 (y 98.8 on the title page), the header rule under the live
+running head "Team # 2200289 Page N of 24". It never encloses anything and has no
+interior, so no region was emitted for it.
+
+Consequence: a furniture detector that hunts for any repeated mark finds 25 candidates
+and would file a header rule as twenty-five background regions, while a detector that
+only subtracts large blocks finds none at all. Both readings are wrong the same way: the
+correct exclusion list for this paper is four panel fragments and nothing else, and the
+running head is text at y 37 that never enters a box. Absence of furniture is a finding
+that has to be recorded as an absence, not inferred from a detector staying silent.
+
+## One drawing can serve two figures and one course two renderings
+
+Same paper. Figures 5 and 6 print the same cyclist-and-bicycle silhouette - identical
+helmet, torso, frame, saddle and rear-derailleur cluster - rotated a few degrees and
+carrying different force vectors; and one course is rendered twice, as Figure 13's
+isometric loop and as the flat distance-elevation curve of Figure 18's right panel. But
+Figure 2, captioned as a topographic map of the same 2021 course, is a thresholded
+terrain silhouette with a twin-peak skyline and no drawn route line at all.
+
+Consequence: two traps. A reuse check needs the crops side by side, because the silhouette
+is rotated, so neither a hash nor an aspect test catches it; and the family split - 10
+line, 5 flowchart-or-schematic, 3 scatter, 1 surface-or-3D, 1 other - cannot be predicted
+from captions that all say the same thing, since "Power Distribution" is a line ten
+times, "Analysis on vw" is a scatter, and one hill is classed surface-or-3D in Figure 13
+while its sibling panel is a plain 2-D line. Figure 2's caption says "map" and its pixels
+say "black skyline with nothing drawn inside", so a caption-driven classifier would file
+it as a map and never notice there is no route on it.
