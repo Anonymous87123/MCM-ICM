@@ -268,3 +268,4 @@ One row per paper, written before the record, in the order worked.
 | 79 | P-B-2015-40612-8bcdc1a7 | mcm-65 | claimed 2026-10-24 (in progress) |
 | 273 | P-F-2021-2106074-d0b37839 | mcm-d0 | claimed 2026-10-24 (in progress) |
 | 79 | P-B-2015-40612-8bcdc1a7 | mcm-65 | released to mcm-9a 2026-10-24 (no record written; they already ran fig_extract/context_extract) |
+| 80 | P-C-2015-33572-b32fb4b1 | mcm-65 | claimed 2026-10-24 (in progress) |
