@@ -515,3 +515,98 @@ discriminator is not size - the foot band is the widest of the four - it is whet
 prints inside the text column and interrupts the prose. An uncaptioned photograph has to be
 recorded as an item with an empty caption, and `[caption.verbatim]` being empty is not
 grounds for excluding it.
+
+## A furnished page can report its footer artefact as its only region
+
+Paper `P-D-2019-1902407-b8153b5d` (#176), pp6, 12 and 18. Each of those pages prints a
+captioned table with a full Word double-rule grid, and each owns no measured region: the
+layout pass returns the page-foot stamp band and nothing above it. p18 is the extreme
+case - its entire region list is the footer artefact, so a "does this page have regions"
+test says yes while the only content on the page is unmeasured.
+
+The distinction that matters is not "empty page" but "artefact-only page": a page that
+produced furniture has been through the whole measurement chain and come out with the
+wrong object, which is a different failure from a page that produced nothing. The counter-
+case in the same paper is worth recording because it kills the obvious workaround: no
+page there emits a region above its footer band at all, so re-measuring the band directly
+does not recover the table - there is no band to measure. Recorded as three declared
+deficits, taken from notes rather than from boxes, because the record cannot carry a bbox
+the measurement layer never produced.
+
+## A caption whose object is a math symbol loses it in the text layer
+
+Same paper, p12: the printed "Figure 8 Strategy to reduce T4" extracts as "Figure 8
+Strategy to reduce " followed by unreadable glyphs. Paper `P-E-2022-2203489-75977cc9`
+(#307) repeats the mode four times - p13 and p17 "Bubble chart of ... values" with the
+whole object replaced by glyph garbage, p22 "Forest's ... - ... Curve" keeping only the
+minus sign, and p23 "Sensitivity analysis of" where the line ends on a space and the
+object is simply gone.
+
+Consequence: the object of a caption is usually the variable the exhibit measures, so a
+caption harvested from the text layer understates the exhibit and a
+`caption_flags.variables` computed from it reads false where the printed caption is true.
+Those rows are recorded `typed-from-crop`. #307 goes further and doubles every math glyph
+in the layer - six `C` glyphs standing for COI, `δδ`, `TTTTTTTT` - so the
+corruption is not always loss: a slice-and-join can assemble a caption made of the right
+number of the wrong characters and still pass a length check.
+
+## A borderless table is invisible to both measurement paths
+
+Paper `P-E-2022-2203489-75977cc9` (#307), seven printed tables on pp4, 6, 8, 11, 14, 18
+and 20. Every one is live text set with column gaps: no rule, no fill, no box. The
+band-scoped drawing count inside each table's band prints zero on all seven pages
+(p4 y 680-800, p6 y 140-260, p8 y 390-500, p11 y 120-300, p14 y 600-720, p18 y 140-340,
+p20 y 570-700). With no drawing operator in the band, neither the rule detector nor the
+vector-cluster path has anything to seed on, so twenty-two printed exhibits produce
+fifteen regions and the deficit IS the rule.
+
+This is not #274's case (a table with no drawn geometry on a page that still holds a
+display-equation region): here the page holds nothing else either, so the loss is total.
+Declared as seven deficits in the record; the p4 caption is additionally welded into its
+own header cell - "Symbol<12 spaces>Table 1: Notations used in this paper" - which defeats
+any caption scan anchored with `re.match` at the start of the line.
+
+## A full-page raster can be an exhibit and own no region
+
+Same paper, p25. One image, 1440x2080 px, covers the sheet: a newspaper-style page with a
+masthead, three inset photographs and its entire text rasterised. The pass measures it
+nowhere. The only two regions on that page are the team-number stamp in the corner
+[-9.0, -8.04, 175.44, 58.8] and the same stamp measured again five points off,
+[-4.08, -4.08, 177.36, 60.72], filed `background` and `duplicate`.
+
+So a coverage check has to ask whether a page's ink is accounted for, not whether the page
+has regions - the same lesson as #176 from the opposite side. The sheet is also the paper's
+thesis object: the exhibits' argument ends on it, so it is the one page that cannot be
+dropped as decoration.
+
+## A printed exhibit number is not a key
+
+Same paper. "Figure 2" prints twice (p6 biomass-time curve, p7 NDVI raster) and
+"Figure 12" prints twice (p20 a 100 % stacked composition bar, p21 a qualitative Kuznets
+sketch with no ticks at all), so fourteen caption rows carry only thirteen distinct
+numbers; separately, Figures 3 and 15 are named in prose and never printed anywhere.
+Captions repeat too: Table 2's caption is Table 1's word for word, and Tables 5 and 6 share
+one caption over two grids of different shape ("height and DHB analysis under different
+IOIC in thinning", the paper's only DHB/DBH spelling break).
+
+Consequence: a row keyed on (kind, printed number) collides. Rows must key on the measured
+region, with the printed number recorded as a caption property, and a duplicate number is a
+finding to report rather than a bug to merge. A pointer to a number that prints nowhere is
+evidence the numbering layer is broken upstream, and it belongs in the notes of the exhibit
+it should have named.
+
+## A body sentence can pass a caption test
+
+Same paper, both directions. p17 opens "as an example, and the thermal map of the result is
+shown in Figure 8. At the same time, our", which a `(Figure|Table)\s*\d+\s*[.:]\s+\S`
+scan accepts as a caption - phrase, full stop, capitalised word - and returns sixteen
+captions for fifteen figures, with Figure 8 counted twice and its pointer count driven to
+zero because the pointer pass strips caption lines before matching. p22 carries the reverse
+case: the line "Figure 14:" alone, the caption head with its object on the next line, so
+requiring a title after the number discards a real caption.
+
+The rule that survives both, and the cell weld on p4, is: accept the phrase when it opens
+the line or follows a run of two or more spaces, require a title after the number, and
+prefer the region the caption sits beside over the line itself. Verified on this paper it
+returns fifteen figure captions on thirteen numbers, seven table captions, and pointer
+counts equal to the record for all fifteen rows.
