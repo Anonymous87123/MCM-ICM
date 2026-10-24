@@ -166,7 +166,14 @@ def build(pid: str, spec: dict, layout: dict, ctx: dict) -> dict:
     for e in exhibits:
         r = region(ctx, e["page"], e["region"])
         page_seen[e["page"]] = page_seen.get(e["page"], 0) + 1
-        caption = resolve_caption(pid, e.get("caption"), e["page"], f"p{e['page']} caption")
+        source = e.get("caption_source")
+        if source == "typed-from-crop":
+            # The crop carries the caption but the text layer interleaves it with a
+            # neighbouring panel's caption, so there is no substring to slice.
+            caption = e.get("caption") or ""
+        else:
+            caption = resolve_caption(pid, e.get("caption"), e["page"],
+                                      f"p{e['page']} caption")
         flags = e["caption_flags"]
         caption_block = {
             "verbatim": caption,
