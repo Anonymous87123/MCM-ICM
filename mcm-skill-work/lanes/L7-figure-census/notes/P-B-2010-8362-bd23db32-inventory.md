@@ -1,7 +1,7 @@
 # P-B-2010-8362-bd23db32 — figure census
 
-- layout sha `1667598da6e89434`, 33 pages, 37 measured regions
-- accounted: 30 figures, 2 tables, 5 excluded, 0 unaccounted
+- layout sha `a878dc3c0d227150`, 33 pages, 39 measured regions
+- accounted: 30 figures, 2 tables, 7 excluded, 0 unaccounted
 - families: heatmap-or-contour 23, line 2, scatter 5, table-grid 2
 
 1. p9 **scatter** conf=high panels=1
@@ -137,6 +137,8 @@
 - p17 not-an-exhibit bbox [89.25, 592.2, 521.0, 649.48] Program 2 listing, ruled pseudocode float
 - p20 not-an-exhibit bbox [89.25, 117.52, 521.0, 147.17] Program 3 listing header band
 - p20 not-an-exhibit bbox [89.25, 621.1, 521.0, 692.82] Program 3 listing tail
+- p17 not-an-exhibit bbox [89.25, 160.85, 521.0, 302.32] Program 2 pseudocode listing, the declaration band cut off by the float's first two rules; the layout measures this ruled float in bands, and this one is the same listing whose bottom rule band is already refused on this page
+- p27 fragment-of-other bbox [136.23, 153.15, 474.03, 345.42] header band of the Appendix A data table already recorded on this page (Serial Killer | Latitude | Longitude | Date of Killing above the Sutcliffe rows); the three rules that bound it are measured apart from the 53-row grid at y=474, so counting it again would double the same table
 
 ## distillation fields
 
