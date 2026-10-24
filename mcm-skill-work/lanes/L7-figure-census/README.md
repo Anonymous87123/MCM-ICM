@@ -2502,6 +2502,7 @@ same defect is not re-diagnosed paper by paper.
 | 165 | P-E-2018-73119-79c4dde3 | 27 | 23 | 9 | 9 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 23 measured regions on 16 of 27 pages = 9 figure rows + 9 table rows + 5 exclusions, for NINETEEN printed exhibits - nine charts and ten grids - so the deficit is one and again it is a rule-only grid: **Table 1 (p7), the symbol table, prints as three horizontal rules with its caption between the top rule and the header row**, the same blind spot that cost #164 its Tables 3 and 4. **The paper runs two caption systems and they disagree about what the object is**: the body numbers Figures 1-9 and Tables 1-4, while the two p27 grids are captioned 'Figure 10'/'Figure 11' in the text layer OVER their own titles pasted in the image, 'Table 2.6' and 'Table 2' (the second colliding with the main body's Table 2). Ten grids print and only four are numbered; four have no caption at all. **Figure 2 is a table wearing a figure caption** - 17x5 indicator hierarchy, pastel bands, dashed separators, an unlabelled column of +/- marks - and the prose then lists the same sixteen indicators again. Nothing is 3-D and nothing carries a colourbar, but the same index is drawn on **four different y windows** (0.30-0.36, 0.28-0.44, 0.32-0.42, 0.35-0.65). Figure 4 has no axis titles and no legend - its caption is the key, 19 words, no space after the colon, 'rep-resent' left hyphenated - and Figure 9's caption AND legend both lost the Greek symbol ('Analysis of 1', '01 = 0.8'). Grids boxed 5 / booktabs 3 / no-rules 1, zero zebra, no decimal alignment anywhere, decimals printed as colons in Table 2, the unruled matrix overflowing the measure at 482 pt of 451. Citation: **7 pointed at by number, 11 of 18 with no number in any pointer**, four positional only, lead_pages 0 six times and -1 once |
 | 166 | P-E-2018-74971-2b1f503a | 23 | 46 | 13 | 3 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 46 measured regions on 12 of 23 pages = 13 figure rows + 3 table rows + 30 exclusions, for SEVENTEEN printed exhibits - thirteen charts and four grids - so the deficit is one and it is again a rule-only grid: **Table 3 (p15), six horizontal rules and no verticals, owns no region**. **The region list is the finding: twenty of the 46 regions are ONE infographic** (the p8 mind map arrives as twelve label rasters, five vector ellipses and three blank rasters) and five more are one two-panel schematic on p7, so 25 of the 30 exclusions are fragments and the recorded area for a split figure is the **union** of its fragments - Fig.4 is 0.271 of the page, not the 0.072 its largest fragment reports. **Numbering runs backwards**: Fig.11 prints on p16 and Fig.10 on p18, and the sentence reading Fig.11 on p17 calls the country **Kenya** in a section titled 'Climate characteristics of Mexico'. Four charts are never named by number, and the pointer to the piecewise curve says 'As the Fig.3 shows'. **Two families have no vocabulary word**: Fig.5 is four dendrograms, Fig.4 a radial mind map, both filed node-link. Nothing is 3-D and nothing carries a colourbar, but colour gradient is both decoration and value channel; only Fig.6 keys it, with a legend below the frame whose first word prints 'impregnabl'. Fig.6's four band thresholds are exactly Table 4's values, so the tipping point exists twice in two formats. Fig.9's caption keys its panels '(a), (b), (c), (b)' for a grid lettered (a)-(d); Fig.7 double-prints every glyph and clips its four rank names at the margin. Grids booktabs 2 / boxed 1, zero zebra, categorical shading instead, Table 2 the only merged and only decimal-aligned grid and the only one the text layer scrambles; no unit in any header; Table 1 splits over the p4/p5 fold. Caption side is the cleanest in the lane (13 figures below, 3 tables above) in the form 'Fig.1' with no space and no colon. Citation: **12 pointed at by number, 4 never named**, two backward pointers, and the two captions that stand in for a missing legend (Fig.10, Fig.13). Two phantom headings are chart furniture ('28 Annual mean temperature', '52.0 FCI 30') |
 | 167 | P-E-2018-78511-395a90c3 | 28 | 33 | 11 | 3 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 33 measured regions on 18 of 28 pages = 11 figure rows + 3 table rows + 19 exclusions, for FOURTEEN printed exhibits and therefore **a deficit of zero - the lane's second exact census**. The mechanism inverts every booktabs paper before it: **Table 1 and Table 3 are drawings of tables, not ruled grids** - three stacked vector blocks each, heavy full-width separators, short column stubs, no closed box - so the ink-following clustering pass sees a picture of a table while it misses a table made of three rules. Six exclusions are their four fragments and the recorded area is the **union**, so Table 1 is 0.245 of the page and Table 3 is the largest exhibit in the document at 0.247. **The caption layer is the finding**: fourteen captions, none naming a variable, unit, condition or conclusion, all six to seventeen words, one sentence, colon form, figures below and tables above, panel key on a wrapped second line. **Every two-panel figure is one raster and no two panels share a window** (y 0.25-0.31 beside 0.36-0.43, x 0-4 beside 0-0.2, y 0-25 beside 0-1.2), so 'similar' claims describe drawn shape. Two radar pairs (Fig.4, Fig.9) have no vocabulary word and print every value and no ring. The only 3-D is Fig.2's isometric pyramid, asserting an order no weight supports. Zero colourbars; near-white 'before' polygons vanish at print. Grids booktabs 3, zero zebra: **Table 1 and Table 3 share one caption with different numbers** while the prose calls them similar, and only Table 1's columns sum to 100 (Table 3: 101/99/111). Table 2 is the one true grid - merged country cells, double vertical rule, decimal-aligned, summary row ruled off. No unit in any header; the only unit in the paper is Fig.8's 'billion dollars'. Citation is the densest in the lane: all fourteen exhibits named, no positional-only pointer, two backward placements (Fig.7 p19 to p21, Fig.10 p22 to p23) |
+| 168 | P-E-2018-88902-cefa4db9 | 28 | 39 | 13 | 5 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 39 measured regions on 17 of 28 pages = 13 figure rows + 5 table rows + 21 exclusions, for EIGHTEEN printed exhibits and therefore **a deficit of zero - the lane's third exact census**. **Two new region-pass mechanisms**: the pass boxes **one drawing twice** (Fig.4 vector plus raster over the same coordinates; all four Fig.8 panels captured twice, so eight regions hold four drawings - anchor 0.118 against a 0.225 union) and **one region can hold two side-by-side drawings** (both p19 pairs). **Caption side is a paper-level habit, not a law**: 18 of 18 captions print below, figures under art AND tables under grid - the inverse of #167's tables-above - and the text layer still lists the caption before the grid, which is how a caption-side record goes wrong. Captions are the richest in the lane: colon form, 4-11 words, one sentence, and **8 of 18 name the quantity plotted** against zero in the previous three. **No multipanel figure shares axes**: Fig.8 has four y windows, two tick steps and a legend order that rotates panel by panel (red is Social in one box, Economic in the next); Fig.10 runs 0-35% beside 0-45%. **Colourbar exactly once** (Fig.13); Fig.2's ring and Fig.3's quadrant gradients shade a value nothing decodes. Only 3-D is Fig.9's four perspective boxes with three named axes and no tick numbers. Grids boxed 2 / booktabs 2 / open-sided zebra 1, zero merged, zero diagonal, zero units-in-header, zero decimal-aligned; **Table 4's caption says 'WFSI C' and drops the CCIC column Table 3 carries**, and **Table 5 welds every cost to its unit** so the column cannot be summed. Table 5 is misplaced under 11 Task 5 although its argument is 10 Task 4, and **Fig.13(b) is a 'continent' index shaded by country** with the prose admitting the reading fails. All eighteen named; 16 pointed at on their own page or one earlier; Fig.7 is a negative lead (art p16, pointer p17). Folio breaks at the end ('Page 25 of 24' on p28); resale banner on every page, invisible to the text layer |
 
 Two more classes are not caption defects but are recorded the same way, because the text
 layer cannot reconstruct the sentence: a caption whose glyphs are mangled math italics
@@ -2690,9 +2691,63 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #167 closed, next #168. The 166-168 checkpoint is written directly
+Queue position: #168 closed, next #169. The 166-168 checkpoint is written directly
 below; the 163-165 checkpoint sits under it, the 160-162 checkpoint under that, and
 the 153-155, 150-152, 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 166-168: the region list both over-counts and under-counts, and caption side is a habit
+Three papers, 118 measured regions on 79 pages for 48 rows against 49 printed exhibits - one
+deficit in 49, and it is #166's rule-only Table 3. Two exact censuses in a row after it (#167 and
+#168, fourteen and eighteen exhibits), and the reason is not that the detector got better: it is
+that these papers give their tables ink. Every grid in the three papers that carries a frame or a
+shading is measured; what still escapes is the one grid made of three thin rules.
+
+**The region list over-counts as well as under-counts, and both faults come from the same
+rule.** The pass follows ink, so a drawing made of two overlapping image layers is two regions.
+#168 is the clean demonstration: Figure 4 is one drawing captured once as vector and once as raster
+over nearly the same coordinates, and all four panels of Figure 8 are captured twice each - eight
+regions, four drawings. The recorded area is therefore always the UNION of the exhibit's regions and
+the anchor is always the largest measured region, never the first one: Figure 8's anchor reports
+0.118 of the page and the grid is 0.225, Figure 13's anchor reports 0.052 against 0.107. This is
+the same convention the fragment papers already forced, now applied in the other direction. The
+mirror fault sits in the same paper: one region can hold TWO side-by-side drawings - both pairs on
+p19 are two panels in one box - so region count can also be lower than drawing count. State both
+halves once: a region is not a drawing, in either direction, and a census that equates them is wrong
+by however much the authoring pipeline duplicated or merged its images.
+
+**Caption side is a paper-level habit, and it flips.** #167 prints its eleven figures below and its
+three tables ABOVE. #168 prints thirteen figures AND five tables below, 18 of 18. #166 splits the
+same way its two neighbours do - figures below, tables above. Three papers, two opposite table
+conventions, all internally consistent, none of them stated anywhere in the document. The
+consequence for this lane is procedural: caption side must be read off the crop every time, and the
+text layer cannot be used as an inference route, because the text layer lists a caption in reading
+order wherever the extractor found it. #168's Figure 12 is the proof case - the caption is
+geometrically UNDER the plot and the text layer emits it before the axes - and Table 1 of #168 is
+the same trap on a grid.
+
+**Numbering errors and section errors are different faults, and only one of them is cheap.**
+#166 runs its figure numbers backwards (Fig.11 on p16, Fig.10 on p18) and never names four of its
+thirteen charts. #168 has the opposite profile - all eighteen named, sixteen on their own page or
+one page before - and still misplaces one exhibit, because Table 5's argument is in 10 Task 4 on
+p21 and the table prints on p22 under 11 Task 5. A backward pointer costs the reader a page flip; a
+table under the wrong heading costs the section its evidence, and no caption check will find it.
+Check `place.section_path` against the pointer sentence, not against what the table is about.
+
+**The caption layer is where a paper's honesty shows up first.** #167's fourteen captions name no
+variable at all. #168's eight of eighteen name the quantity, and the same paper is the first in
+this lane whose exhibits argue against each other: Figure 13 panel (b) is labelled a continent
+index and shaded country by country, Table 4's caption says 'WFSI C' and drops the column its
+predecessor carried, and Table 5 welds every cost to its unit so the column cannot be summed. None
+of those is a layout fault and all of them are exactly what the six field groups are for. A census
+that only counts regions would score this paper perfect, and it is the most self-contradictory
+paper the lane has taken.
+
+**Apparatus faults are the last thing the text layer can be trusted about.** #166 invents two
+phantom section headings out of chart furniture ('28 Annual mean temperature', '52.0 FCI 30').
+#168 stamps one identical red Chinese resale banner on every one of its 28 pages and the text
+layer contains no trace of it, while its folio breaks at the end ('Page 24 of 24' on p27, 'Page 25
+of 24' on p28) - a defect only a page-by-page read finds. Read the folio on the first and last page
+of every paper; read the banner layer only from the crop.
 
 ## Checkpoint 163-165: what decides whether an exhibit is measured, and who owns the number
 
