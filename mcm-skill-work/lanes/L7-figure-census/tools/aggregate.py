@@ -38,7 +38,9 @@ def main() -> int:
                 if kind == "figure" and "geometry" not in e:
                     continue
                 rows.append((kind, e))
-        if any("geometry" in e for e in rec["items"]):
+        # A paper can be all tables and no figures, so an empty `items` list is not
+        # the test for "not distilled": either bucket carrying a distilled row counts.
+        if any("geometry" in e for e in rec["items"]) or rec.get("tables"):
             backfilled += 1
 
     fam = Counter()
