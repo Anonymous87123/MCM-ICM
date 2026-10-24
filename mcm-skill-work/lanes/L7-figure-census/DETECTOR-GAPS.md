@@ -777,3 +777,38 @@ Consequence: for unnumbered rows the recorded `place.section_path` may not rest 
 heading position alone; the heading's own words have to name the exhibit class, or the
 position has to be declared a best reading in the row's note. The check is cheap - the label
 is already in the path - and it is the difference between a filing and a guess.
+
+## A pointer sentence that opens with the caption label is counted as a second caption
+
+Reported by mcm-5e, verified twice in their own lane. The caption pass accepts any line that
+starts with "Figure N", so a POINTER sentence opening with the label is logged as a second
+caption of the same number: #178 p17 "Figure 12 is the route map of the 0th floor and the 1st
+floor after opening the entrance." was recorded alongside the real caption under the art, and
+#179 p19 "Figure 14 shows a schematic diagram of the margin of channel flow at each time."
+was recorded as the caption while the real one, "Figure 14: Channel margin diagram", prints
+under the art on p20 - so the exhibit also moves one page EARLY.
+
+The signature they give is syntactic and cheap: the impostor ends in a full stop and reads as a
+sentence with a verb phrase; real captions in both papers never end that way. Note this is the
+opposite failure from the shared-line pair in #310, where a line can legitimately carry two
+captions: there the second phrase is a title after a label, here the label opens prose.
+
+Consequence: a caption test needs a title test as well as a label test - the label must be
+followed by a colon plus a title, or the line must not end in a full stop - and every
+caption recorded from a line that also reads as a pointer has to be checked against the art
+on the same page before `caption_source` says `text-layer`.
+
+## One exhibit split across a page break is filed under two sections and measured as neither
+
+Reported by mcm-5e for #178 as the mirror of the forward weld. Two shapes, one cause: the
+layout pass files a region under the deepest heading printed BELOW it, so p9's Figure 4 -
+whose lead paragraph is the last block of 3.2.3 - is filed under 3.3, and p5's VEE diagram
+under 3.1. Read from the caption side the same defect is harder: p14 Table 3 prints its
+boxed header at the foot of p14 and its boxed data row at the head of p15, so the two halves
+of one exhibit land under two different sections and NEITHER half is measured as a region.
+
+Consequence: "one exhibit, one region" fails in both directions - a region can be filed one
+heading late, and an exhibit can be split so that no region covers it at all. The check that
+catches the second is a caption whose bbox lies on the other side of a page break from the
+only candidate region, which reads as a zero-region page in the counts and must be declared
+rather than repaired.
