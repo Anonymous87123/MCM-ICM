@@ -109,7 +109,7 @@ into one block.
 | 17 | `P-C-2012-17160-8b6c54d2` | 8 | 73 | 108 | done, deltas: intro -6 (contents+statement), problem +1, assum -2, model-est +20, results +9, str-lim +1, future +1, concl -1 |
 | 18 | `P-C-2013-18492-ab739371` | 8 | 129 | 213 | done, deltas: intro +1, assum -2, model-est +77, results +5, str-lim +1, future -2, concl -2 |
 | 19 | `P-C-2013-21165-17e64d15` | 8 | 78 | 155 | done, deltas: intro -2 (contents), problem +1, assum +2, model-est +16, results +19, str-lim +3, concl -1 (no section) |
-| 20 | `P-C-2014-25318-eac62e81` | 8 | 99 | 182 | done, deltas: intro -1, problem +2, assum +4, model-est +20, results +32, str-lim +2, future +2, concl -2 (no section) |
+| 20 | `P-C-2014-25318-eac62e81` | 8 | 100 | 182 | done, page read. deltas: intro -1, problem +2, assum +4, model-est +21, results +32, str-lim +2, future +2, concl -2 (no section) |
 | 21 | `P-C-2014-27688-856eb1b7` | 8 | 115 | 169 | done, deltas: intro +3, problem +10, assum +2, model-est +21, results +18, str-lim -1, future +5, concl -1 |
 | 22 | `P-C-2014-28199-d39873d7` | 8 | 91 | 154 | done, deltas: model-est +31, results +9, str-lim +7, future +6, concl -1 (no section) |
 | 23 | `P-C-2014-28747-f6ef544f` | 8 | 157 | 205 | done, deltas: problem +11, assum +4, model-est +74, results +22, str-lim +5, concl -1 (no section) |
