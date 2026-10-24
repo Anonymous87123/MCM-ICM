@@ -2496,6 +2496,7 @@ same defect is not re-diagnosed paper by paper.
 | 159 | P-D-2018-78826-ed3ee7b7 | 23 | 39 | 26 | 7 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 39 measured regions on 17 of 23 pages = 26 figure rows + 7 table rows + 6 exclusions, for 24 printed exhibits, and **the surplus of nine rows is custody**: Figure 4.1 is **six separately pasted panels** in a 3x2 paste (caption 6.2 pt under the bottom-right one, and two of the six panels are EMPTY - axes drawn, no series), Figure 4.8 is three boxes across the top of p12, and Appendix 2 is three stacked array screenshots. **The paper pastes its prose as rasters**: p6/p7 hold the pixel-honeycomb derivation, p11 three paragraphs plus four formulas, p12 the logistic model, p14 the 4.3.1 cost factor and p15 the P/TC/AI formulas; p7 returns **no text layer at all**, and its 497x652 pt box would read as the largest figure in the paper to a regions-only census. **Wider box, wrong exhibit, three pages running** - p15's 497x278 pt formula paste is not Figure 4.11 (the 345x146 pt bar 87 pt below it is), p14's wide box is the 4.3.1 paste and p11's is the service-capacity prose. **Four exhibits print no caption at all**: the p4 symbol table (a 581x355 printed bitmap with its title baked in, recorded with `caption_source` none), the p5 control block diagram, the 4.3.2 decision chart and the handout's three-segment range aid. **Appendix 2 is not what its title says** - 'The location of charging stations in Lubbock, US' over three numeric-array screenshots - and Figure 4.8's third panel is bit-identical to Figure 4.7 (one image object printed twice under two numbers). Same Chinese resale watermark above nine pages, plus a caption lie native to this paper: `Figure 4.5.` at the foot of p8 is the last line of a body paragraph, flush left - 18 caption strings, 17 captions. Caption side inverts at the appendix: every numbered body figure below, Appendix 1 and Appendix 2's three boxes above, all 7 tables above. Families: map-or-plan-view 8, line 7, bar 3, flowchart-or-schematic 3, table-as-figure 3, composite-panel 1, scatter 1; **no legend on any of the 26**, no colourbar, nothing 3-D, nine explicit panel rows and three two-panel composites. Grids: boxed 6, booktabs 1; **five of seven print a real header row** - the opposite of the lane habit - the exceptions being the symbol bitmap and Appendix 3's 31-row, 62-entry list; no zebra, no merged cell, no diagonal, no unit in any header, no decimal alignment; 83-88 per cent of the measure for six grids, Appendix 3 alone at the full 459.3 pt. Citation: 17 of 33 rows numbered, 12 distinct exhibits named, eight of them inside 4.1/4.2 where one sentence names two; Appendix 3 promised on p11 and printed on p23 (lead 12); no exhibit ever cited twice. Captions: median 10 words, longest 15, voice `none` on all 29, and Table 4.1's Rural total is wrong (1.20 + 0.04 prints as 1.20) |
 | 160 | P-D-2018-80386-b757100d | 25 | 29 | 13 | 2 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 29 measured regions on 14 of 25 pages = 13 figure rows + 2 table rows + 14 exclusions, and **the surplus runs the other way for the first time**: twenty printed exhibits, fifteen rows, because the paper typesets none of its mathematics and pastes every derivation as a raster. **Both largest boxes in the document are non-exhibits** - p5's 425x409 pt symbol table (34.72 per cent) and p12's 445x391 pt (34.71 per cent) which is **section 5.2.4 pasted whole**, heading included. **Six captioned exhibits own no region**: Figures 3 and 4 print only a merged caption line on p10 with no artwork on the page at all, and Tables 3-6 are three-band text blocks the region pass never clusters (p22's '22 paths, no region' is its stacked Table 5+6). **The numbering is one level off and the TOC lies**: '4 Model Parameters' and '5.2.4 Commercial Model' exist only inside bitmaps, never in the text layer. Three pages print **two captions on one line** (p10, p15, p16), so the join is made on the caption fragment's x-range. Families: line 7, scatter 5, map-or-plan-view 1; the five scatters are one bare-X/Y discriminant template at four countries with no legend, no title and **no shared scale**; legends 8 none / 3 inside / 1 outside-left (Figure 7's stepped Gini band stack) / 1 below; **no colourbar anywhere** and nothing 3-D. Figures 13-15 are native vectors, so axis numbers leak into the text layer ahead of the caption, and Figure 15 measures as three regions because two bitmap patches sit on top of its own plot. Figure 6's caption still says 'Data analysis of the figure X.' Grids: **booktabs 2 of 2 with zebra on both** - the previous paper had zero - an 18x3 symbol table with the unit in a real column and a 4x3 decimal-aligned result grid at half measure; the four unmeasured grids are 12x4, 7x2, 5x2 and 5x3. Citation is degenerate: **one numbered reference in the whole body**, and it leads by -1 page; 11 lead sentences, zero trail sentences, no exhibit named twice. Captions: 13 figures below, 2 tables above, median 7 words, voice `none` on all, no unit/variable/condition/conclusion |
 | 161 | P-D-2018-81402-e1ca1921 | 29 | 20 | 12 | 2 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 20 measured regions on 15 of 29 pages = 12 figure rows + 2 table rows + 6 exclusions, for 19 printed captions, so **five captioned exhibits own no region**: Tables 1-4 and 7 print as **bare unruled text with no table object at all** - Table 3 is one text block holding its own caption plus six rows, caption welded to row one at 1.5 pt overlap - and the page has exactly one drawing object (the header rule). Only Tables 5 and 6 are ruled, both as **closed boxes** (frame + every column + every row), the inverse of #160's booktabs, transposed layouts 4x6 and 5x7 with a YEAR header row. **Caption side is uniform**: all 12 figures and both tables below - the first paper in this block where figure and table captions agree - with gaps 10.6 to 58.3 pt (Figure 7's 58.3 pt the widest in the census). The model half **pastes its maths**: pp6-8 are three text regions and p10's is the EX1-EX4 payoff derivation while the Nash tables print 328 pt below it. Families: scatter 5, surface-or-3D 2 (perspective mesh, grid walls - the only 3-D), contour 2, line 2, schematic 1; **no colourbar on either filled contour**, so half of each surface/contour pair is unquantified; legends 9 none / 3 inside. Faults kept: Figure 2 captioned Salt Lake City over Nashville coordinates, Figures 4 and 6 captioned 'Connections' over zero-edge clouds, Table 6's caption swallowing a body sentence. Citation forecast-first: 11 of 14 named, 6 one page early, **labels glued to numbers** ('figure1', 'Table3', 'Fig- ure 7'), 11 lead sentences, zero trail, no exhibit cited twice; the paper's only two-page lead (Tables 3, 4) belongs to rows that own no region. Red Taobao banner on ALL 29 pages |
+| 162 | P-D-2018-82504-6cc63169 | 43 | 20 | 8 | 5 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 20 measured regions on 12 of 43 pages = 8 figure rows + 5 table rows + 7 exclusions, for 16 printed captions, so **three captions print alone on pages with no artwork** and their exhibits sit on the previous page (p10, p25, p29). The exclusions are **five rasters of mathematics** (pp7, 9, 11 twice - one p9 box bakes two whole paragraphs of prose into the image, so the text layer skips them) plus a boxed Algorithm 1 block and appendix furniture. **New apparatus class: p19 is a 425x487 pt screenshot of an entire TYPESET PAGE** - body prose, displays (8)-(10), the Markov transition matrix - so that page's text layer is EMPTY while the region pass sees a quarter-page box. **Caption side is perfectly kind-driven**: all 8 figures below, all 5 tables above, 12-16 pt gaps. Two rows carry **two welded captions AND one pasted image holding both numbers' artwork** (Figures 5/6 = two Seoul basemaps split by a white gutter; Figures 7/8 = two in-plot-titled line panels). Families: line 4, map-or-plan-view 2, bar 1, scatter 1; **no 3-D, no contour, no colourbar in 43 pages**; legends 4 none / 3 inside / 1 below the axis. Table 3 prints three rules yet owns no region - declared gap. Grids: **booktabs 4 of 5, no verticals**, including a 3x5 transposed period series with periods as the header row, plus ONE boxed 4x4 classification with merged cells on both axes that overruns the margin; two grids overflow the measure. Citation is the opposite extreme from #161: **zero exhibits named by number in 43 pages**, eight unlabelled deictics ('the picture below', 'is as the chart shown'), five never referenced. Captions 3-15 words, voice `none` on all 13 rows. Red Taobao banner on ALL 43 pages |
 
 Two more classes are not caption defects but are recorded the same way, because the text
 layer cannot reconstruct the sentence: a caption whose glyphs are mangled math italics
@@ -2684,9 +2685,77 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #161 closed, next #162. The 159-161 checkpoint is written directly
+Queue position: #162 closed, next #163. The 160-162 checkpoint is written directly
 below; the 153-155 checkpoint sits under it, the 150-152 checkpoint under that, and
 the 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 160-162: three deficits in a row, and a paper that screenshots whole pages
+
+Three papers, 97 measured regions on 76 pages for 42 rows against 55 printed exhibits. The
+row count is below the exhibit count for the third paper running, and #162 shows why the
+deficit is not going away: its exhibits are the only objects on the page that were
+*typeset*, and everything the paper could not typeset it pasted instead. Five findings.
+
+**The deficit is now the diagnostic, and its size tracks how much maths the paper pasted.**
+#160 had 20 exhibits for 15 rows and pasted fourteen derivations. #161 had 19 for 14 and
+pasted its model half. #162 has 16 for 13 and pasted five equation strips plus a whole page.
+The three papers bracket the whole census: #159's surplus came from one figure split into
+six panels, this stretch's deficits come from derivations rendered as pixels. So the rule
+holds in a sharper form than at 159-161 - reconcile captions against regions, and read the
+SIGN of the gap as a statement about the paper's production process, not about the detector.
+
+**A new apparatus fault class: the pasted page.** Previous papers pasted equations; #162
+pastes a page. p19 carries a 425x487 pt image of dense body prose, displays (8), (9), (10),
+the spectral-decomposition radical, a four-node Markov transition matrix and the ergodic
+vector - all typeset, all illegible to extraction, so the page's text layer is EMPTY and
+anything downstream of the text layer (mentions, caption quotes, section paths) silently
+loses that page. Two lesser members of the same family: p9's box bakes two whole paragraphs
+of prose into the raster so the text layer jumps from "after some original improvements" to
+"By the above improvements", and p7's box ends mid-sentence at its top edge. Consequence
+worth stating once: on these papers the text layer is not a subset of the content, it is a
+lossy sample of it, and a quote-not-found error may mean the content was never typed.
+
+**The orphan caption is a distinct failure from the missing-artwork caption, and #162 has
+three of them.** #160's Figures 3 and 4 printed a merged caption line with no artwork on the
+page at all. #162's Figures 2, 9 and 10 print their captions ALONE on p10, p25 and p29 while
+their artwork sits on the previous page - same page, no ink, one turn away. The detector sees
+two correct objects and a reader sees a broken promise, which is why ownership there had to
+be argued from caption text and doc order rather than from proximity. mcm-d0's #268 adds a
+third variant with the same shape: a page-foot stamp that FUSES with a caption on pp8-9, so
+the caption's own line carries furniture.
+
+**Caption side has settled into a kind-driven majority, but the kind is what the NUMBER
+says, not what the drawing is.** #162 is the cleanest instance yet: eight figure captions
+below, five table captions above, no exception in 43 pages. #161 was uniform-below (both
+kinds below), #160 kind-split, #159 inverted by part of the paper. mcm-d0's #268 supplies the
+counter-case that makes the axis non-trivial: in that paper two bars charts are numbered and
+captioned as Tables, so the caption side follows the printed label rather than the artwork -
+**read the number, then place the caption; do not classify the drawing first.** The
+consequence for a census is that family and caption side can disagree on the same row, and
+both are then correct: the drawing is a bar chart, the exhibit is a table.
+
+**Citation style has now been seen to degenerate to zero, and the pointers that remain carry
+the claim.** #160 printed one numbered reference in its whole body. #162 prints NONE in 43
+pages: eight exhibits are introduced by unlabelled deictics ("The picture below is the
+distribution of destination charging stations...", "As in the pictures shown below, the
+distribution is similar to each other, verifying our model's reliability") and five are
+never referenced at all. Against #161's 11-of-14 named with labels glued to numbers, this
+settles the axis: reference density ranges from 0 to nearly 1 inside one paper block, so a
+detector keyed on "Figure N" will find between none and all of a paper's exhibits. Worth
+copying from #162 is the deictic's payload - the sentence states the reading ("similar to
+each other") before the reader reaches the picture; worth avoiding is that nothing in the
+sentence or the artwork says which of two side-by-side plans is Markov and which is SFCLM.
+
+**Apparatus, once, for all three.** The Chinese resale banner is a constant of this block and
+now of the whole block: above ALL 43 pages of #162, text pages and image pages alike, as it
+was for all 29 of #161, so on any paper in this lane a page that opens with a box reads as
+caption_above until proven otherwise. Merged caption lines remain the standard symptom of a
+two-in-one paste: #162's Figures 5/6 and 7/8 each weld two captions into one line AND ship
+one image holding both numbers' artwork, which is the same custody problem #159 had at six
+panels, arriving through the caption instead of the box. And #162 contributes a grid boundary
+worth naming: booktabs 4 of 5 with no verticals at all, and the single boxed grid is the only
+one that needed merged cells on two axes - a correspondence, not a coincidence, that the
+next few papers should test.
 
 ## Checkpoint 159-161: the surplus flips to a deficit, and the detector follows rules rather than tables
 
