@@ -710,3 +710,70 @@ Consequence: the raster path and the drawing path have to be run and reconciled 
 either one trusted, and the rule count inside a table's bbox must accept a horizontal segment
 of any width across the table's own columns. A booktabs header rule is measured to the header
 text, not to the table's width, and that is the table being correct.
+
+## Two captions can share one printed line
+
+Paper `P-E-2022-2218144-2f85ee8c` (#310). Three pairs of figure captions print on one shared
+line: "Figure 9: 2020 bisector surface Figure 10: 2025 bisector surface" on p19, "Figure 12:
+Strategy score before      Figure 13: Strategy score after" on p21, and "Figure 14: Change of
+Z under different Figure 15: Change of Z under different" over a second line "n under m =
+0.0233  m under n = 0.0021" on p22. A detector that accepts a caption only when the phrase
+opens its line finds twelve of the fifteen figure captions and reports three missing exhibits
+on pages where both captions are printed. The separator between the members is not a fixed
+gap - two spaces on p19, six on p21, ONE on p22 - so widening the accept test from "line
+start" to "line start or two spaces" still misses p22.
+
+Consequence: after a line-start caption, every further caption phrase on the same line is a
+second caption of the same pair and must be taken as one, with no gap test at all; and each
+member's sentence is then assembled from the printed fragments, so all four members of the
+p21 and p22 pairs (Figures 12, 13, 14, 15) are `typed-from-crop`. Two bare "Figure N." lines
+in the same paper are not captions either: "Figure 3." on p7 and "Figure 6." on p12 are the
+wrapped ends of the prose sentences that name those figures, so a caption test that accepts a
+phrase at line start will invent two captions that do not exist while missing two that do.
+The printed count is the only thing that settles it: fifteen numbers, fifteen rows.
+
+## A page the layout pass never emitted is invisible to any loop over its page list
+
+Same paper, p24. The layout JSON carries fifteen page entries - the pages that own a region -
+and p24 is not among them: it has no entry, no region list and no bbox, not even an empty one.
+A walk written as `for page in lay["pages"]` therefore never visits it, and the page is not
+reported as a page with zero regions because it is not reported at all. The page prints the
+paper's required newspaper article as ONE raster of 585.8 x 835.9 pt covering the sheet and
+carries zero characters of text layer, so no text-side pass can reach it either.
+
+Consequence: the coverage arithmetic has to be closed against `page_count` from the PDF, not
+against `len(layout["pages"])`, and the difference between the two is the list of pages that
+have to be explained one by one. Here it is one page, it is content, and it cannot be recorded
+because there is no measured bbox to record - so it is declared in the rule list. The same
+subtraction on a paper where the missing pages are all decoration is the cheap way to prove
+the layout pass really did see every sheet.
+
+## A figure that looks drawn by the PDF is usually still a paste
+
+Same paper, Figure 8. The unit-cube vector diagram prints as five arrows, three ticked axes
+labelled 0.0 to 1.0 and five coordinate triples - the one exhibit in the paper with no chart
+junk, no screenshot frame and a cleanly drawn grid, and the first read of it recorded "drawn
+by the PDF itself rather than pasted as a raster". It is a 1225 x 1100 px image pasted at
+212.6, 86.4 to 382.7, 228.1, and the page holds no drawing path inside the region at all.
+
+Consequence: apparent vector quality is not evidence of a vector exhibit. The positive test
+is `get_drawings()` inside the region and `get_images()` inside the region, run per region,
+and this paper makes the point sharply: all fifteen figure regions hold exactly one raster
+and zero paths, while every one of the file's 54 drawing paths is a rule - a 422.5 pt header
+rule at y 63.3 on every body page, the eleven table rules, and small inline fragments. A
+figure counted as "drawn" costs the record its raster note and, worse, invites a reader to
+type values off a picture that was never vector in the first place.
+
+## An unnumbered exhibit belongs to the heading that calls itself an appendix
+
+Proposed by mcm-5e from their own papers and adopted here as the rule for unnumbered rows:
+when an exhibit carries no number, the section walk's answer is only trustworthy if the
+heading it lands on says in its own text that the region is an appendix, an index, a list or
+an annex. A page-opening screenshot with no number has nothing else to anchor it - the
+nearest heading may be a subsection whose prose continues past it, and the printed order does
+not distinguish "belongs to this heading" from "prints on this heading's page".
+
+Consequence: for unnumbered rows the recorded `place.section_path` may not rest on the
+heading position alone; the heading's own words have to name the exhibit class, or the
+position has to be declared a best reading in the row's note. The check is cheap - the label
+is already in the path - and it is the difference between a filing and a guess.
