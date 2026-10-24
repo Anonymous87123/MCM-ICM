@@ -301,3 +301,117 @@ times, "Analysis on vw" is a scatter, and one hill is classed surface-or-3D in F
 while its sibling panel is a plain 2-D line. Figure 2's caption says "map" and its pixels
 say "black skyline with nothing drawn inside", so a caption-driven classifier would file
 it as a map and never notice there is no route on it.
+
+## A caption eight points below the art can be read as eight points above
+
+P-A-2022-2207343-9469a4fe, pp14, 16, 19 and 21. Figures 12, 16, 20 and 22 were recorded
+with `caption.position` "above". Every one of the four captions is printed UNDER its
+region: the gap from the region's bottom edge to the caption's line box is 7.93, 8.20,
+7.94 and 8.21 pt.
+
+Why the inherited reading went the wrong way: all four regions sit at the top of their
+page (y0 74.98-75.42), so the caption line lands in the band where a body heading would
+print, and the section heading that follows the exhibit is what the page actually
+delivers next. A reader who takes the caption's side from the surrounding page structure
+sees "text below the box" and calls the exhibit uncaptioned-from-below; the offset alone
+settles it, but only if the reader bothers to measure it.
+
+Consequence: four of the paper's twenty-three figures were drawn on the wrong side, and
+the error is systematic - every figure that opens a page has it. Side has to be measured
+against the box, never inferred from where the art sits on the sheet.
+
+## Two table captions print inside their own grid
+
+Same paper, p16. Table 8's caption overlaps its measured region by 1.24 pt and Table 9's
+by 1.12 pt, while the other eight table captions clear theirs by 1.16-1.24 pt. The ten
+captions come from one paragraph of introduction set above each grid, and the two on p16
+were typeset tight enough that the caption's last line box crosses the header rule.
+
+Consequence: a caption-side test that wants a positive clearance reports Tables 8 and 9 as
+uncaptioned, which drops two of the paper's ten measured tables. The reading order of the
+page is the only evidence that survives here; the gap does not. Same failure as the
+overlapping caption in P-F-2021-2123945-e8b5b6e5, but this paper produces it twice in one
+column of one page.
+
+## A table printed as live text owns no region and no rules
+
+Same paper, p11. Table 6, "The results of each turn", prints as five lines of plain text
+inside the flow - caption line, header row (Curve number / A / B / C / D / E), a Pout row
+and a v row - with no rule, no cell fill, no raster and no box. The paper's other ten
+tables are booktabs with three drawn rules each; this one is a table the layout pass
+cannot see, so the census carries ten table-grid rows against eleven printed table
+numbers, and the numbering run reads 5, 7 with 6 missing.
+
+Consequence: "the paper has eleven tables" and "the census measured ten tables" are both
+true statements and a completeness check that compares them will report a defect that is
+not there. The missing region is the correct measurement. Reconciling the two counts needs
+the text layer, not the drawing layer.
+
+## A promotional sheet fragments into one region per pasted tile
+
+Same paper, pp24 and 25. The two appendix sheets are RIDERMAN flyers and the layout pass
+splits them into eighteen regions on p24 and seven on p25. On p24 the enclosing leaflet
+raster is region 12 at [27.84, 452.28, 566.34, 821.82] and ten smaller rasters sit inside
+its top band; on p25 the enclosing raster is region 1 at [28.44, 18.84, 566.34, 717.78]
+with two chart tiles inside it. The same picture is therefore measured once as a whole and
+again as each of its parts.
+
+Consequence: a per-region census of these two pages reports 25 exhibits where the paper
+prints three, and a "count the regions, count the exhibits" check disagrees by 22. The
+tiles have to be excluded as fragments of the enclosing raster, which only works if the
+fragment reason is available and the enclosing box is recorded first. Both sheets also
+carry four line-art cyclist cartoons at the page foot, in the same y band as the leaflet,
+so proximity alone does not separate furniture from tile.
+
+## A cover photograph is not page furniture
+
+Same paper, p24. The flyer's masthead is region 1 at [0.0, 0.0, 595.14, 201.18] - the full
+page width, `area_frac` 0.239 - carrying the headline "SWIFT TO WIN! WITH OUR MATHEMATICAL
+OPTIMIZATION MODEL" over a forest-road photograph with overlaid force vectors and a best-
+racing-route arrow. It was excluded in the inherited draft as a "raster tile of the
+appendix sheet's photo collage", together with ten rasters that really are tiles inside it.
+
+Consequence: an area filter that drops full-width bands reports this photograph as
+background, and a detector tuned to subtract page furniture from a flyer page will subtract
+the most prominent picture in the whole appendix. The band is content: it is recorded here
+as a `photo-or-raster-image` exhibit with no caption, and the ten rasters nested inside it
+carry the fragment reason instead.
+
+## The ligature in "fig." hides every pointer from an ASCII scan
+
+Same paper, whole document. The text layer spells the abbreviation with U+FB01, so
+"ﬁg. 4" is one character plus "g", and a regex that looks for `fig` or `Figure` finds
+twenty-nine numbered matches of which only five are real pointers - the ASCII "Fig." once,
+"Figure 19" once and three "Table N". Normalising U+FB01 to "fi" first turns up twenty-four
+ligature pointers that were invisible before, and the paper goes from "four exhibits are
+cited" to "twenty-two are".
+
+Consequence: this is not a flaky detector, it is a total blind spot on any paper typeset
+with a ligature-aware font. Counting pointers without normalising gives a number low by a
+factor of five. The same normalisation is needed before subtracting caption lines, because
+the caption "Figure 3:" is ASCII while its pointers are not.
+
+## A pointer can wrap between the abbreviation and its number
+
+Same paper, pp3, 7 and 12. Three pointers put the abbreviation at the end of a line and
+the number at the start of the next: "shown in ﬁg." then "11)." on p12, a bare "ﬁg. 1."
+alone on a line of p3, and "the power curve in ﬁg .3" on p7 - that last one with a space
+between the abbreviation and its number where the paper prints it that way.
+
+Consequence: a line-scoped pointer scan misses all three and reports Figures 1 and 11 as
+never cited, which they are not. The p7 case is worse than a wrap: the token is
+"ﬁg .3", so even a normalised regex keyed on `fig\.\s*\d` fails until the space before the
+number is allowed. [mention.style] keeps the printed form, space and all.
+
+## A running head can disagree with the folio by three pages
+
+Same paper, every sheet. The header reads "Team # 2207343 / Page N of 22" and runs one
+behind the physical page - p11 prints "Page 10 of 22" - but the file has twenty-five
+pages, because the three appendix sheets are not counted in the header at all. So the head
+is off by one at the front and by three at the back, and the two errors cancel nowhere in
+between.
+
+Consequence: any cross-check that joins a measured page number to a printed folio has to
+add one, and any check that trusts "of 22" as the page count truncates the last three
+sheets - the three that hold the only photo and the only uncaptioned appendix exhibits in
+the paper. Printed folios are not page indices.
