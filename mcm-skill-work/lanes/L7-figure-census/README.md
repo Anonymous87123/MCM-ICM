@@ -2719,10 +2719,66 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #177 closed, next #178. The 172-174 checkpoint is written directly
-below; the 169-171 checkpoint sits under it, the 166-168 checkpoint under that, the
-160-162 checkpoint under that, and
+Queue position: #177 closed, next #178. The 175-177 checkpoint is written directly
+below; the 172-174 checkpoint sits under it, the 169-171 checkpoint under that, the
+166-168 checkpoint under that, the 160-162 checkpoint under that, and
 the 153-155, 150-152, 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 175-177: the same listing filed three ways, and a caption habit that flips between two papers of the same problem
+
+Three consecutive 2019 D papers, 75 pages, 117 measured regions, 60 measured exhibit rows
+(49 figures, 11 grids) against 66 printed exhibits and six declared deficits - and the
+block runs from three grids printed in live text with no region at all (#175) to nothing
+to measure at all (#177). Five findings.
+
+**An algorithm listing is a table only if the paper numbers it as one.** All three papers
+print boxed pseudocode, and all three file it differently. #176 calls its p6 and p18 boxes
+Table 1 and Table 10 - they carry captions, a double top rule and a single bottom rule - and
+then loses both of them to the region pass, which is where its deficits come from. #177's
+three boxes in the same visual species (heavy top and bottom borders, haze of vertical frame
+rules, ONE column of indented pseudocode) print no number and no caption at all, so they are
+refused `not-an-exhibit` and the paper closes at 18 of 18. #175 goes further and refuses ten
+straight pages of MATLAB source, where the running header itself reads as a section head
+('4 C=X;'). The test is the printed label and the grid, in that order: columns without a
+caption are a listing, a caption over one column is still a listing unless the paper calls
+it a table.
+
+**Row count can be zero by design.** #177 prints no table at all - the word never appears in
+19 printed pages, the whole parameter block sits in one paragraph, and every number lives in
+a figure or in prose. That is not the same event as #176's three unmeasured grids or #175's
+one measured table, and an aggregate that only counts "tables per paper" will read 0 as loss.
+The record has to say which: `table_items 0` with no deficit means the paper set nothing in
+grid form.
+
+**The caption habit is a team habit, and it flips between adjacent papers of one problem.**
+#176 (2019 ICM D, team 1902407) prints 'Figure N' + bare noun phrase with NO colon on all 24
+of its numbered captions (its ten appendix plates carry none at all); #177 (2019 ICM D,
+team 1908810) prints 'Figure N:' WITH the colon on 9 of 9, a full stop on only 5 of 9, and
+lets the phrase run 13-22 words so it can be a whole descriptive clause. Same problem, same
+year, opposite punctuation. What survives both is the side - every caption below the art in
+both papers - and the content - no units, no conditions, one conclusion in #177 and none in
+#176. #177 also spends a second sentence in four captions of nine, and two of those four
+say the same thing: 'Averaged across simulation trials', on Figures 5 and 9. That is the
+only place either paper states how its numbers were obtained.
+
+**Citation can be absent and citation can be dense in the same problem.** #176 never names an
+exhibit in prose: its 24 'Figure n'/'Table n' occurrences are all the captions themselves (27
+scan hits, each adjacent to its own caption), so every mention block carries first_page null
+and a deictic sentence instead. #177 names six of nine figures, three
+of them as FORWARD references from the foot of the page before ('refer to Figure 4', 'Figure
+8 indicates ...', 'As we see from Figure 9'), and leaves three (1, 6, 7) unnamed and carried
+by the sentence beside them. A detector trained on "Figure N appears in prose" therefore
+scores 0% on one 2019 D paper and 67% on the next; the deictic fallback has to stay in the
+schema, not be treated as a failure mode.
+
+**`section_path` is the field that fails, and it fails for two different reasons.** #176
+loses it to caption adjacency: a heading welded into the caption line above a table drags six
+exhibits into the wrong subsection. #177 loses it to page position: the pass files a region
+under the deepest heading printed BELOW it, and because 7 of 9 figures print at y=108 of 792
+that forward walk puts six exhibits one or two subsections late - Figure 1 in 3.2, Figure 5
+in 5.2, Figure 9 in 7.3. Both were re-assigned by reading the sentence that introduces or
+reads the exhibit, and in both papers the prose rule and the layout rule disagree on more
+than half the exhibits. Nothing else in the record needs that much repair.
 
 ## Checkpoint 172-174: furniture is `duplicate` when it repeats exactly, and a live-text table has no region
 Three papers, 66 pages, 73 measured regions, 40 rows against 41 printed exhibits - one deficit,
