@@ -62,3 +62,62 @@ Why a colour-only classifier fails: the "banding is the grid" case means the bod
 rules were replaced by alternating row fills, so a reader that looks for stroke colour
 reports `no-rules` on a table that prints four rules. Rule style has to be read from
 the thin fill bands (height < 1.2 pt) plus the fill colour, not from `color`/`width`.
+
+## A page stamp can fuse into an exhibit region
+
+Same block, P-F-2021-2122374-0c765494 (p10, page 612 x 792). Table 2's head runs to
+x 488 and the page-foot WeChat stamp occupies x 448.3 -> 583.1, so the table's right
+edge overlaps the stamp's x-range and the layout pass reports ONE region of 826 paths
+instead of two. The split is exact and countable: 133 black fills are the table's own
+rules (header, Input and Output groups), 689 pink fills at (0.75, 0, 0) plus 4 strokes
+at width 0.048 are the 693-path stamp, and 133 + 689 + 4 = 826. The union bbox
+[66.4, 159.9, 583.1, 789.1] takes its right edge and its bottom edge from the stamp,
+so `area_frac` 0.6708 describes two different objects at once.
+
+Consequence: p10 is the only page in the paper with no standalone stamp region - 25 of
+26 pages carry the identical 693-path stamp at [448.3, 721.7, 583.1, 789.1] - and a
+per-page "stamp present?" check keyed on a 693-path region would report p10 as
+missing its furniture. The stamp has to be identified by the fill colour and the path
+sub-count, not by region identity.
+
+## Two image placements can share one page-plus-bbox key
+
+Same paper, p15. Four image placements sit inside Figure 6's frame: two copies of a
+293x94 px raster and two of a 294x107 px one, each pair at an IDENTICAL box
+([167.0, 82.0, 460.0, 176.0] twice, [167.0, 82.0, 461.0, 189.0] twice). So the paper
+has 50 regions but only 48 distinct page-plus-bbox keys, and the record - which
+identifies a region as (page, rounded bbox) - reports 48 measured regions.
+
+Consequence: on this paper a region count and a key count are different numbers, and
+any completeness check that counts regions while storing keys will disagree by two.
+Identifying the duplicate is also not enough to say what it is: the same chart area is
+pasted at two heights, one 94 px and one 107 px, so "duplicate" here means two
+different raster objects at one box, not one object drawn twice.
+
+## A table can be a bitmap with no rules at all
+
+Same paper, Table 3 on p14. The table is a 474x605 px raster at 137 x 152 dpi - the
+raster is stretched 11 per cent vertically after pasting - and it has no rules, no row
+banding and no cell fills: the only structure is three coloured header cells (beige,
+teal, orange) and 21 ranked rows of type inside the bitmap.
+
+Consequence: the drawing-based table path finds zero items and the rule-style
+classifier has nothing to read, while the print is perfectly legible. This is the
+mirror image of the fill-rules gap above: there, a fully ruled table looks "ruled" only
+through sub-point fills; here, a well-set table has no drawn geometry beyond a
+coloured header strip. `rule_style` `no-rules` therefore covers both a degenerate
+text-only table and a modern styled one, and only the crop tells them apart.
+
+## A caption can swallow the next sentence's first word
+
+Same paper, p6. The caption prints as "Figure 3 The relationship between the three
+dimensions of the status quo of industry performance: coverage" and the following
+paragraph begins "is the cornerstone of fairness, and fairness is the basis of
+achievement." The sentence's subject is missing because the caption line took it.
+
+Consequence: the caption's tail is prose and the prose's head is missing, so a caption
+detector that stops at the first full stop reads a caption that ends mid-thought, and
+the artifact text layer additionally splits the word across the line break
+("covera" + "e", with the "C" lost), so the same caption reads differently in pymupdf
+and in the artifact. Recording the caption verbatim means keeping "covera" and
+documenting the split rather than repairing it to "coverage".
