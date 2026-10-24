@@ -2710,10 +2710,59 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #174 closed, next #175. The 169-171 checkpoint is written directly
-below; the 166-168 checkpoint sits under it, the 163-165 checkpoint under that, the
+Queue position: #174 closed, next #175. The 172-174 checkpoint is written directly
+below; the 169-171 checkpoint sits under it, the 166-168 checkpoint under that, the
 160-162 checkpoint under that, and
 the 153-155, 150-152, 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 172-174: furniture is `duplicate` when it repeats exactly, and a live-text table has no region
+Three papers, 66 pages, 73 measured regions, 40 rows against 41 printed exhibits - one deficit,
+#174's Table 1, and it is the first deficit in this lane caused by a table printed as LIVE TEXT
+rather than by a drawing the pass missed. #172 closes at ten of ten with no exclusions at all,
+#173 at ten of ten with six, #174 at twenty of twenty-one.
+
+**Page furniture is not one thing, and the reason field has to say which.** #173's running head
+survives as a vector band on two of its pages and was filed `background`; #174 stamps the SAME
+678-path advert box at pt y=767-839 on all twenty-five of its pages, identical coordinates,
+identical strings, and that is `duplicate`. The distinguishing test is repetition, not
+inertness: a mark whose geometry varies page to page is background, a mark that repeats with
+identical geometry is a duplicate of itself and one filing per page is all it deserves. Both
+papers also force the panel convention already in the lane - the right box of an (a)/(b) pair on
+a shared baseline is `fragment-of-other`, never a second exhibit.
+
+**A table made of live text is invisible to the region pass, and now twice over.** #147's
+abbreviation glossary and #174's 'Table 1 Notations' are both real tables with printed rules and
+neither has a box, because the pass follows images and vector clusters, not typeset rows. The
+consequence is arithmetic, not cosmetic: the census records one fewer row than the paper prints,
+and the row has to declare the difference. Inventing a bbox is worse; declaring the deficit in
+the rule list is the whole remedy. Corollary for the aggregates: "tables per paper" counts BOXED
+tables, and any paper with a typeset grid under-counts by however many it set in text.
+
+**The closed family list now has a visible gap, and the lane is paying for it with `other`.**
+#174 prints four exploded perspective pies - arcs, not rectangles, in 3-D, keyed by a two-swatch
+legend - and the fourteen families cannot name them, so they are filed `other` with an
+`other_note` carrying the reason. That is the designed escape and it works, but `other` now does
+two different jobs in this lane: "the marks are an arc family we have no word for" and "the paper
+drew something I could not classify". Any future aggregate over `other` is unreadable until the
+note is read with it. Raising the vocabulary to fifteen is a schema decision that invalidates
+nothing but touches all 435 papers' tooling, so it stays a proposal, not an edit.
+
+**Caption side can be settled without spending a proxy.** The region dump reports only the first
+token above and below a box, which is ambiguous exactly where the two conflict - #174's Figure 10
+had text tokens on both sides and no decisive one. Reading the PDF's own word coordinates with a
+text-only pass (word tops against the region's bbox, no image decoded) settled all twenty
+exhibits in one call and found the paper's single exception (caption at 275.3 pt above a region
+starting at 299.0). Every caption side in these three rows is now cross-checked that way, which
+is also the answer to the eight-proxy ceiling: geometry questions move to coordinates, only
+appearance questions go to crops.
+
+**Repeated designs are the norm in this batch, and the legend is where their difference lives.**
+#174's Figures 11, 12 and 13 are one recipe three times - same frame, same colours, same dashed
+2019 divider and 'Forecast area' label - and what separates a result from a sensitivity check is
+carried entirely by the key: project names, then fitted parameter values, then parameter levels.
+#173's three schematics are likewise one recipe with grey fills applied unevenly and unexplained.
+A family count counts printings; the legend text is what tells you whether the paper actually
+plotted three different things.
 
 ## Checkpoint 169-171: the caption can leave the text layer, and the noun on an exhibit is not its type
 Three papers, 74 pages, 60 measured regions, 49 rows against 50 printed exhibits - one deficit
