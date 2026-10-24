@@ -415,3 +415,103 @@ Consequence: any cross-check that joins a measured page number to a printed foli
 add one, and any check that trusts "of 22" as the page count truncates the last three
 sheets - the three that hold the only photo and the only uncaptioned appendix exhibits in
 the paper. Printed folios are not page indices.
+
+## Per-column rule segments can put a table under the half-page bar
+
+P-E-2022-2202838-75410db9, pp8, 18 and 19. Six table numbers print and only three own a
+drawn region. Tables 2, 5 and 6 draw their booktabs rules as a run of per-column segments
+rather than one page-wide stroke: the widest single segment in each band is 93.7, 98.9 and
+87.1 pt, and `rule_table_regions()` needs `w >= 0.5 * page_w` (306 pt on Letter) before it
+will consider a rule at all. So no rule qualifies, the segments are discarded as dividers,
+and the three tables vanish - p19 is even reported as "165 paths but no measured region",
+which reads like a broken page and is in fact a complete table.
+
+Consequence: the half-page gate is a width test on one stroke, and a LaTeX table set with
+column-separated rules leaves no stroke wide enough to pass it however dense the grid is.
+A gap warning on a page that is plainly furnished is a signal to measure the band directly
+(the sum of the segments in one row equals the table width) rather than to trust the empty
+region list. Census here carries three table rows against six printed numbers, and the
+deficit is the detector's, not the paper's.
+
+## A measured region can stop short of its own table's last rows
+
+Same paper, p5. Table 1's box ends at y 168.4 while two notation descriptions still print at
+173.4 and 191.4 and their vector glyphs run to 203.2, all inside the column and all inside
+the drawn caption-to-body rule pair. The region is a correct measurement of the *rules and
+the rows they enclose up to the last horizontal rule*, and the table has no closing rule
+under its final row, so the box closes early by two rows.
+
+Consequence: `[table.rows]` here is the printed count - one header row and six body rows at
+18 pt pitch - and not the row count the bounding box can be cropped to. A per-region row
+count derived from baselines inside the box would report four of six, and the missing two are
+exactly the rows a reader checks against the notation list. The absent closing rule is the
+tell: a booktabs table with two rules where three are expected has been measured short.
+
+## A caption can overlap the bottom of its own region
+
+Same paper, p17. Figure 7's region ends at y 445.7 and its caption baseline sits at 441.4, so
+the caption prints *inside* the last four points of the measured box rather than below it. A
+side test written as `caption_y >= region_y1` fails on it; one written as `caption_y >=
+region_y0` passes on captions that are hundreds of points above the art.
+
+Consequence: caption side needs a proportional test - the caption's line top against the
+region's vertical midpoint - not an edge test against either boundary. Figure 7 is the only
+one of fourteen captioned exhibits in this paper where the two disagree, and it is the one
+where a naive below-test would have flipped the position flag and, with it, the paper's
+otherwise unbroken "captions always below figures" rule.
+
+## An exhibit can belong to the heading above it, not the heading below
+
+Same paper, six rows. The context pass attaches a region to the last heading on the page,
+which for a page-opening exhibit is the heading that prints *under* it: Table 1 was placed
+in section 4 when it prints above the section 4 heading on p5, Figure 1 in "3 Notation" when
+it belongs to 1.3 Our Work, Figure 6 in 6.2.2 when its true section 6.2 heading prints at
+y 312.4 below the art at y 87.6. The mirror case is just as common: Table 3 sits above the
+6.3 heading at y 573.9 and belongs to 6.2.5, Table 4 and Figure 7 above the section 7 heading
+at y 614.9 and belong to 6.3.3, Figure 10 above the section 8 heading at y 435.7 and
+Figure 11 above the section 9 heading at y 271.8.
+
+Consequence: `[place.section_path]` has to be read from the printed heading order against
+the exhibit's y coordinate, and a heading whose ink starts below the region cannot own it no
+matter what the nearest-neighbour attachment says. Seven rows kept the context path and
+eight were overridden; the overrides are all of this shape, so the rule is mechanical rather
+than judgemental.
+
+## A caption can be split across two lines in reverse order
+
+Same paper, p5. Figure 2's caption is not one text line. The extractor returns the tail of it
+above the head - the second line first, then the first - so a slice-and-join in reading order
+produces "network with 4 hidden layers in each layer. Figure 2: Schematic of a feed-forward"
+and the caption fails the verbatim test on its own page.
+
+Consequence: this row is recorded as `caption_source: "typed-from-crop"` with the assembled
+string, and the reorder is stated rather than hidden. Two-line captions elsewhere in the
+block print in order and slice cleanly; the variable is the placement engine, not the
+caption. A payload builder that trusts line order silently records a caption no reader can
+find in the text and a mention matcher then reports zero pointers for a figure cited twice.
+
+## A pointer can print with no space before its number
+
+Same paper, p18. Body text reads "Figure8(b)", the only one of eleven pointer spellings with
+the number welded to the word. The other ten are ASCII "Figure N" with the sub-label in
+parentheses, and five "Table N" pointers are clean.
+
+Consequence: a scan keyed on `Figure\s+\d` misses that pointer and reports Figure 8 as cited
+once when it prints twice. `Figure\s*\(?\d` catches both forms, and the spelling set keeps
+the welded form as printed so the row shows the anomaly instead of normalising it away.
+
+## A decorated article page can sit inside an otherwise plain letter file
+
+Same paper, p23. One sheet of twenty-five is 595.32 x 841.92 pt (A4) against 612 x 792 for
+the rest, laid out two columns with a headline in display type, foliage behind the text, a
+stump clip art and a forest-scene band across the foot - a newspaper-style coda in a
+mathematics paper. It carries the file's only uncaptioned photograph, cropped into the text
+column, which is an exhibit: it is content, and the paper's argument runs through it.
+
+Consequence: page size is a per-page property even in a single-rendered file, so a detector
+that measures in fractions of one page width is measuring against a different sheet here.
+Of the four rasters on p23 exactly one is content and three are furniture, and the
+discriminator is not size - the foot band is the widest of the four - it is whether the image
+prints inside the text column and interrupts the prose. An uncaptioned photograph has to be
+recorded as an item with an empty caption, and `[caption.verbatim]` being empty is not
+grounds for excluding it.
