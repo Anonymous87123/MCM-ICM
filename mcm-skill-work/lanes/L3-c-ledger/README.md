@@ -156,7 +156,7 @@ into one block.
 | 64 | `P-C-2022-2203120-59ecfcb7` | 14 | 80 | 272 | done, page read. deltas: 0,+1,0,0,0,0,+1,+15,0,0,0,0,0,0; layout sha256 identical 4a9625a7 |
 | 65 | `P-C-2022-2204883-34c13ed1` | 11 | 105 | 297 | done, page read. deltas: -7,+1,+2,0,0,0,+33,+8,+6,+1,-1; layout sha256 identical 314b982c |
 | 66 | `P-C-2022-2208834-e1b081c3` | 10 | 97 | 223 | done, page read. deltas: -3,0,+1,+2,-1,+9,0,-1,+1,+1; layout sha256 identical fe123f2f |
-| 67 | `P-C-2022-2212336-9ca07c5b` | 12 | 95 | 177 | done, deltas: 0,+1,-4,+1,+1,-2,-3,+2,+1,-1,0,0; layout sha256 identical e2a5f73e |
+| 67 | `P-C-2022-2212336-9ca07c5b` | 12 | 95 | 177 | done, page read. deltas: 0,+1,-4,+1,0,-2,-3,+2,+1,-1,0,0; layout sha256 identical e2a5f73e |
 | 68 | `P-C-2022-2218743-984f9ab2` | 10 | 67 | 194 | done, deltas: 0,+1,0,0,0,0,+1,+1,0,0; layout sha256 identical e05ae546 |
 | 69 | `P-C-2022-2218931-a1aa7569` | 11 | 80 | 306 | done, deltas: 0,+1,0,0,0,0,0,0,0,-4,0; layout sha256 identical 91508ae0 |
 | 70 | `P-C-2022-2224507-b26b91d5` | 10 | 85 | 353 | done, deltas: 0,0,0,0,0,+1,0,0,0,0; layout sha256 identical aae7ffc8 |
