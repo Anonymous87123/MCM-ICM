@@ -2499,6 +2499,7 @@ same defect is not re-diagnosed paper by paper.
 | 162 | P-D-2018-82504-6cc63169 | 43 | 20 | 8 | 5 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 20 measured regions on 12 of 43 pages = 8 figure rows + 5 table rows + 7 exclusions, for 16 printed captions, so **three captions print alone on pages with no artwork** and their exhibits sit on the previous page (p10, p25, p29). The exclusions are **five rasters of mathematics** (pp7, 9, 11 twice - one p9 box bakes two whole paragraphs of prose into the image, so the text layer skips them) plus a boxed Algorithm 1 block and appendix furniture. **New apparatus class: p19 is a 425x487 pt screenshot of an entire TYPESET PAGE** - body prose, displays (8)-(10), the Markov transition matrix - so that page's text layer is EMPTY while the region pass sees a quarter-page box. **Caption side is perfectly kind-driven**: all 8 figures below, all 5 tables above, 12-16 pt gaps. Two rows carry **two welded captions AND one pasted image holding both numbers' artwork** (Figures 5/6 = two Seoul basemaps split by a white gutter; Figures 7/8 = two in-plot-titled line panels). Families: line 4, map-or-plan-view 2, bar 1, scatter 1; **no 3-D, no contour, no colourbar in 43 pages**; legends 4 none / 3 inside / 1 below the axis. Table 3 prints three rules yet owns no region - declared gap. Grids: **booktabs 4 of 5, no verticals**, including a 3x5 transposed period series with periods as the header row, plus ONE boxed 4x4 classification with merged cells on both axes that overruns the margin; two grids overflow the measure. Citation is the opposite extreme from #161: **zero exhibits named by number in 43 pages**, eight unlabelled deictics ('the picture below', 'is as the chart shown'), five never referenced. Captions 3-15 words, voice `none` on all 13 rows. Red Taobao banner on ALL 43 pages |
 | 163 | P-D-2018-82794-47f05792 | 27 | 23 | 16 | 5 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 23 measured regions = the 21 printed exhibits (Figures 1-16, Tables 1-5) plus two exclusions (p9's pasted equation (6), p26's appendix opener) - the first exact 1:1 census in this lane, because the equations are typeset text and never measure. **Caption side perfect**: 16 figures below, 5 tables above, and Table 1 prints its caption BETWEEN the doubled top rule and the header row. **Two welded caption pairs**: Figures 11/12 on one line, Figures 13/14 on one line. Families: node-link-network 4, line 4, map-or-plan-view 3, bar 2, other 2 (a nested doughnut and a Venn diagram - outside the vocabulary), schematic 1; **no 3-D, no contour, ONE colourbar in the whole document**; legends none 5 / inside 4 / outside-right 3 / below 2 / outside-left 1 / above 1; every row single-panel and none shares axes. Grids: **booktabs 3, boxed 2**, and the boxed pair is exactly the pair with two-axis merges, header units and decimal alignment; nothing overflows the 425 pt measure (353-388 pt). **Tables 2 and 5 print the identical caption.** Citation: 18 of 21 pointed at, only 11 by number, **three one page early**, three never, and one mis-pointer naming Table 3 over the wrong quantity. Placement: Figure 3 intrudes between the bullets that introduce Figure 4 and is never referenced. Red Taobao banner on ALL 27 pages; printed page numbers offset by two |
 | 164 | P-E-2018-72968-5f2ee223 | 37 | 29 | 8 | 2 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 29 measured regions on 19 of 37 pages = 8 figure rows + 2 table rows + 19 exclusions, for TWELVE printed exhibits - **the worst region-to-exhibit ratio in the lane**, and the two missing exhibits are missing for a new reason: **Table 3 (p17) and Table 4 (p22) print as three horizontal rules with no closed frame**, so the clustering pass never sees them, while thirteen pasted display equations - which the census does not want - are kept because a raster always has a tall bbox. The nineteen exclusions: 13 pasted equations whose numbers are printed INSIDE the image (p15's text layer holds no equation body at all), **p26's whole prose paragraph pasted as one raster** (section 6.1.2 has a heading, an image of a paragraph, and the next heading), three overlapping crops of ONE landscape screenshot of Appendix A's 178-country table, and two appendix code-and-heading runs. **Caption side perfect**: 8 figures below, 2 tables above, Table 1's caption inside the top rule. **The pointer layer uses a different format from the caption layer**: every citation is parenthetical - 'Table (1)', 'Table (2)', 'Figure (2)', 'Figure (7)' twice, 'Figure (8)' - six pointers over four numbers and zero occurrences of 'Figure N:', and **both 'Figure (7)' pointers name the wrong exhibit**, so Figure 7 is never correctly cited. Families: other 3 (a pie disc and TWO TREEMAPS whose hue-to-category mapping changes between them), map 1, node-link 1, surface-or-3D 1, bar 1, line 1; **the lane's first genuine 3-D chart** (Figure 5, perspective scatter, colourbar labelled 10-60 over an axis running 0-80); legends none 3 / above 3 / inside 2. Grids booktabs 2 of 2, Table 1 the tallest yet at 26 rows, Table 2 the only numeric grid with a header unit and decimal alignment. Citation: 4 exhibits never referenced, **lead_pages +1 once and -1 once**. Red Taobao banner on 5 pages; folio 6 behind |
+| 165 | P-E-2018-73119-79c4dde3 | 27 | 23 | 9 | 9 | closed by mcm-5e, `check.py` layout identical, unaccounted 0; 23 measured regions on 16 of 27 pages = 9 figure rows + 9 table rows + 5 exclusions, for NINETEEN printed exhibits - nine charts and ten grids - so the deficit is one and again it is a rule-only grid: **Table 1 (p7), the symbol table, prints as three horizontal rules with its caption between the top rule and the header row**, the same blind spot that cost #164 its Tables 3 and 4. **The paper runs two caption systems and they disagree about what the object is**: the body numbers Figures 1-9 and Tables 1-4, while the two p27 grids are captioned 'Figure 10'/'Figure 11' in the text layer OVER their own titles pasted in the image, 'Table 2.6' and 'Table 2' (the second colliding with the main body's Table 2). Ten grids print and only four are numbered; four have no caption at all. **Figure 2 is a table wearing a figure caption** - 17x5 indicator hierarchy, pastel bands, dashed separators, an unlabelled column of +/- marks - and the prose then lists the same sixteen indicators again. Nothing is 3-D and nothing carries a colourbar, but the same index is drawn on **four different y windows** (0.30-0.36, 0.28-0.44, 0.32-0.42, 0.35-0.65). Figure 4 has no axis titles and no legend - its caption is the key, 19 words, no space after the colon, 'rep-resent' left hyphenated - and Figure 9's caption AND legend both lost the Greek symbol ('Analysis of 1', '01 = 0.8'). Grids boxed 5 / booktabs 3 / no-rules 1, zero zebra, no decimal alignment anywhere, decimals printed as colons in Table 2, the unruled matrix overflowing the measure at 482 pt of 451. Citation: **7 pointed at by number, 11 of 18 with no number in any pointer**, four positional only, lead_pages 0 six times and -1 once |
 
 Two more classes are not caption defects but are recorded the same way, because the text
 layer cannot reconstruct the sentence: a caption whose glyphs are mangled math italics
@@ -2687,9 +2688,57 @@ layout has no box for it anywhere; the detector boxed the rule band above it and
 region pass follows images, not tables, and a paper can therefore carry a table the census cannot
 see. That is worth stating once here, because the alternative - inventing a bbox - is worse.
 
-Queue position: #164 closed, next #165. The 160-162 checkpoint is written directly
-below; the 153-155 checkpoint sits under it, the 150-152 checkpoint under that, and
-the 146-148 and 145-147 checkpoints further down.
+Queue position: #165 closed, next #166. The 163-165 checkpoint is written directly
+below; the 160-162 checkpoint sits under it, the 153-155 checkpoint under that, and
+the 150-152, 146-148 and 145-147 checkpoints further down.
+
+## Checkpoint 163-165: what decides whether an exhibit is measured, and who owns the number
+
+Three papers, 75 measured regions on 91 pages for 49 rows against 52 printed exhibits. Five
+findings, all of them about the three layers a census has to reconcile - the region list, the
+caption layer and the pointer layer - and none of them about artwork size, which the last three
+checkpoints kept blaming.
+
+**A table's rule style, not its size, decides whether the detector sees it.** #163 lost nothing
+(23 regions, 21 exhibits, 1:1) because every one of its grids is boxed or booktabs-with-a-frame
+and its maths is typeset. #164 lost two of twelve to three-rule grids and #165 lost one of
+nineteen to the same fault - and in all three cases the table the census cannot see is the
+best-built table in the paper. #165 supplies the inverse proof: it measures nine of its ten
+grids, and the eight that measure are the eight that have a closed outer frame, while the
+ninth is an unruled whitespace matrix that the detector DID catch because its text block is
+dense enough to cluster. So the region pass follows ink, and three thin rules are less ink than
+one word: state this once and stop checking for size first.
+
+**Caption layers are plural.** #163 printed two captions on one line ('Figure 11: mix map
+Figure 12: distribution of supercharging sta-') and printed one caption twice for two different
+grids. #164 captioned in 'Figure N:' and cited in 'Figure (N)' with two of six pointers naming
+the wrong object. #165 runs two numbering SYSTEMS on one page and one number twice across the
+document. Reconciling captions against regions is therefore only the first pass; the second
+pass is caption against pointer, and the third is caption against the object it sits on - #165's
+'Figure 10' sits on a table whose own pasted title says 'Table 2.6', which no caption-vs-region
+count can detect.
+
+**Being pointed at is not the same as being findable.** #163 pointed at 18 of 21 rows but only
+11 by number; #164 managed six pointer lines over four numbers; #165 numbers seven of eighteen
+and introduces four more only positionally ('shown in the figure below'). The metric worth keeping
+is binary and blunt: can a reader who reads the prose reach the exhibit. By that measure #165 is
+the weakest paper of the three despite having the neatest one-exhibit-per-step structure.
+
+**The figure/table distinction is paper-local.** #164 grew two treemaps and a pie disc out of a
+fourteen-family vocabulary that has no word for them. #165 puts a 17x5 ruled grid under a figure
+caption and a pair of 13-column grids under figure numbers too, then leaves four ordinary grids
+with no caption, number or title. The family count therefore describes the graphic, and the
+figure/table split describes the label - a census that aggregates 'figure_items' against
+'table_items' is aggregating the paper's own filing, not the artwork's nature, and the note has
+to say so.
+
+**Scale discipline is absent in every paper and only visible when a chart plots a bounded
+index.** #163's one scale-consistent pair got that way by hand; #164 mislabelled the colourbar of
+its only 3-D chart; #165 plots one fragility index on four disjoint y windows across four charts
+so that no two can be compared, and annotates two thresholds with no label at all. None of the
+five geometry fields can hold this. Until one can, the note on any chart of a 0-1 index should
+print the plotted window, because that number alone decides whether the reader sees a trend or a
+wiggle.
 
 ## Checkpoint 160-162: three deficits in a row, and a paper that screenshots whole pages
 
