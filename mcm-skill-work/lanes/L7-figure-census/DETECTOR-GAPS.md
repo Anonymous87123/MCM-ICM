@@ -812,3 +812,89 @@ heading late, and an exhibit can be split so that no region covers it at all. Th
 catches the second is a caption whose bbox lies on the other side of a page break from the
 only candidate region, which reads as a zero-region page in the counts and must be declared
 rather than repaired.
+
+## A table region can measure only the ruled header band
+
+Found in #311 P-E-2022-2220714-2e6b46c5. Table 3.1 prints a three-cell header - Symbol,
+Description, Unit - under one full-width rule at y 169.9, and eleven symbol rows (NPP, C(t),
+P(t), Q(t), D(t), R(t), alpha, tau, T, eta, W) run from y 184.2 to y 496.3 with no rules
+between them at all. The layout pass emitted a region around the header band only, bbox
+[90.0, 144.3, 504.9, 170.9], and every one of the eleven data rows sits outside every measured
+region on the page. Nothing about the region looks wrong: it is a clean, correctly bounded box
+that contains the caption and one rule, and `unaccounted 0` stays green because the rows are
+not regions to be accounted for.
+
+Consequence: the row count in a table record has to be checked against the printed rows, not
+against the measured box. The test that catches this is a count of text lines inside the
+table's column span BELOW the region's bottom edge: eleven stubs here, and the gaps between
+them (31 pt) match the row pitch above. Record the deficit in the rule list - cols 3, rows 1,
+header_rows 1 - rather than inventing the eleven rows the layout never saw.
+
+## A ruled table can be captioned as a figure, under a number already used on the page
+
+Found in #311. Page 15 prints two exhibits numbered Figure 6.1, forty points apart: r1 is the
+AHP hierarchy artwork with its caption BELOW it, r2 is a ruled 1-9 relative-comparison table
+with its caption ABOVE it, titled "Figure 6.1 Relative Comparison Dimension". The table is not
+a table in the record's sense - it is drawn as one (23 paths, no raster, the only exhibit in
+the file the PDF draws rather than pastes) but captioned as a figure, so it is recorded as an
+item of family `table-as-figure`. A caption-side check keyed on family would file the second
+6.1 as a table caption; a duplicate-number check keyed on the caption text alone reports a
+duplicate and cannot say which of the two is the intended one.
+
+Consequence: duplicate numbers have to be resolved per page and per side, and the resolution
+is a declared fact, not a repair: keep both rows, keep the printed caption verbatim on each,
+and say in the rule list that the designator prints twice, once above and once below. The
+number sequence cannot tell you this at all - 6.1, 6.1, 6.2 reads as a well-formed series to
+any monotonicity test.
+
+## A two-page magazine spread measures twelve regions and zero exhibits
+
+Found in #311, pages 23-24: a chapter-closing spread with a full-bleed cover photograph, the
+72 pt display headline "Harvesting? / Protection?", a pine-tree clip-art glyph used as a drop
+cap, a green double-arrow pull-quote banner, an uncaptioned inset photo, a blank 594x72 pt band
+at the top of the second sheet, and six body columns laid over pale watermarks. Twelve measured
+regions, not one printed figure or table number, not one caption line. Eleven of the twelve
+are page furniture and are refused.
+
+The twelfth is a six-series line chart with titled axes and an in-plot legend, sitting at the
+top of p24 with no number and no caption - and its only pointer is the prose sentence "The
+above figure shows that with the increase of deforestation ratio, forest carbon sequestration
+...". A run-of-paper test that stops at "no caption found" would either drop this exhibit or
+refuse it with the furniture; it is recorded as an item with `caption_source: none` and a
+mention against that sentence with an empty style list.
+
+Consequence: "no caption" is not the same as "no exhibit", and the discriminator is the
+layout, not the text: a raster inside a region larger than any decoration on the page, with a
+plotted frame and positioned tick text, is an exhibit even when the spread names no number for
+it. When a paper's whole exhibit sequence stops for two pages, read those pages for
+unnumbered exhibits before declaring the spread furniture.
+
+## A pointer that ends its sentence is not a decimal continuation
+
+Found in #311 while scanning its "N.M" numbering. The paper numbers exhibits Figure 5.5,
+Table 4.2 and so on, so a pointer pattern needs a guard against a longer number: `Figure 5.6`
+must not match inside `Figure 5.6.1`. The guard `(?!\d|\.\d)` is the one that works; the
+obvious `(?![0-9.])` also rejects the ordinary sentence-final case and silently loses three of
+the four pointers in this paper - "listed in Table 3.1.", "As shown in Table 4.2." and
+"and Figure 5.6." all end in a full stop and all vanished from the first scan, which read as
+"this paper cites almost nothing".
+
+Consequence: pointer counts are the field most sensitive to a one-character regex change, and
+a count that comes back near zero for a paper that clearly discusses its exhibits is evidence
+of the detector, not of the paper. Always print the hits, with their pages, before recording
+`mention.count`, and test the pattern against a sentence-final pointer.
+
+## One box cut by an in-page rule is one exhibit measured twice
+
+Found in #311. Page 13 prints an unnumbered pseudo-code listing, "Algorithm: Simulation and
+Prediction of Average Carbon Storage", in a single boxed frame, and a full-width horizontal
+rule at y 475 cuts it in two: the header, the for-loop line and the open brace sit above the
+rule, the body sits below. The layout pass emits both halves as separate regions 1.6 pt apart
+with the same left and right edges, so a region-count-first census sees two exhibits where the
+page has one.
+
+Consequence: adjacency is the test, not the box count. Two regions whose facing edges are
+within a few points and whose left and right edges agree to a fraction of a point are one
+block until the text flow says otherwise - here the body line continues the sentence started
+above the rule. Record the pair as one refusal plus one fragment-of-other, never as two
+`not-an-exhibit` rows that a later aggregation would read as two separate objects.
