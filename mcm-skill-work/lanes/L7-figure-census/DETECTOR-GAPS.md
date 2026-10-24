@@ -610,3 +610,103 @@ the line or follows a run of two or more spaces, require a title after the numbe
 prefer the region the caption sits beside over the line itself. Verified on this paper it
 returns fifteen figure captions on thirteen numbers, seven table captions, and pointer
 counts equal to the record for all fifteen rows.
+
+## A section walk that stops at the page boundary files a page-opening exhibit late
+
+Paper `P-E-2022-2216618-127926c7` (#309). Figure 5 prints at the top of p14 at y 86.4 and the
+only heading on that page, "4.5 Evaluating the total value of a forest", prints at y 489, at
+the foot of it; the heading that owns the figure, "4.4 Analytic Hierarchy Process (AHP)",
+is on p13 at y 604. A forward walk over the headings of the exhibit's own page therefore
+finds 4.5 above nothing and either attaches the row to 4.5 or, if it only accepts headings
+printed above the art, finds no heading at all and keeps whatever the context pass gave it.
+Both answers are one section out, and the error is silent - "4.5" is a real heading of the
+right section, it merely prints under the exhibit instead of over it.
+
+The mirror direction is in the same paper: Table 3 and Figure 4 print on p10 below the "3.4
+The optimal forest management plan" heading at y 85 while the paragraph introducing them
+continues 3.3 from the previous page, and Table 2 prints on p9 above the 3.3 heading, so it
+belongs to 3.2. Three rows, three different relations between the printed heading, the
+exhibit's y and the prose that introduces it, and in every one the printed heading order
+wins over the prose.
+
+Consequence: the walk has to carry the last heading seen in document order across the page
+break rather than restart at each page, and it must compare that heading's y against the
+region's top edge only when the two share a page. Read as a forward walk over the heading
+stream this is the same field mcm-5e recorded failing one or two subsections late on their
+papers - one entry, one cause: the heading that owns a page-opening exhibit is usually on
+the page before it.
+
+## A caption's math glyphs can be displaced, not only doubled
+
+Papers `P-E-2022-2203489-75977cc9` (#307) and `P-E-2022-2216618-127926c7` (#309). #307
+doubles: six "C" glyphs standing for COI, a doubled delta. #309 displaces: the printed
+"Figure 11: y¯m1-T˜ curve for Amazon rainforests" extracts from the PDF as
+"Figure 11: ¯ym1- ˜T curve for Amazon rainforests" - the macron and the tilde are correct but
+have moved to the FRONT of the character they modify, and the hyphen has slipped in front of
+the tilde. The text-layer page file keeps the printed order; the PDF line extraction does
+not, so the same caption reads two ways inside one paper depending on which layer is asked.
+
+The displacement breaks line matching rather than pointer matching: a check that compares the
+first eighteen characters of the recorded caption against an extracted line reports the
+caption missing on a page where the caption is present and correct. Matching on a
+letters-and-digits key (strip spaces, hyphens, macros and diacritics, compare the first
+sixteen characters) survives both the displacement and #307's doubling.
+
+Consequence: a caption read out of the text-layer page file and a caption read out of the PDF
+line pass must be compared through a normalised key, never character for character, and the
+printed reading stays in `[caption.verbatim]`. The same paper's Figure 12 shows the other
+half of the problem: the caption prints "T(y) curves for different w" and extracts with a
+space inside "T (y)" and the ff ligature replaced by a return arrow, so no text-layer search
+matches it at all and the row is `typed-from-crop`. Count the caption's sentences by eye at
+least once per paper - a glyph that changes count changes `[caption.sentences]` too.
+
+## A zero-deficit census is the exception, and it needs the printed count to close
+
+Same paper. Fifteen printed exhibit numbers - Figures 1 to 12 and Tables 1 to 3 - and
+seventeen measured regions, every one of them resolving to a row: thirteen figure rows,
+three table rows and one refusal. The arithmetic closes exactly, which is not the norm for
+a LaTeX-set paper in this lane and must not become the assumption: the census is closed
+because the printed count was taken independently (twelve figure captions and three table
+captions, no duplicates, no number cited and never printed) and then matched against the
+regions, not because the region count happened to look plausible.
+
+Consequence: run the printed-count check first and let the region count be the thing that
+has to reach it. "Seventeen regions, seventeen rows" is only evidence after the fifteen
+printed numbers are in hand; without them it is a coincidence waiting to be reported as a
+closure. The same discipline turns the opposite case into a finding rather than an
+embarrassment - `table_items` 0 with no deficit means the paper printed no grids, while a
+printed table with no region means the grid printed and the measurement missed it, and the
+two look identical in the counts alone.
+
+## Two regions can share a header line
+
+Reported by mcm-5e from their own rows: an object measured twice, with the frame verticals
+running unbroken through the cut between the two boxes. The two regions abut along a line
+that belongs to both of them, so the second box's top edge and the first box's bottom edge
+are the same rule, and nothing in the numbers distinguishes the pair from two genuinely
+separate exhibits except that the verticals never break.
+
+Consequence: the positive split test for "one object, measured twice" is a header line the
+two boxes share with the verticals unbroken through it; the positive split test for "two
+objects" is the verticals breaking or a gap between them. Area and adjacency alone cannot
+tell the cases apart, so a duplicate has to be argued from the grid and not from the box.
+
+## When every figure is a raster, the drawing detector has nothing to find
+
+Same paper. All twelve figure regions hold exactly one embedded raster each and the pages
+carry no other image anywhere: every quantitative exhibit is a screenshot of a plotting tool,
+so the PDF itself draws no axis, no curve and no tick anywhere in the paper. A vector-cluster
+pass over `get_drawings()` therefore finds no figure at all on any page, while a raster-box
+pass finds all twelve - and the two passes agree on the region only because the raster is the
+whole figure.
+
+The tables are the exact opposite and live in the same file: three live-text booktabs grids,
+no raster, three horizontal rules each and nothing else. Two of the three set their header
+rule narrower than the body rules - Table 2 by 70.8 pt (274.9 against 345.7) and Table 3 by
+120.4 pt (293.4 against 413.8) - so a rule detector that counts only full-width segments
+counts two rules on those tables instead of three and would report a malformed grid.
+
+Consequence: the raster path and the drawing path have to be run and reconciled rather than
+either one trusted, and the rule count inside a table's bbox must accept a horizontal segment
+of any width across the table's own columns. A booktabs header rule is measured to the header
+text, not to the table's width, and that is the table being correct.
