@@ -1,0 +1,15 @@
+Summary
+
+The 2024 Summer Olympics have concluded, yet the memorable moments remain captivating, fueling anticipation for the 2028 Los Angeles Olympics. People are already speculating on the medal counts for various nations in 2028, examining the interplay between countries and sports, exploring in which sports their own country can make progress.
+
+We initiated our analysis with data preprocessing to construct a spatiotemporally coherent dataset. Subsequently, we engineered features leveraging historical data and incorporated variables to account for host advantages and the introduction of new Olympic events. Additionally, during the data processing, a marked shift in medal distribution from 1952 to 1991 prompted the introduction of a Cold War correction factor to reﬁne our model.
+
+We constructed a mixed-effect negative binomial regression model to address the discrete nature of medal counts, effectively capturing country heterogeneity and temporal unpredictability while quantifying the impact of factors like historical performance and host effects. We predicted the 2028 medal table: the United States leads with 42 gold medals(95%CI:[37,46]) and 122 total medals(95%CI:[113,131]) , followed by China with 36 gold medals([32,41]) and 91 total medals([83,100]). The 3rd to 5th places are Japan, the United Kingdom and Australia.
+
+A zero-inﬂated model is developed to predict the probability of zero medals, sharing features with the main model but focusing on competitive countries and identifying potential ﬁrst-time medal winners. Cyprus, Fiji, and Kuwait are identiﬁed as the most likely medal winners with probabilities of 58.2%, 42.1%, and 33.5% respectively.
+
+By employing modular collaboration and structural nesting, we combined these models into a multi-level ensemble model to analyze the regression and progress of each country in 2028. This approach further explores the relationship between countries and sports and identiﬁes advantageous projects for each country. Additionally, we modeled the impact of new events selected by the host country on the 2028 medal table projections.
+
+To solve the challenges of statistical bias and interpretability of coaching effect analysis under small sample conditions, we propose a simpliﬁed analysis framework based on Bayesian modiﬁed entropy. By introducing the Laplace smoothing technique to reconstruct the probability estimation, the model designs a dual veriﬁcation mechanism of binary event-driven information gain (IG) and effect intensity ratio to form a closed-loop veriﬁcation. We suggest that Sweden consider bringing in a great coach for wrestling, Hungary for wrestling, and France for rowing. This might increase the medal counts for Sweden, Hungary, and France by 5-8, 3-5, and 6-10 medals respectively in the next two Olympic Games.
+
+Throughout the modeling process, we also gained insights into various aspects, such as the duality of the host effect and the uncertainty of black swan events, providing reference opinions for the Olympic Committees of various countries.

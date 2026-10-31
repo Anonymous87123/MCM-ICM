@@ -1,0 +1,15 @@
+Summary
+
+This study investigates tennis match dynamics through sophisticated statistical modeling and a novel Dual-Temporal Bayesian Network approach. By analyzing Wimbledon data, we address five key questions:
+
+Performance Metrics (Problem 1): We introduce a server/returner reweighting strategy to accurately evaluate the performance of a player. We further utilize sliding window and Area Under Curve (AUC) methods to ensure continuity and locality, thus better capturing the fluctuations within the game.
+
+Momentum Existence (Problem 2): Rigorous hypothesis testing (Ljung-Box Q Test and Runs Test) fails to reject null hypothesis of complete randomness. But instantaneous winning rates can reveal slight deviations from randomness, suggesting the presence of subtle momentum effects, albeit not overwhelmingly conclusive.
+
+Momentum Prediction (Problem 3): We take a 2-step approach. We first separate out the momentum effect by considering it as the residual of a Naive Binomial Model. Subsequently, we develop a Dual-Temporal Bayesian Network Model to predict this residual effect. The network incorporates various latent variables such as physiology, perception, and self-efficacy. An additional outcome of this model is the calculation of the importance of factors on momentum through the reduction of information entropy.
+
+Predictive Analysis (Problem 4): Our model is tested on the Wimbledon 2023 competition, where it successfully predicts most match fluctuations. We analyze instances of failure and propose potential future enhancements. The model framework is also applied to an additional dataset of female tennis matches, revealing intriguing differences. Most importantly, we generalize our data into a universal framework for predicting momentum in sports games.
+
+Coaching Strategies (Memo) : Finally, we draft a memo for coaches, synthesizing our findings into statistical findings and targeted recommendations of minimising errors, strategic aggression, resilience building, and more. Our goal is to offer a competitive advantage.
+
+Our findings highlight the complexity of tennis match dynamics, combining rigorous statistical validation with sophisticated predictive modeling. Our model not only demonstrates effective prediction and significant robustness but is also broadly applicable across various sports scenarios.

@@ -1,0 +1,15 @@
+# Text-first checkpoint: q276 opening correction
+
+The user answered `允许文字先行队列（推荐）` on2026-10-29 (Asia/Shanghai). [Authorization](text-first-authorization-20261029.md) records the limited workflow exception: serial quarantined author-prose work may advance in the original queue without treating deferred formula/visual/full-closure gates as passed. The goal is active again; no scope question remains pending.
+
+Formal q275 remains unresolved and preserved. The active text-stage paper isq276 `P-D-2015-38996-1efe10af`. The manifest/source identity was rechecked (21 pages, D filename classification, SHA-256 `1efe10af33686734c9dc12c9b8c9ac65446a5e759d61a48ccfffed2365117ac2`). Its existing link debt and missing native transaction are not cleared by staging. The existing metadata-repair provenance guard was inspected and not bypassed.
+
+[Current opening stage](../staging/text-first-20261029-v3/P-D-2015-38996-1efe10af/README.md) contains12 mechanisms,16 source witnesses,24 original examples,12 editorial text groups and two five-part contracts. Summary and complete Introduction were read before later sections. Borrowed definition/principles and task-derived audience wording are context only. The draft fixes page convention and literal witness problems and preserves the source's simulation qualifier and no-action reference contract as unverified author claims.
+
+All unit checks and anti-copy pass, max shared run3. The full partial-record validator still reports three missing-layout errors; full source coverage and saturation are pending.32 bindings, five preimages, all excerpts/groups and all2,619 frozen corpus inputs replay unchanged. History552, latest `TX-000552-c43ecd1213a0`, chain0 and latest-binding0. Live papers/rules/progress/history/installed skill/L7 were not written, no deletion/image/subagent, and no formal paper completion was added.
+
+New canonical regression results:177 pytest /175 unittest pass, plan protocol pass. The seven new tests cover create-only preservation, early rejection of an existing stage, source-range/corruption checks, unit/schema/page anchors, borrowed-text exclusions, causal/reference boundaries and distinct source registers. These tests do not validate source mathematics, graphics or policy effects.
+
+Candidate SHA-256 `65692e76a7c717e04091ee6742bcab4abd1475024884400b763b807a13466543`; opening-review SHA-256 `4db80ea74b550d2deac0a26225793ee64ffbe5a9ea66da2b6bcd7a200433d1ea`. V1 failed the unchanged500-character excerpt limit; v2 passed but used overly generic register fields. Both are preserved. V3 uses a manually selected exact shorter excerpt plus full occurrence context and individually reviewed register fields; no gate was weakened.
+
+Next: stay onq276, continue from physicalp4 line18 through all subsequent author prose, then complete repeated prose scans, mechanisms and positive organizational/argument handoffs. Contents is only a navigation map. Formula/symbol and figure/table work stay paused. Do not selectq277 yet; do not manufacture a final-zero-new-moves scan or install this opening-only record.
