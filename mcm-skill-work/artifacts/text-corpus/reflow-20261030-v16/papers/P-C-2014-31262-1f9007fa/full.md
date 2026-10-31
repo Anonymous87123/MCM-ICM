@@ -1,0 +1,1030 @@
+# P-C-2014-31262-1f9007fa
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | furniture | pages [1] -->
+Team # 31262  Page 1 of 20
+
+<!-- b000002 | front_matter | pages [1] -->
+Team Control Number
+
+<!-- b000003 | front_matter | pages [1] -->
+31262
+
+<!-- b000004 | front_matter | pages [1] -->
+For office use only For office use only
+
+<!-- b000005 | front_matter | pages [1] -->
+T1 ________________ F1 ________________
+
+<!-- b000006 | front_matter | pages [1] -->
+T2 ________________ F2 ________________
+
+<!-- b000007 | front_matter | pages [1] -->
+T3 ________________ F3 ________________ Problem Chosen T4 ________________ F4 ________________
+
+<!-- b000008 | front_matter | pages [1] -->
+C
+
+<!-- b000009 | front_matter | pages [1] -->
+2014 Mathematical Contest in Modeling (MCM) Summary Sheet
+
+<!-- b000010 | prose | pages [1] -->
+A Three-dimensional Network Impact Analysis Model Based on Centralizing, Connecting and Spreading Characteristics
+
+<!-- b000011 | heading | pages [1] -->
+ABSTRACT
+
+<!-- b000012 | prose | pages [1] -->
+Last decade has witnessed a burst in the research of network impact analysis. However, most of the previous research focused on single factor or single algorithm to analyze the impact, which is insufficient for complex networks.
+
+<!-- b000013 | prose | pages [1] -->
+According to our observation and correlation analysis, we propose a characteristic classification method to systematically construct a three-dimension network impact analysis model. We establish the concept of centralizing characteristics, connecting characteristics and spreading characteristics, each of which consists of three sub-characteristics. Sub-characteristics include degree, eigenvector centrality, PageRank algorithm, betweenness centrality, clustering coefficient, node removal method, closeness centrality and two newly-proposed characteristics——spreading breadth index and spreading depth index both obtained from a submodel we design ourselves. Principal Component Analysis (PCA) is applied to obtain three one-dimension characteristic vector respectively. Finally a weighted sum of the three characteristic vectors is obtained to represent the impact measurement result for each node in the network.
+
+<!-- b000014 | prose | pages [1] -->
+Three datasets have been used for testing the rationality of the model and very promising performances have been measured. Additional efforts are made to extract the data, validate our model, visualize the network and discuss various utilities. In this way, we offer a rather comprehensive and reliable solution to this problem.
+
+<!-- b000015 | prose | pages [1] -->
+We strongly recommended our model because of its novel ideas, convincing analysis, exquisite visualization and promising performances.
+
+<!-- b000016 | prose | pages [1] -->
+Keywords Network Impact Analysis; Centralizing Characteristics; Connecting Characteristics; Spreading Characteristics; Spreading Breadth Index; Spreading Depth Index; PCA.
+
+<!-- b000017 | furniture | pages [2] -->
+Team # 31262  Page 2 of 20
+
+<!-- b000018 | contents | pages [2] -->
+A Three-dimensional Network Impact Analysis Model
+
+<!-- b000019 | contents | pages [2] -->
+Based on Centralizing, Connecting and Spreading Characteristics
+
+<!-- b000020 | heading | pages [2] -->
+Content
+
+<!-- b000021 | contents | pages [2] -->
+1.
+
+<!-- b000022 | contents | pages [2] -->
+INTRODUCTION ...................................................................................................................................................... 3
+
+<!-- b000023 | contents | pages [2] -->
+2.
+
+<!-- b000024 | contents | pages [2] -->
+BACKGROUND ........................................................................................................................................................ 3
+
+<!-- b000025 | contents | pages [2] -->
+3.
+
+<!-- b000026 | contents | pages [2] -->
+METHODOLOGY ..................................................................................................................................................... 3
+
+<!-- b000027 | contents | pages [2] -->
+3.1
+
+<!-- b000028 | contents | pages [2] -->
+Centralizing Characteristics ............................................................................................................................ 4
+
+<!-- b000029 | contents | pages [2] -->
+Degree Centrality ( D ) ..................................................................................................................... 4
+
+<!-- b000030 | contents | pages [2] -->
+3.1.1
+
+<!-- b000031 | contents | pages [2] -->
+C ) ............................................................................................................ 4
+
+<!-- b000032 | contents | pages [2] -->
+3.1.2 Eigenvector Centrality (
+
+<!-- b000033 | contents | pages [2] -->
+e
+
+<!-- b000034 | contents | pages [2] -->
+3.1.3
+
+<!-- b000035 | contents | pages [2] -->
+PageRank (PR) .................................................................................................................................. 4
+
+<!-- b000036 | contents | pages [2] -->
+3.2
+
+<!-- b000037 | contents | pages [2] -->
+Connecting Characteristics ............................................................................................................................. 5
+
+<!-- b000038 | contents | pages [2] -->
+C ) ........................................................................................................... 5
+
+<!-- b000039 | contents | pages [2] -->
+3.2.1 Betweenness Centrality (
+
+<!-- b000040 | contents | pages [2] -->
+B
+
+<!-- b000041 | contents | pages [2] -->
+C
+
+<!-- b000042 | contents | pages [2] -->
+3.2.2 Clustering Coefficient (
+
+<!-- b000043 | contents | pages [2] -->
+)............................................................................................................ 5
+
+<!-- b000044 | contents | pages [2] -->
+coe
+
+<!-- b000045 | contents | pages [2] -->
+3.2.3
+
+<!-- b000046 | contents | pages [2] -->
+Node Removal Method and Total Loss (TL) .................................................................................. 5
+
+<!-- b000047 | contents | pages [2] -->
+3.3
+
+<!-- b000048 | contents | pages [2] -->
+Spreading Characteristics ............................................................................................................................... 6
+
+<!-- b000049 | contents | pages [2] -->
+C ) ................................................................................................................ 6
+
+<!-- b000050 | contents | pages [2] -->
+3.3.1 Closeness Centrality (
+
+<!-- b000051 | contents | pages [2] -->
+c
+
+<!-- b000052 | contents | pages [2] -->
+B ) and Half-network Period (
+
+<!-- b000053 | contents | pages [2] -->
+T ) .................................................... 6
+
+<!-- b000054 | contents | pages [2] -->
+3.3.2 Spreading Breadth Index (
+
+<!-- b000055 | contents | pages [2] -->
+s
+
+<!-- b000056 | contents | pages [2] -->
+h
+
+<!-- b000057 | contents | pages [2] -->
+D ) ........................................................................................................... 9
+
+<!-- b000058 | contents | pages [2] -->
+3.3.3 Spreading Depth Index (
+
+<!-- b000059 | contents | pages [2] -->
+s
+
+<!-- b000060 | contents | pages [2] -->
+3.4
+
+<!-- b000061 | contents | pages [2] -->
+DATA PROCESSING .................................................................................................................................. 10
+
+<!-- b000062 | contents | pages [2] -->
+3.4.1
+
+<!-- b000063 | contents | pages [2] -->
+Principal Component Analysis(PCA)............................................................................................ 10
+
+<!-- b000064 | contents | pages [2] -->
+3.4.2
+
+<!-- b000065 | contents | pages [2] -->
+Data Processing Procedures ........................................................................................................... 10
+
+<!-- b000066 | contents | pages [2] -->
+4.
+
+<!-- b000067 | contents | pages [2] -->
+RESULT AND ANALYSIS ..................................................................................................................................... 10
+
+<!-- b000068 | contents | pages [2] -->
+4.1
+
+<!-- b000069 | contents | pages [2] -->
+Task1 ............................................................................................................................................................ 10
+
+<!-- b000070 | contents | pages [2] -->
+4.2
+
+<!-- b000071 | contents | pages [2] -->
+Task2 ............................................................................................................................................................ 13
+
+<!-- b000072 | contents | pages [2] -->
+4.3
+
+<!-- b000073 | contents | pages [2] -->
+Task3 ............................................................................................................................................................ 14
+
+<!-- b000074 | contents | pages [2] -->
+4.4
+
+<!-- b000075 | contents | pages [2] -->
+Task4 ............................................................................................................................................................ 17
+
+<!-- b000076 | contents | pages [2] -->
+4.5
+
+<!-- b000077 | contents | pages [2] -->
+Task5 ............................................................................................................................................................ 18
+
+<!-- b000078 | contents | pages [2] -->
+5.
+
+<!-- b000079 | contents | pages [2] -->
+DISCUSSION AND CONCLUSION ...................................................................................................................... 19
+
+<!-- b000080 | contents | pages [2] -->
+5.1
+
+<!-- b000081 | contents | pages [2] -->
+Strengths ....................................................................................................................................................... 19
+
+<!-- b000082 | contents | pages [2] -->
+5.2
+
+<!-- b000083 | contents | pages [2] -->
+Weakness and Sensitivity ............................................................................................................................. 19
+
+<!-- b000084 | contents | pages [2] -->
+5.3
+
+<!-- b000085 | contents | pages [2] -->
+Contribution .................................................................................................................................................. 20
+
+<!-- b000086 | contents | pages [2] -->
+6.
+
+<!-- b000087 | contents | pages [2] -->
+ACKNOWLEDGMENTS ........................................................................................................................................ 20
+
+<!-- b000088 | contents | pages [2] -->
+7.
+
+<!-- b000089 | contents | pages [2] -->
+REFERENCES ......................................................................................................................................................... 20
+
+<!-- b000090 | furniture | pages [3] -->
+Team # 31262  Page 3 of 20
+
+<!-- b000091 | heading | pages [3] -->
+1. INTRODUCTION
+
+<!-- b000092 | prose | pages [3] -->
+In recent years, people are increasingly finding themselves bombarded with information. As with researchers, they have to filter huge mass of existing papers to find the most useful one. This situation calls for a method to help people analyze influence and impact, which correspondently leads to the burst in the study of social networks.
+
+<!-- b000093 | prose | pages [3] -->
+Most of the previous research focused on single factor to analyze the impact, which is insufficient for complex network. Our goal is to give a multi-factor impact measuring model for impact analysis in research network and extend the utility of our model to other areas of society. In addition, efforts is made to propose new analysis index, validate our model, visualize the network and discuss various utilities. In this way, we offer a rather reliable solution to this long- standing problem.
+
+<!-- b000094 | prose | pages [3] -->
+The paper is organized as follows. Section 2 contains a review of previous studies in the field of network impact analysis. Section 3 demonstrates our modeling method in details and systematically describes relevant algorithms, including two impact analysis index we propose——Spreading Breadth Index and Spreading Depth Index. We give result and analysis for the five tasks in section 4. Finally in section 5 we summarize the main contribution of the present paper and discuss the potential weakness and sensitivity.
+
+<!-- b000095 | heading | pages [3] -->
+2. BACKGROUND
+
+<!-- b000096 | prose | pages [3] -->
+Widely accepted and efficiently utilized in the real world, the concept of a network, having formed for a long time, gradually arouses people’s interest to study and unearth some abstract characteristics of it. Some researchers, like Girvan, M., & Newman, M. E. (2002), are trying to depict the detailed structure of the network, while others, in spite of the same research direction, use some quantitative parameters to give an estimate of characteristics the network has. Bonacich, P. (2007), Latapy, M. (2008) and Yan, E., & Ding, Y. (2009) are among those people. They used a quantified system to describe the centrality, connection and other characteristics of the network.
+
+<!-- b000097 | prose | pages [3] -->
+Implementing some existing or new algorithms to operate on the network system in order to obtain some meaningful results is also attempted by some researchers, like Batagelj, V. (2003). However, they must make some modification to the existing algorithm to make it fit the research thought and approach in the field of network science.
+
+<!-- b000098 | prose | pages [3] -->
+As some creative and outstanding work completed by some researchers, like Jolliffe, I. (2005), some existing mathematical algorithms and methods become more rational, which allow us to use them to construct a more comprehensive appraising system to evaluate the characteristics of the network. In this article, we concentrate our effort on establishing a complete model to estimate the importance and influence of each vertice in a network.
+
+<!-- b000099 | heading | pages [3] -->
+3. METHODOLOGY
+
+<!-- b000100 | prose | pages [3] -->
+After deliberate study of previous research, we propose a characteristic classification method to systematically construct a three-dimension network impact analysis model. In our model, there are three types of characteristic parameters that are playing critical roles in impact analysis. They are centralizing, connecting, and spreading characteristics.
+
+<!-- b000101 | prose | pages [3] -->
+Centralizing characteristics focus on describing the extent of structural centrality for a vertice in its communities. In this type, there are degree, eigenvector centrality and PageRank, which reveal the feature of a vertice in the network from a similar angle.
+
+<!-- b000102 | prose | pages [3] -->
+Connecting characteristics, including betweenness centrality, clustering coefficient and node removal method, are to indicate how the vertice contribute to guarantee the connection of the network.
+
+<!-- b000103 | furniture | pages [4] -->
+Team # 31262  Page 4 of 20
+
+<!-- b000104 | prose | pages [4] -->
+Spreading characteristics, such as closeness centrality, spreading breadth index and spreading depth index, are to quantify the efficiency of information dissemination for the whole network with the information starting from a particular vertice. Based on the fact that any vertice in our model is an information source (people or paper) and all any other vertices connected to it may receive the information released by it, we must think up a standard to assess the information spreading ability of each vertice. So we design a brand-new submodel (spreading breadth index and spreading depth index are the characteristic parameters obtained from it), along with an existing standard (closeness centrality), to describe the information spreading ability for each vertice in the network. This kind of feature naturally should be regarded as another aspect for vertice evaluation.
+
+<!-- b000105 | prose | pages [4] -->
+Our data-processing procedure is based on the classification method above. After getting the nine parameters of a vertice through computer programming or gephi(a visualization software) calculation, we classify the parameters into three groups according to above analysis. And for each group, we use Principal Component Analysis (PCA) to get a comprehensive result of the three parameters in a group. Now with three parameters obtained from three groups correspondingly after PCA, we use three weight factor to operate on the three parameters to work out a final evaluation result of a vertice.
+
+<!-- b000106 | heading | pages [4] -->
+3.1 Centralizing Characteristics
+
+<!-- b000107 | prose | pages [4] -->
+The first type of characteristics of a network is centralizing characteristics. Actually while taking vertex-influence- evaluation into consideration, the first idea coming to our mind is to check to what extent a vertex is in the center of the network. Centralizing characteristic parameters are defined to quantify such kind of extent
+
+<!-- b000108 | heading | pages [4] -->
+3.1.1 Degree Centrality ( D )
+
+<!-- b000109 | prose | pages [4] -->
+Degree centrality, or degree, of a vertice equals to the number of edges a vertex has in common with other neighbor vertices. If there are totally D vertices and E edges in the network, the two sums have the following relation (1) D = 2E Generally, the vertice with a higher degree or more connection edges is more central in structure and has the tendency to possess a greater ability to influence others. Those nodes should have a relatively more important role among all the nodes in the network.
+
+<!-- b000110 | prose | pages [4] -->
+C )
+
+<!-- b000111 | heading | pages [4] -->
+3.1.2 Eigenvector Centrality (
+
+<!-- b000112 | prose | pages [4] -->
+e In a network, if we merely use the degree centrality to describe the extent a vertex is located in the center, the standard could be too one-sided and we may miss some important features of the network. As a result, eigenvector centrality is defined. In some networks, some vertices with a high degree are connected to lots of low-degree vertices and the eigenvector centrality is to quantify the extent of such situations. This parameter is defined to standardize the centrality of vertices from another angle.
+
+<!-- b000113 | heading | pages [4] -->
+3.1.3 PageRank (PR)
+
+<!-- b000114 | prose | pages [4] -->
+PageRank is initially proposed, over ten years ago, by Page and Brin (1998). This parameter is used to assess the rank or importance of a vertice in a network according to a method of iteration using the following equation:
+
+<!-- b000115 | prose | pages [4] -->
+PR(pi) PR(p) = (1 −d) 1 k N + d ∑ (2) i=1 C(pi) where N is the number of vertices in the network, d is a damping factor, and ip  is all other vertices linking to the selected vertice p. After continuous operations of iteration, each point refresh its PR once and once again. Finally all the vertices will have a weight to indicate the importance of it in the whole network.
+
+<!-- b000116 | furniture | pages [5] -->
+Team # 31262  Page 5 of 20
+
+<!-- b000117 | heading | pages [5] -->
+3.2 Connecting Characteristics
+
+<!-- b000118 | prose | pages [5] -->
+The second type of characteristics of a network is connecting characteristics. For the characteristic parameters in this group, they are defined to indicate the contribution of a vertex to the connection and integrity of the whole network. In other words, they reveal how many times a vertice is located in a key position to make the network connected.
+
+<!-- b000119 | prose | pages [5] -->
+C )
+
+<!-- b000120 | heading | pages [5] -->
+3.2.1 Betweenness Centrality (
+
+<!-- b000121 | prose | pages [5] -->
+B Betweenness centrality is based on the number of shortest paths passing through a vertex. Vertices with a high C : betweenness play the role of connecting different groups. We use the following equation to define B gjik CB(ni) = ∑ gjk (3) j,k≠i
+
+<!-- b000122 | prose | pages [5] -->
+In the equation (3), 𝑔𝑗𝑖𝑘 is all geodesics linking node 𝑗 and node 𝑘 which pass through node 𝑔𝑗𝑖𝑘 is the geodesic distance between the vertices of  𝑗 and 𝑘.
+
+<!-- b000123 | prose | pages [5] -->
+In social networks, vertices with high betweenness are the brokers and connectors who bring others together (Yin et al., 2006). Being between means that a vertex has the ability to control the flow of information between most others. Individuals with high betweenness are the pivots in the network information flowing. The vertices with highest betweenness also result in the largest increase in typical distance between others when they are removed.
+
+<!-- b000124 | prose | pages [5] -->
+C
+
+<!-- b000125 | heading | pages [5] -->
+3.2.2 Clustering Coefficient (
+
+<!-- b000126 | prose | pages [5] -->
+) coe A clustering coefficient measures the tendency of nodes in a graph to cluster together. The clustering coefficient of a vertex 𝑣 (with a degree at least 2) is the probability that any two randomly chosen neighbors of 𝑣 are linked together. It is computed by dividing the number of triangles containing 𝑣 by the number of possible edges between its neighbors, i.e.(𝑑(𝑣) 2 ), where 𝑑(𝑣) denotes the number of neighbors of 𝑣. We can then define the clustering coefficient of the whole network as the average of this value for all the vertices (with degree at least 2).
+
+<!-- b000127 | heading | pages [5] -->
+3.2.3 Node Removal Method and Total Loss (TL)
+
+<!-- b000128 | prose | pages [5] -->
+Another method to appraise the extent of connection of a given node in a connected network is node removal method. We can know the connection importance of a vertice by removing it from the network and then estimate the consequential loss. The final result, the value of the loss, can be used to evaluate the importance, with regard to connection characteristic, of the removed vertice. If a vertice is removed from the network, two kinds of losses could be led to. Self-Loss (SL) is based on the fact that after removing, all the vertices in the remaining network are not connected to the removed vertice anymore, and we could use the length of the shortest path from the removed vertice to other vertices to quantify the loss of the i-th vertice:
+
+<!-- b000129 | prose | pages [5] -->
+1   SL i d   j {1,2... N }, j i ij (4) d is the distance between the two vertices with label i and j. where ij
+
+<!-- b000130 | prose | pages [5] -->
+Mutual loss (ML) is the loss of disconnection caused by the removal of a vertice. Assume that the remaining network  N i ( 1,2... ) K have K connected components and each component has vertices, then there will be totally i K K  N N ML for pairs of disconnected vertices. We assume that all the pairs form a set S, and we could define i j i   i 1 j i 1 the i-th vertice, as:
+
+<!-- b000131 | furniture | pages [6] -->
+Team # 31262  Page 6 of 20
+
+<!-- b000132 | prose | pages [6] -->
+1  ML i d  j S j (5) where j is an arbitrary pair disconnected vertices in the set S. Finally we could define the total loss (TL) as:
+
+<!-- b000133 | prose | pages [6] -->
+  TL SL ML i i i (6) TL , we should know the distance matrix, which could be Practically, if we would like to calculate the value of i obtained by Floyd Algorithm and each element in which stands for the distance between two vertices, before the removal(D) and after the removal(D’). Then the sum of the reciprocal of the non-zero elements in the first line is SL of the removed vertice. To get the ML, we check each element in D and find all the non-infinity elements, above the diagonal and not in the first line in D. Those elements form a set of T. Then we select out all the elements in T, which have values of infinity in the corresponding place in the matrix D’ and we can get ML by calculating the sum of the reciprocal of those elements.
+
+<!-- b000134 | heading | pages [6] -->
+3.3 Spreading Characteristics
+
+<!-- b000135 | prose | pages [6] -->
+The third type of characteristics of a network is spreading characteristic, which we define to describe how information
+
+<!-- b000136 | prose | pages [6] -->
+flow, such as academic resource, could be spread in the network between vertices. Establishing the following
+
+<!-- b000137 | prose | pages [6] -->
+parameters to describe such characteristics is indispensable to estimate the extent of information spreading so as to
+
+<!-- b000138 | prose | pages [6] -->
+evaluate the importance of each vertice to the whole network.
+
+<!-- b000139 | prose | pages [6] -->
+C )
+
+<!-- b000140 | heading | pages [6] -->
+3.3.1 Closeness Centrality (
+
+<!-- b000141 | prose | pages [6] -->
+c Closeness centrality is a sophisticated, however useful way to evaluate the characteristic of a vertice. An institutive fact is that for a vertice P, if most vertices in the whole network all have very large distances from it, it must be less central compared with a vertice Q with most vertices having smaller distances from it. So we could use the following equation to define the close centrality:
+
+<!-- b000142 | prose | pages [6] -->
+N 1  C n ( ) c i d n n ( , )  j 1 i j (7) Where  𝐶𝑐(𝑛𝑖) is the closeness centrality of the vertice and 𝑑(𝑛𝑖, 𝑛𝑗) is the distance, the length of the shortest path, between the two vertices in the network. In the equation, each distance between the two vertices contributes to the closeness centrality separately and determines the extent of centrality together.
+
+<!-- b000143 | prose | pages [6] -->
+Practically speaking, this parameter could be used to estimate whether it is easy or not to spread information from a given vertice to other vertices in the network.
+
+<!-- b000144 | prose | pages [6] -->
+B ) and Half-network Period ( T )
+
+<!-- b000145 | heading | pages [6] -->
+3.3.2 Spreading Breadth Index (
+
+<!-- b000146 | prose | pages [6] -->
+s h For a given network with N vertices in total and a given vertice P, we define the spreading breadth index to help describe the information-spreading-efficiency of the network based on the vertice selected.
+
+<!-- b000147 | prose | pages [6, 7] -->
+In the following several paragraphs, we will propose the submodel mentioned at the beginning of the article. Assume that at time t=0, we release a particle (standing for a piece of information) at vertice P and it passes through exactly one edge per second to reach another vertice. If the particle meets a branch at a vertice with degree m, it will split into (m-1) particles and each of them will choose one of the m edges, except the one they come from, to go on moving. Then we set a timespan T (with the unit of second), and define  𝑛(𝑡)(𝑡= 1,2,… , 𝑇) to be the total number of vertices that are being occupied by particles at the time t. Next we can suppose the expression of the spreading breadth index of the vertice P to be:
+
+<!-- b000148 | furniture | pages [7] -->
+Team # 31262  Page 7 of 20
+
+<!-- b000150 | prose | pages [7] -->
+T n t ( )   B P ( ) a t N ( ) s  1  t 1 (8) where  (𝑁−1)is the total number of vertices in the network except P and 𝑎(𝑡) is an attenuation factor of each term.
+
+<!-- b000151 | prose | pages [7] -->
+The attenuation factor 𝑎(𝑡) for the definition of the spreading breadth index is necessary. Take the spread of information as an example, if a vertice could let the information reach the same number of other vertices in a shorter time, this vertice is more significant, as a result of which for a vertice P, those other vertices reached by the particles released from P earlier should have a larger weight. So as time goes by, the particles reached later should contribute less to the spreading breadth index and should be multiplied by an attenuation factor to lessen their importance. Now we must determine 𝑎(𝑡). First we assume that average degree of vertices in the network is 𝐷, and we could get the roughly estimated equation:
+
+<!-- b000152 | prose | pages [7] -->
+   n t ( 1) ( D 1) ( ) n t (9) because from time 𝑡 to time 𝑡+ 1, each particle will become (𝐷−1) ones to go on passing into the branches except the one it comes from. From equation (9) we can know 𝑛(𝑡) has the form:
+
+<!-- b000153 | prose | pages [7] -->
+   1)t 1 n t ( ) n (1)( D (10) Apply (10) to (8) we get:
+
+<!-- b000154 | prose | pages [7] -->
+T n (1)     t 1 B P ( ) a t D ( )( 1) s N 1  t 1 (11) Noticing that T, a changeable timespan, is only for testing, 𝐵𝑠(𝑝)should be independent of T. So we must let the term (𝐷−1)𝑡−1disappear. Assume:
+
+<!-- b000155 | prose | pages [7] -->
+1  a t ( ) b t ( ) (   1)t 1 D (12) Apply (12) to (11) we get:
+
+<!-- b000156 | prose | pages [7] -->
+T n (1)   B P ( ) b t ( ) s N 1  t 1 (13) 1 To let 𝐵𝑠(𝑝) indispensable of T in (13), we could let 𝑏(𝑡) to be the multiple of 𝑇. For convenience we set:
+
+<!-- b000157 | prose | pages [7] -->
+1  b t ( ) T (14) and we get from (13) and (14):
+
+<!-- b000158 | prose | pages [7] -->
+n (1)  B P ( ) s  N 1 (15) Unfortunately, this could not be regarded as the spreading breadth index of P because the equation (9), based on which (15) is obtained, is not accurate and the procedure from equation (9) to equation (15) is just to determine 𝑎(𝑡). Apply (14) to (12) we know:
+
+<!-- b000159 | prose | pages [7, 8] -->
+1  a t ( )   1)t 1 T D ( (16) Apply (16) to (8) we could get the definition of 𝐵𝑠(𝑃):
+
+<!-- b000160 | furniture | pages [8] -->
+Team # 31262  Page 8 of 20
+
+<!-- b000162 | prose | pages [8] -->
+T 1 n t ( ) 1 T n t ( )     B P ( ) s       t 1 t 1 T D ( 1) N 1 T N ( 1) ( D 1)   t 1 t 1 (17) where 𝑇 is the timespan we choose to get Bs(P), N is the number of vertices in the network, D is the average degree of the vertices in the network and  n(t)(t = 1,2,… , T)is the total number of vertices that are being occupied by particles at the time t. Furthermore, we could get the lower bound of the 𝐵𝑠(𝑃). For a network with N vertices, we have:
+
+<!-- b000163 | prose | pages [8] -->
+n t  ( ) 1 (18)
+
+<!-- b000164 | prose | pages [8] -->
+if  𝑇 is selected properly. Apply (18) to (17) and we get:
+
+<!-- b000165 | prose | pages [8] -->
+1 T n t ( ) 1 T 1 D      B P ( ) s         t 1 t 1 T N ( 1) (
+
+<!-- b000166 | heading | pages [8] -->
+D T N
+
+<!-- b000167 | prose | pages [8] -->
+1) ( 1) (
+
+<!-- b000168 | heading | pages [8] -->
+D T N
+
+<!-- b000169 | prose | pages [8] -->
+1) ( 1)( D 1)   t 1 t 1 (19) T 1  t  3 the last sign of inequality is correct because we eliminate all the terms in the if .   t 1 ( D 1)  t 1 For upper bound, we notice that                                                                                   (20) n t ( ) N 1
+
+<!-- b000170 | prose | pages [8] -->
+Apply (20) to (17), we have:
+
+<!-- b000171 | prose | pages [8] -->
+1 T n t ( ) 1 T 1      B P ( ) n t ( ) s     t 1 T N ( 1) (
+
+<!-- b000172 | heading | pages [8] -->
+D T N
+
+<!-- b000173 | prose | pages [8] -->
+1) ( 1) T   t 1 t 1 (21) Plus, the timespan 𝑇 must be the same for all the vertices while testing𝐵𝑠(𝑃)for each vertice. One thing we should pay enough attention to is that if the particle reaches the edge vertice of the network, it will stop moving. Another factor we should consider carefully is that the timespan 𝑇 must be selected properly. For one thing, it should not be too large because the particle will cover every vertice in the network in the end for each vertice selected at the beginning. For another, if the timespan is too small, the particle will have insufficient time to spread and the evaluation of the spreading breadth index could be unconvincing.
+
+<!-- b000174 | prose | pages [8] -->
+Additionally, we define the half-network period to evaluate the spreading characteristic of the network. Also for a network with n vertices, all the condition is exactly like the submodel explained above. Now we define the time 𝑁−1 𝑇ℎ(𝑃) 𝑇ℎ(𝑃)to be the time needed for the particle to have reached half of the N-1 vertices ( ∑ )in the network. 𝑛(𝑡) = 𝑡=1 2 However, starting from some vertices, the particle may never reach half of all the vertices. For example, if the vertice is in a small component of the network, finally it could only reach each vertice in the component, but not the whole network. In this occasion, we could define the half-network period as infinity. It could be obviously noticed that for each given point P, the spreading breadth index 𝐵𝑠(𝑃) and the half-network period 𝑇ℎ(𝑃) for P have the following relations:
+
+<!-- b000175 | prose | pages [8] -->
+T ( ) P T ( ) P 1 n t ( ) 1 n t ( ) h h     B P ( )  s      T ( ) 1 P t 1 T P N ( )( 1) (
+
+<!-- b000176 | heading | pages [8] -->
+D T P N
+
+<!-- b000177 | prose | pages [8] -->
+1) ( )( 1) ( D 1) h   t 1 t 1 h h  ( N 1) / 2 1        T ( ) 1 P T ( ) 1 P T P N ( )( 1)( D 1) 2 T P D ( )( 1) h h h h (22) and:
+
+<!-- b000178 | furniture | pages [9] -->
+Team # 31262  Page 9 of 20
+
+<!-- b000179 | prose | pages [9] -->
+ T ( ) P T ( ) P 1 n t ( ) 1 ( N 1) / 2 1 h h       B P ( ) n t ( ) s      t 1 T P N ( )( 1) (
+
+<!-- b000180 | heading | pages [9] -->
+D T P N
+
+<!-- b000181 | prose | pages [9] -->
+1) ( )( 1) T P N ( )( 1) 2 T P ( )   t 1 t 1 h h h h (23) So if we know 𝑇ℎ(𝑃) of vertice P, we can restrict the range of 𝐵𝑠(𝑃). It should be noticed that the two variable 𝐵𝑠(𝑃) and 𝑇ℎ(𝑃) are both used to evaluate the spreading-breadth efficiency of a vertice. If a vertice has a larger spreading breadth index and a smaller half-network period, the spreading ability of the network based on this point will be better.
+
+<!-- b000182 | prose | pages [9] -->
+While considering the practical meaning of the two parameters, it is not hard to notice that they could be used to confirm how wide the information flow could be spread through a particular point, which undoubtedly has a significant meaning to the whole network.
+
+<!-- b000183 | prose | pages [9] -->
+D )
+
+<!-- b000184 | heading | pages [9] -->
+3.3.3 Spreading Depth Index (
+
+<!-- b000185 | prose | pages [9] -->
+s After consideration of the breadth characteristic of the network, it is natural to think up an idea to define some parameter to evaluate the depth characteristic of the network. Assume that we still have use the particle model in the section above, that is we release a particle from P at t=0 and let it move in the network. Similarly, we set a timespan T as the time measurement factor, and define the maximum of the distances(the length of the shortest path) from all the particles at time t to the vertice P as 𝑑(𝑡). So we can assume, just like the equation to get the spreading breadth index, the form of the spreading depth index of P as:
+
+<!-- b000186 | prose | pages [9] -->
+  T d t ( ) d t ( 1) 
+
+<!-- b000187 | heading | pages [9] -->
+D P
+
+<!-- b000188 | prose | pages [9] -->
+( ) m t ( ) s D  (24) t 1
+
+<!-- b000189 | prose | pages [9] -->
+where D is the diameter of the network, that is, the maximum of the distances for any two vertices in the network. In   (24), ( ) d t d t ( 1) m t is the attenuation factor for distance. It is ( ) is the increase of the distance in the t-th second. easily understood that the spreading distance of the information should have a smaller and smaller weight as time increases to guarantee the time efficiency of the spreading. Make the approximation:
+
+<!-- b000190 | prose | pages [9] -->
+   d t ( ) d t ( 1) 1 (25) and use almost the same way as in the process to get spreading breadth index, we have:
+
+<!-- b000191 | prose | pages [9] -->
+1  m t ( ) T (26) And finally we define:
+
+<!-- b000192 | prose | pages [9] -->
+  T d t ( ) d t ( 1) 1 T d T ( )       
+
+<!-- b000193 | heading | pages [9] -->
+D P
+
+<!-- b000194 | prose | pages [9] -->
+( ) m t ( ) d t ( ) d t ( 1) s
+
+<!-- b000195 | heading | pages [9] -->
+D TD
+
+<!-- b000196 | prose | pages [9] -->
+TD   t 1 t 1 (27) as the spreading depth index of vertice P . For the spreading depth index, we can get the upper bound and the lower bound of it:
+
+<!-- b000197 | prose | pages [9] -->
+1 d T ( ) D 1    
+
+<!-- b000198 | heading | pages [9] -->
+D P
+
+<!-- b000199 | prose | pages [9] -->
+( ) s TD TD TD T (28) since ( ) d T is in the range of [1, D . ]
+
+<!-- b000200 | prose | pages [9, 10] -->
+The spreading depth index could describe the distance of spreading information in a certain time, which means that a vertice, or a researcher, with a larger index has a more outstanding ability to disseminate information and contributes d T ( ) more to the whole network. Actually in the definition equation (27), the term could be regarded as the spreading T velocity, which is independent of the time T, of the information flow.
+
+<!-- b000201 | furniture | pages [10] -->
+Team # 31262  Page 10 of 20
+
+<!-- b000203 | heading | pages [10] -->
+3.4 DATA PROCESSING
+
+<!-- b000204 | heading | pages [10] -->
+3.4.1 Principal Component Analysis(PCA)
+
+<!-- b000205 | prose | pages [10] -->
+During the process of data analysis, we obtain many indexes. However, it will be too complex to take all these indexes into consideration. In order to reduce the dimension of the indexes, we consider the utilization of Principal Component Analysis (PCA). The basic use of PCA is as a dimension-reducing technique whose results are used in a descriptive manner, but there are many variations on this central theme (see [1]). Because the ‘best’ two-(or three-) dimensional representation of a dataset in a least squares sense is given by a plot of the first two-(or three-) principal components, the components provide a ‘best’ low-dimensional graphical display of the data (see [1]). In general, if we want to reduce a n-dimension characteristic matrix to a q-dimension one, PCA operates on the data as the following steps: a. Calculate the covariance matrix ( 𝐶𝑜𝑣𝑛×𝑛) of 𝐴𝑚×𝑛, where 𝐴𝑚×𝑛 documents the characteristic matrix, 𝑚 documents the size of dataset, and 𝑛 documents the total number of indexes. b. Find the eigenvectors and eigenvalues of the covariance matrix. We can assume that 𝑎1, 𝑎2, … , 𝑎𝑛 are the eigenvectors and 𝜆1, 𝜆2,… , 𝜆𝑛 are the eigenvalues. c. Choose 𝑎𝑖1, 𝑎𝑖2, … , 𝑎𝑖𝑞, which correspond to the 𝑞 largest eigenvalues, and we can get matrix 𝐶𝑛×𝑞. d. Let𝐷𝑚×𝑞= 𝐴𝑚×𝑛∙𝐶𝑛×𝑞, and 𝐷𝑚×𝑞 is the lower dimension of the matrix.
+
+<!-- b000206 | heading | pages [10] -->
+3.4.2 Data Processing Procedures
+
+<!-- b000207 | prose | pages [10] -->
+As mentioning above, we divide the parameters into three groups according to their correlation. We assume that these three groups represent different aspect of the model, and the parameters in the same group have a higher correlation coefficient. Hence, after the preliminary-data-process, we obtain three characteristic matrices 𝐴𝑚×3, 𝐵𝑚×3 and 𝐶𝑚×3. Matrix 𝐴 documents the information of centralizing characteristics, matrix 𝐵 documents the information of connecting characteristics, and matrix 𝐶 documents the information of spreading characteristics. 𝑚 is the size of dataset. After normalizing, all parameters are set to the range [0, 1]. Then we apply the above-mentioned PCA procedure to matrix A, B and C respectively to obtain three one-dimension characteristic vector: 𝐶𝑒𝑛𝑡𝑟𝑎𝑙, 𝐶𝑜𝑛𝑛𝑒𝑐𝑡 𝑎𝑛𝑑 𝑆𝑝𝑟𝑒𝑎𝑑. Finally, we obtain a weighted sum of the three characteristic vectors. The sum is named influence measurement (IM):
+
+<!-- b000208 | prose | pages [10] -->
+IM = α ∙Central + β ∙Connect + γ ∙Spread (29) IM could represent the importance and influence of each vertice in a network. In general, α, β, γ can be assigned to the same weight.
+
+<!-- b000209 | heading | pages [10] -->
+4. RESULT AND ANALYSIS
+
+<!-- b000210 | heading | pages [10] -->
+4.1 Task1
+
+<!-- b000211 | heading | pages [10] -->
+4.1.1 Building the co-author network of the Erdos1 authors
+
+<!-- b000212 | prose | pages [10] -->
+To build the co-author network from the file Erdos1, we first eliminate the lines to indirect coauthors of Erdos, that is to say, the lines whose one endpoint is not the direct coauthor of Erdos. Without links to Erdos, there are some isolated authors left. Obviously, these isolated authors can’t be of vital importance. Therefore, we eliminate these isolated authors from our dataset.
+
+<!-- b000213 | heading | pages [10] -->
+4.1.2 Analyzing the properties of this network
+
+<!-- b000214 | prose | pages [10] -->
+After extracting the data of co-author network, we import the data into Gephi and get some information from it, showing in TABLE 1.
+
+<!-- b000215 | furniture | pages [11] -->
+Team # 31262  Page 11 of 20
+
+<!-- b000216 | caption | pages [11] -->
+TABLE 1. Summary statistics for co-author network
+
+<!-- b000217 | prose | pages [11] -->
+Value Nodes 474 Edges 1640 Average Degree 6.920 Connected Components 5 Density 0.015 Average Clustering Coefficient 0.282 Modularity 0.493 Number of Triangles 1828 Diameter (Longest Path Length) 10 Average Path Length 3.825 There are 474 vertices and 1640 edges in this network, in which each vertice represents an author and each edge means the cooperation between two authors. The value of the average degree of all the vertices means that in average, each author collaborates with 6.920 authors. The 4th line shows that there are 5 distinctive connected components, between which the authors do not cooperate with each other. The modularity of a partition is a scalar value between −1 and 1 that measures the density of edges inside communities compared with the density between communities. The last line documents the average length of shortest path. The meaning of clustering coefficient have been mentioned above.
+
+<!-- b000218 | prose | pages [11] -->
+Now we have obtained some global property of this model. In order to have a more direct recognition, we visualize some properties in FIGURE 1.
+
+<!-- b000219 | prose | pages [11] -->
+Statistic of Component Statistic of Degree 500 90
+
+<!-- b000220 | prose | pages [11] -->
+450 80
+
+<!-- b000221 | prose | pages [11] -->
+400 70 350 60 300 50 Count Count 250 40 200 30 150 20 100
+
+<!-- b000222 | prose | pages [11] -->
+10 50
+
+<!-- b000223 | prose | pages [11] -->
+0 0 0 1 2 3 4 -10 0 10 20 30 40 50 60 Coponent ID Degree
+
+<!-- b000224 | caption | pages [11] -->
+Figure 1. Component and degree distribution
+
+<!-- b000225 | caption | pages [11] -->
+FIGURE 1 shows the distribution of components and degrees. We can easily perceive that almost all vertices are in one
+
+<!-- b000226 | prose | pages [11] -->
+component, which means this network has a strong extent of relationship and deserves to be analyzed. The second picture shows the distribution of the degree, which is one of the most important factors in determining the influence of authors. Through this picture, we can know that most vertices have few degrees, which means they have weaker relations with each other.
+
+<!-- b000227 | prose | pages [11] -->
+In order to have a clearer recognition, we draw a figure to show the features of the network. See Figure 2.
+
+<!-- b000228 | furniture | pages [12] -->
+Team # 31262  Page 12 of 20
+
+<!-- b000229 | caption | pages [12] -->
+Figure 2.The co-author network
+
+<!-- b000230 | prose | pages [12] -->
+In Figure 2, there are many circles with different colors. We classify these vertices based on their modularity. The size of the vertice is in positive correlation with its degree and the edges between vertices mean that they have cooperation relationship with each other. Each vertice has its own information such as name.
+
+<!-- b000231 | caption | pages [12] -->
+TABLE 2 to TABLE 5 show the top 30 authors based on closeness centrality, betweenness centrality, degree centrality,
+
+<!-- b000232 | prose | pages [12] -->
+and PageRank.
+
+<!-- b000233 | caption | pages [12] -->
+TABLE 2. Top 30 authors based on closeness centrality
+
+<!-- b000234 | prose | pages [12] -->
+Rank Name Rank Name Rank Name Rank Name Rank Name 1 HENRIKSEN, M 7 HERZOG, F 13 HUNT, G 19 FELLER, W 25 SEIDEL, W 2 GILLMAN, L 8 BONAR, D 14 SIRAO, T 20 JACKSON, S 26 BLEICHER,M 3 BOES, D 9 CARROLL, F 15 BAGEMIHL, F 21 VIJAYAN, K 27 BABU, G 4 GAAL,S 10 DARLING, D 16 KHARE, SP 22 HWANG,J 28 KUNEN, K 5 SCHERK, P 11 VAN, ER 17 SMITH, B 23 BOVEY, J 29 BUCK, R 6 HERZOG, F 12 WINTNER, AF 18 DARST, R 24 BUKOR, J 30 VOLKMANN,B
+
+<!-- b000235 | caption | pages [12] -->
+TABLE 3. Top 30 authors based on betweenness centrality
+
+<!-- b000236 | prose | pages [12] -->
+Rank Name Rank Name Rank Name Rank Name Rank Name 1 HARARY, F 7 ALON, N 13 RUZSA, I 19 RODL, V 25 LOVASZ, L 2 SOS, V 8 GRAHAM, RL 14 SARKOZY, A 20 SHIELDS, AL 26 ROGERS, CA 3 RUBEL, LA 9 BOLLOBAS, B 15 ODLYZKO,AM 21 TURAN, P 27 FAUDREE, RJ 4 STRAUS, EG 10 PACH, J 16 KLEITMAN, D. 22 SZEKELY,L 28 SHELAH, S 5 POMERANCE, C 11 HAJNAL, A 17 SPENCER, J H 23 CHUNG, FRK 29 WORMALD,NC 6 FUREDI, Z 12 TUZA, Z 18 SCHINZEL,AB 24 SZEKERES, G 30 NESETRIL,J
+
+<!-- b000237 | caption | pages [12] -->
+TABLE 4. Top 30 authors based on Degree centrality
+
+<!-- b000238 | prose | pages [12, 13] -->
+Rank Name Rank Name Rank Name Rank Name Rank Name 1 ALON,N 7 TUZA, Z 13 HAJNAL,A 19 SZEMEREDI,E 25 LUCZAK, T 2 HARARY,F 8 SOS,VT 14 LOVASZ,L 20 CHARTRAND,GT 26 KOSTOCHKA,A 3 GRAHAM,RL 9 SPENCER,JH 15 FAUDREE,RJ 21 STRAUS,EG 27 WEST,DB 4 BOLLOBAS,B 10 PACH,J 16 POMERANCE,CB 22 SARKOZY,A 28 SIMONOVITS,M 5 RODL, V 11 GYARFAS,A 17 KLEITMAN,D 23 BABAI,L 29 RUZSA,I 6 FUREDI,Z 12 CHUNG,FRK 18 NESETRIL,J 24 SCHELP,R 30 WORMALD,NC
+
+<!-- b000239 | furniture | pages [13] -->
+Team # 31262  Page 13 of 20
+
+<!-- b000241 | caption | pages [13] -->
+TABLE 5. Top 30 authors based on PageRank
+
+<!-- b000242 | prose | pages [13] -->
+Rank Name Rank Name Rank Name Rank Name Rank Name 1 HARARY,F 7 TUZA, Z 13 STRAUS,EG 19 NESETRIL,J 25 ODLYZKO, AM 2 ALON,N 8 POMERANCE,CB 14 CHUNG,FRK 20 FAUDREE,RJ 26 LUCZAK, T 3 GRAHAM,RL 9 FUREDI,Z 15 SARKOZY,A 21 SZEMEREDI,E 27 SCHELP,R 4 BOLLOBAS,B 10 SPENCER,JH 16 KLEITMAN,D 22 CHARTRAND,GT 28 WEST,DB 5 SOS,VT 11 HAJNAL,A 17 GYARFAS,A 23 BABAI,L 29 KOSTOCHKA,A 6 RODL, V 12 PACH,J 18 LOVASZ,L 24 RUZSA,I 30 SHELAH,S
+
+<!-- b000243 | prose | pages [13] -->
+A few authors are highly ranked in all the tables. And these authors can be regarded as one of the most influential authors in the network.
+
+<!-- b000244 | heading | pages [13] -->
+4.2 Task2
+
+<!-- b000245 | prose | pages [13] -->
+In this part, we start to use our data to analyze and determine most important authors. In our model, we have already classified the characteristic parameters into three types (Centralizing Characteristics, Connecting Characteristics, and Spreading Characteristics). We try to extract their main feature with PCA and provide a more comprehensive estimate of the authors by adding a weight factor to each vector. Some variables and their meanings are listed here for convenience：
+
+<!-- b000246 | caption | pages [13] -->
+TABLE 6. Variable and their meaning
+
+<!-- b000247 | prose | pages [13] -->
+Variable Meaning IM Impact measurement Central The metric for Centralizing Characteristics Connect The metric for  Connecting Characteristics Spread The metric for  Spreading Characteristics Weighting coefficient α, β, γ We assume that Central, Connect, Spread are the vectors extracted from their characteristic matrix with PCA. As for IM, it is defined as:
+
+<!-- b000248 | prose | pages [13] -->
+IM = α ∙Central + β ∙Connect + γ ∙Spread (30) 1 In this passage, we let α = β = γ = 3. Through comparing IM, we can get their comprehensive rank and compare their influence. TABLE 7 shows the top 10 authors according to each characteristic respectively and provides the list of the top 20 authors by taking all the IM into consideration.
+
+<!-- b000249 | caption | pages [13] -->
+TABLE 7. Top 10 authors based on central, connect and spread
+
+<!-- b000250 | prose | pages [13, 14] -->
+Central Connect Spread Final IM Final IM Rank Name Rank Name Rank Name Rank Name Rank Name 1 1 BECK, I 1 FUREDI,Z 1 11 SZEMEREDI,E ALON,N ALON,N 2 GRAHAM,RL 2 BEJLEGAARD,N 2 2 RODL, V 12 FAUDREE,RJ ALON,N 3 RODL, V 3 BERGER,MA 3 GRAHAM,RL 3 GRAHAM,RL 13 LOVASZ,L 4 BOLLOBAS,B 4 BLECKSMITH,RF 4 BOLLOBAS,B 4 BOLLOBAS,B 14 PACH,J 5 HARARY,F 5 BOALS,AJ 5 SOS,VT' 5 FUREDI,Z 15 CHUNG,FRK 6 FUREDI,Z 6 BONAR,DD 6 TUZA, Z 6 TUZA, Z 16 NESETRIL,J 7 TUZA, Z 7 BUCK, RC 7 STRAUS,EG 7 HARARY,F 17 SIMONOVITS, M 8 SOS,VT' 8 BUKOR, J 8 RODL, V 8 SPENCER,JH 18 KOSTOCHKA,A 9 SPENCER,JH 9 CARROLL,FW 9 LOVASZ,L 9 GYARFAS,A 19 SCHELP,R 10 PACH,J 10 CATES,ML 10 SPENCER,JH 10 SOS,VT 20 HAJNAL,A
+
+<!-- b000251 | furniture | pages [14] -->
+Team # 31262  Page 14 of 20
+
+<!-- b000253 | prose | pages [14] -->
+From TABLE 7, we obtain the final comprehensive rank of these authors. ALON, NOGA M. is the most influential author among them. RODL, VOJTECH ranks 2nd and GRAHAM, RONALD LEWIS ranks 3rd. In fact, we can find their name appear frequently from TABLE 2 to TABLE 5. In some extent, this fact proves the rationality of our model.
+
+<!-- b000254 | caption | pages [14] -->
+Figure 7 provides the comparison between Top3 authors. We can see differences do exist among these three
+
+<!-- b000255 | prose | pages [14] -->
+characteristics. The nodes with high centralizing characteristics and spreading characteristics can have low connecting characteristics, and vice versa, which to some extent validates our hypothesis of the three classification.
+
+<!-- b000256 | caption | pages [14] -->
+Figure 7. Comparison of top three author in the final rank
+
+<!-- b000257 | heading | pages [14] -->
+4.3 Task3
+
+<!-- b000258 | heading | pages [14] -->
+4.3.1 Choosing a dataset
+
+<!-- b000259 | prose | pages [14] -->
+We use the sixteen papers given to establish the model of network and evaluate the influence and the importance of each vertice. Actually the sixteen papers are selected carefully to guarantee sufficient citation-relations between vertices, or papers, to test the rationality of the model.
+
+<!-- b000260 | heading | pages [14] -->
+4.3.2 Developing the co-author (citation) model
+
+<!-- b000261 | prose | pages [14] -->
+We select the sixteen papers as the vertices of the network to establish our citation model. For each paper, we assign a number from one to sixteen to it for convenience (shown in TABLE 8). In the citation network, for instance, if the paper A cited the paper B, then we add a directed line segment pointing from B to A to indicate this citation relation, as well as the information flow direction. If we assign number m to A and number n to B (m, n ∈{1,2 … 16}), then in the citation matrix C (16*16), C(n, m) will be set to one correspondingly. FIGURE 3 shows the structure of our model.
+
+<!-- b000262 | caption | pages [14] -->
+TABLE 8. Articles’ Number
+
+<!-- b000263 | prose | pages [14] -->
+Number Article Name Number Article Name 1 On Random Graphs. 9 Scientific collaboration networks: II.
+
+<!-- b000264 | prose | pages [14] -->
+2 Statistical mechanics of complex networks. 10 The structure of scientific collaboration networks.
+
+<!-- b000265 | prose | pages [14] -->
+3 Power and Centrality: A family of measures. 11 The structure and function of complex networks.
+
+<!-- b000266 | furniture | pages [15] -->
+Team # 31262  Page 15 of 20
+
+<!-- b000267 | prose | pages [15] -->
+4 Emergence of scaling in random networks. 12 Networks, influence, and public opinion formation.
+
+<!-- b000268 | prose | pages [15] -->
+5 Identifying sets of key players in a network. 13 Identity and search in social networks.
+
+<!-- b000269 | prose | pages [15] -->
+6 Models of core/periphery structures. Social Networks. 14 Collective dynamics of `small-world' networks.
+
+<!-- b000270 | prose | pages [15] -->
+7 On properties of a well-known graph, or, What is 15 Statistical models for social networks.
+
+<!-- b000271 | prose | pages [15] -->
+your Ramsey number?
+
+<!-- b000272 | prose | pages [15] -->
+8 Navigation in a small world. 16 Social network thresholds in the diffusion of innovations.
+
+<!-- b000273 | caption | pages [15] -->
+Figure 3. The citation network of 16 papers
+
+<!-- b000274 | heading | pages [15] -->
+4.3.3 Paper influence measurement
+
+<!-- b000275 | caption | pages [15] -->
+TABLE 9. Articles’ rank based on central, connect and spread
+
+<!-- b000276 | prose | pages [15] -->
+Central Connect Spread IM Rank No. Rank No. Rank No. Rank No.
+
+<!-- b000277 | prose | pages [15] -->
+1 14 1 1 1 12 1 12 2 4 2 8 2 2 2 8 3 11 3 9 3 15 3 14 4 3 4 12 4 11 4 10 5 13 5 10 5 13 5 2 6 10 6 14 6 10 6 4 7 8 7 13 7 4 7 13 8 2 8 2 8 6 8 11 9 1 9 4 9 8 9 1 10 9 10 11 10 16 10 9 11 12 11 3 11 1 11 15 12 6 12 5 12 3 12 6 13 15 13 6 13 5 13 16 14 16 14 7 14 7 14 3 15 5 15 15 15 9 15 5 16 7 16 16 16 14 16 7
+
+<!-- b000278 | prose | pages [15] -->
+In TABLE 9, we list the rank of the sixteen papers according to their centralizing, connecting, spreading and comprehensive contributions to the whole network. So we could find that the paper with number 12 (Networks, influence, and public opinion formation.) is the most influential one in the network science.
+
+<!-- b000279 | furniture | pages [16] -->
+Team # 31262  Page 16 of 20
+
+<!-- b000280 | prose | pages [16] -->
+In FIGURE 3, we demonstrate the citation relation of the sixteen papers. Each circle stands for a paper and the size of the circle is in positive correlation with the degree of the vertice. The directed line segment, as mentioned above, illustrate the citation relation. For instance, if a segment points from 4 to 11, it means paper 11 cites the paper 4. One interesting thing we observe from the figure is that the circle 11, with the largest size, has a low rank (8) in the last column of TABLE 9, which means paper 11 has a low IM(influential measurement). However, circle 12, with a quite small size, has the highest rank. How could such phenomenon happen?
+
+<!-- b000281 | caption | pages [16] -->
+Figure 4. Influence analysis result of 16 papers                            Figure 5. A detail of citation network
+
+<!-- b000282 | prose | pages [16] -->
+For convenience, we use FIGURE 4, which demonstrates the normalized result of the characteristics of the sixteen papers, to show the superficial paradox. Paper 11, with a relatively high spreading and centralizing contribution, has a quite terrible connecting characteristic at the same time. So in the final assessment result after the weighting process, paper 11 is not as important as we expect at first. Then let’s consider paper 12. It has a low centralizing characteristic, but its other two parameters are quite high, which makes paper 12 the most influential ones among the sixteen. If we further observe FIGURE 5, we could find from the detailed drawing that the paper 11 could only be connected to other papers through paper 12. In other words, the information of paper 11 must be with the help of paper 12 to spread in the network. So the paper 12 is actually quite vital for the whole network. The instance above indicates that we could not simply evaluate the influence of a vertice by its degree and other direct features. Some potential significance must be considered to assess the impact of the vertice more comprehensively.
+
+<!-- b000283 | heading | pages [16] -->
+4.3.4 Utilities in other areas
+
+<!-- b000284 | prose | pages [16] -->
+For an individual researcher in the field of network, we can also apply this model to establish the whole system. Conspicuously, each vertice of the model stands for a researcher. As for the edges in the network, it means that two researchers have cooperative relation, which can also mean they have programs completed together, besides cooperative papers. Next we could use some weight coefficients to work on the cooperative factors mentioned above and get the final weight of each edge. No problem here for the structure of the model, and we can then implement the process in our model to work out the influence and the importance of each vertice. The last question is the data we need. Actually, to implement the model, for any two researchers in the network, we need at least the number of cooperative papers, the number and scale of the cooperative projects and the time, as well as the frequency, of co-citation of the two people’s research result.
+
+<!-- b000285 | prose | pages [16] -->
+For a department in a university, we can use this model to estimate the influence and role of each department. Naturally, we use vertices to represent departments in a given universities. Similarly, just as the standard we set for the individual researcher network mentioned above, we will match tow vertices if the two departments have cooperative programs or co-completed papers by the researchers from the two departments. Next we use some weight coefficients to get the final weight of each edge. The final network is expected to like:
+
+<!-- b000286 | furniture | pages [17] -->
+Team # 31262  Page 17 of 20
+
+<!-- b000287 | caption | pages [17] -->
+Figure 6  The department network
+
+<!-- b000288 | prose | pages [17] -->
+The vertices(departments) are separated into several communities(colleges), and there are more edges within a community than between two communities in comparison, which could be easily understood since the department within a college should naturally be more correlated. The remaining problem is the data. We can use all the data discussed above in the researcher model since there are a great many professors and researchers in a department and each vertice is actually a large set of professors and researchers. Furthermore, we could select some other data, such as the time of sport activities or public benefit activities organized by the two departments, to make the model more rational and convincing. After all, the academic level is not the only factor to be considered while appraising the role and the influence of a department within a university.
+
+<!-- b000289 | heading | pages [17] -->
+4.4 Task4
+
+<!-- b000290 | heading | pages [17] -->
+4.4.1 Data extraction and network establishment
+
+<!-- b000291 | prose | pages [17] -->
+To further test our model, we extract a relatively larger dataset from a website. Precisely, we first select a hot list of movies in China on the internet (http://movie.douban.com/top250), then parse its HTML and crawl the list of movie subject ID. Next we enter the comment page of a particular subject (The Shawshank Redemption for instance) to parsing the HTML to obtain the raw data of user id and user comment score of users who have commented this movie.
+
+<!-- b000292 | prose | pages [17] -->
+Then let us consider how to establish the network model. We regard each user (we have 971 users in total) as a vertice in the network, and for every two users, we calculate the weight of the edge between them. The integral part of the weight is the number of movies both of them have commented, and the decimal part of the weight is a value between 0 and 1 to indicate the similarity of their comments for this movie. If the weight is nonzero, we draw an edge between the two users and assign the calculated value to the edge as its weight. Finally, we get 259179 edges in the network in total.
+
+<!-- b000293 | heading | pages [17] -->
+4.4.2 User influential analysis
+
+<!-- b000294 | prose | pages [17] -->
+We implement our algorithm on a set of the user of Douban Movie. In order to analyze the activity on this site, we try to find the most “influential” user on the site. We try to find the connection of the users by seeing whether they comment on the same movie. In this network, we find 971 users and regard every user as a node. And if they comment on the same movie, there will be an edge between them. We implement our algorithm on this set, and get TABLE 10.
+
+<!-- b000295 | caption | pages [17] -->
+TABLE  10. Top10 of the user of Douban based on central, connecting, spreading and final characteristics
+
+<!-- b000296 | prose | pages [17] -->
+Central Connect Spread IM Rank No. Rank No. Rank No. Rank No.
+
+<!-- b000297 | prose | pages [17, 18] -->
+1 856 1 329 1 9 1 9 2 713 2 636 2 11 2 47 3 620 3 504 3 4 3 10 4 736 4 913 4 20 4 65 5 163 5 836 5 8 5 11 6 967 6 509 6 47 6 21 7 107 7 760 7 28 7 29 8 352 8 141 8 16 8 75 9 306 9 399 9 14 9 32 10 654 10 37 10 65 10 28 We can see that their final rank differs in many ways from the first two ranks. However, it has some similarity with the rank of spreading characteristic. It means that spreading characteristic influence the most in this network. Meanwhile, we plot the distribution of 971 Douban users as follow:
+
+<!-- b000298 | furniture | pages [18] -->
+Team # 31262  Page 18 of 20
+
+<!-- b000300 | prose | pages [18] -->
+IM Distribution in the Network of 971 Douban Users 120
+
+<!-- b000301 | prose | pages [18] -->
+100
+
+<!-- b000302 | prose | pages [18] -->
+80
+
+<!-- b000303 | prose | pages [18] -->
+Count 60
+
+<!-- b000304 | prose | pages [18] -->
+40
+
+<!-- b000305 | prose | pages [18] -->
+20
+
+<!-- b000306 | prose | pages [18] -->
+0 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 IM
+
+<!-- b000307 | caption | pages [18] -->
+Figure 8.  Impact Measurement distribution of 971 Douban users
+
+<!-- b000308 | prose | pages [18] -->
+In the figure, we set 0.05 as step length and calculate the number of the user in this interval. Then we get this figure. We can see that this figure have some similarities with Gaussian distribution. To some extent, the curve fit the fact. In this task, we can analyze the activeness of users. For many website, it is very crucial to pay attention to this group and consider their advice more carefully. Therefore, it is meaningful to analyze influential” users for them.
+
+<!-- b000309 | heading | pages [18] -->
+4.5 Task5
+
+<!-- b000310 | heading | pages [18] -->
+4.5.1 Understanding and science of modeling influence and impact within networks
+
+<!-- b000311 | prose | pages [18] -->
+To model the network is not a simple task since there is no principle to quantify and simplify either the co-author network or the paper network. Precisely, we must create some self-defined things and combine them together to describe the whole network, despite the fact we also add some classical models to our final framework.
+
+<!-- b000312 | prose | pages [18] -->
+For a network, there already exist some well-defined parameters to indicate its characteristics. However, we additionally define several new parameters ourselves to further reveal the structure of the network in consideration of the fact that there is some distinctive characteristics of the network system to be modelled. Furthermore, we also use the thought of classification in this model. Precisely, we divide the several characteristics into three groups in order to process them separately and finally synthesize the three results together to get a comprehensive evaluation of each vertice in the network system.
+
+<!-- b000313 | heading | pages [18] -->
+4.5.2 Utilities of modeling influence and impact within networks
+
+<!-- b000314 | prose | pages [18] -->
+The main utility of our model is to evaluate the importance of each vertice in a given network. In fact, according to the type and the specific characteristics of the network given, the model could be modified by adding or eliminating some parameters, which could help reveal the property of the network more accurately, to make it more suitable to the question.
+
+<!-- b000315 | furniture | pages [19] -->
+Team # 31262  Page 19 of 20
+
+<!-- b000316 | prose | pages [19] -->
+Practically, this model could be applied to not only individuals, but also organizations and even nations to make some estimate of the importance. For instance, in the whole science system nowadays, how could we estimate the importance of each discipline? If we regard each vertice in the network as one discipline and two vertices are matched by a line if there are some intersectional fields between the two disciplines. Plus, we can regulate that the weight of the lines stands for the interdisciplinary extent of two disciplines, which can be obtained, for instance, by investigate the number of academic papers related to intersectional field. In this way, the final result of the modeling process could help appraise the significance of each discipline nowadays. Another example of use of this model is to evaluate the influence of the university all over the world, which could be further used as one factor for university ranking. Vertices of the model could be regarded as the universities and the line between two universities mean that the two universities have cooperative programs or projects. The weights of the lines stand for the extent the two universities cooperate. Then we could use our model to evaluate the influence of each universities. However, the result we obtain could only indicate one aspect of the universities, which actually reveals the impact and interrelation between each other among the whole network of universities. Honestly speaking, our model is not feasible for all situations due to the exquisite classification. However, our main idea fits for most of similar models. If we want to take more factors into consideration, we should make a new classification to get a better performance.
+
+<!-- b000317 | heading | pages [19] -->
+5. DISCUSSION AND CONCLUSION
+
+<!-- b000318 | heading | pages [19] -->
+5.1 Strengths
+
+<!-- b000319 | prose | pages [19] -->
+Comprehensive Evaluation In our model, we set three types of characteristic parameter, with three ones in each type, to attain a panorama of the network structure. The comprehensive evaluation from different angles enables us to analyze and appraise the network with a more tenable and convincing statistical foundation.
+
+<!-- b000320 | prose | pages [19] -->
+Self-defined Evaluation Standards Among the nine parameters in our model, two of them are completely defined by ourselves. Despite the fact that in the academia, there still exists many standards to delineate the outline of a network model, our self-defined standards, which are designed according to the distinctive peculiarities of our model, can give us a more objective and convincing assessment of the importance of the vertices in the network.
+
+<!-- b000321 | prose | pages [19] -->
+Classification of Characteristics We hold the opinion that of the nine description parameters, some are correlated and should be considered together, which triggers the idea of the three-type-classification-method. After the process of PCA, every three parameters in a type could be simplified to one parameter. Finally, with the three parameters obtained from the three big groups, we are able to appraise the importance of the vertices in the network from three aspects.
+
+<!-- b000322 | prose | pages [19] -->
+Rational Visualization To assess our model more exquisitely, we visualize the result data and transform them into many graphs, which could help use have a more intuitive perception of the evaluation result. One advantage of this operation is that we could roughly estimate the rationality of the model conveniently through direct observation of the graphs.
+
+<!-- b000323 | heading | pages [19] -->
+5.2 Weakness and Sensitivity
+
+<!-- b000324 | prose | pages [19] -->
+Dynamic Features Like many other static models, our model lacks a consideration of the time factor. Precisely, the structure of the network may change with the time and this will lead to a change of the result of the model. It is conspicuous that in the real world, the influence of a researcher, or a paper, could never remain unchanged and this naturally give us a new angle to modify our model.
+
+<!-- b000325 | furniture | pages [20] -->
+Team # 31262  Page 20 of 20
+
+<!-- b000326 | prose | pages [20] -->
+Limited amount of data To further test our model, we use some data obtained from a movie website. Totally we consider almost one thousand people to verify the rationality of our model. However, like many other models of network, our model is designed to deal with large network and data set, and the scale of the data tested could be larger to better test the advantages and disadvantages of our model.
+
+<!-- b000327 | prose | pages [20] -->
+Imprecise evaluation of weight In task 2, we simply let α=β=γ=1/3. However we only know that α+β+γ=1. Our imprecise evaluation may lead to an inaccurate result. In reality, we should have a dataset to train the value of weight constantly. Then the model will have a more convincing and accurate result.
+
+<!-- b000328 | heading | pages [20] -->
+5.3 Contribution
+
+<!-- b000329 | prose | pages [20] -->
+Most of the previous research focused on single factor to analyze the impact, which is insufficient for complex network. To thoroughly and comprehensively describe the features of a network, we systematically construct a three-dimension network impact analysis model, combining nine characteristic parameters, existing ones and self-defined ones, together and dividing them into three groups. Based on the hypothesis that the parameters in the same group are relatively highly correlated, we use PCA to simplify them and get three characteristic parameters totally. We use three weight factors to operate on the three values and obtain a final evaluation value for each node. We collect some raw data and use three datasets to test our model and verify the reasonability of it. Besides, we discuss and further extends the utilities of our model to many other areas of society. At the end of the paper, we objectively assess our model and analyze the advantages as well as disadvantages of it.
+
+<!-- b000330 | heading | pages [20] -->
+6. ACKNOWLEDGMENTS
+
+<!-- b000331 | prose | pages [20] -->
+Our thanks to Geghi Graph Visualization and Manipulation software for facilitating our graph visualization and characteristic calculation.
+
+<!-- b000332 | prose | pages [20] -->
+Our thanks to Highcharts JS for facilitating our chart making.
+
+<!-- b000333 | heading | pages [20] -->
+7. REFERENCES
+
+<!-- b000334 | references | pages [20] -->
+[1] Jolliffe, I. (2005). Principal component analysis. John Wiley & Sons, Ltd.
+
+<!-- b000335 | references | pages [20] -->
+[2] Yan, E., & Ding, Y. (2009). Applying centrality measures to impact analysis: A coauthorship network
+
+<!-- b000336 | references | pages [20] -->
+analysis. Journal of the American Society for Information Science and Technology, 60(10), 2107-2118.
+
+<!-- b000337 | references | pages [20] -->
+[3] Watts, D. J., & Strogatz, S. H. (1998). Collective dynamics of small-world’networks. nature, 393(6684), 440-442.
+
+<!-- b000338 | references | pages [20] -->
+[4] Latapy, M. (2008). Main-memory triangle computations for very large (sparse (power-law)) graphs. Theoretical
+
+<!-- b000339 | references | pages [20] -->
+Computer Science, 407(1), 458-473.
+
+<!-- b000340 | references | pages [20] -->
+[5] Bonacich, P. (2007). Some unique properties of eigenvector centrality. Social Networks, 29(4), 555-564.
+
+<!-- b000341 | references | pages [20] -->
+[6] Yan, E., & Ding, Y. (2009). Applying centrality measures to impact analysis: A coauthorship network
+
+<!-- b000342 | references | pages [20] -->
+analysis. Journal of the American Society for Information Science and Technology, 60(10), 2107-2118.
+
+<!-- b000343 | references | pages [20] -->
+[7] Chen, Y., Hu, A. Q., & Hu, J. (2004). A method for finding the most vital node in communication networks. High
+
+<!-- b000344 | references | pages [20] -->
+Technology Letters, 14(1), 21-2.
+
+<!-- b000345 | references | pages [20] -->
+[8] Brin, S., & Page, L. (1998). The anatomy of a large-scale hypertextual Web search engine. Computer networks and
+
+<!-- b000346 | references | pages [20] -->
+ISDN systems, 30(1), 107-117.
+
+<!-- b000347 | references | pages [20] -->
+[9] Blondel, V. D., Guillaume, J. L., Lambiotte, R., & Lefebvre, E. (2008). Fast unfolding of communities in large
+
+<!-- b000348 | references | pages [20] -->
+networks. Journal of Statistical Mechanics: Theory and Experiment, 2008(10), P10008.
