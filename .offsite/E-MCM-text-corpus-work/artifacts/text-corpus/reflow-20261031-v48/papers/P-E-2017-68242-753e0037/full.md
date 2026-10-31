@@ -1,0 +1,769 @@
+# P-E-2017-68242-753e0037
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | front_matter | pages [1] -->
+Team Control Number
+
+<!-- b000002 | front_matter | pages [1] -->
+For office use only For office use only 68242 T1 ________________ F1 ________________ T2 ________________ F2 ________________ Problem Chosen T3 ________________ F3 ________________
+
+<!-- b000003 | front_matter | pages [1] -->
+E
+
+<!-- b000004 | front_matter | pages [1] -->
+T4 ________________ F4 ________________
+
+<!-- b000005 | prose | pages [1] -->
+2017 MCM/ICM
+
+<!-- b000006 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000007 | prose | pages [1] -->
+Towards A Sustainable City In consequence of the urban sprawl, the world is witnessing a series of economic, social and environmental problems. Formulating reasonable urban plan, which is crucial and critical to tackle these problems, is a complicated issue that should embrace the goals of economic prosperity, social equity and environmental sustainability. Fortunately, the Smart Growth Theory provides us new ideas to deal with those problems. In this paper, we focus on how to evaluate the performance of a smart growth plan, and how to formulate a smart growth plan with consideration of the unique needs for a city.
+
+<!-- b000008 | prose | pages [1] -->
+First, we establish a set of metrics to analyze the determinant factors in evaluation of smart growth. To find out what on earth the outcomes of a smart growth plan will be, we do a research on the relationship between the goals of three E’s and the ten principles. After that, based on analysis for a large body of case studies from EPA and Smart Growth America, we construct a metric named SSG (Success of Smart Growth). It consists of SEP (affected by economic prosperity), SSE (affected by social equity) and SES (affected by environmental sustainability). Each contains three first class indicators and different quantities of second class indicators.
+
+<!-- b000009 | prose | pages [1] -->
+Next, to research the current growth plan for two mid-sized cities in different continents, we select Wellington, the capital of New Zeal and Anchorage, a city in Alaska, America as objects we focus on. Besides, we select some cities which have been implemented smart growth plan for a long period of time as the reference standard to evaluate the success of a city’s current plan. With method of Grey Relational Analysis, we calculate rational grade of each metric by use of related data collected from authority websites. The results tell us that both cities develop well in some aspect of smart growth but still have a long way to achieve the goal of high smart growth.
+
+<!-- b000010 | prose | pages [1] -->
+Then, based on the three key steps from case study in EPA to formulate a smart growth plan, we set goals for each city by virtue of the evaluation results above. Besides, we indentify the existing strengths and barriers based on unique characteristics such as demographics, geographic conditions and expected growth rates in order to find the opportunities and challenges for each city. Moreover, with the method of PCA, we determine the principle components of each first class indicator for two cities. By integration of these key information, as well as reference to Getting to Smart Growth 100 policies for implementation, we formulate 7 specific initiatives for the two cities, respectively. Furthermore, with application of the evaluation method we form, we compare the performance between current plan and our plan by setting hypothesis and extending data with Grey Forecasting Model. The results show that our plans will exert increasingly positive impacts on the smart growth of each city as time goes by.
+
+<!-- b000011 | prose | pages [1] -->
+Also, we define an index of potential for the initiatives in our plans. According to the index value, we rank the initiatives in order of high potential to low potential. What’s more, we apply the Malthusian growth model to predict the change of population when the population has an additional 50% increase by 2050. The results demonstrate that our plan still perform well. Finally, we test the sensitivity of our model, conclude the strengths and weakness, and give our thoughts about future work.
+
+<!-- b000012 | furniture | pages [2] -->
+Team # 68242                                                                              Page 1 of 21
+
+<!-- b000013 | heading | pages [2] -->
+Contents
+
+<!-- b000014 | contents | pages [2] -->
+1 Introduction ............................................................................................................................. 2
+
+<!-- b000015 | contents | pages [2] -->
+1.1 Background ................................................................................................................... 2
+
+<!-- b000016 | contents | pages [2] -->
+1.2 Restatement of problems ............................................................................................... 2
+
+<!-- b000017 | contents | pages [2] -->
+1.3 Overview of our work ................................................................................................... 3
+
+<!-- b000018 | contents | pages [2] -->
+2 General Assumptions and Justifications ................................................................................. 3
+
+<!-- b000019 | contents | pages [2] -->
+3 Variable Description ............................................................................................................... 4
+
+<!-- b000020 | contents | pages [2] -->
+4 Policy Tools for Smart Growth ............................................................................................... 4
+
+<!-- b000021 | contents | pages [2] -->
+5 Success of Smart Growth Metric System ................................................................................ 5
+
+<!-- b000022 | contents | pages [2] -->
+5.1 Metric of SEP ................................................................................................................ 6
+
+<!-- b000023 | contents | pages [2] -->
+5.1.1 Potential Indicators for Economical Prosperity .................................................. 6
+
+<!-- b000024 | contents | pages [2] -->
+5.1.2 The SEP Metric system. ...................................................................................... 7
+
+<!-- b000025 | contents | pages [2] -->
+5.2 Metric of SEP ................................................................................................................ 7
+
+<!-- b000026 | contents | pages [2] -->
+5.2.1 Potential Indicators for Social Equity ................................................................. 7
+
+<!-- b000027 | contents | pages [2] -->
+5.2.2 The SSE Metric system ....................................................................................... 8
+
+<!-- b000028 | contents | pages [2] -->
+5.3 Metric of SES ................................................................................................................ 8
+
+<!-- b000029 | contents | pages [2] -->
+5.3.1 Potential Indicators for Environmental Sustainability ........................................ 8
+
+<!-- b000030 | contents | pages [2] -->
+5.3.2 The SES Metric system ..................................................................................... 10
+
+<!-- b000031 | contents | pages [2] -->
+5.4 Metric of SSG .............................................................................................................. 10
+
+<!-- b000032 | contents | pages [2] -->
+6 Analysis for current plans ..................................................................................................... 10
+
+<!-- b000033 | contents | pages [2] -->
+6.1 Selecting the focus area ............................................................................................... 10
+
+<!-- b000034 | contents | pages [2] -->
+6.1.1 Cities we focus on, Wellington and Anchorage................................................. 10
+
+<!-- b000035 | contents | pages [2] -->
+6.1.2 Data sources. ..................................................................................................... 11
+
+<!-- b000036 | contents | pages [2] -->
+6.1.3 Current urban plans ........................................................................................... 11
+
+<!-- b000037 | contents | pages [2] -->
+6.2 Measure the growth plan of two cities ........................................................................ 11
+
+<!-- b000038 | contents | pages [2] -->
+6.2.1 Application of Grey Relational Analysis ........................................................... 11
+
+<!-- b000039 | contents | pages [2] -->
+6.2.2 The Evaluation Results ...................................................................................... 12
+
+<!-- b000040 | contents | pages [2] -->
+7 Growth plans for both cities .................................................................................................. 13
+
+<!-- b000041 | contents | pages [2] -->
+7.1 Goals for Wellington and Anchorage. ......................................................................... 13
+
+<!-- b000042 | contents | pages [2] -->
+7.2 Identifying existing strengths and barriers based on characteristics ........................... 13
+
+<!-- b000043 | contents | pages [2] -->
+7.3 Selecting the policy tools and initiatives ..................................................................... 14
+
+<!-- b000044 | contents | pages [2] -->
+7.4 Performance evaluation of smart growth plans ........................................................... 15
+
+<!-- b000045 | contents | pages [2] -->
+7.5 Initiatives Rank based on index of potential ............................................................... 16
+
+<!-- b000046 | contents | pages [2] -->
+7.6 Analysis of a given population growth rate ................................................................. 17
+
+<!-- b000047 | contents | pages [2] -->
+7.7 Sensitivity analysis ...................................................................................................... 18
+
+<!-- b000048 | contents | pages [2] -->
+8 Evaluation of the model ........................................................................................................ 18
+
+<!-- b000049 | contents | pages [2] -->
+8.1 Strengths ...................................................................................................................... 18
+
+<!-- b000050 | contents | pages [2] -->
+8.2 Weakness ..................................................................................................................... 19
+
+<!-- b000051 | contents | pages [2] -->
+9 Conclusions and Future work ................................................................................................ 19
+
+<!-- b000052 | contents | pages [2] -->
+9.1 Conclusions ................................................................................................................. 19
+
+<!-- b000053 | contents | pages [2] -->
+9.2 Future work ................................................................................................................. 19
+
+<!-- b000054 | contents | pages [2] -->
+References ................................................................................................................................ 20
+
+<!-- b000055 | contents | pages [2] -->
+Appendix .................................................................................................................................. 21
+
+<!-- b000056 | furniture | pages [3] -->
+Team # 68242                                                                              Page 2 of 21
+
+<!-- b000057 | heading | pages [3] -->
+1 Introduction
+
+<!-- b000058 | heading | pages [3] -->
+1.1 Background
+
+<!-- b000059 | prose | pages [3] -->
+In the late 1990s, researchers realized that the development of urban sprawl brought a series of economic, social and environmental problems[1]. Economic problems mainly refer to the low-density expansion of cities, which cause the increase of per capita cost of service facilities, the waste of land resources and the the recession of central area. Social problems mainly refer to the social negative impacts of urban sprawl. Especially, a serious problem is the spatial separation of different races and different income groups, which contributes to the social violence and racism. Environmental problems mainly refer to the environment negative impacts of urban sprawl, such as the reduction of agricultural land and wetlands, the environmental pollution resulting from the use of motor vehicles.
+
+<!-- b000060 | prose | pages [3] -->
+So accompany with the urbanization, the challenge emerging is how to manage city in order to maintain its advantages of innovation and flexibility, realize its potential to provide high quality living conditions, significantly reduce resource consumption and environmental impact. To deal with these challenges, there was born a theory called smart growth, a way to build cities, towns, neighborhoods that are Economical prosperity, social Equity, and Environmental sustainability [2]. In order words, a smart growth plan aims at achieving the goal we call three E’s of sustainability. Besides, these exists ten principles to help achieve the goal of smart growth. To embrace a more depict description of the smart growth, pay attention to figure 1.
+
+<!-- b000061 | caption | pages [3] -->
+Figure1. The three E’s of sustainability of smart growth
+
+<!-- b000062 | prose | pages [3] -->
+Except for adhering to the goal of three E’s of sustainability, the unique needs such as demographics, growth needs, and geographical conditions of a city, are key factors to formulate a specific smart growth plan for the city itself.
+
+<!-- b000063 | heading | pages [3] -->
+1.2 Restatement of problems
+
+<!-- b000064 | prose | pages [3] -->
+To help implement smart growth theories into city design around the world, we are required to select two mid-sized cities (a population of between 100,000 and 500,000), on two different continents. Under circumstances of the two cities, we need to do as follows： Task1. Create a metric system to evaluate the success of a smart growth city under consideration of three E’s of sustainability. Task2. Research how the current growth plan of each city meets the smart principles and how successful the plan is.
+
+<!-- b000065 | furniture | pages [4] -->
+Team # 68242                                                                              Page 3 of 21
+
+<!-- b000066 | prose | pages [4] -->
+Task3. Develop a growth plan for both cities based on the geography, expected growth rates, and economic opportunities, later evaluate the plans. Task4. Rank the individual initiatives in accordance with the order from the most potential to the least potential. Then compare and contrast the ranks between two countries. Task5. Discuss how the plan supports the level of growth that the population of each city increases by 50%.
+
+<!-- b000067 | heading | pages [4] -->
+1.3 Overview of our work
+
+<!-- b000068 | prose | pages [4] -->
+ We first introduce the relationship between goals of three E’s and the ten principles for smart growth by searching key words in related definitions form Smart Growth America.  We establish three metrics of smart growth, totally including 9 first class indicators and 23 second class indicators in section 5.  Then we select two cities, one is Wellington in New Zealand, and the other is Anchorage, Alaska in America as the objects we focus on.  We form an assessment criterion with reference to the development of some cities with a long history of smart growth. After that, we apply the method of Grey Relational Analysis to determine the degree of success for the current urban plan in section 6.  In next section, we formulate the smart growth plan which contains 7 specific initiatives based on Principal Component Analysis for each city, according to the following key steps[3]:
+
+<!-- b000069 | prose | pages [4] -->
+A. Setting goals.
+
+<!-- b000070 | prose | pages [4] -->
+B. Identifying existing Strengths and barriers.
+
+<!-- b000071 | prose | pages [4] -->
+C. Selecting the right policy tools and initiatives.  We define an index of development potential to evaluate the performance of our initiatives. Then rank the initiatives in line with the percentage changes in the rational grade after the implementing of our plans. Furthermore, we analyze the sensitivity of our plan under circumstance that the population increases by 50% by 2050.  The structure of sustainability is as follows, where T represents 10 principles of smart growth.
+
+<!-- b000072 | caption | pages [4] -->
+Figure2. The structure of sustainability
+
+<!-- b000073 | heading | pages [4] -->
+2 General Assumptions and Justifications
+
+<!-- b000074 | prose | pages [4] -->
+To simplify the problem, we have the following basic assumptions，which are properly justified.
+
+<!-- b000075 | furniture | pages [5] -->
+Team # 68242                                                                              Page 4 of 21
+
+<!-- b000076 | prose | pages [5] -->
+ The three E’s of sustainability is a broad statement of general goals of a city’s smart growth, and the adjustment of goals will happen when the city has reached one of them.
+
+<!-- b000077 | prose | pages [5] -->
+What’s more, there are different small goals under each general goal.  Furthermore, the ten principles are the general tools to help realize the goals for smart growth. These principles are flexible and adaptable, the adjustment may happen when the city aims at different goals.  Each specific policy initiatives can not only play a part in certain goal, but also a possibility in other goals in different aspects.  The metric to measure the success of smart growth is equally adaptable for different cities in different countries.  The social environment is stable in both cities, and our plans can be smoothly implemented.  The cities we select as reference have achieved a lot in smart growth, and most of the indicators have reached a high level.  The growth rate of population of both cities can be seem as constant, because the birth rate and the death rate of both cities almost stay constant.
+
+<!-- b000078 | heading | pages [5] -->
+3 Variable Description
+
+<!-- b000079 | prose | pages [5] -->
+Variables Descriptions First appearing page iT The ith principle among the ten principles 5 G The ith goal of three E’s of sustainability 5 i SSG The metric to measure the success of smart growth 6 SEP The metric to measure the success of economic prosperity 6 SSE The metric to measure the success of social equity 6 The metric to measure the success of environmental SES 6 sustainability The jth second class indicator of the ith first class SEP 7 indicator for SEP ij The jth second class indicator of the ith first class SSE 9 ij indicator for SSE The jth second class indicator of the ith first class SES 11 ij indicator for SES ijs The jth city observation on the ith indicator 12 The grey rational coefficient for the jth second class γ 12 ij indicator of the ith first class indicator iδ The rational grade of the ith first class indicator 13 W The ith initiatives in Wellington’s smart growth plan 15 i iA The ith initiatives in Anchorage’s smart growth plan 15 iP The index of the development potential for initiatives i 17
+
+<!-- b000080 | heading | pages [5] -->
+4 Policy Tools for Smart Growth
+
+<!-- b000081 | prose | pages [5, 6] -->
+As is stated before, the ten principles help for achieving the three general goals, so we can regard the principles as policy tools for plan formulation. Strictly speaking, each principle exerts effects on all the three E's. But comparatively, targets of different principles are not completely equivalent. Here we tend to find the relationship between ten principles and three E's, in order to figure out the guiding principles of growth plan formulation for different goals. We collect key words from What Is Smart Growth in website of Smart Growth America [4]. What we find is that each tool is intended for more than one goal, we show it in table 1. If a city mainly intends to achieve Economical prosperity, the initiatives should pay prior attention to policy tools T1, T6, T7, T8, and T9; If a city mainly intends to achieve social Equity, the initiatives should pay prior attention to policy tools T3, T8, T9 and T10; If a city mainly intends to achieve Environmental sustainability, the initiatives should pay prior attention to policy tools T1, T2, T6, T7 and T8.
+
+<!-- b000082 | furniture | pages [6] -->
+Team # 68242                                                                              Page 5 of 21
+
+<!-- b000084 | caption | pages [6] -->
+Table 1.  Policy tools for smart growth
+
+<!-- b000085 | prose | pages [6] -->
+(G1: Economically prosperity.G2: social Equity G3:Environmental sustainability) Principles as General policy key words from What Is Smart Growth Intentions Tools in website of Smart Growth America T1: G1,G3 Mix land uses support businesses, improve safety, enhance vitality, live closer T2: G1,G3 Take advantage of compact more people to jobs, homes, businesses, building design making the most of public investments T3: G2 Create a range of housing more choices, different income, religions, opportunities and choices races T4: G3 Create walkable safely and conveniently neighborhoods T5: G3 Foster distinctive, attractive natural features, historic structures, public communities with a strong art sense of place T6: G1,G3 Preserve open space, natural recreation areas, protecting them farmland, natural beauty, and from natural disasters, animal and plant critical environmental areas habitats T7: G1,G3 Strengthen and direct makes the most of the investments development towards existing communities T8: G1,G2,G3 Provide a variety of high-quality public transportation, safe transportation choices and convenient biking and walking infrastructure T9: G1,G2 Make development decisions development decisions ,more timely, predictable, fair, and cost cost-effective, predictable effective T10: Encourage community and G2 strategies by the people who live and work stakeholder collaboration in there development decisions
+
+<!-- b000086 | heading | pages [6] -->
+5 Success of Smart Growth Metric System
+
+<!-- b000087 | prose | pages [6] -->
+According to the three E’s of sustainability and the 10 principles of smart growth, we choose indicators from both different case study of smart growth in EPA website and the features of cities we select. For example, we focus on Fair treatment, Meaningful involvement, Equitable development to research the social Equity in smart growth [5]. Besides, the components of economic development are from the case study A KELSO, WASHINGTON [3]. As for Environmental sustainability, we pay attention to land use, transportation and environment quality.
+
+<!-- b000088 | furniture | pages [7] -->
+Team # 68242                                                                              Page 6 of 21
+
+<!-- b000089 | prose | pages [7] -->
+Here we start to analyze the potential indicators which can imply the goal of three E’s. We construct a metric incorporating the extent to success of a city’s smart growth, named Success of Smart Growth(SSG). It measures how successful the city’s smart growth is. A larger SSG implies a better development situation in aspects of all three E’s of sustainability. To construct the SSG, we successively construct metric of SEP, SSE and SES.
+
+<!-- b000090 | heading | pages [7] -->
+5.1 Metric of SEP
+
+<!-- b000091 | heading | pages [7] -->
+5.1.1Potential Indicators for Economical Prosperity
+
+<!-- b000092 | prose | pages [7] -->
+In this section, we refer to the case study Using Smart Growth Strategies to Foster Economic Development: A Kelso, Washington, Case Study to analyze the success of economy. In the study, the economic development consists of three components, respectively are Supporting Businesses, Supporting Workers and Supporting Quality of Life. To embrace a more depict description of the components of economical prosperity, pay attention to figure 3.
+
+<!-- b000093 | caption | pages [7] -->
+Figure3. The three components of smart growth economical prosperity
+
+<!-- b000094 | prose | pages [7] -->
+ Supporting Businesses. This component of a smart growth economic development strategy focuses on understanding the current composition and location of businesses, jobs, and potential emerging entrepreneurs in the community. In that way, the business diversity indicates the extent of harmonious development in economic. The per capital GDP and the tax income measure the level of economic development.  Supporting Workers. Workforce development is important to ensure that residents can successfully compete for employment opportunities and that all residents have the opportunity to benefit from economic prosperity. To ensure the opportunities of employment, the city plan should aim at providing all kinds of occupations for different workers and developing the skills of workers, which can be realized by the development of education. Furthermore, the larger the population density is, the larger of size of the city will be, and the more labor force for economical construction will be.  Supporting Quality of Life. One of the aims of economic development is to improve the quality of people’s life. Among these factors, the amenities serve people, the cost of living implying the living burden and total crime implying safety of living are taken into our consideration.
+
+<!-- b000095 | furniture | pages [8] -->
+Team # 68242                                                                              Page 7 of 21
+
+<!-- b000096 | heading | pages [8] -->
+5.1.2 The SEP Metric system.
+
+<!-- b000097 | prose | pages [8] -->
+Based on the above analysis to the potential indicators of economical prosperity, we develop a metric named Success of Economical Prosperity (SEP) to describe the extent to success of a city’s smart growth in area of Economical Prosperity. The metric includes three first class indicators and ten second class indicators. We show the metric of SEP in table 2.
+
+<!-- b000098 | caption | pages [8] -->
+Table 2.  Indicators in SEP metric system.
+
+<!-- b000099 | prose | pages [8] -->
+Indicators
+
+<!-- b000100 | heading | pages [8] -->
+Notation
+
+<!-- b000101 | prose | pages [8] -->
+Indicators Notation Target Business diversity ↑ SEP11 Supporting Businesses SEP1 GDP per capita ↑ SEP12 Tax income ↑ SEP13 Population density ↑ SEP21 SEP Supporting Workers SEP2 Educational attainment ↑ SEP22 Unemployment rate SEP23 ↓ Occupational diversity ↑ SEP24 Cost of living SEP31 ↓ SEP3 Supporting Quality of Life Amenities ↑ SEP32 Total crime SEP33 ↓ The target ↑ (↓) indicates that the increase (decrease) of the value will help promote the extent to success of economical prosperity in smart growth. In all, the metric of SEP can be = ( , , ) SEP f SEP SEP SEP .the finally expressed by a function of SEP1, SEP2 and SEP3 as 1 2 3 diversity can be calculated by Shannon diversity index.
+
+<!-- b000102 | heading | pages [8] -->
+5.2 Metric of SEP
+
+<!-- b000103 | heading | pages [8] -->
+5.2.1 Potential Indicators for Social Equity
+
+<!-- b000104 | prose | pages [8] -->
+In this section, we discuss the indicators of social equity. The social equity refers to improvement of the long-standing environmental, health, and economic disparities in low-income, minority, and tribal communities. Because these communities face an array of challenges, including proximity to polluting facilities, barriers to participating in decision-making processes, disproportionate levels of chronic disease, neighborhood disinvestment, and poor or no access to jobs and services [5]. Refers to the Smart Growth and Equitable Development in website of EPA, we sum up three components of social equity, which are fair treatment, meaningful involvement and equitable development. The component relationship of social equity is displayed in figure 4.
+
+<!-- b000105 | caption | pages [8] -->
+Figure4. The three components of smart growth social equity
+
+<!-- b000106 | furniture | pages [9] -->
+Team # 68242                                                                              Page 8 of 21
+
+<!-- b000107 | prose | pages [9] -->
+ Fair Treatment. Fair treatment means that no group of people should bear a disproportionate share of the negative environmental consequences resulting from industrial, governmental, or commercial operations and policies. That ‘s to say, all people, regardless of race, ethnicity, or economic status, should have the opportunity to enjoy the positive outcomes of environmentally related decisions and actions, such as cleaner air and water, improved health, and economic vitality. Given that the environment quality is more appropriate to been incorporated into the analysis of environmental sustainability. We mainly focus on the income distribution and health care system.  Median income, a large median income demonstrates a high equity of income distribution.  Health care index, which measures the level of health care. A larger value means a more developed and more equitable city.  Meaningful Involvement. Meaningful involvement means that the public should have opportunities to participate in decisions that could affect their environment and their health. We utilize the indicator of policy participation to measure the extent of involvement.  Equitable Development. It refers to a range of approaches for creating communities and regions where residents of all incomes, races, and ethnicities participate in and benefit from decisions that shape the places where they live. So we analyze the extent of religious freedom and racial equity, both are positive indicators.
+
+<!-- b000108 | heading | pages [9] -->
+5.2.2 The SSE Metric system
+
+<!-- b000109 | prose | pages [9] -->
+Based on the above analysis to the potential indicators of social equity, we develop a metric named Success of Social Equity (SSE) to describe the extent to success of a city’s smart growth in area of social equity. The metric includes three first class indicators and five second class indicators. We show the metric of SSE in table 3.
+
+<!-- b000110 | caption | pages [9] -->
+Table 3.  Indicators in SSE metric system.
+
+<!-- b000111 | prose | pages [9] -->
+Indicators
+
+<!-- b000112 | heading | pages [9] -->
+Notation
+
+<!-- b000113 | prose | pages [9] -->
+Indicators
+
+<!-- b000114 | heading | pages [9] -->
+Notation
+
+<!-- b000115 | prose | pages [9] -->
+Target Median income SSE11 ↑ Fair Treatment SSE1 Health care index SSE12 ↑ SSE Meaningful Involvement SSE2 Policy participation SSE21 ↑ Religious freedom SSE31 ↑ Equitable Development SSE3 Racial equity SSE32 ↑ The target ↑ indicates that the increase of the value will help promote the extent to success of social equity in smart growth.
+
+<!-- b000116 | prose | pages [9] -->
+The metric of SSE can finally express by a function of SSE1, SSE2 and SSE3 as = ( , , ) . In addition, the extent of religious freedom and racial equity are SSE f SSE SSE SSE 1 2 3 calculated by formula of formula of Shannon's diversity index, m m ∑ ∑ ln( ), ln( ) SSE d d SSE d d = − = − 31 32 i i i i 1 1 i i = = where id is the percentage of i against the total.
+
+<!-- b000117 | heading | pages [9] -->
+5.3 Metric of SES
+
+<!-- b000118 | heading | pages [9] -->
+5.3.1 Potential Indicators for Environmental Sustainability
+
+<!-- b000119 | prose | pages [9, 10] -->
+After browsing web about environmental topics[6] in EPA, we realize that environmental sustainability contains key words such as air, chemicals, climate change, greener living, land, waste and cleanup, water, as well as many other topics. We classify these topics into three categories. The first is environmental quality, the second is utility of land, and the last one is multiple transportation. We show this relationship in figure 5.
+
+<!-- b000120 | furniture | pages [10] -->
+Team # 68242                                                                              Page 9 of 21
+
+<!-- b000122 | caption | pages [10] -->
+Figure 5. The three components of smart growth environmental sustainability
+
+<!-- b000123 | prose | pages [10] -->
+ Environment Quality. The intuitive indicators to measure environmental sustainability are the environment quality, which can be directly reflected from the degree of pollution in aspects of air, water and noise. Moreover, the larger the green area is, the higher the degree of environmentally friendly of the city will be.  Utility of land. According to the Theory of Wrestling Sprawl[7], the measure of the degree to sprawl can be divided into eight dimensions. We define the utility of land as follows in accordance with that theory.  Concentration is the degree to which housing units are disproportionately located in a relatively few areas or spread evenly.
+
+<!-- b000124 | prose | pages [10] -->
+1 N ∑ 2 ( ( ( ) ( )) ) D i D i N − 2 u d = SES 1 i = 21 N ∑ ( ) D i N d 1 i = ( ) where i is the medium spatial scale used in the analysis, D i is the density of land use u ( ) i over the total urban area, D i is the density of land use i over the developable urban d area.  Mixed used is the degree to which substantial numbers of two different land uses (e.g., housing units and financial units) exist within the same area and this pattern is typical throughout the city.
+
+<!-- b000125 | prose | pages [10] -->
+N =∑ ( )( ( ) ) D i D j S d d = SES 1 i 22 ( ) D i u It demonstrates i in any area occupied by j.  Clustering is the degree to which development within any one-mile-square area is clustered within one of the four one-half-mile squares contained within (as opposed to spread evenly throughout).
+
+<!-- b000126 | prose | pages [10] -->
+N ∑ ( ( ) ( )) D i D i N − u d = SES 1 i = 21 N ∑ ( ) D i N u 1 i =  Multiple Transportation. It is evident that a high ratio of public transportation in people’s daily life will exert positive effects on the environment quality. Additionally, one of the measurements for the rationality of transport plan is traffic safety.
+
+<!-- b000127 | furniture | pages [11] -->
+Team # 68242                                                                              Page 10 of 21
+
+<!-- b000128 | heading | pages [11] -->
+5.3.2 The SES Metric system
+
+<!-- b000129 | prose | pages [11] -->
+Based on above analysis of potential indicators of environmental sustainability, we develop a metric named Success of Environmental Sustainability (SES) to describe the extent to success of a city’s smart growth in area of environmental sustainability. The metric includes three first class indicators and eight second class indicators. As showed in table 4.
+
+<!-- b000130 | caption | pages [11] -->
+Table 4.  Indicators in SES metric system.
+
+<!-- b000131 | prose | pages [11] -->
+Indicators
+
+<!-- b000132 | heading | pages [11] -->
+Notation
+
+<!-- b000133 | prose | pages [11] -->
+Indicators Notation Target Air pollution index SES11 ↓ Environment Quality SES1 Water pollution index SES12 ↓ Green area SES13 ↑ Concentration SES21 ↑ SES Utility of land SES2 Mixed used SES22 ↑ Clustering SES23 ↑ Ratio of public transportation SES31 ↑ Multiple Transportation SES3 Traffic Safety SES32 ↑ The target ↑ (↓) indicates that a high (low) value of the indicator is expected to enhance the environmental sustainability, the metric of SES can finally expressed by a function of = ( , , ) SES1, SES2 and SES3 as SES f SES SES SES . 1 2 3
+
+<!-- b000134 | heading | pages [11] -->
+5.4 Metric of SSG
+
+<!-- b000135 | prose | pages [11] -->
+Now that we have constructed the metric of SEP, SSE and SES, we can construct metric of SSG by integrating them, with respect to the relatively importance in the smart growth goals. We assign weights (0.3, 0.3, 0.4) to SEP, SSE and SES based on consideration that the environmental sustainability plays a decisive role in both economical prosperity and social equity. So SSG are expressed as follows.
+
+<!-- b000136 | prose | pages [11] -->
+= SSG SEP SSE SES θ + θ + θ 1 2 3 =0.3 0.3 0.4 SEP SSE SES + + a high SSG value demonstrates a high degree to success of the smart growth for the city.
+
+<!-- b000137 | heading | pages [11] -->
+6 Analysis for current plans
+
+<!-- b000138 | heading | pages [11] -->
+6.1 Selecting the focus area
+
+<!-- b000139 | heading | pages [11] -->
+6.1.1 Cities we focus on, Wellington and Anchorage.
+
+<!-- b000140 | prose | pages [11] -->
+In terms of the theory of urban growth, the development of urban growth can be divided into three stages: clustering, decentralization and networking. We select two cities in decentralization, the low-density stage needs to necessarily developing the smart growth, separately are  Wellington, the capital of New Zealand with a population about 450 thousand.  Anchorage, a city in Alaska, America, with a population of about 300 thousand. According to the smart growth case introduced in EPA, we know that part of American cities have been implementing smart growth for a long time. Among these cities, the Atlanta, Portland and Austin and some other cities are selected as our reference standard to evaluate the success of current growth plan of a city.
+
+<!-- b000141 | furniture | pages [12] -->
+Team # 68242                                                                              Page 11 of 21
+
+<!-- b000142 | heading | pages [12] -->
+6.1.2 Data sources.
+
+<!-- b000143 | prose | pages [12] -->
+We need to collect more than 20 kinds of data of the indicators of our metric. Among these indicators, the data of policy participation and water pollution index are far less sufficient to meet our needs, so the indicator SSE2 (Meaningful Involvement) can not be quantified. The source of data for both cities are different.  For the America cities, we collect from a lot of websites for statistical data, the main source is the data from AreaVibes[8] and City-Data[9].  For Wellington , we collect from Statistics New Zealand[10]
+
+<!-- b000144 | heading | pages [12] -->
+6.1.3 Current urban plans
+
+<!-- b000145 | prose | pages [12] -->
+We carefully browse the urban plans for Wellington and Anchorage. Then we conclude some key goals and initiatives.  Wellington aims at achieving a compact city, a livable city, a city set in nature and a resilient city[11].  Anchorage relies on the strategies guidance[12] of balanced regional growth, infill and redevelopment, neighborhood diversity, multi-family housing, environmentally sensitive development, residential land conservation and restoration and major transportation.
+
+<!-- b000146 | heading | pages [12] -->
+6.2 Measure the growth plan of two cities
+
+<!-- b000147 | heading | pages [12] -->
+6.2.1 Application of Grey Relational Analysis
+
+<!-- b000148 | prose | pages [12] -->
+On account of the complicated and uncertain correlation between the second class indicators and the first class indicators, it is hard to analyze their explicit effects on the goals of three E’s if we consider approaches with perfect information. Grey Relational analysis (GRA) is a branch of Grey system theory. It can capture the interactions among factors and indicate the grey relational grade of each indicator. Here we make use of GRA to analyze the developing status, the steps of GRA are as follows. Step 1. Normalization based on classification of indicators. According to the goals and directions of their impact, the indicators can be divided into three types, "higher is better" indicators, "lower is better" indicators and "middle is better" indicators. Refer to Table 2, Table 3 and Table 4, we know that in addition to the "lower is better" indicators, such as unemployment rate, cost of living, total crime and pollution index. The others are "higher is better" indicators, so we can have the method of maximum difference normalization for the "higher is better" indicators.
+
+<!-- b000149 | prose | pages [12] -->
+s s − min ij i x = ij s s − imax imin And we can have the method of minimum difference normalization for "lower is better" indicators.
+
+<!-- b000150 | prose | pages [12, 13] -->
+s s − max i ij x = ij s s − imax imin where ijs is the jth city observation on the ith indicator. Step 2. Choose the reference series. The reference series are composed of optimal value of each indicator. Because of the long history of smart growth, we use the average of indicators from the reference cities we { } 1 1 3 3 , ,..., , x x x x x select, Atlanta, Portland and Austin, etc. The reference series = . 0 01 02 31 32 Step 3. Compute grey rational coefficient γ with respect to the jth second class indicator ij of the first class indicator. The equation is ∆ + ∆ τ = γ min max ij ∆+ ∆ τ max ij where , ∆, ∆, and resolution ratio τ is set 0.5 = max =max max min =min min x x ∆ − ∆ ∆ 0 ij ij j i j ij i j ij to optimally improve the significance of the difference of the difference among rational coefficients. Step 4. Calculate the rational grade of each first class indicator respectively by taking the average of its rational coefficient.
+
+<!-- b000151 | furniture | pages [13] -->
+Team # 68242                                                                              Page 12 of 21
+
+<!-- b000153 | prose | pages [13] -->
+1 n ∑ , 1, , j n δ = γ =  i ij n 1 i = where n is the number of second class indicators of the ith first class indicator.
+
+<!-- b000154 | prose | pages [13] -->
+The rational grade demonstrates the connection between the city we research and those cities which have achieve a lot in smart growth. The larger the value of rational grade of the indicator is, the higher the success of the plan implied by this indicator will be.
+
+<!-- b000155 | heading | pages [13] -->
+6.2.2 The Evaluation Results
+
+<!-- b000156 | prose | pages [13] -->
+Soon after the processing of data, we calculate the rational grade of each first class indicator of the two cities. We show the GRA results in table 5.
+
+<!-- b000157 | caption | pages [13] -->
+Table 5 rational grade of each metric in two cities
+
+<!-- b000158 | prose | pages [13] -->
+SEP SSE SES SEP1 SEP2 SEP3 SSE1 SSE3 SES1 SES2 SES3 Wellington 0.7393 0.6774 0.7513 0.7172 0.7318 0.6586 0.9073 0.6840 Anchorage 0.6624 0.7566 0.4140 0.7098 0.7683 0.6720 0.8577 0.8111 After calculating the average of each metric, we get Wellington (SEP (0.7227), SSE (0.7245), SES (0.7500)), whose weighted average with weight (0.3, 0.3, 0.4) is 0.7341; the Anchorage (SEP (0.6110), SSE (0.7390), SES (0.7803)), whose weighted average with weight (0.3, 0.3, 0.4) is 0.7171. For a depict comparison, we draw a radar chart as showed in figure 6.
+
+<!-- b000159 | caption | pages [13] -->
+Figure 6  Rational grades for the first class indicators.
+
+<!-- b000160 | prose | pages [13] -->
+To analyze how successful the city’s current growth plan is, taking the average value of indicators for those cities which have implemented smart growth for a long time as our reference standard, we define four degrees of growth with reference to the literature[13] as follows. On account of the boundaries of four degrees are not exact, the ranges overlap. Ⅰ. High smart growth: with value of rational grade between 0.7~1. Ⅱ. Smart growth: with value of rational grade between 0.5~0.8. Ⅲ. Sprawl growth: with value of rational grade between 0.2~0.6. Ⅳ. High sprawl growth: with value of rational grade between 0.1~0.3.
+
+<!-- b000161 | furniture | pages [14] -->
+Team # 68242                                                                              Page 13 of 21
+
+<!-- b000162 | prose | pages [14] -->
+Comparing the rational grade to the range of four degrees, we infer that,  The current growth plan for both city reaches a degree of smart growth in some extent. Because most of cities have more or less implement the method of smart growth.  Both cities have comparitively huge potentials to reach a high smart growth. It’s obvious that there is still a long way to go to keep up with those cities which implement long-term smart growth. Because the rational grade is lower than 0.8 for each metric.  Wellington does slightly better in the balanced development adhering to the goals of three E’s than Anchorage, especially in supporting quality of life in area of economical prosperity.  Anchorage develops better both in social equity and environmental sustainability, but behaves badly in supporting quality of life.
+
+<!-- b000163 | heading | pages [14] -->
+7 Growth plans for both cities
+
+<!-- b000164 | prose | pages [14] -->
+With the analysis above, both cities still have a long way to go in achieving high smart growth. In order to improve the current plan to support the three E's of smart growth，we formulate the smart growth plan in order of following three steps[3]: A. Setting the goals, B. Identifying existing strengths and barriers, C. Selecting the right policy tools and initiatives.
+
+<!-- b000165 | heading | pages [14] -->
+7.1 Goals for Wellington and Anchorage.
+
+<!-- b000166 | prose | pages [14] -->
+Based on the analysis in section 6.2.2, development of both cities are not as well as the reference cities in all aspects of three Es, so the ultimate goals for both two cities are achieving balance in economical prosperity, social equity and environmental sustainability. Only differentiate in the focal points of the smart growth and the priority.
+
+<!-- b000167 | heading | pages [14] -->
+7.2 Identifying existing strengths and barriers based on characteristics
+
+<!-- b000168 | prose | pages [14] -->
+The unique characteristic refers to the geography, expected growth rates, and economic opportunities of the cities. Here we analyze the strengths or opportunity, barriers or challenges during the process of getting to the development goals.
+
+<!-- b000169 | heading | pages [14] -->
+ The existing strengths and barriers of Wellington
+
+<!-- b000170 | heading | pages [14] -->
+ Strengths
+
+<!-- b000171 | prose | pages [14] -->
+Wellington is at the south-western tip of the North Island on Cook Strait, separating the North and South Islands. Although it has a pretty large square of land, the land is also concentrated and mixed used. Meanwhile, the supporting on business and quality of life are put significant amount of effort by the governments, such as making efforts to decrease the total crime rate. Besides, it provides equitable development which ensures the economic opportunities.  Barriers Compared to the cities with high smart growth, Wellington still has low forest coverage rate. Poor environment quality is another factor that needs to be improved.
+
+<!-- b000172 | prose | pages [14] -->
+Besides, there is still some unfair treatment, such as the unreasonable distribution of income and the high cost of health treatment.
+
+<!-- b000173 | heading | pages [14] -->
+ The existing strengths and barriers of Anchorage
+
+<!-- b000174 | heading | pages [14] -->
+ Strengths
+
+<!-- b000175 | prose | pages [14] -->
+Anchorage is on a strip of coastal lowland and extends up the lower alpine slopes of the Chugach Mountains. With small coastal lowland, the utility of land for Anchorage is more sufficient. In addition, the approach of transportation is multiple. Almost three quarters of inhabitants regard the car as their first choice. 9.1% of inhabitants are willing to walk or bicycle and 3.2% of inhabitants choose to take the bus. Furthermore, the development is still equitable as well.
+
+<!-- b000176 | furniture | pages [15] -->
+Team # 68242                                                                              Page 14 of 21
+
+<!-- b000177 | prose | pages [15] -->
+Barriers  Because of the limit of geographic conditions, the speed of economic development is a little slow. For example, the GDP per capita is a quarter less than that of the average of cities with smart growth. Meanwhile, the security environment is not optimistic with a high crime rate.
+
+<!-- b000178 | heading | pages [15] -->
+7.3 Selecting the policy tools and initiatives
+
+<!-- b000179 | prose | pages [15] -->
+According to the analysis of two cities, Wellington mainly performs badly in the environmental sustainability and performs well in economical prosperity. In order to keep sustainable development of environment, the priorities of metric are SES, SSE and SEP. Meanwhile, the barrier of Anchorage is the development of economy. Therefore, the plan should first focus on SEP, then focus on the improvement of SES and SSE. Generally, a policy usually can not only play a part in certain indicator, but also a possibility in other indicators of different aspects. It is necessary to find the principle components for each metric. More intuitive flow refers to figure 10(Appendix). With the method of Principle Component Analysis (PCA), which is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into set of values of linearly uncorrelated variables [14], we determine the principle indicators of each metric by SPSS. Combining the principle indicators with analysis in section 4 and section 6.3.2, we roughly identify the policy tools and specific initiatives.  Plan for Wellington, with seven principle components (two for SES, two for SSE, three for SEP), as well as its current strengths and barriers, we give specific initiatives, the corresponding policy tools and the indicators involved in each initiative in table 6.
+
+<!-- b000180 | caption | pages [15] -->
+Table 6 Growth plan for Wellington
+
+<!-- b000181 | prose | pages [15] -->
+Metric Policy Initiatives for Wellington smart growth Indicator components tools (one typical initiative) (principles ) T1,T2, T6, W1: Use innovative permitting approaches to protect SES SES11 SES21 SES22 SES31 T7, T8 critical environmental areas. SES32 W2: Provide condition for Greenfield growth. SES13  SES23 W3: Creating communities for all incomes, races, T3, T8, SSE SSE31  SSE32 T9 ,T10 and ethnicities involved in.
+
+<!-- b000182 | prose | pages [15] -->
+W4: Improve income distribution mechanism to SSE11 narrow the gap between rich and poor.
+
+<!-- b000183 | prose | pages [15] -->
+W5: Strengthen the financial investment in T1,T6,T7,T8, SEP SEP11 SEP21 SEP22 SEP31 T9 infrastructure construction. SEP33 W6: Encourage all types of entrepreneurship, SEP12    SEP24 W7: Create job opportunities by attracting SEP13   SEP23 investment.
+
+<!-- b000184 | prose | pages [15] -->
+ Plan for Anchorage, we also give seven initiatives with consideration of principle components (two for SEP, two for SSE, two for SEP). In combination with policy tools and the indicators involved in each initiative, we show the plan in table7.
+
+<!-- b000185 | caption | pages [15] -->
+Table 7 Growth plan for Anchorage
+
+<!-- b000186 | prose | pages [15] -->
+Metric Policy  tools Initiatives for Anchorage smart growth Indicator components (principles ) A1: Provide skills training for dense workers T1,T6,T7,T8, SEP SEP12 SEP13 SEP21 SEP22 T9 SEP23 SEP24 SEP31 SEP33 A2: Develop a wide range of industries. SEP11 A3: Develop a fair health insurance system. SSE T3, T8, T9 ,T10 SSE11   SSE12    SSE32 A4: Legislation protects the history and culture of SSE31 different religions.
+
+<!-- b000187 | furniture | pages [16] -->
+Team # 68242                                                                              Page 15 of 21
+
+<!-- b000188 | prose | pages [16] -->
+A5: Adopt comprehensive plans and sub-area plans SES T1,T2, T6, T7, SES22 SES23 SES31 SES32 T8 that encourage a mix of land uses.
+
+<!-- b000189 | prose | pages [16] -->
+A6: Manage the transition between higher- and SES11   SES21 lower-density neighborhoods.
+
+<!-- b000190 | prose | pages [16] -->
+A7: Encourage the use of public transport by some SES31 incentives.
+
+<!-- b000191 | heading | pages [16] -->
+7.4 Performance evaluation of smart growth plans
+
+<!-- b000192 | prose | pages [16] -->
+ Hypothesized Settings. We assume our plans state in 6.3.3 will basically result in the change of the following indicators. The change rate is in accordance with average level of reference cities.  For Wellington W1 mainly contributes to the growth of degree of land mixed use. We assume the value will increase by 5% in short-term (5 years), 10% in medium-term (10 years), and 20% in long-term (30years).
+
+<!-- b000193 | prose | pages [16] -->
+W2 aims at increase the area of green land. In accordance with the average level of the reference cities, we set the value increase by 5% in short-term 15% in medium-term, and 20% in long-term. W4 aims at increase the median income, we assume that will increase by 10% in short-term 20% in medium-term, and 30% in long-term. W5 aims at increase the educational attainment, we assume that it will increase by 5% in short-term, 20% in medium-term, and 30% in long-term. Besides, it causes population density increase by 5% in short-term, 15% in medium-term, and 40% in long-term. Other initiatives aim at maintaining the present level or only result in a slight change.  For Anchorage A1 aims at supporting workers, which can be measured by SEP21. So we assume the population density increase by 5% in short-term, 10% in medium-term, and 30% in long-term. A3 aims at promoting the level of health care, we set the increase by 5% in short-term 10% in medium-term, and 15% in long-term. A5 mainly contributes to the growth of degree for land mixed use. We assume the value will increase by 5% in short-term, 10% in medium-term and 20% in long-term.
+
+<!-- b000194 | prose | pages [16] -->
+A6 aims at increase the concentration degree of land use, we assume the value increase by 5% in short-term 10% in medium-term, and 15% in long-term. A7 results in the ratio of public transportation increasing by 3% in short-term 6% in medium-term, and 9% in long-term.
+
+<!-- b000195 | prose | pages [16] -->
+Other initiatives aim at maintaining the present level or result only in a slight change.  Performance of smart growth plan over time. After data processing under the hypothesized settings, we show the distribution of the value SSE, SES and SEP in different stage of development with plans we make for each city. We give a intuitive show in figure 7.
+
+<!-- b000196 | caption | pages [16] -->
+Figure 7 The expected distribution of the three metrics under our plan
+
+<!-- b000197 | furniture | pages [17] -->
+Team # 68242                                                                              Page 16 of 21
+
+<!-- b000198 | prose | pages [17] -->
+From above figures, our plans demonstrate increasing positive effects on value of each metric, that’s to say our plans will exert better influence on the smart growth of that city as time goes by, from short-term (5 years), medium-term (10 years), to long-term (30years).
+
+<!-- b000199 | heading | pages [17] -->
+7.5 Initiatives Rank based on index of potential
+
+<!-- b000200 | prose | pages [17] -->
+After we develop the growth plan for both cities, we define the index of potential ip , which measures the potential of a initiative denoted by the percentage changes in the rational grade of the corresponding indicator(more detail in section 7.4).
+
+<!-- b000201 | prose | pages [17] -->
+S S − pi oi p = i S oi where S is the expected rational grade of indicatori after the implement of our smart growth pi S is the expected rational grade of indicatori under current plan. A large index of plan, oi potential demonstrates a high potential of the initiative in improving the indicator related. In order to obtain the series data with current plan for the next few decades, we use the Grey Forecasting Model to predict the precise trend with a few data. Based on our assumption, we apply GM (1, 1) model, the most widely used Grey Forecasting Model, to predict the indicators in our metric system. Then with data of indicators from 2007 to 2014(8 observations), we predict the value of indicators from short term(5 years), medium term(10years) to long term (30 years), to give a description of the development tendency under current plan.
+
+<!-- b000202 | prose | pages [17] -->
+With the expected growth rate of our plan presented above, we predict the expected value under our smart growth plan.
+
+<!-- b000203 | prose | pages [17] -->
+After gaining the expected data under current plan and our plan, we calculate the rational grade of each first class indicator of SEP, SSE, and SES under the stages range from short term, medium term to long term. Rational grade of current plan and our plan are both with reference to the series from other cities we select as standard.
+
+<!-- b000204 | caption | pages [17] -->
+Table 8 shows the potential of initiatives for Wellington and Anchorage.
+
+<!-- b000205 | caption | pages [17] -->
+Table 8 Index of potential for initiatives
+
+<!-- b000206 | prose | pages [17] -->
+Wellington Initiative W1 W2 W3 W4 W5 W6 W7 Potential Short-term 0.0320 0.0411 - 0.0107 0.0069 - - Medium-term 0.0470 0.1491 - 0.0269 0.0601 - - Long-term 0.0172 0.2217 - 0.0536 0.0977 - - Anchorage Initiative A1 A2 A3 A4 A5 A6 A7 Potential Short-term 0.0020 - 0.0125 - 0.0144 0.0247 0.0476 Medium-term 0.0019 - 0.0316 - 0.0098 0.0283 0.1073 Long-term 0.0036 - 0.0640 - 0.0300 0.0416 0.1842 The symbol “-”indicates that the initiative aims at maintaining the current level of the related indicators because of these aspects have achieved the goal of smart growth. In order words, the aspect implied by indicators related to the initiative have behaved at least as well as the reference cities, we can approximately think that these initiatives have a potential equals to zero, and we can adjust the potential among these by virtue of the current value.
+
+<!-- b000207 | prose | pages [17] -->
+Based the results above, we rank the initiatives with the smart growth plan for each city, as shown in table 9.
+
+<!-- b000208 | caption | pages [17] -->
+Table 9 Rank of initiatives according to potential
+
+<!-- b000209 | prose | pages [17, 18] -->
+Wellington Anchorage Stage Short-term W2>W1>W4>W5>W3>W6>W7 A7>A6>A5>A3>A1>A2>A4 Medium-term W2>W5>W1>W4>W3>W6>W7 A7>A3>A6>A5>>A1>A2>A4 Long-term W2>W5>W4>W1> W3> W6>W7 A7>A3>A6>A5>A1>A2>A4  For Wellington. W2, providing condition for Greenfield growth is the most potential. W5, strengthening the financial investment in infrastructure construction gets more and more potential as time goes by.  For Anchorage. A7, encouraging the use of public transport by some incentives is the most potential. A3, developing a fair health insurance system becomes more and more potential, because the effects of health care emerge after a period of time.  The variation of initiatives sequence is generally the same trend between two cities over three stages.
+
+<!-- b000210 | furniture | pages [18] -->
+Team # 68242                                                                              Page 17 of 21
+
+<!-- b000212 | heading | pages [18] -->
+7.6 Analysis of a given population growth rate
+
+<!-- b000213 | prose | pages [18] -->
+If the population of each city increases by an additional 50% by 2050, there will be profound impact on wide range of our life, including economy, equity and environment.  Economy affects With a larger size of populations, the pressure of business and labors are even higher than ever before. We use the Malthusian growth model, widely regarded in the field of population ecology as the first principle of population dynamics, to express the law of population growth. The differential equation is ( ) dP t ( ) rP t = i i dt ( ) P t P = 0 0 i i ( ) where iP t is the population of city i at time t, r is the population growth rate, iP is the 0 ( ) P t initial population size at time t. By formulation , with the initial population, we can = r i tP 0 i get the population growth rate is 1.16% on average every year. So the hypothesized setting of our smart growth plans must be adjusted to adapt to this level of growth. In other words, Population density increases by 5.8% in short-term, 11.6% in medium-term, and 35% in long-term. What’s more, the GDP per capita tend to decrease in short-term.  Equity affects Accompanying with the increase of population, more and more people are in demand for equitable access to job opportunities. The indicator which can be affected a lot in metric of SSE may be the median income, on account of a high possibility of people losing job. Set the increase ratio of median income increase by 5% in short-term, 10% in medium-term, and 20% in long-term may be more appropriate.  Environment affects The planning department will prefer to make full use of land and develop more ways of public transportation. So the hypothesized setting for the indicator, ratio of public transportation, will be higher than 3% in short-term, 6% in medium-term and 9% in long-term. The concentration of land also needs to be adjusted to meet the increasing demand for land resources. Here we set the increase ratio of public transportation 5%, 10%, 15% in three stages, and 10%, 15%, 20% for concentration of land.  Performance of our plan in long term. After the adjustment of our hypothesized settings, we apply the same method in section 7.4 to evaluate the performance of our plan under such level of growth. Given that the additional increase of population lasts to 2050, our analysis is based on problem of long term.
+
+<!-- b000214 | furniture | pages [19] -->
+Team # 68242                                                                              Page 18 of 21
+
+<!-- b000215 | caption | pages [19] -->
+Figure 8. The long-term performance of our plans
+
+<!-- b000216 | prose | pages [19] -->
+As is shown in figure 8, under the circumstances of an additional 50% increase of the population by 2050, our plan performs better than the current plan of each city. After adjustments of our hypothesized settings to meet the growth needs, the plan still performs better than the current plan of each city but does not perform as well as our origin plan.
+
+<!-- b000217 | heading | pages [19] -->
+7.7 Sensitivity analysis
+
+<!-- b000218 | prose | pages [19] -->
+In our model of Grey Relational Analysis, the grey rational grade varies from different resolution ratio τ .We test the sensitivity of grey rational grade with and without our plan.
+
+<!-- b000219 | caption | pages [19] -->
+Figure 9. The sensitivity of resolution ratio
+
+<!-- b000220 | prose | pages [19] -->
+Take the example for the long-term plan. It is obvious that grey rational grade with our plan is higher than that without plan. And with the increase of resolution rate, the grade =0.5 initially increase then tends to remain unchanged. Evidently, is a good choice. τ
+
+<!-- b000221 | heading | pages [19] -->
+8 Evaluation of the model
+
+<!-- b000222 | heading | pages [19] -->
+8.1 Strengths
+
+<!-- b000223 | prose | pages [19, 20] -->
+ Our metric for the degree of success of smart growth (SSG) in a city, and its three components, SEP, SSE and SES are given detail description according to the literature reference and actual situation.  We take comprehensive utilization of the methods, Grey Relational Analysis, Principle Component Analysis, and Grey Forecasting Model. So our model is convincing and substantial.  With the definition of potential, we clearly express the effects growth initiatives we formulate for the cities, which implies that our model is workable.
+
+<!-- b000224 | furniture | pages [20] -->
+Team # 68242                                                                              Page 19 of 21
+
+<!-- b000226 | heading | pages [20] -->
+8.2 Weakness
+
+<!-- b000227 | prose | pages [20] -->
+ Data deviation: data we collect is from multiple websites, the difference in statistical standards may result in bias conclusions. What’s more, the lack of data for more indicators may lead to the errors in evaluation system.  Lack of reference cities: the number of the cities we use as reference standard may be small, which may be not able to sufficiently support our analysis.  Subjectivity: a lot of subjective methods are in the model, and some indicators are born in terms of our own experience and intuition. Some may be not credible.
+
+<!-- b000228 | heading | pages [20] -->
+9 Conclusions and Future work
+
+<!-- b000229 | heading | pages [20] -->
+9.1 Conclusions
+
+<!-- b000230 | prose | pages [20] -->
+In this paper, we have considered the indicators of the success of smart growth of a city and assist Wellington(New Zealand) and Anchorage (America) to develop a growth plan over the next few years. First we construct a success of smart growth metric system (SSG) in accordance with the three E’s of sustainability and the 10 principles of smart growth. We divide SSG into three components, the success of economical prosperity (SEP), the success of social equity (SSE) and the success of environmental sustainability(SES). And we develop them based on the second class indicators, widely used in EPA website and literatures. When incorporating them, we assign fixed weights (0.3,0.3,0.4) to SEP, SSE and SES as the basic consideration which sustainable environment plays a decisive role among them. In terms of the theory of urban growth, we choose two cities in decentralization, the low-density stage needs to necessarily developing the smart growth. Due to the sophisticated and uncertain correlation between the first class indicators and the second class indicators, we apply the Grey Relational Analysis to capture the interactions among the indicators. According to the smart growth case introduction in EPA, we regard some of America cities implementing smart growth for a long time as our reference series to evaluate the success of a cities’ current growth plan. By our SSG system, both cities are at the edge of smart growth and have comparatively great potentials to reach a high smart growth. To reach a high smart growth for both cities, we develop a growth plan based on the smart growth principles. We formulate the smart growth plan in order of following three steps. After setting the goals and identifying existing strengths and barriers, we develop seven initiatives for short term, medium term and long term. And all of our plans perform efficiently for different terms. Finally, we defined index of potential to measure the potential of a initiative. By GM(1, 1) model, the most widely used Grey Forecasting Model, we predict the indicators in the next 40 years, and initiative W2 ranks first in Wellington, initiative A7 ranks first in Anchorage. The plan after some adjustments, still perform well under circumstances of an additional 50% increase of the population by 2050.
+
+<!-- b000231 | heading | pages [20] -->
+9.2 Future work
+
+<!-- b000232 | prose | pages [20, 21] -->
+Uncontrovertibly, there are many drawbacks in our model, such as the few data to analysis. We have to do a lot more to improve our work.  More data is needed. There are some real data missing that we can not collect a data set for a long time. As a result, the prediction may not as precise as we anticipate.  Focus on the difference of the current policies. One of our drawbacks is poor analysis on the policy participation. If we have more time, it is necessary to incorporate sufficient data of policy participation.  Involve BP neutral network and SLEUTH models. BP neutral network and SLEUTH models are excellent model when tackling huge amount of samples. We can apply the model to make good use of the data to simulated the real situations.
+
+<!-- b000233 | furniture | pages [21] -->
+Team # 68242                                                                              Page 20 of 21
+
+<!-- b000235 | heading | pages [21] -->
+References
+
+<!-- b000236 | references | pages [21] -->
+[1]Jing Guan, Research on smart growth, Research on Financial and Economic Issues,
+
+<!-- b000237 | references | pages [21] -->
+February，2013
+
+<!-- b000238 | references | pages [21] -->
+[2]Smart Growth: Improving lives by improving communities, Retrieved from https://s
+
+<!-- b000239 | references | pages [21] -->
+martgrowthamerica.org/
+
+<!-- b000240 | references | pages [21] -->
+[3] Using Smart Growth Strategies to Foster Economic Development: A Kelso, Washin
+
+<!-- b000241 | references | pages [21] -->
+gton, Case Study, Retrieved from https://www.epa.gov/sites/production/files/2015-05/docu
+
+<!-- b000242 | references | pages [21] -->
+ments/using-smart-growth-strategies-foster-economic-development-kelso.pdf.
+
+<!-- b000243 | references | pages [21] -->
+[4] What is smart growth, Retrieved from https://smartgrowthamerica.org/our-vision/what
+
+<!-- b000244 | references | pages [21] -->
+-is-smart-growth/
+
+<!-- b000245 | references | pages [21] -->
+[5] Smart Growth and Equitable Development, Retrieved from https://www.epa.gov/smar
+
+<!-- b000246 | references | pages [21] -->
+tgrowth/smart-growth-and-equitable-development
+
+<!-- b000247 | references | pages [21] -->
+[6] Environmental Topics, Retrieved from https://www.epa.gov/environmental-topics
+
+<!-- b000248 | references | pages [21] -->
+[7] Galster G, Hanson R, Ratcliffe MR, Wolman H, Coleman S, Freihage [J] Wrestlin
+
+<!-- b000249 | references | pages [21] -->
+g sprawl to the ground: Defining and measuring an elusive concept
+
+<!-- b000250 | references | pages [21] -->
+[8] AreaVibes, Retrieved from http://www.areavibes.com/search/
+
+<!-- b000251 | references | pages [21] -->
+[9] City-Data, Retrieved from http://www.city-data.com/
+
+<!-- b000252 | references | pages [21] -->
+[10] Statistics New Zealand, Retrieved from http://stats.govt.nz/
+
+<!-- b000253 | references | pages [21] -->
+[11] Wellington Urban Growth Plan, Urban Development and Transport Strategy 2014
+
+<!-- b000254 | references | pages [21] -->
+[12] Anchorage 2020, Anchorage Bowl Comprehensive Plan, 58.
+
+<!-- b000255 | references | pages [21] -->
+[13] Jing Long, The Study of Urban-rural Land Use Smart Growth Based on BP Neur
+
+<!-- b000256 | references | pages [21] -->
+al Networks [J] 2013.6
+
+<!-- b000257 | references | pages [21] -->
+[14] P.T.harker Alternative modes of questioning in the analytic hierarchy process,
+
+<!-- b000258 | references | pages [21] -->
+Math modeling, Vol.9,No.3-5,1987
+
+<!-- b000259 | furniture | pages [22] -->
+Team # 68242                                                                              Page 21 of 21
+
+<!-- b000260 | heading | pages [22] -->
+Appendix
+
+<!-- b000261 | caption | pages [22] -->
+Figure 10. Model Schematic Diagram

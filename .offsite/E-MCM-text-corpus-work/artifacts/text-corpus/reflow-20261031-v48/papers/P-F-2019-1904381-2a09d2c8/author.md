@@ -1,0 +1,381 @@
+For ofﬁce use only For ofﬁce use only
+
+T1 F1 T2 F2 T3 F3 Problem Chosen
+
+T4 F4
+
+MCM/ICM
+
+Summary Sheet
+
+Summary
+
+In recent years, digital currency has developed rapidly and become an in- dispensable part of the modern economic system. We construct a brand-new dynamic macroeconomic operation system, taking digital currency into account. Our model is based on three perspectives: individual choice, national economy, international economy. We ﬁrst consider the individual behavior choice deci- sion, which is because the aggregate demand of all micro-individuals selections determine the domestic economic operation state, describing as the product mar- ket equilibrium and money market equilibrium. We use models to analyze three short-term economic as well as a long-term economic performance objective, un- der different exchange rate systems, economic shocks and policies.
+
+We ﬁrst build a virtual country whose central bank issues the new digital currency. The impact of digital currency on the current banking system and macroeconomic system is determined by the economic interaction with a par- ticular country in the real world.
+
+We discuss two different exchange rate systems that a country will choose. Using theoretical analysis and R, we ﬁnd that either systems would achieve in- ternal and external equilibrium and realize economic objects if proper policies are implemented when digital currency is introduced.
+
+The innovation of our model is that we introduce the parameters of interna- tional capital ﬂows (ICF) to the model. We analyze the impact of ICF on economy of the country both theoretically and empirically. It is inspiring that we ﬁnd that decentralized digital currency can not only run the economy more efﬁciently by removing barriers to currency ﬂows, but also enhance the world’s welfare by the ultra-high liquidity of digital currency.
+
+To ensure the new banking and the macroeconomic systems involving digital currency can operate with stability and effectiveness we propose all countries accepting digital currencies co-create a United Nations-afﬁliated organization– the World Digital Money Bank (WDCB) and develop a series of regulations.
+
+1 Introduction
+
+1.1 Background
+
+Considering the application of the digital currency, there lies both advantages and disadvantages. Its digital forms can enable instantaneous transactions and borderless transfer-of-ownership, which improves the efﬁciency of the markets and constructs a more convenient form of ﬁnancial exchange. But in the mean- time, while not technically money, their value is tied to real-world currencies which from the very beginning has placed them in a very precarious situation. Lack of regulation around these currencies and their anonymity also bring risk to both citizens and economic analysts.
+
+Therefore, modeling the working mechanism of ﬁnancial system adding the new type of currency is necessary. This model would enable us to have a clear overview of the market model and help make policies with regard to both regu- lations of the currency market and stablity of the system.
+
+1.2 Statement of the Problem
+
+• Task1: Construct a model in which digital currency is taken into consider- ation, and the model should adequately elucidate this ﬁnancial system.
+
+• Task2: Identify the viability and effects of a global decentralized digital ﬁnancial market and develop a kind of general digital currency.
+
+• Task3: Identify major factors which will limit or facilitate its growth, access, security, and stability at both the individual, national, and global levels.
+
+• Task4: How will the countries modify their current banking and monetary models according to their different needs and their willingness to work with this new ﬁnancial marketplace? And what are the consequences of these modiﬁcations?
+
+• Task5: Include the mechanisms for oversight of the global digital currency built above.
+
+• Task6: Analyze the long-term effects of this system on the current banking industry; the local, regional, and world economy; and international rela- tions between countries.
+
+• Task7: What will happen if the countries abandon their own currency and only use digital currency?
+
+2 Assumptions and Notations
+
+2.1 Assumptions
+
+In order to better quantify our model, we may relax some of the assumptions.
+
+• Consumption and savings occur in individuals, while production and in- vestment occur in the enterprise sector. Individuals and enterprises have to pay taxes.
+
+• Consumers are rational and pursue maximum utility.
+
+• The government has two kinds of behavior: government purchase expen- diture and tax revenue.
+
+• Depreciation and undistributed proﬁts are zero. GDP, NDP, NI, PI and DPI are equal.
+
+• The government aims to achieve economic growth, adequate employment, price stability and internal and external equilibrium under balance of inter- national payments.
+
+2.2 Notation of Parameters
+
+We make a list of parameters involving in the model as shown in Tabel 1.
+
+3 Mathematical Model
+
+In order to construct a model that sufﬁciently represent the brand-new ﬁnan- cial system, we should take the willingness of countries to accept digital currency into account and primarily consider two different paths of developing digital currency, which laid the foundation of our mathematical model.
+
+Path I Central banks in all countries refuse to accept digital currency. In this case, the system will be the same as today’s, which rarely inﬂuence the tradi- tional currency market.
+
+Path II NOT ALL central banks refuse to accept digital currency. When a central bank of a country with certain international inﬂuence that regard digital currency as traditional currency, the central bank will be willing to pay a certain amount of traditional currency to purchase digital currency owned by the public, and will sell digital currency to potential demanders to earn a certain amount of traditional currency. From the analysis above, it can be seen that digital currency will directly enter the existing open macroeconomic model.
+
+Parameters Descriptions Y GDP of a country C Consumption of a country I Investment G Government purchase T Tax X Exports M Imports Total currency demand of individuals, ¯m a constant in a short period y Individual income level i Market interest rate level m1 The amount of money held in traditional currency m2 The amount of money held in digital currency u Individual utility level α, β Parameters. Depending on individual micro-traits Money demand caused by transactions motives and L1(Y ) precautionary motives Money demand caused by speculative motive is a function L2(i) with regards to interest rate Total money supply ¯ Ms in the form of digital currency Total money supply ¯ Ms1 in the form of traditional currency Total money supply ¯ Ms2 in the form of digital currency P Price level measured by inﬂation rate k, h Constants CA The balance of current account FA The balance of ﬁnancial account NX Net export NF Net capital inﬂow AX Capital outﬂow AM Capital inﬂow Price level of foreign countries, Pf measured by inﬂation rates of foreign countries Exchange rate of national currency e under direct price method iw Interest rates of foreign countries γ, n, σ, φ Parameters In the following sections, we will mainly focus on path two. Our idea is to discuss the details of our mathematical model from three different perspectives in macroeconomics: 1) the domestic product market 2) the money market in- cluding individual level and nationanl level 3) the foreign exchange market. In addition, we would observe how every single model changes with the introduc- tion of digital currency and analyze the working mechanism of all these three general models.
+
+3.1 Digital Currency System
+
+The ﬁgure above demonstrates us the development of international mone- tary system. It is evident that this sytem will be changed with the introduction of brand-new type of currency–digital currency. Therefore, we name this new system as Digital Currency System.
+
+• Build a virtual country
+
+Regardless of all the existing digital currencies, we assume a mysterious orga- nization issues a brand-new digital currency, which is initially held by a minority. Also, we envision there is a virtual country. The central bank of this country is the very mysterious organization that issues the digital currency, the currency in circulation is digital currency and the residents of this country are the individuals holding the currency.
+
+We assume the total amount of digital money issued by the central bank of this virtual country as a constant. Each unit of electronic money can be inﬁnitely divided. The unit price of digital money measured in real-world currency de- pends on the economic interactions between the virtual country and the coun- tries in the real world. Denote the virtual country as A.
+
+In the following analysis, we suppose a particular country in the real world will be economically associated with virtual countries through existing curren- cies and digital currencies. And this international economic relationship can be characterized by FE curve. Starting with the FE curve, we will in turn analyze the IS curve and the LM curve of this particular country which has economically associated with the virtual country.
+
+3.2 The Money Market
+
+3.2.1 Basic Theory
+
+• Money Supply
+
+Money supply refers to the process in which the economic entity creates the money supply and puts it into circulation. That is, the behavior and process of the central bank and commercial banks investing, expanding or contracting the money in circulation.
+
+The money supply refers to the sum of the currency held by enterprises, in- dividuals and foreign countries outside the banking system and other deposit currencies that are freely available at any time.
+
+• Money Demand
+
+Money demand refers to the amount of money the public is willing to hold after comprehensively weighing the beneﬁts and costs of various assets.
+
+• Liquidity Preference Theory
+
+Keynes’s study of money demand is based on a study of the motives of de- mand for economic agents. Keynes believed that peopleâ ˘A ´Zs demand for money is determined by three motives:
+
+1. The transactions motive: in order to make daily transactions, people must
+
+hold money
+
+2. The precautionary motive: people prefer to have liquidity to cope with unexpected situations.
+
+3. Speculative motive: due to the uncertainty of the future interest rate, peo-
+
+ple will adjust the asset structure and demand more money to hold in order to avoid capital loss or increase capital gains.
+
+3.2.2 Individual Level - Micro Level
+
+Modern new classical macroeconomics tend to focus on the determination of money demand from the perspective of dynamic optimization. Based on the new classical currency model, we interpret currency as the amount of treasure that people are willing to retain under the premise of invariant income. Hence we propose the following model to describe the economic behavious at the micro level.
+
+• Individual Currency Choice Denote ¯m ≜¯m(y, i). According to our model, we have ¯m = m1 + m2
+
+• Individual Money Utility Function
+
+Indifferent Curve:
+
+1mβ u = mα 2 where α, β are parameters. They depend on individual micro-traits, such as risk preferences, liquidity preferences, etc.
+
+Assumptions: 1. Individual preference is normal. 2. Monotonicity. 3. Con- vexity.
+
+In the next section, we try to solve this equation through both mathematical calculation and explicit ﬁgures.
+
+1mβ m1,m2 u = mα max 2
+
+subject to ¯m = m1 + m2
+
+We assume that both u and ¯m have continuous ﬁrst partial derivatives. To ﬁnd the maxium of this function, we introduce a new variable λ as the Lagrange multiplier.
+
+1mβ L(m1, m2, λ) = mα 2 −λ(m1 + m2 −¯m)
+
+We take the partial derivatives with regard to m1, m2 and λ.
+
+ ∂L mβ = αmα−1 2 −λ = 0  α 1  ∂m1   m1 = α + β ¯m     ∂L   1mβ−1 = βmα =⇒ (1) −λ = 0 β 2 ∂m2 m2 = α + β ¯m     ∂L    ∂λ = ¯m −m1 −m2 = 0   (a) individual choice between currency (b) The points that are not on the curve
+
+3.2.3 National Level - Macro Level
+
+1. Total Demand for Money: M = P ¯m = P m1 + P m2
+
+¯ ¯
+
+2. Total Supply for Money: Ms =
+
+Ms1 + Ms2
+
+3. Balance:
+
+Ms1+ ¯ ¯  Ms2 M = P   L(Y, i) = L1(Y ) + L2(i) = kY −hi  M = L(Y, i) 
+
+=⇒i = −1 Ms P + k hY , where k, h : are parameters. h
+
+As noted in the ﬁgure 1, the points above the LM curve indicate insufﬁcient money demand of the country while those below the curve represent excessive demand for money.
+
+(a) Sensitivity of Monetary Demand to Income (b) Sensitivity of Monetary Demand to Interest Rate
+
+slope of the currency transaction demand against the precautionary demand curve and against the speculative currency demand curve :
+
+1. When the sensitivity of money demand to income is certain, the higher the sensitivity of money demand to interest rates, the ﬂatter the LM curve.
+
+2. When the sensitivity of money demand to interest rates is certain, the lower the sensitivity of money demand to income, the ﬂatter the LM curve.
+
+(a) (b)
+
+1. Exogenous decrease in money demand: both L1 and L2 decrease.
+
+2. Exogenous increase in money supply: Ms increases while P decreases.
+
+3.3 The Domestic Product Market
+
+The IS curve describes all possible combinations of interest rate (i) and real GDP (Y) when the domestic product market is in equilibrium, given other fun- damental factors.
+
+1. National Income Balance: Y = C + I + G + (X −M) = C + S + T
+
+2. Saving-Investment Equality: Iall = I + G + (X −M) = S + T = Sall
+
+Note: I and S below refer to Iall and Sall
+
+IS Model:
+
+ I = I0 −di + (X −M)   S = −a + (1 −b)Y + (T −G)  I = S 
+
+Therefore, we have
+
+i = a + I0 + ( ¯G −¯T) + ( ¯X −¯ −(1 −b) M) Y d d
+
+3.4 The Foreign Exchange Market
+
+The FE curve describes all possible combinations of interest rates (i) and real GDP (Y) when the balance of payments is in equilibrium, given other fundamen- tal factors.
+
+The equilibrium of the balance of payments means that the sum of the balance of current account balances and the balance of ﬁnancial account is zero.
+
+Assumptions:
+
+1)The current account balance is a net export
+
+2)The balance of ﬁnancial account balance is net capital inﬂow.
+
+We have B = CA(Y ) + FA(i) = 0
+
+( ( CA ≈NX FA ≈NF NX = X −M NF = AM −AX
+
+Solve the equations shown above
+
+X −M + (AM −AX) = 0
+
+NX = X −M = NF = AX −AM
+
+Suppose NX and NF satisfy the following equations
+
+ NX = X −M  =⇒NX(Y ) = X0 −m0 −γY + nPf ∗e  M = m0 + γY −n ∗rer (2) P  X = X0 
+
+) NF(i) = σ(iw −i) + φ Pf ∗e −X0 −m0 =⇒i = γ σY + (iw + n ) (3) σ P σ NX = NF
+
+4 Analysis of Our Model
+
+4.1 Choice of Exchange Rate Institution
+
+In the real world, the central bank of a particular country choose an exchange rate institution that allows the exchange rate between domestic currency and digital currency issued by the virtual country. Denote a particular country in the real world as Bi(i = 1, 2, 3, ...n). Suppose Bi chooses either ﬁxed exchange rate or ﬂoating exchange rate. The exchange rate is expressed in domestic currency using direct price method. Therefore, the meaning of this exchange rate is the national currency in which one unit of digital currency can be exchanged. We also assume that there is no exchange control on digital currency and the bank’s buying price is the same as selling price.
+
+In the following sections, we will analyze the macroeconomic performance of the country Bi after every country chooses different exchange rate institution, including: 1) long run goals 2) short run goals 3) internal equilibrium 4) external equilibrium. To be more speciﬁc, we will analyze the following :
+
+4.2 Fixed Exchange Rate Institution
+
+4.2.1 Balance of International Payments
+
+In order to maintain exchange rate stability, the central bank will take inter- ventions. Interventions include sterilized intervention and non-sterilized inter- vention.
+
+• Non-Sterilized Intervention
+
+Situation I There is a surplus for the ofﬁcial settlement and the domestic cur- rency is facing pressure to appreciate.
+
+Under this circumstance, digital currency is under pressure to depreciate. Since the central banks of virtual countries do not have monetary and ﬁscal poli- cies, we only need to analyze the behavior of central banks in existing countries. In addition, we regard the electronic money held by the central bank as a foreign exchange asset.
+
+Central bank intervention: purchase digital currency, sell domestic currency.
+
+Major assets Main liabilities Base currency ⇑ Domestic assets Debt securities Cash Loans to the bank Deposit from bank International reserve assets ⇑ Foreign exchange assets
+
+bank’s balance sheet. Base currency and international reserve assets will increase under this condition. Moreover, the way in which ofﬁcial interventions adjust the assets and liabilities of the central bank not only changes the holdings of a country’s ofﬁcial international reserve assets, but also changes the money supply. Under the partial reserve system of the bank, the amount of change in the money supply will be several times more than the amount of ofﬁcial intervention.
+
+• International Balance of Payments - Realization of External Equilibrium
+
+4.2.2 Policy Effects
+
+• Monetary Policy:take the expansionary monetary policy as an example.
+
+The mechanism works as follows.
+
+• Fiscal Policy:take the expansionary monetary policy as an example. The mechanism works as follows.
+
+4.2.3 Shocks to the Economy
+
+In this section, we will introduce deﬁnitions of differernt shocks to the econ- omy help explain the impact of introducing digital currency based on our math- ematical model.
+
+Shocks to Domestic Currency: Changes in the way citizens hold money
+
+Under the ﬁxed exchange rate system, the impact of currency shocks on in- terest rates and output is very limited.
+
+Domestic Spending Shock Effect: Changes in consumer conﬁdence
+
+Under the ﬁxed exchange rate system, the impact of expenditure will have a certain impact on interest rates and output.
+
+International Trade Shock Effects: Reduced export demands Under the ﬁxed exchange rate system, the impact of international trade has a huge impact on the internal equilibrium of a country.
+
+International Capital Flow Shock Effects: international capital outﬂow
+
+The new ﬁnancial transaction digital method enables users to instantly ex- change currency via email addresses or ﬁngerprints. A peer-to-peer payment system provided by the companies such as Google Pay enables global virtual currency transfers in seconds without the need for bank or currency veriﬁcation transaction exchanges. Digital transactions exceed cash and check transactions because they are not affected by bank policies, national boundaries, citizenship, debt or other socio-economic factors. Due to the inﬂuence of exogenous factors such as political ﬂuctuations and insider information, countries with an elec- tronic monetary system will often face huge international capital ﬂows. For ex- ample, when a country has a war, individuals holding the currency of the coun- try will frantically want to exchange the country’s currency for electronic money and transfer the electronic money to the proper places.
+
+Under the ﬁxed exchange rate institution, the impact of international capital ﬂows has a dramatic impact on internal equilibrium.
+
+4.2.4 Internal and External Disequilibrium Adjustment
+
+Tinbergen’s Rule: The number of independent policy instruments that a country can utilize is at least equal to the number of economic policy objectives to be achieved. That is to say, to achieve an economic goal, at least an independent policy tool is needed.
+
+Mundell’s policy matching principle: Each policy tool should be assigned to its most inﬂuential goal, which has a comparative advantage in inﬂuencing this policy goal.
+
+According to Mundell’s policy matching principle, we summarize all the pos- sible policy matches as shown below.
+
+(a) (b)
+
+Swan Model:
+
+4.3 Floating Exchange Rate Institution
+
+4.3.1 Balance of International Payments
+
+The ﬂoating exchange rate institution can realize the external equilibrium spontaneously through the free ﬂuctuation of currency.
+
+Situation I: ofﬁcial settlement surplus
+
+If there is a surplus in balance of international payments, domestic currency will appreciate and digital currency will depreciate. For individuals in virtual countries, they will reduce imports. Therefore, the country’s exports are reduced, FE curve moves to the left, and the IS curve is panned to the left (or below). Ultimately, it will achieve internal and external equilibrium and hence the digital currency will depreciate.
+
+4.3.2 Policy Effects
+
+• The Inﬂuence of Monetary Policy on Exchange Rate
+
+• The Inﬂuence of Fiscal Policy on Exchange Rate Summarizing the above, the following table can be summarized.
+
+Comparison of policy effects under different exchange rate system
+
+4.4 Impact effect under ﬂoating exchange rate system
+
+• Domestic currency impact effect: National changes in the way money is held.Currency shock has a strong impact on a country’s economy
+
+• Impact effect of domestic expenditure: a change in consumer conﬁdence.The impact of expenditure shocks depends on which changes are greater in in- ternational capital ﬂows and current projects.
+
+4.5 Real Cases Analysis
+
+Taking into account the economic interaction of the following countries with virtual countries, the following countries will achieve internal and external bal- anced economic objectives through the use of policy instruments.
+
+4.5.1 Analysis of Fixed Exchange Institution – Sweden
+
+For ﬁxed exchange rate system, we choose Sweden for analysis.
+
+From the ﬁgure above and Firgue9, we can give the conclusion that there are domestic inﬂation, balance of international payments deﬁcit. The domestic cur- rency is under pressure to depreciate. Sweden should pursue a tight monetary policy and a tight ﬁscal policy. To maintain a ﬁxed exchange rate, the central bank sells its own currency and buys digital currency. The IS curve moves to the left and the LM curve moves to the left. Finally achieves internal and external equilibrium.
+
+(c) result for Sweden (d) result for Israel
+
+4.5.2 Analysis of Floating Exchange Institution – Israel
+
+For ﬂoating exchange rate system, we choose Israel for analysis.
+
+From the ﬁgure above and Firgue9, we can give the conclusion that there are domestic inﬂation, balance of international payments deﬁcit. The domes- tic currency depreciates and digital currency appreciates. Israel’s imports have decreased and exports have increased. For virtual countries, imports have in- creased. The FE curve moves to the right. Israel has a tight monetary policy, a currency appreciation, an digital currency depreciation, and LM curve moving to the left. ﬁnally achieve internal and external equilibrium.
+
+5 Evaluations of the Model
+
+5.1 Sensitivity Analysis
+
+The sensitivity of our model is considered in this subsection. To test the sen- sitivity, we apply anova test to the models in Section 4.4 and to see whether the test is viabile and reliable.
+
+(a) result for Sweden (b) result for Israel
+
+From the linear regression result above, we can conclude that each variables of the model is indispensable, and the coeffcients of the model are both small, which demonstrates that the model doesn’t change signiﬁcant when the vari- ables ﬂuctuate. Therefore, it is reasonable to consider that the model is insensi- tive to the outliers.
+
+5.2 Test for Robustness
+
+In this subsection, we consider the robustness of our model. To test the ro- bustness, we apply the model to other countries to see whether the model also work well as the real cases analysis’ result in 4.4.
+
+For ﬁxed exchange rate system, we take Thailand as example. According to the Figure 11, Thailand should pursue a tight ﬁscal policy and an expansionary monetary policy and will ﬁnally achieve internal and external equilibrium. For ﬂoating exchange rate system, we take Mexico as example.According to the Fig- ure 11, Mexico should implement a tight monetary policy and eventually achieve internal and external equilibrium, which attests to the effectiveness of our model.
+
+Additionally, using the anova test in R, we can easily get that these models are signiﬁcant enough to explain the real cases.
+
+(a) result for Thailand (b) result for Mexico
+
+6 Conclusions
+
+6.1 Strengths and Weaknesses
+
+6.1.1 Strengths
+
+• We establish a multi-level dynamic analysis framework from micro-individual to macroeconomic operation
+
+• We creatively propose ideas and mathematical models for analyzing digital currency
+
+• The model is suitable for analysis under a variety of economic shocks • The model is applicable to various exchange rate systems and has strong robustness
+
+• The model proposes a variety of policy tools to resolve internal and external imbalances, with strong realistic policy implications.
+
+6.1.2 Weaknesses
+
+• The equations in the model are linear equations that fail to truly portray the economic conditions of some countries.
+
+• We only consider the economic interaction between the two countries.
+
+6.2 Conclusion
+
+We ﬁrst construct a representative model of ﬁnancial operating systems and macroeconomic operating systems, involving digital currency. This model an- alyzes individual behavioral decisions on digital currency from a micro per- spective. We also discuss two different exchange rate systems that a country will choose.Using theoretical analysis and R, we ﬁnd that either systems would achieve internal and external equilibrium and realize economic objects if proper policies are implemented when digital currency is introduced.
+
+Appendices
+
+Appendix A
+
+Real Data Result

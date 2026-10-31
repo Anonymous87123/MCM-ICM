@@ -1,0 +1,997 @@
+# P-E-2023-2308000-0f85170c
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | front_matter | pages [1] -->
+Problem Chosen
+
+<!-- b000002 | furniture | pages [1] -->
+2023
+
+<!-- b000003 | furniture | pages [1] -->
+Team Control Number
+
+<!-- b000004 | prose | pages [1] -->
+MCM/ICM
+
+<!-- b000005 | title | pages [1] -->
+E
+
+<!-- b000006 | furniture | pages [1] -->
+2308000
+
+<!-- b000007 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000008 | title | pages [1] -->
+The brighter the light, the deeper the shadows
+
+<!-- b000009 | heading | pages [1] -->
+Summary
+
+<!-- b000010 | prose | pages [1] -->
+Light pollution is a new source of environmental pollution, which brings various ad- verse effects to society, human beings, and even the whole ecosystem. Thus, we established a broad light pollution risk assessment model and a flexible intervention strategy model to re- duce the impact of light pollution.
+
+<!-- b000011 | prose | pages [1] -->
+Firstly, we build a risk assessment model based on GE matrix. Our team select 10 indi- cators from social, economic and ecological&health dimensions to establish a system (Fig- ure3). Then re-divide the indicators into artificial light damage system(DS) and requirement system(RS).We get the weight of indicators by projection pursuit method. Next, we define the scores of our two systems as DSI and RSI respectively. Taking DSI and RSI as the hori- zontal and vertical coordinate axis of the GE matrix, the GE matrix can be divided into 9 re- gions (Ⅰ~Ⅸ) and 3 levels (A,B,C).Level A,B and C are in descending order.
+
+<!-- b000012 | prose | pages [1] -->
+Secondly, ignoring intra-regional differences, we apply our risk assessment model to four regions in China: Chengdu (urban), Jintang(suburban), Xingfu Vil(rural), Baishuihe Na- ture Reserve (protected). The results show that the risk level of light pollution in Chengdu is level B. Jintang is level C. Xingfu Vil and Baishuihe Nature Reserve are level A.
+
+<!-- b000013 | prose | pages [1] -->
+Thirdly, we establish a goal programming model for intervention strategy formulation.
+
+<!-- b000014 | prose | pages [1] -->
++, 𝑑𝑖 −) to imple- We introduce priority factors 𝑷𝒊 and positive and negative bias variables (𝑑𝑖 ment region-specific flexible intervention strategies from three dimensions. We take the +, 𝑑𝑖 −) of all constraints as the objective function. Then establish the weighted sum of the (𝑑𝑖 constraint conditions through the secondary indicators of three dimensions (equation 10). Furthermore, we discuss three targeted intervention strategies: social, economic, and eco- logical &health strategies. For example, social intervention strategies mainly control artifi- cial light intensity and other actions at the social dimension. While intervention in the other two dimensions is secondary. The specific actions of each strategy and their impact on light pollution risk are detailed in 5.2.
+
+<!-- b000015 | prose | pages [1] -->
+Further, in order to select the most effective intervention strategy in a specific region, we introduce Intervention Optimization Index (IOI). Based on the goal programming model, we select the strategy corresponding to the minimum value of IOI by changing the priority factor and adjusting the constraint conditions. We apply our intervention strategy model to Chengdu and Jintang. The optimal strategy in Chengdu is social intervention strategy while Jintang is economic intervention strategy. We use GE matrix to compare and analyze the light pollution risk level and various indicators before and after intervention. The light pol- lution risk level is increased from B to A in Chengdu, and C to B in Jintang. After interven- tion, IOI in Chengdu and Jintang decrease by 13.4%and 11.1%.
+
+<!-- b000016 | prose | pages [1] -->
+Finally, we analyze the sensitivity and robustness of four constraint parameters of objec- tive programming of intervention strategy. It is worth mentioning that we introduced the MAPE index to test the robustness of our model. The results show that the MAPE of target planning in Chengdu and Jintang is 1.5% and 3.0%. Our model is very robust.
+
+<!-- b000017 | keywords | pages [1] -->
+Keywords: light pollution; Projection pursuit ; GE matrix; Priority factor ; Goal planning
+
+<!-- b000018 | furniture | pages [2] -->
+Team # 2308000
+
+<!-- b000019 | furniture | pages [2] -->
+P a g e 2 o f 2 5
+
+<!-- b000020 | heading | pages [2] -->
+Contents
+
+<!-- b000021 | contents | pages [2] -->
+1 Introduction ................................................................................................................. 3
+
+<!-- b000022 | contents | pages [2] -->
+1.1 Problem Background .................................................................................................... 3
+
+<!-- b000023 | contents | pages [2] -->
+1.2 Restatement of the Problem ......................................................................................... 4
+
+<!-- b000024 | contents | pages [2] -->
+1.3 Our Work ....................................................................................................................... 4
+
+<!-- b000025 | contents | pages [2] -->
+2 Assumptions and Justifications .............................................................................. 5
+
+<!-- b000026 | contents | pages [2] -->
+3 Notations ...................................................................................................................... 5
+
+<!-- b000027 | contents | pages [2] -->
+4 Light pollution risk assessment model ................................................................. 6
+
+<!-- b000028 | contents | pages [2] -->
+4.1 Reorganizing index - Establish DS and RS system .................................................. 7
+
+<!-- b000029 | contents | pages [2] -->
+4.2 PP：Solution for Risk Assessment Model ................................................................. 7
+
+<!-- b000030 | contents | pages [2] -->
+4.3 Our metric: risk assessment via GE matrix ............................................................... 9
+
+<!-- b000031 | contents | pages [2] -->
+4.4 Application: four diverse types of locations in China ........................................... 10
+
+<!-- b000032 | contents | pages [2] -->
+5 Light pollution intervention model ..................................................................... 13
+
+<!-- b000033 | contents | pages [2] -->
+5.1 Reanalysis of light pollution risk system ................................................................. 13
+
+<!-- b000034 | contents | pages [2] -->
+5.2 Priority-based intervention strategy model ............................................................ 14
+
+<!-- b000035 | contents | pages [2] -->
+5.3 Choice of intervention strategy ................................................................................. 16
+
+<!-- b000036 | contents | pages [2] -->
+5.4 Case Studies: Chengdu City and Jintang County .................................................. 17
+
+<!-- b000037 | contents | pages [2] -->
+6 Sensitivity and robustness analysis ..................................................................... 20
+
+<!-- b000038 | contents | pages [2] -->
+7 Model Evaluation and Further Discussion ......................................................... 22
+
+<!-- b000039 | contents | pages [2] -->
+7.1 Strengths ....................................................................................................................... 22
+
+<!-- b000040 | contents | pages [2] -->
+7.2 Weaknesses .................................................................................................................. 22
+
+<!-- b000041 | contents | pages [2] -->
+References ..................................................................................................................... 24
+
+<!-- b000042 | contents | pages [2] -->
+Appendices ................................................................................................................... 25
+
+<!-- b000043 | furniture | pages [3] -->
+Team # 2308000
+
+<!-- b000044 | furniture | pages [3] -->
+P a g e 3 o f 2 5
+
+<!-- b000045 | heading | pages [3] -->
+1 Introduction
+
+<!-- b000046 | heading | pages [3] -->
+1.1 Problem Background
+
+<!-- b000047 | prose | pages [3] -->
+With the rapid development of urbanization, the global trend of using external lighting to illuminate cities for night-time activities is on the rise. The problem of light pollution was first raised in the 1930s by the International Astronomical Society, which believed that light pollution was a negative effect on astronomical observation caused by outdoor lighting in cit- ies to brighten the sky.
+
+<!-- b000048 | prose | pages [3] -->
+Internationally, light pollution is divided into three categories—white light pollution, ar- tificial day and color light pollution. White light pollution is mainly due to the reflection of buildings and color light pollution is mainly used in indoor entertainment. This paper only discusses the artificial day which brought by outdoor artificial light.
+
+<!-- b000049 | prose | pages [3] -->
+The harm caused by light pollution has a great impact on human society and ecological environment.[1] With the development of cities and the continuous increase of population, the number of lights used by private, commercial and public is increasing. People can travel, pro- duce, trade and consume at night, which brings great economic benefits to the city. However, too much light has bad effects on people's physical and mental health, causing many diseases. At the same time, people in certain occupations, such as drivers, often face white light pollu- tion. That causes great harm to their eyesight. Excessive and non-compliant use of light leads to traffic accidents and other problems, which in turn brings certain economic losses to people.
+
+<!-- b000050 | prose | pages [3] -->
+Ecological light pollution has obvious influence on the behavior of organisms and popu- lation ecology in natural environment. Light pollution will lead to the loss and dislocation of biological direction (especially for nocturnal animals), and confusion about sleep schedules. This in turn may affect their foraging, breeding, migration and communication.[2]
+
+<!-- b000051 | caption | pages [3] -->
+Figure 1: Diagram of ecological and astronomical light pollution
+
+<!-- b000052 | prose | pages [3] -->
+Today, people's life and the normal operation of society cannot do without artificial light. For example, street lighting makes it possible for people to travel normally and safely at night.
+
+<!-- b000053 | furniture | pages [4] -->
+Team # 2308000
+
+<!-- b000054 | furniture | pages [4] -->
+P a g e 4 o f 2 5
+
+<!-- b000055 | prose | pages [4] -->
+The popularization of street lighting reduces the crime rate. The negative effects of artificial light: light pollution cannot be improved by blindly banning the use of artificial lights. Measures should be taken to integrate the specific economic, ecological, population and other aspects of a place. Therefore, our team build a model to identify the level of light pollution risk in a place, propose intervention strategies, and analyze its impact.
+
+<!-- b000056 | heading | pages [4] -->
+1.2 Restatement of the Problem
+
+<!-- b000057 | prose | pages [4] -->
+In order to formulate effective light pollution intervention policies, it is necessary to study how to measure and mitigate the impact of light pollution in different places. Our team un- dertook the following work:
+
+<!-- b000058 | prose | pages [4] -->
+ Establish a light pollution risk level assessment model.
+
+<!-- b000059 | prose | pages [4] -->
+ Assess the risk level of light pollution in four different regions and analyze the as- sessment results based on the actual situation.
+
+<!-- b000060 | prose | pages [4] -->
+ Develop three detailed intervention policies and analyze their potential impact on the impact of light pollution.
+
+<!-- b000061 | prose | pages [4] -->
+ Select two locations, determine the most effective intervention strategy, and study the influence of intervention strategy on the light pollution risk level at this location.
+
+<!-- b000062 | prose | pages [4] -->
+ Develop a one-page leaflet to promote a local light pollution intervention strategy.
+
+<!-- b000063 | heading | pages [4] -->
+1.3 Our Work
+
+<!-- b000064 | prose | pages [4] -->
+First of all, we build a system with society, economy, ecology & health which are the first indicators. 10 factors as population density are put into the second indicators. Then we build the artificial light damage system (DS) and the artificial light requirement system RS. We di- vide the secondary indicators into the two systems according to whether they belong to the requirement or the damage. DSI and RSI scores are used to assess the light pollution risk levels of the two systems respectively. The weights of the indicators are determined by plugging the data of 40 countries into the PP(projection pursuit) method. Then, we combine DSI and RSI scores with GE matrix to comprehensively assess the risk level of light pollution. We apply our model to Chengdu, Jintang County, Xingfu Village and Baishuihe Nature Reserve in China. The light pollution risk level of these four areas are obtained and the results were ana- lyzed.
+
+<!-- b000065 | prose | pages [4] -->
+Then we build a light pollution intervention model. On the basis of the second indicators , we analyze the relationship between the second indicators and made preparations for the for- mulation of intervention strategies. We then build a goal programming model. Our target is to reduce light pollution, improve or maintain the existing order of social, economic and ecol- ogy & health. Priority factors are introduced to reflect the priorities of intervention strategies. Then, we put forward three intervention strategies: social intervention strategy, economic in- tervention strategy, ecological and health intervention strategy. At the same time, the concrete measures and effects of these three strategies are discussed. Based on the system established in the first question and the actual situation, specific measures are proposed for each strategy. We also analyze the impact of these actions on the effects of light pollution.
+
+<!-- b000066 | prose | pages [4] -->
+Further, we propose the intervention optimization index (IOI). By changing the selection of priority factors, goal programming model is solved and the value of the IOI is calculated.
+
+<!-- b000067 | furniture | pages [5] -->
+Team # 2308000
+
+<!-- b000068 | furniture | pages [5] -->
+P a g e 5 o f 2 5
+
+<!-- b000069 | prose | pages [5] -->
+We evaluate the effect of three intervention strategies by combining GE matrix, and then select the optimal strategy.
+
+<!-- b000070 | prose | pages [5] -->
+Finally, we choose Chengdu and Jintang County to get the most effective strategies and specific actions for the two regions respectively through our model. We further discuss the impact of these strategies on risk levels.
+
+<!-- b000071 | prose | pages [5] -->
+Determine the indicator system
+
+<!-- b000072 | heading | pages [5] -->
+Model Ⅰ
+
+<!-- b000073 | prose | pages [5] -->
+Establish subsystem society Use PP method DS Case ：Chengdu、 to calculate the economy Jintang、Xingfu、 weight and get GE matrix two system Baishui RS scores DSI and Ecology RSI & health Risk level of light pollution
+
+<!-- b000074 | prose | pages [5] -->
+Solve the Priority- Propose planning Analyze the Put forward based goal three equation and impact of specific actions programmin intervention calculate the IOI strategy on in combination g model strategies to select the risk level with GE matrix optimal strategy Case：Chengdu、
+
+<!-- b000075 | heading | pages [5] -->
+Model Ⅱ
+
+<!-- b000076 | prose | pages [5] -->
+Jintang
+
+<!-- b000077 | caption | pages [5] -->
+Figure 2: Our work
+
+<!-- b000078 | heading | pages [5] -->
+2 Assumptions and Justifications
+
+<!-- b000079 | prose | pages [5] -->
+The risk assessment of light pollution and the formulation of intervention strategies should take into account economic, social, ecological and other factors. It is not possible to model every possible scenario. So we make some reasonable assumptions to simplify the model, each with a corresponding explanation:
+
+<!-- b000080 | prose | pages [5] -->
+Assumption1：A region under study is a whole unit, regardless of its internal regional differences.
+
+<!-- b000081 | prose | pages [5] -->
+Justification1: The areas we selected for study vary greatly, but the overall characteristics of these areas are significant. Therefore, we can ignore the differences in different places inside. This study is a prerequisite for our in-depth study.
+
+<!-- b000082 | prose | pages [5] -->
+Assumption2:  Ignore government costs and other factors when formulating strategies.
+
+<!-- b000083 | prose | pages [5] -->
+Justification2:  Some factors have little influence, or ignoring some factors can simplify the model.
+
+<!-- b000084 | prose | pages [5] -->
+Assumption3:  Assume that the mathematical relationship between secondary indica- tors is independent of each other.
+
+<!-- b000085 | prose | pages [5] -->
+Justification3:  Facilitate the establishment of models and the proposal of strategies.
+
+<!-- b000086 | heading | pages [5] -->
+3 Notations
+
+<!-- b000087 | prose | pages [5] -->
+The key mathematical notations used in this paper are listed in Table 1.
+
+<!-- b000088 | furniture | pages [6] -->
+Team # 2308000
+
+<!-- b000089 | furniture | pages [6] -->
+P a g e 6 o f 2 5
+
+<!-- b000090 | caption | pages [6] -->
+Table 1: Notations used in this paper
+
+<!-- b000091 | heading | pages [6] -->
+Symbol
+
+<!-- b000092 | prose | pages [6] -->
+Description 𝐷𝑆𝐼 An index that reflects the magnitude of a positive effect 𝑅𝑆𝐼 An index that reflects the magnitude of a negative effect 𝜔𝑗 The weight of the secondary index (i = 1, 2, …) 𝑧𝑖 One-dimensional space projection (i = 1, 2, …) 𝑟𝑖𝑗 The distance between the projected eigenvalues 𝑆𝑤 The standard deviation of the projected eigenvalue 𝐷𝑤 The local density of the projection eigenvalues 𝑥𝑖𝑗 Second Grade Index (i = 1,2; j = 1, 2, … , 5) 𝑃𝑘 priority factors (k = 1, 2, … , n-1) + 𝑑𝑚 the target value is not allowed to be reached (m = 1, 2, …) − 𝑑𝑚 the target value is allowed to be exceeded (m = 1, 2, …) 𝐼𝑂𝐼 the intervention optimization index
+
+<!-- b000093 | heading | pages [6] -->
+4 Light pollution risk assessment model
+
+<!-- b000094 | prose | pages [6] -->
+The assessment of the risk level of light pollution is an important prerequisite to propose intervention strategies for light pollution in a specific area. According to relevant literature [3][4][5], light pollution interacts with society, economy and ecology& health. We comprehen- sively consider the endogenous correlation between light pollution and these above factors. Then we extract 3 primary indexes and 10 secondary indexes, and preliminarily establish the light pollution risk system as shown in the figure 3.
+
+<!-- b000095 | prose | pages [6] -->
+In addition, we do not consider many redundant factors, which will eliminate unneces- sary obstacles for the subsequent model optimization, thus conducive to the subsequent anal- ysis of index mechanism.
+
+<!-- b000096 | prose | pages [6] -->
+：
+
+<!-- b000097 | caption | pages [6] -->
+Figure 3: Light pollution risk level indicator system
+
+<!-- b000098 | furniture | pages [7] -->
+Team # 2308000
+
+<!-- b000099 | furniture | pages [7] -->
+P a g e 7 o f 2 5
+
+<!-- b000100 | heading | pages [7] -->
+4.1 Reorganizing index - Establish DS and RS system
+
+<!-- b000101 | prose | pages [7] -->
+Generally speaking, risk assessment needs to consider the advantages and disadvantages, supply and demand relationship and other factors. Metric of the risk of light pollution should be based on two perspectives:
+
+<!-- b000102 | prose | pages [7] -->
+a) Damage of the excessive use of artificial light, including adverse effects on society , people's lives and destruction to the ecological environment.
+
+<!-- b000103 | prose | pages [7] -->
+b) The requirement of artificial light for human normal work and life. This is mainly re- flected in industrial production, urban construction and other production activities.
+
+<!-- b000104 | prose | pages [7] -->
+By considering the relationship between the secondary index and the risk of light pollu- tion, we reclassify the secondary index and sort out the two evaluation subsystems of DS (ar- tificial light damage system) and RS (artificial light requirement system). The specific indica- tors of each subsystem are shown in the following table.
+
+<!-- b000105 | caption | pages [7] -->
+Table 2: Symbolic Notation of the secondary indicators
+
+<!-- b000106 | prose | pages [7] -->
+DS Indicators NRC EC GGE BIO DCLP 𝑥21 𝑥22 𝑥23 𝑥24 𝑥25
+
+<!-- b000107 | heading | pages [7] -->
+Symbolic Notation
+
+<!-- b000108 | prose | pages [7] -->
+PD ALI QPLE GR PVPI RS Indicators 𝑥11 𝑥12 𝑥13 𝑥14 𝑥15
+
+<!-- b000109 | heading | pages [7] -->
+Symbolic Notation
+
+<!-- b000110 | prose | pages [7] -->
+*All indicators in the table are abbreviations for secondary indicators. Detailed secondary indicators and their types are in the Appendix.
+
+<!-- b000111 | prose | pages [7] -->
+Therefore, We can obtain the linear relationship between each system and the classified indicators. The scores of the two subsystems are used as the benefit index to evaluate the risk of light pollution, and are calculated as DSI and RSI respectively. We define 𝒘 as the weight. So we get the following formula:
+
+<!-- b000112 | prose | pages [7] -->
+5 ∗ (1) 𝐷𝑆𝐼= ∑𝑤1𝑖𝑥1𝑖 𝑖=1
+
+<!-- b000113 | prose | pages [7] -->
+5 ∗ (2) 𝑅𝑆𝐼= ∑𝑤2𝑖𝑥2𝑖 𝑖=1 ∗, 𝑥2𝑖 ∗ refer to the data after min-max normalization particularly. In the later Where 𝑥1𝑖 model, we continue to use 𝑥1𝑖, 𝑥2𝑖 to represent the data which has been processed.
+
+<!-- b000114 | prose | pages [7] -->
+Next, we select 40 countries in the world that are affected by light pollution to varying degrees, and use projection pursuit method (PP) to solve and analyze the CS and RS evalua- tion models.
+
+<!-- b000115 | heading | pages [7] -->
+4.2 PP：Solution for Risk Assessment Model
+
+<!-- b000116 | prose | pages [7] -->
+The basic principle of projection pursuit method is to project the high-dimensional data to the low-dimensional space through some combination, and to reflect the features of the original high-dimensional data by maximizing the projection index. We can study and evalu- ate high dimensional data by analyzing one-dimensional data. We use projection pursuit method to assign weights to each index under DS and RS system respectively. Finally, the result of weighting is converted into the projection score of one-dimensional space.
+
+<!-- b000117 | furniture | pages [8] -->
+Team # 2308000
+
+<!-- b000118 | furniture | pages [8] -->
+P a g e 8 o f 2 5
+
+<!-- b000119 | prose | pages [8] -->
+The steps of projection pursuit are as follows:
+
+<!-- b000120 | prose | pages [8] -->
+I. Analyze the index of the sub-system (DS and RS). The indicators are processed in a positive and standardized way.
+
+<!-- b000121 | prose | pages [8] -->
+II. Construct linear projections. Observe the data from different directions to find the op- timal projection direction that fully reflects the characteristics of the indicators. We pick some random projection directions 𝑤= (𝑤1,𝑤2, 𝑤3. . . 𝑤𝑚), and calculate the size of the projection in- dex function. Determine the projection solution of the maximum index function as the optimal projection direction. For the i  th sample, its one-dimensional space projection can be ex- pressed as:
+
+<!-- b000122 | prose | pages [8] -->
+𝑚 𝑧𝑖= ∑𝑤𝑗𝑥𝑖𝑗 (3) 𝑗=1 III. Construct the projection index function. Depending on the definition of the optimal projection direction, we want the distribution of the projection eigenvalues 𝑧𝑖 to satisfy:
+
+<!-- b000123 | prose | pages [8] -->
+1. As a whole, the projection cluster is spread out as far as possible.
+
+<!-- b000124 | prose | pages [8] -->
+2. Local projection points are as dense as possible.
+
+<!-- b000125 | prose | pages [8] -->
+In order to meet the above conditions, the objective function may be constructed as:
+
+<!-- b000126 | prose | pages [8] -->
+𝑚𝑎𝑥 𝑄(𝑤) = 𝑆𝑤𝐷𝑤 (4)
+
+<!-- b000127 | prose | pages [8] -->
+Where 𝑆𝑤 is the standard deviation of the projected eigenvalue, and 𝐷𝑤, is the local den- sity of the projected eigenvalue. The formula is as follows:
+
+<!-- b000128 | prose | pages [8] -->
+𝑛 (5) 𝑆𝑤= √∑(𝑧𝑖−𝑧𝑤̅̅̅̅)/(𝑛−1) 𝑖=1
+
+<!-- b000129 | prose | pages [8] -->
+𝑛 𝑛 𝑤= ∑∑(𝑅−𝑟𝑖𝑗)𝑢(𝑅−𝑟𝑖𝑗) (6) 𝑖=1 𝑗=1
+
+<!-- b000130 | prose | pages [8] -->
+Where 𝑟𝑖𝑗  means the distance between the projection eigenvalue, 𝑟𝑖𝑗= |𝑧𝑖−𝑧𝑗|(𝑖, 𝑗= 1,2,. . . 𝑛). 𝑢(𝑡) is the step function which is 𝑢(𝑡) = {0, 𝑡< 0 1, 𝑡≥0., R is the parameter for estimating
+
+<!-- b000131 | prose | pages [8] -->
+the local scatter density, and we take 𝑅= 0.1𝑚𝑎𝑥 (𝑟𝑖𝑗).
+
+<!-- b000132 | prose | pages [8] -->
+IV. Optimize the projection direction. To sum up, in order to find the optimal projection direction 𝑤, we build a nonlinear optimization model:
+
+<!-- b000133 | prose | pages [8, 9] -->
+𝑚𝑎𝑥 𝑄(𝑤) = 𝑆𝑤𝐷𝑤 (7) 𝑚 ∑𝑤𝑗2 = 1 𝑗=1 0 < 𝑤𝑗< 1
+
+<!-- b000134 | furniture | pages [9] -->
+Team # 2308000
+
+<!-- b000135 | furniture | pages [9] -->
+P a g e 9 o f 2 5
+
+<!-- b000137 | prose | pages [9] -->
+𝑛 𝑆𝑤= √∑(𝑧𝑖−𝑧𝑤̅̅̅̅)/(𝑛−1) 𝑖=1 𝑠. 𝑡. (8) 𝑛 𝑛 𝐷𝑤= ∑∑(𝑅−𝑟𝑖𝑗)𝑢(𝑅−𝑟𝑖𝑗) 𝑖=1 𝑗=1 𝑢(𝑡) = {0, 𝑡< 0 1, 𝑡≥0 𝑟𝑖𝑗= |𝑧𝑖−𝑧𝑗| 𝑅= 0.1𝑚𝑎𝑥(𝑟𝑖𝑗) {
+
+<!-- b000138 | prose | pages [9] -->
+This is a complex nonlinear optimization. We consider using GA algorithm to optimize the solution process. We obtain the optimized projection weight𝑤= (𝑤1, 𝑤2, 𝑤3, … , 𝑤𝑚)by us- ing MATLAB ga toolbox. Finally, the weight results are represented by radar map(Figure 4). We believe that the weight obtained is universal, and this result is still used in the later models.
+
+<!-- b000139 | prose | pages [9] -->
+0.8 0.8 0.701 0.425 0.6 0.6 0.4 0.4 0.155 0.2 0.446 0.2 0 0 0.566 0.612
+
+<!-- b000140 | prose | pages [9] -->
+0.201 0.215 0.314 0.498
+
+<!-- b000141 | prose | pages [9] -->
+RS DS
+
+<!-- b000142 | caption | pages [9] -->
+Figure 4: Weight radar map
+
+<!-- b000143 | prose | pages [9] -->
+Through the linear relation of DSI, RSI and index, the score of DS system and RS system can be calculated respectively. Two scores that assess the level of light pollution risk.
+
+<!-- b000144 | heading | pages [9] -->
+4.3 Our metric: risk assessment via GE matrix
+
+<!-- b000145 | prose | pages [9] -->
+In order to better assess the risk level of light pollution in a certain area, we carefully consider the significance and relationship between DS and RS. And we adopt GE matrix as- sisted analysis. The GE Matrix, also known as the McKinsey Matrix, is an efficient tool for analyzing business strategy. Measures business competitiveness and market attractiveness by introducing multiple factors and quantifying scores. Determine the position of business in the business strategy of the enterprise, so as to formulate the strategy in line with the development of the enterprise.
+
+<!-- b000146 | prose | pages [9, 10] -->
+We believe that DSI and RSI reflect the relative risk (benefit and harm) of light pollution from two dimensions, which is similar to the relationship between business competitiveness and market attractiveness on enterprise business strategy. Then we use DSI as the horizontal axis and RSI as the vertical axis to describe the risk level of light pollution according to its distribution on the GE matrix. Both the calculated DSI and RSI are normalized so that their values were between (0,1). According to the actual situation, DSI and RSI are divided into three grades (Table X).
+
+<!-- b000147 | furniture | pages [10] -->
+Team # 2308000
+
+<!-- b000148 | furniture | pages [10] -->
+P a g e 1 0 o f 2 5
+
+<!-- b000150 | prose | pages [10] -->
+Table 3：Index classification The value of DSI Level The value of RSI Level 0~0.3 Low 0~0.3 Low 0.3~0.7 Medium 0.3~0.7 Medium 0.7~1 High 0.7~1 High
+
+<!-- b000151 | caption | pages [10] -->
+Figure 5: GE matrix diagram
+
+<!-- b000152 | prose | pages [10] -->
+We visualize the GE matrix (Figure 5).Since both DSI and RSI are divided into three levels, the GE matrix is divided into nine parts. Then we combine GE matrix to evaluate the risk of light pollution: 1) DSI represents the magnitude of the negative effect caused by artificial light. The higher the DSI, the greater the degree of damage to the assessed object by artificial light, which is not conducive to the sustainable development of ecological environment. RSI stands for positive effects caused by artificial light. The higher the RSI is, the greater the system needs and relies on artificial light. In order to maintain normal social life and economic develop- ment, human beings still need to use a large number of artificial light sources. 2) The smaller the DSI is and the larger the RSI is, the lower the relative risk of light pollution is. We set regions VI, VII, and VIII as A, I, V, and IX as B, and II, III, and VI as C. The risk of light pollution is similar in areas of the same grade. The risk levels in regions A, B and C decreased successively. 3) At the same time, we believe that region VII is the ideal region in the GE matrix, and its light pollution risk is at a relatively low degree. The coordinate (0,1) is set to the optimal ideal point.
+
+<!-- b000153 | heading | pages [10] -->
+4.4 Application: four diverse types of locations in China
+
+<!-- b000154 | prose | pages [10, 11] -->
+China is one of the countries with the most severe light pollution, with a large population and rich geographical environment. Therefore, we apply the light pollution risk assessment model to China. First, collect the global data as sample analysis, and then choose Sichuan Province as the case study object. Then, the risk assessment model is applied to the following four sites: Chengdu City (an urban community), Jintang County (a suburban community), Xingfu Vil (a rural community), Baishuihe Nature Reserve (a protected land location).The data collect for each indicator are shown in Table 4. In addition, we combine GE matrix and the actual situation of the local comparative analysis.
+
+<!-- b000155 | furniture | pages [11] -->
+Team # 2308000
+
+<!-- b000156 | furniture | pages [11] -->
+P a g e 1 1 o f 2 5
+
+<!-- b000158 | prose | pages [11] -->
+Some of the points are listed below: ⚫ The scope of Chengdu in this paper only includes several major districts in the urban area of Chengdu, not all the districts under the jurisdiction of Chengdu. ⚫ Jintang County is a relatively concentrated area in the suburbs of Chengdu City, so it is taken as one of the objects of evaluation. ⚫ The population density of the nature reserve is extremely low, but there are still a few staff members staying here. ⚫ In order to facilitate the assessment of local light pollution risk level, this section tempo- rarily does not consider the impact of local policies, and only collects and analyzes rele- vant data.
+
+<!-- b000159 | caption | pages [11] -->
+Figure 6: Light pollution map
+
+<!-- b000160 | prose | pages [11] -->
+Based on the data collected from authoritative literatures [6][7][8] and websites [9][10], we have sorted out important data (parts) as shown in Table 4.
+
+<!-- b000161 | caption | pages [11] -->
+Table 4: Partial data for four locations
+
+<!-- b000162 | prose | pages [11] -->
+PD QPLE ...... ALI Chengdu 2868 1559880 ...... 204.93 Jintang 838 145.16 43330 ......
+
+<!-- b000163 | prose | pages [11] -->
+Xingfu Vil. 384 3321 ...... 1.70 Baishuihe Na- 15 169 ...... 0.03 ture Reserve We substitute the data of the four regions under each index into the two evaluation sub- systems of DS and RS constructed above, and get the corresponding DSI and RSI. The specific values are shown in the square bar chart below. According to the values of DSI and RSI, trace the corresponding points in the GE matrix diagram:
+
+<!-- b000164 | prose | pages [12] -->
+校苑 校苑数 校苑数模
+
+<!-- b000165 | furniture | pages [12] -->
+Team # 2308000
+
+<!-- b000166 | furniture | pages [12] -->
+P a g e 1 2 o f 2 5
+
+<!-- b000167 | prose | pages [12] -->
+校苑数模 校苑 校苑数模
+
+<!-- b000168 | caption | pages [12] -->
+Figure 7: value of Index (left) and points in GE matrix diagram (right)
+
+<!-- b000169 | prose | pages [12] -->
+The figure above shows the GE matrix of the four regions, and the histogram of DSI and 校苑数模 RSI. According to the light pollution risk assessment method in 4.3, it can be concluded that Chengdu is in B, Jintang is in C, Xingfu Vil and Baishuihe Nature Reserve are in A. Here is an explanation of the risks of light pollution in four regions: 校 Chengdu：RSI scores are relatively high, indicating that Chengdu artificial lighting demand is large. Chengdu, as the core and important hub of Sichuan Province, has 校苑数模 witnessed rapid urban expansion and population growth in recent years. Urban areas carry a city's housing, industry, and commerce. The city of Chengdu has developed a night-time economy and built large service industries, such as night markets. Road lighting, airports, high-speed trains and so on all require the use of a lot of artificial lights. The huge benefits generated by Chengdu's night economy cannot be separated from the use of night lights. 校苑数模 However, the high DSI score indicates that Chengdu also suffers more losses from 模 artificial lighting. The excessive use of artificial lights makes the city too bright at night, which will have a certain impact on the people living in the city. Turning on the lights of commercial street billboards all night has caused a waste of resources and led to some civil disputes. The large number of vehicles has resulted in a large 校苑数模 number of accidents at night due to the use of wrong lights. Ecological problems are serious. 苑数模 Jintang, a suburban county of Chengdu, has a relatively high RSI. Jintang's proximity to downtown Chengdu has attracted many people to settle there. The suburbs are mainly used for housing and industry. No bustling commercial streets, no need to generate huge economic benefits to the city. Suburban population is large, the use of artificial lights in private and public facilities is more, there is little need for a large 校苑数模 number of lighting commercial streets.
+
+<!-- b000170 | prose | pages [12] -->
+Jintang has a high DSI index. Since the suburbs are mainly where people live, the negative effects of excessive artificial lighting are obvious. The harm to people's body and living environment is relatively large. At the same time, due to the incomplete construction planning and management system in this area, there is a relatively obvi- 苑数模 ous phenomenon of excessive use of artificial light.
+
+<!-- b000171 | prose | pages [12] -->
+XingfuVil, a village near Chengdu. RSI scores are high, but lower than those in the suburbs. Lighting demand in rural communities mainly comes from people's life and agricultural production. The rural population is smaller than the suburbs, there is no
+
+<!-- b000172 | prose | pages [12, 13] -->
+模 large service industry, night markets, etc., less night lighting can meet the needs. As this area is close to a big city like Chengdu, the rural population and demand are larger than those of other areas (especially remote areas), and the positive impact of artificial light is larger. Rural natural environment area accounts for a large propor- tion of animals and plants. The low DSI score in this area indicates that the loss of light pollution is relatively small. People and living things are less exposed to light pollution.
+
+<!-- b000173 | furniture | pages [13] -->
+Team # 2308000
+
+<!-- b000174 | furniture | pages [13] -->
+P a g e 1 3 o f 2 5
+
+<!-- b000176 | prose | pages [13] -->
+The RSI index of Baishuihe Nature Reserve is low, and its demand for light is less. A low DSI indicates light pollution. The population of protected areas is usually small, so the need for lighting is naturally low, but some protected areas have tourist areas, which have an impact on the natural environment. In addition, rangers patrolling the forest at night or lighting some monitoring equipment also contribute to weak light pollution in the area.
+
+<!-- b000177 | prose | pages [13] -->
+To sum up, Chengdu and Jintang have a high risk of light pollution, which is also due to the inevitable negative effects of urbanization. However, appropriate intervention measures can be taken to reduce or weaken the negative effects without affecting the normal living needs of human beings. Light pollution risk levels for XingfuVil and Baishuihe Nature Reserve are low, because natural ecosystems and wildlife occupy most of the area. Thus artificial light is more likely to diffuse into the natural environment and cause significant impacts on a large number of wildlife. So appropriate interventions are still needed to limit light pollution in the area.
+
+<!-- b000178 | heading | pages [13] -->
+5 Light pollution intervention model
+
+<!-- b000179 | prose | pages [13] -->
+In the previous section, we developed a model that allows for a broad assessment of light pollution risk levels, and evaluated regions in China. In this section, we expect to propose three different intervention policies to effectively intervene light pollution in different areas. In addition, we apply our intervention policies to specific places and analyze their impact on the level of light pollution risk in that place.
+
+<!-- b000180 | heading | pages [13] -->
+5.1 Reanalysis of light pollution risk system
+
+<!-- b000181 | prose | pages [13] -->
+Various influencing factors should be considered comprehensively in formulating the in- tervention strategy of light pollution in a certain area. According to the index system estab- lished above (Figure 3), systematic intervention strategies can be established. We find that the secondary indicators in the lower part of the light pollution risk system are intrinsically related, which may affect the degree of light pollution harm and may reflect the demand for artificial light.
+
+<!-- b000182 | prose | pages [13] -->
+Therefore, we start from three dimensions, namely first-level indicators (Society, Econ- omy, Ecology&Health) and conduct correlation analysis for second-level indicators. The rela- tionship between primary indicators and light pollution must also be obtained. Combining with the actual situation, we consider three feasible measures under the Angle of light pollu- tion intervention.
+
+<!-- b000183 | prose | pages [13] -->
+Next, we visualized the results of the analysis using Vensim, as shown in Figure 8.
+
+<!-- b000184 | furniture | pages [14] -->
+Team # 2308000
+
+<!-- b000185 | furniture | pages [14] -->
+P a g e 1 4 o f 2 5
+
+<!-- b000186 | caption | pages [14] -->
+Figure 8: System dynamics analysis of light pollution system
+
+<!-- b000187 | heading | pages [14] -->
+5.2 Priority-based intervention strategy model
+
+<!-- b000188 | prose | pages [14] -->
+We regard the adoption of intervention strategies as goal planning: that is, the objectives of intervention strategies are proposed from three dimensions (Society, Economy, Ecology & Health). Try to improve or maintain the existing order of social, economic and ecology while reducing light pollution. Our intervention strategies should be biased, for example, focus on light pollution interventions in the social dimension, while interventions in the other two di- mensions are regarded as secondary.
+
+<!-- b000189 | prose | pages [14] -->
+So we took inspiration from multi-objective programming and introduced priority factors. We think that interventions on light pollution are prioritized in different dimensions. The de- gree of intervention is reflected by priority factors through goal programming. For n priority factors, we specify:
+
+<!-- b000190 | prose | pages [14] -->
+𝑃𝑘≫𝑃𝑘+1, 𝑘= 1,2,. . . 𝑛−1 Where 𝑃𝑘≫𝑃𝑘+1 means that 𝑃𝑘 has a higher priority than 𝑃𝑘+1.
+
+<!-- b000191 | prose | pages [14] -->
+We take Chengdu as an example, and we still use the data of 2022 indicators in 4.4. At the +) and negative deviation variables (𝑑𝑖 −) same time, we consider positive deviation variables (𝑑𝑖 in the goal programming. The deviation variable represents the part of the decision value that does not reach the target value. Therefore, different from rigid constraints in linear program- ming, constraints containing deviation variables are called soft constraints (target constraints). If we hope the intervention to be prioritized from high to low is: Society, Ecology & Health, and Economy, then the goal-planning model should be:
+
+<!-- b000192 | prose | pages [14, 15] -->
++ + 𝑃2(𝑑2 +) + 𝑃3𝑑3 + −+ 𝑑2 𝑚𝑖𝑛 𝑦= 𝑃1𝑑1 (9) ∑𝜔1𝑖𝑥1𝑖 ≥1.1 ∑𝜔2𝑗𝑥2𝑗 𝑖=1 𝑗=1 + = 0 −−𝑑1 𝑥11 −0.001𝑥21 + 𝑑1 𝑠. 𝑡. (10) + = 200 −−𝑑2 𝑥23 + 𝑥24 + 𝑥25 + 𝑑2 + = 0 −−𝑑3 𝑥15 + 𝑥22 −0.15𝑥14 + 𝑑3 𝑥12 ≤150 + ≥0 (𝑖= 1,2; 𝑗= 1,2, . . . ,5; 𝑚= 1,2,3) − , 𝑑𝑚 𝑥𝑖𝑗 , 𝑑𝑚 { In the constraint condition, 𝜔1𝑖 and 𝜔2𝑗 represent the index weights obtained by the projection pursuit method in 4.2. We apply rigid constraints on RS and DS systems, requiring + means that the target value is RSI to be 10% higher than DSI. In the constraint, including 𝑑𝑖 − means that the target value is allowed to be exceeded, not allowed to be reached, including 𝑑𝑖 −+ 𝑑𝑖 +) means that the target value is just reached. Our objective function,y and including (𝑑𝑖 should measure and minimize the positive and negative deviations of all constraints, and con- strain second-level indexes of each dimension to different degrees.
+
+<!-- b000193 | furniture | pages [15] -->
+Team # 2308000
+
+<!-- b000194 | furniture | pages [15] -->
+P a g e 1 5 o f 2 5
+
+<!-- b000195 | furniture | pages [15] -->
+5
+
+<!-- b000196 | furniture | pages [15] -->
+5
+
+<!-- b000198 | prose | pages [15] -->
+For example, the constraint 𝑥11 −0.001𝑥21 means that the number of traffic accidents at naight should not be greater than 1‰ of population density., 𝑥15 + 𝑥22 −0.15𝑥14 indicates that the combined output value of the PV industry and the night market service industry does not exceed 15% of GDP. The constraint condition of 𝑥23 + 𝑥24 + 𝑥25 = 20 indicates that the loss of GGE, BIO and TCLP is not more than 20 billion yuan. The numerical value of each index can be solved by MATLAB.
+
+<!-- b000199 | prose | pages [15] -->
+We are primarily concerned with light pollution interventions from the social dimension, so it is given the priority 𝑃1. Ecology & Health and economics come second, and we assign priority 𝑃2 and 𝑃3, respectively. We assign weight to each priority according to the actual lo- cal conditions., 𝑃1 is considered to be twice the relationship of 𝑃2 and 𝑃2 is 1.5 times the rela- tionship of 𝑃3. We define three main intervention strategies according to priority 𝑃1: Social intervention strategy, economic intervention strategy, and ecological & health intervention strategy. Our intervention strategy is highly targeted, and several relevant interventions are explained in the figure below. According to the different bias, analyze the secondary indexes, we get the following intervention strategy, the interpretation of the related intervention measures as shown in figure 9.
+
+<!-- b000200 | prose | pages [15] -->
+Social dimension In accordance with the International Dark Sky Association regulations, artificial light dis- tribution, to reduce the light invasion phenomenon[11]. Reasonable planning of green space and color space. establish and improve a legal system for the prevention and control of light pollution and unify standards for its control. Utilizing light sources of minimum intensity necessary to accomplish the light's purpose.
+
+<!-- b000201 | prose | pages [15] -->
+Economic dimension Reduce unnecessary lighting. Turning lights off using a timer or occupancy sensor or manually when not needed. Lighting is for the convenience of human activities in the dimly lit space. However, in some places where human activities are few at night, the intensity of artificial light is very high, which not only causes the waste of energy, but also aggravates the light pollution in the area. Adjusting the type of lights used, so the light waves emitted are those that are less likely to cause severe light pollution problems.
+
+<!-- b000202 | prose | pages [15, 16] -->
+Ecological and health dimension Limiting greenhouse gas emissions. Artificial light sources will produce carbon dioxide and other greenhouse gases, damaging the ecological environment. Reducing the greenhouse gases produced by lighting is also a way to reduce the harm of light pollution. Use minimal or no artificial light sources in areas where wildlife animals gather together. Wild animals and plants have adapted their life style to nature, and human activities often have negative effects on them. Human beings should try to avoid their own activities' impact on wild animals and plants.
+
+<!-- b000203 | furniture | pages [16] -->
+Team # 2308000
+
+<!-- b000204 | furniture | pages [16] -->
+P a g e 1 6 o f 2 5
+
+<!-- b000206 | prose | pages [16] -->
+As a matter of fact, the causes of light pollution are many and the effects are complex. So there are a number of possible intervention strategies, and here is just a brief list of some of the specific measures that are available and the potential impact of taking those actions.
+
+<!-- b000207 | caption | pages [16] -->
+Figure 9: Concept map of the intervention strategies
+
+<!-- b000208 | heading | pages [16] -->
+5.3 Choice of intervention strategy
+
+<!-- b000209 | prose | pages [16] -->
+Next, we can repeat the priority intervention strategy model. By changing the priorities of Society, Ecology & Health, and Economy, adjusting the constraints appropriately, and solv- 3 = ing the goal planning, we can gain the optimized intervention strategy data of the group 𝐴3 6. However, with only intervention strategy data, we cannot determine which priorities are most likely to reduce light pollution.
+
+<!-- b000210 | prose | pages [16] -->
+Therefore, we combine the GE matrix and get inspiration, by calculating the distance be- tween the optimal point (0,1), proposed the intervention optimization index (IOI).And we evaluate the effect of the intervention strategies. We believe that the smaller the IOI value, the better the effect of such intervention strategies on the optimization of light pollution risk level. This is an evaluation method to optimize system synthesis. Its calculation formula is:
+
+<!-- b000211 | prose | pages [16] -->
+𝐼𝑂𝐼= 100 × √(𝐷𝑆𝐼−0)2 + (𝑅𝑆𝐼−1)2 (11)
+
+<!-- b000212 | prose | pages [16] -->
+The size of IOI is determined by DSI and RSI, and the interval value of IOI in this paper is between 0 and 141.4. In reality, due to limitations, we cannot reach the optimal ideal point, but can only get infinitely close to it.
+
+<!-- b000213 | furniture | pages [17] -->
+Team # 2308000
+
+<!-- b000214 | furniture | pages [17] -->
+P a g e 1 7 o f 2 5
+
+<!-- b000215 | heading | pages [17] -->
+5.4 Case Studies: Chengdu City and Jintang County
+
+<!-- b000216 | prose | pages [17] -->
+In order to test the effectiveness of our proposed intervention policy, We select Chengdu City and Jintang County as research objects. Because Chengdu City and Jintang County are very different in economic level, degree of modernization and other practical conditions, so the priority of their intervention strategies should be different. Also,the specific actions of the same intervention dimension will be slightly different. This is reflected in the difference of target planning and constraint conditions of the two regions. For example, in terms of the constraint conditions of artificial light intensity, Chengdu City and Jintang County are differ- ent. Our constraints are comprehensive and involve three intervention dimensions. See Sec- tion 4.2 for the target planning of Chengdu, and the target planning of Jintang County is as follows:
+
+<!-- b000217 | prose | pages [17] -->
++ + 𝑃2(𝑑2 +) + 𝑃3𝑑3 + −+ 𝑑2 𝑚𝑖𝑛 𝑦= 𝑃1𝑑1 (12)
+
+<!-- b000218 | prose | pages [17] -->
+5 5 ∑𝜔1𝑖𝑥1𝑖 ≥1.08 ∑𝜔2𝑗𝑥2𝑗 𝑖=1 𝑗=1 + = 0 −−𝑑1 𝑥15 + 𝑥22 −0.12𝑥14 + 𝑑1 𝑠. 𝑡. (13) + = 18 −−𝑑2 𝑥23 + 𝑥24 + 𝑥25 + 𝑑2 + = 0 −−𝑑3 𝑥11 −0.001𝑥21 + 𝑑3 𝑥12 ≤110 + ≥0 (𝑖= 1,2; 𝑗= 1,2, . . . ,5; 𝑚= 1,2,3) − , 𝑑𝑚 𝑥𝑖𝑗 , 𝑑𝑚 {
+
+<!-- b000219 | prose | pages [17] -->
+Then, we apply our intervention strategy model to Chengdu City and Jintang County. The process for combining model ideas with a specific locale is:
+
+<!-- b000220 | prose | pages [17] -->
+Algorithm : Intervention Strategies for Specific Locations Input: Objective planning of intervention strategies model
+
+<!-- b000221 | prose | pages [17] -->
+Output:IOI𝑜𝑝𝑡𝑖𝑚𝑎𝑙,optimal intervention strategies
+
+<!-- b000222 | prose | pages [17] -->
+Initialize objective function y,𝑃1,𝑃2 and 𝑃3; 1:
+
+<!-- b000223 | prose | pages [17] -->
+2: IOI=[];//Set the list of solutions 3: Max number of iterations=6;
+
+<!-- b000224 | prose | pages [17] -->
+k←0; 4:
+
+<!-- b000225 | prose | pages [17] -->
+5: while (k<Max number of iterations) 6: if no optimal solution to the equation then 7: adjust the constraints appropriately;
+
+<!-- b000226 | prose | pages [17] -->
+8: else figure out the optimal solution(𝑥11, 𝑥12. . . 𝑥24, 𝑥25); 9:
+
+<!-- b000227 | prose | pages [17] -->
+5 5 RSI←∑ ;RSI←∑ 𝜔1𝑖𝑥1𝑖 𝜔2𝑖𝑥2𝑖 ; 𝑖=1 𝑖=1 10:
+
+<!-- b000228 | prose | pages [17] -->
+IOI[k]←100 × √(𝐷𝑆𝐼−0)2 + (𝑅𝑆𝐼−1)2; 11:
+
+<!-- b000229 | prose | pages [17] -->
+change 𝑃1,𝑃2 and 𝑃3 for different dimensions ; 12:
+
+<!-- b000230 | prose | pages [17] -->
+13: k++;
+
+<!-- b000231 | furniture | pages [18] -->
+Team # 2308000
+
+<!-- b000232 | furniture | pages [18] -->
+P a g e 1 8 o f 2 5
+
+<!-- b000233 | prose | pages [18] -->
+14: end if 15: end while
+
+<!-- b000234 | prose | pages [18] -->
+IOI𝑜𝑝𝑡𝑖𝑚𝑎𝑙←min(IOI);//Obtain the optimal intervention strategies 16:
+
+<!-- b000235 | prose | pages [18] -->
+return IOI𝑜𝑝𝑡𝑖𝑚𝑎𝑙; 17:
+
+<!-- b000236 | prose | pages [18] -->
+Further, we obtain the IOI of Chengdu and Jintang County under the above 6 different intervention strategies. Through mapping the bubble chart of IOI (IOI value as small as possi- ble, figure10), we can obtain what kind of the optimization of regional light pollution more comprehensive intervention strategy, and get the optimal IOI. For Chengdu, the social inter- vention strategy is better, while for Jintang County, the economic intervention strategy is bet- ter.
+
+<!-- b000237 | prose | pages [18] -->
+More specifically, Chengdu's priorities from high to low are Society, Ecology & Health, Economy while Jintang's priorities are Economy ,Ecology & Health, and Society in descending order.
+
+<!-- b000238 | prose | pages [18] -->
+100
+
+<!-- b000239 | prose | pages [18] -->
+95 93.45 91.31 90 89.74 88.34 86.17 85 83.06 80 79.12 75 71.97 71.55 70.73 70 69.98 66.67 65
+
+<!-- b000240 | prose | pages [18] -->
+60 0 1 2 3 4 5 6 7 Chengdu Jintang
+
+<!-- b000241 | caption | pages [18] -->
+Figure 10: the bubble chart of IOI
+
+<!-- b000242 | caption | pages [18] -->
+Table 5: The results of goal programming
+
+<!-- b000243 | prose | pages [18] -->
+Second grade in- PD(𝒙𝟏𝟏) ALI(𝒙𝟏𝟐) QPLE(𝒙𝟏𝟑) GR(𝒙𝟏𝟒) PVPI(𝒙𝟏𝟓) dexes Chengdu 2506.81 143.45 1513985 37.76 3.63 Jintang 822.64 101.61 62496 1.81 0.13 Second grade in- NTA(𝒙𝟐𝟏) OPNM(𝒙𝟐𝟐) GGE(𝒙𝟐𝟑) BIO(𝒙𝟐𝟒) TCLP(𝒙𝟐𝟓) dexes Chengdu 1.56 2.42 81.15 76.87 41.98 Jintang 0.93 0.09 7.63 5.91 5.41
+
+<!-- b000244 | prose | pages [18, 19] -->
+We obtain the optimal value of the second-level index (Table 5), DSI and RSI by solving the objective programming. Using DSI and RSI as coordinates to draw on GE matrix graph, the optimization effect after intervention strategy can be intuitively seen. We combine GE ma- trix to discuss the corresponding intervention strategies for two sites respectively.
+
+<!-- b000245 | furniture | pages [19] -->
+Team # 2308000
+
+<!-- b000246 | furniture | pages [19] -->
+P a g e 1 9 o f 2 5
+
+<!-- b000248 | caption | pages [19] -->
+Figure 11: The optimal results in GE matrix diagram
+
+<!-- b000249 | prose | pages [19] -->
+a) Chengdu Analysis: As for the light pollution risk intervention in Chengdu, we focus on the social dimension, respectively constraining the population density and the number of lamps, and controlling the night traffic and the city. At the same time, the ecological diversity of birds, which are seriously damaged by light pollution, should be maintained, and human health should be paid attention to. The economic constraint is relatively loose, mainly try to maintain the power supply and the normal operation of the night market.
+
+<!-- b000250 | prose | pages [19] -->
+GE matrix can reflect the expected result after we implement intervention strategy mac- roscopically. The demand index RSI for artificial light in the city is slightly reduced while the light pollution level is greatly improved. After the implementation of the intervention strategy, the light pollution risk index of Chengdu is expected to reach Grade A.
+
+<!-- b000251 | prose | pages [19] -->
+We use the percentage bar chart (Figure 12) to compare some important secondary indi- cators before and after optimization. Interventions are specifically proposed based on the op- timization results in Table 5.
+
+<!-- b000252 | prose | pages [19] -->
+Intervention strategies:
+
+<!-- b000253 | prose | pages [19] -->
+ ALI is required to be reduced by 30% for significant optimization effect.
+
+<!-- b000254 | prose | pages [19] -->
+ Strengthen traffic control and strictly control the number of traffic accidents at night.
+
+<!-- b000255 | prose | pages [19] -->
+ Optimize the urban lighting system planning, according to the population density and lighting demand degree, divide strong main lighting area and weak lighting area.
+
+<!-- b000256 | prose | pages [19] -->
+ Reduce the brightness of neon lights and LED screens, and try to use monochromatic light to reduce the clutter caused by colored lights.
+
+<!-- b000257 | prose | pages [19] -->
+ Public lighting systems minimize the impact on the interior of residential buildings, reducing the medical costs of light pollution-related diseases (TCLP) by 20 percent.
+
+<!-- b000258 | prose | pages [19] -->
+ Establish a sound legal system to set standards for the control and treatment of light pollution.
+
+<!-- b000259 | prose | pages [19] -->
+ Limit the intensity of light in the city's upper air to reduce the impact on aerial animals.
+
+<!-- b000260 | prose | pages [19] -->
+ Promote knowledge about light pollution and provide residents with environmental awareness and initiative.
+
+<!-- b000261 | prose | pages [19, 20] -->
+The results of the priority-based programming model can be used as a reference for the goals to be achieved in each field.
+
+<!-- b000262 | furniture | pages [20] -->
+Team # 2308000
+
+<!-- b000263 | furniture | pages [20] -->
+P a g e 2 0 o f 2 5
+
+<!-- b000265 | prose | pages [20] -->
+b) Jintang Analysis: For the light pollution risk intervention in Jintang County, we focus on the eco- nomic dimension. Adjust the industrial structure, especially the expansion industry that con- sumes a lot of artificial light. The profit of the output value of the photovoltaic industry is also strictly limited. Ecologically restrain the energy dissipation caused by artificial light, which is mainly greenhouse gases, and protect the biodiversity. In the social dimension, our constraints are looser in order to maintain relative stability.
+
+<!-- b000266 | prose | pages [20] -->
+GE matrix can reflect the expected result after we implement intervention strategy mac- roscopically. The DSI of light pollution in Jintang County, a suburb, can be reduced from 0.726 to 0.554.IOI decreased by 17.81%. After the implementation of the intervention strategy, the potential risk of light pollution in Jintang County has been improved and is expected to reach Grade B.
+
+<!-- b000267 | prose | pages [20] -->
+We use the percentage bar chart (Figure 12) to compare some important secondary indi- cators before and after optimization. Interventions are specifically proposed based on the op- timization results in Table 5.
+
+<!-- b000268 | prose | pages [20] -->
+Intervention strategies:
+
+<!-- b000269 | prose | pages [20] -->
+ Control the opening hours of night services and night markets.
+
+<!-- b000270 | prose | pages [20] -->
+ Limit PV enterprise output value (PVPI) profit reduction by 20%.
+
+<!-- b000271 | prose | pages [20] -->
+ Focus on protecting birds in rural areas that are severely affected by light pollution.
+
+<!-- b000272 | prose | pages [20] -->
+ The adoption of new, more energy efficient light sources will reduce greenhouse gas emissions from the manufacture of light sources by 15%.
+
+<!-- b000273 | prose | pages [20] -->
+The results of the priority-based programming model can be used as a reference for the goals to be achieved in each field.
+
+<!-- b000274 | caption | pages [20] -->
+Figure 12: Percentage histogram
+
+<!-- b000275 | heading | pages [20] -->
+6 Sensitivity and robustness analysis
+
+<!-- b000276 | prose | pages [20] -->
+The statistics obtained in reality are often inaccurate, and our model inputs may have some biases. These biases may affect the results of our model. Therefore, we conducted sensi- tivity analysis for the light pollution intervention strategy model.
+
+<!-- b000277 | prose | pages [20] -->
+We set appropriate step sizes respectively to change the parameters of constraint condi- tions of the light pollution intervention planning model. Solve the models and evaluate the IOI value of each model. The results of sensitivity analysis are shown in line figure 13.
+
+<!-- b000278 | furniture | pages [21] -->
+Team # 2308000
+
+<!-- b000279 | furniture | pages [21] -->
+P a g e 2 1 o f 2 5
+
+<!-- b000280 | prose | pages [21] -->
+Chengdu Step size: 0.002 Step size: 2
+
+<!-- b000281 | prose | pages [21] -->
+(a) (b)
+
+<!-- b000282 | prose | pages [21] -->
+Step size: 0.01 Step size: 0.1
+
+<!-- b000283 | prose | pages [21] -->
+Jintang
+
+<!-- b000284 | prose | pages [21] -->
+(c) (d)
+
+<!-- b000285 | caption | pages [21] -->
+Figure 13: Sensitivity analysis
+
+<!-- b000286 | prose | pages [21] -->
+The above figure shows the sensitivity of four parameters of target planning for light pol- lution intervention in Chengdu and Jintang respectively. It can be seen that the inflection point occurs when the parameter values in Figure a,b and c are 0.6,192 and 0.09 respectively. After the inflection point, the output IOI value of the model tends to be stable with the change of parameters. It is worth mentioning that the parameters we selected in goal programming in 4.1 are in a stable interval. IOI value in Figure d fluctuates slightly around 66.67, indicating that this parameter is not sensitive. In addition, we found that the parameters in Figure (a) and Figure (c) were significantly negatively correlated with IOI to some extent, and the IOI decreased by 13.4% and 11.1% in (0, 6 × 10−4 ) and (0.05, 0.09) respectively. Therefore, the above two parameters need to be reasonably controlled in the actual intervention model.
+
+<!-- b000287 | caption | pages [21] -->
+Table 7: the mean absolute percentage error
+
+<!-- b000288 | prose | pages [21] -->
+MAPE(%)
+
+<!-- b000289 | heading | pages [21] -->
+Model robustness
+
+<!-- b000290 | prose | pages [21] -->
+< 𝟏𝟎 High robustness 𝟏𝟎−𝟐𝟎 Good robustness 𝟐𝟎−𝟓𝟎 Reasonable robustness > 𝟓𝟎 Weak robustness
+
+<!-- b000291 | prose | pages [21] -->
+Finally, we took inspiration from MAPE, a predictive evaluation indicator, and intro- duced MAPE to test the robustness of the model. MAPE stands for mean absolute percentage error, which reflects the robustness of the model. The MAPE criteria used to judge the model are shown in Table x. We calculated the MAPE of each parameter's change to IOI within the stable range. Select the maximum MAPE for the model's MAPE. The MAPE of Chengdu in- tervention planning model was 1.5%, and that of Jintang intervention planning model was 3.0%.According to Table 7, the goal planning of our intervention strategy is highly robust.
+
+<!-- b000292 | furniture | pages [22] -->
+Team # 2308000
+
+<!-- b000293 | furniture | pages [22] -->
+P a g e 2 2 o f 2 5
+
+<!-- b000294 | heading | pages [22] -->
+7 Model Evaluation and Further Discussion
+
+<!-- b000295 | heading | pages [22] -->
+7.1 Strengths
+
+<!-- b000296 | prose | pages [22] -->
+（1） We introduce GE matrix to measure the risk level of light pollution. Establish mul- tiple objective indicators from the two dimensions of benefit and harm, and obtain the weight of each index by using the projection pursuit method to conduct a com- prehensive evaluation of light pollution. （2） The goal programming model can flexibly adjust the priority. The introduction of priority factor can arrange the primary and secondary order for several objectives to achieve different optimization effects. Therefore, decision-makers can choose the policy with the best optimization effect according to different emphases.
+
+<!-- b000297 | heading | pages [22] -->
+7.2 Weaknesses
+
+<!-- b000298 | prose | pages [22] -->
+（1） We offer intervention strategies that do not take into account the costs of imple- mentation. When the government takes specific intervention measures, it often needs to pay a certain cost, such as replacing the old lighting lamps with new en- ergy-saving lamps and cut-off lamps, and the government needs to invest money to buy these lamps. Therefore, better intervention strategies should consider the relationship between the costs and benefits of inputs. （2） Lack of more representative indicators. Because the research on light pollution has not established a unified standard, the world's specific data collection on light pol- lution is insufficient, the existing data reflect the degree of light pollution is not comprehensive.
+
+<!-- b000299 | furniture | pages [23] -->
+Team # 2308000
+
+<!-- b000300 | prose | pages [23] -->
+P a g e
+
+<!-- b000301 | furniture | pages [23] -->
+2
+
+<!-- b000302 | furniture | pages [23] -->
+3
+
+<!-- b000303 | prose | pages [23] -->
+o f
+
+<!-- b000304 | furniture | pages [23] -->
+2
+
+<!-- b000305 | furniture | pages [23] -->
+5
+
+<!-- b000306 | furniture | pages [24] -->
+Team # 2308000
+
+<!-- b000307 | furniture | pages [24] -->
+P a g e 2 4 o f 2 5
+
+<!-- b000308 | heading | pages [24] -->
+References
+
+<!-- b000309 | references | pages [24] -->
+[1] Xiao D S,Yang S. A review of population spatial distribution based on nighttime
+
+<!-- b000310 | references | pages [24] -->
+light data［J］.Remote Sensing for Land and Resources,2019,31( 3) : 10－19．
+
+<!-- b000311 | references | pages [24] -->
+[2] Longcore T, Rich C. Ecological light pollution[J]. Frontiers in Ecology and the Envi-
+
+<!-- b000312 | references | pages [24] -->
+ronment, 2004, 2(4): 191-198.
+
+<!-- b000313 | references | pages [24] -->
+[3] Hao Ying, Li Wenjun, Zhang Peng, Zhang Jinyan, Xu Yang, &Sun Hongbo (2014).
+
+<!-- b000314 | references | pages [24] -->
+A review of light pollution research at home and abroad. China's population·resources and
+
+<!-- b000315 | references | pages [24] -->
+environment(S1), 3.
+
+<!-- b000316 | references | pages [24] -->
+[4] Gallaway, T, Olsen, R. N, & Mitchell, D. M. (2010). The economics of global light
+
+<!-- b000317 | references | pages [24] -->
+pollution. Ecological Economics, 69 (3), 658-665.
+
+<!-- b000318 | references | pages [24] -->
+[5] Pawson, S. M., & Bader, M. (2014). Led lighting increases the ecological impact of
+
+<!-- b000319 | references | pages [24] -->
+light pollution irresp.
+
+<!-- b000320 | references | pages [24] -->
+[6] Liao Shunbao, & ze-hui li. (2004). The relationship between population distribution
+
+<!-- b000321 | references | pages [24] -->
+and land use and the spatial experiment of population data in Sichuan province. Resources
+
+<!-- b000322 | references | pages [24] -->
+and environment of the Yangtze River basin, 13(6) , 557-561.
+
+<!-- b000323 | references | pages [24] -->
+[7] Wang aiying, Shi gang. Light pollution in urban nightscape lighting. Urban Planning
+
+<!-- b000324 | references | pages [24] -->
+(4) , 95-96.
+
+<!-- b000325 | references | pages [24] -->
+[8] Hong Yu. (2018) . Street lamp and urban society: A study centered on Chengdu
+
+<!-- b000326 | references | pages [24] -->
+Street Lamp Management Institute (1939-1949) . Doctoral dis-sertation, Sichuan Normal
+
+<!-- b000327 | references | pages [24] -->
+University.
+
+<!-- b000328 | references | pages [24] -->
+[9] List of continents by GDP (nominal). (2020, 2). Retrieved from Wikipedia:
+
+<!-- b000329 | references | pages [24] -->
+https://en.wikipedia.org/wiki/List_of_continents_by_GDP_(nominal)
+
+<!-- b000330 | references | pages [24] -->
+[10] Light pollution statistics. (2022). Retrieved from Wikipedia: https://www.lightpol-
+
+<!-- b000331 | references | pages [24] -->
+lutionmap.info/LP_Stats/
+
+<!-- b000332 | references | pages [24] -->
+[11] Light pollution .   (2022).   Retrieved from encyclopedia article by TheFreeDic-
+
+<!-- b000333 | references | pages [24] -->
+tionary
+
+<!-- b000334 | furniture | pages [25] -->
+Team # 2308000
+
+<!-- b000335 | furniture | pages [25] -->
+P a g e 2 5 o f 2 5
+
+<!-- b000336 | heading | pages [25] -->
+Appendices
+
+<!-- b000337 | prose | pages [25] -->
+First Grade Second Grade Index Unit System Effect Index Population/km2 Population density (PD) R + Number of traffic accidents at night (NTA) D − Society The average light intensity (ALI) million lux R + Quantity of public lighting equipment (QPLE) thousand R + The growth rate of GDP (GR) billion per year R + The operating profit of the night market billion per year D − Economy (OPNM) Production value of photovoltaic industry billion per year R + (PVPI) The expense of greenhouse gas emissions billion D − (GGE) Ecology & Health The loss of biodiversity (BIO) billion D − The treatment caused by light pollution (TCLP) billion D −
+
+<!-- b000338 | prose | pages [25] -->
+DSI and RSI results for 40 countries using the projection pursuit assessment model:
+
+<!-- b000339 | prose | pages [25] -->
+Country DSI RSI Country DSI RSI Afghanistan 0.412 0.785 Lebanon 0.886 0.794 Argentina 0.261 0.423 Malaysia 0.854 0.717 Australia 0.312 0.784 Mexico 0.621 0.505 Bhutan 0.884 0.745 New Zealand 0.300 0.647 Brazil 0.801 0.812 Nigeria 0.438 0.644 Canada 0.312 0.948 North Korea 0.446 0.598 Chile 0.644 0.721 Norway 0.300 0.761 China 0.771 0.743 Oman 0.866 0.735 Denmark 0.446 0.902 Pakistan 0.871 0.632 Egypt 0.700 0.806 Portugal 0.808 0.759 Finland 0.211 0.841 Romania 0.396 0.487 France 0.401 0.695 Russia 0.899 0.902 Germany 0.331 0.774 South Korea 0.926 0.761 Greece 0.294 0.861 Spain 0.523 0.844 India 0.924 0.941 Thailand 0.716 0.649 Iraq 0.841 0.753 Tonga 0.276 0.335 Ireland 0.774 0.641 Ukraine 0.622 0.617 Italy 0.521 0.861 United States 0.796 0.859 Japan 0.746 0.896 Vietnam 0.914 0.861 Jordan 0.209 0.417 Yemen 0.197 0.498

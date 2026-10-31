@@ -1,0 +1,275 @@
+Summary
+
+Many conventional rectangular baking pans have a problem that they bake the corners of the batter faster than the rest of the pan. Circular baking pans eliminate this problem, but take up more space in the oven. We propose a solution that given weights for baking consistency and space eﬃciency based on the importance of each will provide the optimal baking pan shape. We have come up with an algorithm for sorting the pans of area A eﬀectively and formed a model that describes the heat ﬂow into the pan as well as the baking mix itself. The model we developed was based oﬀreal-life data that we gathered by baking brownies using careful measurement. We determined several physical properties, such as speciﬁc heat, density, and heat transfer coeﬃcients for brownies directly through experimentation. We compared our results with previous studies on the properties of cake-like foods and found that they were similar. Then we ran the model using these coeﬃcients and a variety of diﬀerent plausible baking parameters, including temperature and baking time.
+
+We also developed a technique for optimally arranging polygonal shaped pans in the oven for any length- to-width ratio to maximize the number of pans that can ﬁt. For polygons, we considered both lattice arrangements and where applicable, tessellating patterns. The algorithm for packing also takes into account the need for airﬂow between the pans for overall even cooking, which means that the pans are not packed directly next to each other causing uneven heating on the pans located near the sides of the oven. The overall eﬃciency of a pan shape was calculated using the following equation (where p is a weighting factor):
+
+Efftotal = p · Effspace + (1 −p) · Effheating
+
+Using the algorithm we found that the type of polygon needed to eﬃciently use the oven space while heating the pan perimeter was greatly dependent on the dimensions of the oven for weighting values between 0.2-1.0. (Below 0.2, the circular pan is very heavily favored regardless of the oven dimensions.) We also found that adding or subtracting a little bit from the width or length of the oven can have a drastic eﬀect on the spacing eﬃciency ratio. When we have maximally high eﬃciency, we call the width and length of the pan ”magic numbers.”
+
+For example, if the oven dimensions (width by length) are 30” x 40”, with two racks, if the area of a pan is set to be 81 in2, and if space eﬃciency and baking consistency are given equal weight, we found that the optimal shape is a octagon. Our algorithm is able to compute the optimal shape for any width, length, pan area, and weighting factors using a variety of baking parameters.
+
+Polythermal Bakeware
+
+Stop Worrying About Pans that Unevenly Bake Food and Fit Poorly in Your Oven.
+
+At Polythermal Bakeware we are committed to finding you the optimal baking pans using our newly developed mathematical computer models. Using spatial and thermodynamic models of your oven, we are able to help you select the types of pans that maximize number of pans that can fit in the oven and even distribution of heat for the pan. We have a wide variety of polygonal shaped pans for you to choose from, all made from the highest grade stainless steel.
+
+Our algorithm takes the dimensions of your oven, the area of pan that you want, and how much you would prefer even heating over the number of pans you can fit on a rack to give you the most efficient designed pan possible for your needs.  The algorithm utilizes a heat diffusion model of the pan to rate each shape and size based on the pan’s ability to heat all points on the perimeter of the pan to the same temperature.  Spatially, our algorithm uses an efficiency scale based upon how much oven rack area can be utilized by the pans.  By combining these two efficiencies and weighting them based on the baker’s preference for either spatial efficiency and even heating.  Each customer is unique and we can configure your baking pan for you specific kitchen setup.
+
+Where helping you choose the most efficient baking pan design to meet your needs is our goal.
+
+Cooking Up the Optimal Baking Algorithm
+
+Introduction to Problem
+
+The problem we chose to solve was how do we create the best brownie pan with edges that are heated evenly, but also ﬁt as many pans as possible on a rack. Obviously a square is most eﬃcient in terms of space, but is found lacking in heating eﬃciency because the corners are likely to be burnt in comparison with the rest of the edges. A circle shaped pan solves this problem, but is not as eﬃcient space-wise. If we assume each pan has a set area of A, we can optimize what shape will work best in a oven that has a width-length ratio of W/L.
+
+Assumptions and Parameters
+
+Assumptions and Justiﬁcations
+
+In the problem we made some assumptions; they are as follows:
+
+1. The oven has only two racks, which are evenly spaced.
+
+2. The oven is pre-heated to the desired temperature when the brownies are placed in the oven. This insures that the oven temperature is constant in our model, and does not ”ramp up” during the beginning of the cooking.
+
+3. The oven can be considered a heat reservoir in comparison to any batch of brownies. An oven should be insulated and should not lose signiﬁcant heat as it is designed to stay at a stable temperature.
+
+4. The pan heats up to the oven temperature fast and maintains its temperature, so for the brownie batter, it can be considered a heat reservoir at the same temperature as the oven.
+
+5. In relation to the brownie, the pan is the primary heating agent. This is especially true around the edges where the air is in contact minimally with the surface area of the edge. The hot air above the brownie pan is a secondary heating agent, which we will incorporate into our model as well.
+
+6. The bottom of any pan is ﬂat, and no pans under 36 square inches will appear in our oven. Flat pans will provide more brownies and will be easier to store. Anything smaller than 6”x6” will be an ineﬃcient use of time and will be a hassle when baking.
+
+7. We also assume that the baker will rotate the racks when cooking in order to cook each batch evenly.
+
+Each individual oven has its own hot-spots, and it is up to each baker to ﬁgure them out and cook accordingly to his tools.
+
+8. The mass, density and volume taken up by the brownies are constant. This in reality is not usually the case, but the expansion is generally vertical, and should therefore not impact the horizontal heat distribution. Additionally, the change in density, while noticeable, is not signiﬁcant enough to be worth incorporating into our model.
+
+9. The consistency of the brownies is uniform, and does not change signiﬁcantly as the brownies are baked.
+
+In particular, this means that we are not accounting for the evaporation of water for the brownies.
+
+Again, this is not usually true, but for our purposes, we are trying to measure the total amount of heat absorbed, and this is easier to do if we assume the consistency does not change over time. After all, the goal is to ensure that the brownies are evenly cooked, and brownies that get dried out because of water evaporation is just as much of a concern as brownies that are over- or under-heated.
+
+Parameters
+
+The ﬁrst step towards building our model was setting up some parameters. We knew that the area of the pan (of any shape) had an area of A. The oven itself was rectangular and had a width-length ratio of W/L. There was also a weighting criteria p and 1 −p, where 0 ≤p ≤1. The number p “grades” the importance of the space maximization so that if p = 1, we only care about how many brownies we cook and not about how well we cook them. If p = 0 then the even cooking of brownies is the priority.
+
+Since our focus was on regular polygons, we also examined the parameter n for the number of sides of a regular polygon. In this study, the apothem, denoted a, and the radius, denoted r are important. The angles of the corners of the polygon, are denoted as θ. Our goal is to use as much of the oven area, W · L, with a pan of area A having n sides, while still cooking the edges eﬃciently.
+
+The heating model itself has several parameters. One aspect of the model, which we will go into more detail later, is the geometry of the pan, which has several parameters, like the number of sides and the area. We also needed physical properties of the brownie batter, the pan, and the air in the oven to use in our model. These parameters were density, ρ, speciﬁc heat, c, and thermal conductivity, k of the brownie batter. There were also two heat transfer coeﬃcients: one between the pan and the batter, and one between the batter and the hot air in the oven.
+
+Finally there are various baking parameters, such as the temperature of the oven, the initial ”room temperature” of the batter, and the length of time the brownies are to be cooked, which we needed to considered.
+
+Analysis of the Problem
+
+Hypotheses
+
+We came up with a few diﬀerent hypotheses for how to optimize heating and space eﬃciency individually. First of all, we knew that shapes that had fewer sides would be the most eﬃcient at using area. Squares and regular hexagons are unique in this category because they can tessellate (triangles were not considered due to poor corner heating). However, perfect space eﬃciency means no heat ﬂow and poor cooking of the brownie, so we would need to space out these tessellation patterns. We hypothesized that using a lattice layout for the shapes would be the most eﬃcient packing pattern.
+
+Our other hypothesis was that since circles are the most eﬃcient at even heating shapes with many sides would also be better than a square at heating the edges evenly. Thus, we believe that either a hexagon or an octagon will give us the best shape overall if each criteria is weighed evenly.
+
+The Model
+
+We divided our model into two main components: packing and heating.
+
+Space Optimization
+
+The algorithm for spatial optimization utilized lattice packing as shown in Figure 1 and a tessellating pattern for certain cases with squares and hexagons as shown in Figure 2. The code for the algorithm is shown in the appendix. Regular polygons with multiple of two sides were used for two main reasons. First regular polygons can be packed into regular patterns that allow for more eﬃcient use of oven space. The other reason for using regular polygons is that a square will pack more eﬃciently than a circle, but the square has worst heat distribution. However, as you add more sides to the polygon, it comes closer to becoming a circle which means that you can get the some of the properties of eﬃcient polygon lattice packing along with more even heating for higher n-sided polygons. The lattice packing was incorporated into the packing strategy for a couple reasons. Most importantly since we are assuming a rectangular shaped oven, most of the time the lattice packing procedure will be most eﬃcient, and the cases where it is not can be handled with the tessellating packing strategy. Additionally, without airﬂow between the pans, the pans towards the sides of the oven will heat up faster than the ones in the middle of the oven. It was important that our packing strategy took into account the need for regular spaces between the pans.
+
+The lattice packing algorithm calculates twice the apothem for regular polygons with multiple of 4 sides, with the exception of squares, and then checked to see how many polygons could be ﬁt into a particular length and width shaped oven. For even sided polygons that did not have multiple of 4 sides, the algorithm calculated twice the radius and twice the apothem to get the dimensions of the rectangle they would inscribe, then the algorithm calculated how many would ﬁt in the oven. One thing to note is that for the case of even non-multiple-of-4 sided polygons, the algorithm checks both possible orientations of the polygons in the oven, one with the parallel sides of the polygons spanning the width of the oven and the other with the parallel sides spanning the length. This was done to insure that the maximum number of polygons could be ﬁt into the lattice structured layout. For squares, our algorithm needed to account for there being no natural spaces between adjacent squares. To accomplish this, when the maximum number of squares that could ﬁt in the oven was calculated, the area of the square was inﬂated by 8%. This meant that while the squares had area A, for ﬁnding the maximum number of squares that would ﬁt in the oven, the area used in Equation 1 was 1.08A, where N is the number of polygons that can be ﬁt on the oven rack.
+
+Effspace = N · A (1) L · W This allowed for there to be space between the squares when they were put into the oven to insure airﬂow between the baking pans. For hexagons, a tessellating algorithm was used to check if the lattice packing method was the most eﬃcient. With the hexagonal tessellation seen in Figure 2 the algorithm again had to account for the need for space between the hexagons for airﬂow considerations. Thus, for the purpose of calculating how many shapes could ﬁt in the oven, the area of the shape was increased to 1.08A. This algorithm also checked to see if orienting the tessellation along the width or length of the oven would ﬁt more hexagons. The tessellating orientation was not tried for shapes with higher number of sides because after octagons, the higher order polygons become close enough to circles that the lattice packing method is the more eﬃcient for packing.
+
+Heating of Polygons
+
+There are two primary equations governing our heating model. The ﬁrst is Newton’s Law of Heating and Cooling, which governs the rate at which the brownie batter is heated in the pan. The second is the diﬀusion equation, which governs he rate at which the heat diﬀuses throughout the batter. Since the system is too diﬃcult to solve analytically, we will do a numerical approximation of the system. We stored the temperatures at various points in the pan, spaced evenly, ran a simulation to calculate how the temperatures at various points change over time. The diﬀusion equation is straightforward, and we use a standard forward-time, centered-space approximation to simulate its eﬀects. We assumed that the area at the edge of the pan is aﬀected most immediately by Newton’s Law, and apply it to the volume within some ∆w of the edge of the pan. More precisely, we took all the data points within this ∆w, calculated the volume ∆V around each point, and then apply Newton’s Law based on a fraction of the surface area, ∆A, of the pan bordering this small volume. We did not neglect the heating of the brownies from the air, and use Newton’s Law in the same way to simulate the heating of the top of the brownies from the hot air in the oven. For a given data point, therefore, the full heating equation is:
+
+∂T ∂t = K cρ∇2T + hpan ∆V (T −Tpan) + hair ∆A ∆A ∆V (T −Tair) (2) cρ cρ
+
+Determining the surface area of each data point for heating
+
+One of the most diﬃcult problems to solve for our heating model was determining how much surface area each small volume of brownie batter had with the pan. We initially considered just drawing the shape of the pan over a grid and determining how much area fell into each grid space. The problem with this approach was that some edge squares only had a little bit of surface area associated with them simply because of how the grid fell, not because of any characteristics of the geometry of the pan. Unlike most of the pan edge, these squares would fail to rise to the oven temperature when we tested the simulation, incorrectly giving an appearance of inconsistent cooking.
+
+Our next approach was to simply average the area over all the edge squares, so that the heat along all squares on an edge would be uniformly distributed. However, we realized this would also distribute the heat evenly over all the corners, defeating the purpose of the simulation. Our ﬁnal solution was a hybrid of sorts; we distributed the surface area evenly over the edges, but assigned certain data points to be ”corners,” which were higher than the other points. For a square, the corners were weighted to have twice the adjacent surface area as the other edge points. For a circle, there are no corners, so we knew the limit of this ratio had to approach one as the number of sides went to inﬁnity. We also knew that what fundamentally changed the local surface area at the corners is the angle of each vertex, which can be found geometrically:
+
+θ = n −2 π (3) n What we really needed, then was a formula that evaluated to 2 when θ = π/2 = 90◦, and approached 1 as θ approached π = 180◦. Ideally, this formula would also drop oﬀquickly as θ moves away from 90◦, but would only gradually approach 1 as θ approaches 180◦. A formula which met these requirements is as follows:
+
+2 ) = sin(n −2 A = 2 −sin(θ −π π −π 2 ) (4) n This is the weight which we gave the surface area adjacent to each corner data point, if the surface area adjacent to an edge data point was 1. To calculate the actual surface area, we just calculated the total surface area of the pan, and then multiply every weight by this total surface area divided by the sum of the unadjusted weights.
+
+Heating Eﬃciency Model
+
+To determine our heating eﬃciency, we assigned certain data points to be ”corners” (the same ones which had the higher surface area), and others to be ”edges”. We then measured the average temperature over the entire simulation time at the corners, and at the edges. These average temperatures should be indicative of the heat energy absorbed per unit volume at diﬀerent point in the pan. Our eﬃciency was calculated by dividing the average temperature at the edges by the average temperature at the corners. This method of calculating eﬃciency has two convenient properties: if the edges are not heated at all, or insigniﬁcantly compared to the heat at the corners, then the eﬃciency will drop to zero. However, if the edges and corners are heated evenly, the eﬃciency will be one. This gives us a good zero-to-one normalized scale to compare with our space eﬃciency.
+
+Final Algorithm for Eﬃciency
+
+Our ﬁnal algorithm to determine the n-sided polygon that ﬁt in an oven of width W and length L used a weighting factor p to weight whether spatial eﬃciency or even heating eﬃciency was more desired. The equation used for this ﬁnal algorithm was:
+
+Efftotal = p · Effspace + (1 −p) · Effheating (5)
+
+Determining Parameters by Experimentation
+
+Procedures
+
+As part of this project we needed to determine a few constants for use in the thermodynamic models of the pans. Using a standard electric oven, we baked two batches of brownies to determine the density, thermal conductivity, speciﬁc heat, and heat transfer coeﬃcient for the brownies. We determined these parameters by monitoring the temperature of the brownie mix in a stainless steel pan with a K-Type thermocouple. For the ﬁrst experiment, we made the brownie and measured the initial temperature, volume, and mass. During the ﬁfty minute cooking period at 350◦C, the temperature at the center and 1cm from the edge was measured at increments of about 10 minutes. At 20 minutes, the mass and volume of the brownie mix was measured. Unfortunately, the thermal measurements required that the oven be opened multiple times, which slightly cooled the oven and the pan.
+
+After baking, a calorimetry experiment was done using the set up as shown in Figure 4 using Styrofoam cups. A small amount of cooked brownie was put into the calorimeter with a set mass of water and the water-brownie mix was stirred for 5 minutes until the temperature equilibrated. The equation to calculate the speciﬁc heat is q = cm∆T. Using the known mass m, speciﬁc heat c and change in temperature ∆T for the water, the energy released q by the brownie can be calculated. Then based on the mass and temperature change for the brownie, the speciﬁc heat of brownie can be calculated. The calculated speciﬁc heat of the brownie was determined to be about 2.0 J/g◦C.
+
+A second baking experiment was done to monitor the brownies baking in the oven without the need to open the oven door to take temperature readings. Three thermocouples were threaded through some heat shielded tubing and then placed in the center, midway to the edge, and at the edge in the brownie mix. The purpose of this experiment was to get more accurate data for the needed thermodynamic parameters. However, the heat from the surroundings of the oven traveled through the wires to the thermistor causing inﬂated temperature measurements. For this reason the data was not used to reevaluate the constants obtained from the ﬁrst experiment.
+
+Heat Transfer Coeﬃcient Calculations
+
+Figures 5 and 6 show our data from the brownie experiment.
+
+Time (min) 0 10 20 30 40 50 Temperature (C) 22 72 99 102 104 116
+
+batter, and about 1cm from the edge of an 8” x 8” baking pan.
+
+Time (min) 0 10 20 30 40 50 Temperature (C) 22 56 85 97 104 104
+
+batter at the very center of an 8” x 8” baking pan.
+
+When inspecting the data gathered from our experiments, we found that at about 104◦C the batter reached a plateau, and did not rise signiﬁcantly after that. We hypothesized that this was because at this point water started boiling oﬀnear the surface, and reduced the temperature at the points we measured. In order to get an accurate value for the heat transfer coeﬃcient, we threw out the data points where the batter had reached 104◦C. This left us with three data points near the edge of the pan and four data points in the middle of the pan; not as many data points as would be preferable to minimize error, but enough to give us an order-of-magnitude estimate of our coeﬃcients as a starting point.
+
+We used the data collected at the edge of the pan to calculate a heat transfer coeﬃcient between the pan and the brownie mix. Since the temperature at this point should be dominated by the heat from the pan, we can assume for our purposes that our temperature data can be completely accounted for by heat transfer from the pan. The diﬀerential equation given by Newton’s Law of heating/cooling can be solved analytically for temperature.
+
+T(t) = TP an + (TRoom −TP an)e−h A V t (6) cρ
+
+The fraction A V is the ratio of surface area to volume. Another way of looking at this for a square pan is that it is the multiplicative inverse of the depth within the brownie batter for which the temperature is a characteristic value. We measured the temperature at a distance of approximately 1 cm from the pan edge, so it should be a characteristic of the temperature in the region extending up to 2 cm from the edge. We will therefore use 50.0 m−1 as the value of A V to calculate the heat transfer coeﬃcient between the pan and the brownies.
+
+Finally, we know the room temperature, the pan temperature, we have already calculated the speciﬁc heat of brownie batter, and we already measured the mass of the batter. After performing a least squares ﬁt on our data using these coeﬃcients and the equation above, we found that the heat transfer coeﬃcient W between the pan and the brownies is approximately 47 m2◦C .
+
+We use a similar method to measure the heat transfer coeﬃcient between the brownies and the air in the oven. For this we use the data collected in the center of the pan. Since this point is farthest from any of the edges of the pan, it is dominated by heat from the hot air above the pan. However in this case, A V is the multiplicative inverse of the depth of the measurement region under the surface. Since the distance of the probe under the surface was approximately 2 mm, the depth of the eﬀective measurement region is V is 250.0 m−1 All other parameters are the same as before including the temperature, since we 4mm, and A assumed that the oven and the pan are both the same temperature. Once again, we did a least squares ﬁt W and found that heat transfer coeﬃcient between the brownies and the air is approximately 8.8 m2◦C .
+
+Mass, Volume, and Density
+
+During the course of our experiments, we measured the mass and volume before, during, and after the baking process. Using mass and volume, we were able to also compute density. We found that the density of the uncooked batter was 1040kg/m3, but dropped to 840kg/m3 after 20 minutes of baking. The density did not drop signiﬁcantly more between the 20 minute mark and the end of the 50 minute baking process.
+
+In order to measure the density, we also had to measure the mass. We found that the batter lost some mass over the entire course of the baking process, roughly linearly with respect to time. The uncooked batter initially weighed 1.112 kg. After 20 minutes it dropped to 1.082 kg. By the end of the baking process the total mass was 1.038 kg. We believe that this loss of mass was due to water evaporating oﬀthe surface. So some of the change in density was due to the loss of mass, but most was due to the rising of the brownies.
+
+Although we found that the mass, volume, and density changed over time, we ultimately chose to keep them as constants in our model. This made the code simpler, and since we did not have time to take enough measurements to ensure that the relationships were, in fact, linear, we thought it would be better to just keep them as constants.
+
+Comparison with previous studies
+
+Baik et. al studied the properties of cupcakes and, like our study, measured their density and speciﬁc heat, and additionally determined their thermal conductivity, which we were not able to measure.[1] While cupcakes can have a slightly diﬀerent consistency than brownies, they are close enough to verify that our ﬁgures are on the right order of magnitude and the thermal conductivity should be a good order-of-magnitude starting point, so that we could calculate a thermal diﬀusivity for the batter. Baik et. al found that the density of uncooked batter was 803 kg/m3, and dropped to 236 kg/m3 after the batter was cooked. This is a lower density than we measured, and it dropped even more, but this is not unreasonable considering that cupcakes are generally less dense than brownies. They measured that the speciﬁc heat varied over the baking period from 2516 J/kg◦C to 2658 J/kg◦C, but stayed relatively constant. This is fairly consistent with our measured value of speciﬁc heat, 2000 J/kg◦C, which was a bit lower. Finally, they measured that thermal conductivity varied between 0.1064-0.2064 W/mK We started with thermal conductivities in these ranges, but found that to get results more like what we expected, a slightly larger thermal conductivity in the range of 0.3-0.4 W/mK was necessary.
+
+Reduction of physical constants to algorithm parameters
+
+In our algorithm we simpliﬁed the code by reducing the number of parameters. For diﬀusion, the fraction K cρ can be reduced to a single constant α. We found that the value of α that worked the best was 18.0×10−8m2/s, which was consistent with the order of magnitude of the parameters that we measured.
+
+h Similarly, for heating from the pan and the air, the fraction cρ can be reduced to a single parameter as well, which we called β for the pan to brownie heat transfer, and γ for the air to brownie heat transfer. We calculated them as follows:
+
+50W/(m2◦C) β = hpan 2000J/kg◦C × 1000kg/m3 = 2.5 × 10−5m/s = (7) cρ
+
+8W/(m2◦C) γ = hair 2000J/kg◦C × 1000kg/m3 = 4.0 × 10−6m/s cρ = (8)
+
+Results
+
+As we assumed, there was no one ideal shape to our model. Every optimal shaped hinged on the dimensions of the pan, the weighting factor, and the desired area of the pan. When we ran our algorithm, no one shape dominated every situation. Typically, for lower values of p the circle dominated, but as p approached 1, the square was most eﬃcient in just as many situations as the circle, followed closely by the hexagon. In general, to determine which shape would be most eﬃcient space-wise we must take “magic numbers” into account.
+
+Magic Numbers
+
+Magic numbers are the dimensions of the pan, W by L, that provide a local maximum in terms of spacing eﬃciency. For a regular polygon with the number of sides being a multiple of four, the formula for a magic number would be
+
+W = L = 2 · apothem[n] · k
+
+where k is a natural number. This means a W/L ratio of one would be ideal for these types of shapes. This is because these polygons have a length and width equal to the length of two of their apothems. It follows that the width and length of the pan should be an integer multiple in order to maximize eﬃciency. If these dimensions were slightly less than an integer multiple, we would be unable to ﬁt another row or column in the pan, thus creating a lot of unused space. This is why we call the dimensions magic numbers. It is because they are the most optimal local dimensions.
+
+For a polygon that has an even number of sides but is not divisible by four, the formula is a little diﬀerent. Without loss of generality, if r is the apothem and R is the radius:
+
+W = 2 · r · j (9)
+
+L = 2 · R · k (10)
+
+where j, k are a natural numbers. These types of polygons are diﬀerent because they are stacked side to side and corner to corner. The length from opposite corners is longer than the length from opposite sides, so that is why these have a diﬀerent equation for magic numbers.
+
+Optimization
+
+In order to get the overall eﬃciency, we must use the equation
+
+Eff = p N · A W · L + (1 −p) Emin (11) Emax To be clear, N is the number of shapes of area A that we can ﬁt into a W by L pan. It is natural to make the assumption that the percentage of area used would be a good grading scale for eﬃciency in area. It has the bounds from zero to one and has a wide range of values.
+
+The fraction Emin Emax is the ratio between the area on the edge that absorbed the least heat compared to the area on the edge that absorbed the most heat. We deﬁne this to be our grading criteria for heating because if ﬁts in the range from zero to one, and will directly compare how evenly the sides will be heated.
+
+Again, p is the weighting factor. The equation for eﬃciency has a maximum value of one, but no shape will satisfy that number. Hence we designed an algorithm that takes in the previous inputs and outputs the most eﬃcient shape. We have a packing algorithm that determines how many of one shape can ﬁt inside an area, and we used a least-squares estimation to ﬁnd an equation that approximates the data we get from our heating model. Using these two things we multiply by the weights and whichever shape has the highest eﬃciency is the one we determine is the best shape for the above conditions.
+
+Optimal Shapes
+
+After ﬁtting our heat model to an equation, we optimized space and heating with a variety of pan areas with diﬀerent weights. We tallied the number of ”hits” for each pan shape over all pan areas tested for a given choice of weights and obtained the following results:
+
+p 4 6 18 20 circle 0.00 0 0 1 0 6 0.10 0 0 1 1 5 0.20 1 0 1 1 4 0.30 2 0 1 0 4 0.40 2 1 1 0 3 0.50 2 2 0 0 3 0.60 2 2 0 0 3 0.70 2 2 0 0 3 0.80 2 2 0 0 3 0.90 2 2 0 0 3 1.00 6 1 0 0 0
+
+While it appears that circle seems to win most of the time, for certain areas this may not be the case.
+
+Eﬃciency
+
+Finally we see that no one shape can dominate over every circumstance. The optimal shape depends on the parameters given. Overall, the three most eﬃcient shapes under our optimization methods are the circle, square, and hexagon. Should our goal be to mass produce, we would want to have circular pans be our product. Otherwise tailoring our product to what the consumer desired would be ideal, as we could charge more for custom products. As far as producing the optimal shaped pan, it depends on the situation. However, given the situation we can always ﬁnd the best pan for it.
+
+Error/Sensitivity Analysis
+
+Since we have had an experiment as part of our paper, one must wonder how accurate our physical constants? In all likelihood they are subject to error, and we must know how much could we tweak these constants before our model becomes void? Let us make a list of what these parameters are:
+
+• Our three physical constants α, β, and γ
+
+• The maximum temperature of the pan
+
+• The height of the brownies being cooked
+
+• The time we cook the brownies
+
+• The area of the brownies
+
+• The shape (number of sides) of the brownie pans
+
+Varying the temperature in the pan did not vary our results signiﬁcantly. Our standard temperature was 200◦C and we the range of values we tested were from 100◦C to 300◦C, which were well beyond the standard normal baking temperatures. In this we discovered that the lower the temperature, the higher the eﬃciency. Over all the shapes we considered, there was a 3% diﬀerence between the eﬃciency of two temperature extremes in the worst case. Since we are dealing with eﬃciency ratios of > 80%, 3% cannot be ignored. However, the eﬃciency diﬀerence between the standard (200◦C) and our 300◦C is about 0.7% in the worst case which is signiﬁcantly better than the diﬀerence between 300◦C and 100◦C. Since we are reaching equilibrium quicker with the higher temperature, we can say that using our standard temperature is an accurate source of data.
+
+Next on the list is the variance of height in the brownie. We should expect that since we are evaluating the middle layer of the brownie that raising the height will take away from the contributions of the bottom of the pan and the top layer of air, making it a more accurate as the height increases. Our standard height was about 1.5 inches, or 0.04 meters. Lowering height raises eﬃciency, but that is because we need to take into account the heat from the bottom and top of pan, making our eﬃciency rating more inaccurate. The diﬀerence in eﬃciency between 1 inch and 6 inches for height was a signiﬁcant 5.5%, with around a 3% each way. Even if we go up to 2 inches our eﬃciency ratio decreases by 1.3%. Further analysis would tell us the ideal height to measure at.
+
+Now it is time to evaluate the baking time. As we might expect, if we lower the baking time the eﬃciency ratio decreases since there is not enough time for the middle to be heated up. If we run it too long however, every brownie reaches the saturation temperature and all eﬃciencies will be 1. We chose the middle ground of 30 minutes as our standard, which is not too diﬀerent from normal baking time, considering the temperature we chose. Varying the time to 50 minutes we get about a 5% diﬀerence, and lowering it 25 minutes has the same eﬀect. As far as any sources of error, this was perhaps our greatest contribution. Choosing a standard was hard, but we needed some sort of compromise between too long and too short and 30 minutes ﬁt the bill.
+
+As far as area goes, we were pretty consistent and had little error when modeling this. Since we naturally checked many areas, we can see that as area increases, the ratio of heat eﬃciency decreased proportional to the inverse of the root of the area. Since we checked pans about half the assumed area minimum and the equation still ﬁt, we need not worry about error changing when we assumed the pan size is less than our required minimum size. The same holds true for pans that have a meter of squared area. The oven still will heat according to our modeled equation. Little error shows up here.
+
+Considering what this project is asking for, we must see how changing the shape will change our heating eﬃciency. Our model shows what we would expect; a shape with more sides has higher eﬃciency. We deﬁne circles to have exactly an eﬃciency ratio of one, and other shapes we will have the ratio of the heating of the middle of a side and the heating of a corner of our shape. From that we see that a square will have worse eﬃciency as far as heating goes, and in general will be no less than 80%, which is what is to be expected. Since again we were modeling how well the shapes heat evenly, we came up with an equation that would describe the eﬃciency in heating a shape with n sides and got to about 0.1% accuracy. Since modeling is not a problem, little error arises from here as well.
+
+Sensitivity with respect to heating parameters
+
+There are essentially four parameters in our heating model: K, the thermal conductivity, hpan and hair, the heat transfer coeﬃcients between the brownies and the pan and the air, respectively, and ﬁnally the product of speciﬁc heat and density, cρ. These last two are one parameter because they only appear in the model together, so sensitivity can be performed on their product because any error in one individually could be canceled out by equal and opposite error in the other without aﬀecting the model.
+
+To test each parameter, tests were run on a range of values for the parameter with all other parameters constant. Our standard was to bake the brownies at 200◦C for 30 minutes in a 40cm x 40cm pan with batter 4 cm deep. Our grid was 21 units in each horizontal direction and 10 units vertically, and we used 180 time steps to complete the simulation. We ran the test for even-sided polygons between 4 and 20 sides.
+
+We varied α, the total thermal diﬀusivity, between 1.8 × 10−9 and 1.8 × 10−7. This is equivalent to varying the thermal conductivity K while keeping speciﬁc heat and density constant. At diﬀusivity values higher than 1.8 × 10−7, the diﬀusivity was too high for the number of time steps, and the model failed to converge. We found that the eﬃciencies generally increased as α increased, but they did not change very much, and the overall shape of the graph tended to stay the same. The maximum diﬀerence in eﬃciency over these diﬀerence of two orders of magnitude in α was 4%. This is relatively insigniﬁcant considering how much we changed α by. Therefore, even if our value for α was oﬀby an entire order of magnitude, we would not expect that it would change our results signiﬁcantly.
+
+cρ , we allowed to vary between 2.5 × 10−7 and 2.5 × 10−4. Similar to α, we found that β, deﬁned as hpan for values higher than 2.5 × 10−4 the system heated too fast in one time step and the algorithm did not converge. We found that the system did not heat signiﬁcantly when β was less than 1.0 × 10−5, so we threw those data point out. For other β values, higher β tended to result in higher eﬃciencies. Unlike α, though, the shape did change; when the batter heated faster, it tended to also reach equilibrium at the edges faster, and therefore the temperatures were generally more consistent there. The maximum diﬀerence in eﬃciency was 16% over just above one order of magnitude. However, in real life, if β was indeed higher, a baker would probably not cook the brownies for as long, so as not to burn them. With a shorter cooking time, there probably would be a more noticeable diﬀerence between the corners and the edges for higher β values.
+
+cρ , to vary between 4.0 × 10−8 and 4.0 × 10−4. Like β, increasing γ Finally, we allowed γ, deﬁned as hair tended to increase the eﬃciency slightly. However, even over this large range, it did not aﬀect our eﬃciencies signiﬁcantly at all; the maximum diﬀerent in eﬃciency was 3.5%. This is because the heating from the air is only secondary to the heating from the pan, and primarily aﬀects just the batter right on the surface. Therefore we can conclude that our results are not particularly sensitive with respect to γ.
+
+One last test that we ran was to vary all three equally. Since all three have cρ in the denominator, this is equivalent to varying cρ while keeping K, hpan, and hair constant. This not only had a signiﬁcant impact on the eﬃciency, but also on the temperature. More than doubling cρ had the eﬀect that the batter was hardly baked at all, even on the edges. Reducing cρ improved the eﬃciency dramatically, but more than doubling it resulted in heating too fast for the time step we used. Between halving and doubling cρ, we observed a maximum eﬃciency diﬀerence of 15%. While this diﬀerence is very signiﬁcant, the diﬀerence in absolute temperature is more signiﬁcant - telling us that we probably have fairly accurate values for c and rho.
+
+In summary, the parameters that likely aﬀected our model the most were the heat transfer coeﬃcient between the pan and the brownies, and the combination of speciﬁc heat and density of the batter. However, we believe that the parameters that we chose for these values are fairly accurate due to the reasonable temperature values we got at the end of the simulations for reasonable values of other parameters like baking time and oven temperature.
+
+Analysis of our Model
+
+Strengths
+
+Our heating model is quite robust and is able to generate predictable results over a variety of temperatures, baking times, and other parameters. For instance, cooking the batter for a longer period of time for a shorter temperature results in more even baking than baking for a shorter period of time under a higher temperature, as expected. By limiting our shapes to polygons, we were also able to easily guarantee that our packing algorithm gives an optimal number of pans for a given shape, area, and oven size. Finally, we were able to experimentally determine several of our parameters and compare them with previously published results to verify their validity. Moreover, these parameters gave us the most reasonable results in our heating model as well, given reasonable values for other parameters like baking time and temperature.
+
+Weaknesses
+
+One weakness of our heat model is that in discretizing the brownie pan, it is possible we still lost some distinguishing features of a pan design, that might have been noticeable with a ﬁner grid, or even a diﬀerent method of discretizing the space (for instance, a radial method). It is also possible that some artifacts could have been added due to our methods as well. Additionally, we were not able to rigorously prove that our method of assigning surface areas for the edge and corner data points scientiﬁcally accurate. However, most of our results were what we predicted would occur intuitively, so we would suggest that improving our methods in these ways would not signiﬁcantly impact the results we obtained.
+
+Another weakness is that we do not account for certain eﬀects that occur at high temperatures, like the evaporation of water, the restructuring of the batter molecules, and the resulting changes in mass and density. A more reﬁned model could account for these to give more accurate results.
+
+Finally, one last weakness is that we only considered regular polygons in our model. With more time, we could consider non-regular polygons and various curved shapes like ellipses as well.
+
+Future Improvements
+
+Just like any other project, improvements can be made. Perhaps a better scheme for measuring eﬃciency in even heating could be developed. Besides that, we would like to get more accurate parameters from our measurements with better equipment. Consensus on the way of standardizing the time and temperature to ﬁt real-life brownie making would also be necessary. Convection currents were also hard to model, and ﬁguring out how much open area is needed in the lattice diagram would provide a better eﬃciency in spacing for the square and hexagon. One last consideration would be to see how radiation from the sides of the oven would heat up our product, and how that would aﬀect our heat transfer.
+
+Conclusion
+
+We have just presented two models, one for packing polygons and one to model the heating of a polygon- shaped pan in a conventional oven. Our packing model was able to eﬃciently organize polygons using tessellating techniques and lattice structures. Our heating model produced reasonable results and gave us eﬃciency ratings for various shapes, areas, and baking parameters. Finally, all this was based on experimental data that we performed by baking brownies, taking measurements, and ﬁtting them to our model. The best overall shape depends strongly on the parameters given; there is no optimal shape. Instead, for a given application our algorithm should simply be run to determine the best shape for the circumstances. For every customer there is one optimal pan, but there is no one optimal pan for every customer.

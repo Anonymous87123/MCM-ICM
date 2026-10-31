@@ -1,0 +1,497 @@
+MCM/ICM
+
+Summary Sheet
+
+Summary
+
+Recently, the Asian giant hornet has been observed in Washington State, which may cause damage to the ecosystem in the future. Therefore, the Washington State Department of Agri- culture (WSDA) has provided large amounts of observations on the species, hoping to get our assistance.
+
+For problem 1, we propose two metrics: the resource competition coeﬃcient and the environmental friendliness to construct a time-step diﬀerence equation, and simulate the population dispersal of the Asian giant hornet. We predict the distribution of nests in Washington State within 10 years, and gain the range of activities of an Asian giant hornet
+
+by adding noise. The results show that if no measures are taken against the spread of Asian giant hornets, the number of the species will show an approximate exponential growth at the initial stage in Washington State. To evaluate the accuracy of the model, we use Logistic Growth Model to test the accuracy of the model. The loss is 0.076, and the fastest growing year is the seventh year.These results indicate that we need to control the number of nests early.
+
+In problem 2, we divide it into feature extraction and image classiﬁcation. For the former, we establish a model based on auto-encoder to condense images information, of which the minimum testing loss dips to 0.0274. For the latter, we build three models, the Binary Logistic Regression, the Support Vector Machine, and the Convolutional Neural Network (CNN). The highest accuracy of the three models on the testing set is 0.5303, 0.5758, and 0.8030 respectively, so we choose CNN as our classiﬁcation model. Finally, we summarize the features of negative images from three aspects: species characteristics, subject deﬁnition and background softness.
+
+In terms of problem 3, we conduct Agglomerative Clustering according to the latitude and longitude of each sighting with unveriﬁed or unprocessed status, and divide them into 5 classes. Then we deﬁne the priority of a region based on the positive probabilities of input images in this area. Through analysis, we ﬁnd that Seattle is located in the center of the highest probability area.
+
+With regard to problem 4, we update the model with diﬀerent intervals to ﬁnd optimal update time interval. Selected indicators include the testing loss of auto-encoder and the accuracy of CNN in testing dataset. The optimal time interval for updating models is deﬁned as the abscissa corresponding to the extremum of the numerical derivative of the time-varying indicators. Finally, we get the following conclusions: the auto-encoder needs to be updated every four months, and the CNN needs to be updated every three months.
+
+As for problem 5, we design a number of variables based on observational data to characterize changes in the number of nests. We eliminate the inﬂuence of the image recognition model based on Bayesian inference. When K converges to 0, we think that the pest has been eradicate.
+
+Last but not least, we summarize the suggestions and write a memorandum for the WSDA, to assist relevant departments in biological control.
+
+关注数学模型 Agglomerative Clustering
+
+1 Introduction
+
+1.1 Problem Background
+
+The Asian giant hornet is the largest hornet in the world, which is native to East Asia, 微信公众号：数学模型 South Asia, mainland Southeast Asia and some far east parts of the Russian. Recently, it was discovered in the American Northwest at the end of 2019, and there had been lots of sightings in 2020. In fact, the invasion of the Asian giant hornet is not an isolated incident. In 2004, it ﬁrst appeared in Europe, and then began to spread to Spain, Belgium, Portugal and Italy, rapidly. According to European studies, the propagation speed of Asian giant hornet can reach 49.5 kilometers per year [2, 11].
+
+Even worse, the Asian giant hornet attacks and hunts variety of insects such as bees, bum- blebees, praying mantises and other insects. Moreover, if the Asian giant hornet reach all suitable habitats in North America, the cost for dealing with this disaster in America will ex- ceed $113.7 millions [1]. Therefore, it is very necessary to ﬁnd and process the Asian giant hornet eﬀectively.
+
+微信号：MATHmodels
+
+1.2 Clariﬁcations and Restatements
+
+In this problem, we are given the data of observations on the Asian giant hornet, which is perceived by local citizens, including the time, location, latitude and longitude, and the cor- responding observation photos. Washington State Department of Agriculture divided observa- tions into four status based on photos, namely: positive, negative, unveriﬁed, and unprocessed. We will solve the following problems based on the historial observations:
+
+1. Based on positive observations and corresponding latitudes and longitudes, combined
+
+with the biological characteristics of the Asian giant hornet, forecast the short-term spread of the species and analyze the accuracy of the prediction;
+
+2. Establish a model for judging whether a photo contains at least an Asian giant hornet, and analyze the image features that make the model output “Negative” results;
+
+3. Based on the above classiﬁcation model, deﬁne the government’s priority in handling
+
+citizen observations, for the reason that some unprocessed or unveriﬁed observations are most likely to be positive and require the government to explore;
+
+4. Consider that more sightings have been observed, determine the update method and update frequency of the model;
+
+5. According to the model above, analyze what indicators of Washington State has achieved, it can be said that the pest has been “eliminated”;
+
+6. Submit a memorandum to to the Washington State Department of Agriculture to com-
+
+prehensively supplement our research results and take corresponding protective measures at the same time.
+
+1.3 Our Work
+
+In problem 1, we construct and simulate a time-step diﬀerence equation with two metrics: the resource competition coeﬃcient and the environmental friendliness. We use this model to predict the distribution of nests in Washington State. Then, we gain the range of activities of a single Asian giant hornet by adding noise. After that, we use the Logistic Growth Model to test the accuracy of the model.
+
+We divide problem 2 into two subproblems: feature extraction, and image classiﬁ-
+
+关注数学模型 cation. In order to reduce the impact of sample imbalance, we apply image ﬂipping and Borderline-SMOTE methods for data augmentation ﬁrst, and then divide the data into the training set and the validation set (testing set). Next, we utilize auto-encoder to collect key features of images. To prevent over-ﬁtting, we store the best performance model in the testing set for subsequent use. Next, we establish three models, the Binary Logistic Regression, the Support Vector Machine, and the Convolutional Neural Network. After com- 微信公众号：数学模型 paring their accuracy on the testing set, we choose CNN as our image classiﬁcation model. Finally, we summarize the main features of having negative labels from three aspects: species characteristics, subject deﬁnition and background softness.
+
+As for problem 3, we take the scope of activities of one-time inspection by the government into account, and conduct Agglomerative Clustering according to the latitude and longitude of each sighting. Then we deﬁne the priority of a region based on the positive probabilities of input images.
+
+With regard to problem 4, we discuss the eﬀect of updating the model with diﬀerent time intervals on the testing results, including the loss of auto-encoder and the accuracy of CNN. The optimal time interval of updating models is deﬁned as the abscissa corresponding to the extremum of the numerical derivative of the function, which is the maximum value for auto-encoder, and the opposite for CNN.
+
+微信号：MATHmodels In terms of problem 5, the number of nests, the range of spatial distribution and the positive ratio in observations can all reﬂect the growth of pests. We design a number of variables to characterize changes in the number of nests. Since the image recognition model has a certain error probability, we have made a correction based on Bayesian inference.
+
+2 Reasonable Assumptions
+
+Assumptions about the data provided.
+
+1. The uploaded location (latitude and longitude) has high accuracy and no deviation from the map on Google1;
+
+2. The judgments made by the WSDA based on photos and the corresponding comments is accurate, and there is no error in recognition;
+
+关注数学模型 1https://www.google.com/map/ 3. The date of the photo was taken is always equal to the corresponding detection date, i.e., there is no delay in uploading photos;
+
+4. Whether a photo contains an Asian giant hornet, is independent of the status of other photos.
+
+微信公众号：数学模型 Assumptions about the behavior of Asian giant hornet.
+
+1. When the surrounding geographical environment is similar, the Asian giant hornet preys randomly, as well as the population dispersal. At the same time, the species tends to prey and migrate nearby.
+
+2. The Asian giant hornet cannot build nests or prey in the water;
+
+3. The environment is similar in diﬀerent regions, so ﬁtted hyperparameters in a certain small area can be regarded as constants. Therefore, hyperparameters can be promoted throughout Washington State.
+
+微信号：MATHmodels
+
+3 Problem 1: Propagation Simulation Based on Yearly
+
+Time-Step Diﬀerence Equation
+
+The parameters used in our analysis in this section are as follows:
+
+Symbol Interpretation Symbol Interpretation
+
+C the set of cells Ei the environmental friendliness Nt the set of nests Ci the resource competition coeﬃcient r the growth rate γ the resource dependence coeﬃcient Nt the number of nests ∆ij the distance between cell i and cell j σc the predation distance
+
+3.1 Method Overview
+
+(a) The life cycle of the Asian giant hornet. (b) Parameter relationship in propagation simulation.
+
+关注数学模型 By clustering and plotting the existing positive data, we get that there are three nests near the State of Washington currently. Therefore, we set the initial number of nests to 3, and their location coordinates are the center of the latitude and longitude observed by citizens. We build a time-step diﬀerence equation [8] model in years to predict propagation. Based on the probability distribution of each parameter, we utilize Monte Carlo simulation to solve the 微信公众号：数学模型 model. The workﬂow is shown in Figure 2b.
+
+3.2 Model Construction
+
+Like other wasps, Asian giant hornets are an annual species, and the time points when queens produce male peak females are concentrated in September to November. Therefore, the life of the species has a strong periodicity, which belongs to rigid seasonal behaviour. This type of rigid seasonal behaviour is suitable for constructing a time-step diﬀerence equation, and iterating in units of years. In the annual Monte Carlo simulation, we conduct propagation on a single nest, and then calculate the number of nests each year.
+
+Parameters Selection.
+
+When building the model, we select several parameters with practical signiﬁcance such as 微信号：MATHmodels biological populations and geographic conditions, which are introduced below.
+
+First of all, we consider the inﬂuence between nests. Since the Asian giant hornet will inevitably produce more nests when spreads in Washington State, the resources suitable for the species in State of Washington will gradually become scarce, and intraspeciﬁc struggle will be inevitable. Therefore, we constructed a parameter to measure the competition for resources of diﬀerent nests: the intra-species resource competition coeﬃcient Cij, the formula is shown as follows: ( )  −∆2  ij  Cij = exp   2σ2 c ( ) , ∀i ∈N, (1) ∑ −∆2   ij  Ci = exp  2σ2 c j∈N
+
+where ∆ij represents the distance between nest i and nest j, and σc is the predation distance of the Asian giant hornet. According to the knowledge of species biology, the farther the nest is, the smaller the intra-species competition, and when the predation range overlaps, the intra- species competition increases, so Cij is represented by Gaussian competition kernel. Then add up j to obtain the total intra-species resource competition coeﬃcient Ci of nest i.
+
+Second, the Asian giant hornet needs to forage and build nests in order to live and breed, so it has certain requirements for the surrounding environment. We constructed an index to measure the quality of the environment near nest i: the environmental friendliness Eij, which mainly measures the geographical environment and spatial distribution of cell j surrounding nest i, reﬂecting the quality of the predation and nesting environment of Asian giant hornets. The formula is shown as follows:
+
+( )  −∆2  ij  · Tj Eij = exp   2σ2 c ( ) ∀i ∈N, , (2) ∑ −∆2   ij  · Tj Ei = exp  2σ2 c j∈C
+
+where parameter Tj represents the inﬂuence of terrain on environmental adaptation. Owing to the Asian giant hornet cannot prey or build nests at all when it is on the sea, the lake, or the river etc., so Tj equals 0 for all j ∈C, . Washington State haws good agricultural development
+
+关注数学模型 and good natural conditions. Therefore, we believe that places other than sea areas or rivers are more suitable for the survival of the Asian giant hornet, so Tj is 1 for any cell j on land. From the perspective of spatial distribution, cell j that is closer to nest i is more environmentally friendly to nest i, so Eij is represented by the product of Gaussian competition kernel and Tj. Calculate the Eij of nest i and cell j, and add up to j to obtain the total environmental friendliness Ei of nest i. 微信公众号：数学模型 Model Hyperparameters Selection. For the total number of nests in a region, because of the small spatial range in the early stage of growth, the inﬂuence of spatial distribution on the total number of nests can be ignored. Therefore, we set the total number of nests in year t as Nt. According to the growth characteristics of nests, the total number of nests in year t is related to the situation in year t −1. We set Nt as a random variable and obey the following Poisson distribution formula. The expression of Nt is:
+
+( ) rNt−1 Nt = Poisson , (3) 1 + γ ¯CNt−1
+
+where r and γ are hyperparameters, respectively, representing growth rate and resource depen- dence coeﬃcient. For parameter ¯C, we comprehensively consider the spatial distribution in the area, and the average is taken over all cells i and j in this area.The expression of ¯C is shown 微信号：MATHmodels as follows: ( ) ∑ ∑ −∆2 1 ij ¯C = exp . (4) |C|2 2σ2 c i∈C j∈C
+
+Time-Step Diﬀerence Equation.
+
+After the above calculation, we construct an equation to measure nest i “fertility” Qi, which represents the number of successfully fertilized new queens produced by nest i in a certain year:
+
+( r · Ei ) ∀i ∈N. Qi = Poisson , (5) 1 + γCi
+
+According to biological knowledge, when the growth rate r is larger, the overall environ- mental friendliness Ei is larger, and the Qi of nest i is larger. When the total intra-species resource competition coeﬃcient Ci is larger, the resource dependence coeﬃcient γ is larger, the Qi of nest i is smaller. Therefore, r and Ei are proportional to Qi, and Ci and are inversely proportional to Qi. According to reference materials, the queen’s successful fertilization rate is only 35%, i.e., P0 = 35%. Considering that some factors such as temperature and crowd density are not taken into consideration, instead of setting it to a constant, we set Qi to a Poisson distribution, and introduce a certain noise to be more in line with the actual situation.
+
+For the spatial distribution, we use Pij to represent the probability that the new queen goes from nest i to cell j to build a nest. The expression of Pij is as follows:
+
+( ) −∆ij · Tj, ∀i ∈N, j ∈C. Pij = exp (6) µ
+
+Considering that the Asian giant hornet cannot nest in sea areas or rivers, the terrain parameter Tj will aﬀect Pij. In terms of spatial distribution, because organisms always migrate to the nearest base when they migrate, that is, as the distance between nest i and cell j increases, the probability of migration to cell j decreases, which is expressed as an exponential in the formula.
+
+关注数学模型
+
+3.3 Predictions of Population Dispersal
+
+Algorithm 1: Simulation of the Asian giant hornet propagation
+
+Input: Due time Ttotal, number of the initial population N0 and corresponding coordinates (x0, y0), growth rate r, resource dependence coeﬃcient γ. 微信公众号：数学模型 Output: Population number Nt and its corresponding coordinates (xt, yt). 1 Initialize the set of cells C and the set of nests N0 based on N0 and (x0, y0); 2 for t = 0 to Ttotal −1 do for i ∈Nt do 3 Calculate Ci and Ei based on Equations (1) and (2); 4 Randomly select Qi based on Equation (5); 5 Calculate Pij for each j ∈C based on Equation (6); 6 Set Pi = (Pij)|C|×1 for all j ∈C; 7 for x = 0 to Qi do 8 Selecting a destination j based on the probability vector Pi; 9 Add j into Nt+1; 10 end 11 微信号：MATHmodels end 12 return Nt+1 and its corresponding coordinates (xt+1, yt+1); 13 14 end
+
+关注数学模型 f) and the ﬁtted logistic curve (subﬁgure g).
+
+Finally, by iterating the time-step diﬀerence equation in years according to 1, we got the results of the Asian giant hornet spreading around Washington State. There are two series of results. The ﬁrst series is the result of the location of the Asian giant hornet’s nest, and the second series is the result of a single hornet observed when the Asian giant hornet preys and wanders near the nest during propagation. 微信公众号：数学模型 The pictures2 in Figure 3 show our results. Subﬁgure (a) to (c) in Figure 3 are migration process of nests of the Asian giant hornet and the red points are nests of hornets. Subﬁgure(d) to (f) in Figure 3 are the activity range of the Asian giant hornet in the current year.
+
+It can be seen from the propagation image of nest that at the beginning of the simulation, the growth was slow, and the spread of the Asian giant hornet accelerated after the number of nests had reached a certain number. This phenomenon is consistent with biological knowledge.
+
+Error Analysis Based on Logistic Growth Model.
+
+We utilize the Logistic Equation to measure the accuracy of our constructed model, which can be calculated as:
+
+N · er(t−t0) f(t) = 1 + N (er(t−t0) −1), (7)
+
+where r represents growth rate in time-step diﬀerence equation model, t0 represents the year 微信号：MATHmodels with the fastest growth, and N represents stable population of the Asian giant hornet.
+
+We have performed eleven iterations using the annual time-step diﬀerence equation. We use the RMSProp optimizer to ﬁt the Logistic Equation, and apply the MSE as loss function, with the minimum value 0.076. The ﬁtting result shows that the fastest growing year of the Asian giant hornet is 2027, which means t0 equals to 7. Due to the excellent ﬁtting results, our model and the corresponding predictions conform to the actual theory of ecology.
+
+4 Problem 2: Image Recognition Model Based on Auto-
+
+Encoder and Convolutional Neural Network
+
+In the past decade, deep learning has been made a great success in both computer vision [9], speech recognition [5, 12] and even in playing Atari games [10]. A wild range of neural network architectures have been utilized including fully connected neural networks, convolutional neural networks, and recurrent neural network to those problems.
+
+For problem 2, we establish two models based on auto-encoder [14] and convolutional neural network [4] respectively. One for feature extraction, and the other for prediction. In this section, we will ﬁrst introduce our methods of data cleaning and data augmentation; and then, we will introduce the structure of auto-encoder and CNN, and give the prediction results on the
+
+2The background is downloaded from Google map:
+
+https://www.google.com/maps/@48.5668576,-121.5766197,6.8z?hl=en.
+
+关注数学模型 validation set; ﬁnally, we will summarize the image features that are most possibly identiﬁed as “Negative” by our model.
+
+微信公众号：数学模型 微信号：MATHmodels
+
+4.1 Data Cleaning and Data Augmentation
+
+As mentioned at part 1.2, we are given 4426 sightings of the Asian giant hornet, with 4 diﬀerent status conﬁrmed by the government: positive, negative, unveriﬁed, and unprocessed. The evidences provided by each sighting include image format, video format and even Microsoft Word format. We manually converted all the other format to image: the most suitable frame was extracted from videos, and save all the pictures in each Word or PDF. and remain 2127 valid observations in total.
+
+(a) For negative sightings’ comments length. (b) For positive sightings’ comments length.
+
+关注数学模型 As shown in Figure 6, the probability distributions of the length of comments with diﬀerent status are similar. For a more detailed discussion, we build a linear model, with the status x (0/1) as input and the length of corresponding comment y as output:
+
+y = β0 + β1x + ϵ, (8)
+
+微信公众号：数学模型 where β0 and β1 are parameters to be ﬁtted, and ϵ is an unobservable error term, which obeys normal distribution.
+
+Degrees of Sum of Mean Value of F Signiﬁcance of F Freedom Squares (SS) Square (MS)
+
+Regression 1 17382.96 17382.96 3.25 0.072 1.097 × 108 Error 2052 5346.42 1.099 × 108 Total 2053
+
+微信号：MATHmodels tell from the regression model that under the condition of 5% signiﬁcance, whether the image is positive or not has no signiﬁcant relationship with the length of comments sent when people upload the picture (the signiﬁcance of F is bigger than 0.05). Therefore, we can conclude that the comments when uploading an image have nothing to do with the status of the image itself at the signiﬁcance level of 0.05, so we only use images in the subsequent analysis, not the corresponding comments.
+
+Data Cleaning. After deleting the invalid sightings, we divide the data set into four groups according to the status of each observation. There are 2043 sighting with negative status, 11 with positive, 67 with unveriﬁed, and 5 with unprocessed. In order to verify the training eﬀect of the model, we divide the data set into the training set and the testing or veriﬁcation set.
+
+Reasons for Augmentation. According to the result of above, we ﬁnd that the number of negative observations is above 2000, while the number of positive sightings is only 193. Such imbalance of positive and negative samples will lead to various problems in model training [13], such as under ﬁtting, gradient disappearance and so on. Therefore, in this paper, we ﬁrst ﬂip the positive images in three directions (vertical, horizontal and diagonal) to form 76 images including the original image; then we select 28 of them as the testing set, the rest as the training set, and randomly select 38 negative images as the testing set. However, the number of positive images in the training set (48) is still signiﬁcantly less than the number of negative images, so we use the unbalanced data sampling method.
+
+Methods for Augmentation. SMOTE (synthetic minority oversampling technique) [3] is an improved oversampling algorithm based on random sampling, which is easy to implement but has some obvious disadvantages at the same time. SMOTE treats all the minority samples equally and does not consider the class information of the nearest neighbor samples, it often leads to aliasing of samples, resulting in poor classiﬁcation eﬀect. Borderline-SMOTE [6] is an improved over sampling algorithm based on SMOTE, which only uses a few class samples on the boundary to synthesize new samples, so as to improve the class distribution of samples. According to [13], when dealing with the problem of binary classiﬁcation, the ratio of positive and negative samples should not be less than 1 : 4. Therefore, we sampled 697 observations from the original 48 positive training sets through Borderline-SMOTE for subsequent training.
+
+3We download 8 more images of the species from 2021MCM_ProblemC_Vespamandarinia.pdf.
+
+关注数学模型
+
+4.2 The Structure and Training Results of Auto-Encoder
+
+As is shown in Figure 5, we establish an Auto-Encoder to reduce the dimension of input images, as well as extract their key features. The model has two main parts, the encoder and the decoder. In the following subsection, we will introduce the structure of these two parts in 微信公众号：数学模型 detail.
+
+The Structure of Encoder. The encoder contains 4 convolutional blocks. Each block has 4 parts, the convolution, the activation function, the batch normalization, and the down sampling (pooling). For the convolution part, when we take x1 ∈RC × RH × RW as input, we will get an output x2 ∈RC′ × RH′ × RW ′. The dimensions of x2 depend on parameters of convolution (channel, padding, stride, and kernel size) and the stride of down sampling. In order to simplify the calculation, we set the channel equals to 2C, the padding and the stride equals to 1, the kernel to 3x3 shape, and the stride of down sampling equals 2, which contribute to x2 ∈R2C × RH/2 × RW/2. Therefore, if we input an image x1 ∈RC × RH × RW to our encoder, the output tensor x2 will be shape (24C, 2−4H, 2−4W), which will be activated by ReLU function.
+
+The Structure of Decoder. Similar to the encoder, our decoder contains 4 deconvolu- 微信号：MATHmodels tional blocks with the deconcolution part, the up sampling part, and the activation function. The only diﬀerence between the parameters of decoder and encoder is that, we set the channel equals to C/2 rather than 2C. Therefore, if we input an image x1 ∈RC × RH × RW to our decoder, the output tensor x2 will be shape (2−4C, 24H, 24W), which will be also activated by ReLU function.
+
+Training Results of Auto-Encoder. We set the loss function as MSE, which can be calculated as follows:
+
+f(x1, x2) = ||x1 −x2||2 2, (9)
+
+where x1 and x2 are inputs. Figure 7a shows the trend of training losses and testing losses with the increase of training iterations. To increase the robustness of the model, we regard the model with the smallest testing loss as the best, and save its weights and biases for subsequent use. The minimum testing loss during the training is 0.0274 after training 1605 iterations. Figure 7b are examples of input image and decoded image, output by the best model.
+
+(a) The loss curve for auto-encoder. (b) Examples of auto-encoder.
+
+关注数学模型
+
+4.3 Results of the Binary Classiﬁcation Problem
+
+微信公众号：数学模型
+
+微信号：MATHmodels After extract features of input images by auto-encoder, we build three models: Binary Logistic Regression, Support Vector Machine (SVM), and Convolutional Neural Network (CNN) for forecasting. The workﬂow is shown in Figure 8, when we have an image to be recognized, we ﬁrst put it into auto-encoder, and take the output of encoder as the classiﬁcation model’s input, and then we will get the probability of positive or negative (they are equivalent because they always add up to one). After comparing the performance of each model on the testing set, we ﬁnally choose CNN as our prediction model.
+
+Binary Logistic Regression. We utilize L2 norm as cost function which supposed to be minimized, and apply Newton’s method for iterative optimization. After optimization, the accuracy of the model in the testing set reaches 0.5303.
+
+Support Vector Machine. Due to the small amount of samples and the large number of features, we use Gaussian kernel to experiment, and adjust the γ parameter, which inﬂuences the Gauss’s range of action corresponding to each support vector. We set γ range from 0 to 2 with an interval of 0.01. The maximum accuracy of testing set reaches 0.5758 when γ = 1.64.
+
+Convolutional Neural Network. As shown in Figure 4, CNN contains 2 convolutional blocks with batch normalization, and two fully connected layers. To prevent over ﬁtting, the ﬁrst layer has a 25% probability of dropping connections between nerves. We utilize the Cross Entropy loss while training, which can be calculated as follows:
+
+∑ H(p, q) = − p(x) log q(x), (10) x
+
+where p and q are two diﬀerent probability density functions of the same random variable x, and p represents the ground truth and q is the current estimation. In our case, x is an input image, and both p and q are the PDFs of 0-1 distribution, whose output implies the probability of input x. Figure 9a shows the trend of losses and the accuracy in testing set. Similar to auto- encoder, we regard the model with the maximum accuracy in testing set as the best model, and save its weights and biases. The maximum accuracy reaches 0.8030 after training 490 iterations. Figure 9b are 6 examples predictions sampled randomly, 5 of which are correct.
+
+关注数学模型 微信公众号：数学模型 (a) The loss curve and testing accuracy for CNN. (b) Examples of predictions and labels.
+
+4.4 Features for Negative Sightings
+
+微信号：MATHmodels
+
+these pictures are all correct, i.e., ground truths of images above are all negative. To summarize, pictures containing following features are tend to be recognized as negative:
+
+1. Other species in the picture, not wasps, let alone the Asian giant hornet.
+
+Obviously, there is an insect resembling a dragonﬂy in Figure 10a. Figure 10 is deﬁnitely not an Asian giant hornet, because the Asian giant hornet should have wings. Figure 10j contains something similar to a cocoon.
+
+2. The insect is too small. For both Figure 10f, Figure 10d, and Figure 10h, the insects are too small to distinguish.
+
+3. The background is diﬃcult to discriminate from the insect itself. For Figure 10f and Figure 10g we can’t even see where the insect is at a glance because of its background.
+
+关注数学模型 In conclusion, for problem 2, we ﬁrst clean the data and apply Borderline-SMOTE method to deal with the imbalanced training set. Next, we build a model to extract features in images based on auto-encoder. After that, we build 3 models, the Binary Logistic Regression, the SVM, and the CNN, and compare their performance on testing set, and select CNN for subsequent use. Finally, we choose 10 pictures with the highest negative probability output by CNN, and 微信公众号：数学模型 summarize their three most salient common characteristics.
+
+5 Problem 3:
+
+Priority Computation Model Based on
+
+Agglomerative Clustering
+
+微信号：MATHmodels
+
+In this section, we ﬁrst conduct further screening based on the data set processed in problem 2. We select all valid data with unprocessed or unveriﬁed status, 63 in total. Next, we input each image into the prediction procedure shown in Figure 2b, and get the positive probability of each image. Meanwhile, we take the scope of activities of one-time inspection by government personnel into account, and conduct Agglomerative Clustering according to the latitude and longitude of each sighting, and divide them into ﬁve categories. Then, combining the clustering results and positive probabilities, we deﬁne the priority of a region, and ﬁnally we provide suggestions based on this priority for future treatments of government departments.
+
+5.1 Region Division
+
+Agglomerative clustering starts from n clusters, where n is the total number of samples. Each cluster initially contains only one object, and then the two most similar clusters are merged in each iteration, until a cluster almost containing all the data is formed. According to how to deﬁne the diﬀerences between diﬀerent clusters, there are three variants of the algorithm, the single link (nearest neighbor), the complete link (furthest neighbor), and the average link. In this paper, we utilize the ﬁrst method to calculate distances between clusters, shown as follows:
+
+D(I, J ) = i∈I,j∈J dij, min (11)
+
+where i and j are points in cluster I and cluster J , respectively. dij represents the Euclidean distance between point i and point j, which is calculated according to their longitude and latitude, and D(I, J ) means the distance between the two diﬀerent clusters.
+
+We utilize the siloette coeﬃcient [7] to evaluate the quality of clustering. In order to calculate the siloette coeﬃcient of point i in cluster I, we ﬁrst deﬁne:
+
+ K = arg min J̸ =I D(J , I)    ∑ ∑ , (12) a(i) = 1 b(i) = 1  dij, dik   |I| |K|
+
+关注数学模型 j∈I k∈K where a(i) means the average of distance from i to all other points in cluster I. K is the closet cluster to I, and b(i) means the average distance from i to all points in cluster K. Then, the siloette coeﬃcient S(i) can be calculated as:
+
+b(i) −a(i) S(i) = max{a(i), b(i)}, (13) 微信公众号：数学模型 then the siloette coeﬃcient ¯S of the current clustering scheme is simply the average of S(i).
+
+微信号：MATHmodels (a) The curve of Silhouette Coeﬃcient changing (b) The dendrogram of Agglomerative Clustering with the number of clusters. when 5 clusters.
+
+(c) The number of clusters is equal to two. (d) The number of clusters is equal to ﬁve.
+
+To select the best number of clusters, we calculate the siloette coeﬃcient with the number of clusters varies from 2 to 9, shown in Figure 12a. From the Figure we can tell that cluster samples into 2 classes has the best ¯S, followed by 5 clusters. In order to further select the most suitable number of clusters, we calculate the maximum distance points belong to the same cluster and its corresponding distance when the number of clusters is 2 and 5 respectively. The result of clustering is shown in Figure 12c and Figure 12d. In the case of diﬀerent number of categories, the maximum distance pair of points in the same clusters is 329.2 kilometers when we divide the system into 2 classes, which is far beyond the diameter of a single operation of the government. When 5 groups were clustered, the value drops to 189.6 and decreases by 42%. A diameter of nearly 200 kilometers seems to make sense. Therefore, we decide to cluster the system into 5 groups, whose dendrogram is shown in Figure 12b.
+
+关注数学模型
+
+5.2 Positive Probability Prediction and Priority Deﬁnition
+
+We assume that whether a photo contains an Asian giant hornet, is independent of the status of other photos. Therefore, when we take n pictures as a system x = (x1, x2, · · · , xn), the probability of the whole system being positive Pr(x) is as follows:
+
+微信公众号：数学模型 Pr(x) = Pr(x1 ∪x2 ∪· · · ∪xn) n ∏ , (14) = 1 − (1 −Pr(xi)) i=1
+
+where Pr(xi) represents the positive probability of image i, which is the output of our prediction model–CNN. If the positive probability of a system reaches a high value (e.g., 0.8, 0.9, or even higher), the Asian giant hornet will be likely to exist in this area, and the government should prioritize the observation. Based on this reasoning, we deﬁne the probability of system positivity Pr(x) as the priority of the region. Observations sent from places of high priority should be processed ﬁrst. Table 3 shows the detailed information of each cluster, including the number of observations, central latitude and longitude, and priority etc.
+
+微信号：MATHmodels
+
+Index Central Longitude Central Latitude Observations Priority Rank Color
+
+0 -122.2903 47.5641 41 0.9982 1 Red 1 -117.6439 47.3892 4 0.0036 5 Green 2 -122.4812 48.7551 20 0.6507 2 Blue 3 -120.4284 47.2251 5 0.0746 4 Yellow 4 -122.5077 45.6566 3 0.2480 3 Black
+
+So far, we can give the government the following advice:
+
+1. If an observation is sent from an area close to the central coordinate of cluster 0, it should be highly valued;
+
+2. If an observation is sent from an area close to the central coordinate of cluster 1 or 3, it is most likely to be negative;
+
+3. If an observation is sent from an area close to the central coordinate of cluster 3 or 4, there is a certain possibility that he may be positive, so the government can check carefully when it is not in an emergency situation.
+
+6 Problem 4: Optimal Updating Strategy Based on Nu-
+
+merical Derivative
+
+In this section, we will discuss the eﬀect of updating the model at diﬀerent intervals on the testing results, including the testing loss of auto-encoder and the accuracy of CNN in testing dataset. To ﬁgure this out, we keep the same testing set as problem two in section 4, but the images of the training set are screened twice according to the time interval.
+
+We ﬁrst utilize the latest detection date in the data, November 20, 2020, as the current time, and select a series of time interval thresholds. We make the diﬀerence between the observation time and the current time, and apply the threshold strategy to ﬁlter the images. That is, when
+
+关注数学模型 we set the threshold of time interval to t0, we only consider the observation images whose time diﬀerence is greater than t0.
+
+微信公众号：数学模型
+
+微信号：MATHmodels Update Frequency.
+
+We chose 11 diﬀerent threshold, 0, 5, 10, 15, 25, 40, 60, 80, 100, 120, and 150, in days. The results in details, including the testing loss of auto-encoder and the testing accuracy of CNN, are shown in Table 4.
+
+t0 Loss Accuracy t0 Loss Accuracy t0 Loss Accuracy
+
+0 0.0274 0.8030 25 0.0280 0.8030 100 0.0298 0.7576 5 0.0280 0.8030 40 0.0278 0.8030 120 0.0363 0.7727 10 0.0280 0.8030 60 0.0291 0.7879 150 0.0424 0.7879 15 0.0280 0.8030 80 0.0313 0.7727
+
+In order to further analyze the loss and the accuracy, we apply cubic spline interpolation method, and obtain their corresponding numerical derivatives by using the central diﬀerence formula:
+
+k(x) ≈fk+1(x) −fk−1(x) f ′ , (15) 2h where h is the small step size. The smaller h is, the more accurate the result is. The truncation error of central diﬀerence has been proofed to be o(h2/6). The optimal time interval for updating models is deﬁned as the abscissa corresponding to the extremum of the numerical derivative of the time-varying functions (the testing loss curve for auto-encoder, and the testing accuracy for CNN).
+
+with the time interval. According to the diagram, we can draw the following conclusions:
+
+1. The auto-encoder model needs to be updated every 4 months.
+
+Because when t0 = 119.39, the numerical derivative of the testing loss reaches the maxi- mum value of 0.0042, which indicates at this time the error grows the fastest;
+
+2. The CNN model needs to be updated every 3 months.
+
+Because when t0 = 85.71, the numerical derivative of accuracy reaches the minimum
+
+关注数学模型 value of −0.0092, which implies at this time the accuracy decreases the fastest.
+
+微信公众号：数学模型 (a) The loss of auto-encoder. (b) The accuracy of CNN.
+
+light shade is the numerical derivative calculated based on the central diﬀerence.
+
+微信号：MATHmodels Update Method. The method to update the model is to utilize the data cleaning and enhancement methods mentioned in section 4 to process the newly generated observations, and then put them into the training set.
+
+7 Problem 5: Assessment Based on the Bayes Formula
+
+For invasive species, due to their strong survivability and reproductive ability, it is still possible to erupt again when the destruction is not thorough enough. Therefore, we need to establish a suﬃciently complete monitoring and evaluation system. Since the actual number and distribution of nests are diﬃcult to obtain directly, we made judgments based on positive observations and established a multi-dimensional evaluation system as follows:
+
+Growth Ratio gt. For the number of positives, growth rate refers to the ratio of the current population to the previous year, which can reﬂect the growth of nests. When gt is less than 1, the size of population will decrease.
+
+Nt gt = . (16) Nt−1 Distribution Range Ratio dt. As diﬀerent nests compete with each other, the distribu- tion range of nests will increase as the number grows. We calculate the average value between all positive positions i and j to represent the distribution range of nests. In order to reﬂect the dynamic change characteristics of the distribution range, we calculate the ratio of the current average to the average of the previous year.
+
+∑ i,j∈Nt−1 ∆2 ij ∑ dt = . (17) i,j∈Nt ∆2 ij
+
+Positive Probability Ratio pt. From the perspective of probability theory, each sighting can be regarded as a sampling, so the ratio of all positive observation reports can imply the proportion of the Asian giant hornet in the nature of all bees. Similarly, we calculate the ratio of the current value to the previous year’s average.
+
+Positivet/Allt
+
+pt = , (18) 关注数学模型 Positivet−1/Allt−1 where Positivet represents the number of positive observations in year t, while Allt is the total number of sightings.
+
+Evaluation Coeﬃcient Kt. It can be obtained by multiplying the above three param- eters. Considering that the neural network model has a certain error rate, we use Bayesian inference to correct it. Suppose the posterior probability of Kt is Pr(Kt | θ), and the correct 微信公众号：数学模型 rate of neural network model is θ.
+
+Pr (Kt) · Pr (Kt | θ) ( ) ( ). Pr (Kt | θ) = (19) ∑ K(i) K(i) · Pr | θ i∈Nt Pr t t
+
+When K converges to 0, we are fully conﬁdent that the pest has been eradicated. We test the accuracy of the evaluation model by simulating the increase and decrease of nests. In the growth phase, the number of nests conforms to the logistic growth, and K is always greater than 1. After measures are taken, the environmental carrying capacity is greatly reduced, nests begin to decrease rapidly, and K decreases rapidly. This shows that the observation indicators are eﬀective.
+
+微信号：MATHmodels (a) Introduction of Evaluation coeﬃcient. (b) Changes in N and K after taking actions.
+
+8 Model Analysis
+
+8.1 Strengths and Weaknesses
+
+Strengths.
+
+1. When setting the parameters of the equation in problem 1, many inﬂuencing factors such as intraspeciﬁc competition and environmental parameters are considered;
+
+2. In problem 1,the model uses a suitable probability distribution to get random results, which makes the model more realistic; 3. We use auto-encoder to eﬀectively condense the image information in problem 2, making CNN training faster and better;
+
+4. In the data processing, a regression analysis is performed on the comments, and it is concluded that the photo category and the length of the comments are irrelevant under the 95% signiﬁcance condition, which proves to a certain extent that the text does not need to be considered in problem 2.
+
+Weaknesses.
+
+关注数学模型 1. Due to the lack of data used to ﬁt hyperparameters, there may be some errors in the estimation of hyperparameters in problem 1;
+
+2. Although we take various measures to solve the problem of category imbalance, the problem of category imbalance still exists due to the large disparity between the negative samples and positive samples in the dataset. 微信公众号：数学模型
+
+8.2 Sensitivity Analysis
+
+微信号：MATHmodels
+
+Figure 16a, shows the variation trend of nest number with r and γ. From the ﬁgure we can tell that: the number of nests is positively correlated with r and negatively correlated with γ, which is consistent with Equation (3) and (5). In addition, when r increases or γ decreases separately, N has little eﬀect. But when r and γ change synchronously, N increases rapidly.
+
+From Figure 16b and c, we can tell that: as the negative images increases, the imbalance of positive and negative samples increases, and the loss of auto-encoder tends to drop at the same time. This is because the loss is negatively correlated with the number of images, i.e., the more training pictures, the smaller the error. Furthermore, with the increase of sample imbalance, the testing accuracy ﬁrst decreases signiﬁcantly and then increases slowly. This is because at the beginning, the sample imbalance is the dominant factor aﬀecting the accuracy, and with the increasing number of training images, the size of training set is gradually dominant.
+
+9 Conclusion
+
+Nowadays, the biological invasion of the Asian giant hornet has become an issue that needs attention in Washington State. Therefore, accurately identifying the Asian giant hornet, pre- dicting the future spread of the Asian giant hornet in Washington State, and establishing an eﬀective evaluation system is of great signiﬁcance to Washington State’s biological control.
+
+In this project, we ﬁrst carefully screened the dataset to retain meaningful pictures and geographic information. After that, we use time-step diﬀerence equation to simulate the population migration process of the Asian giant hornet, and use auto-encoder and CNN to identify the Asian giant hornet images, and use Agglomerative Clustering and image recognition methods to help prioritize regional investigations. In the end, we built an evaluation system to assist the Washington State Department of Agriculture in judging the degree of the Asian giant hornet biological invasion.
+
+关注数学模型
+
+Appendices
+
+Appendix A
+
+Core Codes for Auto-Encoder 微信公众号：数学模型 import torch import torch.nn as nn
+
+class AutoEncoder(nn.Module): def __init__(self): super(AutoEncoder , self).__init__ () self.DownSampling = nn.Sequential( nn.Conv2d(3, 6, 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(6), nn.MaxPool2d(2), nn.Conv2d(6, 12 , 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(12), nn.MaxPool2d(2), nn.Conv2d(12 , 24 , 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(24), nn.MaxPool2d(2), nn.Conv2d(24 , 48 , 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(48), nn.MaxPool2d(2), 微信号：MATHmodels ) self.UpSampling = nn.Sequential( nn.Conv2d(48 , 24 , 3, 1, 1), nn. ConvTranspose2d (24 , 24 , 3, 2, 1, 1), nn.ReLU (), nn.Conv2d(24 , 12 , 3, 1, 1), nn. ConvTranspose2d (12 , 12 , 3, 2, 1, 1), nn.ReLU (), nn.Conv2d(12 , 6, 3, 1, 1), nn. ConvTranspose2d (6, 6, 3, 2, 1, 1), nn.ReLU (), nn.Conv2d(6, 3, 3, 1, 1), nn. ConvTranspose2d (3, 3, 3, 2, 1, 1), ) def forward(self , x): return self.DownSampling(x), self.UpSampling(self.DownSampling(x))
+
+Appendix B
+
+Core Codes for CNN
+
+import torch import torch.nn as nn
+
+class CNN(nn.Module):
+
+def __init__(self): super(CNN , self).__init__ () self.conv = nn.Sequential( nn.Conv2d(48 , 96 , 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(96), nn.MaxPool2d(2), nn.Conv2d(96 , 192 , 3, 1, 1), nn.ReLU (), nn.BatchNorm2d(192), nn.MaxPool2d(2), ) self.out = nn.Sequential( nn.Linear(3072 , 128), nn.Dropout(0.25), nn.ReLU (), nn.Linear(128 , 2), nn.Softmax(dim=1), ) def forward(self , x): return self.out(self.conv(x).view(x.shape[0], -1))
+
+关注数学模型 Fight the Plague of Asian Giant Hornets
+
+Background
+
+微信公众号：数学模型 In December 2019, WSDA received and verified two reports of the Asian giant hornet near Blaine. In 2020, both Washington and Canada have had new confirmed sightings of Asian giant hornet in October of 2020. This is not an isolated incident. In 2004, it first appeared in Europe, and spread to Spain, Belgium, Portugal and Italy, rapidly. Characteristics of Asian giant hornet: • Aggressive: attack many kinds of insects. • Strong: destroy a hive in a matter of hours. • Fast: the population spreads quickly.
+
+Actual distribution of Asian giant hornets in Europe
+
+Descriptions
+
+How fast will the Asian giant hornet spread? We combine the biological information and ecological principles of the 微信号：MATHmodels Asian giant hornet.
+
+Growth Foundation
+
+Reproduction Wintering
+
+If the Asian giant hornet is allowed to breed freely, Washington State will be filled with the Asian giant hornet’s nests in just a few years.
+
+How can we identify the Asian giant hornet? We conduct deep learning with the data provided. After inputting the observation picture, the model can give positive and negative judgments.
+
+Positive Output Input AI or Negative
+
+The accuracy of the model reached 80.3%, which can effectively judge the observation photos.
+
+Which area has the highest risk? How often to update the model?
+
+Number: priority of the area As new observations increase, errors will gradually increase.
+
+4 months
+
+3 months
+
+The most risk city: Seattle
+
+关注数学模型 Fight the Plague of Asian Giant Hornets
+
+Descriptions 微信公众号：数学模型 How can we make sure the Asian giant hornet has been eradicated?
+
+We design three indicators to characterize changes in the population.
+
+Number of nests
+
+Converges to 0 Range of spatial distribution
+
+Positive ratio in observations
+
+Suggestions 微信号：MATHmodels As the number of nests of the Asian giant hornet explodes in the simulation, we suggest that the government should pay close attention to the biological invasion of the Asian giant hornet.
+
+How to educate the public? We recommend that the Asian giant hornet be popularized with the people of Washington State through the media or popular science books.
+
+• Popularize the biological characteristics of the species to the public. • Emphasize the selection of the background which is easy to distinguish when taking photos. • Upload the correct image, not the reference image downloaded from the official website. • Write comments carefully and realistically, which describe the scene of the photo. • Unify the upload format into the picture format.
+
+What should we do in the future?
+
+We suggest that you and your department conduct identification of uploaded samples on a regular basis.
+
+• Update the auto-encoder for every 3 months, and the CNN for every 4 months. • Set up a professional team to assist the further iteration of image recognition algorithm. • Employ computer vision algorithm engineers to further improve the accuracy of the model. • Handle observations strictly according to priority.
