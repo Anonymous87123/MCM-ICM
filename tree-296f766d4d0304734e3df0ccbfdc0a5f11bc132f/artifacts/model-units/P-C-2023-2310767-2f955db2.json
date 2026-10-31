@@ -1,0 +1,753 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2023-2310767-2f955db2",
+  "problem_type": "C",
+  "year": "2023",
+  "source_sha256": "2f955db23419f4a8cbf18f79705f8c6323c490efc8f6bc65c2ef80063f5157ec",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q237-001",
+      "page": 5,
+      "section": "4 Task 1: Interval Prediction & Correlation Analysis",
+      "family": "time-series hybrid (ARIMA + LSTM)",
+      "purpose": "Predict number of reported Wordle results on March 1, 2023, combining ARIMA for linear trend and LSTM for nonlinear residuals.",
+      "base_or_modification": "modification",
+      "summary": "Hybrid: ARIMA(p,1,q) captures linear trend, LSTM captures nonlinear residuals. Combined prediction 22577, interval [9614,43109]. RMSE 0.0432.",
+      "variables": [
+        {
+          "symbol": "r_t",
+          "normalized_name": "reported results",
+          "unit": "count",
+          "definition": "Number of reported results at day t",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_bar_t",
+          "normalized_name": "differenced series",
+          "unit": "count",
+          "definition": "First-order differenced series",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi_i",
+          "normalized_name": "AR coefficients",
+          "unit": "dimensionless",
+          "definition": "Autoregressive coefficients",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_i",
+          "normalized_name": "MA coefficients",
+          "unit": "dimensionless",
+          "definition": "Moving average coefficients",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon_t",
+          "normalized_name": "white noise",
+          "unit": "count",
+          "definition": "White noise error term",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "AR order",
+          "unit": "dimensionless",
+          "definition": "Number of autoregressive terms",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "MA order",
+          "unit": "dimensionless",
+          "definition": "Number of moving average terms",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "differencing order",
+          "unit": "dimensionless",
+          "definition": "Number of differences for stationarity (d=1)",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "sample size",
+          "unit": "count",
+          "definition": "Total number of observations",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_m",
+          "normalized_name": "Ljung-Box statistic",
+          "unit": "dimensionless",
+          "definition": "White noise test statistic",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r_t",
+        "T"
+      ],
+      "outputs": [
+        "r_t"
+      ],
+      "handoff_outputs": [
+        "r_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q237-001",
+          "page": 6,
+          "label": "(1)",
+          "source_expression": "r_bar_t = r_t - r_{t-1}",
+          "normalized_latex": "\\bar{r}_t = r_t - r_{t-1}",
+          "purpose": "First-order differencing for stationarity.",
+          "variable_symbols": [
+            "r_t",
+            "r_bar_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-002",
+          "page": 6,
+          "label": "(2)",
+          "source_expression": "r_bar_t = phi_0 + sum phi_i r_bar_{t-i} + epsilon_t - sum theta_i epsilon_{t-i}",
+          "normalized_latex": "\\bar{r}_t = \\phi_0 + \\sum_{i=1}^{p} \\phi_i \\bar{r}_{t-i} + \\varepsilon_t - \\sum_{i=1}^{q} \\theta_i \\varepsilon_{t-i}",
+          "purpose": "ARIMA(p,d,q) model equation.",
+          "variable_symbols": [
+            "r_bar_t",
+            "phi_i",
+            "theta_i",
+            "epsilon_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-003",
+          "page": 6,
+          "label": "(3)",
+          "source_expression": "Q(m) = T(T+2) sum rho_hat_l^2 / (T-l)",
+          "normalized_latex": "Q(m) = T(T+2) \\sum_{l=1}^{m} \\frac{\\hat{\\rho}_l^2}{T-l}",
+          "purpose": "Ljung-Box statistic for residual white noise test.",
+          "variable_symbols": [
+            "Q_m",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Differencing (1), ARIMA (2), Ljung-Box (3) from p.6."
+      },
+      "objectives": [
+        "Predict number of reported Wordle results on March 1, 2023 with interval."
+      ],
+      "constraints": [
+        "Time series must be stationary after differencing."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Training data: daily reported results from Wordle dataset."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Time series; no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Forecasting; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "BIC for ARIMA order. LSTM trained on residuals with phase space reconstruction, optimal order 18.",
+        "parameters": [
+          "p",
+          "q",
+          "d",
+          "phi_i",
+          "theta_i"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "ADF stationarity test on raw series.",
+          "First-order differencing.",
+          "BIC for optimal ARIMA(p,d,q) order.",
+          "Fit ARIMA, obtain residuals.",
+          "Phase space reconstruction of residuals.",
+          "Train LSTM on residuals.",
+          "Sum ARIMA + LSTM predictions."
+        ],
+        "software": [
+          "Python"
+        ],
+        "convergence_criteria": "BIC minimization + LSTM training."
+      },
+      "assumptions": [
+        "Series stationary after first-order differencing.",
+        "LSTM captures nonlinear residual patterns.",
+        "Residual series contains useful nonlinear information."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "RMSE=0.0432. Interval [9614,43109]."
+      },
+      "validation_refs": [
+        "Figure 4: ARIMA-LSTM prediction vs actual."
+      ],
+      "computational_cost": "ARIMA fitting + LSTM training.",
+      "strengths": [
+        "Combines linear and nonlinear modeling.",
+        "RMSE improvement over ARIMA alone."
+      ],
+      "limitations": [
+        "Interval [9614,43109] extremely wide.",
+        "Phase space reconstruction order 18 not justified."
+      ],
+      "missing_details": [
+        "LSTM architecture (layers, hidden units, epochs).",
+        "Specific ARIMA(p,q) values."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q237-002",
+      "page": 12,
+      "section": "5 Task 2: Stacking Prediction",
+      "family": "ensemble (stacking)",
+      "purpose": "Predict percentage distribution of 1-6 tries and X for a given word on future date using two-layer Stacking.",
+      "base_or_modification": "base",
+      "summary": "Two-layer Stacking: Layer 1 = Ridge, Lasso, XGBoost, LightGBM. Layer 2 = XGBoost meta-learner. 7 separate models for 7 attempt categories. R2=0.8377. EERIE: [0,0,9,18,26,37,10].",
+      "variables": [
+        {
+          "symbol": "fr",
+          "normalized_name": "commonness rating",
+          "unit": "dimensionless",
+          "definition": "COCA-based common usage measure",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fn",
+          "normalized_name": "word frequency",
+          "unit": "count",
+          "definition": "SUBTLEX-US corpus frequency",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "num_letters",
+          "normalized_name": "number of letters",
+          "unit": "count",
+          "definition": "Count of distinct letters",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "num_vowels",
+          "normalized_name": "number of vowels",
+          "unit": "count",
+          "definition": "Count of vowel letters",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_X",
+          "normalized_name": "information entropy",
+          "unit": "bits",
+          "definition": "Information entropy of word X",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "comp_num",
+          "normalized_name": "competition number",
+          "unit": "count",
+          "definition": "Game round number",
+          "role": "input",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "y_k",
+          "normalized_name": "percentage for k tries",
+          "unit": "proportion",
+          "definition": "Percentage solving in k tries",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "fr",
+        "fn",
+        "num_letters",
+        "num_vowels",
+        "H_X",
+        "comp_num"
+      ],
+      "outputs": [
+        "y_k"
+      ],
+      "handoff_outputs": [
+        "y_k"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q237-004",
+          "page": 9,
+          "label": "(4)",
+          "source_expression": "f_i = ln(p_i)",
+          "normalized_latex": "f_i = \\ln(p_i)",
+          "purpose": "Lexical common usage index from COCA ranking.",
+          "variable_symbols": [
+            "fr"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-005",
+          "page": 9,
+          "label": "(5)",
+          "source_expression": "H(X) = -sum p(x_i) log p(x_i)",
+          "normalized_latex": "H(X) = -\\sum_{i=1}^{n} p(x_i) \\log p(x_i)",
+          "purpose": "Information entropy of word X.",
+          "variable_symbols": [
+            "H_X"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-006",
+          "page": 10,
+          "label": "(6)",
+          "source_expression": "rho = 1 - 6 sum d_i^2 / (n(n^2-1))",
+          "normalized_latex": "\\rho = 1 - \\frac{6 \\sum_{i=1}^{n} d_i^2}{n(n^2-1)}",
+          "purpose": "Spearman rank correlation coefficient.",
+          "variable_symbols": [
+            "fr",
+            "fn"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "COCA index (4), entropy (5), Spearman (6) from pp.9-10."
+      },
+      "objectives": [
+        "Predict percentage distribution of attempt outcomes for any word on future date."
+      ],
+      "constraints": [
+        "7 predicted percentages must sum to 100% (post-normalization)."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "286 training and 71 test words with attributes."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Cross-sectional prediction."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Prediction task."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Layer 1: Ridge (alpha=14), Lasso, XGBoost, LightGBM. Layer 2: XGBoost meta-learner.",
+        "parameters": [
+          "fr",
+          "fn",
+          "num_letters",
+          "num_vowels",
+          "H_X"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Split 4:1 into training (286) and test (71).",
+          "Layer 1: Train Ridge, Lasso, XGBoost, LightGBM.",
+          "Layer 1: Predict on full dataset, save 4 prediction columns.",
+          "Layer 2: Use 4 predictions + original features.",
+          "Layer 2: Train XGBoost meta-model.",
+          "Predict for each of 7 attempt categories separately.",
+          "Normalize 7 predictions to sum to 100%."
+        ],
+        "software": [
+          "Python",
+          "sklearn",
+          "xgboost",
+          "lightgbm"
+        ],
+        "convergence_criteria": "R2 maximization on test set."
+      },
+      "assumptions": [
+        "Word attributes sufficient for attempt distribution prediction.",
+        "Stacking captures complementary linear and tree model strengths."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "R2=0.8377 vs Lasso 0.6847."
+      },
+      "validation_refs": [
+        "Table 3: MSE/RMSE/MAE/R2 comparison.",
+        "Figure 10: Stacking results."
+      ],
+      "computational_cost": "4 base models + 1 meta-learner x 7 categories.",
+      "strengths": [
+        "Complementary linear + tree model strengths.",
+        "R2=0.8377 best among all."
+      ],
+      "limitations": [
+        "Only 5+1 features.",
+        "Post-normalization may distort."
+      ],
+      "missing_details": [
+        "XGBoost/LightGBM hyperparameters.",
+        "Cross-validation folds."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q237-003",
+      "page": 15,
+      "section": "6 Task 3: GMM Classification",
+      "family": "Gaussian mixture model (clustering with PCA)",
+      "purpose": "Classify Wordle words into 3 difficulty levels using 7 features + Word2Vec, PCA, and GMM clustering.",
+      "base_or_modification": "base",
+      "summary": "7 features + Word2Vec 100-dim -> 107-dim. PCA to 3D (72.8% variance). GMM 3 clusters: 105 difficult, 100 medium, 150 easy. 67% accuracy. EERIE = difficult.",
+      "variables": [
+        {
+          "symbol": "fr",
+          "normalized_name": "frequent use",
+          "unit": "dimensionless",
+          "definition": "COCA-based common usage",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fn",
+          "normalized_name": "word frequency",
+          "unit": "count",
+          "definition": "SUBTLEX-US frequency",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ftn",
+          "normalized_name": "lexical labels",
+          "unit": "count",
+          "definition": "NLTK lexical label count",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fd",
+          "normalized_name": "consonant doubling",
+          "unit": "count",
+          "definition": "Number of distinct letters",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fp",
+          "normalized_name": "phoneme length",
+          "unit": "count",
+          "definition": "Phonetic length from CMU dict",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fvow",
+          "normalized_name": "vowel count",
+          "unit": "count",
+          "definition": "Number of vowels",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fc",
+          "normalized_name": "concreteness rating",
+          "unit": "dimensionless",
+          "definition": "Brysbaert concreteness rating",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fvec",
+          "normalized_name": "word vector",
+          "unit": "dimensionless",
+          "definition": "100-dim Word2Vec embedding",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_k",
+          "normalized_name": "mixture weight",
+          "unit": "dimensionless",
+          "definition": "Weight of k-th Gaussian component",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_k",
+          "normalized_name": "component mean",
+          "unit": "dimensionless",
+          "definition": "Mean vector of k-th Gaussian",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sigma_k",
+          "normalized_name": "component covariance",
+          "unit": "dimensionless",
+          "definition": "Covariance matrix of k-th Gaussian",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_diffi",
+          "normalized_name": "expected difficulty",
+          "unit": "dimensionless",
+          "definition": "Expected number of guesses as ground truth",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "fr",
+        "fn",
+        "ftn",
+        "fd",
+        "fp",
+        "fvow",
+        "fc",
+        "fvec"
+      ],
+      "outputs": [
+        "E_diffi"
+      ],
+      "handoff_outputs": [
+        "E_diffi"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q237-007",
+          "page": 16,
+          "label": "(7)",
+          "source_expression": "p(d_i|lambda) = sum w_k p_k(d_i)",
+          "normalized_latex": "p(d_i | \\lambda) = \\sum_{k=1}^{M} w_k p_k(d_i)",
+          "purpose": "GMM density as weighted sum of M Gaussian components.",
+          "variable_symbols": [
+            "w_k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-008",
+          "page": 16,
+          "label": "(8)",
+          "source_expression": "p_k(d_i) = 1/((2pi)^{D/2}|Sigma_k|^{1/2}) exp(-1/2 (d_i-mu_k)^T Sigma_k^{-1} (d_i-mu_k))",
+          "normalized_latex": "p_k(d_i) = \\frac{1}{(2\\pi)^{D/2} |\\Sigma_k|^{1/2}} \\exp\\left(-\\frac{1}{2}(d_i - \\mu_k)^T \\Sigma_k^{-1} (d_i - \\mu_k)\\right)",
+          "purpose": "Gaussian component density.",
+          "variable_symbols": [
+            "mu_k",
+            "Sigma_k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-009",
+          "page": 17,
+          "label": "(9)",
+          "source_expression": "lambda = {w_k, mu_k, Sigma_k}, k=1,...,M",
+          "normalized_latex": "\\lambda = \\{w_k, \\mu_k, \\Sigma_k\\}, k=1,\\ldots,M",
+          "purpose": "GMM parameter set definition.",
+          "variable_symbols": [
+            "w_k",
+            "mu_k",
+            "Sigma_k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-010",
+          "page": 17,
+          "label": "(10)",
+          "source_expression": "DifficultyFeatures = (fr, fn, ftn, fd, fp, fvow, fc, fvec)",
+          "normalized_latex": "\\text{DifficultyFeatures} = (f_r, f_n, f_{tn}, f_d, f_p, f_{vow}, f_c, f_{vec})",
+          "purpose": "Combined 107-dimensional feature vector.",
+          "variable_symbols": [
+            "fr",
+            "fn",
+            "ftn",
+            "fd",
+            "fp",
+            "fvow",
+            "fc",
+            "fvec"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q237-011",
+          "page": 18,
+          "label": "(11)",
+          "source_expression": "E(diffi) = sum j * p_j",
+          "normalized_latex": "E(\\text{diffi}) = \\sum_{j=1}^{n} j \\cdot p_j",
+          "purpose": "Expected difficulty as weighted average of guess counts.",
+          "variable_symbols": [
+            "E_diffi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "GMM (7-9), feature vector (10), expected difficulty (11) from pp.16-18."
+      },
+      "objectives": [
+        "Classify Wordle words into difficulty levels and classify EERIE."
+      ],
+      "constraints": [
+        "GMM assumes data drawn from mixture of Gaussians."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "355 words with 7 features + 100-dim Word2Vec."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Clustering; no boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Clustering; no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EM algorithm for GMM M=3. PCA 107->3.",
+        "parameters": [
+          "w_k",
+          "mu_k",
+          "Sigma_k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute 7 features; apply transforms.",
+          "Word2Vec 100-dim via Gensim.",
+          "Combine into 107-dim vector.",
+          "PCA 107->3 (72.8% variance).",
+          "GMM M=3 via EM (scikit-learn).",
+          "Validate against expected difficulty."
+        ],
+        "software": [
+          "Python",
+          "gensim",
+          "sklearn"
+        ],
+        "convergence_criteria": "EM log-likelihood stabilization."
+      },
+      "assumptions": [
+        "7 features + Word2Vec capture difficulty.",
+        "3 PCA components retain sufficient variance.",
+        "3 difficulty levels appropriate."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "67% accuracy. 72.8% variance retained."
+      },
+      "validation_refs": [
+        "Figure 12: 3D PCA clustering.",
+        "Figure 13: Cluster distribution."
+      ],
+      "computational_cost": "Word2Vec + PCA + GMM EM.",
+      "strengths": [
+        "Word2Vec captures semantic similarity.",
+        "PCA enables visualization."
+      ],
+      "limitations": [
+        "67% accuracy moderate.",
+        "M=3 without BIC/AIC.",
+        "72.8% variance only."
+      ],
+      "missing_details": [
+        "EM iterations.",
+        "Word2Vec training parameters."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q237-001",
+      "to_model_id": "MU-C-Q237-002",
+      "handoff": "Word attributes defined in ARIMA-LSTM section reused as Stacking inputs."
+    },
+    {
+      "from_model_id": "MU-C-Q237-002",
+      "to_model_id": "MU-C-Q237-003",
+      "handoff": "Stacking predictions inform expected difficulty for GMM validation."
+    }
+  ]
+}

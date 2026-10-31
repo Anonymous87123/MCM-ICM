@@ -1,0 +1,62 @@
+Team # 55285                                                         Page 20 of 32
+
+Appendices
+
+Appendix A Simulation Code
+
+    Our simulation codes written in C++:
+
+#include<cstdio>
+#include<cmath>
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+const int Files = 4;
+
+string filename[Files] = {"A", "B", "E", "F"};
+
+double stringToSecond(string &str) {
+       int now = 0;
+       double min = 0, sec = 0;
+       while (str[now] != ’:’) {
+              min = min * 10 + str[now++] - 48;
+       }
+       now++;
+       while (str[now] != ’.’) {
+              sec = sec * 10 + str[now++] - 48;
+       }
+       return min * 60 + sec;
+
+}
+
+void work(ifstream &inFile, ofstream &outFile) {
+       double second[100], difference[100];
+       int n = 0;
+       string str;
+       while (inFile >> str) {
+              second[n++] = stringToSecond(str);
+              outFile << second[n - 1] << endl;
+       }
+       double sum = 0;
+       for (int i = 1; i < n; ++i) {
+              difference[i] = second[i] - second[i - 1];
+              sum += difference[i];
+       }
+       double ave = sum / (n - 1);
+       sum = 0;
+       for (int i = 1; i < n; ++i) {
+              sum += (difference[i] - ave) * (difference[i] - ave);
+       }
+       double vari = sum / (n - 2);
+       outFile << "average: " << ave << endl;
+       outFile << "variance: " << vari << endl;
+       outFile << "standard deviation: " << sqrt(vari) << endl;
+
+}
+
+int main() {
+       ifstream inFile;
+       ofstream outFile;
+       for (int i = 0; i < Files; ++i) {

@@ -1,0 +1,50 @@
+                                                                                                        Page 8
+                                                                                                    Team 70174
+
+4.4.2   Draw Road Lines
+
+To determine where to draw road lines, we look at all patches which have |y−coordinate| ≤ (numberof lanes+
+1) and are not lanes. We then spawn an invisible turtle at that location. If the turtle is on the edge of the
+road, we draw a yellow line with a gap distance of zero on all grey patches along that y-coordinate (to give
+a solid yellow lane line along the outside of the outermost lanes). If the turtle is in between lanes, we draw
+a white line with a gap distance of .5 patches on all grey patches along that y-coordinate (to give a dotted
+white highway lane line in between lanes). To draw the lines, we have each of these lane drawing turtles to
+put down a pen of the appropriate color and then move forward (1 − gapdistance). Then the turtles pick
+up their pen and move forward their gap distance. They continue this for the entire width of the world and
+then they are killed when they return to the y-axis.
+
+4.4.3   Create Barriers Along Edges
+
+Due to the fact that it is easier to program turtle-to-turtle interactions in NetLogo than it is turtle-to-patch
+interactions, we created barriers along the road to indicate to cars that they cannot go off-road. These can
+also be thought of as medians, which are a common lane management system used in toll plazas. To create
+our red barriers along the sides of the road, we spawn a turtle with the breed “barriers” at every green patch
+which has at least one neighbor that is grey (i.e. all grass patches which are beside the road).
+
+4.4.4   Create or Remove Cars
+
+To create cars, we count the total number of cars in the world and if that is less than the number shown on
+the number-of-cars slider set by the user in the interface, we spawn another car on the road before the toll
+booths. If the number of cars in the world is more than the slider indicates, we kill a random car. We also
+kill cars that reach the end of the world. So, when a car has gone through the tolls and merges back into
+the normal highway traffic, another car enters the queue at the tolls.
+
+As cars are created, they are given random values to determine whether or not they are self-driving, their
+top speed, wait time at the tolls, patience level, method of payment, and anticipation level.
+
+
+4.5     Step Forward and Go Procedures
+4.5.1   Operate Booth
+
+This section of the code sets the gates for the toll booths in the lanes next to them. These gates are where
+the cars stop for and wait for their service time to pass, or cruise through at a very slow pace so that their
+electronic transponder can be detected by scanners. Once cars have waited long enough or cruised through
+the pay station, they move forward.
+
+4.5.2   Move Forward
+
+In the move forward command, cars will accelerate unless they are being blocked by another car, a barrier,
+or if they are at their top-speed. If a car sees another car or barrier ahead of it within their field of vision,
+they will slow down and lose some patience. It is important to note that cars will detect barriers from much
+farther away because most drivers will begin to merge sooner if they are running out of road than if there is
+another car in front of them that is still moving forward. If their patience ever reaches zero, they choose a

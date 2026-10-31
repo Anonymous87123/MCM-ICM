@@ -1,0 +1,5173 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2016-46830-001",
+      "handoff": "The phase-aware thermodynamic balance supplies the field PDE's source, boundary, and initial conditions.",
+      "to_model_id": "MU-A-2016-46830-002"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-002",
+      "handoff": "The fitted temperature field and gradient become the reduced interface in the universal thermodynamic model.",
+      "to_model_id": "MU-A-2016-46830-003"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-003",
+      "handoff": "The universal energy balance is extended with a motion-dependent convection source.",
+      "to_model_id": "MU-A-2016-46830-004"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-004",
+      "handoff": "Motion-adjusted temperature fields are evaluated against the human comfort distribution.",
+      "to_model_id": "MU-A-2016-46830-005"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-005",
+      "handoff": "Comfort probability, temperature deviation, and water use become the Strategy I objective and constraints.",
+      "to_model_id": "MU-A-2016-46830-006"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-005",
+      "handoff": "The same comfort and energy criteria are recast for piecewise tap switching.",
+      "to_model_id": "MU-A-2016-46830-007"
+    },
+    {
+      "from_model_id": "MU-A-2016-46830-006",
+      "handoff": "The selected continuous strategy is reused after bubble-interface losses are modified.",
+      "to_model_id": "MU-A-2016-46830-008"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define geometry and phases",
+          "write internal-energy balance",
+          "substitute each loss mechanism",
+          "pass energy and average temperature downstream"
+        ]
+      },
+      "assumptions": [
+        "no wave/overflow effect from motion",
+        "no heat loss during short air transit",
+        "natural convection neglected",
+        "bubble properties fixed when concentration changes"
+      ],
+      "base_or_modification": "base",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "constant bathroom conditions",
+        "full-bath overflow",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "universal thermodynamic control-volume model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-001",
+          "label": "(1)",
+          "normalized_latex": "dQ=dQ_{exchange}-dQ_{evaporation}-dQ_{body}-dQ_{radiation}+dQ_{in}-dQ_{out}",
+          "page": 7,
+          "purpose": "master heat differential balance",
+          "source_expression": "dQ=dQexchange-dQevaporation-dQbody-dQradiation+dQin-dQout",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-002",
+          "label": "(2)",
+          "normalized_latex": "Q=\\rho c_p\\int_V T_{field}\\,dV",
+          "page": 7,
+          "purpose": "internal energy from spatial temperature",
+          "source_expression": "Q=rho*cp*integral(Tfield)dV",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "rho",
+            "cp",
+            "Tfield"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-003",
+          "label": "(3)",
+          "normalized_latex": "T=\\frac{\\int_V T_{field}\\,dV}{V}",
+          "page": 7,
+          "purpose": "average bath temperature",
+          "source_expression": "T=integral(Tfield)dV/V",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "T",
+            "Tfield",
+            "V"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-004",
+          "label": "(4)",
+          "normalized_latex": "dQ_{exchange}=\\int_A[h(T_{field}-T_0)+h_{air}(T_{field}-T_{air})]\\,dA\\,dt",
+          "page": 8,
+          "purpose": "wall and air exchange",
+          "source_expression": "dQexchange=integral(h(Tfield-T0)+hair(Tfield-Tair))dA dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "h",
+            "hair",
+            "Tfield",
+            "T0",
+            "Tair",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-005",
+          "label": "(5)",
+          "normalized_latex": "dQ_{evaporation}=u_{evap}L_{heat}\\,dA\\,dt",
+          "page": 8,
+          "purpose": "evaporation loss",
+          "source_expression": "dQevaporation=u_evap*Lheat*dA dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "u_evap",
+            "Lheat",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-006",
+          "label": "(6)",
+          "normalized_latex": "dQ_{body}=S_{body}h_{body}(T-T_{body})\\,dt",
+          "page": 9,
+          "purpose": "body-water heat exchange",
+          "source_expression": "dQbody=Sbody*hbody*(T-Tbody)dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "Sbody",
+            "hbody",
+            "T",
+            "Tbody",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-007",
+          "label": "(7)",
+          "normalized_latex": "dQ_{radiation}=\\epsilon\\sigma_{SB}\\int_A(T_{field}^4-T_{air}^4)\\,dA\\,dt",
+          "page": 9,
+          "purpose": "radiative loss",
+          "source_expression": "dQradiation=eps*sigmaSB*integral(Tfield^4-Tair^4)dA dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "eps",
+            "sigmaSB",
+            "Tfield",
+            "Tair",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-008",
+          "label": "(8)",
+          "normalized_latex": "dQ_{in}=c_p\\rho k_{flow}T_0\\,dt",
+          "page": 9,
+          "purpose": "hot-water inflow heat",
+          "source_expression": "dQin=cp*rho*kflow*T0 dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "cp",
+            "rho",
+            "kflow",
+            "T0",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-009",
+          "label": "(9)",
+          "normalized_latex": "dQ_{out}=c_p\\rho k_{flow}T_{field}(x_{out},y_{out},z_{out},t)\\,dt",
+          "page": 9,
+          "purpose": "overflow heat loss",
+          "source_expression": "dQout=cp*rho*kflow*Tfield(outlet)dt",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "cp",
+            "rho",
+            "kflow",
+            "Tfield",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Q",
+        "T",
+        "V"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Loss mechanisms share a single aggregate balance and can hide phase-specific calibration."
+      ],
+      "missing_details": [
+        "humidity feedback",
+        "measured body heat",
+        "overflow temperature field"
+      ],
+      "model_id": "MU-A-2016-46830-001",
+      "objectives": [
+        "conserve energy",
+        "represent three bath phases",
+        "provide interface for all later models"
+      ],
+      "outputs": [
+        "Q",
+        "T",
+        "V"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Track bathwater internal energy through filling, cooling, and reheating",
+      "section": "Normal thermodynamic energy model",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "The UTM decomposes internal-energy change into wall/air exchange, evaporation, body heat, radiation, hot-water inflow, and overflow loss, then treats filling, full-bath cooling, and reheating as separate phases.",
+      "validation_refs": [
+        "Eq.1-9 pp.7-10"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "solve PDE in MATLAB",
+          "sample temperature surface",
+          "fit plane",
+          "derive mean and gradient relations"
+        ]
+      },
+      "assumptions": [
+        "39 C initial field",
+        "45 C inlet source",
+        "constant boundary coefficients"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "constant source at tap",
+        "symmetry",
+        "plane approximation after 2.5 s"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "three-dimensional heat-conduction PDE with Neumann boundaries",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-010",
+          "label": "(10)",
+          "normalized_latex": "\\frac{\\partial T_{field}}{\\partial t}=\\alpha\\nabla^2T_{field}+q",
+          "page": 11,
+          "purpose": "temperature field PDE",
+          "source_expression": "partial Tfield/partial t=alpha Laplacian Tfield+q",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "alpha",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-011",
+          "label": "BC",
+          "normalized_latex": "\\partial_n T_{field}=h(T_{field}-T_0)",
+          "page": 11,
+          "purpose": "Neumann heat boundaries",
+          "source_expression": "normal derivative=h(Tfield-T0)",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "h",
+            "T0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-012",
+          "label": "fit",
+          "normalized_latex": "T_{field}(x,y,z,2.5s)=44.63-4.294y",
+          "page": 14,
+          "purpose": "plane-fit approximation",
+          "source_expression": "Tfield=44.63-4.294*y",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "y"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-013",
+          "label": "(11)",
+          "normalized_latex": "T_{field}(x,y,z,t)=T(t)-K_{grad}(t)y",
+          "page": 15,
+          "purpose": "mean-gradient decomposition",
+          "source_expression": "Tfield=T-Kgrad*y",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "T",
+            "Kgrad",
+            "y"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-014",
+          "label": "(12)",
+          "normalized_latex": "K_{grad}=\\sqrt{12D_{var}}/a",
+          "page": 15,
+          "purpose": "gradient from variance",
+          "source_expression": "Kgrad=sqrt(12*Dvar)/a",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Kgrad",
+            "Dvar",
+            "a"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Tfield",
+        "T",
+        "Kgrad",
+        "Rfit",
+        "Dvar"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "R-squared is reported at one time and Kgrad(t) remains an unknown function."
+      ],
+      "missing_details": [
+        "grid resolution",
+        "fit uncertainty",
+        "time evolution of gradient"
+      ],
+      "model_id": "MU-A-2016-46830-002",
+      "objectives": [
+        "capture spatial nonuniformity",
+        "fit a usable interface",
+        "provide gradient/variance for control"
+      ],
+      "outputs": [
+        "Tfield",
+        "T",
+        "Kgrad",
+        "Rfit",
+        "Dvar"
+      ],
+      "page": 11,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Resolve spatial water temperature during hot-water injection and produce a tractable analytic interface",
+      "section": "Temperature field PDE and fitted interface",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "The PDE tool solves the conduction field from a constant hot-water source and Neumann boundaries; a plane fit with reported R-squared 0.931 is then used as an approximate downstream temperature distribution.",
+      "validation_refs": [
+        "Figures 4-7; Eq.10-12 pp.11-18"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "substitute fitted field",
+          "simplify integrals",
+          "write phase-specific ODE/PDE interface"
+        ]
+      },
+      "assumptions": [
+        "all properties fixed",
+        "body is constant-temperature source",
+        "air humidity constant"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "fitted plane is valid for later times",
+        "radiation through coated wall can be simplified"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "coupled field-to-energy reduced model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-015",
+          "label": "(13)",
+          "normalized_latex": "dQ=\\mathcal{F}(T,K_{grad},k_{flow},T_0,S_{body},h_{body},\\epsilon,humidity)",
+          "page": 16,
+          "purpose": "universal thermodynamic closure",
+          "source_expression": "dQ=all six source terms with Tfield=T-Kgrad*y",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "T",
+            "Kgrad",
+            "kflow",
+            "T0",
+            "Sbody",
+            "hbody",
+            "eps",
+            "humidity",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Q",
+        "T",
+        "Kgrad"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Unknown Kgrad(t) is carried as a free function and several coefficients are assumed rather than calibrated."
+      ],
+      "missing_details": [
+        "gradient calibration",
+        "humidity dynamics",
+        "body surface temperature distribution"
+      ],
+      "model_id": "MU-A-2016-46830-003",
+      "objectives": [
+        "close field and energy loops",
+        "retain evaporation and radiation",
+        "supply control equations"
+      ],
+      "outputs": [
+        "Q",
+        "T",
+        "Kgrad"
+      ],
+      "page": 17,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Combine fitted temperature distribution with the full heat-loss balance",
+      "section": "Universal thermodynamic model",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "The fitted field is substituted into wall exchange, evaporation, body, radiation, inflow, and overflow terms so the average temperature and gradient can drive later motion and control models.",
+      "validation_refs": [
+        "Eq.13 p.16"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "compute Fk",
+          "apply response function",
+          "update gradient",
+          "pass field to comfort/control"
+        ]
+      },
+      "assumptions": [
+        "motion frequency and range are prescribed",
+        "Fb calibrated from a selected scenario"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "discrete equal-amplitude frequency motion",
+        "no mechanical work heat",
+        "response is nonnegative"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "human-motion convection source model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-016",
+          "label": "motion",
+          "normalized_latex": "F_k=S_kV_k",
+          "page": 18,
+          "purpose": "motion intensity proxy",
+          "source_expression": "Fk=Sk*Vk",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Fk",
+            "Sk",
+            "Vk"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-017",
+          "label": "(14)",
+          "normalized_latex": "T_k=T_{field}+f(F_k)(T-T_{field})",
+          "page": 19,
+          "purpose": "local mixing toward mean",
+          "source_expression": "Tk=Tfield+f(Fk)(T-Tfield)",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "fmove",
+            "Fk",
+            "T"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-018",
+          "label": "response",
+          "normalized_latex": "f(F_k)\\ge0,\\quad f(F_k)\\to1",
+          "page": 20,
+          "purpose": "bounded convection response",
+          "source_expression": "f(F)=0 for F=0 and increasing bounded function",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "fmove",
+            "Fk"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-019",
+          "label": "(15)",
+          "normalized_latex": "T_{field}=T(t)-4.294e^{-f_0t/F_b}y",
+          "page": 30,
+          "purpose": "control-stage temperature field",
+          "source_expression": "Tfield=T-4.294 exp(-f0*t/Fb)*y",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tfield",
+            "T",
+            "Kgrad",
+            "fmove",
+            "t",
+            "Fb",
+            "y"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Tfield",
+        "Fk",
+        "Kgrad"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Fb is not deduced from physical constants and requires experiment; the response function is incompletely fitted."
+      ],
+      "missing_details": [
+        "motion measurement",
+        "coupled fluid mechanics",
+        "source interaction"
+      ],
+      "model_id": "MU-A-2016-46830-004",
+      "objectives": [
+        "quantify motion",
+        "reduce gradients",
+        "feed spatial field into control"
+      ],
+      "outputs": [
+        "Tfield",
+        "Fk",
+        "Kgrad"
+      ],
+      "page": 18,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Represent body movement as a forced-convection source that reduces spatial gradients",
+      "section": "Forced convection model",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "Each discrete movement is encoded by moved volume times moved distance; a nonnegative response function then pulls local temperature toward the average, while the source magnitude changes over time.",
+      "validation_refs": [
+        "Figures 8-9; Eq.14-15 pp.18-30"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define comfort distribution",
+          "normalize objective factors",
+          "add temperature/energy constraints"
+        ]
+      },
+      "assumptions": [
+        "comfort probability is a proxy",
+        "weights are selected rather than elicited"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "normal distribution",
+        "constant body temperature",
+        "weights represent preferences"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "normal-distribution comfort model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-020",
+          "label": "comfort",
+          "normalized_latex": "p(T_{comfort})=\\frac1{3\\sqrt{2\\pi}}e^{-(T_{comfort}-312)^2/18}",
+          "page": 21,
+          "purpose": "comfort probability",
+          "source_expression": "p(Tbody)=normal(mu=312,sigma=3)",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tcomfort"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-021",
+          "label": "objective",
+          "normalized_latex": "J=w_TJ_T+w_WJ_W-w_CJ_C",
+          "page": 24,
+          "purpose": "multi-criteria objective",
+          "source_expression": "J=weightT*temperature deviation+weightW*water-weightC*comfort",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "weightT",
+            "weightW",
+            "weightC"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-022",
+          "label": "constraints",
+          "normalized_latex": "T_{bodymin}\\le T_b\\le T_{high},\\quad T=Q/(\\rho c_pV)",
+          "page": 25,
+          "purpose": "comfort and energy constraints",
+          "source_expression": "Tbodymin<=Tb<=Thigh and T=Q/(rho*cp*V)",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tbodymin",
+            "Tb",
+            "Thigh",
+            "T",
+            "Q",
+            "rho",
+            "cp",
+            "V"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Tcomfort",
+        "T",
+        "weightT",
+        "weightW",
+        "weightC"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Comfort weights and distribution parameters are not empirically calibrated for individuals."
+      ],
+      "missing_details": [
+        "preference elicitation",
+        "individual body variation",
+        "objective normalization"
+      ],
+      "model_id": "MU-A-2016-46830-005",
+      "objectives": [
+        "protect comfort",
+        "make comfort comparable with water and stability",
+        "define safe injection range"
+      ],
+      "outputs": [
+        "Tcomfort",
+        "T",
+        "weightT",
+        "weightW",
+        "weightC"
+      ],
+      "page": 21,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Turn human comfort into an explicit constraint/objective",
+      "section": "Human body comfort model",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "The body-temperature comfort model uses a normal distribution centered near 312 K, allowing a comfort probability to be combined with temperature stability and water use.",
+      "validation_refs": [
+        "pp.21-25"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "enumerate kflow and Tb",
+          "solve embedded energy equations",
+          "compare average-temperature curves",
+          "report water and comfort ratios"
+        ]
+      },
+      "assumptions": [
+        "one flow and one temperature control",
+        "UTM governs dynamics"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "constant flow",
+        "30-minute horizon",
+        "safe inlet temperature"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "continuous optimal-control model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-023",
+          "label": "S1-objective",
+          "normalized_latex": "\\min J_1=w_T\\int_0^{t_m}|T(t)-T_0|dt+w_Wk_{flow}-w_CJ_C",
+          "page": 24,
+          "purpose": "constant-flow objective",
+          "source_expression": "min weighted integral temperature+flow-comfort",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "weightT",
+            "weightW",
+            "weightC",
+            "T",
+            "T0",
+            "tm",
+            "kflow"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-024",
+          "label": "S1-constraints",
+          "normalized_latex": "0\\le k_{flow}\\le k_{max},\\quad T_{bodymin}\\le T_b\\le T_{high},\\quad t_m\\le1800",
+          "page": 25,
+          "purpose": "strategy I constraints",
+          "source_expression": "0<=kflow<=kmax; Tbody<=Tb<=Thigh; tm<=1800",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "kflow",
+            "Tbodymin",
+            "Tb",
+            "Thigh",
+            "tm"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "kflow",
+        "Tb",
+        "T"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Step sizes and objective weights determine the selected point; the strategy is nominal and not experimentally closed-loop."
+      ],
+      "missing_details": [
+        "weight sensitivity",
+        "actuator limits",
+        "measurement feedback"
+      ],
+      "model_id": "MU-A-2016-46830-006",
+      "objectives": [
+        "minimize temperature deviation",
+        "minimize added water",
+        "maximize comfort"
+      ],
+      "outputs": [
+        "kflow",
+        "Tb",
+        "T"
+      ],
+      "page": 23,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Choose constant hot-water flow and injection temperature for a 30-minute bath",
+      "section": "Strategy I constant-flow control",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "Strategy I minimizes temperature deviation, water flow, and negative comfort simultaneously under flow, safety, energy, and time constraints; enumeration returns 0.007 L/s and 311.1 K in the reported scenario.",
+      "validation_refs": [
+        "Figures 10-11; Table 3 pp.28-30"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "enumerate thresholds and intervals",
+          "solve on/off phases",
+          "interpret degenerate optimum",
+          "compare with Strategy I"
+        ]
+      },
+      "assumptions": [
+        "piecewise dynamics",
+        "constant flow while open"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "threshold ordering",
+        "energy relation",
+        "binary tap phase"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "piecewise switching optimal-control model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-025",
+          "label": "S2-objective",
+          "normalized_latex": "\\min J_2=\\sum_i w_T\\int_{t_i}^{t_{i+1}}|T(t)-T_0|dt+w_W\\sum_i t_{2k}-w_CJ_C",
+          "page": 26,
+          "purpose": "switching objective",
+          "source_expression": "min sum interval temperature deviation+open time-comfort",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "weightT",
+            "weightW",
+            "weightC",
+            "T",
+            "T0",
+            "t",
+            "n"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-026",
+          "label": "S2-constraints",
+          "normalized_latex": "T_{bodymin}\\le T_{min1}\\le T_{min2}\\le T_b\\le T_{high}",
+          "page": 27,
+          "purpose": "switch thresholds",
+          "source_expression": "Tbody<=Tmin1<=Tmin2<=Tb<=Thigh",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Tbodymin",
+            "Tmin1",
+            "Tmin2",
+            "Tb",
+            "Thigh"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-027",
+          "label": "phase",
+          "normalized_latex": "\\eta_q=1\\ (open),\\quad \\eta_q=0\\ (closed)",
+          "page": 27,
+          "purpose": "binary phase indicator",
+          "source_expression": "eta=1 if tap open else 0",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "eta"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-028",
+          "label": "S2-balance",
+          "normalized_latex": "dQ=dQ_{loss}+\\eta(dQ_{in}-dQ_{out})",
+          "page": 27,
+          "purpose": "unified on/off balance",
+          "source_expression": "dQ=losses+eta*(Qin-Qout)",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "eta",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Tmin1",
+        "Tmin2",
+        "Tb",
+        "kflow"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "The equal-threshold optimum reflects discretization and objective normalization; finer cycles were computationally infeasible."
+      ],
+      "missing_details": [
+        "switch sensor behavior",
+        "time-step convergence",
+        "weight standardization"
+      ],
+      "model_id": "MU-A-2016-46830-007",
+      "objectives": [
+        "minimize piecewise temperature deviation",
+        "minimize open time",
+        "maximize comfort"
+      ],
+      "outputs": [
+        "Tmin1",
+        "Tmin2",
+        "Tb",
+        "kflow"
+      ],
+      "page": 25,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compare automatic threshold switching with continuous flow",
+      "section": "Strategy II temperature-switch control",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "Strategy II alternates tap-on and tap-off phases using Tmin1, Tmin2, Tb, and a binary phase indicator; the reported optimum collapses Tmin1 and Tmin2 to the same value, interpreted as a continuous limit.",
+      "validation_refs": [
+        "Figure 10; pp.25-31"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports fit goodness, finite-difference/enumeration step choices, and strategy flow charts, but not complete solver tolerances or grid-convergence evidence.",
+        "software": [
+          "MATLAB PDE tool",
+          "MATLAB enumeration and finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "remove or reduce evaporation",
+          "modify air exchange",
+          "compute dissipation ratio",
+          "rerun Strategy I"
+        ]
+      },
+      "assumptions": [
+        "bubble layer acts as air insulation",
+        "same comfort/control framework reused"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Cost grows with PDE grid, time step, nested strategy equations, enumeration dimensions, and sensitivity scenarios; appendix code is partial and full runtime settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Tub wall, air surface, tap, overflow, and body-contact boundaries are explicitly represented in the source equations or their stated approximations."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon numerical solutions and fitted temperature surfaces are used; long-run convergence and independent field validation are not established."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial filling, full-bath, and reheating phases are stated or inherited from the preceding model."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "bubble thickness fixed",
+        "density and heat capacity unchanged",
+        "evaporation strongly reduced"
+      ],
+      "equation_status": {
+        "reason": "All displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "thermal-resistance counterfactual model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-46830-029",
+          "label": "bubble-exchange",
+          "normalized_latex": "dQ_{exchange}=dQ_{water-wall}+dQ_{bubble-air}",
+          "page": 32,
+          "purpose": "bubble interface replacement",
+          "source_expression": "dQexchange=water-wall+water-bubble-air",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "T",
+            "T0",
+            "Tair",
+            "delta"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-030",
+          "label": "bubble-loss",
+          "normalized_latex": "dQ_{bubble}=dQ_{exchange}+dQ_{body}+dQ_{radiation}+dQ_{in}-dQ_{out}",
+          "page": 32,
+          "purpose": "bubble energy balance",
+          "source_expression": "dQbubble=dQexchange+dQbody+dQradiation+dQin-dQout",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Q",
+            "Wbubble",
+            "Wwater"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-46830-031",
+          "label": "power-ratio",
+          "normalized_latex": "W_{bubble}/W_{water}=0.4585",
+          "page": 32,
+          "purpose": "bubble heat-loss comparison",
+          "source_expression": "Wbubble/Wwater=0.4585",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Wbubble",
+            "Wwater"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Wbubble",
+        "Wwater",
+        "kflow",
+        "Tb"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The model is computationally feasible for nominal strategy comparison and sensitivity, but motion calibration, fitted gradient evolution, and real-bath validation remain incomplete.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Q",
+        "T",
+        "Tfield",
+        "t",
+        "x",
+        "y",
+        "z",
+        "a",
+        "b",
+        "H",
+        "V",
+        "rho",
+        "cp",
+        "kappa",
+        "alpha",
+        "h",
+        "hair",
+        "hbody",
+        "Sbody",
+        "Tbody",
+        "Tair",
+        "P",
+        "humidity",
+        "Lheat",
+        "eps",
+        "sigmaSB",
+        "T0",
+        "Tbodymin",
+        "Thigh",
+        "Sk",
+        "Vk",
+        "Fb",
+        "weightT",
+        "weightW",
+        "weightC",
+        "tm",
+        "n",
+        "delta"
+      ],
+      "limitations": [
+        "Bubble-layer thickness and evaporation reduction are assumed; the model is not experimentally calibrated."
+      ],
+      "missing_details": [
+        "layer conductivity",
+        "surfactant concentration",
+        "bubble lifetime"
+      ],
+      "model_id": "MU-A-2016-46830-008",
+      "objectives": [
+        "compare bubble insulation",
+        "recompute optimal control",
+        "quantify water saving"
+      ],
+      "outputs": [
+        "Wbubble",
+        "Wwater",
+        "kflow",
+        "Tb"
+      ],
+      "page": 32,
+      "parameter_estimation": {
+        "method": "nominal constants, literature values, and selected fitted/assumed parameters",
+        "parameters": [
+          "rho",
+          "cp",
+          "kappa",
+          "h",
+          "hair",
+          "Sbody",
+          "kflow",
+          "Tb"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Modify air-interface losses for bubble insulation and rerun the control recommendation",
+      "section": "Bubble-bath modification and decision layer",
+      "strengths": [
+        "The paper makes each model handoff visible and returns results to the requested bathing decision."
+      ],
+      "summary": "Bubble water removes or reduces evaporation and replaces direct water-air exchange with a bubble-layer transfer; reported dissipation is 45.85% of normal water and Strategy I changes to 0.004 L/s at 311.9 K.",
+      "validation_refs": [
+        "Figure 12; pp.32-33"
+      ],
+      "variables": [
+        {
+          "definition": "internal energy of bath water",
+          "normalized_name": "internal energy",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Q",
+          "unit": "J"
+        },
+        {
+          "definition": "average water temperature",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "temperature in space and time",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Tfield",
+          "unit": "K"
+        },
+        {
+          "definition": "bath or simulation time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "coordinate along tub length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "coordinate across tub width",
+          "normalized_name": "width coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "vertical coordinate",
+          "normalized_name": "height coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "long dimension of tub",
+          "normalized_name": "tub length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "short dimension of tub",
+          "normalized_name": "tub width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "water depth or tub height",
+          "normalized_name": "tub height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "water volume after body displacement",
+          "normalized_name": "water volume",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "V",
+          "unit": "m^3"
+        },
+        {
+          "definition": "density of water",
+          "normalized_name": "water density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "specific heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "conductivity of water or material",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "thermal diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "water-wall heat transfer coefficient",
+          "normalized_name": "wall heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "water-air heat transfer coefficient",
+          "normalized_name": "air heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hair",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water heat coefficient",
+          "normalized_name": "body heat coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "hbody",
+          "unit": "W/(m^2 K)"
+        },
+        {
+          "definition": "body-water contact area",
+          "normalized_name": "body contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sbody",
+          "unit": "m^2"
+        },
+        {
+          "definition": "constant body surface temperature",
+          "normalized_name": "body temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tbody",
+          "unit": "K"
+        },
+        {
+          "definition": "bathroom air temperature",
+          "normalized_name": "air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Tair",
+          "unit": "K"
+        },
+        {
+          "definition": "saturated vapor pressure",
+          "normalized_name": "vapor pressure",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "P",
+          "unit": "Pa"
+        },
+        {
+          "definition": "bathroom humidity",
+          "normalized_name": "relative humidity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "humidity",
+          "unit": "1"
+        },
+        {
+          "definition": "surface evaporation rate",
+          "normalized_name": "evaporation rate",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "u_evap",
+          "unit": "kg/(m^2 s)"
+        },
+        {
+          "definition": "latent heat of evaporation",
+          "normalized_name": "latent heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Lheat",
+          "unit": "J/kg"
+        },
+        {
+          "definition": "water radiation coefficient",
+          "normalized_name": "emissivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "radiation constant",
+          "normalized_name": "Stefan Boltzmann constant",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigmaSB",
+          "unit": "W/(m^2 K^4)"
+        },
+        {
+          "definition": "water temperature at tap or outlet",
+          "normalized_name": "inlet/outlet reference temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T0",
+          "unit": "K"
+        },
+        {
+          "definition": "water injection rate",
+          "normalized_name": "water flow",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kflow",
+          "unit": "m^3/s"
+        },
+        {
+          "definition": "hot water injection temperature",
+          "normalized_name": "injection temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tb",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II lower threshold",
+          "normalized_name": "lower switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin1",
+          "unit": "K"
+        },
+        {
+          "definition": "strategy II upper threshold",
+          "normalized_name": "upper switching threshold",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tmin2",
+          "unit": "K"
+        },
+        {
+          "definition": "lower body comfort constraint",
+          "normalized_name": "body lower comfort bound",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Tbodymin",
+          "unit": "K"
+        },
+        {
+          "definition": "upper safety constraint",
+          "normalized_name": "upper safe temperature",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Thigh",
+          "unit": "K"
+        },
+        {
+          "definition": "distance of kth body movement",
+          "normalized_name": "motion distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Sk",
+          "unit": "m"
+        },
+        {
+          "definition": "volume of kth moving body part",
+          "normalized_name": "motion volume",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Vk",
+          "unit": "m^3"
+        },
+        {
+          "definition": "motion intensity proxy",
+          "normalized_name": "forced convection source",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Fk",
+          "unit": "m^4"
+        },
+        {
+          "definition": "calibration motion source",
+          "normalized_name": "reference motion source",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "Fb",
+          "unit": "m^4"
+        },
+        {
+          "definition": "spatial temperature gradient",
+          "normalized_name": "temperature gradient",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Kgrad",
+          "unit": "K/m"
+        },
+        {
+          "definition": "nonnegative forced-convection response",
+          "normalized_name": "motion response",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "fmove",
+          "unit": "1"
+        },
+        {
+          "definition": "most comfortable body temperature",
+          "normalized_name": "comfortable temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Tcomfort",
+          "unit": "K"
+        },
+        {
+          "definition": "objective weight",
+          "normalized_name": "temperature objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightT",
+          "unit": "1"
+        },
+        {
+          "definition": "water-use weight",
+          "normalized_name": "water objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightW",
+          "unit": "1"
+        },
+        {
+          "definition": "comfort weight",
+          "normalized_name": "comfort objective weight",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "weightC",
+          "unit": "1"
+        },
+        {
+          "definition": "optimization horizon",
+          "normalized_name": "maximum bath time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tm",
+          "unit": "s"
+        },
+        {
+          "definition": "enumerated update increment",
+          "normalized_name": "temperature increment",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "K"
+        },
+        {
+          "definition": "number of strategy-II operations",
+          "normalized_name": "switch count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "1"
+        },
+        {
+          "definition": "dimensionless binary indicator: 1 while the tap is open and 0 while closed",
+          "normalized_name": "tap phase indicator",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "1"
+        },
+        {
+          "definition": "air-bubble insulation thickness",
+          "normalized_name": "bubble layer thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "delta",
+          "unit": "m"
+        },
+        {
+          "definition": "normal-water dissipation",
+          "normalized_name": "normal heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wwater",
+          "unit": "W"
+        },
+        {
+          "definition": "bubble-water dissipation",
+          "normalized_name": "bubble heat loss power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Wbubble",
+          "unit": "W"
+        },
+        {
+          "definition": "plane-fit goodness of fit",
+          "normalized_name": "fit goodness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Rfit",
+          "unit": "1"
+        },
+        {
+          "definition": "spatial variance",
+          "normalized_name": "temperature variance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Dvar",
+          "unit": "K^2"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2016-46830-92f43919",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "92f4391909128a7ae0f6619bb9e2e81ee61c05ae9e879a14420af5103d270a99",
+  "year": "2016"
+}

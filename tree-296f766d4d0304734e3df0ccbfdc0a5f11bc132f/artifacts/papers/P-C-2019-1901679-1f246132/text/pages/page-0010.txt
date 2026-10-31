@@ -1,0 +1,61 @@
+4. PART I: CHARACTERISTICS OF THE EPIDEMIC                                                            Control #1901679
+
+
+    This discovery gave us both confidence to continue, and a suspicion that the rough origin of the opioid epidemic
+in this region of the US was southwestern West Virginia, based on visual inspection. Although our team could not
+formally quantify our visual stimulation by these maps, these observations held some weight given how adept our
+eyes and brains are at pattern recognition [23].
+
+4.1     How the Model Works
+    In basic terms, the classification of each county in our model at the next time step is influenced by its current
+class, the classes of its neighboring counties, a noise parameter, and random selection from a probability vector. To
+run the model, we wrote code in Python which performs the following tasks:
+
+  – Initialize the probability vector by adding noise uniformly to each class, so the probability of a county transi-
+  1.
+     tioning from one class to any other is greater than zero. The level of noise added to each class was optimized
+     before running the model to minimize the error (discussed below).
+  2. Each neighboring county adds a tally to the index of its class in the probability vector to increase the probability
+     of the original county being in that class in the next time step. This tally incorporates inverse distance weighting.
+     In other words, a county directly adjacent adds a tally of 1, a county with one county in between it and the
+     origin county adds a tally of 1/4, etc.
+  3. Divide each entry in the probability vector by the relevant transition score in the penalty matrix below. This
+     matrix reflects our expectations about how difficult it should be to transition between each class.
+                                                                                 
+                                                  LS   HS     LI   HI    LD    HD
+                                          LS
+                                                 |1    4      2    3     2     1 
+                                                                                  
+                                          HS
+                                                 |4    1      3    2     3     2 
+                                                                                  
+                                          LI
+                                                 |2    3      1    2     2     2 
+                                                                                  
+                                          HI
+                                                 |3    2      2    1     4     2 
+                                                                                  
+                                          LD     |2    3      2    4     1     2 
+                                          HD      |3    2      2    2     2     1
+
+  4. Scale the probability vector by a coefficient vector which was previously optimized to account for the overall
+     importance of each class, in the same manner as the noise was optimized.
+  5. Normalize the probability vector so it is actually a discrete probability distribution.
+  6. The final probability vector defines the distribution for a stochastic simulation which selects a class for the
+     county in the next time period.
+  7. Repeat the steps above for some number of time steps and then for some number of trials so each trial walks
+     through the specified number of time steps.
+
+   After running all of the trials, pick the majority vote for each county at the point in time we are interested in
+analyzing.
+
+4.1.1   Evaluation of the Model
+    Once we created the model’s structure, we realized we needed an error function to evaluate model performance
+and help us optimize the levels of noise and the values of coefficients for each class. Error analysis is tricky for this
+model because a good result does not necessarily mean a perfect match to the data. If our algorithm classifies a
+county as high stable, and the data says it should be high increasing, we want the error to reflect the fact that our
+model was close, and not so wrong as to classify that county as having low prevalence of opioid abuse. This need to
+distinguish the probabilities of certain transitions gave us the idea for the penalty matrix, displayed in the previous
+section.
+    However, after imposing the penalties, the model results started clustering a lot more than the real data, as seen
+in Figure 4, below.

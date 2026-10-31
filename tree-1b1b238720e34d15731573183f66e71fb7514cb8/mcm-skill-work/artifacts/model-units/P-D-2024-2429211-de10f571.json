@@ -1,0 +1,1069 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-D-2024-2429211-de10f571",
+ "problem_type": "D",
+ "year": "2024",
+ "source_sha256": "de10f5711d7740aa8e2c7897899fad78e388f6d692d1b11193883236754db40a",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-D-2024-2429211-HYDRO",
+   "page": 11,
+   "section": "2.5 Data-Based Model Of The Hydrosphere",
+   "family": "regression",
+   "purpose": "express each river's flow as a line in the height of the lake it leaves",
+   "base_or_modification": "paper-specific",
+   "summary": "Two rivers are each given a fitted straight line, and the travel time between lakes is read off the peak of a lagged correlation.",
+   "variables": [
+    {
+     "symbol": "fNiagara",
+     "normalized_name": "niagara flow",
+     "unit": "m^3/s",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "flow in the Niagara River"
+    },
+    {
+     "symbol": "hErie",
+     "normalized_name": "erie height",
+     "unit": "m",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "height of Lake Erie above sea level"
+    },
+    {
+     "symbol": "fDetroit",
+     "normalized_name": "detroit flow",
+     "unit": "m^3/s",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "flow in the Detroit River"
+    },
+    {
+     "symbol": "hHuron",
+     "normalized_name": "huron height",
+     "unit": "m",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "height of the merged Michigan and Huron lake"
+    }
+   ],
+   "inputs": [
+    "hErie",
+    "hHuron"
+   ],
+   "outputs": [
+    "fNiagara",
+    "fDetroit"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2429211-01",
+     "page": 11,
+     "label": "unnumbered",
+     "source_expression": "f_{\\mathrm{Niagara}}=2088.917\\,h_{\\mathrm{Erie}}-357993.824",
+     "normalized_latex": "f_{\\mathrm{Niagara}}=2088.917\\,h_{\\mathrm{Erie}}-357993.824",
+     "variable_symbols": [
+      "fNiagara",
+      "hErie"
+     ],
+     "purpose": "fitted line for the Niagara River, reported with a coefficient of determination of 0.928",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-02",
+     "page": 11,
+     "label": "unnumbered",
+     "source_expression": "f_{\\mathrm{Detroit}}=1611.581\\,h_{\\mathrm{Huron}}-278618.674",
+     "normalized_latex": "f_{\\mathrm{Detroit}}=1611.581\\,h_{\\mathrm{Huron}}-278618.674",
+     "variable_symbols": [
+      "fDetroit",
+      "hHuron"
+     ],
+     "purpose": "fitted line for the Detroit River, reported with a coefficient of determination of 0.850",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "a flow for each river given the height of the lake above it"
+   ],
+   "constraints": [
+    "the line is trusted only over the small range of heights observed"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the schedule starts from the current measured levels"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "flood and drought heights bound every lake"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "linear regression on recorded heights and flows, time-lagged cross correlation for the lags",
+    "parameters": [
+     "regression slopes",
+     "regression intercepts",
+     "lag times"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute the lagged correlation between each pair of lakes",
+     "read the lag off the peak",
+     "fit a line of flow against height for each river"
+    ],
+    "software": [],
+    "convergence_criteria": "none stated; each fit is reported with its coefficient of determination"
+   },
+   "assumptions": [
+    "the flow is linear in the height over the small range observed",
+    "the lag read off the correlation peak is the true travel time"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "both lines carry a coefficient of determination, but only two rivers are fitted in print"
+   },
+   "handoff_outputs": [
+    "fNiagara",
+    "fDetroit"
+   ],
+   "validation_refs": [
+    "the schedules are run against the 25th, 50th and 75th percentile historical inflow"
+   ],
+   "computational_cost": "two lines, each a slope and an intercept",
+   "strengths": [
+    "both printed lines explain most of the recorded variation"
+   ],
+   "limitations": [
+    "only two of the rivers are given a printed line",
+    "the linearity is argued from a small-oscillation expansion and not tested outside it"
+   ],
+   "missing_details": [
+    "the lines for the remaining rivers are used in the balance but never printed"
+   ]
+  },
+  {
+   "model_id": "MU-D-2024-2429211-MACRO",
+   "page": 8,
+   "section": "2.3 Linear Program Formulation",
+   "family": "optimization",
+   "purpose": "choose the two dam releases over a horizon of months so the levels stay close to the ideal curves without flooding or drought",
+   "base_or_modification": "modification",
+   "summary": "A linear program tracks four lakes, lets the two dams be the only decisions, and punishes departure from the ideal curves.",
+   "variables": [
+    {
+     "symbol": "omega_i",
+     "normalized_name": "stakeholder weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "weight given to stakeholder i"
+    },
+    {
+     "symbol": "h_it",
+     "normalized_name": "lake height",
+     "unit": "m",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "height of body of water i at time t"
+    },
+    {
+     "symbol": "hhat_it",
+     "normalized_name": "ideal height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "ideal height for stakeholder i at time t"
+    },
+    {
+     "symbol": "f_t",
+     "normalized_name": "river flow",
+     "unit": "m^3/s",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "flow in the St. Lawrence River at time t"
+    },
+    {
+     "symbol": "fhat_t",
+     "normalized_name": "ideal flow",
+     "unit": "m^3/s",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "ideal river flow at time t"
+    },
+    {
+     "symbol": "x_t",
+     "normalized_name": "superior release",
+     "unit": "m",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "water let through the upstream dam at time t"
+    },
+    {
+     "symbol": "y_t",
+     "normalized_name": "ontario release",
+     "unit": "m",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "water let through the downstream dam at time t"
+    },
+    {
+     "symbol": "r_it",
+     "normalized_name": "exogenous inflow",
+     "unit": "m",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "height added by rain, runoff and evaporation"
+    },
+    {
+     "symbol": "s_i",
+     "normalized_name": "surface area",
+     "unit": "m^2",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "surface area of body of water i"
+    },
+    {
+     "symbol": "alpha_i",
+     "normalized_name": "regression slope",
+     "unit": "m^2/s",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "slope of the fitted flow line for lake i"
+    },
+    {
+     "symbol": "beta_i",
+     "normalized_name": "regression bias",
+     "unit": "m^3/s",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "intercept of the fitted flow line for lake i"
+    },
+    {
+     "symbol": "L",
+     "normalized_name": "lag",
+     "unit": "day",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "days a change upstream takes to reach the lower lakes"
+    },
+    {
+     "symbol": "F_i",
+     "normalized_name": "flood height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "height at which body of water i floods"
+    },
+    {
+     "symbol": "D_i",
+     "normalized_name": "drought height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "height below which body of water i is dangerously low"
+    },
+    {
+     "symbol": "M_1",
+     "normalized_name": "superior cap",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "most the upstream dam can release in one step"
+    },
+    {
+     "symbol": "M_2",
+     "normalized_name": "ontario cap",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "most the downstream dam can release in one step"
+    },
+    {
+     "symbol": "w",
+     "normalized_name": "flow decay",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "share of yesterday's river flow kept today"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "water bodies",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the set of bodies of water"
+    },
+    {
+     "symbol": "T",
+     "normalized_name": "horizon",
+     "unit": "day",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of time steps"
+    }
+   ],
+   "inputs": [
+    "hhat_it",
+    "fhat_t",
+    "r_it",
+    "alpha_i",
+    "beta_i",
+    "L"
+   ],
+   "outputs": [
+    "x_t",
+    "y_t"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2429211-03",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "\\min \\sum_{i\\in B,t\\in T}\\omega_i|h_{i,t}-\\hat h_{i,t}|+(1-\\sum_{i\\in B}\\omega_i)\\sum_{t\\in T}|f_t-\\hat f_t|",
+     "normalized_latex": "\\min \\sum_{i\\in B,t\\in T}\\omega_i|h_{i,t}-\\hat h_{i,t}|+(1-\\sum_{i\\in B}\\omega_i)\\sum_{t\\in T}|f_t-\\hat f_t|",
+     "variable_symbols": [
+      "omega_i",
+      "h_it",
+      "hhat_it",
+      "f_t",
+      "fhat_t",
+      "B",
+      "T"
+     ],
+     "purpose": "the long-horizon objective: weighted level error plus the leftover weight on flow error",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-04",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{1,t}=h_{1,t-1}-x_{t-1}+r_{1,t-1}",
+     "normalized_latex": "h_{1,t}=h_{1,t-1}-x_{t-1}+r_{1,t-1}",
+     "variable_symbols": [
+      "h_it",
+      "x_t",
+      "r_it",
+      "T"
+     ],
+     "purpose": "Lake Superior loses what the dam releases and gains the exogenous inflow",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-05",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{2,t}=h_{2,t-1}+\\frac{s_1}{s_2}x_{t-L}-\\frac{\\alpha_2 h_{2,t-1}+\\beta_2}{s_2}+r_{2,t-1}",
+     "normalized_latex": "h_{2,t}=h_{2,t-1}+\\frac{s_1}{s_2}x_{t-L}-\\frac{\\alpha_2 h_{2,t-1}+\\beta_2}{s_2}+r_{2,t-1}",
+     "variable_symbols": [
+      "h_it",
+      "s_i",
+      "x_t",
+      "L",
+      "alpha_i",
+      "beta_i",
+      "r_it",
+      "T"
+     ],
+     "purpose": "the merged lake gains the lagged upstream release and loses its own fitted outflow",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-06",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{3,t}=h_{3,t-1}+\\frac{\\alpha_2 h_{2,t-L}+\\beta_2}{s_3}-\\frac{\\alpha_3 h_{3,t-1}+\\beta_3}{s_3}+r_{3,t-1}",
+     "normalized_latex": "h_{3,t}=h_{3,t-1}+\\frac{\\alpha_2 h_{2,t-L}+\\beta_2}{s_3}-\\frac{\\alpha_3 h_{3,t-1}+\\beta_3}{s_3}+r_{3,t-1}",
+     "variable_symbols": [
+      "h_it",
+      "alpha_i",
+      "beta_i",
+      "s_i",
+      "L",
+      "r_it",
+      "T"
+     ],
+     "purpose": "Lake Erie gains the lagged outflow of the lake above and loses its own",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-07",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{4,t}=h_{4,t-1}+\\frac{\\alpha_3 h_{3,t-1}+\\beta_3}{s_4}-y_{t-1}+r_{4,t-1}",
+     "normalized_latex": "h_{4,t}=h_{4,t-1}+\\frac{\\alpha_3 h_{3,t-1}+\\beta_3}{s_4}-y_{t-1}+r_{4,t-1}",
+     "variable_symbols": [
+      "h_it",
+      "alpha_i",
+      "beta_i",
+      "s_i",
+      "y_t",
+      "r_it",
+      "T"
+     ],
+     "purpose": "Lake Ontario gains the outflow from above and loses the dam release",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-08",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{i,t}\\le F_i",
+     "normalized_latex": "h_{i,t}\\le F_i",
+     "variable_symbols": [
+      "h_it",
+      "F_i",
+      "B",
+      "T"
+     ],
+     "purpose": "no lake may rise to its flood height",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-09",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "h_{i,t}\\ge D_i",
+     "normalized_latex": "h_{i,t}\\ge D_i",
+     "variable_symbols": [
+      "h_it",
+      "D_i",
+      "B",
+      "T"
+     ],
+     "purpose": "no lake may fall to its drought height",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-10",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "x_t\\le M_1",
+     "normalized_latex": "x_t\\le M_1",
+     "variable_symbols": [
+      "x_t",
+      "M_1",
+      "T"
+     ],
+     "purpose": "the upstream dam cannot release more than its cap",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-11",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "y_t\\le M_2",
+     "normalized_latex": "y_t\\le M_2",
+     "variable_symbols": [
+      "y_t",
+      "M_2",
+      "T"
+     ],
+     "purpose": "the downstream dam cannot release more than its cap",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-12",
+     "page": 8,
+     "label": "unnumbered",
+     "source_expression": "f_t=w f_{t-1}+(1-w)y_t",
+     "normalized_latex": "f_t=w f_{t-1}+(1-w)y_t",
+     "variable_symbols": [
+      "f_t",
+      "w",
+      "y_t",
+      "T"
+     ],
+     "purpose": "the river keeps a share of yesterday's flow and takes the rest from today's release",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "keep every lake close to its ideal curve and the river close to its ideal flow"
+   ],
+   "constraints": [
+    "no lake may flood or run dry",
+    "neither dam may release more than its cap"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the schedule starts from the current measured levels"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "flood and drought heights bound every lake"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "linear regression on recorded heights and flows, time-lagged cross correlation for the lags",
+    "parameters": [
+     "regression slopes",
+     "regression intercepts",
+     "lag times"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "expand the lagged network into one copy of each node per time step",
+     "write the level balance for each of the four lakes",
+     "bound the levels and the releases",
+     "solve the linear program"
+    ],
+    "software": [],
+    "convergence_criteria": "a feasible schedule meeting every bound"
+   },
+   "assumptions": [
+    "the lake areas stay constant",
+    "the dams open or close within an hour and never fail",
+    "the fitted lines hold over the horizon"
+   ],
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the program is described and its results are plotted, but no solved schedule is printed"
+   },
+   "handoff_outputs": [
+    "x_t",
+    "y_t"
+   ],
+   "validation_refs": [
+    "the schedules are run against the 25th, 50th and 75th percentile historical inflow"
+   ],
+   "computational_cost": "a linear program over a horizon of a few months",
+   "strengths": [
+    "the program returns a schedule that respects every stated bound",
+    "it can be rerun quickly when the forecast changes"
+   ],
+   "limitations": [
+    "the objective and every constraint must stay linear",
+    "an infeasible program gives the user no hint of what to relax"
+   ],
+   "missing_details": [
+    "no solved schedule is printed, only the resulting levels"
+   ]
+  },
+  {
+   "model_id": "MU-D-2024-2429211-WEIGHT",
+   "page": 9,
+   "section": "2.4 Methods for Stakeholder Management",
+   "family": "optimization",
+   "purpose": "give the next period's weight to the stakeholders the last period served worst",
+   "base_or_modification": "paper-specific",
+   "summary": "After two months the absolute level error of each stakeholder is summed and turned into that stakeholder's share of the next weights.",
+   "variables": [
+    {
+     "symbol": "eps_i",
+     "normalized_name": "stakeholder error",
+     "unit": "m",
+     "role": "intermediate",
+     "source_status": "explicit-defined",
+     "definition": "summed absolute level gap for stakeholder i"
+    },
+    {
+     "symbol": "h_t",
+     "normalized_name": "observed height",
+     "unit": "m",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "observed water level at day t"
+    },
+    {
+     "symbol": "hhat_t",
+     "normalized_name": "ideal height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "ideal water level for the stakeholder at day t"
+    },
+    {
+     "symbol": "w_i",
+     "normalized_name": "reassigned weight",
+     "unit": "1",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "stakeholder i's share of the total error"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "stakeholder count",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the number of stakeholders"
+    }
+   ],
+   "inputs": [
+    "h_t",
+    "hhat_t"
+   ],
+   "outputs": [
+    "w_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2429211-13",
+     "page": 9,
+     "label": "unnumbered",
+     "source_expression": "\\varepsilon_i=\\sum_{t\\in[1,60]}|h_t-\\hat h_t|",
+     "normalized_latex": "\\varepsilon_i=\\sum_{t\\in[1,60]}|h_t-\\hat h_t|",
+     "variable_symbols": [
+      "eps_i",
+      "h_t",
+      "hhat_t"
+     ],
+     "purpose": "a stakeholder's error over the sixty days the schedule was actually run",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-14",
+     "page": 9,
+     "label": "unnumbered",
+     "source_expression": "w_{1i}=\\frac{\\varepsilon_i}{\\sum_k\\varepsilon_k}",
+     "normalized_latex": "w_{1i}=\\frac{\\varepsilon_i}{\\sum_k\\varepsilon_k}",
+     "variable_symbols": [
+      "w_i",
+      "eps_i",
+      "n"
+     ],
+     "purpose": "the next period's weight is the stakeholder's share of the total error",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "raise the weight of whoever was served worst"
+   ],
+   "constraints": [
+    "the new weights are shares of the total error, so they sum to one"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the schedule starts from the current measured levels"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "flood and drought heights bound every lake"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "linear regression on recorded heights and flows, time-lagged cross correlation for the lags",
+    "parameters": [
+     "regression slopes",
+     "regression intercepts",
+     "lag times"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "run the schedule for two months",
+     "sum each stakeholder's absolute level error",
+     "normalise the errors into the next weights"
+    ],
+    "software": [],
+    "convergence_criteria": "the new weights sum to one"
+   },
+   "assumptions": [
+    "a larger error means a less satisfied stakeholder",
+    "the sixty days stand for the period the schedule was honoured"
+   ],
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the rule is written out but never applied to a printed set of errors"
+   },
+   "handoff_outputs": [
+    "w_i"
+   ],
+   "validation_refs": [
+    "the schedules are run against the 25th, 50th and 75th percentile historical inflow"
+   ],
+   "computational_cost": "one sum per stakeholder over sixty days",
+   "strengths": [
+    "the rule corrects the last period's imbalance automatically"
+   ],
+   "limitations": [
+    "the starting weights are left to the practitioner",
+    "the rule rewards whoever was served worst, with no cap"
+   ],
+   "missing_details": [
+    "the rule is never applied to a printed set of errors"
+   ]
+  },
+  {
+   "model_id": "MU-D-2024-2429211-MICRO",
+   "page": 12,
+   "section": "3 Microschedule Model",
+   "family": "optimization",
+   "purpose": "time the downstream dam through one day so the level and the flow stay near their ideals and the day ends at the height the long schedule requires",
+   "base_or_modification": "modification",
+   "summary": "An hourly linear program covers only the lowest lake and its river, and it is forced to finish the day at a set height.",
+   "variables": [
+    {
+     "symbol": "alpha_1",
+     "normalized_name": "level weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "weight on the water level gap"
+    },
+    {
+     "symbol": "alpha_2",
+     "normalized_name": "flow weight",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "weight on the flow gap"
+    },
+    {
+     "symbol": "h_t",
+     "normalized_name": "ontario height",
+     "unit": "m",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "height of Lake Ontario at hour t"
+    },
+    {
+     "symbol": "hhat_t",
+     "normalized_name": "ideal height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "ideal height at hour t"
+    },
+    {
+     "symbol": "f_t",
+     "normalized_name": "river flow",
+     "unit": "m^3/s",
+     "role": "state",
+     "source_status": "explicit-defined",
+     "definition": "flow in the St. Lawrence River at hour t"
+    },
+    {
+     "symbol": "fhat_t",
+     "normalized_name": "ideal flow",
+     "unit": "m^3/s",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "ideal flow at hour t"
+    },
+    {
+     "symbol": "F_t",
+     "normalized_name": "hourly inflow",
+     "unit": "m",
+     "role": "input",
+     "source_status": "explicit-defined",
+     "definition": "inflow into Lake Ontario during hour t"
+    },
+    {
+     "symbol": "x_t",
+     "normalized_name": "dam outflow",
+     "unit": "m",
+     "role": "output",
+     "source_status": "explicit-defined",
+     "definition": "water let through the dam during hour t"
+    },
+    {
+     "symbol": "omega",
+     "normalized_name": "decay",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "share of the previous hour's flow kept"
+    },
+    {
+     "symbol": "k",
+     "normalized_name": "conversion",
+     "unit": "1",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "coefficient turning a dam release into river flow"
+    },
+    {
+     "symbol": "O",
+     "normalized_name": "outflow cap",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "most the dam may release in one hour"
+    },
+    {
+     "symbol": "Hhat",
+     "normalized_name": "end height",
+     "unit": "m",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "height the lake must reach by the end of the day"
+    },
+    {
+     "symbol": "T",
+     "normalized_name": "hours",
+     "unit": "hour",
+     "role": "parameter",
+     "source_status": "explicit-defined",
+     "definition": "the set of hours in the day"
+    }
+   ],
+   "inputs": [
+    "Hhat",
+    "F_t",
+    "hhat_t",
+    "fhat_t"
+   ],
+   "outputs": [
+    "x_t"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2429211-15",
+     "page": 12,
+     "label": "unnumbered",
+     "source_expression": "\\min\\sum_{t\\in T}\\alpha_1|h_t-\\hat h_t|+\\alpha_2|f_t-\\hat f_t|",
+     "normalized_latex": "\\min\\sum_{t\\in T}\\alpha_1|h_t-\\hat h_t|+\\alpha_2|f_t-\\hat f_t|",
+     "variable_symbols": [
+      "alpha_1",
+      "alpha_2",
+      "h_t",
+      "hhat_t",
+      "f_t",
+      "fhat_t",
+      "T"
+     ],
+     "purpose": "the daily objective: weighted gaps in level and in flow",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-16",
+     "page": 12,
+     "label": "unnumbered",
+     "source_expression": "h_t=h_{t-1}+F_t-x_t",
+     "normalized_latex": "h_t=h_{t-1}+F_t-x_t",
+     "variable_symbols": [
+      "h_t",
+      "F_t",
+      "x_t",
+      "T"
+     ],
+     "purpose": "the lake gains the hour's inflow and loses the dam release",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-17",
+     "page": 12,
+     "label": "unnumbered",
+     "source_expression": "f_t=\\omega f_{t-1}+k(1-\\omega)x_t",
+     "normalized_latex": "f_t=\\omega f_{t-1}+k(1-\\omega)x_t",
+     "variable_symbols": [
+      "f_t",
+      "omega",
+      "k",
+      "x_t",
+      "T"
+     ],
+     "purpose": "the river flow blends last hour's flow with this hour's release",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-18",
+     "page": 12,
+     "label": "unnumbered",
+     "source_expression": "x_t\\le O",
+     "normalized_latex": "x_t\\le O",
+     "variable_symbols": [
+      "x_t",
+      "O",
+      "T"
+     ],
+     "purpose": "the dam cannot release more than its hourly cap",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    },
+    {
+     "equation_id": "EQ-D-2024-2429211-19",
+     "page": 12,
+     "label": "unnumbered",
+     "source_expression": "h_T=\\hat H",
+     "normalized_latex": "h_T=\\hat H",
+     "variable_symbols": [
+      "h_t",
+      "Hhat",
+      "T"
+     ],
+     "purpose": "by the day's end the lake must stand at the height the long schedule demands",
+     "visual_checked": true,
+     "transcription_confidence": "high",
+     "source_type": "paper"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "displayed and read from the page raster"
+   },
+   "objectives": [
+    "stay near the ideal level and the ideal flow through the day"
+   ],
+   "constraints": [
+    "the dam cannot exceed its hourly cap",
+    "the lake must stand at the required height at the final hour"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the schedule starts from the current measured levels"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "flood and drought heights bound every lake"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": []
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "linear regression on recorded heights and flows, time-lagged cross correlation for the lags",
+    "parameters": [
+     "regression slopes",
+     "regression intercepts",
+     "lag times"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "fix the end-of-day height from the long schedule",
+     "update the level and the flow each hour",
+     "cap the release",
+     "solve the linear program"
+    ],
+    "software": [],
+    "convergence_criteria": "the lake stands at the required height at the final hour"
+   },
+   "assumptions": [
+    "there is no meaningful lag inside a single day",
+    "the river flow is a fixed blend of the last hour and the current release"
+   ],
+   "identifiability_feasibility": {
+    "status": "not-demonstrated",
+    "analysis": "the daily program is written and its flow error is plotted, but no hourly schedule is printed"
+   },
+   "handoff_outputs": [
+    "x_t"
+   ],
+   "validation_refs": [
+    "the schedules are run against the 25th, 50th and 75th percentile historical inflow"
+   ],
+   "computational_cost": "a linear program over the hours of one day",
+   "strengths": [
+    "the day ends exactly where the long schedule needs it"
+   ],
+   "limitations": [
+    "the blend coefficient is admitted to be hard to pin down from the data",
+    "the program only covers the lowest lake and its river"
+   ],
+   "missing_details": [
+    "no hourly schedule is printed, only the resulting flow error"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-D-2024-2429211-HYDRO",
+   "to_model_id": "MU-D-2024-2429211-MACRO",
+   "handoff": "the fitted flow lines and the lag times are what the long-horizon balance uses"
+  },
+  {
+   "from_model_id": "MU-D-2024-2429211-MACRO",
+   "to_model_id": "MU-D-2024-2429211-WEIGHT",
+   "handoff": "the schedule the long program returns is what each stakeholder's error is measured against"
+  },
+  {
+   "from_model_id": "MU-D-2024-2429211-MACRO",
+   "to_model_id": "MU-D-2024-2429211-MICRO",
+   "handoff": "the height the long schedule demands at the end of the day is the constraint the daily program must hit"
+  }
+ ]
+}

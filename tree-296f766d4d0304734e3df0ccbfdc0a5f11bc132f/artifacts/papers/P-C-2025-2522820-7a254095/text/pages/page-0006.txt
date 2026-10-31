@@ -1,0 +1,64 @@
+Team 2522820                                                                              Page 6
+
+This is usually written as ϵ ∼ N (0, σ2). Since our data is limited, we expect that there are discrepancies between
+what they can predict given the complicated nature of why countries win olympic medals. Generally, ϵ is usually
+used as a ’noise’ term, but in our implementation we extend this to account for unobserved random effects. To
+do this, we have both σn (noise) and σu (unobserved effects) that contribute to the variance of ϵ as follows:
+
+                                                          σ2 = σn2 + σu2.
+
+This ensures that we can capture unobserved effects from factors that we cannot add into linear predictors. From
+here, our implementation of the Tobit model fits coefficients in β based on previous data to be able to predict y∗
+given predictors X.
+
+3.3.1 Maximum Likelihood Estimate (MLE)
+
+    Our implementation of the Tobit Model optimizes fit using the Maximum Likelihood Estimate (MLE),
+which is standard for Tobit models since it can account for both observed and unobserved (censored) parts of
+the data. Essentially, MLE aims to maximize the likelihood function, which is the probability that y is observed
+given values of β and σ. Maximizing the likelihood means the fitted coefficients for β and σ yield the largest
+probability of the actual observed data being observed, which allows us to accurately predict y∗ given only
+predictors X.
+
+                                                      L(β, σ) = P (y|β, σ)
+
+Across many observations (yi) this becomes
+
+                                                                                                               n
+
+                                    L(β, σ) = P (y1, y2, . . . yn|β, σ) = P (yi|β, σ)
+
+                                                                                                              i=1
+
+The likelihood function can then be split up into values where yi = 0 (censored) and yi > 0 (uncensored). The
+Tobit model generally assumes y∗ is normally distributed, which is a restricting assumption but can be altered
+if necessary. When yi = 0, we want to compute P (yi = 0|β, σ) = P (y∗ ≤ 0|β, σ), which can be found with
+the normal cumulative density function (CDF), Φ. When yi > 0, we just want P (y∗ = yi|β, σ), which can be
+found with the normal probability density function (PDF), ϕ. Mathematically this becomes
+
+              P (y∗ ≤ 0|β, σ) = Φ −Xiβ
+                                             σ
+
+              P (y∗ = yi|β, σ) = ϕ       yi − Xiβ
+                                             σ
+
+                        n                Φ −Xiβ                ϕ yi − Xiβ .
+                                                 σ                      σ
+              =⇒ P (yi|β, σ) =
+
+              i=1               yi=0                     yi>0
+
+Aiming to maximize, it helps to take the logarithm of the likelihood function. This helps the function in terms
+of differentiability (to be maximized), and whatever maximum is achieved for the log of the likelihood function
+will correspond to a maximum of the likelihood function itself.
+
+ℓ(β, σ) = log(L(β, σ)) = log ϕ yi − Xiβ                  + log Φ 0 − Xiβ
+                                                      σ                          σ
+
+                                            yi>0             yi=0
+
+Maximizing this (using various numerical methods) give us fitted parameters β and σ for the Tobit model.
+
+                                                                                       2  ܱᇿඔ࿐ଆ྘
+                                                                                          ࠆ౼۷‫؟‬ሧ࿟
+                                                                             MATHmodels

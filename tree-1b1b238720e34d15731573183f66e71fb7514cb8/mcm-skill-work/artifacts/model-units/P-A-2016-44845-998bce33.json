@@ -1,0 +1,2268 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2016-44845-001",
+      "handoff": "Steady energy and boundary coefficients supply the transient heat equation.",
+      "to_model_id": "MU-A-2016-44845-002"
+    },
+    {
+      "from_model_id": "MU-A-2016-44845-002",
+      "handoff": "Analytical heat solution identifies missing bulk motion, motivating convection-diffusion.",
+      "to_model_id": "MU-A-2016-44845-003"
+    },
+    {
+      "from_model_id": "MU-A-2016-44845-003",
+      "handoff": "Numerical fields provide average-error and uniformity metrics for comparison.",
+      "to_model_id": "MU-A-2016-44845-004"
+    },
+    {
+      "from_model_id": "MU-A-2016-44845-004",
+      "handoff": "Comparison metrics become the PID error signal and control target.",
+      "to_model_id": "MU-A-2016-44845-005"
+    },
+    {
+      "from_model_id": "MU-A-2016-44845-005",
+      "handoff": "Average-temperature forcing is extended to spatially distributed inlet control.",
+      "to_model_id": "MU-A-2016-44845-006"
+    },
+    {
+      "from_model_id": "MU-A-2016-44845-006",
+      "handoff": "Heat-map improvement becomes the final user strategy.",
+      "to_model_id": "MU-A-2016-44845-007"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define control volume",
+          "assign nominal properties",
+          "balance inlet, outlet, and boundary heat"
+        ]
+      },
+      "assumptions": [
+        "uniform cross-section",
+        "steady state",
+        "convection only"
+      ],
+      "base_or_modification": "base",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "steady thermodynamic control-volume model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-001",
+          "label": "(5)",
+          "normalized_latex": "Q_{in}-Q_{out}+Q=0",
+          "page": 12,
+          "purpose": "steady energy balance",
+          "source_expression": "Qin-Qout+Qgen=0",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-002",
+          "label": "(7)",
+          "normalized_latex": "m c_p(u_{in}-u)=q",
+          "page": 12,
+          "purpose": "flow-energy relation",
+          "source_expression": "m cp (uin-uout)=Q",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "m",
+            "cp",
+            "uin",
+            "u",
+            "q"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "uavg",
+        "q"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "no spatial or temporal dependence"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-001",
+      "objectives": [
+        "Estimate uniform bath energy and heat loss"
+      ],
+      "outputs": [
+        "uavg",
+        "q"
+      ],
+      "page": 11,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Estimate uniform bath energy and heat loss",
+      "section": "Steady state uniform model",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "A steady state treats the bath as a uniform control volume with inlet, outlet, and ambient convection.",
+      "validation_refs": [
+        "Eq.5-10 pp.12-13"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define forcing",
+          "shift boundary data",
+          "derive Fourier coefficients",
+          "evaluate transient solution"
+        ]
+      },
+      "assumptions": [
+        "one-dimensional cross-section",
+        "time-dependent boundary conditions",
+        "known initial condition"
+      ],
+      "base_or_modification": "base",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "one-dimensional transient heat PDE",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-003",
+          "label": "(12)",
+          "normalized_latex": "\\frac{\\partial u}{\\partial t}=\\alpha\\frac{\\partial^2u}{\\partial x^2}+q",
+          "page": 15,
+          "purpose": "transient heat PDE",
+          "source_expression": "du/dt=alpha d2u/dx2+q",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "u",
+            "t",
+            "alpha",
+            "x",
+            "q"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-004",
+          "label": "(13)",
+          "normalized_latex": "u=v+U",
+          "page": 15,
+          "purpose": "boundary homogenization",
+          "source_expression": "u=v+U",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "u"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-005",
+          "label": "(23)",
+          "normalized_latex": "u(x,t)=\\sum_n u_n(x,t)",
+          "page": 17,
+          "purpose": "Fourier solution",
+          "source_expression": "u=sum Fourier terms",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "u",
+            "x",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-006",
+          "label": "(33)",
+          "normalized_latex": "q(t)=h(u-u_s)",
+          "page": 18,
+          "purpose": "heat loss boundary",
+          "source_expression": "Q(t)=h(u-us)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q",
+            "u"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "u",
+        "uavg",
+        "sigma"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "boundary forcing and coefficients require careful audit"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-002",
+      "objectives": [
+        "Solve the time-dependent temperature distribution with forcing and boundary conditions"
+      ],
+      "outputs": [
+        "u",
+        "uavg",
+        "sigma"
+      ],
+      "page": 14,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Solve the time-dependent temperature distribution with forcing and boundary conditions",
+      "section": "Analytical heat equation",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "A Fourier-based heat equation with time-dependent Neumann boundaries and heat generation is transformed and solved analytically.",
+      "validation_refs": [
+        "Eq.12-39 pp.15-21"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "discretize space/time",
+          "apply update rule",
+          "enforce stability",
+          "add bather source distribution"
+        ]
+      },
+      "assumptions": [
+        "finite difference",
+        "uniform laminar flow",
+        "source fraction across grid"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "finite-difference convection-diffusion PDE",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-007",
+          "label": "(40)",
+          "normalized_latex": "\\frac{\\partial u}{\\partial t}=\\alpha\\frac{\\partial^2u}{\\partial x^2}-\\epsilon v\\frac{\\partial u}{\\partial x}+\\frac{q}{\\rho c_p}",
+          "page": 22,
+          "purpose": "convection-diffusion PDE",
+          "source_expression": "du/dt=alpha d2u/dx2-eps v du/dx+q/(rho cp)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "u",
+            "t",
+            "alpha",
+            "eps",
+            "x",
+            "q",
+            "rho",
+            "cp"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-008",
+          "label": "(43)",
+          "normalized_latex": "u_i^j=Au_{i}^{j-1}+Bu_{i-1}^{j-1}+Cu_{i+1}^{j-1}+Dq_i^{j-1}\\Delta t",
+          "page": 22,
+          "purpose": "finite-difference update",
+          "source_expression": "u_i^j update",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "u",
+            "t",
+            "alpha",
+            "eps",
+            "x",
+            "q",
+            "rho",
+            "cp"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-009",
+          "label": "(44)",
+          "normalized_latex": "\\Delta x<\\frac{2\\alpha}{\\epsilon v},\\quad\\Delta t<\\frac{(\\Delta x)^2}{2\\alpha}",
+          "page": 22,
+          "purpose": "stability criteria",
+          "source_expression": "dx<2alpha/(eps v), dt<dx2/(2alpha)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "alpha",
+            "eps",
+            "x",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-010",
+          "label": "(52)",
+          "normalized_latex": "q_i^j=\\frac{m c_p(u_{in}-u_i^j)}{WH}f_i^j",
+          "page": 26,
+          "purpose": "bather heat source",
+          "source_expression": "q_i^j=...",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q",
+            "m",
+            "cp",
+            "uin",
+            "u",
+            "W",
+            "H"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "u",
+        "uavg",
+        "sigma"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "grid convergence and source calibration are incomplete"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-003",
+      "objectives": [
+        "Capture bulk water motion and diffusion numerically"
+      ],
+      "outputs": [
+        "u",
+        "uavg",
+        "sigma"
+      ],
+      "page": 22,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Capture bulk water motion and diffusion numerically",
+      "section": "Numerical convection-diffusion model",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "The numerical model adds a convection term to the heat equation and uses explicit finite differences with stability criteria.",
+      "validation_refs": [
+        "Eq.40-53 pp.22-26"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define metrics",
+          "vary one factor",
+          "recompute curves and maps",
+          "interpret mechanism"
+        ]
+      },
+      "assumptions": [
+        "common nominal parameters",
+        "one-factor variation"
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "metric and sensitivity layer",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-011",
+          "label": "(54)",
+          "normalized_latex": "\\bar u(t)=u_{avg}(t)-u_{obj}",
+          "page": 27,
+          "purpose": "target error metric",
+          "source_expression": "ubar=uavg-uobj",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "uavg",
+            "uobj"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-012",
+          "label": "(55)",
+          "normalized_latex": "\\sigma(t)=\\sqrt{\\frac1N\\sum_n(u_n-u_{avg})^2}",
+          "page": 27,
+          "purpose": "uniformity metric",
+          "source_expression": "sigma=sqrt(sum(un-uavg)^2/N)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "sigma",
+            "u",
+            "uavg"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-013",
+          "label": "(56)",
+          "normalized_latex": "Pe=\\frac{vL}{\\alpha}",
+          "page": 30,
+          "purpose": "relative convection strength",
+          "source_expression": "Pe=...",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "eps",
+            "x",
+            "alpha"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "uavg",
+        "sigma"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "metrics are proxies and interactions are not explored"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-004",
+      "objectives": [
+        "Compare temperature target error and spatial uniformity"
+      ],
+      "outputs": [
+        "uavg",
+        "sigma"
+      ],
+      "page": 27,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compare temperature target error and spatial uniformity",
+      "section": "Model comparison",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "The paper separates average-temperature error from standard deviation and varies geometry, soap, input, flow, and bather factors.",
+      "validation_refs": [
+        "Eq.54-56 pp.27-33"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "define error",
+          "tune gains",
+          "apply forcing at inlet",
+          "inspect rise time and oscillation"
+        ]
+      },
+      "assumptions": [
+        "feedback uses average error",
+        "nominal gains"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "closed-loop proportional-integral-derivative control",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-014",
+          "label": "(57)",
+          "normalized_latex": "f(t)=K_p\\bar u(t)+K_i\\int_0^t\\bar u(\\tau)d\\tau+K_d\\frac{\\partial\\bar u(t)}{\\partial t}",
+          "page": 35,
+          "purpose": "PID forcing",
+          "source_expression": "f=Kp ubar+Ki integral ubar+Kd d(ubar)/dt",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "uavg",
+            "uobj",
+            "Kp",
+            "Ki",
+            "Kd",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2016-44845-015",
+          "label": "(58)",
+          "normalized_latex": "f(t)=m(u_{in}-u(0,t))",
+          "page": 35,
+          "purpose": "inlet forcing implementation",
+          "source_expression": "f=m(uin-u(0,t))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "m",
+            "uin",
+            "u",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "uin",
+        "m",
+        "uavg"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "gain tuning and actuator limits are not fully specified"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-005",
+      "objectives": [
+        "Regulate average temperature by changing inlet forcing"
+      ],
+      "outputs": [
+        "uin",
+        "m",
+        "uavg"
+      ],
+      "page": 35,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Regulate average temperature by changing inlet forcing",
+      "section": "PID control",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "PID gains convert target error into a forcing function for inlet temperature and flow.",
+      "validation_refs": [
+        "Eq.57-58 p.35"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "select spatial weights",
+          "redistribute inlet heat",
+          "compare heat maps"
+        ]
+      },
+      "assumptions": [
+        "prescribed distribution fractions",
+        "same one-dimensional domain"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "Displayed source equations retained and visually checked.",
+        "status": "present"
+      },
+      "family": "distributed inlet strategy",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2016-44845-016",
+          "label": "(59)",
+          "normalized_latex": "f_i=\\sum_{j=1}^N c_{ij}f_j",
+          "page": 37,
+          "purpose": "distributed forcing",
+          "source_expression": "f_i=sum coefficients",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q",
+            "m"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "sigma",
+        "uavg",
+        "m"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "manual heat distribution is a proxy for a real faucet device"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-006",
+      "objectives": [
+        "Reduce spatial gradients while maintaining target temperature"
+      ],
+      "outputs": [
+        "sigma",
+        "uavg",
+        "m"
+      ],
+      "page": 37,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Reduce spatial gradients while maintaining target temperature",
+      "section": "Uniformity control and heat distribution",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "The second PID stage redistributes input heat over spatial positions rather than only regulating average temperature.",
+      "validation_refs": [
+        "Figures 31-35 pp.37-40"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Analytical checks and stated finite-difference stability bounds are reported; complete numerical convergence logs are absent.",
+        "software": [
+          "MATLAB",
+          "finite-difference calculations"
+        ],
+        "status": "implemented",
+        "steps": [
+          "summarize model strengths",
+          "state control recommendation",
+          "state future extensions"
+        ]
+      },
+      "assumptions": [
+        "nominal bath and control assumptions"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite-difference cost scales with grid points, time steps, and parameter scenarios; raw code and solver logs are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Faucet, overflow, top, bottom, and wall heat-transfer boundaries are defined."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Finite-horizon simulations and incomplete solver details limit convergence claims."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial water temperature and bath geometry are stated or inherited."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "one-dimensional reduction",
+        "constant material properties"
+      ],
+      "equation_status": {
+        "reason": "This scenario layer has no separate governing display.",
+        "status": "omitted-by-paper"
+      },
+      "family": "audience decision layer",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "uobj",
+        "uin",
+        "m"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The reduced model is feasible for comparison and control but not fully validated against field data.",
+        "status": "partial"
+      },
+      "inputs": [
+        "u",
+        "t",
+        "x",
+        "L",
+        "W",
+        "H",
+        "alpha",
+        "eps",
+        "q",
+        "rho",
+        "cp",
+        "k",
+        "uin",
+        "m",
+        "Kp",
+        "Ki",
+        "Kd"
+      ],
+      "limitations": [
+        "no empirical user trial or robust uncertainty decision"
+      ],
+      "missing_details": [
+        "mesh/grid files",
+        "complete code and uncertainty propagation"
+      ],
+      "model_id": "MU-A-2016-44845-007",
+      "objectives": [
+        "Translate model comparison and PID results into a practical bath strategy"
+      ],
+      "outputs": [
+        "uobj",
+        "uin",
+        "m"
+      ],
+      "page": 40,
+      "parameter_estimation": {
+        "method": "literature properties and nominal table values",
+        "parameters": [
+          "rho",
+          "cp",
+          "k",
+          "m",
+          "uin"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Translate model comparison and PID results into a practical bath strategy",
+      "section": "Final remarks and application",
+      "strengths": [
+        "Preserves a clear handoff from physical balance to numerical control."
+      ],
+      "summary": "The final recommendation combines PID temperature control with continuous, distributed inlet water and states model boundaries.",
+      "validation_refs": [
+        "Figures 35 and conclusion pp.40-42"
+      ],
+      "variables": [
+        {
+          "definition": "temperature field in the bath",
+          "normalized_name": "temperature",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "u",
+          "unit": "degC"
+        },
+        {
+          "definition": "bath time",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "min"
+        },
+        {
+          "definition": "coordinate along bath length",
+          "normalized_name": "length coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "length of rectangular bath",
+          "normalized_name": "bath length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "m"
+        },
+        {
+          "definition": "width of rectangular bath",
+          "normalized_name": "bath width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "m"
+        },
+        {
+          "definition": "height of rectangular bath",
+          "normalized_name": "bath height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H",
+          "unit": "m"
+        },
+        {
+          "definition": "diffusion coefficient",
+          "normalized_name": "thermal diffusivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "m^2/s"
+        },
+        {
+          "definition": "convective transport coefficient",
+          "normalized_name": "porosity/flow coefficient",
+          "role": "parameter",
+          "source_status": "inferred-from-equation",
+          "symbol": "eps",
+          "unit": "1"
+        },
+        {
+          "definition": "distributed heat source",
+          "normalized_name": "heat generation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "water density",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "water heat capacity",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "cp",
+          "unit": "J/(kg K)"
+        },
+        {
+          "definition": "thermal conductivity",
+          "normalized_name": "conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "incoming water temperature",
+          "normalized_name": "inlet temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "uin",
+          "unit": "degC"
+        },
+        {
+          "definition": "desired average temperature",
+          "normalized_name": "objective temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uobj",
+          "unit": "degC"
+        },
+        {
+          "definition": "spatial average",
+          "normalized_name": "average temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "uavg",
+          "unit": "degC"
+        },
+        {
+          "definition": "uniformity metric",
+          "normalized_name": "temperature deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "degC"
+        },
+        {
+          "definition": "inlet flow",
+          "normalized_name": "mass flow rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kg/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "proportional gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kp",
+          "unit": "1"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "integral gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Ki",
+          "unit": "1/s"
+        },
+        {
+          "definition": "PID gain",
+          "normalized_name": "derivative gain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Kd",
+          "unit": "s"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2016-44845-998bce33",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "998bce334eb4ce1d2c2a28313f434fa049a618e32e3fd9b831f6d2912d62cb91",
+  "year": "2016"
+}

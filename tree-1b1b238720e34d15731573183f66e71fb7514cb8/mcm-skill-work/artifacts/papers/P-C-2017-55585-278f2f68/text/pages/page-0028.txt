@@ -1,0 +1,70 @@
+Team # 55585                                                                         Page 26 of 34
+
+
+
+
+            if (roadold[able][0].kind == 0) {
+                int thislane = able;
+                int find = direction_cal(thislane, 0, roadold);
+                int speed_up_bound = 0;
+
+                  if (find > road_length) speed_up_bound = 11;
+                  else if (kind == 1) {
+                    for (speed_up_bound = 0; speed_up_bound <= 10; ++speed_up_bound) {
+                      if (find < safe_space_min[speed_up_bound]) break;
+                    }
+                  }
+                  else if (roadold[thislane][find].kind == 1) {
+                    for (speed_up_bound = 0; speed_up_bound <= 10; ++speed_up_bound) {
+                      if (find < safe_space_min[speed_up_bound]) break;
+                    }
+                  }
+                  else if (roadold[thislane][find].kind == 2) {
+                    for (speed_up_bound = 0; speed_up_bound <= 10; ++speed_up_bound) {
+                      if (find < safe_space_min[speed_up_bound] - safe_space_min[roadold[
+                      thislane][find].speed] + 2 * roadold[thislane][find].speed + 1) break;
+                    }
+                  }
+
+                  if (speed_up_bound <= 0) continue;
+                  else {
+                    tempremain[able] = 0;
+                    int speed = (rand() + speed_up_bound) % speed_up_bound;
+                    if (speed > 0) --speed;
+                    roadold[thislane][0].kind = kind;
+                    roadold[thislane][0].speed = speed;
+                    roadold[thislane][0].light = 0;
+                    roadold[thislane][0].timer = 1;
+                  }
+              }
+        }
+    }
+
+}
+
+//Get the value of LCS
+bool change_lane_safety(int nowlane, int aimlane, int num, Cars**r) {
+  bool ans = false;
+  int kind = r[nowlane][num].kind, speed = r[nowlane][num].speed;
+  int light = 0;
+  int turning_light = r[nowlane][num].turning_light;
+  int find = direction_cal(nowlane, num, r);
+  int delta = find - num;
+  int next = findnext(nowlane, num);
+  int aimlaneahead = direction_cal(aimlane, num-1, r);
+  int aimlanenext = findnext(aimlane, num+1);
+
+    if (kind == 1){
+      if (delta >= safe_space_min[speed] && aimlaneahead - num >=
+      safe_space_min[speed]
+        && num - aimlanenext >= safe_space_min[r[aimlane][aimlanenext].speed]) {
+        if (r[nowlane][next].turning_light != aimlane - nowlane) {
+          ans = true;
+        }
+        else ans = false;
+      }
+    }
+    else if (kind == 2) {
+      bool t1 = false, t2 = false, t3 = false;
+      if (!iscar(nowlane, find)) t1 = true;
+      else if (iscar(nowlane, find) == 1) {

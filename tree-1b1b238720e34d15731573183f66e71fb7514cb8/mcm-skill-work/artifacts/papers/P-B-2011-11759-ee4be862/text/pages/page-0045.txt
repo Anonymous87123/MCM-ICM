@@ -1,0 +1,59 @@
+      Control Number: 11759                                             Page 45 of 51
+
+
+157
+158       %New targetloc
+159       concat = zeros(numuncov,2);
+160       for i=1:numuncov;
+161           concat(i,1) = notcovered(i,2*it+3);
+162           concat(i,2) = notcovered(i,2*it+4);
+163       end
+164
+165       [clusid,clusters]=kmeans(concat,numclus);
+166
+
+167       clusscr=zeros(numclus,3);
+168
+169
+170
+171       %Set temp repeater locations
+172       for i=1:numclus,
+173           reptemp(i,1)=clusters(i,1);
+174           reptemp(i,2)=clusters(i,2);
+175       end
+176       %Calculate score of each cluster and order by score
+177       for i=1:numclus,
+178           clusscr(i,1)=reptemp(i,1);
+179           clusscr(i,2)=reptemp(i,2);
+180           for j=1:numuncov,
+181               if sqrt((reptemp(i,1)-concat(j,1))ˆ2+(reptemp(i,2)-concat(j,2))ˆ2)≤sepdist
+182                   clusscr(i,3)=clusscr(i,3)+1;
+183               end
+184           end
+185       end
+186
+187       srtclus = sortrows(clusscr,-3); %sorted clusters
+188
+189       %Set new target location
+190       targetloc(1)=srtclus(1,1);
+191       targetloc(2)=srtclus(1,2);
+192       repdist=zeros(repno,1);
+193       for i=1:repno,
+194           repdist(i,1)=sqrt((targetloc(1)-rep(i,1))ˆ2+(targetloc(2)-rep(i,2))ˆ2);
+195       end
+196
+197       [C,I]=min(repdist);
+198       lastplaced=I(1);
+199       newrepdist = sqrt((rep(lastplaced,1)-targetloc(1))ˆ2+(rep(lastplaced,2)-targetloc(2))ˆ2
+200
+201
+
+202       if ((rep(lastplaced,1)≥targetloc(1))&&(rep(lastplaced,2)≤targetloc(2)))
+203            newrepang= acos((targetloc(1)-rep(lastplaced,1))/newrepdist);
+204       elseif ((rep(lastplaced,1)≥targetloc(1))&&(rep(lastplaced,2)≥targetloc(2)))
+205            newrepang=2*pi-acos((targetloc(1)-rep(lastplaced,1))/newrepdist);
+206       elseif ((rep(lastplaced,1)≤targetloc(1))&&(rep(lastplaced,2)≥targetloc(2)))
+207            newrepang=2*pi-acos((targetloc(1)-rep(lastplaced,1))/newrepdist);
+208       else
+209            newrepang=acos((targetloc(1)-rep(lastplaced,1))/newrepdist);
+210       end

@@ -1,0 +1,83 @@
+    Team #67316                                                             Page 25 of 20
+
+14
+
+15 state = zeros(4*machine_number,peo_num);
+
+16 %the first row is the flight time of each passenger
+
+17 %the second row is the arrival time of each passenger
+
+18 %the third row is the service time of each passenger
+
+19 %the fourth row is the waiting time of each passenger
+
+20
+
+21 leave_time = zeros(machine_number,peo_num);
+
+22 wait_time = zeros(machine_number,peo_num);
+
+23
+
+24 %initialize the state matrix
+
+25 for i = 1:machine_number
+
+26      state(4*(i-1)+1,1) = peo_fli(i);
+
+27      state(4*(i-1)+2,1) = peo_arr(i);
+
+28 % state(4*(i-1)+3,:) = exprnd(mean_serv,1,peo_num);%service times of each machine in
+
+29 expoential distribution
+
+30      state(4*(i-1)+3,:) = gamrnd(x_k,1/(x_k*x_mu),1,peo_num);
+
+31      state(4*(i-1)+4,1) = 0;
+
+32
+
+33      leave_time(i,1) = sum(state(4*(i-1)+2 : 4*i ,1));
+
+34      wait_time(i,1) = state(4*i,1);
+
+35 end
+
+36
+
+37 count = ones(1,machine_number);%record the array length of each machine
+
+38
+
+39 queue = zeros(1,peo_num);
+
+40 front = 1;
+
+41 rear = 1;
+
+42
+
+43 scanning = machine_number+1;
+
+44
+
+45 record_min = zeros(1,machine_number);
+
+46 for j = 1:machine_number
+
+47      record_min(j) = leave_time(j,count(j));
+
+48 end
+
+49 [min_time,min_array] = min(record_min);
+
+50
+
+51 % %push the next person into queue
+
+52 % queue(rear) = scanning;
+
+53 % rear = rear + 1;
+
+54 % scanning = scanning+1;

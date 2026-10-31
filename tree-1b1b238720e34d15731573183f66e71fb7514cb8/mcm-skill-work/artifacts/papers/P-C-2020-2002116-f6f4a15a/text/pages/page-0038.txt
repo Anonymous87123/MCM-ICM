@@ -1,0 +1,79 @@
+Team # 2002116                                                                Page 37 of 38
+
+
+#data import
+data=pd.read_csv(loadurl)
+intvec=onehotvec(data[’star’]).values.tolist()
+vecvec=data[[’p1’,’p2’,’p3’,’p4’,’p5’]].values.tolist()
+help=pd.read_csv(r’D:\Problem_C_Data\hair_dryer.tsv’,sep=’\t’)[’helpful_votes’].
+                                          values.tolist()
+date=pd.read_csv(r’D:\Problem_C_Data\hair_dryer.tsv’,sep=’\t’)[’review_date’]
+#get informative value
+cal=[]
+for i in range(len(help)):
+    x=(1+help[i])*pow(np.e,(-1)*cosdistance(intvec[i],vecvec[i]))*pow(np.e,1*
+                                              entropy(vecvec[i]))
+    cal.append(x)
+result=pd.DataFrame(cal)
+
+
+
+Appendix F        Source Code for Reputation Calculation
+def sigmoid(x):
+    return 1/(1+pow(np.e,(-1)*x))
+def get_reputation(df):
+    data=df.values.tolist()
+    data=data[::-1]
+    curve=np.zeros(len(data)).tolist()
+    curve[0]=1
+    #param set
+    p=0.75
+    n=0.25
+    k1=25
+    k2=20
+    #k=2
+    for i in range(1,len(data)):
+        if data[i][0]>=0:
+            if data[i][3]==0:
+                curve[i]=curve[i-1]+(p-n)*data[i][0]
+            else:
+                curve[i]=curve[i-1]+(p-n)*data[i][0]-sigmoid(k1*curve[i-1])*k2*data
+                                                          [i][1]/data[i][3]
+        else:
+            if data[i][3]==0:
+                curve[i]=curve[i-1]+(p+n)*data[i][0]
+            else:
+                curve[i]=curve[i-1]+(p+n)*data[i][0]-sigmoid(k1*curve[i-1])*k2*data
+                                                          [i][2]/data[i][3]
+    return pd.DataFrame(curve)
+#calculate
+curve1=get_reputation(inputdata)
+
+
+
+Appendix G         Source Code for Beyes Model
+def word_freq(df,s):
+    data=df[’body’].values.tolist()
+    count=0
+    for i in range(len(data)):
+        if s in data[i]:
+            count+=1
+    return count/len(data)
+def countfive_prob(data):
+    d=data[’star’].values.tolist()
+    total=len(d)
+    count=0
+    for i in range(len(d)):
+        if d[i]==5:
+            count+=1
+    return count/total
+def countfive_word(df,s):
+    count=0
+    total=0
+    data=df[[’star’,’body’]].values.tolist()
+                                                                               2
+                                                                                    关注数学模型
+                                                                      MATHmodels
+
+
+                                                                                    获取更多资讯

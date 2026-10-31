@@ -1,0 +1,71 @@
+Team # 81402  Page 26 of 27
+
+              line = f.readline()
+              if line == None or len(line) == 0:
+
+                     break
+              sz += 1
+              sys.stdout.write("\033[F") #back to previous line
+              sys.stdout.write("\033[K") #clear line
+              print "retreiving ssp data: %.2f" % (float(sz) / 4295. * 100) + "%"
+              line = re.sub(r"\n", '', line)
+              line = line.split(r",")
+              for i in range(len(line)):
+
+                     line[i] = float(line[i])
+              ssp.append(line)
+
+with open("./data/demand.json", "r") as f:
+       demand = json.load(f)
+
+min_cost_flow = pywrapgraph.SimpleMinCostFlow()
+inf = 0x7fffffff
+
+total_flow = 0
+print ""
+for i in range(1, sz + 1):
+
+       sys.stdout.write("\033[F") #back to previous line
+       sys.stdout.write("\033[K") #clear line
+       print "building network: %.2f" % (float(i) / float(sz) * 100.0) + "%"
+       total_flow += int(demand[i - 1] / base + 2)
+       min_cost_flow.SetNodeSupply(i, int((1. - alpha) * demand[i - 1] / base +
+
+             1))
+       min_cost_flow.SetNodeSupply(sz + i, int(alpha * demand[i - 1] / base + 1))
+       min_cost_flow.SetNodeSupply(2 * sz + i, - maxC)
+       for j in range(1, sz + 1):
+
+              min_cost_flow.AddArcWithCapacityAndUnitCost(i, 2 * sz + j, inf,
+                     int( ssp[i - 1][j - 1]))
+
+              if ssp[i - 1][j - 1] >= minD:
+                     min_cost_flow.AddArcWithCapacityAndUnitCost(sz + i, 2 * sz + j,
+                            inf, int(ssp[i - 1][j - 1]))
+
+print "sz: %s" % sz
+print "total_flow: %s" % total_flow
+print "calculating..."
+min_cost_flow.SolveMaxFlowWithMinCost()
+print "min-cost: ", min_cost_flow.OptimalCost()
+
+solution = []
+num_of_arcs = min_cost_flow.NumArcs()
+max_flow = 0
+flow = [0] * sz
+print ""
+for i in range(num_of_arcs):
+
+       sys.stdout.write("\033[F") #back to previous line
+       sys.stdout.write("\033[K") #clear line
+       print "retreiving optimal flow: %.2f" % (float(i + 1) / float(num_of_arcs)
+
+               * 100.0) + "%"
+       flow[min_cost_flow.Head(i) - 2 * sz - 1] += min_cost_flow.Flow(i)
+       max_flow += min_cost_flow.Flow(i)
+print "max-flow: ", max_flow
+
+with open("./data/assignments.json", "w") as f:
+       json.dump(flow, f, indent = 4)
+
+stop = timeit.default_timer()

@@ -1,0 +1,115 @@
+                                             Team # 68940                             Page 47 of 52
+
+1052 end
+
+1053 to-report investment
+
+1054 report (1 / (1 + inflation)) * (income - welfare / (1 - MPC)) * (1 - MPC) * ifelse-value (
+
+           innovator = 1) [1.5][1]
+
+1055 end
+
+1056 to-report gdp
+
+1057 report (sum [income] of turtles with [working?]) * MPC + welfare * count turtles with [lifestage
+
+           >= 3] + government-spending + sum [investment] of turtles with [working?]
+
+1058 end
+
+1059 ;to-report mean-metric
+
+1060 ; let dmu (abs (income-mean - prev-income-mean)) / (income-mean + prev-income-mean) * 2 *
+
+          ticks-per-year
+
+1061 ; report dmu / (dmu + mu-constant * income-mean); TO DO set mu-constant
+
+1062 ;end
+
+1063 to-report variance-metric
+
+1064 report (income-var) / ((income-var) ^ 2 + income-d)
+
+1065 end
+
+1066 to-report income-metric
+
+1067 report income-mean * variance-metric
+
+1068 end
+
+1069 to-report equal [a b]
+
+1070 if(item 1 b = 0)[
+
+1071      report 0
+
+1072 ]
+
+1073 report ((item 0 a ) / (item 1 a) - (item 0 b) / (item 1 b)) ^ 2
+
+1074 end
+
+1075 to-report equality-c
+
+1076 let x (map equal earth mars)
+
+1077 report map [[arg]-> arg / sum x ] x
+
+1078 end
+
+1079 to-report equality
+
+1080 let women n-values 22 [
+
+1081      [arg]->
+
+1082 count turtles with [sex = "female" and job = arg]
+
+1083 ]
+
+1084 report sum (map [[a b] -> a * b] equality-c women) / labor-force
+
+1085 end
+
+1086 to-report inflation
+
+1087 report sinoid (ticks / ticks-per-year)
+
+1088 end
+
+1089 to-report sinoid [hi]
+
+1090 report inflation-amp * sin (hi * 360 / inflation-period) + inflation-constant - inflation-amp-2
+
+           * cos (hi * 360 / inflation-period-2)
+
+1091 end
+
+1092 to set-inflation
+
+1093 set total-inflation total-inflation * (1 + inflation) ^ (1 / ticks-per-year)
+
+1094 end
+
+1095 to-report education-metric
+
+1096 let t sum ([education] of turtles with [job = 7]) + sum ([experience] of turtles with [job = 7])
+
+1097 if(t = 0)[
+
+1098      set t (1 / 2)
+
+1099 ]
+
+1100 report 100 * unemployment-rate * count turtles with [student?] / t
+
+1101 end
+
+1102 to-report government-spending
+
+1103 report count turtles with [student?] * 42155 + ((168281905 + 158625722 ) * count turtles / 10000
+
+           ) + count turtles with [lifestage = 3 and (not working?)] * welfare + count turtles with [

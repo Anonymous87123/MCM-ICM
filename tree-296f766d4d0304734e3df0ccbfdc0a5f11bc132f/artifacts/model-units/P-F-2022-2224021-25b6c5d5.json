@@ -1,0 +1,829 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2022-2224021-25b6c5d5",
+  "problem_type": "F",
+  "year": "2022",
+  "source_sha256": "25b6c5d510be0136f6087737ce464bf3bb2ef5fe7bf4251829dc3e9830fdbe41",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2022-2224021-HEL",
+      "section": "4 Global Equity Model (HELEN)",
+      "family": "composite-index",
+      "summary": "Five-dimensional global equity index (Health&Education, Environment, Life Quality, Economy, Natural Resources) with AHP first-level and EWM second-level weights.",
+      "computational_cost": "not-stated",
+      "purpose": "Measure global equity quantitatively using 5 first-level and 16 second-level indicators.",
+      "base_or_modification": "paper-specific",
+      "page": 5,
+      "inputs": [
+        "x_ij",
+        "V_ij"
+      ],
+      "outputs": [
+        "I_score"
+      ],
+      "handoff_outputs": [
+        "I_score"
+      ],
+      "objectives": [
+        "Establish a universal global equity evaluation system validated against Piketty's top-10% income share."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Value of jth second-level indicator for ith year/country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega_i",
+          "normalized_name": "ahp_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "AHP weight of ith first-level indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ij",
+          "normalized_name": "entropy_proportion",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Proportion of ith sample on jth index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_j",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of jth index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_j",
+          "normalized_name": "information_utility",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information utility of jth index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "psi_j",
+          "normalized_name": "ewm_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "EWM weight of jth second-level indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega_ij",
+          "normalized_name": "comprehensive_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined weight for jth indicator in ith dimension",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V_ij",
+          "normalized_name": "normalized_value",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Normalized value of indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_score",
+          "normalized_name": "global_equity_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Comprehensive equity score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CI",
+          "normalized_name": "consistency_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "AHP consistency index",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-1",
+          "equation_label": "AHP initial weight",
+          "equation_text": "omega_i = n-th root of product(a_i1...a_in)",
+          "source_expression": "omega_i = n-th root of product(a_i1...a_in)",
+          "normalized_latex": "\\omega_i = \\sqrt[n]{a_{i1}a_{i2}\\cdots a_{in}}",
+          "purpose": "Geometric mean of comparison matrix row",
+          "variable_symbols": [
+            "omega_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-2",
+          "equation_label": "Entropy proportion",
+          "equation_text": "p_ij = z_ij / sum_i(z_ij)",
+          "source_expression": "p_ij = z_ij / sum_i(z_ij)",
+          "normalized_latex": "p_{ij} = \\frac{z_{ij}}{\\sum_{i=1}^{n} z_{ij}}",
+          "purpose": "Probability for entropy calculation",
+          "variable_symbols": [
+            "p_ij",
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-3",
+          "equation_label": "Information entropy",
+          "equation_text": "e_j = -(1/ln(n)) * sum_i(p_ij * ln(p_ij))",
+          "source_expression": "e_j = -(1/ln(n)) * sum_i(p_ij * ln(p_ij))",
+          "normalized_latex": "e_j = -\\frac{1}{\\ln n}\\sum_{i=1}^{n} p_{ij}\\ln p_{ij}",
+          "purpose": "Entropy of jth indicator",
+          "variable_symbols": [
+            "e_j",
+            "p_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-4",
+          "equation_label": "Information utility",
+          "equation_text": "d_j = 1 - e_j",
+          "source_expression": "d_j = 1 - e_j",
+          "normalized_latex": "d_j = 1 - e_j",
+          "purpose": "Utility value",
+          "variable_symbols": [
+            "d_j",
+            "e_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-5",
+          "equation_label": "EWM weight",
+          "equation_text": "psi_j = d_j / sum_j(d_j)",
+          "source_expression": "psi_j = d_j / sum_j(d_j)",
+          "normalized_latex": "\\psi_j = \\frac{d_j}{\\sum_{j=1}^{m} d_j}",
+          "purpose": "Normalized entropy weight",
+          "variable_symbols": [
+            "psi_j",
+            "d_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-6",
+          "equation_label": "Comprehensive weight",
+          "equation_text": "omega_ij = omega_i * omega_j|i",
+          "source_expression": "omega_ij = omega_i * omega_j|i",
+          "normalized_latex": "\\omega_{ij} = \\omega_i \\cdot \\omega_{j|i}",
+          "purpose": "Product of AHP first-level and EWM second-level weights",
+          "variable_symbols": [
+            "omega_ij",
+            "omega_i",
+            "psi_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-HEL-7",
+          "equation_label": "Composite equity score",
+          "equation_text": "I = sum_i sum_j V_ij * omega_ij",
+          "source_expression": "I = sum_i sum_j V_ij * omega_ij",
+          "normalized_latex": "I = \\sum_{i=1}^{4}\\sum_{j=1}^{n_i} V_{ij}\\omega_{ij}",
+          "purpose": "Weighted sum of all normalized indicators",
+          "variable_symbols": [
+            "I_score",
+            "V_ij",
+            "omega_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (1)-(7) on pages 8-9.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Data from 180+ countries, 2001-2020."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index model."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "AHP with CI=0.0593<0.1 for first-level; EWM for second-level; product for combined",
+        "parameters": [
+          "omega_i",
+          "psi_j"
+        ]
+      },
+      "algorithm": {
+        "description": "AHP for 5 first-level weights, EWM for 16 second-level weights, multiply for comprehensive weights, compute composite score.",
+        "status": "implemented",
+        "steps": [
+          "Pairwise comparison matrix",
+          "Geometric mean weights",
+          "Consistency test CI=0.0593",
+          "Entropy proportions",
+          "Entropy and utility",
+          "EWM weights",
+          "Comprehensive weights",
+          "Composite score"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "CI = 0.0593 < 0.1."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Validated against Piketty top-10% income share. Regional consistency confirmed."
+        ],
+        "analysis": "Europe/Oceania lowest inequity, Africa/Latin America highest."
+      },
+      "constraints": [
+        "Five dimensions: HELEN.",
+        "16 second-level indicators."
+      ],
+      "validation_refs": [
+        "Figure 3 weight chart",
+        "Figure 4 Piketty comparison",
+        "Figure 5 HELEN equity index by region"
+      ],
+      "strengths": [
+        "Combines AHP subjective and EWM objective weights.",
+        "Validated against established Piketty metric."
+      ],
+      "limitations": [
+        "High data demand.",
+        "Moran Index calculation is complex."
+      ],
+      "missing_details": [
+        "Exact AHP comparison matrix entries."
+      ],
+      "assumptions": [
+        "Five dimensions suffice for global equity.",
+        "Data from 2001-2020 is representative."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2224021-AMM",
+      "section": "5 Asteroid Mining Market Model",
+      "family": "market-equilibrium",
+      "summary": "Cobb-Douglas production, Cournot equilibrium with international regulatory market share caps, impact on HELEN via GDP, DI, PPI changes.",
+      "computational_cost": "not-stated",
+      "purpose": "Model the asteroid mining market and determine impact on global equity through HELEN.",
+      "base_or_modification": "paper-specific",
+      "page": 10,
+      "inputs": [
+        "k_i",
+        "l_i",
+        "A_i",
+        "delta_U"
+      ],
+      "outputs": [
+        "q_i",
+        "pi_i",
+        "I_score"
+      ],
+      "handoff_outputs": [
+        "q_i",
+        "I_score"
+      ],
+      "objectives": [
+        "Calculate equilibrium output and market share, then trace impact through economy, natural resources, and life quality dimensions."
+      ],
+      "variables": [
+        {
+          "symbol": "q_i",
+          "normalized_name": "output",
+          "role": "output",
+          "unit": "kg",
+          "definition": "Output of minerals for participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_Q",
+          "normalized_name": "price",
+          "role": "intermediate",
+          "unit": "USD/kg",
+          "definition": "Inverse demand function: p(Q) = 12016.08 - 30.18Q",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_i",
+          "normalized_name": "market_share",
+          "role": "intermediate",
+          "unit": "percent",
+          "definition": "Market share of participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi_i",
+          "normalized_name": "profit",
+          "role": "output",
+          "unit": "billion USD",
+          "definition": "Profit of participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "cost",
+          "role": "intermediate",
+          "unit": "billion USD",
+          "definition": "Minimized cost of participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_i",
+          "normalized_name": "capital_input",
+          "role": "input",
+          "unit": "billion USD",
+          "definition": "Capital input for participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "l_i",
+          "normalized_name": "labor_input",
+          "role": "input",
+          "unit": "thousand persons",
+          "definition": "Labor input for participant i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_i",
+          "normalized_name": "technology",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Technology parameter in Cobb-Douglas",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_i",
+          "normalized_name": "capital_elasticity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Capital elasticity = 0.3",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_i",
+          "normalized_name": "labor_elasticity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Labor elasticity = 0.7",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_U",
+          "normalized_name": "market_share_cap",
+          "role": "input",
+          "unit": "percent",
+          "definition": "Upper bound of market share set by regulator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "total_output",
+          "role": "intermediate",
+          "unit": "kg",
+          "definition": "Total output including traditional mining",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_score",
+          "normalized_name": "equity_after",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Global equity index after mining impact",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2224021-AMM-1",
+          "equation_label": "Cobb-Douglas production",
+          "equation_text": "q_i = A_i * k_i^alpha_i * l_i^beta_i",
+          "source_expression": "q_i = A_i * k_i^alpha_i * l_i^beta_i",
+          "normalized_latex": "q_i = A_i k_i^{\\alpha_i} l_i^{\\beta_i}",
+          "purpose": "Production function for participant i",
+          "variable_symbols": [
+            "q_i",
+            "A_i",
+            "k_i",
+            "l_i",
+            "alpha_i",
+            "beta_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-AMM-2",
+          "equation_label": "Profit function",
+          "equation_text": "pi_i = p(Q) * q_i - C_i(q_i)",
+          "source_expression": "pi_i = p(Q) * q_i - C_i(q_i)",
+          "normalized_latex": "\\pi_i = p(Q)q_i - C_i(q_i)",
+          "purpose": "Profit as revenue minus cost",
+          "variable_symbols": [
+            "pi_i",
+            "p_Q",
+            "q_i",
+            "C_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2224021-AMM-3",
+          "equation_label": "Equilibrium optimization",
+          "equation_text": "max pi_i s.t. q_i/Q <= delta_U, k_i <= k_iU, l_i <= l_iU",
+          "source_expression": "max pi_i s.t. q_i/Q <= delta_U, k_i <= k_iU, l_i <= l_iU",
+          "normalized_latex": "\\max \\pi_i \\;\\text{s.t.}\\; q_i/Q \\leq \\delta_i^U,\\; k_i \\leq k_i^U,\\; l_i \\leq l_i^U",
+          "purpose": "Constrained profit maximization for each participant",
+          "variable_symbols": [
+            "pi_i",
+            "q_i",
+            "Q",
+            "delta_U",
+            "k_i",
+            "l_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations (8)-(14) on pages 12-15.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "20 countries with mining capacity, clustered into 4 categories via KPCA + ward."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Market share cap, capital and labor upper bounds."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Cournot equilibrium: Leader 53.20%, Advancer 26.13%, Pursuer 15.22%, Outsider 5.16%."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "alpha=0.3, beta=0.7 from Nicholson; A estimated by regression on historical mineral data per cluster; inverse demand p(Q)=12016.08-30.18Q from nickel data",
+        "parameters": [
+          "A_i",
+          "alpha_i",
+          "beta_i",
+          "p_Q"
+        ]
+      },
+      "algorithm": {
+        "description": "KPCA + ward clustering -> 4 categories. Cobb-Douglas production per category. Cournot equilibrium with market share caps. Trace impact via GDP, DI, PPI into HELEN.",
+        "status": "implemented",
+        "steps": [
+          "Cluster 20 countries via KPCA+ward",
+          "Estimate A per category",
+          "Set up profit maximization with constraints",
+          "Solve equilibrium",
+          "Compute GDP/DI/PPI changes",
+          "Feed into HELEN"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Equilibrium market shares sum to 100%."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Equity raises from 0.525 to 0.579 (worse). Tables 1-5 give market share, GDP, DI, PPI impacts."
+        ],
+        "analysis": "Mining increases inequity under initial conditions."
+      },
+      "constraints": [
+        "Market share cap per country.",
+        "Capital and labor upper bounds.",
+        "Only three HELEN dimensions affected."
+      ],
+      "validation_refs": [
+        "Table 1 market share",
+        "Table 2 GDP change",
+        "Table 3 DI change",
+        "Table 4 PPI change",
+        "Table 5 equity impact"
+      ],
+      "strengths": [
+        "Captures both factor and product market sides.",
+        "Cournot equilibrium with regulatory constraint."
+      ],
+      "limitations": [
+        "Linear inverse demand is a simplification.",
+        "Only three of five HELEN dimensions affected."
+      ],
+      "missing_details": [
+        "Exact A values for all 4 categories."
+      ],
+      "assumptions": [
+        "Cobb-Douglas with fixed alpha=0.3, beta=0.7.",
+        "Linear inverse demand from nickel data.",
+        "Regulatory cap enforced unconditionally."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2224021-ADJ",
+      "section": "6 Model Adjustment",
+      "family": "simulation",
+      "summary": "Simulation of equity index vs enterprise count under restricted/unrestricted market share; SEM for national power -> equity transmission.",
+      "computational_cost": "not-stated",
+      "purpose": "Analyze how changes in mining patterns (participants, regulation) and national power affect global equity.",
+      "base_or_modification": "modification",
+      "page": 18,
+      "inputs": [
+        "n_enterprises",
+        "delta_U"
+      ],
+      "outputs": [
+        "I_score"
+      ],
+      "handoff_outputs": [
+        "I_score"
+      ],
+      "objectives": [
+        "Show that market share restriction lowers peak inequity but delays the inflection point, and that SEM reveals transmission pathways."
+      ],
+      "variables": [
+        {
+          "symbol": "n_enterprises",
+          "normalized_name": "enterprise_count",
+          "role": "input",
+          "unit": "count",
+          "definition": "Number of asteroid mining enterprises",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_U",
+          "normalized_name": "market_share_cap",
+          "role": "input",
+          "unit": "percent",
+          "definition": "Upper bound on market share (0.30 or unrestricted)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_score",
+          "normalized_name": "equity_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Global equity index from HELEN",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2224021-ADJ-1",
+          "equation_label": "Simulation equilibrium",
+          "equation_text": "Same Cournot optimization as AMM, iterated over increasing enterprise count",
+          "source_expression": "Same Cournot optimization as AMM, iterated over increasing enterprise count",
+          "normalized_latex": "\\text{Cournot equilibrium iterated for } n = 1, \\ldots, N",
+          "purpose": "Simulation of equity curve as enterprise count grows",
+          "variable_symbols": [
+            "I_score",
+            "n_enterprises",
+            "delta_U"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Reuses AMM equations with varying n. SEM coefficients from AMOS.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Current space company counts per country."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Restricted: delta_U = 0.30. Unrestricted: no cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Inflection at ~1800 enterprises (restricted) vs ~1200 (unrestricted)."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Current enterprise counts extrapolated; SEM regression via AMOS with chi-squared test",
+        "parameters": [
+          "n_enterprises"
+        ]
+      },
+      "algorithm": {
+        "description": "Iterate AMM equilibrium over enterprise counts, plot equity curve. Run SEM in AMOS for technology/capital/labor -> equity paths.",
+        "status": "implemented",
+        "steps": [
+          "Set enterprise count range",
+          "Solve equilibrium per count",
+          "Compare restricted vs unrestricted",
+          "Run SEM in AMOS",
+          "Draw roadmap"
+        ],
+        "software": [
+          "AMOS"
+        ],
+        "convergence_criteria": "SEM passes chi-squared test."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Restricted peak 0.739 vs unrestricted 0.789. SEM shows technology, capital, labor all impact equity."
+        ],
+        "analysis": "Restriction lowers peak but delays inflection."
+      },
+      "constraints": [
+        "Two scenarios: restricted (30%) and unrestricted.",
+        "SEM uses historical data."
+      ],
+      "validation_refs": [
+        "Figure 11 intuitive analysis",
+        "Figure 12 simulation result",
+        "Figure 13 SEM roadmap"
+      ],
+      "strengths": [
+        "Compares policy on/off scenarios directly.",
+        "SEM reveals causal pathways."
+      ],
+      "limitations": [
+        "Enterprise count growth is assumed linear.",
+        "SEM is correlational, not truly causal."
+      ],
+      "missing_details": [
+        "Exact SEM regression coefficients."
+      ],
+      "assumptions": [
+        "Infant Industry Theory describes participant transition.",
+        "SEM model structure is correctly specified."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-1",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 8,
+      "source_expression": "omega_i = n-th root of product(a_i1...a_in)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-2",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 8,
+      "source_expression": "p_ij = z_ij / sum_i(z_ij)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-3",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 9,
+      "source_expression": "e_j = -(1/ln(n)) * sum_i(p_ij * ln(p_ij))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-4",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 9,
+      "source_expression": "d_j = 1 - e_j"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-5",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 9,
+      "source_expression": "psi_j = d_j / sum_j(d_j)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-6",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 9,
+      "source_expression": "omega_ij = omega_i * omega_j|i"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-HEL-7",
+      "model_id": "MU-F-2022-2224021-HEL",
+      "page": 9,
+      "source_expression": "I = sum_i sum_j V_ij * omega_ij"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-AMM-1",
+      "model_id": "MU-F-2022-2224021-AMM",
+      "page": 12,
+      "source_expression": "q_i = A_i * k_i^alpha_i * l_i^beta_i"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-AMM-2",
+      "model_id": "MU-F-2022-2224021-AMM",
+      "page": 14,
+      "source_expression": "pi_i = p(Q) * q_i - C_i(q_i)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-AMM-3",
+      "model_id": "MU-F-2022-2224021-AMM",
+      "page": 15,
+      "source_expression": "max pi_i s.t. q_i/Q <= delta_U, k_i <= k_iU, l_i <= l_iU"
+    },
+    {
+      "equation_id": "EQ-F-2022-2224021-ADJ-1",
+      "model_id": "MU-F-2022-2224021-ADJ",
+      "page": 19,
+      "source_expression": "Same Cournot optimization as AMM, iterated over increasing enterprise count"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2022-2224021-HEL",
+      "to_model_id": "MU-F-2022-2224021-AMM",
+      "handoff": "HELEN equity index is the evaluation framework for mining impact"
+    },
+    {
+      "from_model_id": "MU-F-2022-2224021-AMM",
+      "to_model_id": "MU-F-2022-2224021-ADJ",
+      "handoff": "AMM equilibrium is iterated in simulation with varying enterprise count"
+    }
+  ]
+}

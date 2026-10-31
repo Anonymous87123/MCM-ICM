@@ -1,0 +1,1846 @@
+{
+  "schema_version": 1,
+  "paper_id": "P-A-2018-86103-6d21eb9d",
+  "problem_type": "A",
+  "year": "2018",
+  "source": {
+    "relative_path": "2018美赛特等奖/A题5篇/A86103-Simulation Analysis of Multi-hop HF Radio.pdf",
+    "sha256": "6d21eb9d0f1f13d61ef2df427746944e466a909d1ca692aac1a62a7e186d89fe",
+    "page_count": 28
+  },
+  "source_quality": {
+    "status": "source-checked",
+    "text_coverage_ratio": 1.0,
+    "text_word_count": 7668,
+    "text_fidelity": "high-with-equation-and-code-layout-gaps",
+    "visual_review_status": "complete",
+    "layout_reviewed": true,
+    "figures_reviewed": true,
+    "equations_reviewed": true,
+    "notes": [
+      "All 28 physical pages, four contact sheets, full-resolution Equations 1-25/27, tables, plots, references, and five-page code asset were inspected."
+    ],
+    "limitations": [
+      "AES encrypted but print/copy allowed.",
+      "Commercial watermark on every page.",
+      "Three front pages precede an internally numbered 25-page body.",
+      "Appendix code is cropped and color/comment semantics are not preserved by OCR."
+    ]
+  },
+  "task_reconstruction": {
+    "objective": "Simulate a wind-driven 3-D sea surface, translate reflection changes into HF loss/SNR/hop limits, compare ground surfaces, and extend the threshold model to a moving ship.",
+    "inputs": [
+      "wind, frequency, angle, wave spectrum and random phase",
+      "ionosphere height/loss and atmospheric-noise lookup",
+      "sea/ground electromagnetic parameters and roughness",
+      "power, bandwidth, hop count, ship speed"
+    ],
+    "outputs": [
+      "wave surface and roughness correction",
+      "first-reflection power and SNR",
+      "maximum hops/distance",
+      "ground comparison and same-path duration",
+      "qualitative frequency guidance"
+    ],
+    "decision": "Choose operating frequency/power/angle and path-change timing subject to SNR>=10 dB, while treating broad frequency-table advice separately from computed results."
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "section": "abstract",
+      "summary": "abstract advances through 9 functional blocks from application value -> scoped loss question to graphic navigation module -> threshold extension."
+    },
+    {
+      "page": 6,
+      "section": "introduction",
+      "summary": "introduction advances through 3 functional blocks from shipping danger and congestion -> HF communication need to ionosphere layers/time variation -> physical interface."
+    },
+    {
+      "page": 6,
+      "section": "problem-restatement",
+      "summary": "problem-restatement advances through 2 functional blocks from turbulent/calm first reflection -> maximum hops -> ground comparison -> moving receiver to ground-wave taxonomy -> sky-wave taxonomy -> selected branch."
+    },
+    {
+      "page": 10,
+      "section": "problem-analysis",
+      "summary": "problem-analysis advances through 5 functional blocks from four requested outputs -> dependency graph to SNR gate -> distance/time decision."
+    },
+    {
+      "page": 6,
+      "section": "assumptions",
+      "summary": "assumptions advances through 6 functional blocks from sky wave selected -> ground wave excluded to La fixed -> ionosphere proxy."
+    },
+    {
+      "page": 7,
+      "section": "notation",
+      "summary": "notation advances through 4 functional blocks from global symbols -> meanings to geometry/angle symbols -> path interface."
+    },
+    {
+      "page": 9,
+      "section": "data-preprocessing",
+      "summary": "data-preprocessing advances through 5 functional blocks from spectrum candidates -> PM selection to frequency bands -> scenario guidance."
+    },
+    {
+      "page": 7,
+      "section": "model-establishment",
+      "summary": "model-establishment advances through 9 functional blocks from HF/F2/0.85MUF frame to moving-receiver duration."
+    },
+    {
+      "page": 13,
+      "section": "algorithm",
+      "summary": "algorithm advances through 7 functional blocks from wave surface -> cross section to appendix fragments -> partial provenance."
+    },
+    {
+      "page": 12,
+      "section": "robustness-verification",
+      "summary": "robustness-verification advances through 5 functional blocks from polarization curves -> branch comparison to threshold surface -> decision table."
+    },
+    {
+      "page": 15,
+      "section": "results",
+      "summary": "results advances through 7 functional blocks from rough correction -> Figure 9 to frequency-state suggestion table."
+    },
+    {
+      "page": 12,
+      "section": "sensitivity-analysis",
+      "summary": "sensitivity-analysis advances through 4 functional blocks from incidence angle -> Fresnel response to distance/frequency/hops -> SNR surface."
+    },
+    {
+      "page": 21,
+      "section": "strengths-limitations",
+      "summary": "strengths-limitations advances through 5 functional blocks from propagation classification -> claimed accuracy to omissions/fixed parameters -> reliability boundary."
+    },
+    {
+      "page": 21,
+      "section": "future-improvements",
+      "summary": "future-improvements advances through 5 functional blocks from sky-wave-only scope -> add ground wave to fragmented code -> executable provenance and validation."
+    },
+    {
+      "page": 2,
+      "section": "memo",
+      "summary": "memo advances through 3 functional blocks from graphic module title -> method -> figure/result to navigation extension -> open variables -> threshold output."
+    },
+    {
+      "page": 20,
+      "section": "conclusion",
+      "summary": "conclusion advances through 4 functional blocks from SNR gate -> operating controls to strengths -> applicability boundaries."
+    },
+    {
+      "page": 24,
+      "section": "appendix",
+      "summary": "appendix advances through 6 functional blocks from wave generator fragment to cropped code boundary -> provenance warning."
+    }
+  ],
+  "contributions": [
+    {
+      "page": 9,
+      "section": "Random sea model",
+      "summary": "Builds a directional 3-D random wave surface from PM spectrum components."
+    },
+    {
+      "page": 10,
+      "section": "Loss inventory",
+      "summary": "Creates a four-part propagation ledger before component formulas."
+    },
+    {
+      "page": 11,
+      "section": "Spherical reach",
+      "summary": "Uses Earth curvature and virtual ionosphere height for a one-hop surface bound."
+    },
+    {
+      "page": 12,
+      "section": "Calm baseline",
+      "summary": "Separates horizontal/vertical Fresnel coefficients before roughness correction."
+    },
+    {
+      "page": 13,
+      "section": "Local ray geometry",
+      "summary": "Uses wave slope and micro-element direction to create a forward-reflection fraction."
+    },
+    {
+      "page": 14,
+      "section": "Shadow correction",
+      "summary": "Adds occluded-region accounting as a distinct roughness channel."
+    },
+    {
+      "page": 16,
+      "section": "First-reflection KPI",
+      "summary": "Maps component losses to a controlled wind/frequency response."
+    },
+    {
+      "page": 17,
+      "section": "Signal/noise gate",
+      "summary": "Combines signal field and noise lookup into a 10 dB usability criterion."
+    },
+    {
+      "page": 18,
+      "section": "Cross-medium transfer",
+      "summary": "Reuses the reflection scaffold with ground material and relief inputs."
+    },
+    {
+      "page": 20,
+      "section": "Moving decision",
+      "summary": "Converts threshold distance into a nominal same-path time interface."
+    }
+  ],
+  "dependency_graph": {
+    "nodes": [
+      "MU-A-2018-86103-001",
+      "MU-A-2018-86103-002",
+      "MU-A-2018-86103-003",
+      "MU-A-2018-86103-004",
+      "MU-A-2018-86103-005",
+      "MU-A-2018-86103-006",
+      "MU-A-2018-86103-007",
+      "MU-A-2018-86103-008",
+      "MU-A-2018-86103-009",
+      "MU-A-2018-86103-010",
+      "MU-A-2018-86103-011",
+      "MU-A-2018-86103-012",
+      "MU-A-2018-86103-013",
+      "MU-A-2018-86103-014",
+      "MU-A-2018-86103-015",
+      "MU-A-2018-86103-016",
+      "MU-A-2018-86103-017"
+    ],
+    "edges": [
+      {
+        "from_model_id": "MU-A-2018-86103-001",
+        "to_model_id": "MU-A-2018-86103-002",
+        "handoff": "The HF/F2 frame bounds the spectral wave carrier scenarios."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-003",
+        "to_model_id": "MU-A-2018-86103-002",
+        "handoff": "PM density sets harmonic amplitudes."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-002",
+        "to_model_id": "MU-A-2018-86103-004",
+        "handoff": "One-direction components are distributed across directions."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-004",
+        "to_model_id": "MU-A-2018-86103-009",
+        "handoff": "The 3-D surface supplies a local cross section and slope."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-009",
+        "to_model_id": "MU-A-2018-86103-010",
+        "handoff": "Forward-ray fraction feeds the rough-sea correction."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-008",
+        "to_model_id": "MU-A-2018-86103-010",
+        "handoff": "Calm Fresnel reflection is the baseline corrected for roughness."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-010",
+        "to_model_id": "MU-A-2018-86103-005",
+        "handoff": "Rough-sea loss enters the total ledger."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-006",
+        "to_model_id": "MU-A-2018-86103-005",
+        "handoff": "Free-space loss enters the total ledger."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-007",
+        "to_model_id": "MU-A-2018-86103-005",
+        "handoff": "Ionosphere absorption enters the total ledger."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-005",
+        "to_model_id": "MU-A-2018-86103-011",
+        "handoff": "The four-part loss ledger determines first-reflection power."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-005",
+        "to_model_id": "MU-A-2018-86103-012",
+        "handoff": "Total loss enters signal field and SNR."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-006",
+        "to_model_id": "MU-A-2018-86103-013",
+        "handoff": "Dmax and FSPL geometry parameterize the hop controller."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-007",
+        "to_model_id": "MU-A-2018-86103-013",
+        "handoff": "Per-hop absorption is accumulated by hop count."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-008",
+        "to_model_id": "MU-A-2018-86103-013",
+        "handoff": "Per-reflection loss is accumulated between hops."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-012",
+        "to_model_id": "MU-A-2018-86103-013",
+        "handoff": "SNR supplies the 10 dB continuation gate."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-014",
+        "to_model_id": "MU-A-2018-86103-016",
+        "handoff": "Ground coefficients feed the ground comparison results."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-013",
+        "to_model_id": "MU-A-2018-86103-015",
+        "handoff": "Maximum usable distance and hop state feed the moving-receiver extension."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-015",
+        "to_model_id": "MU-A-2018-86103-016",
+        "handoff": "Distance-frequency-SNR states feed Figure 13 and Table 4."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-015",
+        "to_model_id": "MU-A-2018-86103-017",
+        "handoff": "The moving context motivates but does not quantitatively generate the frequency table."
+      },
+      {
+        "from_model_id": "MU-A-2018-86103-016",
+        "to_model_id": "MU-A-2018-86103-017",
+        "handoff": "Threshold results are converted into qualitative operating guidance."
+      }
+    ],
+    "terminal_outputs": [
+      "wave surface",
+      "reflection correction",
+      "first-reflection power",
+      "SNR",
+      "maximum hop/distance",
+      "same-path time",
+      "frequency band suggestion"
+    ]
+  },
+  "assumptions": [
+    {
+      "page": 6,
+      "section": "Propagation mode",
+      "summary": "Retain sky wave as the main route and exclude ground wave from the quantitative model."
+    },
+    {
+      "page": 6,
+      "section": "Ionosphere layer",
+      "summary": "Treat F2 as the principal reflecting layer."
+    },
+    {
+      "page": 6,
+      "section": "Wave-height driver",
+      "summary": "Treat wind speed as the main factor controlling wave height."
+    },
+    {
+      "page": 6,
+      "section": "Sea material",
+      "summary": "Fix seawater permittivity and conductivity under ordinary salinity/temperature conditions."
+    },
+    {
+      "page": 7,
+      "section": "Ship motion",
+      "summary": "Treat ship movement as uniform motion."
+    },
+    {
+      "page": 9,
+      "section": "Wave representation",
+      "summary": "Represent a random sea as harmonic components and finitely sampled directions."
+    },
+    {
+      "page": 11,
+      "section": "Ionosphere loss",
+      "summary": "Ignore small E/F offset absorption and use D-layer-dominated loss."
+    },
+    {
+      "page": 11,
+      "section": "Absorption proxy",
+      "summary": "Use La=4 dB in numerical results instead of evaluating Equations 8-9."
+    },
+    {
+      "page": 12,
+      "section": "Polarization",
+      "summary": "Assume equal energy in horizontal and vertical polarizations."
+    },
+    {
+      "page": 13,
+      "section": "Surface cross section",
+      "summary": "Use one selected 2-D cross section to represent rough-sea reflection geometry."
+    },
+    {
+      "page": 15,
+      "section": "Additional loss",
+      "summary": "Use YP approximately 15 dB as a local-time proxy."
+    },
+    {
+      "page": 19,
+      "section": "Ground analogy",
+      "summary": "Represent terrain relief by the same rough-surface structure used for sea waves."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 9,
+      "section": "PM spectrum inputs",
+      "summary": "Wind speed at 19.5 m, gravity, frequency bins, and random phases parameterize the wave spectrum."
+    },
+    {
+      "page": 11,
+      "section": "Earth geometry",
+      "summary": "Use Re=6371 km, F2 virtual height, and minimum elevation generally above 3 degrees."
+    },
+    {
+      "page": 11,
+      "section": "Ionosphere proxy",
+      "summary": "Use La=4 dB and ignore <=1 dB E/F offset absorption."
+    },
+    {
+      "page": 15,
+      "section": "Additional loss proxy",
+      "summary": "Use YP=15 dB as a fixed local-time-related term."
+    },
+    {
+      "page": 16,
+      "section": "Figure 10 grid",
+      "summary": "Retain 27 first-reflection values over 10/20/30 MHz and wind levels 0-8."
+    },
+    {
+      "page": 17,
+      "section": "Noise lookup",
+      "summary": "Retain 36 coefficients over four latitude bands, three longitude bands, and three time bins."
+    },
+    {
+      "page": 18,
+      "section": "Material table",
+      "summary": "Retain seawater, freshwater, wet-soil, and dry-soil permittivity/conductivity ranges and selected references."
+    },
+    {
+      "page": 19,
+      "section": "Figure 12 grid",
+      "summary": "Retain 27 ground first-reflection values over three frequencies and relief levels 0-8."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 scenario",
+      "summary": "Bind f=15 MHz intent, P=100 W claim, n=1-6, distance, and SNR."
+    },
+    {
+      "page": 21,
+      "section": "Frequency guidance",
+      "summary": "Retain five environment/use-case frequency bands as qualitative input guidance."
+    },
+    {
+      "page": 24,
+      "section": "Wave simulation settings",
+      "summary": "Appendix fixes M=1000 frequency bins, N=5 directions, wind levels 1-8, and a 501x301 grid."
+    },
+    {
+      "page": 25,
+      "section": "Roughness code",
+      "summary": "Appendix maps wind to h=0.0051v^2 and sweeps frequency/angle with an empirical correction."
+    },
+    {
+      "page": 27,
+      "section": "Ground code",
+      "summary": "Appendix uses a single epsilon=8 ground override despite the richer material table."
+    },
+    {
+      "page": 27,
+      "section": "SNR code",
+      "summary": "Appendix nominally fixes P=100, B=0.003, YP=15, La=4, Fa=80, h=300 km, n=1-6."
+    }
+  ],
+  "models": [
+    {
+      "page": 8,
+      "section": "HF/F2 and frequency frame",
+      "summary": "MU-A-2018-86103-001: HF is 3-30 MHz; the paper selects F2 sky wave and recommends about 0.85 MUF."
+    },
+    {
+      "page": 9,
+      "section": "Longuet-Higgins one-direction wave",
+      "summary": "MU-A-2018-86103-002: Random amplitudes/frequencies/phases generate a one-dimensional wave state."
+    },
+    {
+      "page": 9,
+      "section": "PM wave spectrum",
+      "summary": "MU-A-2018-86103-003: The PM spectrum supplies component energy for a fully developed sea."
+    },
+    {
+      "page": 9,
+      "section": "Directional 3-D wave superposition",
+      "summary": "MU-A-2018-86103-004: A double sum over frequency and direction yields a 3-D random wave surface."
+    },
+    {
+      "page": 10,
+      "section": "Sky-wave loss ledger",
+      "summary": "MU-A-2018-86103-005: Free-space, ionosphere, reflection, and additional terms form the total ledger."
+    },
+    {
+      "page": 11,
+      "section": "Free-space and spherical hop geometry",
+      "summary": "MU-A-2018-86103-006: The km/MHz FSPL formula and Earth-radius geometry provide path cost and hop range."
+    },
+    {
+      "page": 11,
+      "section": "Ionospheric absorption and proxy",
+      "summary": "MU-A-2018-86103-007: A sunspot/zenith/frequency relation is printed, then numerical work fixes La at 4 dB."
+    },
+    {
+      "page": 12,
+      "section": "Calm-sea Fresnel reflection",
+      "summary": "MU-A-2018-86103-008: Complex seawater permittivity feeds horizontal/vertical coefficients and their equal-energy combination."
+    },
+    {
+      "page": 13,
+      "section": "Local-slope reflected-ray routing",
+      "summary": "MU-A-2018-86103-009: A local tangent and reflected-path equation classify forward-reflecting micro-elements."
+    },
+    {
+      "page": 14,
+      "section": "Wave shadow and rough-sea correction",
+      "summary": "MU-A-2018-86103-010: An area/length shadow factor is composed with a forward fraction; Appendix also uses an empirical wind-height correction."
+    },
+    {
+      "page": 15,
+      "section": "First-reflection power",
+      "summary": "MU-A-2018-86103-011: The source logarithm minus path, absorption, reflection, and additional loss produces P1."
+    },
+    {
+      "page": 16,
+      "section": "Signal field, atmospheric noise, and SNR",
+      "summary": "MU-A-2018-86103-012: Transmitter/frequency/gain/loss determine Et; a lookup noise coefficient and bandwidth determine En."
+    },
+    {
+      "page": 17,
+      "section": "Multi-hop SNR controller",
+      "summary": "MU-A-2018-86103-013: Distance grows as nDmax, ionosphere loss as nLa, and intermediate surface loss as (n-1)Lg."
+    },
+    {
+      "page": 18,
+      "section": "Ground parameter substitution",
+      "summary": "MU-A-2018-86103-014: Ground permittivity/conductivity and relief level replace sea inputs to produce first-reflection and hop claims."
+    },
+    {
+      "page": 19,
+      "section": "Moving-ship path duration",
+      "summary": "MU-A-2018-86103-015: The repeated SNR inequality binds hop losses to a 10 dB gate; r/v is called the same-path duration."
+    },
+    {
+      "page": 16,
+      "section": "Scenario result aggregation",
+      "summary": "MU-A-2018-86103-016: Controlled slices connect intermediate coefficients to first-reflection power and threshold distance."
+    },
+    {
+      "page": 21,
+      "section": "Frequency guidance matrix",
+      "summary": "MU-A-2018-86103-017: A five-row table provides tropical/night/day/season frequency guidance without a quantitative optimizer."
+    }
+  ],
+  "verification": [
+    {
+      "page": 17,
+      "section": "SNR constant",
+      "summary": "137.2+96.8-32.44 equals 201.56, confirming the algebraic combination behind Equation 22.",
+      "verification_type": "algebra recomputation"
+    },
+    {
+      "page": 17,
+      "section": "Hop loss structure",
+      "summary": "nLa and (n-1)Lg correctly count ionosphere passages and intermediate surface reflections under the stated topology.",
+      "verification_type": "structural count check"
+    },
+    {
+      "page": 20,
+      "section": "Dmax recomputation",
+      "summary": "Re=6371 km, h=300 km, and 3 degrees yield D=3224.506855 km.",
+      "verification_type": "geometry recomputation"
+    },
+    {
+      "page": 20,
+      "section": "Table 4 distances",
+      "summary": "n=1,2,3 distances round to 3225, 6449, and 9674 km.",
+      "verification_type": "arithmetic recomputation"
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=1 SNR",
+      "summary": "Printed-code inputs reproduce 54.097696 dB, matching 54.0977.",
+      "verification_type": "numeric recomputation"
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=3 SNR",
+      "summary": "Printed-code inputs reproduce 16.972806 dB, matching 16.9728.",
+      "verification_type": "numeric recomputation"
+    },
+    {
+      "page": 16,
+      "section": "Figure 10 monotonicity",
+      "summary": "Each frequency series decreases monotonically with wind level; higher frequency has the larger total decline.",
+      "verification_type": "visual/data trend check"
+    },
+    {
+      "page": 19,
+      "section": "Figure 12 monotonicity",
+      "summary": "Each frequency series decreases monotonically with relief and preserves the higher-frequency sensitivity ordering.",
+      "verification_type": "visual/data trend check"
+    },
+    {
+      "page": 19,
+      "section": "Sea-ground baseline",
+      "summary": "All 27 Figure 12 values sit about 6.9-7.0 dB below their Figure 10 counterparts.",
+      "verification_type": "paired-grid comparison"
+    },
+    {
+      "page": 17,
+      "section": "Noise table totals",
+      "summary": "The 36 values sum to 3100, with min/max 62/104 and time-bin means 86.0, 77.4167, 94.9167.",
+      "verification_type": "table recomputation"
+    },
+    {
+      "page": 18,
+      "section": "Material reference inclusion",
+      "summary": "Every selected Table 3 reference lies within its printed variation interval.",
+      "verification_type": "range check"
+    },
+    {
+      "page": 20,
+      "section": "Duration dimensions",
+      "summary": "r in km divided by ship speed in km/h yields hours.",
+      "verification_type": "dimensional check"
+    },
+    {
+      "page": 12,
+      "section": "Fresnel visual",
+      "summary": "Figure 5 supports slow RH variation and a sharp RV minimum/return, independent of the prose sensitivity reversal.",
+      "verification_type": "visual formula check"
+    },
+    {
+      "page": 14,
+      "section": "Correction trends",
+      "summary": "Figure 8 shows smaller correction at larger wind, frequency, and angle in the displayed cases.",
+      "verification_type": "visual trend check"
+    },
+    {
+      "page": 21,
+      "section": "Strength-limit audit",
+      "summary": "The paper explicitly lists four scope/material/ionosphere omissions, although several additional defects remain in G7.",
+      "verification_type": "coverage check"
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 8,
+      "section": "Best usable frequency",
+      "summary": "The paper recommends roughly 0.85 MUF as a reserve below the penetration boundary."
+    },
+    {
+      "page": 11,
+      "section": "F2 one-hop limit",
+      "summary": "With the stated F2 setup the paper uses a nominal maximum one-hop distance of 4000 km."
+    },
+    {
+      "page": 16,
+      "section": "Figure 10 10 MHz",
+      "summary": "Wind level 0 to 8 changes first-reflection values from -154.2 to -157.2 dBW, a 3.0 dB decline."
+    },
+    {
+      "page": 16,
+      "section": "Figure 10 20 MHz",
+      "summary": "Wind level 0 to 8 changes first-reflection values from -154.6 to -159.2 dBW, a 4.6 dB decline."
+    },
+    {
+      "page": 16,
+      "section": "Figure 10 30 MHz",
+      "summary": "Wind level 0 to 8 changes first-reflection values from -154.8 to -160.5 dBW, a 5.7 dB decline."
+    },
+    {
+      "page": 17,
+      "section": "Calm sea hop claim",
+      "summary": "The text reports a calm-sea maximum of six hops under its stated 100 W/15 MHz narrative case."
+    },
+    {
+      "page": 17,
+      "section": "Atmospheric noise table",
+      "summary": "The 36 Table 2 coefficients have mean 86.1111, range 62-104, and latitude-band means decreasing from 92.8889 to 74.2222."
+    },
+    {
+      "page": 19,
+      "section": "Figure 12 10 MHz",
+      "summary": "Relief level 0 to 8 changes first-reflection values from -161.2 to -164.1 dBW, a 2.9 dB decline."
+    },
+    {
+      "page": 19,
+      "section": "Figure 12 20 MHz",
+      "summary": "Relief level 0 to 8 changes values from -161.6 to -166.2 dBW, a 4.6 dB decline."
+    },
+    {
+      "page": 19,
+      "section": "Figure 12 30 MHz",
+      "summary": "Relief level 0 to 8 changes values from -161.7 to -167.4 dBW, a 5.7 dB decline."
+    },
+    {
+      "page": 19,
+      "section": "Ground baseline shift",
+      "summary": "Figure 12 points are about 6.9-7.0 dB below corresponding Figure 10 points; mean shift is -6.94815 dB."
+    },
+    {
+      "page": 19,
+      "section": "Ground hop claim",
+      "summary": "With flat-ground Lg stated as 6.53 dB, the paper reports n=4."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=1",
+      "summary": "3225 km and 54.0977 dB; distance and printed-code SNR reproduce within rounding."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=2",
+      "summary": "6449 km and 23.2859 dB are printed; the SNR is flagged separately because code yields 34.2859 dB."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=3",
+      "summary": "9674 km and 16.9728 dB; distance and printed-code SNR reproduce within rounding."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=4",
+      "summary": "10125 km and 10 dB are printed as the threshold row."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=5",
+      "summary": "The paper prints less than 10125 km and 10 dB without an exact distance."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 n=6",
+      "summary": "The paper prints less than 10125 km and 10 dB without an exact distance."
+    },
+    {
+      "page": 20,
+      "section": "Duration interface",
+      "summary": "The paper converts a maximum distance to time with tmax=r/v but gives no ship-speed numerical result."
+    },
+    {
+      "page": 21,
+      "section": "Frequency matrix",
+      "summary": "The paper lists five broad bands from 2-4 through 15-17 MHz for tropical, night, all-day, daytime, and seasonal use."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "section": "abstract",
+      "summary": "Five-part contract closes application value -> scoped loss question; PM/random theory -> 3-D wave model -> rough-sea reflection; field/noise ledger -> SNR gate -> six-hop claim; wave model -> ground parameter substitution -> four-hop claim; moving receiver -> open controls -> time/frequency outputs; graphic wave module -> Figure; graphic loss module -> Figure/table; graphic ground module -> comparison; graphic navigation module -> threshold extension into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 6,
+      "section": "introduction",
+      "summary": "Five-part contract closes shipping danger and congestion -> HF communication need; HF range and propagation families -> sky-wave focus; ionosphere layers/time variation -> physical interface into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 6,
+      "section": "problem-restatement",
+      "summary": "Five-part contract closes turbulent/calm first reflection -> maximum hops -> ground comparison -> moving receiver; ground-wave taxonomy -> sky-wave taxonomy -> selected branch into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 10,
+      "section": "problem-analysis",
+      "summary": "Five-part contract closes four requested outputs -> dependency graph; surface state -> reflection coefficient -> loss; loss ledger -> field/noise -> SNR; fixed receiver boundary -> dynamic dependency redraw; SNR gate -> distance/time decision into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 6,
+      "section": "assumptions",
+      "summary": "Five-part contract closes sky wave selected -> ground wave excluded; F2 reflection retained -> layer boundary; wind opened -> wave height; sea material fixed -> proxy boundary; ship motion uniform -> kinematic conversion; La fixed -> ionosphere proxy into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 7,
+      "section": "notation",
+      "summary": "Five-part contract closes global symbols -> meanings; formula-local variables -> units; power/field/noise symbols -> link ledger; geometry/angle symbols -> path interface into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 9,
+      "section": "data-preprocessing",
+      "summary": "Five-part contract closes spectrum candidates -> PM selection; wind level -> wind speed/wave spectrum; external noise charts -> lookup table; material ranges -> selected reference; frequency bands -> scenario guidance into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 7,
+      "section": "model-establishment",
+      "summary": "Five-part contract closes HF/F2/0.85MUF frame; 1-D wave -> spectrum -> 3-D wave; four-part loss ledger; spherical hop geometry and absorption; calm Fresnel baseline; rough-sea slope/shadow corrections; signal/noise/SNR ledger; ground analogue; moving-receiver duration into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 13,
+      "section": "algorithm",
+      "summary": "Five-part contract closes wave surface -> cross section; derivative -> tangent -> reflected ray; direction test -> m/M; shadow intersection -> remaining area; parameter sweeps -> figures; SNR threshold -> hop/distance search; appendix fragments -> partial provenance into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 12,
+      "section": "robustness-verification",
+      "summary": "Five-part contract closes polarization curves -> branch comparison; frequency/angle/wind slices -> trend checks; sea/ground matched scaffold -> baseline shift; formula arithmetic -> table recomputation; threshold surface -> decision table into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 15,
+      "section": "results",
+      "summary": "Five-part contract closes rough correction -> Figure 9; loss ledger -> first reflection Figure 10; signal/noise -> SNR and six hops; ground parameters -> Figure 12 and four hops; distance-frequency-SNR surface -> Table 4; distance -> duration; frequency-state suggestion table into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 12,
+      "section": "sensitivity-analysis",
+      "summary": "Five-part contract closes incidence angle -> Fresnel response; wind/frequency -> correction factor; roughness -> first-reflection decline; distance/frequency/hops -> SNR surface into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 21,
+      "section": "strengths-limitations",
+      "summary": "Five-part contract closes propagation classification -> claimed accuracy; 3-D wave -> interpretability; correction model -> quantitative comparison; periodic ionosphere -> claimed adaptability; omissions/fixed parameters -> reliability boundary into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 21,
+      "section": "future-improvements",
+      "summary": "Five-part contract closes sky-wave-only scope -> add ground wave; fixed La -> time/location ionosphere; reflection-only surface -> refraction/diffraction; fixed material -> frequency/salinity/temperature; fragmented code -> executable provenance and validation into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 2,
+      "section": "memo",
+      "summary": "Five-part contract closes graphic module title -> method -> figure/result; ground comparison -> selected parameter replacement; navigation extension -> open variables -> threshold output into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 20,
+      "section": "conclusion",
+      "summary": "Five-part contract closes SNR gate -> operating controls; distance -> path-change cadence; environment -> frequency matrix; strengths -> applicability boundaries into a downstream model, comparison, decision, or boundary."
+    },
+    {
+      "page": 24,
+      "section": "appendix",
+      "summary": "Five-part contract closes wave generator fragment; Fresnel coefficient plots; roughness correction plots; ground substitution plot; SNR grid fragment; cropped code boundary -> provenance warning into a downstream model, comparison, decision, or boundary."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "section": "abstract",
+      "summary": "Retains 30 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 6,
+      "section": "introduction",
+      "summary": "Retains 12 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 6,
+      "section": "problem-restatement",
+      "summary": "Retains 8 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 10,
+      "section": "problem-analysis",
+      "summary": "Retains 8 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 6,
+      "section": "assumptions",
+      "summary": "Retains 12 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 7,
+      "section": "notation",
+      "summary": "Retains 8 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 9,
+      "section": "data-preprocessing",
+      "summary": "Retains 12 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 7,
+      "section": "model-establishment",
+      "summary": "Retains 36 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 13,
+      "section": "algorithm",
+      "summary": "Retains 19 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 12,
+      "section": "robustness-verification",
+      "summary": "Retains 7 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 15,
+      "section": "results",
+      "summary": "Retains 7 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 12,
+      "section": "sensitivity-analysis",
+      "summary": "Retains 6 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 21,
+      "section": "strengths-limitations",
+      "summary": "Retains 2 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 21,
+      "section": "future-improvements",
+      "summary": "Retains 2 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 2,
+      "section": "memo",
+      "summary": "Retains 5 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 20,
+      "section": "conclusion",
+      "summary": "Retains 9 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    },
+    {
+      "page": 24,
+      "section": "appendix",
+      "summary": "Retains 5 positive units with occurrence/function/order/slots/variants/boundary/disposition; final pass adds zero moves."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 2,
+      "section": "Synopsis Figure 1",
+      "form": "duplicate wave-surface panel",
+      "purpose": "Preserve the graphic-summary use of a Figure 3 panel while marking it as duplicate evidence.",
+      "summary": "Synopsis Figure 1 is retained because it will preserve the graphic-summary use of a Figure 3 panel while marking it as duplicate evidence."
+    },
+    {
+      "page": 2,
+      "section": "Synopsis Figure 2",
+      "form": "relabelled duplicate chart",
+      "purpose": "Preserve provenance that Figure 12 ground data are relabelled as wind-scale sea data in the front summary.",
+      "summary": "Synopsis Figure 2 is retained because it will preserve provenance that Figure 12 ground data are relabelled as wind-scale sea data in the front summary."
+    },
+    {
+      "page": 4,
+      "section": "Table of Contents",
+      "form": "document map",
+      "purpose": "Expose the full architecture and internal/physical page offset.",
+      "summary": "Table of Contents is retained because it will expose the full architecture and internal/physical page offset."
+    },
+    {
+      "page": 7,
+      "section": "Notation table",
+      "form": "symbol table",
+      "purpose": "Bind losses, distance, angle, hop, power, and reflection symbols.",
+      "summary": "Notation table is retained because it will bind losses, distance, angle, hop, power, and reflection symbols."
+    },
+    {
+      "page": 8,
+      "section": "Figure 1",
+      "form": "propagation schematic",
+      "purpose": "Show ground/sky wave and ionosphere bounce geometry.",
+      "summary": "Figure 1 is retained because it will show ground/sky wave and ionosphere bounce geometry."
+    },
+    {
+      "page": 8,
+      "section": "Figure 2",
+      "form": "ionosphere layer diagram",
+      "purpose": "Show day/night D/E/F1/F2 structure and height ranges.",
+      "summary": "Figure 2 is retained because it will show day/night D/E/F1/F2 structure and height ranges."
+    },
+    {
+      "page": 10,
+      "section": "Figure 3",
+      "form": "four 3-D wave surfaces",
+      "purpose": "Visualize wind-level random wave simulations.",
+      "summary": "Figure 3 is retained because it will visualize wind-level random wave simulations."
+    },
+    {
+      "page": 10,
+      "section": "Figure 4",
+      "form": "loss decomposition tree",
+      "purpose": "Expose the four-part transmission ledger.",
+      "summary": "Figure 4 is retained because it will expose the four-part transmission ledger."
+    },
+    {
+      "page": 12,
+      "section": "Figure 5",
+      "form": "polarization response panels",
+      "purpose": "Compare RH and RV over incidence angle and frequency.",
+      "summary": "Figure 5 is retained because it will compare RH and RV over incidence angle and frequency."
+    },
+    {
+      "page": 13,
+      "section": "Figure 6",
+      "form": "rough-sea ray schematic",
+      "purpose": "Show local reflection/scattering on a turbulent profile.",
+      "summary": "Figure 6 is retained because it will show local reflection/scattering on a turbulent profile."
+    },
+    {
+      "page": 14,
+      "section": "Figure 7",
+      "form": "shadow schematic",
+      "purpose": "Identify wave-occluded regions and the second correction channel.",
+      "summary": "Figure 7 is retained because it will identify wave-occluded regions and the second correction channel."
+    },
+    {
+      "page": 14,
+      "section": "Figure 8",
+      "form": "correction-factor panels",
+      "purpose": "Show wind response across frequency and grazing-angle slices.",
+      "summary": "Figure 8 is retained because it will show wind response across frequency and grazing-angle slices."
+    },
+    {
+      "page": 15,
+      "section": "Figure 9",
+      "form": "final reflection curves",
+      "purpose": "Compare calm and wind-level reflection coefficients across frequency.",
+      "summary": "Figure 9 is retained because it will compare calm and wind-level reflection coefficients across frequency."
+    },
+    {
+      "page": 16,
+      "section": "Figure 10",
+      "form": "first-reflection chart with data",
+      "purpose": "Retain all 27 wind/frequency first-reflection values.",
+      "summary": "Figure 10 is retained because it will retain all 27 wind/frequency first-reflection values."
+    },
+    {
+      "page": 16,
+      "section": "Table 1",
+      "form": "first-reflection parameter table",
+      "purpose": "Bind La, YP, f, P0, and angle to the result claim.",
+      "summary": "Table 1 is retained because it will bind La, YP, f, P0, and angle to the result claim."
+    },
+    {
+      "page": 17,
+      "section": "Table 2",
+      "form": "atmospheric-noise lookup",
+      "purpose": "Retain 36 latitude/longitude/time noise coefficients.",
+      "summary": "Table 2 is retained because it will retain 36 latitude/longitude/time noise coefficients."
+    },
+    {
+      "page": 18,
+      "section": "Figure 11",
+      "form": "ground coefficient/loss panels",
+      "purpose": "Compare four ground roughness levels under the substituted reflection scaffold.",
+      "summary": "Figure 11 is retained because it will compare four ground roughness levels under the substituted reflection scaffold."
+    },
+    {
+      "page": 18,
+      "section": "Table 3",
+      "form": "material range/reference table",
+      "purpose": "Retain electromagnetic ranges and selected reference values for four surfaces.",
+      "summary": "Table 3 is retained because it will retain electromagnetic ranges and selected reference values for four surfaces."
+    },
+    {
+      "page": 19,
+      "section": "Figure 12",
+      "form": "ground first-reflection chart",
+      "purpose": "Retain all 27 relief/frequency first-reflection values.",
+      "summary": "Figure 12 is retained because it will retain all 27 relief/frequency first-reflection values."
+    },
+    {
+      "page": 20,
+      "section": "Figure 13",
+      "form": "distance-frequency-SNR surface",
+      "purpose": "Connect continuous response geometry to threshold decisions.",
+      "summary": "Figure 13 is retained because it will connect continuous response geometry to threshold decisions."
+    },
+    {
+      "page": 20,
+      "section": "Table 4",
+      "form": "hop-distance-SNR table",
+      "purpose": "Retain the six reported hop rows and threshold claims.",
+      "summary": "Table 4 is retained because it will retain the six reported hop rows and threshold claims."
+    },
+    {
+      "page": 21,
+      "section": "Table 5",
+      "form": "frequency guidance matrix",
+      "purpose": "Map broad environment/use cases to five frequency bands.",
+      "summary": "Table 5 is retained because it will map broad environment/use cases to five frequency bands."
+    },
+    {
+      "page": 24,
+      "section": "Appendix A pages 24-28",
+      "form": "continuous printed-code asset",
+      "purpose": "Preserve wave, Fresnel, roughness, ground, and SNR fragments with their crop/color boundaries.",
+      "summary": "Appendix A pages 24-28 is retained because it will preserve wave, Fresnel, roughness, ground, and SNR fragments with their crop/color boundaries."
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "section": "Summary",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: the sea -> ground -> moving receiver roadmap may aid judge navigation; no judge commentary proves causation."
+    },
+    {
+      "page": 2,
+      "section": "Graphic Abstract",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: modular figure-led summarization may improve scanability, though one chart is relabelled incorrectly."
+    },
+    {
+      "page": 10,
+      "section": "Loss inventory",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: a visible loss tree may make the final SNR auditable; award causation is unknown."
+    },
+    {
+      "page": 13,
+      "section": "Rough-sea algorithm",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: local-slope and shadow mechanisms may appear more task-specific than a single empirical coefficient; validation is absent."
+    },
+    {
+      "page": 16,
+      "section": "Controlled result",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: plotting intermediate and final responses in sequence may help evaluation; numeric provenance is incomplete."
+    },
+    {
+      "page": 18,
+      "section": "Ground transfer",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: cross-medium reuse with a parameter table may signal model extensibility; the analogy is unvalidated."
+    },
+    {
+      "page": 20,
+      "section": "Threshold decision",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: the SNR surface followed by a threshold table may improve decision relevance; unit defects materially weaken the result."
+    },
+    {
+      "page": 24,
+      "section": "Appendix",
+      "evidence_class": "C",
+      "summary": "C-class hypothesis: code fragments may signal transparency, but cropped/nonrunning code is not reproducibility."
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 1,
+      "section": "Document provenance",
+      "summary": "All 28 physical pages carry a red commercial watermark; the three front-matter pages precede a 25-page internally numbered body."
+    },
+    {
+      "page": 10,
+      "section": "Loss symbol mismatch",
+      "summary": "Equation 5 uses Li while the prose and Figure 4 use La for ionospheric absorption."
+    },
+    {
+      "page": 12,
+      "section": "Reflection-loss sign",
+      "summary": "Equation 10 omits the minus sign used by the Appendix; coefficients below one therefore produce a negative quantity called loss."
+    },
+    {
+      "page": 15,
+      "section": "P0/P1 reversal",
+      "summary": "Equation 19 and Notation use P0 as transmitter and P1 as first reflection, but the following prose reverses them."
+    },
+    {
+      "page": 16,
+      "section": "Out-of-range frequency",
+      "summary": "Table 1 prints 100 MHz although the paper defines HF as 3-30 MHz and Figure 10 uses 10/20/30 MHz."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 frequency unit",
+      "summary": "Table 4 says f=15 Hz; the model and code use 15 MHz."
+    },
+    {
+      "page": 16,
+      "section": "Power-unit mismatch",
+      "summary": "Equation 20 says P is kW, while Table 4 and code insert 100 W as P=100, inflating SNR by at least 30 dB."
+    },
+    {
+      "page": 17,
+      "section": "Bandwidth unit open",
+      "summary": "Equation 21 labels B in dB while code uses 0.003 without a declared Hz/kHz/MHz base; SNR can shift by tens of dB."
+    },
+    {
+      "page": 16,
+      "section": "Gain symbol typo",
+      "summary": "Equation 20 prose calls Gt 'tt(dB)', leaving the antenna-gain interface inconsistent."
+    },
+    {
+      "page": 19,
+      "section": "Equation numbering",
+      "summary": "The moving SNR inequality reuses label 24, label 26 is absent, and the next formula is 27."
+    },
+    {
+      "page": 24,
+      "section": "Spectrum code mismatch",
+      "summary": "Appendix uses 0.81 and 7400 plus a directional factor, unlike Equation 3 constants 8.1e-3 and 0.74."
+    },
+    {
+      "page": 24,
+      "section": "Negative-direction amplitude",
+      "summary": "Wave code computes sqrt(2*swi*wavewn*theta) with negative direction angles instead of positive thetawn, creating complex amplitudes."
+    },
+    {
+      "page": 24,
+      "section": "Absolute-value masking",
+      "summary": "The code plots abs(z), hiding complex amplitudes and altering wave statistics."
+    },
+    {
+      "page": 24,
+      "section": "Unused/time-omitted wave inputs",
+      "summary": "wavewp is unused and the code lacks Equation 4's time term, so it generates only one random snapshot."
+    },
+    {
+      "page": 24,
+      "section": "Phase-range mismatch",
+      "summary": "The paper states epsilon_ij in [0,pi/2], but code samples rand*2*pi."
+    },
+    {
+      "page": 13,
+      "section": "Angle/slope ambiguity",
+      "summary": "Equation 15 prose calls the input theta while the equation uses Delta; xi'(x) is not explicitly evaluated at x0."
+    },
+    {
+      "page": 13,
+      "section": "Forward-count definition",
+      "summary": "Equation 16 intends forward reflections, but the variable definition describes m as positive and negative reflected waves together."
+    },
+    {
+      "page": 14,
+      "section": "Area/length ambiguity",
+      "summary": "Equation 17 is derived from a 2-D cross section but calls S and s surface areas without a 3-D mapping."
+    },
+    {
+      "page": 14,
+      "section": "Figure 8 panel reversal",
+      "summary": "The prose describes the left panel as angles and the right as frequencies, opposite the plotted legends."
+    },
+    {
+      "page": 25,
+      "section": "15-degree code bug",
+      "summary": "Figure 8 code uses 15/180*2, about 9.55 degrees, rather than 15/180*pi."
+    },
+    {
+      "page": 25,
+      "section": "Seawater conductivity conflict",
+      "summary": "Fresnel code fixes sigma=50 S/m, outside Table 3's 1-4.3 S/m range and reference value 4."
+    },
+    {
+      "page": 18,
+      "section": "Permittivity unit",
+      "summary": "Table 3 labels relative-like permittivity values 80 and 4 as F/m, inconsistent with the Fresnel interface."
+    },
+    {
+      "page": 26,
+      "section": "Wave-height mapping gap",
+      "summary": "Figure 9 maps wind levels 0/2/4/6 directly to heights 0/1.5/3/4.5 without connecting to h=0.0051v^2."
+    },
+    {
+      "page": 27,
+      "section": "Ground conductivity dropped",
+      "summary": "Figure 11 code constructs complex permittivity then overwrites it with epsilon=8, eliminating conductivity and Table 3 materials."
+    },
+    {
+      "page": 18,
+      "section": "Diffraction absent",
+      "summary": "The ground section claims diffraction/obstacle blocking but provides no diffraction equation, geometry, loss term, or code."
+    },
+    {
+      "page": 27,
+      "section": "Ground plot label",
+      "summary": "Figure 11's right axis remains labelled sea-surface reflection loss although the plot is presented as ground."
+    },
+    {
+      "page": 27,
+      "section": "Polarization assignment bug",
+      "summary": "Figure 13 code writes the vertical calculation into RHh again, leaving RHv at zero."
+    },
+    {
+      "page": 27,
+      "section": "Polarization-average omission",
+      "summary": "Figure 13's reflection combination omits Equation 10's division by two and inherits only one polarization branch."
+    },
+    {
+      "page": 28,
+      "section": "Cropped SNR code",
+      "summary": "The printed Figure 13 SNR assignment ends at -(n-1)* and cannot execute from the PDF."
+    },
+    {
+      "page": 17,
+      "section": "fsolve provenance absent",
+      "summary": "The prose says fsolve yields n=6, but Appendix only hard-codes for n=1:6 and has no threshold stop."
+    },
+    {
+      "page": 16,
+      "section": "Incomplete figure provenance",
+      "summary": "Figures 10/12 and Tables 4-5 lack complete generating code and parameter-to-output bindings."
+    },
+    {
+      "page": 2,
+      "section": "Synopsis relabelled duplicate",
+      "summary": "Front-matter Figure 2 repeats all Figure 12 ground data but relabels relief degree as wind scale and sea behavior."
+    },
+    {
+      "page": 11,
+      "section": "Periodic ionosphere not implemented",
+      "summary": "Numerical work fixes La=4 dB despite Summary/Strengths claims of periodic ionosphere analysis and optimal frequency."
+    },
+    {
+      "page": 8,
+      "section": "MUF rule disconnected",
+      "summary": "The 0.85 MUF rule has no electron-density/MUF calculation and is not connected to frequency sweeps or Table 5."
+    },
+    {
+      "page": 20,
+      "section": "Incomplete threshold rows",
+      "summary": "Table 4 gives n=5,6 only as <10125 km at exactly 10 dB, without actual maximum distances or a solver rule."
+    },
+    {
+      "page": 20,
+      "section": "Duration metric mismatch",
+      "summary": "tmax=r/v divides total radio path distance by ship speed, not remaining ship movement within a fixed multi-hop coverage geometry."
+    },
+    {
+      "page": 24,
+      "section": "No stochastic/convergence evidence",
+      "summary": "No seed, repeats, confidence intervals, direction/grid convergence, or error bars support the random-wave and sensitivity outputs."
+    },
+    {
+      "page": 20,
+      "section": "Scenario limits not reconciled",
+      "summary": "The calm-sea six-hop, ground four-hop, and turbulent Table 4 threshold claims are not distinguished by complete comparable parameter bundles."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-A-86103-001",
+      "summary": "Repair power/bandwidth units and publish one complete link-budget ledger."
+    },
+    {
+      "extension_id": "E-A-86103-002",
+      "summary": "Replace the fixed La proxy with time/location/solar-conditioned ionosphere data and a real MUF gate."
+    },
+    {
+      "extension_id": "E-A-86103-003",
+      "summary": "Unify the prose micro-element/shadow algorithm with the empirical Appendix roughness correction."
+    },
+    {
+      "extension_id": "E-A-86103-004",
+      "summary": "Repair wave generator direction weighting, phase convention, time state, seeds, and convergence tests."
+    },
+    {
+      "extension_id": "E-A-86103-005",
+      "summary": "Use consistent complex material parameters across sea, freshwater, soil, and terrain branches."
+    },
+    {
+      "extension_id": "E-A-86103-006",
+      "summary": "Implement diffraction/obstacle geometry before claiming a ground blocking model."
+    },
+    {
+      "extension_id": "E-A-86103-007",
+      "summary": "Replace hard-coded hop loops with a validated integer threshold search using true slant path."
+    },
+    {
+      "extension_id": "E-A-86103-008",
+      "summary": "Define moving-ship coverage geometry and compute remaining-path time rather than total radio range divided by ship speed."
+    },
+    {
+      "extension_id": "E-A-86103-009",
+      "summary": "Bind every figure/table to an executable script, environment, and parameter manifest."
+    },
+    {
+      "extension_id": "E-A-86103-010",
+      "summary": "Validate wave, reflection, and received-field outputs against independent simulations and observations."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-A-LANG-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-001",
+        "O-A-2018-86103-002",
+        "O-A-2018-86103-003",
+        "O-A-2018-86103-004",
+        "O-A-2018-86103-005",
+        "O-A-2018-86103-006",
+        "O-A-2018-86103-007",
+        "O-A-2018-86103-008",
+        "O-A-2018-86103-009",
+        "O-A-2018-86103-010",
+        "O-A-2018-86103-011",
+        "O-A-2018-86103-012"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-LANG-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-FRAME-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-033",
+        "O-A-2018-86103-034",
+        "O-A-2018-86103-035",
+        "O-A-2018-86103-036",
+        "O-A-2018-86103-037",
+        "O-A-2018-86103-038",
+        "O-A-2018-86103-039",
+        "O-A-2018-86103-040",
+        "O-A-2018-86103-041",
+        "O-A-2018-86103-042",
+        "O-A-2018-86103-043",
+        "O-A-2018-86103-044"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-FRAME-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-CLOSURE-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-049",
+        "O-A-2018-86103-050",
+        "O-A-2018-86103-051",
+        "O-A-2018-86103-052",
+        "O-A-2018-86103-068",
+        "O-A-2018-86103-069",
+        "O-A-2018-86103-070",
+        "O-A-2018-86103-071",
+        "O-A-2018-86103-072",
+        "O-A-2018-86103-073",
+        "O-A-2018-86103-074",
+        "O-A-2018-86103-075"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-CLOSURE-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-AUDIENCE-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-001",
+        "O-A-2018-86103-002",
+        "O-A-2018-86103-003",
+        "O-A-2018-86103-004",
+        "O-A-2018-86103-005",
+        "O-A-2018-86103-006",
+        "O-A-2018-86103-007",
+        "O-A-2018-86103-008",
+        "O-A-2018-86103-009",
+        "O-A-2018-86103-010",
+        "O-A-2018-86103-011",
+        "O-A-2018-86103-012"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-AUDIENCE-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-LOG-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-240",
+        "O-A-2018-86103-241",
+        "O-A-2018-86103-242",
+        "O-A-2018-86103-243",
+        "O-A-2018-86103-244",
+        "O-A-2018-86103-245",
+        "O-A-2018-86103-246",
+        "O-A-2018-86103-247",
+        "O-A-2018-86103-248",
+        "O-A-2018-86103-249",
+        "O-A-2018-86103-250",
+        "O-A-2018-86103-251"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-LOG-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-LOG-002",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-257",
+        "O-A-2018-86103-258",
+        "O-A-2018-86103-259",
+        "O-A-2018-86103-260",
+        "O-A-2018-86103-261",
+        "O-A-2018-86103-262",
+        "O-A-2018-86103-263",
+        "O-A-2018-86103-264"
+      ],
+      "summary": "This paper adds 8 bounded observations supporting R-A-LOG-002; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MOD-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-189",
+        "O-A-2018-86103-190",
+        "O-A-2018-86103-191",
+        "O-A-2018-86103-213",
+        "O-A-2018-86103-214",
+        "O-A-2018-86103-215",
+        "O-A-2018-86103-237",
+        "O-A-2018-86103-238",
+        "O-A-2018-86103-239"
+      ],
+      "summary": "This paper adds 9 bounded observations supporting R-A-MOD-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MOD-002",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-192",
+        "O-A-2018-86103-193",
+        "O-A-2018-86103-194",
+        "O-A-2018-86103-216",
+        "O-A-2018-86103-217",
+        "O-A-2018-86103-218"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-MOD-002; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MOD-003",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-195",
+        "O-A-2018-86103-196",
+        "O-A-2018-86103-197",
+        "O-A-2018-86103-219",
+        "O-A-2018-86103-220",
+        "O-A-2018-86103-221"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-MOD-003; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MOD-004",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-198",
+        "O-A-2018-86103-199",
+        "O-A-2018-86103-200",
+        "O-A-2018-86103-222",
+        "O-A-2018-86103-223",
+        "O-A-2018-86103-224"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-MOD-004; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MOD-005",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-201",
+        "O-A-2018-86103-202",
+        "O-A-2018-86103-203",
+        "O-A-2018-86103-225",
+        "O-A-2018-86103-226",
+        "O-A-2018-86103-227"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-MOD-005; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-PATH-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-204",
+        "O-A-2018-86103-205",
+        "O-A-2018-86103-206",
+        "O-A-2018-86103-228",
+        "O-A-2018-86103-229",
+        "O-A-2018-86103-230"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-PATH-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-CODE-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-190",
+        "O-A-2018-86103-193",
+        "O-A-2018-86103-196",
+        "O-A-2018-86103-199",
+        "O-A-2018-86103-202",
+        "O-A-2018-86103-205",
+        "O-A-2018-86103-208",
+        "O-A-2018-86103-210",
+        "O-A-2018-86103-211",
+        "O-A-2018-86103-211",
+        "O-A-2018-86103-212",
+        "O-A-2018-86103-214"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-CODE-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-NUM-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-207",
+        "O-A-2018-86103-208",
+        "O-A-2018-86103-209",
+        "O-A-2018-86103-231",
+        "O-A-2018-86103-232",
+        "O-A-2018-86103-233"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-NUM-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-REPRO-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-191",
+        "O-A-2018-86103-194",
+        "O-A-2018-86103-197",
+        "O-A-2018-86103-200",
+        "O-A-2018-86103-203",
+        "O-A-2018-86103-206",
+        "O-A-2018-86103-209",
+        "O-A-2018-86103-212",
+        "O-A-2018-86103-215",
+        "O-A-2018-86103-218",
+        "O-A-2018-86103-221",
+        "O-A-2018-86103-224"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-REPRO-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-VIZ-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-265",
+        "O-A-2018-86103-266",
+        "O-A-2018-86103-267",
+        "O-A-2018-86103-268",
+        "O-A-2018-86103-269",
+        "O-A-2018-86103-270",
+        "O-A-2018-86103-271",
+        "O-A-2018-86103-272",
+        "O-A-2018-86103-273",
+        "O-A-2018-86103-274",
+        "O-A-2018-86103-275",
+        "O-A-2018-86103-276"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-VIZ-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-VER-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-288",
+        "O-A-2018-86103-289",
+        "O-A-2018-86103-290",
+        "O-A-2018-86103-291",
+        "O-A-2018-86103-292",
+        "O-A-2018-86103-293",
+        "O-A-2018-86103-294",
+        "O-A-2018-86103-295",
+        "O-A-2018-86103-296",
+        "O-A-2018-86103-297",
+        "O-A-2018-86103-298",
+        "O-A-2018-86103-299"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-VER-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-DATA-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-303",
+        "O-A-2018-86103-304",
+        "O-A-2018-86103-305",
+        "O-A-2018-86103-306",
+        "O-A-2018-86103-307",
+        "O-A-2018-86103-308",
+        "O-A-2018-86103-309",
+        "O-A-2018-86103-310",
+        "O-A-2018-86103-311",
+        "O-A-2018-86103-312",
+        "O-A-2018-86103-313",
+        "O-A-2018-86103-314"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-DATA-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-DEC-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-257",
+        "O-A-2018-86103-258",
+        "O-A-2018-86103-259",
+        "O-A-2018-86103-260",
+        "O-A-2018-86103-261",
+        "O-A-2018-86103-262",
+        "O-A-2018-86103-263",
+        "O-A-2018-86103-264",
+        "O-A-2018-86103-329",
+        "O-A-2018-86103-330",
+        "O-A-2018-86103-331",
+        "O-A-2018-86103-332"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-DEC-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-SAFE-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-317",
+        "O-A-2018-86103-318",
+        "O-A-2018-86103-319",
+        "O-A-2018-86103-320",
+        "O-A-2018-86103-321",
+        "O-A-2018-86103-322",
+        "O-A-2018-86103-323",
+        "O-A-2018-86103-324",
+        "O-A-2018-86103-325",
+        "O-A-2018-86103-326",
+        "O-A-2018-86103-327",
+        "O-A-2018-86103-328"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-SAFE-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-SENS-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-216",
+        "O-A-2018-86103-217",
+        "O-A-2018-86103-234",
+        "O-A-2018-86103-235",
+        "O-A-2018-86103-367",
+        "O-A-2018-86103-383",
+        "O-A-2018-86103-385",
+        "O-A-2018-86103-386"
+      ],
+      "summary": "This paper adds 8 bounded observations supporting R-A-SENS-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-MATERIAL-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-309",
+        "O-A-2018-86103-315",
+        "O-A-2018-86103-369",
+        "O-A-2018-86103-370",
+        "O-A-2018-86103-372",
+        "O-A-2018-86103-374"
+      ],
+      "summary": "This paper adds 6 bounded observations supporting R-A-MATERIAL-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    },
+    {
+      "rule_id": "R-A-SCALE-001",
+      "action": "supports-existing",
+      "evidence_ids": [
+        "O-A-2018-86103-329",
+        "O-A-2018-86103-330",
+        "O-A-2018-86103-331",
+        "O-A-2018-86103-332",
+        "O-A-2018-86103-333",
+        "O-A-2018-86103-334",
+        "O-A-2018-86103-335",
+        "O-A-2018-86103-336",
+        "O-A-2018-86103-337",
+        "O-A-2018-86103-338",
+        "O-A-2018-86103-339",
+        "O-A-2018-86103-340"
+      ],
+      "summary": "This paper adds 12 bounded observations supporting R-A-SCALE-001; all retain source-specific unit, geometry, proxy, code, and validation limits."
+    }
+  ],
+  "unresolved_questions": [
+    {
+      "page": 1,
+      "section": "Document provenance",
+      "summary": "All 28 physical pages carry a red commercial watermark; the three front-matter pages precede a 25-page internally numbered body."
+    },
+    {
+      "page": 10,
+      "section": "Loss symbol mismatch",
+      "summary": "Equation 5 uses Li while the prose and Figure 4 use La for ionospheric absorption."
+    },
+    {
+      "page": 12,
+      "section": "Reflection-loss sign",
+      "summary": "Equation 10 omits the minus sign used by the Appendix; coefficients below one therefore produce a negative quantity called loss."
+    },
+    {
+      "page": 15,
+      "section": "P0/P1 reversal",
+      "summary": "Equation 19 and Notation use P0 as transmitter and P1 as first reflection, but the following prose reverses them."
+    },
+    {
+      "page": 16,
+      "section": "Out-of-range frequency",
+      "summary": "Table 1 prints 100 MHz although the paper defines HF as 3-30 MHz and Figure 10 uses 10/20/30 MHz."
+    },
+    {
+      "page": 20,
+      "section": "Table 4 frequency unit",
+      "summary": "Table 4 says f=15 Hz; the model and code use 15 MHz."
+    },
+    {
+      "page": 16,
+      "section": "Power-unit mismatch",
+      "summary": "Equation 20 says P is kW, while Table 4 and code insert 100 W as P=100, inflating SNR by at least 30 dB."
+    },
+    {
+      "page": 17,
+      "section": "Bandwidth unit open",
+      "summary": "Equation 21 labels B in dB while code uses 0.003 without a declared Hz/kHz/MHz base; SNR can shift by tens of dB."
+    },
+    {
+      "page": 16,
+      "section": "Gain symbol typo",
+      "summary": "Equation 20 prose calls Gt 'tt(dB)', leaving the antenna-gain interface inconsistent."
+    },
+    {
+      "page": 19,
+      "section": "Equation numbering",
+      "summary": "The moving SNR inequality reuses label 24, label 26 is absent, and the next formula is 27."
+    },
+    {
+      "page": 24,
+      "section": "Spectrum code mismatch",
+      "summary": "Appendix uses 0.81 and 7400 plus a directional factor, unlike Equation 3 constants 8.1e-3 and 0.74."
+    },
+    {
+      "page": 24,
+      "section": "Negative-direction amplitude",
+      "summary": "Wave code computes sqrt(2*swi*wavewn*theta) with negative direction angles instead of positive thetawn, creating complex amplitudes."
+    },
+    {
+      "page": 24,
+      "section": "Absolute-value masking",
+      "summary": "The code plots abs(z), hiding complex amplitudes and altering wave statistics."
+    },
+    {
+      "page": 24,
+      "section": "Unused/time-omitted wave inputs",
+      "summary": "wavewp is unused and the code lacks Equation 4's time term, so it generates only one random snapshot."
+    }
+  ],
+  "review_status": "validated",
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-A-2018-86103-6d21eb9d.json",
+      "schema_version": 3,
+      "review_status": "validated",
+      "unit_count": 188,
+      "chapters": [
+        "abstract",
+        "introduction",
+        "problem-restatement",
+        "problem-analysis",
+        "assumptions",
+        "notation",
+        "data-preprocessing",
+        "model-establishment",
+        "algorithm",
+        "robustness-verification",
+        "results",
+        "sensitivity-analysis",
+        "strengths-limitations",
+        "future-improvements",
+        "memo",
+        "conclusion",
+        "appendix"
+      ]
+    },
+    "models": {
+      "path": "artifacts/model-units/P-A-2018-86103-6d21eb9d.json",
+      "review_status": "validated",
+      "model_count": 17,
+      "equation_count": 29
+    }
+  }
+}

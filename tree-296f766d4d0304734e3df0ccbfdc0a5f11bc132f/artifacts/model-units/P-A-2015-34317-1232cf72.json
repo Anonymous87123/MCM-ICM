@@ -1,0 +1,2652 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2015-34317-1232cf72",
+  "problem_type": "A",
+  "year": "2015",
+  "source_sha256": "1232cf723c65fdb344b89b22ed6cac406f693f4e8065ac6f90cbe1b2390abe17",
+  "models": [
+    {
+      "model_id": "MU-A-2015-34317-001",
+      "page": 10,
+      "section": "4.3 Construction of the Model",
+      "family": "SEIIRF compartment ODE",
+      "purpose": "Predict cases and deaths from stage transitions",
+      "base_or_modification": "paper-specific",
+      "summary": "Six epidemic states represent susceptibility, exposure, two infectious stages, recovery, and unburied deaths.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "susceptible",
+          "unit": "person",
+          "definition": "susceptible fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exposed",
+          "unit": "person",
+          "definition": "exposed fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_1",
+          "normalized_name": "first-stage infectious",
+          "unit": "person",
+          "definition": "infectious first-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_2",
+          "normalized_name": "second-stage infectious",
+          "unit": "person",
+          "definition": "infectious second-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "recovered",
+          "unit": "person",
+          "definition": "recovered fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "dead-unburied",
+          "unit": "person",
+          "definition": "dead awaiting burial",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_C",
+          "normalized_name": "cumulative cases",
+          "unit": "person",
+          "definition": "integrated case count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_D",
+          "normalized_name": "cumulative deaths",
+          "unit": "person",
+          "definition": "integrated death count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "normalized_name": "first-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "second-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_F",
+          "normalized_name": "funeral transmission",
+          "unit": "1/day",
+          "definition": "corpse transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "exposed-to-first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_1",
+          "normalized_name": "first-stage progression",
+          "unit": "1/day",
+          "definition": "first-to-second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_2",
+          "normalized_name": "second-stage death rate",
+          "unit": "1/day",
+          "definition": "second-stage death rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_F",
+          "normalized_name": "burial rate",
+          "unit": "1/day",
+          "definition": "burial rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_1",
+          "normalized_name": "first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_2",
+          "normalized_name": "second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "person",
+          "definition": "country population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S",
+        "E",
+        "I_1",
+        "I_2",
+        "F",
+        "N"
+      ],
+      "outputs": [
+        "y_C",
+        "y_D",
+        "S",
+        "E",
+        "I_1",
+        "I_2",
+        "R",
+        "F"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-001",
+          "page": 10,
+          "label": "4.1a",
+          "source_expression": "dS/dt = -(beta1 I1 + beta2 I2 + betaF F)S",
+          "normalized_latex": "\\dot S=-(\\beta_1I_1+\\beta_2I_2+\\beta_FF)S",
+          "purpose": "susceptible depletion",
+          "variable_symbols": [
+            "S",
+            "beta_1",
+            "I_1",
+            "beta_2",
+            "I_2",
+            "beta_F",
+            "F"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-002",
+          "page": 10,
+          "label": "4.1b",
+          "source_expression": "dE/dt = (beta1 I1 + beta2 I2 + betaF F)S - alpha E",
+          "normalized_latex": "\\dot E=(\\beta_1I_1+\\beta_2I_2+\\beta_FF)S-\\alpha E",
+          "purpose": "exposure progression",
+          "variable_symbols": [
+            "E",
+            "beta_1",
+            "I_1",
+            "beta_2",
+            "I_2",
+            "beta_F",
+            "F",
+            "alpha"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-003",
+          "page": 10,
+          "label": "4.1c",
+          "source_expression": "dI1/dt = alpha E - gamma1 I1",
+          "normalized_latex": "\\dot I_1=\\alpha E-\\gamma_1I_1",
+          "purpose": "first-stage progression",
+          "variable_symbols": [
+            "I_1",
+            "alpha",
+            "E",
+            "gamma_1"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-004",
+          "page": 10,
+          "label": "4.1d",
+          "source_expression": "dI2/dt = (1-delta1)gamma1 I1 - gamma2 I2",
+          "normalized_latex": "\\dot I_2=(1-\\delta_1)\\gamma_1I_1-\\gamma_2I_2",
+          "purpose": "second-stage progression",
+          "variable_symbols": [
+            "I_2",
+            "delta_1",
+            "gamma_1",
+            "I_1",
+            "gamma_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-005",
+          "page": 10,
+          "label": "4.1e",
+          "source_expression": "dF/dt = delta2 gamma2 I2 - gammaF F",
+          "normalized_latex": "\\dot F=\\delta_2\\gamma_2I_2-\\gamma_FF",
+          "purpose": "dead and burial dynamics",
+          "variable_symbols": [
+            "F",
+            "delta_2",
+            "gamma_2",
+            "I_2",
+            "gamma_F"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-006",
+          "page": 10,
+          "label": "4.1f",
+          "source_expression": "dR/dt = (1-delta1)gamma1 I1 + (1-delta2)gamma2 I2",
+          "normalized_latex": "\\dot R=(1-\\delta_1)\\gamma_1I_1+(1-\\delta_2)\\gamma_2I_2",
+          "purpose": "recovery accumulation",
+          "variable_symbols": [
+            "R",
+            "delta_1",
+            "gamma_1",
+            "I_1",
+            "delta_2",
+            "gamma_2",
+            "I_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-007",
+          "page": 10,
+          "label": "4.2a",
+          "source_expression": "yC(t)=integral alpha E(t)dt",
+          "normalized_latex": "y_C(t)=\\int_0^t\\alpha E(\\tau)d\\tau",
+          "purpose": "cumulative cases",
+          "variable_symbols": [
+            "alpha",
+            "E"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-008",
+          "page": 10,
+          "label": "4.2b",
+          "source_expression": "yD(t)=integral delta2 gamma2 I2(t)dt",
+          "normalized_latex": "y_D(t)=\\int_0^t\\delta_2\\gamma_2I_2(\\tau)d\\tau",
+          "purpose": "cumulative deaths",
+          "variable_symbols": [
+            "delta_2",
+            "gamma_2",
+            "I_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "fit epidemic trajectories",
+        "forecast cumulative cases and deaths"
+      ],
+      "constraints": [
+        "nonnegative compartments",
+        "bounded recovery shares",
+        "country population fixed over horizon"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_F",
+          "alpha",
+          "gamma_1",
+          "gamma_2",
+          "gamma_F",
+          "delta_1",
+          "delta_2",
+          "N"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Initialize compartments.",
+          "Evaluate ODE transitions.",
+          "Integrate cumulative cases and deaths.",
+          "Compare curves with WHO data."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "infection from infectious and unburied states",
+        "closed country population",
+        "parameters are country-specific"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "y_C",
+        "y_D",
+        "S",
+        "E",
+        "I_1",
+        "I_2",
+        "R",
+        "F"
+      ],
+      "validation_refs": [
+        "Fig.4.1, Fig.4.3, WHO data"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "No spatial distribution is modeled in the baseline.",
+        "Long-horizon fit degrades."
+      ],
+      "missing_details": [
+        "random seeds",
+        "complete observation likelihood"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-002",
+      "page": 9,
+      "section": "4.5 Refresh the Values of Parameters",
+      "family": "genetic search plus least squares",
+      "purpose": "Fit epidemic parameters to reported curves",
+      "base_or_modification": "modification",
+      "summary": "A genetic algorithm proposes parameter vectors and least-square fitness selects an improved fit.",
+      "variables": [
+        {
+          "symbol": "beta_1",
+          "normalized_name": "first-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "second-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_F",
+          "normalized_name": "funeral transmission",
+          "unit": "1/day",
+          "definition": "corpse transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "exposed-to-first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_1",
+          "normalized_name": "first-stage progression",
+          "unit": "1/day",
+          "definition": "first-to-second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_2",
+          "normalized_name": "second-stage death rate",
+          "unit": "1/day",
+          "definition": "second-stage death rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_F",
+          "normalized_name": "burial rate",
+          "unit": "1/day",
+          "definition": "burial rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_1",
+          "normalized_name": "first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_2",
+          "normalized_name": "second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "person",
+          "definition": "country population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "parameter vector",
+          "unit": "dimensionless",
+          "definition": "candidate parameter vector",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_0",
+          "normalized_name": "reported cases",
+          "unit": "person",
+          "definition": "observed cumulative cases",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_0",
+          "normalized_name": "reported deaths",
+          "unit": "person",
+          "definition": "observed cumulative deaths",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_c",
+          "normalized_name": "calibration horizon",
+          "unit": "day",
+          "definition": "October-December fitting window",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_C",
+          "normalized_name": "cumulative cases",
+          "unit": "person",
+          "definition": "model cumulative cases",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_D",
+          "normalized_name": "cumulative deaths",
+          "unit": "person",
+          "definition": "model cumulative deaths",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "fitness",
+          "unit": "person^2 day",
+          "definition": "least-square discrepancy",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "C_0",
+        "D_0",
+        "t_c",
+        "X"
+      ],
+      "outputs": [
+        "X",
+        "f",
+        "y_C",
+        "y_D"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-009",
+          "page": 9,
+          "label": "4.3a",
+          "source_expression": "X=[beta1,beta2/beta1,betaF/beta1,alpha,gamma1,gamma2,gammaF,delta1delta2,delta2]",
+          "normalized_latex": "X=[\\beta_1,\\beta_2/\\beta_1,\\beta_F/\\beta_1,\\alpha,\\gamma_1,\\gamma_2,\\gamma_F,\\delta_1\\delta_2,\\delta_2]",
+          "purpose": "parameter vector",
+          "variable_symbols": [
+            "X",
+            "beta_1",
+            "beta_2",
+            "beta_F",
+            "alpha",
+            "gamma_1",
+            "gamma_2",
+            "gamma_F",
+            "delta_1",
+            "delta_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-010",
+          "page": 9,
+          "label": "4.3b",
+          "source_expression": "f=integral[(yC-C0)^2] + integral[(yD-D0)^2]",
+          "normalized_latex": "f(X)=\\int_0^{t_c}(y_C-C_0)^2dt+\\int_0^{t_c}(y_D-D_0)^2dt",
+          "purpose": "least-square fitness",
+          "variable_symbols": [
+            "X",
+            "t_c",
+            "y_C",
+            "C_0",
+            "y_D",
+            "D_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "minimize curve discrepancy",
+        "avoid obsolete parameter set"
+      ],
+      "constraints": [
+        "parameter bounds",
+        "fitness computed on calibration window"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_F",
+          "alpha",
+          "gamma_1",
+          "gamma_2",
+          "gamma_F",
+          "delta_1",
+          "delta_2",
+          "N",
+          "t_c"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize candidate vector.",
+          "Evaluate ODE and fitness.",
+          "Apply genetic operations.",
+          "Retain optimal vector."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "reported curves are treated as observations",
+        "optimization settings are simplified"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "X",
+        "f",
+        "y_C",
+        "y_D"
+      ],
+      "validation_refs": [
+        "Fig.4.2, Fig.4.3"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "Seeds, population size, mutation schedule, and convergence tolerance are absent."
+      ],
+      "missing_details": [
+        "reproducible optimizer configuration"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-003",
+      "page": 15,
+      "section": "4.6 Advanced Model",
+      "family": "hospital-extended SEIIRF",
+      "purpose": "Represent infection and recovery pathways through hospitals",
+      "base_or_modification": "modification",
+      "summary": "The advanced graph adds hospital first- and second-stage compartments and hospital-specific transmission and recovery rates.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "susceptible",
+          "unit": "person",
+          "definition": "susceptible fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exposed",
+          "unit": "person",
+          "definition": "exposed fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_1",
+          "normalized_name": "first-stage infectious",
+          "unit": "person",
+          "definition": "infectious first-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_2",
+          "normalized_name": "second-stage infectious",
+          "unit": "person",
+          "definition": "infectious second-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "recovered",
+          "unit": "person",
+          "definition": "recovered fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "dead-unburied",
+          "unit": "person",
+          "definition": "dead awaiting burial",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_C",
+          "normalized_name": "cumulative cases",
+          "unit": "person",
+          "definition": "integrated case count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_D",
+          "normalized_name": "cumulative deaths",
+          "unit": "person",
+          "definition": "integrated death count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "normalized_name": "first-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "second-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_F",
+          "normalized_name": "funeral transmission",
+          "unit": "1/day",
+          "definition": "corpse transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "exposed-to-first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_1",
+          "normalized_name": "first-stage progression",
+          "unit": "1/day",
+          "definition": "first-to-second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_2",
+          "normalized_name": "second-stage death rate",
+          "unit": "1/day",
+          "definition": "second-stage death rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_F",
+          "normalized_name": "burial rate",
+          "unit": "1/day",
+          "definition": "burial rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_1",
+          "normalized_name": "first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_2",
+          "normalized_name": "second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "person",
+          "definition": "country population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_1",
+          "normalized_name": "hospital first-stage",
+          "unit": "person",
+          "definition": "first-stage patients in hospital",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_2",
+          "normalized_name": "hospital second-stage",
+          "unit": "person",
+          "definition": "second-stage patients in hospital",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_1",
+          "normalized_name": "first-stage admission rate",
+          "unit": "1/day",
+          "definition": "time to hospital from first stage",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_2",
+          "normalized_name": "second-stage admission rate",
+          "unit": "1/day",
+          "definition": "time to hospital from second stage",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_3",
+          "normalized_name": "hospital first-stage progression",
+          "unit": "1/day",
+          "definition": "hospital first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_4",
+          "normalized_name": "hospital second-stage progression",
+          "unit": "1/day",
+          "definition": "hospital second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_{1H}",
+          "normalized_name": "hospital first-stage transmission",
+          "unit": "1/day",
+          "definition": "hospital first-stage transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_{2H}",
+          "normalized_name": "hospital second-stage transmission",
+          "unit": "1/day",
+          "definition": "hospital second-stage transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_{1H}",
+          "normalized_name": "hospital first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "hospital first-stage recovery",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_{2H}",
+          "normalized_name": "hospital second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "hospital second-stage recovery",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S",
+        "E",
+        "I_1",
+        "I_2",
+        "H_1",
+        "H_2",
+        "F"
+      ],
+      "outputs": [
+        "y_C",
+        "y_D",
+        "R",
+        "H_1",
+        "H_2"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-011",
+          "page": 15,
+          "label": "4.4a",
+          "source_expression": "dH1/dt=h1 I1-gamma3 H1",
+          "normalized_latex": "\\dot H_1=h_1I_1-\\gamma_3H_1",
+          "purpose": "hospital first-stage flow",
+          "variable_symbols": [
+            "H_1",
+            "h_1",
+            "I_1",
+            "gamma_3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-012",
+          "page": 15,
+          "label": "4.4b",
+          "source_expression": "dH2/dt=h2 I2-gamma3 H1-gamma4 H2",
+          "normalized_latex": "\\dot H_2=h_2I_2-\\gamma_3H_1-\\gamma_4H_2",
+          "purpose": "hospital second-stage flow",
+          "variable_symbols": [
+            "H_2",
+            "h_2",
+            "I_2",
+            "gamma_3",
+            "H_1",
+            "gamma_4"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-013",
+          "page": 15,
+          "label": "4.4c",
+          "source_expression": "dS/dt=...-beta1H H1 S-beta2H H2 S",
+          "normalized_latex": "\\dot S=-(\\beta_1(I_1+\\beta_{1H}H_1)+\\beta_2(I_2+\\beta_{2H}H_2)+\\beta_FF)S",
+          "purpose": "hospital transmission modification",
+          "variable_symbols": [
+            "S",
+            "beta_1",
+            "I_1",
+            "beta_{1H}",
+            "H_1",
+            "beta_2",
+            "I_2",
+            "beta_{2H}",
+            "H_2",
+            "beta_F",
+            "F"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-014",
+          "page": 15,
+          "label": "4.4d",
+          "source_expression": "dR/dt includes hospital recovery",
+          "normalized_latex": "\\dot R=...+(1-\\delta_{1H})\\gamma_3H_1+(1-\\delta_{2H})\\gamma_4H_2",
+          "purpose": "hospital recovery contribution",
+          "variable_symbols": [
+            "R",
+            "delta_{1H}",
+            "gamma_3",
+            "H_1",
+            "delta_{2H}",
+            "gamma_4",
+            "H_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "improve country curve fit",
+        "represent hospital transmission and treatment"
+      ],
+      "constraints": [
+        "hospital states nonnegative",
+        "hospital rates bounded"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_F",
+          "alpha",
+          "gamma_1",
+          "gamma_2",
+          "gamma_F",
+          "delta_1",
+          "delta_2",
+          "N",
+          "h_1",
+          "h_2",
+          "gamma_3",
+          "gamma_4",
+          "beta_{1H}",
+          "beta_{2H}",
+          "delta_{1H}",
+          "delta_{2H}"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Add hospital states.",
+          "Modify force of infection.",
+          "Fit additional rates.",
+          "Compare advanced curves."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "hospital can increase exposure",
+        "hospital treatment changes recovery and mortality"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "y_C",
+        "y_D",
+        "R",
+        "H_1",
+        "H_2"
+      ],
+      "validation_refs": [
+        "Fig.4.4, Fig.4.5, Table 4.2"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "The full printed system has OCR-damaged indexed terms and incomplete hospital data."
+      ],
+      "missing_details": [
+        "hospital admission observations",
+        "country-level hospital calibration"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-004",
+      "page": 15,
+      "section": "4.8 Prediction of the Future",
+      "family": "country-specific forecast",
+      "purpose": "Use fitted advanced model for Guinea and compare Liberia/Sierra Leone",
+      "base_or_modification": "paper-specific",
+      "summary": "Country-specific parameter tables generate Guinea forecasts and fitted curves for Liberia and Sierra Leone.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "susceptible",
+          "unit": "person",
+          "definition": "susceptible fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exposed",
+          "unit": "person",
+          "definition": "exposed fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_1",
+          "normalized_name": "first-stage infectious",
+          "unit": "person",
+          "definition": "infectious first-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_2",
+          "normalized_name": "second-stage infectious",
+          "unit": "person",
+          "definition": "infectious second-stage fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "recovered",
+          "unit": "person",
+          "definition": "recovered fraction",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "dead-unburied",
+          "unit": "person",
+          "definition": "dead awaiting burial",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_C",
+          "normalized_name": "cumulative cases",
+          "unit": "person",
+          "definition": "integrated case count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_D",
+          "normalized_name": "cumulative deaths",
+          "unit": "person",
+          "definition": "integrated death count",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "normalized_name": "first-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "second-stage transmission",
+          "unit": "1/day",
+          "definition": "transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_F",
+          "normalized_name": "funeral transmission",
+          "unit": "1/day",
+          "definition": "corpse transmission coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "exposed-to-first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_1",
+          "normalized_name": "first-stage progression",
+          "unit": "1/day",
+          "definition": "first-to-second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_2",
+          "normalized_name": "second-stage death rate",
+          "unit": "1/day",
+          "definition": "second-stage death rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_F",
+          "normalized_name": "burial rate",
+          "unit": "1/day",
+          "definition": "burial rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_1",
+          "normalized_name": "first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_2",
+          "normalized_name": "second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "recovery fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "person",
+          "definition": "country population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_1",
+          "normalized_name": "hospital first-stage",
+          "unit": "person",
+          "definition": "first-stage patients in hospital",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_2",
+          "normalized_name": "hospital second-stage",
+          "unit": "person",
+          "definition": "second-stage patients in hospital",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_1",
+          "normalized_name": "first-stage admission rate",
+          "unit": "1/day",
+          "definition": "time to hospital from first stage",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_2",
+          "normalized_name": "second-stage admission rate",
+          "unit": "1/day",
+          "definition": "time to hospital from second stage",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_3",
+          "normalized_name": "hospital first-stage progression",
+          "unit": "1/day",
+          "definition": "hospital first-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_4",
+          "normalized_name": "hospital second-stage progression",
+          "unit": "1/day",
+          "definition": "hospital second-stage rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_{1H}",
+          "normalized_name": "hospital first-stage transmission",
+          "unit": "1/day",
+          "definition": "hospital first-stage transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_{2H}",
+          "normalized_name": "hospital second-stage transmission",
+          "unit": "1/day",
+          "definition": "hospital second-stage transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_{1H}",
+          "normalized_name": "hospital first-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "hospital first-stage recovery",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_{2H}",
+          "normalized_name": "hospital second-stage recovery share",
+          "unit": "dimensionless",
+          "definition": "hospital second-stage recovery",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S",
+        "E",
+        "I_1",
+        "I_2",
+        "H_1",
+        "H_2",
+        "F"
+      ],
+      "outputs": [
+        "y_C",
+        "y_D",
+        "R"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes this component procedurally or with a flowchart."
+      },
+      "objectives": [
+        "forecast near-future cases",
+        "compare countries"
+      ],
+      "constraints": [
+        "finite horizon",
+        "country-specific rates"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_F",
+          "alpha",
+          "gamma_1",
+          "gamma_2",
+          "gamma_F",
+          "delta_1",
+          "delta_2",
+          "N",
+          "h_1",
+          "h_2",
+          "gamma_3",
+          "gamma_4",
+          "beta_{1H}",
+          "beta_{2H}",
+          "delta_{1H}",
+          "delta_{2H}"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Load country parameters.",
+          "Integrate advanced system.",
+          "Plot fitted or forecast curves.",
+          "Report horizon and totals."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "WHO data are incomplete",
+        "Liberia and Sierra Leone future forecasts are explicitly deferred"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "y_C",
+        "y_D",
+        "R"
+      ],
+      "validation_refs": [
+        "Fig.4.6-Fig.4.9, Tables 4.3-4.5"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "Long-horizon accuracy and uncertainty intervals are not reported."
+      ],
+      "missing_details": [
+        "held-out forecast evaluation"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-005",
+      "page": 23,
+      "section": "5.3 Clustering Method",
+      "family": "hierarchical agglomerative clustering",
+      "purpose": "Reduce many provincial capitals to feasible city groups",
+      "base_or_modification": "paper-specific",
+      "summary": "Single-linkage clustering repeatedly merges the nearest groups using road-network distance.",
+      "variables": [
+        {
+          "symbol": "d_{ij}",
+          "normalized_name": "road-network distance",
+          "unit": "km",
+          "definition": "reticular distance between cities",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_{KL}",
+          "normalized_name": "minimum group distance",
+          "unit": "km",
+          "definition": "minimum distance between groups",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_i",
+          "normalized_name": "city group",
+          "unit": "set",
+          "definition": "current city group",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_M",
+          "normalized_name": "merged group",
+          "unit": "set",
+          "definition": "new merged group",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_{MJ}",
+          "normalized_name": "group distance",
+          "unit": "km",
+          "definition": "distance between merged groups",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d_{ij}",
+        "G_i"
+      ],
+      "outputs": [
+        "G_M",
+        "D_{MJ}"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-015",
+          "page": 23,
+          "label": "5.1",
+          "source_expression": "D_MJ=min_{x_i in M,x_j in J} d_ij",
+          "normalized_latex": "D_{MJ}=\\min_{x_i\\in G_M,x_j\\in G_J}d_{ij}",
+          "purpose": "single-linkage group distance",
+          "variable_symbols": [
+            "D_{KL}",
+            "d_{ij}",
+            "G_M",
+            "G_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "form city groups",
+        "limit delivery-center candidates"
+      ],
+      "constraints": [
+        "symmetric distance matrix",
+        "merge nearest groups"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize singleton groups.",
+          "Find minimum distance.",
+          "Merge groups.",
+          "Refresh matrix until selected count."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "provincial capitals represent demand",
+        "storage cost is omitted"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "G_M",
+        "D_{MJ}"
+      ],
+      "validation_refs": [
+        "Fig.5.1, clustering recurrence"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "Distance scaling and tie handling are not specified."
+      ],
+      "missing_details": [
+        "road-network data and initial distance matrix"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-006",
+      "page": 25,
+      "section": "5.5-5.6 Principles of Fairness and Efficiency",
+      "family": "P-Center / weighted facility selection",
+      "purpose": "Choose locations balancing distance, fairness, and efficiency",
+      "base_or_modification": "paper-specific",
+      "summary": "The paper evaluates candidate delivery places with weighted distance and weighted coverage principles.",
+      "variables": [
+        {
+          "symbol": "w_i",
+          "normalized_name": "regional weight",
+          "unit": "dimensionless",
+          "definition": "risk or importance weight of demand region",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_{ij}",
+          "normalized_name": "assignment",
+          "unit": "binary",
+          "definition": "region i assigned to center j",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_j",
+          "normalized_name": "center open",
+          "unit": "binary",
+          "definition": "delivery center j is selected",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_{ij}",
+          "normalized_name": "distance",
+          "unit": "km",
+          "definition": "distance from center to region",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "weighted distance",
+          "unit": "km",
+          "definition": "fairness objective",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "weighted efficiency",
+          "unit": "dimensionless",
+          "definition": "efficiency objective",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "w_i",
+        "d_{ij}",
+        "c_{ij}",
+        "x_j"
+      ],
+      "outputs": [
+        "P",
+        "Q",
+        "x_j"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-016",
+          "page": 25,
+          "label": "5.2",
+          "source_expression": "P=min sum_i sum_j w_i d_ij c_ij",
+          "normalized_latex": "P=\\min\\sum_i\\sum_j w_i d_{ij}c_{ij}",
+          "purpose": "fairness objective",
+          "variable_symbols": [
+            "P",
+            "w_i",
+            "d_{ij}",
+            "c_{ij}"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-017",
+          "page": 25,
+          "label": "5.3",
+          "source_expression": "Q=sum_i sum_j w_i c_ij",
+          "normalized_latex": "Q=\\sum_i\\sum_j w_ic_{ij}",
+          "purpose": "efficiency objective",
+          "variable_symbols": [
+            "Q",
+            "w_i",
+            "c_{ij}"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "minimize weighted distance",
+        "maximize weighted service"
+      ],
+      "constraints": [
+        "assignment consistency",
+        "selected centers limited by resources"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "w_i"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compute regional weights.",
+          "Evaluate candidate centers.",
+          "Compare fairness and efficiency.",
+          "Select practical locations."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "fairness and efficiency can conflict",
+        "storage and construction cost omitted"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "P",
+        "Q",
+        "x_j"
+      ],
+      "validation_refs": [
+        "Equations 5.2-5.3, Tables 5.1-5.2"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "The tradeoff weighting and exact center constraint are not fully specified."
+      ],
+      "missing_details": [
+        "multiobjective scalarization",
+        "capacity constraints"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-007",
+      "page": 27,
+      "section": "6.3 TSP Model – Well-Planned Routes",
+      "family": "mixed-integer traveling-salesperson model",
+      "purpose": "Find circular or return routes that cover selected delivery places",
+      "base_or_modification": "paper-specific",
+      "summary": "Binary route edges minimize total travel while enforcing one visit and subtour control.",
+      "variables": [
+        {
+          "symbol": "x_{ij}",
+          "normalized_name": "route edge",
+          "unit": "binary",
+          "definition": "vehicle travels from i to j",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_{ij}",
+          "normalized_name": "route distance",
+          "unit": "km",
+          "definition": "distance from i to j",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "big-M",
+          "unit": "dimensionless",
+          "definition": "subtour elimination constant",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_i",
+          "normalized_name": "route order",
+          "unit": "integer",
+          "definition": "visit order",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_j",
+          "normalized_name": "route order at destination",
+          "unit": "integer",
+          "definition": "visit order at j",
+          "role": "state",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "D_{ij}",
+        "M",
+        "x_{ij}"
+      ],
+      "outputs": [
+        "x_{ij}",
+        "D_{ij}",
+        "u_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-018",
+          "page": 27,
+          "label": "6.1",
+          "source_expression": "min sum_i sum_j D_ij x_ij",
+          "normalized_latex": "\\min\\sum_i\\sum_jD_{ij}x_{ij}",
+          "purpose": "route length objective",
+          "variable_symbols": [
+            "D_{ij}",
+            "x_{ij}"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-019",
+          "page": 27,
+          "label": "6.2",
+          "source_expression": "sum_j x_ij=1 and sum_i x_ij=1",
+          "normalized_latex": "\\sum_jx_{ij}=1,\\quad\\sum_ix_{ij}=1",
+          "purpose": "one-in one-out route constraints",
+          "variable_symbols": [
+            "x_{ij}"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-020",
+          "page": 27,
+          "label": "6.3",
+          "source_expression": "u_i-u_j+M x_ij <= M-1",
+          "normalized_latex": "u_i-u_j+Mx_{ij}\\le M-1",
+          "purpose": "subtour elimination",
+          "variable_symbols": [
+            "u_i",
+            "u_j",
+            "M",
+            "x_{ij}"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "minimize transportation distance",
+        "cover each delivery place"
+      ],
+      "constraints": [
+        "binary edges",
+        "one incoming and outgoing edge",
+        "subtour elimination"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "M"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Build distance matrix.",
+          "Solve MIP.",
+          "Compare two circular routes.",
+          "Select route for delivery."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "travel times and vehicle capacity are simplified",
+        "routes are country-specific"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "x_{ij}",
+        "D_{ij}",
+        "u_i"
+      ],
+      "validation_refs": [
+        "Fig.6.1, route equations, Lingo mention"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "Solver settings, vehicle capacities, and stochastic travel times are absent."
+      ],
+      "missing_details": [
+        "complete road network",
+        "capacity and time-window constraints"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-008",
+      "page": 29,
+      "section": "7.1 General algorithm",
+      "family": "integrated clustering-TSP delivery algorithm",
+      "purpose": "Combine clustering, center selection, and routing for three countries",
+      "base_or_modification": "paper-specific",
+      "summary": "A flowchart increases the number of delivery locations until every route can finish within one day, then outputs locations and transport routes.",
+      "variables": [
+        {
+          "symbol": "G_i",
+          "normalized_name": "city group",
+          "unit": "set",
+          "definition": "group requiring service",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "delivery location",
+          "unit": "node",
+          "definition": "selected center",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "route",
+          "unit": "sequence",
+          "definition": "vehicle route",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "number of groups",
+          "unit": "integer",
+          "definition": "current group count",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_{ij}",
+          "normalized_name": "route distance",
+          "unit": "km",
+          "definition": "distance between route nodes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "G_i",
+        "n",
+        "D_{ij}"
+      ],
+      "outputs": [
+        "L",
+        "T"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes this component procedurally or with a flowchart."
+      },
+      "objectives": [
+        "meet route-time requirement",
+        "return locations and routes"
+      ],
+      "constraints": [
+        "route completion checked daily",
+        "country boundaries retained"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "n"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Start with cluster result.",
+          "Run TSP.",
+          "Check every route duration.",
+          "Increase centers if needed.",
+          "Output locations and transport."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "no-boundary scheme deferred",
+        "decision thresholds are procedural"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "L",
+        "T"
+      ],
+      "validation_refs": [
+        "Fig.7.1-Fig.7.5"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "The route-feasibility threshold and optimization tie-breaking are not fully reproducible."
+      ],
+      "missing_details": [
+        "solver logs",
+        "vehicle operating constraints"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-009",
+      "page": 33,
+      "section": "8.4-8.5 Manufacturing Speed and Quantity",
+      "family": "piecewise supply-demand model",
+      "purpose": "Estimate production speed, urgency-based allocation, and total medicine",
+      "base_or_modification": "paper-specific",
+      "summary": "Production increases linearly while stock is scarce, then is capped by first-stage demand; total medicine is the integral of daily output.",
+      "variables": [
+        {
+          "symbol": "V_1",
+          "normalized_name": "medicine production speed",
+          "unit": "unit/day",
+          "definition": "medicine output rate",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V_2",
+          "normalized_name": "vaccine production speed",
+          "unit": "unit/day",
+          "definition": "vaccine output rate",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_1",
+          "normalized_name": "initial medicine inventory",
+          "unit": "unit",
+          "definition": "initial stock",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_2",
+          "normalized_name": "initial vaccine inventory",
+          "unit": "unit",
+          "definition": "initial stock",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_1",
+          "normalized_name": "medicine acceleration",
+          "unit": "unit/day^2",
+          "definition": "production acceleration",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_2",
+          "normalized_name": "vaccine acceleration",
+          "unit": "unit/day^2",
+          "definition": "production acceleration",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_i",
+          "normalized_name": "urgency allocation fraction",
+          "unit": "dimensionless",
+          "definition": "share of first-stage patients at place i",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_1",
+          "normalized_name": "first-stage hospital patients",
+          "unit": "person",
+          "definition": "patients requiring medicine",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "treatment course",
+          "unit": "day",
+          "definition": "course duration",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "total medicine",
+          "unit": "unit",
+          "definition": "integrated medicine amount",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "production time",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "b_1",
+        "k_1",
+        "H_1",
+        "theta",
+        "p_i"
+      ],
+      "outputs": [
+        "V_1",
+        "V_2",
+        "W",
+        "p_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-021",
+          "page": 33,
+          "label": "8.1",
+          "source_expression": "V1=k1 t+b1, V2=k2 t+b2",
+          "normalized_latex": "V_1=k_1t+b_1,\\quad V_2=k_2t+b_2",
+          "purpose": "linear production speed",
+          "variable_symbols": [
+            "V_1",
+            "k_1",
+            "t",
+            "b_1",
+            "V_2",
+            "k_2",
+            "b_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-022",
+          "page": 33,
+          "label": "8.2",
+          "source_expression": "V1=min(k1 t+b1,H1/theta)",
+          "normalized_latex": "V_1=\\min(k_1t+b_1,H_1/\\theta)",
+          "purpose": "medicine saturation rule",
+          "variable_symbols": [
+            "V_1",
+            "k_1",
+            "t",
+            "b_1",
+            "H_1",
+            "theta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-023",
+          "page": 34,
+          "label": "8.3",
+          "source_expression": "p_i=H1_i/sum H1",
+          "normalized_latex": "p_i=\\frac{H_{1,i}}{\\sum_jH_{1,j}}",
+          "purpose": "urgency allocation",
+          "variable_symbols": [
+            "p_i",
+            "H_1"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-024",
+          "page": 35,
+          "label": "8.4",
+          "source_expression": "W=integral V1(t)dt",
+          "normalized_latex": "W=\\int_0^tV_1(\\tau)d\\tau",
+          "purpose": "total medicine requirement",
+          "variable_symbols": [
+            "W",
+            "V_1",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "avoid shortages",
+        "allocate by urgency",
+        "estimate total units"
+      ],
+      "constraints": [
+        "nonnegative production",
+        "medicine targets first-stage patients",
+        "vaccine effect is ignored in quantity calculation"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "b_1",
+          "b_2",
+          "k_1",
+          "k_2",
+          "theta",
+          "t"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set initial inventory and acceleration.",
+          "Compute daily output.",
+          "Allocate by urgency.",
+          "Integrate output."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "linear ramp is idealized",
+        "unit dose is a proxy",
+        "medicine effectiveness is stage-limited"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "V_1",
+        "V_2",
+        "W",
+        "p_i"
+      ],
+      "validation_refs": [
+        "Fig.8.1-Fig.8.3, Tables 8.1-8.3"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "Manufacturing capacity, pharmacological dose, and inventory balance are incomplete."
+      ],
+      "missing_details": [
+        "capacity constraints",
+        "shelf life and stock balance"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-34317-010",
+      "page": 36,
+      "section": "IX Other Factors and XI Sensitivity analysis",
+      "family": "scenario sensitivity and control",
+      "purpose": "Test hospital, funeral, epidemic, and production-rate interventions",
+      "base_or_modification": "paper-specific",
+      "summary": "Scenario curves reduce hospital or funeral transmission and perturb fitted epidemic and production parameters to assess stability.",
+      "variables": [
+        {
+          "symbol": "r_H",
+          "normalized_name": "hospital transmission multiplier",
+          "unit": "dimensionless",
+          "definition": "relative hospital infectiousness",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_F",
+          "normalized_name": "funeral transmission multiplier",
+          "unit": "dimensionless",
+          "definition": "relative funeral infectiousness",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_1",
+          "normalized_name": "initial production speed",
+          "unit": "unit/day",
+          "definition": "medicine speed scenario",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "total cases",
+          "unit": "person",
+          "definition": "decision output",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r_H",
+        "r_F",
+        "b_1"
+      ],
+      "outputs": [
+        "C"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-34317-025",
+          "page": 36,
+          "label": "9.1",
+          "source_expression": "C=C(r_H,r_F)",
+          "normalized_latex": "C=C(r_H,r_F)",
+          "purpose": "hospital and funeral control scenario",
+          "variable_symbols": [
+            "C",
+            "r_H",
+            "r_F"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-34317-026",
+          "page": 39,
+          "label": "11.1",
+          "source_expression": "C=C(b1)",
+          "normalized_latex": "C=C(b_1)",
+          "purpose": "production-speed sensitivity",
+          "variable_symbols": [
+            "C",
+            "b_1"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Visually reviewed source equations are retained."
+      },
+      "objectives": [
+        "compare control levers",
+        "test parameter robustness"
+      ],
+      "constraints": [
+        "finite scenario levels",
+        "total cases as primary output"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Country populations, initial compartments, city groups, inventory, and fitted parameters are scenario inputs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source models Guinea, Liberia, and Sierra Leone as the operational domain."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No formal equilibrium or global optimality certificate is established."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares and genetic search for epidemic parameters; literature, country tables, and scenario assumptions for operational parameters.",
+        "parameters": [
+          "r_H",
+          "r_F",
+          "b_1"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Choose factor levels.",
+          "Run model scenarios.",
+          "Plot total cases.",
+          "Interpret stable or changing outputs."
+        ],
+        "software": [
+          "Genetic algorithm plus least-square fitting; Lingo mixed-integer route optimization is cited."
+        ],
+        "convergence_criteria": "Fitness improvement and route feasibility are described, but tolerance and random seeds are not fully specified."
+      },
+      "assumptions": [
+        "one-factor perturbations do not establish joint robustness",
+        "hospital/funeral effects are stylized"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Country-specific parameters are fitted, but many coupled rates and sparse observations limit identifiability."
+      },
+      "handoff_outputs": [
+        "C"
+      ],
+      "validation_refs": [
+        "Fig.9.1-Fig.9.2, Fig.11.1-Fig.11.3"
+      ],
+      "computational_cost": "ODE evaluation, parameter search, clustering, and route enumeration scale with parameters, cities, and candidate centers.",
+      "strengths": [
+        "The paper exposes a visible handoff from epidemic state to delivery and manufacturing decisions.",
+        "Country-specific tables and maps make the operational output inspectable."
+      ],
+      "limitations": [
+        "No global sensitivity, confidence intervals, or replication protocol is reported."
+      ],
+      "missing_details": [
+        "joint parameter uncertainty",
+        "raw replicates and seeds"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2015-34317-001",
+      "to_model_id": "MU-A-2015-34317-002",
+      "handoff": "baseline trajectories provide the calibration target"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-002",
+      "to_model_id": "MU-A-2015-34317-003",
+      "handoff": "fitted parameters seed the hospital extension"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-003",
+      "to_model_id": "MU-A-2015-34317-004",
+      "handoff": "country-specific advanced curves support forecasts"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-004",
+      "to_model_id": "MU-A-2015-34317-006",
+      "handoff": "epidemic demand informs weighted location criteria"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-006",
+      "to_model_id": "MU-A-2015-34317-008",
+      "handoff": "selected centers enter the integrated delivery algorithm"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-007",
+      "to_model_id": "MU-A-2015-34317-008",
+      "handoff": "route model supplies feasible transport"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-008",
+      "to_model_id": "MU-A-2015-34317-010",
+      "handoff": "delivery system is evaluated with operational scenarios"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-003",
+      "to_model_id": "MU-A-2015-34317-010",
+      "handoff": "hospital and funeral pathways become sensitivity factors"
+    },
+    {
+      "from_model_id": "MU-A-2015-34317-010",
+      "to_model_id": "MU-A-2015-34317-009",
+      "handoff": "intervention scenarios define medicine demand inputs"
+    }
+  ],
+  "review_status": "validated"
+}

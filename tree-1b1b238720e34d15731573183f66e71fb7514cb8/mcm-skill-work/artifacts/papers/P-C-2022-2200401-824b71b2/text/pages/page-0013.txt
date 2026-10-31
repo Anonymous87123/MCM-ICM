@@ -1,0 +1,50 @@
+Team 2200401                                                                                                          Page 12
+
+
+5.3     Backtesting Process
+When a trade period ends, we terminate the APGM model for the current period and run the backtesting
+process. The goal of this process is to adjust the parameters of our model so that they can perform better
+in the next period of trading. During the backtesting process, we will obtain the following metrics and
+adaptively adjust the parameters related to them. The following table contains the updating criteria for
+related parameters.
+
+
+          Indicators                   Parameters                               Descriptions
+  𝑃𝑅𝐺 , 𝑃𝑅 𝐵 , 𝑃𝑃𝑅𝐺 , 𝑃𝑅 𝐵                𝐺/𝐵             These denote the potential of increment of the two assets
+  𝑝 max (𝑡1 , 𝑡2 ), 𝑝 min (𝑡1 , 𝑡2 )   𝑝 max , 𝑝 min      These prevent price going beyond boundaries
+   𝑀𝑆𝐸, ACF and PACF                     𝑝, 𝑞, 𝑑          These influence the accuracy of ARIMA Model
+         q-test , retest                  𝜔, 𝜇            These evaluate the significance of ARIMA and MA
+
+The following gives some formulas to quantify parameters of the 𝑖th period :
+                                                       𝜆1                 𝜆2
+                                    1 + 𝑃𝑅𝐺                     1 + 𝑃𝑃𝑅𝐺
+                              𝐺/𝐵 =                                                ,   𝜆1 , 𝜆2 ∈ {1, 2, 3}
+                                    1 + 𝑃𝑅 𝐵                    1 + 𝑃𝑃𝑅 𝐵
+
+                                             𝑝 max = 𝜆3 𝑝 max (𝑇1 , 𝑇𝑖 ),     𝜆3 ∈ {2, 3, 4}
+                                       𝑝 min = 𝜆4 𝑝 min (𝑇𝑖−1 , 𝑇𝑖 ),       𝜆4 ∈ {0.5, 1, 1.25}
+                                                      𝜔, 𝜇 ∈ {0, 0.1, 0.3, 0.5}
+Then we show the detailed process of backtesting:
+
+      • Use price data of last period to update 𝑝 max (𝑇1 , 𝑇𝑖 ) and 𝑝 min (𝑇𝑖−1 , 𝑇𝑖 ),which are the historical
+        maximum price and the minimum price in the last period.
+
+      • Calculate 𝑃𝑅𝐺 and 𝑃𝑅 𝐵 with the following formula,
+
+                                         𝑉 {𝑇𝑖 } (𝐺) − 𝑉 {𝑇𝑖−1 } (𝐺)                    𝑉 {𝑇𝑖 } (𝐵) − 𝑉 {𝑇𝑖−1 } (𝐵)
+                              𝑃𝑅𝐺 =                                  ,       𝑃𝑅 𝐵 =
+                                                  𝑉 {𝑇𝑖−1 } (𝐺)                                 𝑉 {𝑇𝑖−1 } (𝐵)
+
+      • Retest the model in the last period supposing that we have known all days’ prices so that we can
+        get a possible maximum profit rate for Gold and Bitcoin (𝑃𝑃𝑅𝐺 ,𝑃𝑃𝑅 𝐵 ).
+
+      • Enumerate all possible value of 𝜆1 , 𝜆2 , 𝜆3 , 𝜆4 , 𝜔, 𝜇 and restart the model of last period with
+        corresponding parameters.
+
+      • According to the highest total profit rate apply that group of parameters in the new period.
+
+      • Use ACF and PACF of the last period to find a responsible range of 𝑝, 𝑞.
+
+      • Calculate 𝑀𝑆𝐸 of the ARIMA model with different 𝑝, 𝑞, 𝑑 and find the minimum one. Then use
+        them in the next period. The Figure 6 displays MSE for different 𝑝 and 𝑞 with 𝑑 = 1 together
+        with the ACF and PACF of the first period.

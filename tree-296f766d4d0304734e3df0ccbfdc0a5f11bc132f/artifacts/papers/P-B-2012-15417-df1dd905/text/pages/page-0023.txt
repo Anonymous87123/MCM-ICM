@@ -1,0 +1,84 @@
+      Team # 15417                                                                                    Page 21 of 24
+
+
+265                              if (schedule[i][j] == null)
+266                              {
+267                                  // Empty site: we’re done; set found to true so all the loops terminate.
+268                                  nextBoat.setCurrentSite(j);
+269                                  schedule[i][j] = nextBoat;
+270                                  found = true;
+271                              }
+272                              else if (schedule[i][j].compareTo(nextBoat) > 0)
+273                              {
+274                                  // Boat with lower priority: swap roles, but just break out of the inner loop
+275                                  // since the lower priority boat still needs to find a site.
+276                                  nextBoat.setCurrentSite(j);
+277
+278                                  Boat temp = nextBoat;
+279                                  nextBoat = schedule[i][j];
+280                                  schedule[i][j] = temp;
+281                                  swapped = true;
+282                              }
+283                          }
+284
+285                          if (!found && !swapped)
+286                          {
+287                              // No empty sites were found, and all boats have higher priority,
+288                              // so swap roles with the boat at the site our boat was yesterday
+289                              // and continue with that boat.
+290                              nextBoat.setCurrentSite(lastSite);
+291
+292                              Boat temp = nextBoat;
+293                              nextBoat = schedule[i][lastSite];
+294                              schedule[i][lastSite] = temp;
+295                          }
+296                      }
+297                  }
+298              }
+299
+300              // Now add more boats to the river
+301              addBoats(i);
+302          }
+303
+304          // Remove any boats from the schedule that didn’t make it back by the last day of the season.
+305          for (int i = 0; i < numSites; i++)
+306          {
+307              if (schedule[NUM_DAYS-1][i] != null)
+308              {
+309                  reschedule(schedule[NUM_DAYS-1][i]);
+310              }
+311          }
+312      }
+313
+314      /**
+315        * An algorithm to check that the schedule does not violate any rules of our model.
+316        */
+317      public void checkSchedule()
+318      {
+319           int lateBoats = 0, earlyBoats = 0, speedingBoats = 0, totalBoats = 0;
+320           for (Boat boat : boatsOut)
+321           {
+322               int firstDay = -1, site, lastSite = -1;
+323               for (int day = 0; day < NUM_DAYS; day++)
+324               {
+325                   for (site = 0; site < numSites; site++)
+326                   {
+327                       if (schedule[day][site] == boat) break;
+328                   }
+329                   if (site != numSites)
+330                   {
+331                       if (firstDay == -1)
+332                       {
+333                            firstDay = day;
+334                            if (site+1 > boat.getMaxSitesPerDay(numSites))
+335                            {
+336                                speedingBoats++;
+337                            }
+338                       }
+339                       else
+340                       {
+341                            if (site-lastSite > boat.getMaxSitesPerDay(numSites))
+342                            {
+343                                speedingBoats++;
+344                            }
+345                       }

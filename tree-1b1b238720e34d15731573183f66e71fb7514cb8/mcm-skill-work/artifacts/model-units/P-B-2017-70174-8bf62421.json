@@ -1,0 +1,1509 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-B-2017-70174-8bf62421",
+  "problem_type": "B",
+  "year": "2017",
+  "source_sha256": "8bf62421abcbd0212c8cef7cf6b6cc35f390a4005a09be17ff325e6b10c15e17",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-B-2017-70174-001",
+      "page": 6,
+      "section": "4.1 Model Development",
+      "family": "agent-based toll-plaza simulation",
+      "purpose": "Represent individual cars and their interactions so micro-level choices produce queue, merge, and throughput behavior.",
+      "base_or_modification": "paper-specific",
+      "summary": "Represent individual cars and their interactions so micro-level choices produce queue, merge, and throughput behavior.",
+      "variables": [
+        {
+          "symbol": "L",
+          "normalized_name": "incoming lanes",
+          "unit": "lanes",
+          "definition": "Number of highway lanes entering the plaza.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "toll booths",
+          "unit": "booths",
+          "definition": "Number of toll booths.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "cars in world",
+          "unit": "cars",
+          "definition": "Current simulated car population.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "throughput",
+          "unit": "cars",
+          "definition": "Cars that complete the plaza.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "B",
+        "N"
+      ],
+      "outputs": [
+        "q"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes agent procedures or scenario reporters without a separate displayed governing equation."
+      },
+      "objectives": [
+        "Represent individual cars and their interactions so micro-level choices produce queue, merge, and throughput behavior.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        },
+        "terminal": {
+          "status": "present",
+          "details": [
+            "Figure 1 ends the modeled run at STOP at 500 ticks."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "L",
+          "B",
+          "N"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "initialize the world",
+          "create cars",
+          "advance GO",
+          "record reporters",
+          "compare configurations"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported.",
+        "stopping_rule": "STOP at 500 ticks, as shown in Figure 1; no convergence or repeated-run stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Cars interact through local rules.",
+        "The upstream queue is included to shape downstream dispersal.",
+        "Finite runs represent scenarios rather than field forecasts."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "q"
+      ],
+      "validation_refs": [
+        "Summary Sheet",
+        "Figure 1",
+        "model-development text"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "No source code, seed, or replication ledger is archived."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-002",
+      "page": 7,
+      "section": "4.3 Agent Sets",
+      "family": "agent state and stochastic service",
+      "purpose": "Assign each car driver type, speed, target lane, patience, payment method, service time, and anticipation.",
+      "base_or_modification": "paper-specific",
+      "summary": "Assign each car driver type, speed, target lane, patience, payment method, service time, and anticipation.",
+      "variables": [
+        {
+          "symbol": "driver",
+          "normalized_name": "driver type",
+          "unit": "binary",
+          "definition": "Human-operated or autonomous.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "speed",
+          "normalized_name": "current speed",
+          "unit": "patch/tick",
+          "definition": "Current car speed.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "top",
+          "normalized_name": "top speed",
+          "unit": "patch/tick",
+          "definition": "Driver-specific upper speed.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lane",
+          "normalized_name": "target lane",
+          "unit": "lane index",
+          "definition": "Lane selected for service or merge.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pat",
+          "normalized_name": "patience",
+          "unit": "score",
+          "definition": "Remaining braking tolerance.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pay",
+          "normalized_name": "payment method",
+          "unit": "category",
+          "definition": "EZ-Pass, exact change, or cash.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "service",
+          "normalized_name": "service time",
+          "unit": "s",
+          "definition": "Booth service duration.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "anticip",
+          "normalized_name": "anticipation",
+          "unit": "ticks",
+          "definition": "Individual merge timing offset.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "driver",
+        "top",
+        "pay",
+        "service",
+        "anticip"
+      ],
+      "outputs": [
+        "speed",
+        "lane",
+        "pat"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes agent procedures or scenario reporters without a separate displayed governing equation."
+      },
+      "objectives": [
+        "Assign each car driver type, speed, target lane, patience, payment method, service time, and anticipation.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "driver",
+          "top",
+          "pay",
+          "service",
+          "anticip"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "sample car attributes",
+          "assign payment route",
+          "decrement patience on braking",
+          "attempt a lane change at zero",
+          "reset after a merge"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Autonomous cars are perfectly patient.",
+        "Cash and exact change use an exponential service draw with mean 30 seconds.",
+        "EZ-Pass service time is zero.",
+        "Each car receives a distinct anticipation value."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "speed",
+        "lane",
+        "pat"
+      ],
+      "validation_refs": [
+        "pages 7-8",
+        "Figure 1",
+        "service-time paragraph"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "Driver type and payment method are confounded for autonomous cars.",
+        "The source does not report the random distributions beyond the service-time example."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-003",
+      "page": 8,
+      "section": "4.4 Environment Setup",
+      "family": "discrete road geometry",
+      "purpose": "Construct lanes, spawn points, barriers, toll gates, and an exit-entry population loop in the NetLogo world.",
+      "base_or_modification": "paper-specific",
+      "summary": "Construct lanes, spawn points, barriers, toll gates, and an exit-entry population loop in the NetLogo world.",
+      "variables": [
+        {
+          "symbol": "y",
+          "normalized_name": "lane coordinate",
+          "unit": "patch",
+          "definition": "Patch coordinate used to color lanes.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "road patch",
+          "unit": "category",
+          "definition": "Gray drivable patch versus green grass.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "barrier",
+          "normalized_name": "road boundary",
+          "unit": "boolean",
+          "definition": "Barrier turtle at the road edge.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "spawn",
+          "normalized_name": "spawn point",
+          "unit": "patch",
+          "definition": "Pre-toll car entry point.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "exit",
+          "normalized_name": "world exit",
+          "unit": "patch",
+          "definition": "End-of-world completion boundary.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "y",
+        "spawn",
+        "exit"
+      ],
+      "outputs": [
+        "barrier",
+        "g"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes agent procedures or scenario reporters without a separate displayed governing equation."
+      },
+      "objectives": [
+        "Construct lanes, spawn points, barriers, toll gates, and an exit-entry population loop in the NetLogo world.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "y",
+          "spawn",
+          "exit"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "color grass",
+          "mark lanes",
+          "draw lines",
+          "spawn barriers",
+          "create or remove cars"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Lanes are symmetric around the tolls.",
+        "Barriers prevent off-road movement.",
+        "Cars leaving the world are replaced to maintain the requested population."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "barrier",
+        "g"
+      ],
+      "validation_refs": [
+        "pages 8-9",
+        "Figure 1",
+        "environment procedures"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "Patch-to-feet conversion depends on an SUV length assumption.",
+        "No geometric file or coordinate export is supplied."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-004",
+      "page": 8,
+      "section": "4.3 Agent Sets",
+      "family": "payment-service model",
+      "purpose": "Differentiate electronic passage from stochastic cash or exact-change service.",
+      "base_or_modification": "paper-specific",
+      "summary": "Differentiate electronic passage from stochastic cash or exact-change service.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "cash service time",
+          "unit": "s",
+          "definition": "Sampled service time for cash or exact change.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "service rate",
+          "unit": "1/s",
+          "definition": "Exponential-rate parameter 1/30.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "electronic service time",
+          "unit": "s",
+          "definition": "Zero service time for EZ-Pass in the model.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "r",
+        "E"
+      ],
+      "outputs": [
+        "X",
+        "E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70174-001",
+          "page": 8,
+          "label": "service-time",
+          "source_expression": "X ~ Exp(1/30)",
+          "normalized_latex": "X \\sim \\operatorname{Exp}(1/30)",
+          "purpose": "Represent cash or exact-change service time with a mean of 30 seconds.",
+          "variable_symbols": [
+            "X",
+            "r"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations were checked against focused page proxies."
+      },
+      "objectives": [
+        "Differentiate electronic passage from stochastic cash or exact-change service.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "r",
+          "E"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "draw X",
+          "set E=0",
+          "hold cars at a gate until service completes",
+          "release the car"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Cash and exact change are modeled together.",
+        "The exponential rate is the reciprocal of the 30-second mean.",
+        "Electronic cars slow to 5 mph but incur zero modeled service time."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "X",
+        "E"
+      ],
+      "validation_refs": [
+        "page 8",
+        "service-time definition"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "Human-operated and exact-change booths are intentionally collapsed.",
+        "The time basis and empirical service distribution are not calibrated."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-005",
+      "page": 10,
+      "section": "4.6 Distance/Time Correlations",
+      "family": "unit calibration",
+      "purpose": "Record the paper's conversion from patches and ticks to feet and seconds without silently correcting the printed expression.",
+      "base_or_modification": "paper-specific",
+      "summary": "Record the paper's conversion from patches and ticks to feet and seconds without silently correcting the printed expression.",
+      "variables": [
+        {
+          "symbol": "v",
+          "normalized_name": "printed conversion result",
+          "unit": "as printed; direction ambiguous",
+          "definition": "The paper displays an approximately 10 tick/(1 second) result after multiplying patch/tick, feet/patch, and seconds/(95 feet).",
+          "role": "output",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "patch speed",
+          "unit": "patch/tick",
+          "definition": "0.5 patch per tick.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "patch length",
+          "unit": "ft/patch",
+          "definition": "18 feet, based on an SUV length assumption.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "tick rate",
+          "unit": "tick/s",
+          "definition": "Approximately 10 ticks per second in the prose immediately after the displayed expression.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p",
+        "f",
+        "tau"
+      ],
+      "outputs": [
+        "v"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70174-002",
+          "page": 10,
+          "label": "unit conversion",
+          "source_expression": "(0.5 patch/tick) * (18 feet/patch) * (seconds/(95 feet)) ~= (10 tick/(1 second))",
+          "normalized_latex": "0.5\\,\\frac{\\mathrm{patch}}{\\mathrm{tick}} \\cdot 18\\,\\frac{\\mathrm{feet}}{\\mathrm{patch}} \\cdot \\frac{\\mathrm{seconds}}{95\\,\\mathrm{feet}} \\approx \\frac{10\\,\\mathrm{tick}}{1\\,\\mathrm{second}}",
+          "purpose": "Transcribe the paper's patch/feet/tick conversion without repairing its displayed dimensional direction.",
+          "variable_symbols": [
+            "v",
+            "p",
+            "f",
+            "tau"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations were checked against focused page proxies."
+      },
+      "objectives": [
+        "Record the paper's conversion from patches and ticks to feet and seconds without silently correcting the printed expression.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "p",
+          "f",
+          "tau"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "set p",
+          "set f",
+          "set tau",
+          "transcribe the displayed factors",
+          "pass the unresolved conversion to the warning gate"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "The speed limit is 0.5 patch/tick.",
+        "An average SUV is 18 feet long.",
+        "The displayed expression uses seconds/(95 feet) and ends with approximately 10 tick/(1 second).",
+        "The prose then states that 10 ticks are approximately 1 second."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "v"
+      ],
+      "validation_refs": [
+        "page 10",
+        "conversion display"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The printed conversion has a dimensional-direction and numerical-convention ambiguity; do not use it as calibrated physical speed."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-006",
+      "page": 10,
+      "section": "5.1 Satisfaction Metric",
+      "family": "normalized multi-criteria score",
+      "purpose": "Compare plaza configurations with equally scaled cost, waiting, safety, and throughput terms.",
+      "base_or_modification": "paper-specific",
+      "summary": "Compare plaza configurations with equally scaled cost, waiting, safety, and throughput terms.",
+      "variables": [
+        {
+          "symbol": "S_i",
+          "normalized_name": "satisfaction score",
+          "unit": "dimensionless",
+          "definition": "Score for configuration i; lower is preferred by the paper.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "cost",
+          "unit": "currency/year",
+          "definition": "Maintenance and staffing or machine cost.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_i",
+          "normalized_name": "wait time",
+          "unit": "s",
+          "definition": "Time below the low-speed threshold.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_i",
+          "normalized_name": "safety proxy",
+          "unit": "dimensionless",
+          "definition": "Proxy based on average merges.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_i",
+          "normalized_name": "throughput",
+          "unit": "cars",
+          "definition": "Cars completing the plaza.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_max",
+          "normalized_name": "cost normalizer",
+          "unit": "currency/year",
+          "definition": "Maximum cost used for standardization.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_max",
+          "normalized_name": "wait normalizer",
+          "unit": "s",
+          "definition": "Maximum wait used for standardization.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F_max",
+          "normalized_name": "safety normalizer",
+          "unit": "dimensionless",
+          "definition": "Maximum proxy value used for standardization.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_max",
+          "normalized_name": "throughput normalizer",
+          "unit": "cars",
+          "definition": "Maximum throughput used for standardization.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "C_i",
+        "W_i",
+        "F_i",
+        "Q_i",
+        "C_max",
+        "W_max",
+        "F_max",
+        "Q_max"
+      ],
+      "outputs": [
+        "S_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70174-003",
+          "page": 10,
+          "label": "(1)",
+          "source_expression": "satisfaction_i = cost_i/max(cost) + wait_i/max(wait) + (1-safety_i/max(safety)) + (1-throughput_i/max(throughput))",
+          "normalized_latex": "S_i = C_i/C_max + W_i/W_max + 1 - F_i/F_max + 1 - Q_i/Q_max",
+          "purpose": "Combine standardized cost, wait, safety, and throughput terms.",
+          "variable_symbols": [
+            "S_i",
+            "C_i",
+            "C_max",
+            "W_i",
+            "W_max",
+            "F_i",
+            "F_max",
+            "Q_i",
+            "Q_max"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations were checked against focused page proxies."
+      },
+      "objectives": [
+        "Compare plaza configurations with equally scaled cost, waiting, safety, and throughput terms.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "C_i",
+          "W_i",
+          "F_i",
+          "Q_i",
+          "C_max",
+          "W_max",
+          "F_max",
+          "Q_max"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "measure four terms",
+          "normalize by sweep maxima",
+          "sum the terms",
+          "minimize S_i",
+          "compare configurations"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "All terms are standardized to [0,1].",
+        "Merge count is used as a safety proxy.",
+        "Cost, wait, safety, and throughput receive equal weight."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "S_i"
+      ],
+      "validation_refs": [
+        "page 10",
+        "Equation (1)",
+        "page 11 metric definitions"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The safety direction and merge proxy need an independent audit.",
+        "Maxima change with the comparison set."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-007",
+      "page": 12,
+      "section": "5.2 Example Comparison",
+      "family": "scenario aggregation",
+      "purpose": "Compare symmetric, merge-up, and merge-down patterns across three plaza sizes and three traffic levels.",
+      "base_or_modification": "paper-specific",
+      "summary": "Compare symmetric, merge-up, and merge-down patterns across three plaza sizes and three traffic levels.",
+      "variables": [
+        {
+          "symbol": "T",
+          "normalized_name": "aggregated throughput",
+          "unit": "ratio",
+          "definition": "Completed cars divided by spawned cars across traffic levels.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_i",
+          "normalized_name": "passed cars",
+          "unit": "cars",
+          "definition": "Cars that reach the end at traffic level i.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_i",
+          "normalized_name": "spawned cars",
+          "unit": "cars",
+          "definition": "Cars introduced at traffic level i.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "i",
+          "normalized_name": "traffic index",
+          "unit": "category",
+          "definition": "Low, medium, or high traffic.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pattern",
+          "normalized_name": "merge pattern",
+          "unit": "category",
+          "definition": "Symmetric, merge up, or merge down.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_i",
+        "N_i",
+        "pattern"
+      ],
+      "outputs": [
+        "T"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70174-004",
+          "page": 12,
+          "label": "(2)",
+          "source_expression": "throughput_3l4b = sum(i=1..3) passed_i / sum(i=1..3) spawned_i",
+          "normalized_latex": "T = \\frac{\\sum_{i=1}^{3} P_i}{\\sum_{i=1}^{3} N_i}",
+          "purpose": "Aggregate completed cars across low, medium, and high traffic levels.",
+          "variable_symbols": [
+            "T",
+            "P_i",
+            "N_i",
+            "i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations were checked against focused page proxies."
+      },
+      "objectives": [
+        "Compare symmetric, merge-up, and merge-down patterns across three plaza sizes and three traffic levels.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "P_i",
+          "N_i",
+          "pattern"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "run each traffic level",
+          "count completed cars",
+          "sum numerators and denominators",
+          "compute T",
+          "compare patterns"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Traffic levels are combined after separate runs.",
+        "Each lane-booth size is compared with all three patterns.",
+        "Symmetry is interpreted as reducing outer-lane merge pressure."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "T"
+      ],
+      "validation_refs": [
+        "pages 11-12",
+        "Figures 2-4",
+        "throughput expression"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "The paper does not report replications or uncertainty for each combination."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-008",
+      "page": 15,
+      "section": "6.2-6.3 Sensitivity",
+      "family": "finite-run sensitivity analysis",
+      "purpose": "Test patience, autonomous share, and initial population against merge, throughput, and accumulated-efficiency reporters.",
+      "base_or_modification": "paper-specific",
+      "summary": "Test patience, autonomous share, and initial population against merge, throughput, and accumulated-efficiency reporters.",
+      "variables": [
+        {
+          "symbol": "e_t",
+          "normalized_name": "tick efficiency",
+          "unit": "ratio/tick",
+          "definition": "Cars leaving in tick t divided by initial population.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_acc",
+          "normalized_name": "accumulated efficiency",
+          "unit": "ratio",
+          "definition": "Sum of tick efficiencies through the plotted horizon; the summation is stated in prose.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "O_t",
+          "normalized_name": "cars out this tick",
+          "unit": "cars/tick",
+          "definition": "Cars that exit during tick t.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_0",
+          "normalized_name": "initial population",
+          "unit": "cars",
+          "definition": "Cars in the system at the start.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "tick counter",
+          "unit": "tick",
+          "definition": "Summation index reconstructed from the prose definition of accumulated efficiency.",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "accumulation horizon",
+          "unit": "tick",
+          "definition": "Final tick through which tick efficiencies are summed.",
+          "role": "parameter",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "autonomous share",
+          "unit": "percent",
+          "definition": "Tested at 0, 10, and 25 percent in Figures 8-9.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pat",
+          "normalized_name": "patience setting",
+          "unit": "score",
+          "definition": "Tested at 10, 20, and 30 in Figures 6-7.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N_0",
+        "T",
+        "a",
+        "pat"
+      ],
+      "outputs": [
+        "E_acc"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2017-70174-005",
+          "page": 15,
+          "label": "efficiency",
+          "source_expression": "efficiency_t = cars out of system this tick / cars in system at start; accumulated efficiency sums efficiency_t over ticks",
+          "normalized_latex": "e_t = O_t/N_0,\\quad E_{acc}(T) = \\sum_{t=1}^{T} e_t",
+          "purpose": "Define tick efficiency and the prose-described accumulation used for population sensitivity.",
+          "variable_symbols": [
+            "e_t",
+            "E_acc",
+            "O_t",
+            "N_0",
+            "t",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed equations were checked against focused page proxies."
+      },
+      "objectives": [
+        "Test patience, autonomous share, and initial population against merge, throughput, and accumulated-efficiency reporters.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "N_0",
+          "T",
+          "a",
+          "pat"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "set patience",
+          "run the plaza for 500 ticks",
+          "record merges",
+          "test autonomous shares 0/10/25 percent",
+          "vary starting population",
+          "sum tick efficiency",
+          "plot trajectories"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Autonomous cars are all EZ-Pass and perfectly patient.",
+        "The autonomous sweep is limited to 0, 10, and 25 percent.",
+        "Population effects are normalized by the starting population.",
+        "Behavior Space Figure 5 shows repetitions=1 and a 500-tick time limit."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "E_acc"
+      ],
+      "validation_refs": [
+        "pages 13-16",
+        "Figures 5-10",
+        "Behavior Space reporters"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "No confidence intervals, seeds, or broad mixed-fleet design are supplied."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    },
+    {
+      "model_id": "MU-B-2017-70174-009",
+      "page": 16,
+      "section": "6.2-6.3 Scenario Interpretation",
+      "family": "scenario decision layer",
+      "purpose": "Translate sensitivity outputs into conditional recommendations about patience, autonomous cars, booth types, and future experiments.",
+      "base_or_modification": "paper-specific",
+      "summary": "Translate sensitivity outputs into conditional recommendations about patience, autonomous cars, booth types, and future experiments.",
+      "variables": [
+        {
+          "symbol": "mix",
+          "normalized_name": "vehicle/payment mix",
+          "unit": "category",
+          "definition": "Combination of human/autonomous and payment classes.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "flow",
+          "normalized_name": "traffic level",
+          "unit": "category",
+          "definition": "Low, medium, or high traffic.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rec",
+          "normalized_name": "recommendation",
+          "unit": "text",
+          "definition": "Conditional operational suggestion.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gap",
+          "normalized_name": "evidence gap",
+          "unit": "text",
+          "definition": "Unresolved replication or category limitation.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mix",
+        "flow"
+      ],
+      "outputs": [
+        "rec",
+        "gap"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper describes agent procedures or scenario reporters without a separate displayed governing equation."
+      },
+      "objectives": [
+        "Translate sensitivity outputs into conditional recommendations about patience, autonomous cars, booth types, and future experiments.",
+        "Keep assumptions, simulated outputs, derived metrics, and recommendations in separate evidence classes."
+      ],
+      "constraints": [
+        "Retain page, unit, lane/booth configuration, payment type, traffic regime, and reporter definition.",
+        "Do not silently repair printed formulas, proxy directions, missing replications, or untested fleet ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The model requires its stated plaza geometry, agent population, payment mix, and traffic regime."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The source assumes symmetric entry, rule-following cars, no downstream spillback into service, and a bounded autonomous share."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No stochastic equilibrium or steady-state proof is supplied; runs are finite scenario simulations."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters combine stated assumptions, random draws, fixed NetLogo settings, and reporter aggregation; no external calibration ledger is supplied.",
+        "parameters": [
+          "mix",
+          "flow"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "classify scenario",
+          "read the reporter",
+          "state the conditional recommendation",
+          "name the gap",
+          "propose the next experiment"
+        ],
+        "software": [
+          "NetLogo and Behavior Space"
+        ],
+        "convergence_criteria": "No random seed, warm-up rule, replication precision, or stopping diagnostic is reported."
+      },
+      "assumptions": [
+        "Recommendations stay within tested configurations.",
+        "Human and exact-change booths are not separated.",
+        "Further work is needed before field adoption."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The procedure is conceptually inspectable, but source code, parameter distributions, seeds, geometry files, and external validation are incomplete."
+      },
+      "handoff_outputs": [
+        "rec",
+        "gap"
+      ],
+      "validation_refs": [
+        "pages 16-17",
+        "Strengths/Weaknesses",
+        "Further Work"
+      ],
+      "computational_cost": "The paper reports a large combination sweep but no runtime, hardware, memory, seed ledger, or reproducible run archive.",
+      "strengths": [
+        "The component has a visible place in the agent-state -> procedure -> reporter -> comparison chain.",
+        "Its output can be labeled assumed, simulated, derived, or recommended without upgrading evidence strength."
+      ],
+      "limitations": [
+        "A recommendation is not a construction-ready design."
+      ],
+      "missing_details": [
+        "NetLogo source, version, interface file, random seeds, replications, calibration targets, raw reporter tables, and uncertainty intervals are absent."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-B-2017-70174-001",
+      "to_model_id": "MU-B-2017-70174-002",
+      "handoff": "model-level configuration becomes car-level state"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-002",
+      "to_model_id": "MU-B-2017-70174-003",
+      "handoff": "agent state consumes road geometry"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-003",
+      "to_model_id": "MU-B-2017-70174-004",
+      "handoff": "payment route reaches service-time rule"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-004",
+      "to_model_id": "MU-B-2017-70174-005",
+      "handoff": "service and motion are interpreted in physical units"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-005",
+      "to_model_id": "MU-B-2017-70174-006",
+      "handoff": "physical reporters enter the satisfaction score"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-006",
+      "to_model_id": "MU-B-2017-70174-007",
+      "handoff": "score compares merge-pattern scenarios"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-007",
+      "to_model_id": "MU-B-2017-70174-008",
+      "handoff": "comparison baseline supplies sensitivity settings"
+    },
+    {
+      "from_model_id": "MU-B-2017-70174-008",
+      "to_model_id": "MU-B-2017-70174-009",
+      "handoff": "sensitivity outputs become bounded recommendations"
+    }
+  ]
+}

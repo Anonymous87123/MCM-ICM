@@ -1,0 +1,51 @@
+Team#73156                                                                                Page 24 of 27
+
+        curpoint(i).Geometry = 'Point';                   scolor}); %repmat(landcolor,
+        nextpoint(i).Geometry = 'Point';            numel(states), 1)
+        if res(i, 3) == 0                           geoshow(ax, states, 'DisplayType',
+                                                    'polygon', ...
+              curpoint(i).Lon = res(i, 2);
+              curpoint(i).Lat = res(i, 1);                'SymbolSpec', faceColors)
+              curpoint(i).Name = '';                rivers = shaperead('worldrivers',
+        end                                         'UseGeoCoords', true);
+        if res(i, 3) == 1                           geoshow(rivers, 'Color', 'blue')
+              nextpoint(i).Lon = res(i, 2);         geoshow(nextpoint,
+              nextpoint(i).Lat = res(i, 1);         'MarkerEdgeColor','r','Marker', '.',
+              nextpoint(i).Name = '';               'MarkerSize',10)
+        end                                         geoshow(curpoint,'MarkerEdgeColor', 'r',
+  end                                               'Marker', '.', 'MarkerSize',10 )
+                                                    set(gcf, 'Position', [100, 100, 800, 400])
+  figure                                            %% Reading the data of Super filling piles in
+  ax = worldmap('World');                           the United States
+  ax = worldmap([25, 55], [230, 300]);              [~, ~, data] =
+  land = shaperead('landareas', 'UseGeoCoords',     xlsread('SuperChargeData.xlsx');
+  true);                                            count = 1;
+  geoshow(ax, land, 'FaceColor', landcolor)         for i = 1:size(data, 1)
+  lakes = shaperead('worldlakes',
+  'UseGeoCoords', true);                                  if mod(i, 13) == 8
+  geoshow(lakes, 'FaceColor', lakescolor)                       sdata = data{i, 1};
+  states = shaperead('usastatelo', 'UseGeoCoords',              index = strfind(sdata, ', ');
+  true);                                                        superCharge(count, 1) =
+  scolor = [];
+  for i = 1:size(states, 1)                         str2num(sdata(1:index-1));
+                                                                superCharge(count, 2) =
+        if states(i).PopDens2000 >= 150
+              scolor = [scolor; mcolor(4, :)];      str2num(sdata(index+2:end));
+                                                                superCharge(count, 3) = data{i-1,
+        elseif states(i).PopDens2000 >= 50
+              scolor = [scolor; mcolor(3, :)];      1};
+                                                                SuperChargeStatus{count, 1} =
+        else
+              scolor = [scolor; mcolor(1, :)];      data{i+2, 1};
+                                                                count = count + 1;
+        end
+  end                                                     end
+  index = find(scolor(:, 1) >= 1);                  end
+  for i = 1:size(index, 1)                          %% Drawing the data of Super-filling piles
+                                                    in the United States
+        scolor(index(i), :) = [1 0 0];              count = 1;
+  end                                               superpoint = [];
+  faceColors = makesymbolspec('Polygon',...         chargeline = [];
+                                                    for i = 1:size(res, 1)
+        {'INDEX', [1 numel(states)],
+  'FaceColor', ...                                        if res(i, 3) == 1 && res(i, 5) == 1

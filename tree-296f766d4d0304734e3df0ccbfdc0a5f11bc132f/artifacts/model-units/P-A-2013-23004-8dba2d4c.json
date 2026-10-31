@@ -1,0 +1,1876 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2013-23004-001",
+      "handoff": "Steady edge-temperature samples in kelvin are reduced to shape-specific edge standard deviations sigma_i.",
+      "to_model_id": "MU-A-2013-23004-002"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-002",
+      "handoff": "Shape-specific sigma_i values and the rectangle baseline sigma_0 enter the normalized discrepancy objective.",
+      "to_model_id": "MU-A-2013-23004-004"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-003",
+      "handoff": "Feasible counts N and dimensionless unused-area rate eta enter the weighted objective.",
+      "to_model_id": "MU-A-2013-23004-004"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-004",
+      "handoff": "The retained shape family and candidate count vector determine which center lattice and containment test are evaluated.",
+      "to_model_id": "MU-A-2013-23004-005"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-005",
+      "handoff": "Feasible arrangement count N returns to eta and the weighted objective for candidate comparison.",
+      "to_model_id": "MU-A-2013-23004-004"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-004",
+      "handoff": "The R=1 objective, shape constraints, and discrepancy values define the worked test calculations.",
+      "to_model_id": "MU-A-2013-23004-006"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-005",
+      "handoff": "Accepted center sets provide the visual layouts and feasible N values used in Tests 1-3.",
+      "to_model_id": "MU-A-2013-23004-006"
+    },
+    {
+      "from_model_id": "MU-A-2013-23004-006",
+      "handoff": "Neighboring scenario selections and objective values expose discrete decision changes under p and W/L.",
+      "to_model_id": "MU-A-2013-23004-007"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "Mesh, tolerance, element order, and convergence checks are not reported.",
+        "software": [
+          "MATLAB PDE Toolbox"
+        ],
+        "status": "partial",
+        "steps": [
+          "Define the open-top pan geometry.",
+          "Reduce the three-dimensional equation to a two-dimensional side-facet problem.",
+          "Enter Table 2 parameters in MATLAB PDE Toolbox.",
+          "Use finite elements to obtain a steady field and sample edge temperature."
+        ]
+      },
+      "assumptions": [
+        "constant forced-convection oven",
+        "isotropic good conductor",
+        "pan approximated by an open rectangular box",
+        "bottom heat is spatially uniform"
+      ],
+      "base_or_modification": "hybrid",
+      "computational_cost": "Finite-element cost is unreported because mesh size and solver settings are absent.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Eq.4-Eq.5 specify normal heat flux on the pan edge."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Eq.2 sets the time derivative to zero as time tends to infinity."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "The source jumps to steady state and supplies no transient initial field."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "constant oven temperature",
+        "isotropic conductivity",
+        "uniform bottom heating",
+        "specified edge flux"
+      ],
+      "equation_status": {
+        "reason": "All central displayed source equations assigned to this unit are visually retained.",
+        "status": "present"
+      },
+      "family": "transient and steady heat conduction with convection and Neumann flux",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-23004-001",
+          "label": "1",
+          "normalized_latex": "\\rho c\\frac{\\partial T}{\\partial t}-\\lambda\\left(\\frac{\\partial^2T}{\\partial x^2}+\\frac{\\partial^2T}{\\partial y^2}+\\frac{\\partial^2T}{\\partial z^2}\\right)=Q_g",
+          "page": 4,
+          "purpose": "State the transient three-dimensional heat equation.",
+          "source_expression": "rho*c*dT/dt - lambda*(d2T/dx2+d2T/dy2+d2T/dz2)=Q_g",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "rho",
+            "c",
+            "T",
+            "t",
+            "lambda",
+            "x",
+            "y",
+            "z",
+            "Q_g"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-002",
+          "label": "2",
+          "normalized_latex": "\\frac{\\partial T}{\\partial t}=0\\quad(t\\to\\infty)",
+          "page": 4,
+          "purpose": "Define the steady-state limit.",
+          "source_expression": "dT/dt=0, t->infinity",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "T",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-003",
+          "label": "3",
+          "normalized_latex": "-\\lambda\\left(\\frac{\\partial^2T}{\\partial x^2}+\\frac{\\partial^2T}{\\partial y^2}+\\frac{\\partial^2T}{\\partial z^2}\\right)=h(T_{ext}-T)",
+          "page": 4,
+          "purpose": "Combine steady conduction with the printed convection term.",
+          "source_expression": "-lambda*(d2T/dx2+d2T/dy2+d2T/dz2)=h*(T_ext-T)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "lambda",
+            "T",
+            "x",
+            "y",
+            "z",
+            "h",
+            "T_ext"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-004",
+          "label": "4",
+          "normalized_latex": "q_{edge}=-\\lambda\\frac{\\partial T}{\\partial n}=q(x,y,z,t)",
+          "page": 5,
+          "purpose": "State the source's Neumann edge-flux boundary.",
+          "source_expression": "q_edge=-lambda*dT/dn=q(x,y,z,t)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q_edge",
+            "lambda",
+            "T",
+            "n",
+            "q",
+            "x",
+            "y",
+            "z",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-005",
+          "label": "5",
+          "normalized_latex": "\\left\\{\\begin{aligned}-\\lambda\\left(\\frac{\\partial^2T}{\\partial x^2}+\\frac{\\partial^2T}{\\partial y^2}\\right)&=h(T_{ext}-T),\\\\q_{edge}&=-\\lambda\\frac{\\partial T}{\\partial n}=q_0.\\end{aligned}\\right.",
+          "page": 5,
+          "purpose": "Define the reduced two-dimensional field and constant edge flux.",
+          "source_expression": "{-lambda*(d2T/dx2+d2T/dy2)=h*(T_ext-T); q_edge=-lambda*dT/dn=q_0}",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "lambda",
+            "T",
+            "x",
+            "y",
+            "h",
+            "T_ext",
+            "q_edge",
+            "n",
+            "q_0"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "T",
+        "q_edge"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The PDE produces plotted fields, but dimensional closure, initial data, and numerical convergence are not demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "lambda",
+        "h",
+        "T_ext",
+        "q_0"
+      ],
+      "limitations": [
+        "Three-dimensional effects are discarded in the reduced solve.",
+        "Printed convection and flux units do not fully close dimensionally."
+      ],
+      "missing_details": [
+        "mesh and element order",
+        "initial condition",
+        "solver tolerance",
+        "convergence study",
+        "complete geometry and boundary implementation"
+      ],
+      "model_id": "MU-A-2013-23004-001",
+      "objectives": [
+        "Compute steady edge temperatures for equal-area candidate shapes."
+      ],
+      "outputs": [
+        "T",
+        "q_edge"
+      ],
+      "page": 4,
+      "parameter_estimation": {
+        "method": "Table 2 supplies standard values rather than a calibration procedure.",
+        "parameters": [
+          "lambda",
+          "h",
+          "T_ext",
+          "q_0"
+        ],
+        "status": "omitted-by-paper"
+      },
+      "purpose": "Compute the steady pan temperature field and edge-temperature distribution.",
+      "section": "Model 1: Distribution of Heat at Edges of Polygon",
+      "strengths": [
+        "Makes a physical mechanism and boundary condition visible before optimization."
+      ],
+      "summary": "A three-dimensional energy equation is reduced to a two-dimensional side-facet PDE and solved with MATLAB PDE Toolbox finite elements.",
+      "validation_refs": [
+        "Fig.3-Fig.6 qualitative fields and curves",
+        "corner-hot pattern compared with motivating observation"
+      ],
+      "variables": [
+        {
+          "definition": "Density in Eq.1.",
+          "normalized_name": "pan density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "mass per volume"
+        },
+        {
+          "definition": "Specific heat in Eq.1.",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "c",
+          "unit": "energy per mass kelvin"
+        },
+        {
+          "definition": "Pan temperature over space and time.",
+          "normalized_name": "temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "K"
+        },
+        {
+          "definition": "Time coordinate.",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        },
+        {
+          "definition": "Isotropic conductivity; Table 2 gives 50.",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "lambda",
+          "unit": "W/(m K)"
+        },
+        {
+          "definition": "Spatial coordinate.",
+          "normalized_name": "x coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "Spatial coordinate.",
+          "normalized_name": "y coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "y",
+          "unit": "m"
+        },
+        {
+          "definition": "Spatial coordinate in the unreduced model.",
+          "normalized_name": "z coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z",
+          "unit": "m"
+        },
+        {
+          "definition": "Source term in Eq.1; no value is supplied.",
+          "normalized_name": "volumetric heat generation",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Q_g",
+          "unit": "W/m^3"
+        },
+        {
+          "definition": "Table 2 gives 100.",
+          "normalized_name": "convection coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "W/(m^2 K) as printed"
+        },
+        {
+          "definition": "External oven temperature; Table 2 gives 330.",
+          "normalized_name": "oven temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_ext",
+          "unit": "K"
+        },
+        {
+          "definition": "Normal heat flux on a pan edge.",
+          "normalized_name": "edge heat flux",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "q_edge",
+          "unit": "source unit unresolved"
+        },
+        {
+          "definition": "Normal derivative direction.",
+          "normalized_name": "outward normal coordinate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "unit direction"
+        },
+        {
+          "definition": "Boundary function q(x,y,z,t).",
+          "normalized_name": "specified boundary flux function",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "source unit unresolved"
+        },
+        {
+          "definition": "Constant boundary flux in the reduced Eq.5; Table 2 gives 1000.",
+          "normalized_name": "constant edge flux",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "q_0",
+          "unit": "W/(s m) as printed"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual threshold, uncertainty, or model comparison is reported.",
+        "software": [
+          "MATLAB or unspecified curve-fitting facility"
+        ],
+        "status": "partial",
+        "steps": [
+          "Sample edge temperatures for each fixed-area shape.",
+          "Compute edge variance and standard deviation.",
+          "Fit sigma against edge count m."
+        ]
+      },
+      "assumptions": [
+        "edge standard deviation is an adequate proxy for baking evenness",
+        "sampled shapes share the same area and environment"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "A small finite set of polygon simulations plus an unspecified curve fit.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The comparison is restricted to the sampled regular polygons and circle."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [],
+          "status": "not-applicable"
+        }
+      },
+      "constraints": [
+        "same pan area",
+        "same thermal parameters",
+        "regular polygons"
+      ],
+      "equation_status": {
+        "reason": "All central displayed source equations assigned to this unit are visually retained.",
+        "status": "present"
+      },
+      "family": "fixed-area comparative statistic and empirical inverse-square fit",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-23004-006",
+          "label": "6",
+          "normalized_latex": "\\sigma=\\frac{23.605}{m^2}+0.035\\approx\\frac{23.605}{m^2}\\propto\\frac{1}{m^2}",
+          "page": 8,
+          "purpose": "Fit edge-temperature dispersion as a function of edge count.",
+          "source_expression": "sigma=23.605/m^2+0.035 approx 23.605/m^2 proportional 1/m^2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "sigma",
+            "m"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "sigma"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The monotone sample is visible, but fit quality and predictive validity are not demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "m"
+      ],
+      "limitations": [
+        "The source drops the fitted intercept when claiming proportionality."
+      ],
+      "missing_details": [
+        "fit method",
+        "residuals",
+        "confidence interval",
+        "out-of-sample check"
+      ],
+      "model_id": "MU-A-2013-23004-002",
+      "objectives": [
+        "Estimate a comparable heat-uniformity penalty for each candidate shape."
+      ],
+      "outputs": [
+        "sigma"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "The paper says curve fitting but supplies no fit sample, residual metric, or uncertainty.",
+        "parameters": [
+          "23.605",
+          "0.035"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compress each shape's edge field into a dispersion value for optimization.",
+      "section": "Edge-temperature statistics and curve fit",
+      "strengths": [
+        "Creates a transparent interface from field output to the design objective."
+      ],
+      "summary": "Fixed-area regular polygons are compared by edge standard deviation and fitted against edge count.",
+      "validation_refs": [
+        "Table 3",
+        "Fig.6",
+        "Fig.7"
+      ],
+      "variables": [
+        {
+          "definition": "Dispersion of edge temperature for an m-sided regular polygon.",
+          "normalized_name": "edge-temperature standard deviation",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "K"
+        },
+        {
+          "definition": "Number of regular-polygon edges; the circle is the limiting case.",
+          "normalized_name": "polygon edge count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Global packing optimality and completeness of the screened shape family are not proved.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Compute nominal two-rack area capacity.",
+          "Route capacity-only demand to rectangles and heat-only demand to circles.",
+          "Screen polygon families by edge and interior waste.",
+          "Use Eq.17 to motivate a constant correction factor."
+        ]
+      },
+      "assumptions": [
+        "equal pan area",
+        "regular close-packing patterns are adequate",
+        "polygons with at least twelve edges can be approximated as circles"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite case enumeration over retained shapes and arrangements; exact search size is not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Pans must fit within the rectangular rack under shape-specific geometry."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "Rack and pan dimensions are supplied before counting."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "two racks except the Eq.11 denominator",
+        "integer counts",
+        "at most two shapes later in the mixed branch"
+      ],
+      "equation_status": {
+        "reason": "All central displayed source equations assigned to this unit are visually retained.",
+        "status": "present"
+      },
+      "family": "two-rack capacity metric with shape-specific geometric packing",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-23004-007",
+          "label": "7",
+          "normalized_latex": "\\eta=1-\\frac{NA}{2S}",
+          "page": 8,
+          "purpose": "Measure nominal unused rack area across two racks.",
+          "source_expression": "eta=1-NA/(2S)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "eta",
+            "N",
+            "A",
+            "S"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-011",
+          "label": "11",
+          "normalized_latex": "\\min\\eta=\\min\\left(1-\\frac{NA}{S}\\right)\\Longrightarrow\\max N",
+          "page": 10,
+          "purpose": "Reduce the capacity-only branch to maximum count while preserving the source denominator.",
+          "source_expression": "min eta=min(1-NA/S) implies max N",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "eta",
+            "N",
+            "A",
+            "S"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-012",
+          "label": "12",
+          "normalized_latex": "N_{max}=2\\left\\lfloor\\frac{S}{A}\\right\\rfloor",
+          "page": 10,
+          "purpose": "Set a two-rack area upper bound on pan count.",
+          "source_expression": "N_max=2 floor(S/A)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N_max",
+            "S",
+            "A"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-013",
+          "label": "13",
+          "normalized_latex": "\\left\\{\\begin{aligned}A&=wl,\\quad S=WL,\\\\N_{max}/2&\\ge n_wn_l,\\\\1\\le n_w&\\le\\lfloor W/w\\rfloor,\\\\1\\le n_l&\\le\\lfloor L/l\\rfloor.\\end{aligned}\\right.",
+          "page": 10,
+          "purpose": "Define rectangle geometry and integer fit constraints.",
+          "source_expression": "A=wl,S=WL; N_max/2>=n_w*n_l; 1<=n_w<=floor(W/w); 1<=n_l<=floor(L/l)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "A",
+            "w",
+            "l",
+            "S",
+            "W",
+            "L",
+            "N_max",
+            "n_w",
+            "n_l"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-015",
+          "label": "15",
+          "normalized_latex": "N\\le N_{max}=2\\left\\lfloor\\frac{S}{A}\\right\\rfloor",
+          "page": 11,
+          "purpose": "Retain capacity feasibility for circle arrangements.",
+          "source_expression": "N<=N_max=2 floor(S/A)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N",
+            "N_max",
+            "S",
+            "A"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-017",
+          "label": "17",
+          "normalized_latex": "S_l=A\\left(\\frac{\\cot(\\pi/(4l_{poly}))}{l_{poly}}-1\\right),\\quad l_{poly}>1",
+          "page": 13,
+          "purpose": "State the source's area relation for regular 4l-gon overlap packing.",
+          "source_expression": "S_l=A*(cot(pi/(4l))/l-1), l>1",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "S_l",
+            "A",
+            "l_poly"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "eta",
+        "N",
+        "N_max",
+        "S_l"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Area bounds are feasible upper limits, but the finite pattern catalogue does not prove global packing optimality.",
+        "status": "partial"
+      },
+      "inputs": [
+        "S",
+        "A",
+        "w",
+        "l",
+        "W",
+        "L",
+        "l_poly"
+      ],
+      "limitations": [
+        "Eq.7 and Eq.11 use inconsistent rack-area denominators.",
+        "Odd and irregular polygons are excluded without exhaustive comparison."
+      ],
+      "missing_details": [
+        "global packing proof",
+        "wall and inter-pan clearance",
+        "m=11 disposition",
+        "derivation of Eq.17"
+      ],
+      "model_id": "MU-A-2013-23004-003",
+      "objectives": [
+        "Minimize unused area or maximize pan count subject to rack containment."
+      ],
+      "outputs": [
+        "eta",
+        "N",
+        "N_max",
+        "S_l"
+      ],
+      "page": 8,
+      "parameter_estimation": {
+        "method": "Geometry and supplied dimensions determine the quantities; no statistical estimation is used.",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "purpose": "Compute unused-area rate, capacity bounds, and feasible rectangle/circle/polygon arrangements.",
+      "section": "Area utilization and packing branches",
+      "strengths": [
+        "Makes discrete capacity and geometry constraints explicit."
+      ],
+      "summary": "The source combines a nominal area penalty with rectangle, circle, and regular-polygon packing cases.",
+      "validation_refs": [
+        "Fig.8-Fig.15",
+        "Eq.7 and Eq.11-Eq.17"
+      ],
+      "variables": [
+        {
+          "definition": "One minus nominal pan area divided by two-rack area.",
+          "normalized_name": "unused-area rate",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Count across both racks.",
+          "normalized_name": "total pan count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        },
+        {
+          "definition": "Fixed pan area.",
+          "normalized_name": "area of one pan",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A",
+          "unit": "cm^2 or consistent area"
+        },
+        {
+          "definition": "Rectangular rack area.",
+          "normalized_name": "area of one rack",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "S",
+          "unit": "cm^2 or consistent area"
+        },
+        {
+          "definition": "Rectangle-pan width.",
+          "normalized_name": "pan width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "w",
+          "unit": "length"
+        },
+        {
+          "definition": "Rectangle-pan length; distinct from polygon index l_poly.",
+          "normalized_name": "pan length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "l",
+          "unit": "length"
+        },
+        {
+          "definition": "Rack width.",
+          "normalized_name": "rack width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "length"
+        },
+        {
+          "definition": "Rack length.",
+          "normalized_name": "rack length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "length"
+        },
+        {
+          "definition": "Two-rack area upper bound.",
+          "normalized_name": "capacity upper count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N_max",
+          "unit": "count"
+        },
+        {
+          "definition": "Integer rectangle count in width direction.",
+          "normalized_name": "pan count across rack width",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "n_w",
+          "unit": "count"
+        },
+        {
+          "definition": "Integer rectangle count in length direction.",
+          "normalized_name": "pan count across rack length",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "n_l",
+          "unit": "count"
+        },
+        {
+          "definition": "Printed Eq.17 area associated with a 4l-gon packing pattern.",
+          "normalized_name": "enclosed unused area",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "S_l",
+          "unit": "area"
+        },
+        {
+          "definition": "Index l in a regular 4l-gon, l>1.",
+          "normalized_name": "quarter edge-count index",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "l_poly",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Enumeration range, tie rule, and proof of optimality are not reported.",
+        "software": [
+          "unspecified implementation"
+        ],
+        "status": "partial",
+        "steps": [
+          "Compute eta and normalized sigma.",
+          "Select p=1, p=0, or mixed branch.",
+          "Enumerate retained shape-count vectors.",
+          "Call the arrangement algorithm for feasible counts.",
+          "Evaluate the weighted objective and retain the minimum."
+        ]
+      },
+      "assumptions": [
+        "linear scalarization represents user preferences",
+        "R puts the two factors on a comparable scale",
+        "no more than two shapes are practical"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite mixed-integer enumeration coupled to geometric counting; complexity is unreported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Eq.20 and Eq.22 impose area, count, and shape-family constraints."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "Candidate shapes, rack geometry, and preference p are provided."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "two-rack area",
+        "integer shape counts",
+        "four shape families",
+        "maximum two simultaneous shapes"
+      ],
+      "equation_status": {
+        "reason": "All central displayed source equations assigned to this unit are visually retained.",
+        "status": "present"
+      },
+      "family": "normalized multi-objective mixed-integer shape and count optimization",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-23004-008",
+          "label": "8",
+          "normalized_latex": "\\sigma=\\frac{\\sum_i n_i\\sigma_i}{\\sigma_0N}",
+          "page": 9,
+          "purpose": "Aggregate per-shape edge discrepancy.",
+          "source_expression": "sigma=(sum_i n_i*sigma_i)/(sigma_0*N)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "sigma",
+            "n_i",
+            "sigma_i",
+            "sigma_0",
+            "N"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-009",
+          "label": "9",
+          "normalized_latex": "\\min\\left[R\\eta p+\\sigma(1-p)\\right]",
+          "page": 9,
+          "purpose": "Define the weighted utilization-uniformity objective.",
+          "source_expression": "min [R*eta*p+sigma*(1-p)]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R",
+            "eta",
+            "p",
+            "sigma"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-010",
+          "label": "10",
+          "normalized_latex": "\\mathrm{s.t.}\\quad 2S-NA\\ge0,\\quad\\sum_i n_i=N,\\quad n_i\\in Z_+",
+          "page": 9,
+          "purpose": "State area, count, and integer constraints.",
+          "source_expression": "s.t. 2S-NA>=0; sum_i n_i=N, n_i in Z+",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "S",
+            "N",
+            "A",
+            "n_i",
+            "Z_plus"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-014",
+          "label": "14",
+          "normalized_latex": "\\min\\sigma=\\min\\left(\\frac{\\sum_i n_i\\sigma_i}{\\sigma_0N}\\right)",
+          "page": 11,
+          "purpose": "State the heat-uniformity-only branch.",
+          "source_expression": "min sigma=min[(sum_i n_i*sigma_i)/(sigma_0*N)]",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "sigma",
+            "n_i",
+            "sigma_i",
+            "sigma_0",
+            "N"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-016",
+          "label": "16",
+          "normalized_latex": "\\min\\left[R\\eta p+\\sigma(1-p)\\right],\\quad0<p<1",
+          "page": 11,
+          "purpose": "Restore the mixed-preference objective.",
+          "source_expression": "min [R*eta*p+sigma*(1-p)], 0<p<1",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R",
+            "eta",
+            "p",
+            "sigma"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-018",
+          "label": "18",
+          "normalized_latex": "R=\\mathrm{const}",
+          "page": 13,
+          "purpose": "Assert a constant correction factor across the retained shapes.",
+          "source_expression": "R=const",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-019",
+          "label": "19",
+          "normalized_latex": "\\min\\left[R\\eta p+\\sigma(1-p)\\right]",
+          "page": 13,
+          "purpose": "Restate the final mixed-shape objective.",
+          "source_expression": "min [R*eta*p+sigma*(1-p)]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R",
+            "eta",
+            "p",
+            "sigma"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-020",
+          "label": "20",
+          "normalized_latex": "\\mathrm{s.t.}\\left\\{\\begin{aligned}2S-NA&\\ge0,\\\\n_4+n_6+n_8+n_\\infty&=N,\\quad n_i\\in Z_+,\\\\\\sigma_i&\\in\\{\\sigma_4,\\sigma_6,\\sigma_8,\\sigma_\\infty\\}.\\end{aligned}\\right.",
+          "page": 13,
+          "purpose": "Restrict the decision vector to four retained shape families.",
+          "source_expression": "s.t. 2S-NA>=0; n4+n6+n8+n_infinity=N; n_i in Z+; sigma_i in {sigma4,sigma6,sigma8,sigma_infinity}",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "S",
+            "N",
+            "A",
+            "n_4",
+            "n_6",
+            "n_8",
+            "n_infty",
+            "n_i",
+            "Z_plus",
+            "sigma_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-021",
+          "label": "21",
+          "normalized_latex": "\\min[\\eta p+\\sigma(1-p)]=\\min\\left[p\\left(1-\\frac{NA}{2S}\\right)+(1-p)\\frac{\\sum_i n_i\\sigma_i}{\\sigma_0N}\\right]",
+          "page": 15,
+          "purpose": "Expand the R=1 test objective.",
+          "source_expression": "min[eta*p+sigma*(1-p)]=min[p*(1-NA/(2S))+(1-p)*(sum_i n_i*sigma_i)/(sigma_0*N)]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "eta",
+            "p",
+            "sigma",
+            "N",
+            "A",
+            "S",
+            "n_i",
+            "sigma_i",
+            "sigma_0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-022",
+          "label": "22",
+          "normalized_latex": "\\mathrm{s.t.}\\left\\{\\begin{aligned}2S-NA&\\ge0,\\\\n_4+n_6+n_8+n_\\infty&=N,\\quad n_i\\in Z_+,\\\\\\sigma_i&\\in\\{\\sigma_4,\\sigma_6,\\sigma_8,\\sigma_\\infty\\}.\\end{aligned}\\right.",
+          "page": 15,
+          "purpose": "Carry the mixed-shape constraints into the worked tests.",
+          "source_expression": "same shape-count and two-rack constraints as Eq.20",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "S",
+            "N",
+            "A",
+            "n_4",
+            "n_6",
+            "n_8",
+            "n_infty",
+            "n_i",
+            "Z_plus",
+            "sigma_i"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "sigma",
+        "n_4",
+        "n_6",
+        "n_8",
+        "n_infty",
+        "f"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The objective is computable for tested candidates, but scaling, zero-count semantics, and global optimality are not demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "eta",
+        "sigma_i",
+        "sigma_0",
+        "p",
+        "R",
+        "n_i",
+        "S",
+        "A"
+      ],
+      "limitations": [
+        "R lacks quantitative derivation.",
+        "The linear scalarization and normalization are not preference-calibrated."
+      ],
+      "missing_details": [
+        "preference elicitation",
+        "R calibration",
+        "tie handling",
+        "integer-domain zero convention",
+        "search bounds"
+      ],
+      "model_id": "MU-A-2013-23004-004",
+      "objectives": [
+        "Minimize corrected unused area and normalized temperature discrepancy."
+      ],
+      "outputs": [
+        "sigma",
+        "n_4",
+        "n_6",
+        "n_8",
+        "n_infty",
+        "f"
+      ],
+      "page": 9,
+      "parameter_estimation": {
+        "method": "R is asserted constant from an approximate rate comparison and set to one in tests.",
+        "parameters": [
+          "R",
+          "p",
+          "sigma_0"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Select shape counts under a user preference between capacity and heat uniformity.",
+      "section": "Weighted pan optimization",
+      "strengths": [
+        "Makes the stakeholder tradeoff explicit and preserves limiting cases."
+      ],
+      "summary": "Count-weighted edge discrepancy and unused-area rate are combined with p and R, then routed through limiting and mixed preference regimes.",
+      "validation_refs": [
+        "Eq.8-Eq.10",
+        "Eq.14",
+        "Eq.16",
+        "Eq.18-Eq.22",
+        "Tests 1-3"
+      ],
+      "variables": [
+        {
+          "definition": "Count-weighted edge-temperature discrepancy normalized by rectangle baseline.",
+          "normalized_name": "normalized aggregate discrepancy",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Number of pans of candidate shape i.",
+          "normalized_name": "count of shape i",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "n_i",
+          "unit": "count"
+        },
+        {
+          "definition": "Edge-temperature standard deviation for shape i.",
+          "normalized_name": "shape-specific edge discrepancy",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "sigma_i",
+          "unit": "K"
+        },
+        {
+          "definition": "Normalization baseline.",
+          "normalized_name": "rectangle discrepancy baseline",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "sigma_0",
+          "unit": "K"
+        },
+        {
+          "definition": "Sum of shape-specific counts.",
+          "normalized_name": "total pan count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        },
+        {
+          "definition": "Scales area and heat factors; later set to one in tests.",
+          "normalized_name": "correction factor",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "R",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Output from the packing metric.",
+          "normalized_name": "unused-area rate",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Weight in [0,1].",
+          "normalized_name": "capacity preference weight",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Rack area.",
+          "normalized_name": "one-rack area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "S",
+          "unit": "area"
+        },
+        {
+          "definition": "Fixed pan area.",
+          "normalized_name": "one-pan area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A",
+          "unit": "area"
+        },
+        {
+          "definition": "Count in the four-edge family.",
+          "normalized_name": "rectangle count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "n_4",
+          "unit": "count"
+        },
+        {
+          "definition": "Count in the six-edge family.",
+          "normalized_name": "hexagon count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "n_6",
+          "unit": "count"
+        },
+        {
+          "definition": "Count in the eight-edge family.",
+          "normalized_name": "octagon count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "n_8",
+          "unit": "count"
+        },
+        {
+          "definition": "Count in the circle limit.",
+          "normalized_name": "circle count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "n_infty",
+          "unit": "count"
+        },
+        {
+          "definition": "Printed Z+ domain; zero inclusion is not resolved.",
+          "normalized_name": "source integer domain",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Z_plus",
+          "unit": "integer set"
+        },
+        {
+          "definition": "Weighted objective evaluated in the worked tests.",
+          "normalized_name": "test objective value",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The finite candidate loop ends after all matrix centers are tested; lattice bounds, spacing derivation, and tie handling are omitted.",
+        "software": [
+          "flowchart only; implementation not supplied"
+        ],
+        "status": "partial",
+        "steps": [
+          "Input rack-edge equations and polygon shape.",
+          "Build the center matrix for a close-packing pattern.",
+          "Initialize N to zero.",
+          "Select each candidate center within coordinate ranges.",
+          "Compute distances to all rack boundaries.",
+          "Accept the center when shape-specific conditions hold and increment N.",
+          "Rotate the rack ninety degrees for hexagons and keep the better count.",
+          "Output N and the arrangement."
+        ]
+      },
+      "assumptions": [
+        "each retained shape has an enumerable close-packing center lattice",
+        "center containment plus radius clearance is sufficient"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Linear in the number of candidate centers times the number of rack boundaries for each enumerated pattern and orientation.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Center-to-wall distance is compared with inscribed radius, or circumradius for the source's hexagon rule."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "Input edge equations and shape initialize the flowchart."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "every accepted polygon remains inside the rack",
+        "shape-specific radius rule",
+        "hexagon evaluated in two rack orientations"
+      ],
+      "equation_status": {
+        "reason": "The source expresses this stage procedurally rather than with a displayed equation.",
+        "status": "not-applicable"
+      },
+      "family": "center-lattice containment and counting algorithm",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "N",
+        "C"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The flowchart supports finite counting for listed patterns but not global packing optimality or arbitrary mixtures.",
+        "status": "partial"
+      },
+      "inputs": [
+        "C",
+        "r_in",
+        "r_out"
+      ],
+      "limitations": [
+        "No executable pseudocode or complete lattice construction is supplied.",
+        "The hexagon circumradius boundary rule is source-specific and not justified."
+      ],
+      "missing_details": [
+        "lattice spacing",
+        "coordinate bounds",
+        "mixture collision checks",
+        "tie rule",
+        "executable code"
+      ],
+      "model_id": "MU-A-2013-23004-005",
+      "objectives": [
+        "Maximize feasible center count for a selected shape and pattern."
+      ],
+      "outputs": [
+        "N",
+        "C"
+      ],
+      "page": 13,
+      "parameter_estimation": {
+        "method": "Lattice spacing and radii are geometric rather than estimated.",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "purpose": "Count feasible placements for each retained close-packing pattern.",
+      "section": "Regular Polygon Arrangement Based on Center Matrix Statics",
+      "strengths": [
+        "Turns shape-specific packing drawings into a reusable counting procedure."
+      ],
+      "summary": "Candidate polygon centers are represented as a dot matrix, filtered by rack bounds and radius conditions, with a rotation branch for hexagons.",
+      "validation_refs": [
+        "Fig.16",
+        "Fig.17",
+        "Fig.18"
+      ],
+      "variables": [
+        {
+          "definition": "Centers implied by a close-packing pattern.",
+          "normalized_name": "candidate center matrix",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "C",
+          "unit": "coordinate lattice"
+        },
+        {
+          "definition": "Least distance from a center to rack boundaries.",
+          "normalized_name": "center-to-boundary distance",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "d",
+          "unit": "length"
+        },
+        {
+          "definition": "Rectangle and general-polygon boundary clearance.",
+          "normalized_name": "inscribed radius",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "r_in",
+          "unit": "length"
+        },
+        {
+          "definition": "Source's hexagon boundary clearance.",
+          "normalized_name": "circumradius",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "r_out",
+          "unit": "length"
+        },
+        {
+          "definition": "Number of feasible pans.",
+          "normalized_name": "accepted center count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Candidate enumeration and stopping details are absent.",
+        "software": [
+          "unspecified implementation"
+        ],
+        "status": "partial",
+        "steps": [
+          "Fix rack area, pan area, and R.",
+          "Enumerate arrangement patterns.",
+          "Set p and W/L for a test.",
+          "Evaluate feasible shapes and counts.",
+          "Report the selected arrangement and weighted objective."
+        ]
+      },
+      "assumptions": [
+        "commercial rack dimensions represent the intended use case",
+        "standard thermal environment",
+        "the retained shape catalogue is adequate"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Unreported finite enumeration for three scenarios.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Candidate arrangements must fit the rack as tested by the center-matrix algorithm."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "Eq.23-Eq.25 fix geometry and capacity before the tests."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "R=1",
+        "standard environment",
+        "two 9 by 13 inch racks",
+        "A=30 cm^2"
+      ],
+      "equation_status": {
+        "reason": "All central displayed source equations assigned to this unit are visually retained.",
+        "status": "present"
+      },
+      "family": "worked numerical scenario evaluation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-23004-023",
+          "label": "23",
+          "normalized_latex": "S=9''\\times13''=22.86\\,\\mathrm{cm}\\times33.02\\,\\mathrm{cm}=754.8372\\,\\mathrm{cm}^2",
+          "page": 16,
+          "purpose": "Convert rack dimensions to area.",
+          "source_expression": "S=9in*13in=22.86cm*33.02cm=754.8372cm^2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "S",
+            "W",
+            "L"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-024",
+          "label": "24",
+          "normalized_latex": "A=30\\,\\mathrm{cm}^2",
+          "page": 16,
+          "purpose": "Fix one brownie-pan area.",
+          "source_expression": "A=30 cm^2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "A"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-025",
+          "label": "25",
+          "normalized_latex": "N\\le N_{max}=2\\left\\lfloor\\frac{S}{A}\\right\\rfloor=50",
+          "page": 16,
+          "purpose": "Compute the area-only two-rack count bound.",
+          "source_expression": "N<=N_max=2 floor(S/A)=50",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N",
+            "N_max",
+            "S",
+            "A"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-026",
+          "label": "26",
+          "normalized_latex": "N=40,\\quad m=6,\\quad a=3.3981\\,\\mathrm{cm}",
+          "page": 16,
+          "purpose": "Report the Test 1 selected hexagon design.",
+          "source_expression": "N=40,m=6,a=3.3981cm",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N",
+            "m",
+            "a"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-027",
+          "label": "27",
+          "normalized_latex": "f(p=0.5)_{min}=0.5\\left(1-\\frac{40\\times30}{2\\times754.8372}\\right)+0.5\\times0.3861=0.2956",
+          "page": 16,
+          "purpose": "Evaluate the Test 1 objective.",
+          "source_expression": "f(p=0.5)_min=0.5*(1-40*30/(2*754.8372))+0.5*0.3861=0.2956",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "f",
+            "p"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-028",
+          "label": "28",
+          "normalized_latex": "N=30,\\quad m=8,\\quad a=2.4926\\,\\mathrm{cm}",
+          "page": 16,
+          "purpose": "Report the Test 2 selected octagon design.",
+          "source_expression": "N=30,m=8,a=2.4926cm",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N",
+            "m",
+            "a"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-029",
+          "label": "29",
+          "normalized_latex": "f(p=0.25)_{min}=0.25\\left(1-\\frac{30\\times30}{2\\times754.8372}\\right)+0.75\\times0.2048=0.2546",
+          "page": 17,
+          "purpose": "Evaluate the Test 2 objective.",
+          "source_expression": "f(p=0.25)_min=0.25*(1-30*30/(2*754.8372))+0.75*0.2048=0.2546",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "f",
+            "p"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-030",
+          "label": "30",
+          "normalized_latex": "N=40,\\quad m=8,\\quad a=2.4926\\,\\mathrm{cm}",
+          "page": 17,
+          "purpose": "Report the Test 3 selected octagon design after changing W/L.",
+          "source_expression": "N=40,m=8,a=2.4926cm",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "N",
+            "m",
+            "a",
+            "W",
+            "L"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-23004-031",
+          "label": "31",
+          "normalized_latex": "f(p=0.5)_{min}=0.5\\left(1-\\frac{40\\times30}{2\\times754.8372}\\right)+0.5\\times0.2048=0.2050",
+          "page": 17,
+          "purpose": "Evaluate the Test 3 objective.",
+          "source_expression": "f(p=0.5)_min=0.5*(1-40*30/(2*754.8372))+0.5*0.2048=0.2050",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "f",
+            "p"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "N",
+        "m",
+        "a",
+        "f"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Arithmetic substitution is reproducible, but the candidate search and claimed optimum cannot be independently reproduced from the paper alone.",
+        "status": "partial"
+      },
+      "inputs": [
+        "S",
+        "A",
+        "p",
+        "W",
+        "L"
+      ],
+      "limitations": [
+        "Worked scenarios are not holdout validation.",
+        "No external measured thermal or baking outcome is used."
+      ],
+      "missing_details": [
+        "candidate enumeration",
+        "code",
+        "all rejected objective values",
+        "tie handling",
+        "measured validation data"
+      ],
+      "model_id": "MU-A-2013-23004-006",
+      "objectives": [
+        "Find the lowest objective among enumerated candidate arrangements for each test."
+      ],
+      "outputs": [
+        "N",
+        "m",
+        "a",
+        "f"
+      ],
+      "page": 15,
+      "parameter_estimation": {
+        "method": "Scenario inputs are selected, not estimated; the commercial images are illustrative provenance.",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "purpose": "Instantiate the optimization and report selected arrangements and objective values.",
+      "section": "Model test scenarios",
+      "strengths": [
+        "Pairs every reported design with parameters, a layout, and an objective value."
+      ],
+      "summary": "A commercial oven's two rack dimensions and a fixed brownie area define three preference/aspect-ratio scenarios.",
+      "validation_refs": [
+        "Eq.23-Eq.31",
+        "Fig.20-Fig.22"
+      ],
+      "variables": [
+        {
+          "definition": "9 by 13 inch rack area, 754.8372 cm^2.",
+          "normalized_name": "one-rack area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "S",
+          "unit": "cm^2"
+        },
+        {
+          "definition": "Fixed at 30.",
+          "normalized_name": "brownie pan area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A",
+          "unit": "cm^2"
+        },
+        {
+          "definition": "30 or 40 in the tests.",
+          "normalized_name": "selected pan count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        },
+        {
+          "definition": "Two-rack upper bound of 50.",
+          "normalized_name": "area upper count",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "N_max",
+          "unit": "count"
+        },
+        {
+          "definition": "0.5 or 0.25.",
+          "normalized_name": "capacity weight",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "22.86 cm in Tests 1-2; ratio perturbed in Test 3.",
+          "normalized_name": "rack width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "cm"
+        },
+        {
+          "definition": "33.02 cm in Tests 1-2.",
+          "normalized_name": "rack length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "cm"
+        },
+        {
+          "definition": "Six or eight.",
+          "normalized_name": "selected polygon edge count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "count"
+        },
+        {
+          "definition": "3.3981 cm or 2.4926 cm.",
+          "normalized_name": "polygon edge length",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "cm"
+        },
+        {
+          "definition": "Reported weighted score.",
+          "normalized_name": "minimum objective value",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No systematic grid, global sensitivity, or recommendation-reversal threshold is supplied.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Compare nearby W/L and p cases.",
+          "Observe changes in m, N, arrangement, and objective.",
+          "Attribute discontinuity to integer decisions.",
+          "Recommend avoiding or sampling decision boundaries.",
+          "Propose rounded corners and nonregular polygons as future work."
+        ]
+      },
+      "assumptions": [
+        "nearby scenario changes reveal relevant discrete boundaries",
+        "tested cases represent the local decision surface"
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "A few scenario comparisons; no formal complexity or sampling design is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Claims are bounded to the compared p and W/L cases."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "Test outputs provide the baseline cases."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "finite tested cases",
+        "integer decision vector",
+        "same candidate family"
+      ],
+      "equation_status": {
+        "reason": "The source expresses this stage procedurally rather than with a displayed equation.",
+        "status": "not-applicable"
+      },
+      "family": "discrete decision-boundary analysis",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "m",
+        "N"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The examples establish possible discontinuity, not robustness over the full preference-geometry domain.",
+        "status": "partial"
+      },
+      "inputs": [
+        "p",
+        "W_over_L"
+      ],
+      "limitations": [
+        "Only a few nearby cases are shown.",
+        "Improved shapes are proposed but not optimized or validated."
+      ],
+      "missing_details": [
+        "systematic p-W/L sweep",
+        "decision-reversal map",
+        "uncertainty analysis",
+        "rounded-corner optimization",
+        "irregular-polygon algorithm"
+      ],
+      "model_id": "MU-A-2013-23004-007",
+      "objectives": [
+        "Identify inputs at which the selected shape or arrangement changes."
+      ],
+      "outputs": [
+        "m",
+        "N"
+      ],
+      "page": 18,
+      "parameter_estimation": {
+        "method": "No parameter estimation is performed.",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "purpose": "Explain recommendation changes under nearby preference and rack-ratio inputs and propose bounded improvements.",
+      "section": "Sensitivity and design recommendation",
+      "strengths": [
+        "Connects integer optimization to a practical warning about sudden recommendation changes."
+      ],
+      "summary": "The source interprets integer-valued solutions as discontinuous and compares a few neighboring cases before recommending boundary awareness and future shape extensions.",
+      "validation_refs": [
+        "Tests 1-3",
+        "Sensitivity Analysis",
+        "Strengths and Weaknesses",
+        "Improvement"
+      ],
+      "variables": [
+        {
+          "definition": "Perturbed user weight.",
+          "normalized_name": "capacity preference weight",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Compared near 0.6923 and 0.6833.",
+          "normalized_name": "rack aspect ratio",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W_over_L",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Selected shape family.",
+          "normalized_name": "selected edge count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "count"
+        },
+        {
+          "definition": "Selected number of pans.",
+          "normalized_name": "selected count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2013-23004-8dba2d4c",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "8dba2d4c8aee035cfdbb8dc037102972de2ab6096b960155aeb651faf18401c6",
+  "year": "2013"
+}

@@ -1,0 +1,48 @@
+Team # 32722                                                                      Page 9 of 37
+
+
+the likelihood that an individual will become infected from other infected individuals. More
+details on the specific structure and function of this layer can be found in the following
+section.
+    Moving one layer up from the individual models is the regional or “city” model. Each
+city acts as a node in a larger network, with connections to nearby cities that allow for the
+modeling of intercity movement and transportation dynamics. Although a city is comprised
+of individual state-based persons, the interactions between cities can be governed by different
+rules that may not arise from individual modeling alone.
+    Cities can be likewise grouped into nations and further grouped into regions and conti-
+nents ad absurdum, allowing for progressively larger (or smaller) levels of detail that can be
+implemented in a modular way. A simulation done at the national level, for example, can
+be further refined by breaking nations into districts and modeling them separately, down to
+the level of individual villages or neighborhoods. This implicit scalability and potential for
+detail made the model extremely attractive for our purposes. Our specific implementation
+of this model is described below.
+
+2.3.1. Individual Layer - Stochastic State Based Model
+    At the beginning of each simulation, we designate a number of individuals as either
+susceptible, latent, or infectious based off of World Health Organization (WHO) data on the
+outbreak. These individuals are accurately spread throughout the afflicted districts based
+on the February 2015 Situation Report [1] and, as previously mentioned, progress through
+the states defined in Fig. 4.
+    Before even entering into the probability of a state transition, individuals that are sus-
+ceptible, latent, or displaying early symptoms check to see if they “decide” to move based
+on their region’s probability of movement, a factor whose determination is discussed in Sec.
+2.3.3. Regardless of the outcome of this roll, individuals then proceed to check the modifi-
+cations of their state within the context of their starting region on that day.
+    Transitions between states are probabilistic at two levels, depending on the transition.
+All transitions have a probability of occurring within the state model, defined in Table 1
+when an individual is in the preceding state. Some interactions, specifically the chance
+of a susceptible individual becoming infected and the chance of an individual becoming
+hospitalized or vaccinated, must be triggered by the simulation before the aforementioned
+probability calculation.
+    The probabilities of an individual triggering an interaction with an individual deemed
+infectious (broken up into early stage symptomatic, late stage symptomatic, and unburied
+individuals) is simulation dependent and calculated at each timestep from the following
+equation:
+                                   Quantity of type of individual in region
+                     Pinteract =
+                                    Total number of individuals in region
+    After a state transition has been triggered, the simulation checks the probability of such
+a transition occurring as governed by the probabilities listed in Table 1. These probabilities
+attempt to fit real-world data on the epidemic to an individual’s progression through the
+disease, normalized to the average duration of each stage of the illness from available data
+from Sierra Leone and Liberia. Guinea was discounted due to lack of available statistics,

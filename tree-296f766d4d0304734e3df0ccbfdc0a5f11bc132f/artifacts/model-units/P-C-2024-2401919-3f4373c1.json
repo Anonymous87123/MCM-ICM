@@ -1,0 +1,1042 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2401919-3f4373c1",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "3f4373c10081702489d0bc17f115aa2829212f2d16ef94d3559aca2f8988ef47",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q245-001",
+      "page": 6,
+      "section": "3 TASK1&2: PCA-TOPSIS",
+      "family": "principal component weighted score",
+      "purpose": "Score one player's performance at every point of one match from eighteen indicators.",
+      "base_or_modification": "paper-specific",
+      "summary": "One model per player per match. Eighteen indicators in five aspects are standardized to mean zero and variance one, reduced to the six components whose cumulative contribution reaches 86.65 percent, and scored by S = Z W I. The printed weights are 0.3910, 0.1626, 0.1358, 0.0689, 0.0527, 0.0363, while Table 2 gives the fifth and sixth components as 5.56 and 5.27 percent and gives 3.63 percent to the seventh. Both are kept. The serve count loads near zero on every component. KMO is 0.8263 and the Barlett p-value is below 0.01. The ideal-solution step of TOPSIS is named and never written as an equation.",
+      "variables": [
+        {
+          "symbol": "Sstar",
+          "normalized_name": "standardized indicator",
+          "unit": "1",
+          "definition": "An indicator shifted to mean zero and scaled to variance one.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "mean",
+          "unit": "1",
+          "definition": "Mean of one indicator over the sample points.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "standard deviation",
+          "unit": "1",
+          "definition": "Standard deviation of one indicator.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "correlation",
+          "unit": "1",
+          "definition": "Correlation between two standardized indicators.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "eigenvalue",
+          "unit": "1",
+          "definition": "Eigenvalue of the correlation matrix, eighteen of them.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "contribution",
+          "unit": "1",
+          "definition": "Share of one eigenvalue in the total.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "cumulative contribution",
+          "unit": "1",
+          "definition": "Running share of the leading eigenvalues. The cutoff is 85 percent.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "decision matrix",
+          "unit": "1",
+          "definition": "Loadings, eighteen indicators by six components.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wi",
+          "normalized_name": "component weight",
+          "unit": "1",
+          "definition": "Printed weights 0.3910, 0.1626, 0.1358, 0.0689, 0.0527, 0.0363.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "standardized data",
+          "unit": "1",
+          "definition": "Sample points by original indicators.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "weight vector",
+          "unit": "1",
+          "definition": "The six weights as a column.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Score",
+          "normalized_name": "performance score",
+          "unit": "1",
+          "definition": "Called momentum. One value per point.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "indicator count",
+          "unit": "1",
+          "definition": "Eighteen.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "component count",
+          "unit": "1",
+          "definition": "Six.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "sample length",
+          "unit": "1",
+          "definition": "Number of points in the match.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SCi",
+          "normalized_name": "serve count",
+          "unit": "1",
+          "definition": "Accumulated serves, kept and then found negligible.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Z",
+        "t",
+        "SCi"
+      ],
+      "outputs": [
+        "Score"
+      ],
+      "handoff_outputs": [
+        "Score"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q245-001",
+          "page": 8,
+          "label": "(1)",
+          "source_expression": "S*_i = (S_{i,t} - mu(S_i)) / sigma(S_i)",
+          "normalized_latex": "S_i^{\\ast}=(S_{i,t}-\\mu(S_i))/\\sigma(S_i)",
+          "purpose": "Standardization to mean zero and variance one. The formula takes S_i as the example.",
+          "variable_symbols": [
+            "Sstar",
+            "mu",
+            "sigma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q245-002",
+          "page": 9,
+          "label": "(2)",
+          "source_expression": "R = Cov(S*, G*) / sqrt(Var(S*) Var(G*))",
+          "normalized_latex": "R_{S,G}=\\mathrm{Cov}(S^{\\ast},G^{\\ast})/\\sqrt{\\mathrm{Var}(S^{\\ast})\\mathrm{Var}(G^{\\ast})}",
+          "purpose": "Correlation. The formula is scrambled around the square root.",
+          "variable_symbols": [
+            "R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-003",
+          "page": 9,
+          "label": "(3)",
+          "source_expression": "T_k = lambda_k / sum_{j=1}^{p} lambda_j",
+          "normalized_latex": "T_k=\\lambda_k\\big/\\sum_{j=1}^{p}\\lambda_j",
+          "purpose": "Information contribution of one component.",
+          "variable_symbols": [
+            "T",
+            "lambda",
+            "p"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q245-004",
+          "page": 10,
+          "label": "(4)",
+          "source_expression": "D_k = sum_{i=1}^{k} lambda_i / sum_{j=1}^{p} lambda_j",
+          "normalized_latex": "D_k=\\sum_{i=1}^{k}\\lambda_i\\big/\\sum_{j=1}^{p}\\lambda_j",
+          "purpose": "Cumulative contribution. Six components reach 86.65 percent.",
+          "variable_symbols": [
+            "D",
+            "lambda",
+            "p"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q245-005",
+          "page": 11,
+          "label": "(5)",
+          "source_expression": "W = (w_ij) in R^{18 x 6}",
+          "normalized_latex": "W=(w_{ij})\\in\\mathbb{R}^{18\\times 6}",
+          "purpose": "Principal component decision matrix. The equation number sits on the next line.",
+          "variable_symbols": [
+            "W",
+            "p",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q245-006",
+          "page": 11,
+          "label": "(6)",
+          "source_expression": "S = Z W I",
+          "normalized_latex": "S=ZWI",
+          "purpose": "Score as a product of three matrices. The sentence says simply multiply.",
+          "variable_symbols": [
+            "Score",
+            "Z",
+            "W",
+            "I"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (1) through (6) are printed. (2) and (5) are scrambled."
+      },
+      "objectives": [
+        "Track one player's performance at every point, and call the score momentum."
+      ],
+      "constraints": [
+        "One model per player per match.",
+        "Six components, cutoff 85 percent.",
+        "The serve count is kept and found negligible."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each point carries the eighteen indicators, some accumulated from the start of the set and some taken at that moment."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The six components and their printed weights come from the correlation matrix. The TOPSIS ideal target is named and not written as an equation.",
+        "parameters": [
+          "Wi",
+          "h",
+          "p"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Fill speed with the average and the three categorical gaps with zero.",
+          "Accumulate the binary columns and then decrement them.",
+          "Map the serve and return codes.",
+          "Standardize.",
+          "Keep six components.",
+          "Multiply the three matrices."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "KMO 0.8263 and a Barlett p-value below 0.01."
+      },
+      "assumptions": [
+        "Players are in a normal state.",
+        "Venue, weather, crowd, and earlier matches rarely affect the score."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The matrix product is legible. The ideal-solution ranking that the prose promises is not written down."
+      },
+      "validation_refs": [
+        "Table 2: six components, cumulative 86.65 percent.",
+        "Figure 7: Alcaraz against Djokovic.",
+        "KMO 0.8263."
+      ],
+      "computational_cost": "One eigendecomposition per player per match.",
+      "strengths": [
+        "The weights come from the data instead of a judge."
+      ],
+      "limitations": [
+        "The printed weights and Table 2 disagree on the fifth and sixth components."
+      ],
+      "missing_details": [
+        "The ideal target of the TOPSIS step.",
+        "Which of the two weight lists was multiplied."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q245-002",
+      "page": 12,
+      "section": "4 Task3: white noise",
+      "family": "white noise test",
+      "purpose": "Test whether the performance score is a random sequence.",
+      "base_or_modification": "base",
+      "summary": "The score from model I is treated as the explicit form of momentum and tested twice. The autocorrelation of the final shows first-order truncation and the partial autocorrelation shows fourth-order tailing. Ljung-Box and Box-Pierce are both used because the sample is about 300, between the ranges the paper quotes for each. With h = 20 and alpha = 0.05 the p-values are 6.645e-13 and 2.087e-12. Across 62 sequences from 31 matches, 60 fail the test and 2 pass, and the paper calls the rate 96.78 percent.",
+      "variables": [
+        {
+          "symbol": "Score",
+          "normalized_name": "performance score",
+          "unit": "1",
+          "definition": "The score handed over from model I.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "autocorrelation",
+          "unit": "1",
+          "definition": "Population autocorrelation at a lag.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rhohat",
+          "normalized_name": "sample autocorrelation",
+          "unit": "1",
+          "definition": "Sample autocorrelation at lag k.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "lag count",
+          "unit": "1",
+          "definition": "Set to 20.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "significance level",
+          "unit": "1",
+          "definition": "Set to 0.05.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "sample size",
+          "unit": "1",
+          "definition": "About 300 in the final.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "QLB",
+          "normalized_name": "ljung-box statistic",
+          "unit": "1",
+          "definition": "n(n+2) times the weighted sum of squared autocorrelations.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "QBP",
+          "normalized_name": "box-pierce statistic",
+          "unit": "1",
+          "definition": "n times the sum of squared autocorrelations.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "p-value",
+          "unit": "1",
+          "definition": "Printed 6.645e-13 and 2.087e-12 for the final.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Score",
+        "n"
+      ],
+      "outputs": [
+        "QLB",
+        "QBP",
+        "p"
+      ],
+      "handoff_outputs": [
+        "p"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q245-007",
+          "page": 13,
+          "label": "(7)",
+          "source_expression": "H0: rho_1 = ... = rho_h = 0",
+          "normalized_latex": "H_0:\\rho_1=\\cdots=\\rho_h=0",
+          "purpose": "Null hypothesis of no serial correlation.",
+          "variable_symbols": [
+            "rho",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q245-008",
+          "page": 14,
+          "label": "(8)",
+          "source_expression": "Ha: some rho_k differs from 0",
+          "normalized_latex": "H_a:\\exists\\,k,\\ \\rho_k\\neq 0",
+          "purpose": "Alternative hypothesis.",
+          "variable_symbols": [
+            "rho",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q245-009",
+          "page": 14,
+          "label": "(9)",
+          "source_expression": "Q_LB = n(n+2) sum rhohat_k^2 / (n-k)",
+          "normalized_latex": "Q_{LB}=n(n+2)\\sum_{k=1}^{h}\\hat\\rho_k^{2}/(n-k)",
+          "purpose": "Ljung-Box statistic. The sum is split across lines.",
+          "variable_symbols": [
+            "QLB",
+            "n",
+            "rhohat",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-010",
+          "page": 14,
+          "label": "(10)",
+          "source_expression": "Q_BP = n sum rhohat_k^2",
+          "normalized_latex": "Q_{BP}=n\\sum_{k=1}^{h}\\hat\\rho_k^{2}",
+          "purpose": "Box-Pierce statistic. The formula is broken around the sum.",
+          "variable_symbols": [
+            "QBP",
+            "n",
+            "rhohat",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-011",
+          "page": 14,
+          "label": "(11)",
+          "source_expression": "Q > chi^2_{1-alpha, h} iff p < alpha",
+          "normalized_latex": "Q>\\chi^{2}_{1-\\alpha,h}\\iff p<\\alpha",
+          "purpose": "Rejection rule. Alpha is 0.05 and h is 20.",
+          "variable_symbols": [
+            "QLB",
+            "QBP",
+            "alpha",
+            "h",
+            "p"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (7) through (11) are printed. (9) and (10) are split."
+      },
+      "objectives": [
+        "Reject or keep the coach's claim that swings are random."
+      ],
+      "constraints": [
+        "h = 20.",
+        "alpha = 0.05.",
+        "Both statistics, because the sample sits between their quoted ranges."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The sequence is the performance score of one player in one match."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Nothing is fitted. The lag count and the level are chosen.",
+        "parameters": [
+          "h",
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Read the autocorrelation and partial autocorrelation against the 95 percent band.",
+          "Compute both statistics at 20 lags.",
+          "Reject when the p-value is below 0.05.",
+          "Repeat for 62 sequences."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "60 of 62 sequences rejected, a rate of 96.78 percent."
+      },
+      "assumptions": [
+        "The performance score is the explicit form of momentum."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Both statistics and the rejection rule are the standard ones and are legible."
+      },
+      "validation_refs": [
+        "Figure 8: first-order truncation, fourth-order tailing.",
+        "62 sequences, 60 rejected."
+      ],
+      "computational_cost": "Two statistics on each of 62 sequences.",
+      "strengths": [
+        "The two sequences that pass are counted."
+      ],
+      "limitations": [
+        "The paper moves from likely not, on one figure, to obviously not, on the count."
+      ],
+      "missing_details": [
+        "Which two sequences passed."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q245-003",
+      "page": 15,
+      "section": "5 Task4: GM(1,1)",
+      "family": "grey disaster prediction",
+      "purpose": "Predict the times at which the score difference swings.",
+      "base_or_modification": "base",
+      "summary": "The score difference is differenced again and kept only where it passes a threshold that is never given a number. The level ratios of the resulting sequence fall in (0.9200, 1.0869), inside the printed interval, so no shift is applied. A GM(1,1) is fit by least squares to the times of those points, and a predicted time is marked 1 when it exceeds the same unnamed threshold. On the final the average relative error is 0.0378, the absolute correlation 0.9895, and the mean square deviation ratio 0.1284.",
+      "variables": [
+        {
+          "symbol": "dM",
+          "normalized_name": "score difference",
+          "unit": "1",
+          "definition": "Difference of the two players' scores at one point.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t0",
+          "normalized_name": "catastrophic sequence",
+          "unit": "1",
+          "definition": "Times at which the differenced score passes the threshold.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "level ratio",
+          "unit": "1",
+          "definition": "Ratio of successive terms. All fall in (0.9200, 1.0869).",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t1",
+          "normalized_name": "accumulated sequence",
+          "unit": "1",
+          "definition": "Partial sums of the catastrophic sequence.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "mean sequence",
+          "unit": "1",
+          "definition": "Average of two successive accumulated terms.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "development coefficient",
+          "unit": "1",
+          "definition": "Grey parameter.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "grey input",
+          "unit": "1",
+          "definition": "Grey parameter.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "design matrix",
+          "unit": "1",
+          "definition": "Rows of negative mean term and one.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "response",
+          "unit": "1",
+          "definition": "The catastrophic sequence from the second term on.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "that",
+          "normalized_name": "predicted time",
+          "unit": "1",
+          "definition": "Closed form of the whitening equation.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thr",
+          "normalized_name": "threshold",
+          "unit": "1",
+          "definition": "The predetermined cutoff. No value is printed.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        }
+      ],
+      "inputs": [
+        "dM"
+      ],
+      "outputs": [
+        "that"
+      ],
+      "handoff_outputs": [
+        "that",
+        "dM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q245-012",
+          "page": 15,
+          "label": "(12)",
+          "source_expression": "lambda(k) = t0(k-1) / t0(k)",
+          "normalized_latex": "\\lambda(k)=t^{(0)}(k-1)/t^{(0)}(k)",
+          "purpose": "Level ratio. The interval is printed as (0.9200, 1.0869).",
+          "variable_symbols": [
+            "lam",
+            "t0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-013",
+          "page": 16,
+          "label": "(13)",
+          "source_expression": "t0(k) + a z(k) = b",
+          "normalized_latex": "t^{(0)}(k)+a\\,z^{(1)}(k)=b",
+          "purpose": "Grey differential equation. The number sits beside the next formula.",
+          "variable_symbols": [
+            "t0",
+            "a",
+            "z",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-014",
+          "page": 16,
+          "label": "(14)",
+          "source_expression": "dt1/dm + a t1(m) = b",
+          "normalized_latex": "\\frac{dt^{(1)}}{dm}+a\\,t^{(1)}(m)=b",
+          "purpose": "Whitening equation. The paper calls m a continous variable.",
+          "variable_symbols": [
+            "t1",
+            "a",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-015",
+          "page": 16,
+          "label": "(15)",
+          "source_expression": "t1(k+1) = (t0(1) - b/a) exp(-a k) + b/a",
+          "normalized_latex": "\\hat t^{(1)}(k+1)=\\big(t^{(0)}(1)-b/a\\big)e^{-ak}+b/a",
+          "purpose": "Closed form. The terms are scattered around the equation number.",
+          "variable_symbols": [
+            "that",
+            "t0",
+            "a",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (12) through (15) are printed. (13), (14), and (15) are scrambled."
+      },
+      "objectives": [
+        "Name the points where the lead changes hands."
+      ],
+      "constraints": [
+        "The level ratio must sit inside the printed interval.",
+        "A prediction is a turning point only past the threshold."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The sequence starts from the times of the observed swings."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Least squares, u = (B^T B)^{-1} B^T Y. The threshold is used and never valued.",
+        "parameters": [
+          "a",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Difference the two scores.",
+          "Difference again and keep the times past the threshold.",
+          "Check the level ratio.",
+          "Accumulate and average.",
+          "Solve for a and b.",
+          "Mark a predicted time as 1 when it exceeds the threshold."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Average relative error 0.0378 on the final."
+      },
+      "assumptions": [
+        "A swing is a jump in the score difference, not the difference itself."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The threshold that builds the sequence is never given, so the sequence cannot be rebuilt."
+      },
+      "validation_refs": [
+        "Figure 9: predicted and actual turning points of the final.",
+        "Relative error 0.0378, absolute correlation 0.9895, deviation ratio 0.1284."
+      ],
+      "computational_cost": "One least-squares fit on a sequence of about twenty points.",
+      "strengths": [
+        "The feasibility check is reported before the fit, and the shift is refused with a reason."
+      ],
+      "limitations": [
+        "The threshold is used twice and printed never."
+      ],
+      "missing_details": [
+        "The value of the threshold.",
+        "The length of the catastrophic sequence."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q245-004",
+      "page": 17,
+      "section": "6 Task5: grey relational",
+      "family": "grey relational analysis",
+      "purpose": "Rank the indicators by how closely their difference tracks the score difference.",
+      "base_or_modification": "base",
+      "summary": "The score difference of the final is the reference and the eighteen indicator differences are the comparisons. The resolution coefficient is left inside [0, 1] and never valued. The pointwise coefficients are averaged because the paper calls them too scattered. The largest printed correlation is 0.9250 for games won, and the offensive indicators average 0.9239. Cumulative points are given as 0.833 and used as the contrast. Several printed rows are negative, and the table is misaligned.",
+      "variables": [
+        {
+          "symbol": "dM",
+          "normalized_name": "score difference",
+          "unit": "1",
+          "definition": "Reference sequence, taken from the two scores.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dp",
+          "normalized_name": "indicator difference",
+          "unit": "1",
+          "definition": "One of the eighteen comparison sequences.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xi",
+          "normalized_name": "relational coefficient",
+          "unit": "1",
+          "definition": "Closeness of one comparison to the reference at one moment.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "resolution coefficient",
+          "unit": "1",
+          "definition": "A number in [0, 1]. No value is printed.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "relational degree",
+          "unit": "1",
+          "definition": "Average of the coefficients. Games won prints 0.9250.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "length",
+          "unit": "1",
+          "definition": "Number of moments.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "dM",
+        "dp",
+        "n"
+      ],
+      "outputs": [
+        "r"
+      ],
+      "handoff_outputs": [
+        "r"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q245-016",
+          "page": 17,
+          "label": "(16)",
+          "source_expression": "xi_i(k) = (min + rho max) / (|dM - dS| + rho max)",
+          "normalized_latex": "\\xi_i(k)=(\\min\\min|\\Delta M-\\Delta p|+\\rho\\max\\max|\\Delta M-\\Delta p|)/(|\\Delta M(k)-\\Delta S(k)|+\\rho\\max\\max|\\Delta M-\\Delta p|)",
+          "purpose": "Relational coefficient. The formula is split and rho is unvalued.",
+          "variable_symbols": [
+            "xi",
+            "dM",
+            "dp",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q245-017",
+          "page": 17,
+          "label": "(17)",
+          "source_expression": "r_i = (1/n) sum xi_i(k)",
+          "normalized_latex": "r_i=(1/n)\\sum_{k=1}^{n}\\xi_i(k)",
+          "purpose": "Relational degree, the average the paper asks for.",
+          "variable_symbols": [
+            "r",
+            "xi",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (16) and (17) are printed. (16) is split across lines."
+      },
+      "objectives": [
+        "Name the indicator and the aspect most tied to a swing."
+      ],
+      "constraints": [
+        "The reference is the score difference of one match.",
+        "The pointwise coefficients are averaged."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The sequences are the differences between the two players in the final."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The average is computed. The resolution coefficient is never chosen in print.",
+        "parameters": [
+          "rho"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Take the score difference as the reference.",
+          "Take the eighteen indicator differences as comparisons.",
+          "Compute the coefficient at each moment.",
+          "Average it.",
+          "Rank the indicators and the five aspects."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "Games won 0.9250. Offensive efficiency averages 0.9239."
+      },
+      "assumptions": [
+        "Closer curves mean a stronger tie to the swings."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The average is legible. The coefficient depends on a resolution that has no printed value."
+      },
+      "validation_refs": [
+        "Table 3: games won 0.9250, points 0.833."
+      ],
+      "computational_cost": "Eighteen averages over one match.",
+      "strengths": [
+        "The advice is tied to the two winning numbers and to the one small number."
+      ],
+      "limitations": [
+        "The table is misaligned and several printed correlations are negative."
+      ],
+      "missing_details": [
+        "The value of rho.",
+        "Which row of the scrambled table belongs to which indicator."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q245-001",
+      "to_model_id": "MU-C-Q245-002",
+      "handoff": "The performance score is the sequence the white noise tests examine."
+    },
+    {
+      "from_model_id": "MU-C-Q245-001",
+      "to_model_id": "MU-C-Q245-003",
+      "handoff": "The difference of the two scores is what the grey model differences again."
+    },
+    {
+      "from_model_id": "MU-C-Q245-001",
+      "to_model_id": "MU-C-Q245-004",
+      "handoff": "The same score difference is the reference sequence of the relational analysis."
+    },
+    {
+      "from_model_id": "MU-C-Q245-003",
+      "to_model_id": "MU-C-Q245-004",
+      "handoff": "The swings the grey model predicts are what the relational ranking is meant to explain."
+    }
+  ]
+}

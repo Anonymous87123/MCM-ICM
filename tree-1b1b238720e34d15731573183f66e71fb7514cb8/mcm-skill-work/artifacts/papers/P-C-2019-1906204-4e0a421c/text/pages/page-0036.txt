@@ -1,0 +1,72 @@
+Team # 1906204                                                      Page 34 of 38
+
+
+    for row in label:
+        A = []
+        B = []
+        for i in range(7):
+            try:
+                 A.append(int(opioid.loc[(opioid[’FIPS_Combined’] == fips)
+                     &(opioid[’YYYY’] == i+2010), ’DrugReports’]))
+            except:A.append(0)
+            try:
+                 B.append(float(data[i].loc[(data[i][’GEO.id2’] == str(fips)),
+                  (data[i].loc[’Id’] == row)].values[0][0]))
+            except:B.append(0)
+        A = sklearn.preprocessing.normalize(np.array([A]), norm = ’l2’)
+        B = sklearn.preprocessing.normalize(np.array([B]), norm = ’l2’)
+        corr = np.corrcoef(A,B)[0][1]
+        df.loc[fips,row] = corr
+    print(fips)
+for row in label:
+    df.loc[’avg’,row] = df[row].mean()
+df.to_csv(’rough_corr_result.csv’, encoding=’utf-8’)
+
+
+Association rule learning
+
+import xlrd
+import pandas as pd
+import numpy as np
+from math import *
+import xlwt
+import operator
+import copy
+from functools import reduce
+import matplotlib.pyplot as plt
+import matplotlib
+import networkx as nx
+from itertools import combinations
+from igraph import *
+import seaborn as sns
+import pylab
+import random
+from sklearn.cluster import KMeans
+import sklearn.preprocessing
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+from collections import Counter
+sns.set_style(’darkgrid’)
+
+def get_drugReport(time, location, excel_output_add_new =
+ pd.read_excel(’excel_output_add_new.xls’, sheet_name=’biubiu’)):
+    try:
+         return excel_output_add_new[(excel_output_add_new[’FIPS_Combined’] ==
+             location)&(excel_output_add_new[’YYYY’] == time)][’TotalDrugReportsCounty’].values[0]
+    except:
+         return 0
+#print(get_drugReport(2010, 51001))
+
+def get_new_dataFile_with_drug(time):
+    problem2_data = pd.read_excel(’problem2_data.xlsx’, sheet_name=’Sheet1’)
+    dat = [0]
+    for i in range(1, len(problem2_data[’GEO.id2’])):
+        loc = problem2_data[’GEO.id2’].iloc[i]
+        k = get_drugReport(time, loc)
+        dat.append(get_drugReport(time, loc))
+        print(k)
+    problem2_data[’drug’] = dat
+    print(dat)
+    return ’sucess’
+
+def Kmean_sub(data):

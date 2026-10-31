@@ -1,0 +1,879 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2023-2308000-0f85170c",
+  "problem_type": "E",
+  "year": "2023",
+  "source_sha256": "0f85170c80399e9491d57c3e6de9c0882b18dffc9b165d7ff403d0e4e922c0f9",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2023-2308000-PPGE",
+      "section": "Light Pollution Risk Assessment Model",
+      "family": "evaluation",
+      "summary": "A risk grade for a place, read from two scores and placed on a nine-cell matrix. Ten secondary indicators are drawn from three dimensions, society, economy, and ecology and health, and then sorted into a damage system and a requirement system of five indicators each. The damage system holds night traffic accidents, the night market's operating profit, the cost of greenhouse gas emissions, the loss of biodiversity, and the medical cost of light-related disease. The requirement system holds population density, average light intensity, the quantity of public lighting, the growth rate of GDP, and the output of the photovoltaic industry. Each score is a weighted sum of its five indicators after min-max normalization. The weights come from projection pursuit: the data of forty countries are projected onto one direction, the direction is chosen so the projected values spread out overall and cluster locally, and a genetic algorithm in the MATLAB ga toolbox solves the nonlinear program. The resulting weights are treated as universal and reused everywhere later. The two scores are scaled into the unit interval, cut at 0.3 and 0.7 into low, medium, and high, and plotted with damage on the horizontal axis and requirement on the vertical. The nine cells collapse into three grades: cells VI, VII, and VIII are grade A, cells I, V, and IX are grade B, and cells II, III, and IV are grade C, with A the lowest risk. Cell VII is the ideal region and the corner (0, 1) the optimal point.",
+      "computational_cost": "One genetic algorithm run on forty countries, then two weighted sums per site",
+      "purpose": "Grade any place on its light pollution risk.",
+      "base_or_modification": "hybrid",
+      "page": 7,
+      "inputs": [
+        "x"
+      ],
+      "outputs": [
+        "DSI",
+        "RSI",
+        "G"
+      ],
+      "handoff_outputs": [
+        "DSI",
+        "RSI",
+        "w"
+      ],
+      "objectives": [
+        "Place each site in the matrix cell that matches its harm and its need."
+      ],
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "normalized_indicator",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "A secondary indicator after min-max normalization",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Projection weight of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "projection_direction",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Unit vector giving the optimal projection direction",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "projected_value",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "One-dimensional projection of one sample",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "spread",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Standard deviation of the projected values",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "local_density",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Local density of the projected values",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "projection_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Product of spread and local density",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DSI",
+          "normalized_name": "damage_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted score of the damage system",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RSI",
+          "normalized_name": "requirement_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted score of the requirement system",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "risk_grade",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Grade A, B, or C read from the matrix cell",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2308000-PPGE-1",
+          "equation_label": "System scores",
+          "equation_text": "DSI and RSI are each the weighted sum of their five normalized indicators.",
+          "source_expression": "DSI and RSI are each the weighted sum of their five normalized indicators.",
+          "normalized_latex": "DSI=\\sum_{j=1}^{5} w_{2j} x_{2j},\\ RSI=\\sum_{j=1}^{5} w_{1j} x_{1j}",
+          "purpose": "Collapse ten indicators into two scores.",
+          "variable_symbols": [
+            "DSI",
+            "RSI",
+            "w",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2308000-PPGE-2",
+          "equation_label": "Projection index",
+          "equation_text": "The projected value is the dot product with the direction, and the index is the product of its spread and its local density.",
+          "source_expression": "The projected value is the dot product with the direction, and the index is the product of its spread and its local density.",
+          "normalized_latex": "z_i=\\sum_j a_j x_{ij},\\ Q(a)=S\\,D",
+          "purpose": "Find the direction that reveals the data.",
+          "variable_symbols": [
+            "z",
+            "a",
+            "x",
+            "Q",
+            "S",
+            "D"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2308000-PPGE-3",
+          "equation_label": "Best direction",
+          "equation_text": "Maximize the projection index subject to the direction having unit length and positive components below one.",
+          "source_expression": "Maximize the projection index subject to the direction having unit length and positive components below one.",
+          "normalized_latex": "\\max Q(a)\\ \\mathrm{s.t.}\\ \\sum_j a_j^2=1,\\ 0<a_j<1",
+          "purpose": "Solve for the weights.",
+          "variable_symbols": [
+            "Q",
+            "a",
+            "w"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 8 print with several symbols stripped. The recorded forms follow the prose: two weighted sums, the projection index as a product, and the unit-length constraint.",
+        "reason": "Sections 4.1 to 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The grade uses one cross-section of data, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Both scores lie in (0, 1) and the bands meet at 0.3 and 0.7."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Weights are the components of the projection direction that maximizes the product of spread and local density, solved by a genetic algorithm on forty countries.",
+        "parameters": [
+          "w",
+          "a"
+        ]
+      },
+      "algorithm": {
+        "description": "Standardize, project, optimize, and read the cell.",
+        "status": "implemented",
+        "steps": [
+          "Normalize the ten indicators",
+          "Project the forty countries onto trial directions",
+          "Maximize the product of spread and local density with a genetic algorithm",
+          "Score each site with the resulting weights",
+          "Place the site in a matrix cell and read its grade"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The genetic algorithm returns the direction of maximum index."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Four sites receive a grade, and forty countries receive both scores in the appendix."
+        ],
+        "analysis": "The procedure is specified, though the printed projection formulas lost several symbols."
+      },
+      "constraints": [
+        "The projection direction has unit length.",
+        "Every weight component lies between zero and one."
+      ],
+      "validation_refs": [
+        "Figure 4, the weight radar map",
+        "Table 3, the three bands"
+      ],
+      "strengths": [
+        "Harm and need are scored separately, so a bright city is not punished for needing light.",
+        "The weights are estimated once and reused."
+      ],
+      "limitations": [
+        "The local-density window is set at a tenth of the spread without justification.",
+        "The cell-to-grade mapping is stated and never derived."
+      ],
+      "missing_details": [
+        "The genetic algorithm settings.",
+        "The exact numerical weights, which appear only on the radar chart."
+      ],
+      "assumptions": [
+        "A region is one unit with no internal differences.",
+        "The secondary indicators are independent of one another."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2308000-GP",
+      "section": "Priority-Based Intervention Strategy Model",
+      "family": "decision",
+      "summary": "A goal program that cuts light pollution while holding the social, economic, and ecological order. Three priority factors rank the dimensions, each required to greatly exceed the next, and the objective is the weighted sum of the deviation variables, penalizing the leading dimension only when it overshoots and the middle dimension on either side. The constraints mix rigid and soft rules. The requirement score must exceed the damage score by 10 percent in Chengdu and by 8 percent in Jintang. Night traffic accidents must stay under one thousandth of the population density. The photovoltaic industry and the night market together must stay under 15 percent of GDP in the city and 12 percent in the suburb. The combined loss from emissions, biodiversity, and treatment must stay under 200 in the city and 18 in the suburb, and average light intensity is capped at 150 and 110. The first priority weighs twice the second and the second weighs one and a half times the third. Whichever dimension carries the first priority names the strategy: social, economic, or ecological and health. The concrete actions follow the International Dark Sky Association on light distribution, use timers and occupancy sensors, and keep artificial light away from where wildlife gathers.",
+      "computational_cost": "One goal program per priority ordering",
+      "purpose": "Turn a chosen priority order into a feasible set of indicator targets.",
+      "base_or_modification": "modification",
+      "page": 14,
+      "inputs": [
+        "DSI",
+        "RSI",
+        "w"
+      ],
+      "outputs": [
+        "y",
+        "d"
+      ],
+      "handoff_outputs": [
+        "d"
+      ],
+      "objectives": [
+        "Minimize the weighted deviations while the requirement stays ahead of the damage."
+      ],
+      "variables": [
+        {
+          "symbol": "DSI",
+          "normalized_name": "damage_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Damage score from the assessment model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RSI",
+          "normalized_name": "requirement_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Requirement score from the assessment model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "indicator_weight",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Projection weight reused from the assessment",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "priority_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Priority weight of one dimension, strictly decreasing",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "deviation",
+          "role": "intermediate",
+          "unit": "mixed",
+          "definition": "Positive or negative deviation from a target",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "decision_indicator",
+          "role": "intermediate",
+          "unit": "mixed",
+          "definition": "Target value of a secondary indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "objective",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the deviations",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2308000-GP-1",
+          "equation_label": "Priority order",
+          "equation_text": "Each priority factor greatly exceeds the next one.",
+          "source_expression": "Each priority factor greatly exceeds the next one.",
+          "normalized_latex": "P_k \\gg P_{k+1}",
+          "purpose": "Rank the dimensions.",
+          "variable_symbols": [
+            "P"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2308000-GP-2",
+          "equation_label": "Deviations",
+          "equation_text": "The objective penalizes the first dimension for overshooting, the second on both sides, and the third for overshooting.",
+          "source_expression": "The objective penalizes the first dimension for overshooting, the second on both sides, and the third for overshooting.",
+          "normalized_latex": "y=P_1 d_1^{+}+P_2(d_2^{-}+d_2^{+})+P_3 d_3^{+}",
+          "purpose": "Measure how far the plan misses its targets.",
+          "variable_symbols": [
+            "y",
+            "P",
+            "d"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2308000-GP-3",
+          "equation_label": "Score constraint",
+          "equation_text": "The requirement score must beat the damage score by a set margin.",
+          "source_expression": "The requirement score must beat the damage score by a set margin.",
+          "normalized_latex": "RSI \\ge (1+m)\\,DSI",
+          "purpose": "Keep the need ahead of the harm.",
+          "variable_symbols": [
+            "RSI",
+            "DSI",
+            "w",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 9, 10, 12, and 13 print with stripped symbols. The recorded forms keep the priority ordering, the weighted deviations, and the margin between the two scores.",
+        "reason": "Sections 5.2 and 5.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The plan starts from the 2022 indicator values of the chosen site."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Light intensity, the industry share, and the loss total each have a hard cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The program is solved once, not to an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The priority ratios are set by judgment at 2 and 1.5. The caps are chosen per site. The weights are inherited from the assessment model.",
+        "parameters": [
+          "P"
+        ]
+      },
+      "algorithm": {
+        "description": "Fix the priority order, write the constraints, and solve.",
+        "status": "implemented",
+        "steps": [
+          "Choose which dimension leads",
+          "Set the priority weights in the stated ratios",
+          "Write the margin and the caps for the site",
+          "Solve the goal program in MATLAB",
+          "Read off the target value of each indicator"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The solver returns a feasible point of minimum weighted deviation."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Both sites receive a full set of target values."
+        ],
+        "analysis": "The targets are printed. The priority ratios are stated but not derived from data."
+      },
+      "constraints": [
+        "Deviations are nonnegative.",
+        "The requirement score exceeds the damage score by the stated margin."
+      ],
+      "validation_refs": [
+        "Table 5, the solved indicator targets",
+        "Figure 9, the strategy concept map"
+      ],
+      "strengths": [
+        "Soft constraints let a target be missed in a controlled direction.",
+        "The same program serves three strategies by swapping the priority order."
+      ],
+      "limitations": [
+        "The caps differ between the two sites without a stated rule.",
+        "Implementation cost is excluded by assumption."
+      ],
+      "missing_details": [
+        "How the caps of 150, 110, 200, and 18 were chosen.",
+        "The solver tolerances."
+      ],
+      "assumptions": [
+        "Government cost is ignored.",
+        "The indicators stay independent under intervention."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2308000-IOI",
+      "section": "Choice of Intervention Strategy",
+      "family": "decision",
+      "summary": "A selector that picks the priority order whose result lands closest to the ideal corner. Six orderings of the three dimensions are solved in turn, the constraints being relaxed when an ordering has no feasible point, and each solution is scored by the intervention optimization index, one hundred times the distance from the point (0, 1) on the matrix. The index lies between 0 and 141.4, and smaller is better. The search is written as a loop that stores the six values and returns the minimum. Applied to the two sites, the social strategy wins in Chengdu with priorities society, ecology and health, then economy, and the economic strategy wins in Jintang with the reverse order. Chengdu's grade moves from B to A and Jintang's from C to B. The summary reports the index down 13.4 percent in Chengdu and 11.1 percent in Jintang, while the body reports Jintang's damage score falling from 0.726 to 0.554 and its index down 17.81 percent. The solved targets become the actions: the city must cut average light intensity by 30 percent and the medical cost of light-related disease by 20 percent, and the suburb must cut photovoltaic profit by 20 percent and emissions from lamp manufacture by 15 percent.",
+      "computational_cost": "Six goal programs per site",
+      "purpose": "Choose the intervention strategy for a given place.",
+      "base_or_modification": "paper-specific",
+      "page": 16,
+      "inputs": [
+        "d"
+      ],
+      "outputs": [
+        "IOI",
+        "sstar"
+      ],
+      "handoff_outputs": [
+        "IOI",
+        "sstar"
+      ],
+      "objectives": [
+        "Select the priority order with the smallest intervention index."
+      ],
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "deviation",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Deviations returned by one solved goal program",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DSI",
+          "normalized_name": "damage_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Damage score after the intervention",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RSI",
+          "normalized_name": "requirement_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Requirement score after the intervention",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IOI",
+          "normalized_name": "intervention_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Scaled distance from the ideal corner",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sstar",
+          "normalized_name": "best_strategy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Priority order with the smallest index",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2308000-IOI-1",
+          "equation_label": "Intervention index",
+          "equation_text": "The index is one hundred times the distance from the ideal point at zero damage and full requirement.",
+          "source_expression": "The index is one hundred times the distance from the ideal point at zero damage and full requirement.",
+          "normalized_latex": "IOI=100\\sqrt{DSI^2+(RSI-1)^2}",
+          "purpose": "Score one strategy.",
+          "variable_symbols": [
+            "IOI",
+            "DSI",
+            "RSI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2308000-IOI-2",
+          "equation_label": "Best strategy",
+          "equation_text": "The chosen strategy is the priority order with the smallest index.",
+          "source_expression": "The chosen strategy is the priority order with the smallest index.",
+          "normalized_latex": "s^{\\star}=\\arg\\min_k IOI_k",
+          "purpose": "Pick the winner.",
+          "variable_symbols": [
+            "sstar",
+            "IOI",
+            "d"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 11 prints cleanly. The selection rule is stated in the algorithm box rather than as a numbered equation, and the recorded form follows that box.",
+        "reason": "Sections 5.3 and 5.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The index is computed from the solved plan, not from a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The index lies between 0 and 141.4."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The index has no free parameter. The ideal point is fixed at (0, 1).",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Solve all six orderings and keep the minimum.",
+        "status": "implemented",
+        "steps": [
+          "Initialize the priority weights",
+          "Solve the goal program",
+          "Relax the constraints if no feasible point exists",
+          "Compute the index from the resulting scores",
+          "Return the ordering with the smallest index"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The loop stops after six orderings."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Both sites receive a winning strategy and a new grade."
+        ],
+        "analysis": "The six index values are plotted. The two reported reductions for Jintang do not agree."
+      },
+      "constraints": [
+        "Exactly one ordering is chosen.",
+        "An infeasible ordering is repaired by relaxing constraints rather than dropped."
+      ],
+      "validation_refs": [
+        "Figure 10, the six index values",
+        "Figure 11, the optimized positions"
+      ],
+      "strengths": [
+        "The ideal corner gives every strategy a common target.",
+        "The search is written out as an algorithm, so the comparison is reproducible."
+      ],
+      "limitations": [
+        "Relaxing a constraint changes the problem being compared.",
+        "The reported improvement for Jintang differs between summary and body."
+      ],
+      "missing_details": [
+        "Which constraints were relaxed for which ordering.",
+        "The index value before intervention, needed to check the percentages."
+      ],
+      "assumptions": [
+        "Closer to the corner is always better, regardless of which score moved.",
+        "The six orderings exhaust the reasonable strategies."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2308000-RBST",
+      "section": "Sensitivity and Robustness Analysis",
+      "family": "evaluation",
+      "summary": "A check on the four constraint parameters of the goal program. Each parameter is stepped across a range and the intervention index is recomputed: the steps are 0.002, 2, 0.01, and 0.1. Three of the curves bend and then flatten, at 0.6, at 192, and at 0.09, and the parameters actually used in the plan sit inside the flat part. The fourth curve only wobbles around 66.67, so that parameter is called insensitive. Two of the curves fall as the parameter rises, the index dropping 13.4 percent over the first and 11.1 percent over the third, and those two are flagged for careful control. Robustness is graded by the mean absolute percentage error of the index inside the stable range, taking the worst parameter as the model's value. Chengdu scores 1.5 percent and Jintang 3.0 percent, both inside the band the paper calls high robustness. The grading table itself prints with its thresholds stripped, so the boundaries of the four robustness bands cannot be read.",
+      "computational_cost": "Four parameter sweeps per site",
+      "purpose": "Show the plan stays stable under its own parameters.",
+      "base_or_modification": "base",
+      "page": 21,
+      "inputs": [
+        "IOI"
+      ],
+      "outputs": [
+        "M"
+      ],
+      "handoff_outputs": [
+        "M"
+      ],
+      "objectives": [
+        "Confirm the chosen parameters lie where the index no longer moves."
+      ],
+      "variables": [
+        {
+          "symbol": "IOI",
+          "normalized_name": "intervention_index",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Index recomputed at one parameter value",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "constraint_parameter",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "One of the four stepped constraint parameters",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "percentage_error",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Absolute percentage change of the index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "mape",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Worst mean absolute percentage error across the parameters",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2308000-RBST-1",
+          "equation_label": "Mean absolute percentage error",
+          "equation_text": "The robustness grade is the largest mean absolute percentage change of the index over the stable range.",
+          "source_expression": "The robustness grade is the largest mean absolute percentage change of the index over the stable range.",
+          "normalized_latex": "M=\\max_p \\mathrm{mean}(|IOI-\\overline{IOI}|/\\overline{IOI})",
+          "purpose": "Grade the plan.",
+          "variable_symbols": [
+            "M",
+            "IOI",
+            "e",
+            "p"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 21,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "No numbered equation is given for the robustness grade. The recorded form follows the prose: the worst mean absolute percentage error over the stable range.",
+        "reason": "Section 6."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The sweep has no time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The stable interval begins at the inflection point of each curve."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The step sizes are chosen for display. Nothing is estimated.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Step each parameter, recompute the index, and take the worst error.",
+        "status": "implemented",
+        "steps": [
+          "Choose a step size per parameter",
+          "Resolve the plan at each step",
+          "Mark the inflection point",
+          "Compute the percentage error inside the flat region",
+          "Report the worst error as the model's grade"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The sweep covers a fixed range."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Both sites receive a robustness grade."
+        ],
+        "analysis": "The grades are printed. The table that defines the bands lost its thresholds, so the word high cannot be checked."
+      },
+      "constraints": [
+        "Only the stable part of each curve enters the average.",
+        "The worst parameter represents the model."
+      ],
+      "validation_refs": [
+        "Figure 13, the four sweeps",
+        "Table 7, the robustness bands"
+      ],
+      "strengths": [
+        "The chosen parameters are shown to sit past the bend.",
+        "One number summarizes four sweeps."
+      ],
+      "limitations": [
+        "The band thresholds are unreadable.",
+        "The sweeps move one parameter at a time."
+      ],
+      "missing_details": [
+        "The numerical boundaries of the four robustness bands.",
+        "The baseline index used in the percentage."
+      ],
+      "assumptions": [
+        "A flat curve means a trustworthy parameter.",
+        "The worst parameter is the right summary of the model."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2023-2308000-PPGE-1",
+      "model_id": "MU-E-2023-2308000-PPGE",
+      "page": 7,
+      "source_expression": "DSI and RSI are each the weighted sum of their five normalized indicators."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-PPGE-2",
+      "model_id": "MU-E-2023-2308000-PPGE",
+      "page": 8,
+      "source_expression": "The projected value is the dot product with the direction, and the index is the product of its spread and its local density."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-PPGE-3",
+      "model_id": "MU-E-2023-2308000-PPGE",
+      "page": 9,
+      "source_expression": "Maximize the projection index subject to the direction having unit length and positive components below one."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-GP-1",
+      "model_id": "MU-E-2023-2308000-GP",
+      "page": 14,
+      "source_expression": "Each priority factor greatly exceeds the next one."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-GP-2",
+      "model_id": "MU-E-2023-2308000-GP",
+      "page": 15,
+      "source_expression": "The objective penalizes the first dimension for overshooting, the second on both sides, and the third for overshooting."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-GP-3",
+      "model_id": "MU-E-2023-2308000-GP",
+      "page": 15,
+      "source_expression": "The requirement score must beat the damage score by a set margin."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-IOI-1",
+      "model_id": "MU-E-2023-2308000-IOI",
+      "page": 16,
+      "source_expression": "The index is one hundred times the distance from the ideal point at zero damage and full requirement."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-IOI-2",
+      "model_id": "MU-E-2023-2308000-IOI",
+      "page": 18,
+      "source_expression": "The chosen strategy is the priority order with the smallest index."
+    },
+    {
+      "equation_id": "EQ-E-2023-2308000-RBST-1",
+      "model_id": "MU-E-2023-2308000-RBST",
+      "page": 21,
+      "source_expression": "The robustness grade is the largest mean absolute percentage change of the index over the stable range."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2023-2308000-PPGE",
+      "to_model_id": "MU-E-2023-2308000-GP",
+      "handoff": "The two scores and the projection weights become the plan's targets and coefficients."
+    },
+    {
+      "from_model_id": "MU-E-2023-2308000-GP",
+      "to_model_id": "MU-E-2023-2308000-IOI",
+      "handoff": "Each solved priority order supplies the scores whose distance to the corner is measured."
+    },
+    {
+      "from_model_id": "MU-E-2023-2308000-IOI",
+      "to_model_id": "MU-E-2023-2308000-RBST",
+      "handoff": "The winning plan is the one whose parameters are swept."
+    }
+  ]
+}

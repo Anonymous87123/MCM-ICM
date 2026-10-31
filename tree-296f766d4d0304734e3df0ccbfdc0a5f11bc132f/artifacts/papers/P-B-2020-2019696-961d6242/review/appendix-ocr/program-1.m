@@ -1,0 +1,20 @@
+clear;clc
+v=0.2;
+a1=0.1;
+a2=2*10^(-5.5);
+b=1/6000;
+te=7200;
+syms R r;
+h=3*v/(pi*(R^2+r^2+R*r));
+tf=3*v/(b*pi*(R^2+r^2+R*r));
+hfinal=h-2*a2*(te-tf);
+s21=2*h/(pi*sqrt((R-r)^2+h^2));
+l1=a1*s21;
+L1=2*l1+2*a2*te;
+L2=2*a2*te;
+Rfinal=(2*R-L1-L2)/2;
+rfinal=r-(l1+a2*(te-tf));
+a=pi*hfinal*(Rfinal^2+rfinal^2+Rfinal*rfinal)/(3*v);
+f1=diff(a,R);
+f2=diff(a,r);
+[R,r]=solve(f1==0,f2==0,R,r)

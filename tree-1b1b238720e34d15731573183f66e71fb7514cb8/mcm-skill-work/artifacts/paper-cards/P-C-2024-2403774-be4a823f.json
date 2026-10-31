@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "paper_id": "P-C-2024-2403774-be4a823f",
+  "problem_type": "C",
+  "year": "2024",
+  "source": {
+    "relative_path": "2024美赛特等奖/C/2403774.pdf",
+    "sha256": "be4a823ff2369e6375b3b27cc52a9deebe7f6484d2d864b958d0f8fcec10c628",
+    "page_count": 24
+  },
+  "source_quality": {
+    "text_layer": "text-rich",
+    "equation_authority": "text layer, running footer corrupts many lines"
+  },
+  "task_reconstruction": {
+    "official_task": "2024 MCM Problem C, momentum in a tennis match, addressed to coaches.",
+    "required_outputs": [
+      "a model of the flow of a match that includes the serve",
+      "a test of a coach's claim that momentum does not matter",
+      "a forecast of the turning points and the indicators behind them",
+      "advice for a new match",
+      "a check on other matches",
+      "a memo to the coaches"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "summary": "abstract: two models, three preparation steps, four problems"
+    },
+    {
+      "page": 3,
+      "summary": "introduction: a quotation, a comeback, and a restatement"
+    },
+    {
+      "page": 4,
+      "summary": "assumptions: six bullets, each with a because"
+    },
+    {
+      "page": 5,
+      "summary": "data: one match dropped, one column divided before it is repaired"
+    },
+    {
+      "page": 10,
+      "summary": "model-establishment: a windowed label and an XGBoost fit"
+    },
+    {
+      "page": 13,
+      "summary": "results: the random match against the real one"
+    },
+    {
+      "page": 15,
+      "summary": "model-establishment: changepoint bands, then a network that classifies them"
+    },
+    {
+      "page": 21,
+      "summary": "sensitivity: serve speed and running distance, both directions"
+    },
+    {
+      "page": 23,
+      "summary": "memo: a letter signed Bill"
+    }
+  ],
+  "contributions": [
+    {
+      "page": 10,
+      "summary": "The label is built from the recent points and adjusted for the server before the model is trained."
+    },
+    {
+      "page": 13,
+      "summary": "The coach's claim is turned into a match drawn from a uniform distribution and scored by the rules."
+    },
+    {
+      "page": 15,
+      "summary": "The turning points are reported as bands and checked against four named events."
+    },
+    {
+      "page": 18,
+      "summary": "Three kernel sizes stand for three time scales, and every run is reported."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "MU-C-Q246-001",
+      "to": "MU-C-Q246-002",
+      "label": "The trained model scores the real matches and the drawn ones."
+    },
+    {
+      "from": "MU-C-Q246-003",
+      "to": "MU-C-Q246-004",
+      "label": "The changepoint regions are the labels the network classifies."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 4,
+      "summary": "The two players' momentum sums to a constant, so player 2 is derived from player 1."
+    },
+    {
+      "page": 4,
+      "summary": "The effect is short-term and stable inside a local window."
+    },
+    {
+      "page": 4,
+      "summary": "Some momentum carries from one game to the next, so the start of a game is not a clean slate."
+    },
+    {
+      "page": 4,
+      "summary": "Anything outside the table is ignored, and the distance run stands for exertion."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 5,
+      "summary": "Outliers fall outside the 1.5 IQR fence and are replaced by interpolation inside the match."
+    },
+    {
+      "page": 5,
+      "summary": "Running distance is divided by the rally count before the outliers are repaired, then multiplied back."
+    },
+    {
+      "page": 6,
+      "summary": "Match 2023-wimbledon-1310 is dropped for a run of missing serve speeds. Thirty sets remain."
+    },
+    {
+      "page": 6,
+      "summary": "A double fault makes speed and rally count zero. The row at 3:05:04 has no double fault and a rally count of 3, so its gap is real."
+    },
+    {
+      "page": 7,
+      "summary": "The winner's shot type is coded as two dummy columns, because 1, 2, 3 would invent an order."
+    },
+    {
+      "page": 9,
+      "summary": "Removal stops when dropping set_no cuts the accuracy from 95.5 to 66.1 percent. Eighteen variables remain."
+    }
+  ],
+  "models": [
+    {
+      "page": 10,
+      "summary": "MU-C-Q246-001: XGBoost on a windowed momentum label, serving factor 0.1."
+    },
+    {
+      "page": 13,
+      "summary": "MU-C-Q246-002: a random match as the counterfactual, no equation of its own."
+    },
+    {
+      "page": 15,
+      "summary": "MU-C-Q246-003: Bayesian online changepoint detection, marks reported as bands."
+    },
+    {
+      "page": 18,
+      "summary": "MU-C-Q246-004: a temporal network with kernels of size 3, 5 and 7."
+    }
+  ],
+  "verification": [
+    {
+      "page": 12,
+      "summary": "Average MSE 0.02."
+    },
+    {
+      "page": 14,
+      "summary": "Real against random, six metrics. The prose and Table 5 disagree."
+    },
+    {
+      "page": 17,
+      "summary": "Four bands checked against four events."
+    },
+    {
+      "page": 19,
+      "summary": "Five runs, average 74.79 percent."
+    },
+    {
+      "page": 21,
+      "summary": "Women's singles, MSE 0.025."
+    },
+    {
+      "page": 22,
+      "summary": "Serve speed by 5 percent, distance by 10 percent, both directions."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 12,
+      "summary": "MSE 0.02. Momentum above 0.5 favors player 1."
+    },
+    {
+      "page": 14,
+      "summary": "Pearson 0.9408 to 0.9591 on the real matches, near zero on the random ones."
+    },
+    {
+      "page": 18,
+      "summary": "Distance first, then the break points, then the scoring streak."
+    },
+    {
+      "page": 19,
+      "summary": "75.49, 74.94, 75.70, 73.98, 73.83. Average 74.79."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "The summary names both models before it describes either, and counts the preparation."
+    },
+    {
+      "page": 4,
+      "summary": "Every assumption comes with its reason, and one reason is common sense."
+    },
+    {
+      "page": 15,
+      "summary": "The claim waits until the random case has had its own sentence."
+    },
+    {
+      "page": 17,
+      "summary": "A result in the wrong shape is defended with a because."
+    },
+    {
+      "page": 21,
+      "summary": "The remedies are conditional on a failure that did not happen."
+    },
+    {
+      "page": 23,
+      "summary": "The letter retells the work in five adverbs and signs a name."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "Has always been a subject of great interest. Besides, are key to victory. Before, subsequently, finally."
+    },
+    {
+      "page": 3,
+      "summary": "Despite a rocky start, tenaciously fought back. An elusive, subjective concept, one that defies direct measurement."
+    },
+    {
+      "page": 10,
+      "summary": "Implicitly embedded, explicitly reflecting. Conversely, such a mapping would be impossible."
+    },
+    {
+      "page": 15,
+      "summary": "In contrast, close to zero, failing to. In summary, not random, and plays a significant role."
+    },
+    {
+      "page": 23,
+      "summary": "I am writing to propose. Visonary, leaning. Not only serves as a reference but also provides. Warm regards, Bill."
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 5,
+      "summary": "Box plot of the outliers in serve speed."
+    },
+    {
+      "page": 5,
+      "summary": "Running distance before and after dividing by the rally count."
+    },
+    {
+      "page": 6,
+      "summary": "Missing-value heatmap with the yellow bands that all belong to match 1310."
+    },
+    {
+      "page": 8,
+      "summary": "A correlation plot the paper calls a confusion matrix."
+    },
+    {
+      "page": 9,
+      "summary": "Autocorrelation among the candidates, with set_no tied to the distances."
+    },
+    {
+      "page": 9,
+      "summary": "Importance ranking of the variables against whether the point was scored."
+    },
+    {
+      "page": 13,
+      "summary": "Momentum and the scoring record, with two boxes marking a rise and a fall."
+    },
+    {
+      "page": 13,
+      "summary": "The steps that build a random match."
+    },
+    {
+      "page": 15,
+      "summary": "Predicted momentum against the label, real lines mostly level and random lines not. The caption reads mometum."
+    },
+    {
+      "page": 17,
+      "summary": "Scoring trend and inflection bands for matches 1407 and 1503, with both matches named in one caption."
+    },
+    {
+      "page": 17,
+      "summary": "The importance ranking, whose caption collides with the previous figure's number."
+    },
+    {
+      "page": 19,
+      "summary": "Dilated convolution and causal convolution, captions scrambled among the figures."
+    },
+    {
+      "page": 21,
+      "summary": "The women's singles, momentum and score."
+    },
+    {
+      "page": 22,
+      "summary": "The two sensitivity checks side by side."
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 15,
+      "summary": "The paper prints both the prose ranges and the contradictory random row, so the disagreement stays visible.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 19,
+      "summary": "All five runs are printed, including the two below 74 percent, and the summary's 75.70 is left as the best of them.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 15,
+      "summary": "The prose random row and Table 5's random row are different numbers, and a column is never defined."
+    },
+    {
+      "page": 16,
+      "summary": "The changepoint prior and the hazard are named and never valued."
+    },
+    {
+      "page": 19,
+      "summary": "The final layer is written on the first pooled branch only, and the batch is described as video."
+    },
+    {
+      "page": 23,
+      "summary": "The letter dates the women's match to 2003."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-C-Q246-001",
+      "page": 16,
+      "summary": "Value the changepoint prior and the hazard, which the paper names and never numbers, and rebuild the bands."
+    },
+    {
+      "extension_id": "E-C-Q246-002",
+      "page": 19,
+      "summary": "Connect the second and third pooled branches to the output, which the printed final layer leaves out."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-C-Q246-LAN-001",
+      "impact": "seed",
+      "summary": "Open on the sport and split the causes of victory before naming a model."
+    },
+    {
+      "rule_id": "R-C-Q246-LOG-005",
+      "impact": "seed",
+      "summary": "Give the failed case its own sentence before the claim."
+    }
+  ],
+  "unresolved_questions": [
+    "Which random row was meant, the prose values or the printed table?",
+    "What are the changepoint prior and the hazard?",
+    "How do the second and third time scales reach the output?",
+    "What window width was used for the momentum label?"
+  ],
+  "review_status": "validated",
+  "dimension_counts": {
+    "assumption": 0,
+    "data": 0,
+    "language": 96,
+    "logic": 7,
+    "modeling": 6,
+    "other": 0,
+    "result": 0,
+    "verification": 7,
+    "visualization": 14,
+    "weakness": 0
+  },
+  "protocol_v2_records": {
+    "language": {
+      "schema_version": 3,
+      "unit_count": 96,
+      "chapters": [
+        "abstract",
+        "introduction",
+        "assumptions",
+        "notation",
+        "data-preprocessing",
+        "model-establishment",
+        "results",
+        "sensitivity-analysis",
+        "strengths",
+        "limitations",
+        "memo",
+        "references"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "model_count": 4,
+      "equation_count": 13,
+      "review_status": "validated"
+    }
+  }
+}

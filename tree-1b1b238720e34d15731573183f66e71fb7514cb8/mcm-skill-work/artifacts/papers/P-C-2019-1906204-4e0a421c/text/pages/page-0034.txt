@@ -1,0 +1,72 @@
+Team # 1906204                                                        Page 32 of 38
+
+
+            f, w = features[(i, j)]
+            pre = round(np.sum(list(map(lambda x, y: x.predict([[t]])*y, f, w))),0)
+            if pre > 0:
+                predict[i][j] = pre
+            else:
+                predict[i][j] = 0
+    return predict
+
+
+def predict_Mul(features, new_factor):
+    predict = np.zeros([100, 1])
+    for i in range(100):
+        new_f = new_factor[i]
+        f, w = features[i]
+        pre = round(np.sum(list(map(lambda x, y: x.predict([new_f])*y, f, w))),0)
+        if pre > 0:
+            predict[i] = pre
+        else:
+            predict[i] = 0
+    return predict
+
+
+
+if __name__ == ’__main__’:
+    data = xlrd.open_workbook(’../K-means/kmeans.xls’)
+    drug2num, num2drug, dataslice, center = init(data)
+
+    trainingMatrix = np.zeros((100,69,7), dtype = np.int)
+
+    for year in range(7):
+        tmp = sparseMatrix(dataslice[year], drug2num, num2drug)
+        for i in range(100):
+            for j in range(len(num2drug)):
+                trainingMatrix[i][j][year] += tmp[i][j]
+    held_outMatrix = sparseMatrix(dataslice[7], drug2num, num2drug)
+
+
+    extract_feature = xlrd.open_workbook(’extract_feature.xls’)
+    factor = init_feature(extract_feature)
+
+    # print(’------------real--------------’)
+    real = np.zeros([100,1])
+    for i in range(len(dataslice[2])):
+        entry = dataslice[2][i]
+        real[int(entry[1])] += entry[3]
+    # print(real)
+    # print([list(map(lambda x: x[2], dataslice[2][i])) for i in range(100)])
+    # print(’------------pre---------------’)
+    train = find_SVR_coef_Mul(trainingMatrix, center, real, factor)
+    pre = predict_Mul(train, factor[2])
+    # print(pre)
+
+    factor_new = [[12., 5, 27]]*100
+    pre_new = predict_Mul(train, factor_new)
+
+    # for i in range(100):
+    #   print(’real: {0} --- pre: {1} --- new: {2} --- zone: {3}’.format(real[i], pre[i], pre_new[i], i
+
+    print(’real: {0} --- pre: {1} --- new: {2} --- zone: {3}’.format(real[88], pre[88], pre_new[88], 88
+    # features = find_SVR_coef(trainingMatrix, center, held_outMatrix)
+    # print(features)
+    # print(’--------------2017predict---------------------’)
+    # pred2017 = predict(features, 2017)
+    # print(pred2017)
+    # print(held_outMatrix[0][1])
+    # print(trainingMatrix[0][1])
+    # sim = similarity(0,trainingMatrix,center,300000)
+    # print(sim)
+    # for s in sim:

@@ -1,0 +1,47 @@
+Team#29911                                                               Page 35 of 40
+
+
+              tot+=cnt[i];
+        return tot;
+   }
+   car &operator[](int i){return c[i];}
+   lane(const char *fpath){
+        memset(cnt, 0, sizeof cnt);
+        FILE *fp = fopen(fpath, "r");
+        int n, t;
+        fscanf(fp, "%d, %d, %d ", &L, &n, &t);
+        c.resize(n);
+        for(int i=0; i<n; i++){
+              fscanf(fp, "%d, %d, %d ", &c[i].x, &c[i].vmax, &c[i].v);
+              assert(c[i].vmax >= c[i].v);
+              cnt[c[i].v]++;
+        }
+        fclose(fp);
+   }
+   lane(){}
+   bool OK() const {
+        for(int i=0; i<c.size(); i++)
+              if(c[i].x<0 || c[i].x>=L)return false;
+        for(int i=0; i+1<c.size(); i++)
+              if(c[i].x >= c[i+1].x)return false;
+        if (tot() != c.size()) return false;
+        return true;
+   }
+   int size() const {
+        return c.size();
+   }
+   int advance(vector<car> &t){
+        int n;
+        t.resize(n = c.size());
+        if(n==0)return 0;
+        for(int i=0; i<c.size(); i++){
+              int j=fn(i+1);
+              t[i]=c[i];
+              if (t[i].v < t[i].vmax) t[i].v++;
+              int DXf = fL(c[j].x-c[i].x-1);
+              if (t[i].v > DXf) t[i].v = DXf;
+              if (t[i].v > 0 && R(Pd)) t[i].v--;
+              t[i].x = fL(t[i].x + t[i].v);
+              if (t[i].v > c[i].v) ECost += t[i].v+c[i].v;
+        }
+        if(t[n-1].x<t[0].x){

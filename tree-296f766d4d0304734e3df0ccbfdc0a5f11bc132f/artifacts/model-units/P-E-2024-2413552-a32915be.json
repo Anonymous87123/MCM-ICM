@@ -1,0 +1,1229 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2024-2413552-a32915be",
+  "problem_type": "E",
+  "year": "2024",
+  "source_sha256": "a32915be51c291bb4c99941e4c0ee9dc8ba024a71ccc272d664a36d710caec72",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "section": "Insurance Strategy Formulation Model",
+      "family": "spatial-regression",
+      "summary": "An insurance pricing model built on multiscale geographically weighted regression. Ninety-six ERA5-Land climate variables are standardized and cut by principal component analysis to four components that keep 42.1, 16.6, 13.7, and 10.6 percent of the variance. Grid climate is moved onto event coordinates by bivariate spline interpolation, and an event is flagged when an interpolated variable crosses a climatic threshold. The payout at a location is an intercept plus the four components plus the probability of an extreme event, each with its own location-specific coefficient. The premium is a base times one plus a scaled risk score, times a humanitarian adjustment coefficient of the local socio-economic factors, times a profitability factor equal to the historical payout ratio plus a target margin. The two adjustment factors are then optimized to balance humanitarian impact against profitability, with the solver left unnamed. An improved grey model GM(1,1) is fitted to the accumulated series by least squares and inverted to forecast 2024 to 2034. California is read as high risk, rising from 2013.94 to 3100.54, Texas as medium, and Nebraska as low, though the prose later calls Nebraska medium too.",
+      "computational_cost": "not-stated",
+      "purpose": "Price property insurance under extreme weather while holding both the insurer and the owner in view.",
+      "base_or_modification": "modification",
+      "page": 9,
+      "inputs": [
+        "PC",
+        "Pprob",
+        "HPR"
+      ],
+      "outputs": [
+        "Ipay",
+        "Prem"
+      ],
+      "handoff_outputs": [
+        "Ipay"
+      ],
+      "objectives": [
+        "Predict the payout from climate and location, then price the policy so that humanitarian impact and profit both survive."
+      ],
+      "variables": [
+        {
+          "symbol": "Ipay",
+          "normalized_name": "insurance_payout",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Insurance payout at a location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "intercept",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific intercept of the payout regression",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bk",
+          "normalized_name": "component_coefficient",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific coefficient on a principal component",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PC",
+          "normalized_name": "principal_component",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "One of the four climate components from the principal component analysis",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b5",
+          "normalized_name": "event_coefficient",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific coefficient on the event probability",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pprob",
+          "normalized_name": "event_probability",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Probability of an extreme event at the location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "error_term",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Residual of the regression",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HIC",
+          "normalized_name": "humanitarian_coefficient",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Adjustment of the premium for local socio-economic factors",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEF",
+          "normalized_name": "socioeconomic_factors",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Per capita GDP, population density, healthcare, and education at the location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PRF",
+          "normalized_name": "profitability_factor",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Historical payout ratio plus the target margin",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HPR",
+          "normalized_name": "historical_payout_ratio",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Past payouts divided by past premiums",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TPM",
+          "normalized_name": "target_profit_margin",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Margin the insurer aims to keep",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Prem",
+          "normalized_name": "final_premium",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Premium charged to the policyholder",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Bprem",
+          "normalized_name": "base_premium",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Premium before risk and the two adjustments",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "risk_scaling",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of the risk score inside the premium",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rscore",
+          "normalized_name": "risk_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Risk score taken from the regression",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-1",
+          "equation_label": "Multiscale payout regression",
+          "equation_text": "I_pay = b0(u, v) + sum over k of b_k(u, v) * PC_k + b5(u, v) * P_prob + eps.",
+          "source_expression": "I_pay = b0(u, v) + sum over k of b_k(u, v) * PC_k + b5(u, v) * P_prob + eps.",
+          "normalized_latex": "I_i = \\beta_0(u,v) + \\sum_k \\beta_k(u,v) PC_k + \\beta_5(u,v) P_i + \\varepsilon",
+          "purpose": "Let every climate driver carry its own spatial scale.",
+          "variable_symbols": [
+            "Ipay",
+            "b0",
+            "bk",
+            "PC",
+            "b5",
+            "Pprob",
+            "eps"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-2",
+          "equation_label": "Humanitarian adjustment",
+          "equation_text": "HIC = f(SEF), a function of the local socio-economic factors.",
+          "source_expression": "HIC = f(SEF), a function of the local socio-economic factors.",
+          "normalized_latex": "HIC = f(SEF)",
+          "purpose": "Raise or lower the premium with the local economy.",
+          "variable_symbols": [
+            "HIC",
+            "SEF"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-3",
+          "equation_label": "Profitability factor",
+          "equation_text": "PRF = HPR + TPM.",
+          "source_expression": "PRF = HPR + TPM.",
+          "normalized_latex": "PR = HPR + TPM",
+          "purpose": "Keep the insurer solvent by a stated margin.",
+          "variable_symbols": [
+            "PRF",
+            "HPR",
+            "TPM"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-4",
+          "equation_label": "Final premium",
+          "equation_text": "Prem = B_prem * (1 + alpha * R_score) * HIC * PRF.",
+          "source_expression": "Prem = B_prem * (1 + alpha * R_score) * HIC * PRF.",
+          "normalized_latex": "Prem = B(1 + \\alpha R) \\times HIC \\times PR",
+          "purpose": "Stack risk, humanitarian relief, and profit into one price.",
+          "variable_symbols": [
+            "Prem",
+            "Bprem",
+            "alpha",
+            "Rscore",
+            "HIC",
+            "PRF"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-5",
+          "equation_label": "Two-objective balance",
+          "equation_text": "Optimize (HIC, PRF) to balance humanitarian impact against profitability.",
+          "source_expression": "Optimize (HIC, PRF) to balance humanitarian impact against profitability.",
+          "normalized_latex": "\\mathrm{opt}(HIC, PR) \\text{ s.t. } (HI, PR)",
+          "purpose": "State the trade without naming the solver.",
+          "variable_symbols": [
+            "HIC",
+            "PRF"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-MGWR-6",
+          "equation_label": "Grey forecast",
+          "equation_text": "Accumulate the series, fit dX1/dt + a X1 = b by least squares, then invert the accumulation to recover the forecast.",
+          "source_expression": "Accumulate the series, fit dX1/dt + a X1 = b by least squares, then invert the accumulation to recover the forecast.",
+          "normalized_latex": "\\hat x^{(1)}(k+1) = (x^{(0)}(1) - b/a) e^{-ak} + b/a",
+          "purpose": "Project payouts from 2024 to 2034.",
+          "variable_symbols": [
+            "Ipay"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The MATHmodels watermark replaces most symbols in equations 6 to 12 with placeholder blocks. The recorded forms follow the prose gloss printed beside each equation.",
+        "reason": "Sections 3.3 to 3.6."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The regression is fit to 2013-2023 and has no initial state."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Location enters only through the coordinates (u, v)."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "No equilibrium is defined for the pricing model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The grey model parameters a and b are estimated by least squares. The regression bandwidths and the scaling factor alpha are not given.",
+        "parameters": [
+          "bk",
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "description": "Reduce the climate, regress the payout, price the policy, then forecast.",
+        "status": "implemented",
+        "steps": [
+          "Standardize the 96 climate variables",
+          "Cut them to four principal components",
+          "Interpolate the grid onto event coordinates",
+          "Fit the location-specific regression",
+          "Forecast 2024 to 2034 with the grey model"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Not stated. The forecast is checked against the historical years and the parameters are adjusted."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Table 2 and Table 3 give the forecasts, but the bandwidths are unreported, so the regression cannot be refit."
+        ],
+        "analysis": "The outputs are shown. The fitting procedure is only sketched."
+      },
+      "constraints": [
+        "The premium must serve both humanitarian impact and profitability.",
+        "A low threshold is kept so that basic cover is never removed."
+      ],
+      "validation_refs": [
+        "Table 2, the state forecasts",
+        "Table 3, the Asian country forecasts",
+        "Figure 4, events against insurance performance"
+      ],
+      "strengths": [
+        "Each covariate is allowed its own spatial scale, which is the stated gain over ordinary geographically weighted regression.",
+        "The price carries the insurer and the owner in the same expression."
+      ],
+      "limitations": [
+        "The optimizer in equation 10 is named only as linear programming or a genetic algorithm.",
+        "Nebraska is labeled low risk in Table 2 and medium risk in the prose."
+      ],
+      "missing_details": [
+        "The bandwidth chosen for each covariate.",
+        "The value of the scaling factor alpha and of the target margin."
+      ],
+      "assumptions": [
+        "The official data are complete, so no supplement is needed.",
+        "The spatial heterogeneity of extreme weather is captured by the regression.",
+        "Socio-economic factors correlate with insurance demand."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2413552-COMM",
+      "section": "Community and Property Owner Protection",
+      "family": "optimization",
+      "summary": "Two protection layers built on the payout regression. Community administrators enter as one more covariate, a protection level with its own location-specific coefficient. Risk is one minus the ratio of the community's capacity to the maximum capacity, cost is a base plus a coefficient times the protection level times a unit cost, and the loss sums risk plus a weighted cost over locations. The three quantities are solved with scipy and read off Figure 5 as a positive correlation, with about 70 percent protection against about 30 percent cost. Property owners are handled by an improved entropy weight method on twelve socio-economic indicators: min-max normalization, entropy, weights, a weighted index, and a linear map from that index to the humanitarian coefficient, trained on historical premiums. Table 4 prints weights of 0.375, 0.250, 0.250, and 0.125, while the advice quotes 0.444, 0.389, and 0.278.",
+      "computational_cost": "not-stated",
+      "purpose": "Choose a community protection level and a set of owner actions that cut the payout.",
+      "base_or_modification": "modification",
+      "page": 14,
+      "inputs": [
+        "Ipay",
+        "SEF"
+      ],
+      "outputs": [
+        "R",
+        "HIC"
+      ],
+      "handoff_outputs": [
+        "HIC"
+      ],
+      "objectives": [
+        "Minimize the sum of risk and weighted cost, and turn the socio-economic indicators into one adjustment coefficient."
+      ],
+      "variables": [
+        {
+          "symbol": "Ipay",
+          "normalized_name": "payout_with_protection",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Payout once the community protection level is included",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "intercept",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific intercept",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bk",
+          "normalized_name": "covariate_coefficient",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific coefficient on a covariate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "covariate",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Climate and demographic covariates",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bL",
+          "normalized_name": "protection_coefficient",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Location-specific coefficient on the protection level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "protection_level",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Level of protective measures at a location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "error_term",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Residual",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "risk",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Risk as one minus a capacity ratio",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "capacity",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Community capacity to withstand risk",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cmax",
+          "normalized_name": "max_capacity",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Largest capacity considered",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cost",
+          "normalized_name": "protection_cost",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Cost of the protective measures",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cbase",
+          "normalized_name": "base_cost",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Cost before any added protection",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "cost_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Adjustment on the unit protection cost",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cprot",
+          "normalized_name": "unit_protection_cost",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Cost per unit of protective measure",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Loss",
+          "normalized_name": "combined_loss",
+          "role": "output",
+          "unit": "mixed",
+          "definition": "Sum of risk and weighted cost over locations",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "tradeoff_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of cost against risk",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xnorm",
+          "normalized_name": "normalized_indicator",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Min-max normalized socio-economic indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SEF",
+          "normalized_name": "socioeconomic_indicator",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "One of the twelve resident indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmin",
+          "normalized_name": "indicator_minimum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Smallest value of an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmax",
+          "normalized_name": "indicator_maximum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Largest value of an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ej",
+          "normalized_name": "indicator_entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "indicator_proportion",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of an indicator at one location",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nloc",
+          "normalized_name": "location_count",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of locations",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wj",
+          "normalized_name": "indicator_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weight derived from one minus the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "indicator_count",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sidx",
+          "normalized_name": "composite_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the normalized indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HIC",
+          "normalized_name": "humanitarian_coefficient",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Linear function of the composite index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "intercept_parameter",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Intercept of the linear map",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "slope_parameter",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Slope of the linear map",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-1",
+          "equation_label": "Payout with protection",
+          "equation_text": "I_pay = b0(u, v) + sum of b_k(u, v) * X_k + b_L(u, v) * L + eps.",
+          "source_expression": "I_pay = b0(u, v) + sum of b_k(u, v) * X_k + b_L(u, v) * L + eps.",
+          "normalized_latex": "I_i = \\beta_0 + \\sum \\beta_k X_k + \\beta_L L_i + \\varepsilon",
+          "purpose": "Add the community's effort as one more covariate.",
+          "variable_symbols": [
+            "Ipay",
+            "b0",
+            "bk",
+            "X",
+            "bL",
+            "L",
+            "eps"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-2",
+          "equation_label": "Risk as a capacity gap",
+          "equation_text": "R = 1 - C / C_max.",
+          "source_expression": "R = 1 - C / C_max.",
+          "normalized_latex": "R_i = 1 - C_i/C_{max}",
+          "purpose": "Measure risk by how far capacity sits below its maximum.",
+          "variable_symbols": [
+            "R",
+            "C",
+            "Cmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-3",
+          "equation_label": "Protection cost",
+          "equation_text": "Cost = C_base + beta * L * c_prot.",
+          "source_expression": "Cost = C_base + beta * L * c_prot.",
+          "normalized_latex": "Cost_i = C_{base} + \\beta L_i c_{prot}",
+          "purpose": "Make protection cost linear in the level chosen.",
+          "variable_symbols": [
+            "Cost",
+            "Cbase",
+            "beta",
+            "L",
+            "cprot"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-4",
+          "equation_label": "Combined loss",
+          "equation_text": "Loss = sum over locations of (R + lam * Cost).",
+          "source_expression": "Loss = sum over locations of (R + lam * Cost).",
+          "normalized_latex": "L = \\sum_i (R_i + \\lambda Cost_i)",
+          "purpose": "Trade risk against cost with one coefficient.",
+          "variable_symbols": [
+            "Loss",
+            "R",
+            "lam",
+            "Cost"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-5",
+          "equation_label": "Min-max normalization",
+          "equation_text": "x_norm = (SEF - x_min) / (x_max - x_min).",
+          "source_expression": "x_norm = (SEF - x_min) / (x_max - x_min).",
+          "normalized_latex": "x' = (x - \\min x)/(\\max x - \\min x)",
+          "purpose": "Put the twelve indicators on one scale.",
+          "variable_symbols": [
+            "xnorm",
+            "SEF",
+            "xmin",
+            "xmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-6",
+          "equation_label": "Indicator entropy",
+          "equation_text": "E_j = -1/ln(n_loc) * sum over locations of p * ln(p).",
+          "source_expression": "E_j = -1/ln(n_loc) * sum over locations of p * ln(p).",
+          "normalized_latex": "E_j = -\\ln(n)^{-1}\\sum p\\ln p",
+          "purpose": "Score each indicator by how uneven it is.",
+          "variable_symbols": [
+            "Ej",
+            "nloc",
+            "p"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-7",
+          "equation_label": "Entropy weight",
+          "equation_text": "w_j = (1 - E_j) / sum over indicators of (1 - E).",
+          "source_expression": "w_j = (1 - E_j) / sum over indicators of (1 - E).",
+          "normalized_latex": "w_j = (1-E_j)/\\sum(1-E_k)",
+          "purpose": "Give more weight to the indicator that varies more.",
+          "variable_symbols": [
+            "wj",
+            "Ej",
+            "m"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-COMM-8",
+          "equation_label": "Composite index and the linear map",
+          "equation_text": "S_idx = sum of w_j * x_norm, and HIC = a + b * S_idx.",
+          "source_expression": "S_idx = sum of w_j * x_norm, and HIC = a + b * S_idx.",
+          "normalized_latex": "S = \\sum w_j x'_j, \\quad f = a + bS",
+          "purpose": "Collapse the indicators into the humanitarian coefficient.",
+          "variable_symbols": [
+            "Sidx",
+            "wj",
+            "xnorm",
+            "HIC",
+            "a",
+            "b"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 13 to 21 print with placeholder blocks in place of the subscripts. The recorded forms follow the sentences that define each symbol.",
+        "reason": "Sections 4.1 and 4.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The optimization has no time state."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Each location is optimized on its own coordinates."
+          ]
+        },
+        "equilibrium": {
+          "status": "omitted-by-paper",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The linear map is trained by minimizing the gap between predicted and historical premiums. The entropy weights are computed, not estimated.",
+        "parameters": [
+          "a",
+          "b",
+          "wj"
+        ]
+      },
+      "algorithm": {
+        "description": "Solve the community loss, then compute the entropy weights.",
+        "status": "implemented",
+        "steps": [
+          "Solve risk, cost, and protection level with scipy",
+          "Normalize the twelve indicators",
+          "Compute entropy and weights",
+          "Fit the linear map on historical premiums"
+        ],
+        "software": [
+          "scipy"
+        ],
+        "convergence_criteria": "Not stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Figure 5 shows the three metrics moving together, but the trade-off coefficient is not reported."
+        ],
+        "analysis": "The qualitative result is shown. The optimum cannot be reproduced."
+      },
+      "constraints": [
+        "Risk and cost are both minimized, with lambda setting the balance.",
+        "The humanitarian coefficient is forced to be linear in the index."
+      ],
+      "validation_refs": [
+        "Figure 5, protection, risk, and cost",
+        "Table 4, the entropy weights",
+        "Figure 6, losses under three interventions"
+      ],
+      "strengths": [
+        "The community action enters the same regression as the climate, so the two are comparable.",
+        "The weights are derived rather than chosen."
+      ],
+      "limitations": [
+        "The weights quoted in the advice do not match Table 4.",
+        "Figure 6 shows every intervention series starting above the no-intervention series, which the prose calls a reduction."
+      ],
+      "missing_details": [
+        "The value of the trade-off coefficient lambda.",
+        "The fitted intercept and slope of the linear map."
+      ],
+      "assumptions": [
+        "Socio-economic factors correlate with insurance demand, which is what licenses the entropy weights.",
+        "The map from the index to the coefficient is linear."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2413552-LAND",
+      "section": "Preservation of Historical Landmarks",
+      "family": "spatial-regression",
+      "summary": "A preservation layer that reuses the payout regression on buildings. A significance score weights cultural importance at 0.4, historical at 0.3, economic at 0.2, and community at 0.1, after min-max normalization. The Ernest Hemingway House scores high on culture and low on community; the Illinois State Capitol scores high on history and low on economics. The required protection level, in the same three tiers as the insurance risk, is then regressed on building size, age, material cost, and structural complexity, plus the coordinates. For the Statue of Liberty the coefficients run 0.7 to 1.0 for size, 0.5 to 0.7 for age, 0.5 to 1.0 for material cost, 0.5 to 1.0 for structural complexity, and 0.7 to 1.0 for the coordinates, which the paper reads as the top protection tier at about 2.5 million dollars a year.",
+      "computational_cost": "not-stated",
+      "purpose": "Rank a landmark and assign it a protection level and a cost.",
+      "base_or_modification": "modification",
+      "page": 19,
+      "inputs": [
+        "Scult",
+        "X"
+      ],
+      "outputs": [
+        "Sscore",
+        "Yprot"
+      ],
+      "handoff_outputs": [
+        "Yprot"
+      ],
+      "objectives": [
+        "Score the building on four importances, then map its physical features to a protection level."
+      ],
+      "variables": [
+        {
+          "symbol": "Sscore",
+          "normalized_name": "significance_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted importance of a building",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w1",
+          "normalized_name": "cultural_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on cultural importance, set at 0.4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Scult",
+          "normalized_name": "cultural_importance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Cultural importance score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w2",
+          "normalized_name": "historical_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on historical importance, set at 0.3",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Shist",
+          "normalized_name": "historical_importance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Historical importance score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w3",
+          "normalized_name": "economic_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on economic importance, set at 0.2",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Secon",
+          "normalized_name": "economic_importance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Economic importance score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w4",
+          "normalized_name": "community_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on community importance, set at 0.1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Scomm",
+          "normalized_name": "community_importance",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Community importance score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Yprot",
+          "normalized_name": "protection_level_required",
+          "role": "output",
+          "unit": "category",
+          "definition": "Required protection level in three tiers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "intercept",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Location-specific intercept",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "bk",
+          "normalized_name": "feature_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Location-specific coefficient on a building feature",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "building_feature",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Size, age, material cost, or structural complexity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "error_term",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Residual",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2413552-LAND-1",
+          "equation_label": "Significance score",
+          "equation_text": "S_score = w1 * S_cult + w2 * S_hist + w3 * S_econ + w4 * S_comm, with weights 0.4, 0.3, 0.2, and 0.1.",
+          "source_expression": "S_score = w1 * S_cult + w2 * S_hist + w3 * S_econ + w4 * S_comm, with weights 0.4, 0.3, 0.2, and 0.1.",
+          "normalized_latex": "S = 0.4 S_c + 0.3 S_h + 0.2 S_e + 0.1 S_m",
+          "purpose": "Rank the building before pricing its protection.",
+          "variable_symbols": [
+            "Sscore",
+            "w1",
+            "Scult",
+            "w2",
+            "Shist",
+            "w3",
+            "Secon",
+            "w4",
+            "Scomm"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2413552-LAND-2",
+          "equation_label": "Building protection regression",
+          "equation_text": "Y_prot = b0(u, v) + sum of b_k(u, v) * X_k + eps.",
+          "source_expression": "Y_prot = b0(u, v) + sum of b_k(u, v) * X_k + eps.",
+          "normalized_latex": "Y_i = \\beta_0(u,v) + \\sum \\beta_k(u,v) X_k + \\varepsilon",
+          "purpose": "Turn size, age, materials, and complexity into a protection level.",
+          "variable_symbols": [
+            "Yprot",
+            "b0",
+            "bk",
+            "X",
+            "eps"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 22 prints with its four terms run together, and equation 23 prints with the sum index detached. The recorded forms follow the prose.",
+        "reason": "Sections 5.1 and 5.2.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The score and the regression have no time state."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Location enters only as coordinates."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is involved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The four weights are assumed, not estimated. The regression coefficients are reported only as ranges for one building.",
+        "parameters": [
+          "w1",
+          "w2",
+          "w3",
+          "w4",
+          "bk"
+        ]
+      },
+      "algorithm": {
+        "description": "Score the building, then regress its features.",
+        "status": "implemented",
+        "steps": [
+          "Normalize the four importances",
+          "Apply the fixed weights",
+          "Regress protection level on the building features",
+          "Read the coefficient ranges for the chosen landmark"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Not stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Figure 9 gives coefficient ranges for the Statue of Liberty only."
+        ],
+        "analysis": "One case is worked. The fit cannot be repeated for another building."
+      },
+      "constraints": [
+        "The protection level uses the same three tiers as the insurance risk classes.",
+        "The four weights are fixed in advance."
+      ],
+      "validation_refs": [
+        "Figure 7, the four importance scores",
+        "Figure 9, the coefficient ranges for the Statue of Liberty"
+      ],
+      "strengths": [
+        "The same regression used for payouts is reused for buildings, so the two decisions share a scale.",
+        "The case is closed with a cost, about 2.5 million dollars a year."
+      ],
+      "limitations": [
+        "The weights are declared rather than derived.",
+        "Only one landmark is taken through the regression."
+      ],
+      "missing_details": [
+        "The data source for the four importance scores.",
+        "The fitted coefficients for any building other than the Statue of Liberty."
+      ],
+      "assumptions": [
+        "Cultural, historical, economic, and community importance can be scored and weighted.",
+        "The protection level falls into the same three tiers as the insurance risk."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-1",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 9,
+      "source_expression": "I_pay = b0(u, v) + sum over k of b_k(u, v) * PC_k + b5(u, v) * P_prob + eps."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-2",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 9,
+      "source_expression": "HIC = f(SEF), a function of the local socio-economic factors."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-3",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 10,
+      "source_expression": "PRF = HPR + TPM."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-4",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 10,
+      "source_expression": "Prem = B_prem * (1 + alpha * R_score) * HIC * PRF."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-5",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 10,
+      "source_expression": "Optimize (HIC, PRF) to balance humanitarian impact against profitability."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-MGWR-6",
+      "model_id": "MU-E-2024-2413552-MGWR",
+      "page": 10,
+      "source_expression": "Accumulate the series, fit dX1/dt + a X1 = b by least squares, then invert the accumulation to recover the forecast."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-1",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 14,
+      "source_expression": "I_pay = b0(u, v) + sum of b_k(u, v) * X_k + b_L(u, v) * L + eps."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-2",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 14,
+      "source_expression": "R = 1 - C / C_max."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-3",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 14,
+      "source_expression": "Cost = C_base + beta * L * c_prot."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-4",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 14,
+      "source_expression": "Loss = sum over locations of (R + lam * Cost)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-5",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 14,
+      "source_expression": "x_norm = (SEF - x_min) / (x_max - x_min)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-6",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 15,
+      "source_expression": "E_j = -1/ln(n_loc) * sum over locations of p * ln(p)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-7",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 15,
+      "source_expression": "w_j = (1 - E_j) / sum over indicators of (1 - E)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-COMM-8",
+      "model_id": "MU-E-2024-2413552-COMM",
+      "page": 15,
+      "source_expression": "S_idx = sum of w_j * x_norm, and HIC = a + b * S_idx."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-LAND-1",
+      "model_id": "MU-E-2024-2413552-LAND",
+      "page": 19,
+      "source_expression": "S_score = w1 * S_cult + w2 * S_hist + w3 * S_econ + w4 * S_comm, with weights 0.4, 0.3, 0.2, and 0.1."
+    },
+    {
+      "equation_id": "EQ-E-2024-2413552-LAND-2",
+      "model_id": "MU-E-2024-2413552-LAND",
+      "page": 20,
+      "source_expression": "Y_prot = b0(u, v) + sum of b_k(u, v) * X_k + eps."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2024-2413552-MGWR",
+      "to_model_id": "MU-E-2024-2413552-COMM",
+      "handoff": "The payout regression is extended by one protection term, and its humanitarian coefficient is what the entropy method computes."
+    },
+    {
+      "from_model_id": "MU-E-2024-2413552-MGWR",
+      "to_model_id": "MU-E-2024-2413552-LAND",
+      "handoff": "The building protection level reuses the same location-specific regression and the same three tiers."
+    }
+  ]
+}

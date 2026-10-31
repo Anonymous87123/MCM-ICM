@@ -1,0 +1,75 @@
+     Team 2003717                                                                    Page 39
+
+
+
+ 1   from __future__ import print_function
+ 2
+ 3   import time
+ 4
+ 5 import matplotlib
+ 6 import matplotlib . pyplot as plt
+ 7 import numpy as np
+ 8
+ 9 import torch
+10 import torch .nn as nn
+11 import torch . optim as optim
+12 from utils import *
+13
+14   matplotlib .use(’Agg ’)
+15
+16 default_path = ’3_LSTM /’
+17 output_path = ’3 _LSTM /’
+18 products = [’hair_dryer ’, ’microwave ’, ’pacifier ’]
+19 features = [’star_rating ’, ’helpful_votes ’, ’total_votes ’,
+20             ’vine ’, ’verified_purchase ’, ’review_date ’]
+21 batch_size = 1
+22 num_feature = len( features )
+23 hidden_size = 200
+24
+25
+26 class Sequence (nn. Module ):
+27     def __init__ (self):
+28         super (Sequence , self). __init__ ()
+29         self. lstm1 = nn. LSTMCell ( num_feature , hidden_size )
+30         self. lstm2 = nn. LSTMCell ( hidden_size , hidden_size )
+31         self. linear = nn. Linear ( hidden_size , num_feature )
+32
+33       def forward (self , input , future =0):
+34           outputs = []
+35           h_t = torch. zeros( input .size (0) , hidden_size , dtype=torch. double )
+36           c_t = torch. zeros( input .size (0) , hidden_size , dtype=torch. double )
+37           h_t2 = torch. zeros( input.size (0) , hidden_size , dtype=torch. double )
+38           c_t2 = torch. zeros( input.size (0) , hidden_size , dtype=torch. double )
+39
+40           for i, input_t in enumerate (input.chunk( input .size (1) , dim =1)):
+41               input_t = input_t . squeeze (dim =1)
+42               h_t , c_t = self.lstm1(input_t , (h_t , c_t))
+43               h_t2 , c_t2 = self.lstm2(h_t , (h_t2 , c_t2))
+44               output = self. linear (h_t2)
+45               # assert 0
+46               outputs += [ output ]
+47
+48           for i in range ( future ):
+49               h_t , c_t = self.lstm1(output , (h_t , c_t))
+50               h_t2 , c_t2 = self.lstm2(h_t , (h_t2 , c_t2))
+51               output = self. linear (h_t2)
+52               outputs += [ output ]
+53
+54           outputs = torch .stack(outputs , 1)
+55           return outputs
+56
+57
+58 if __name__ == ’__main__ ’:
+59     np. random .seed (0)
+60     torch . manual_seed (0)
+61
+62       for product in products :
+
+
+
+                                                                                                  2
+                                                                                                      关注数学模型
+                                                                                         MATHmodels
+
+
+                                                                                                      获取更多资讯

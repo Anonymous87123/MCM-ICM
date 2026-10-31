@@ -1,0 +1,54 @@
+Team # 25142                                               Page 31 of 34
+
+
+            else
+                   A(i)=5;
+                   B(i)=speedmaxs;
+            end
+      end
+end
+road1(:,1:8,1)=A;
+road1(:,1:8,2)=B;
+end
+
+
+Acceleration:
+function [ b,y,x ] = Xacc(lane ,xdistance )
+%XACC Summary of this function goes here
+%   Detailed explanation goes here
+global road1;
+road1(lane,xdistance,1)=min([road1(lane,xdistance,2),road1(lane,xdistance,1)+1]);
+
+b=road1(lane,xdistance,1);
+y=lane;
+x=xdistance+road1(lane,xdistance,1);
+
+
+end
+
+
+Deceleration:
+function [ b,y,x ] = Xsub(lane ,xdistance )
+%XSUB Summary of this function goes here
+%   Detailed explanation goes here
+global road1;
+global speedmaxl ;
+road1(lane,xdistance,1)=max([ speedmaxl-3,road1(lane,xdistance,1)-1]);
+
+b=road1(lane,xdistance,1);;
+y=lane;
+x=xdistance+road1(lane,xdistance,1);
+
+end
+
+
+Deal with urgent deceleration:
+function [ b,y,x] = Xurgent( m,n )
+%XURGENT Summary of this function goes here
+%   Detailed explanation goes here
+global road1;
+global speedmaxl ;
+p=find(road1(m,n+1:min(n+30,1000),1));
+
+S=size(p);
+Xr=30;

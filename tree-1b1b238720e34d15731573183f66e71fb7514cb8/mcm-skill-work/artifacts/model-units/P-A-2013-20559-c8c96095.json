@@ -1,0 +1,1619 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2013-20559-005",
+      "handoff": "Measured and transferred c, rho, K, h_pan, and h_air become unit-bearing heat-model parameters; uncertainty is not propagated.",
+      "to_model_id": "MU-A-2013-20559-002"
+    },
+    {
+      "from_model_id": "MU-A-2013-20559-003",
+      "handoff": "Angle-based deltaA assignments define pan-boundary source strengths for the temperature grid.",
+      "to_model_id": "MU-A-2013-20559-002"
+    },
+    {
+      "from_model_id": "MU-A-2013-20559-002",
+      "handoff": "The temperature history at designated corner and edge points is aggregated into Eff_heating.",
+      "to_model_id": "MU-A-2013-20559-004"
+    },
+    {
+      "from_model_id": "MU-A-2013-20559-004",
+      "handoff": "Simulated heating-efficiency values over shapes and areas are fitted by an unprinted least-squares surrogate.",
+      "to_model_id": "MU-A-2013-20559-006"
+    },
+    {
+      "from_model_id": "MU-A-2013-20559-006",
+      "handoff": "The surrogate provides dimensionless Eff_heating for each candidate in the weighted decision.",
+      "to_model_id": "MU-A-2013-20559-007"
+    },
+    {
+      "from_model_id": "MU-A-2013-20559-001",
+      "handoff": "Packing provides N and dimensionless Eff_space for the same W, L, A_pan, and candidate shape.",
+      "to_model_id": "MU-A-2013-20559-007"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "The source claims an optimal count for a fixed candidate shape but supplies no executable appendix, tie rule, or boundary-clearance pseudocode.",
+        "software": [
+          "Appendix code referenced but absent from the source PDF"
+        ],
+        "status": "partial",
+        "steps": [
+          "Compute polygon geometry from A_pan and n.",
+          "Route n divisible by four to a 2r by 2r lattice except squares.",
+          "Route other even n to a 2r by 2R rectangle and evaluate both orientations.",
+          "For squares and hexagons compare the 1.08A tessellation count.",
+          "Return the largest N and nominal Eff_space."
+        ]
+      },
+      "assumptions": [
+        "The rack is rectangular.",
+        "Regular patterns are adequate for the restricted candidate family.",
+        "An 8 percent area inflation is an adequate airflow proxy."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Finite enumeration over candidate side counts and two orientations; exact complexity and tie handling are unreported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Pans must remain inside W by L and are counted under lattice or tessellation geometry with the stated clearance proxy."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The oven dimensions, candidate pan area, and side count are supplied."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "All candidates have the same nominal A_pan.",
+        "Only regular even-sided polygons and the circle are considered.",
+        "Squares and hexagons use 1.08*A_pan for clearance during the count while Eff_space uses nominal A_pan."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "case-based regular-polygon lattice and tessellation packing",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-001",
+          "label": "1",
+          "normalized_latex": "\\mathrm{Eff}_{space}=\\frac{N A_{pan}}{LW}",
+          "page": 5,
+          "purpose": "Convert feasible pan count to nominal rack-area utilization.",
+          "source_expression": "Eff_space = N*A/(L*W)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Eff_space",
+            "N",
+            "A_pan",
+            "L",
+            "W"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-002",
+          "label": null,
+          "normalized_latex": "W=L=2r k_m",
+          "page": 10,
+          "purpose": "Identify local packing maxima for polygons whose side count is divisible by four.",
+          "source_expression": "W = L = 2*apothem[n]*k",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "W",
+            "L",
+            "r",
+            "k_m"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-003",
+          "label": "9",
+          "normalized_latex": "W=2rj",
+          "page": 10,
+          "purpose": "Identify a width-compatible local maximum for other even polygons.",
+          "source_expression": "W = 2*r*j",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "W",
+            "r",
+            "j"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-004",
+          "label": "10",
+          "normalized_latex": "L=2Rk_m",
+          "page": 10,
+          "purpose": "Identify a length-compatible local maximum for other even polygons.",
+          "source_expression": "L = 2*R*k",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L",
+            "R",
+            "k_m"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "N",
+        "Eff_space"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Counts are conceptually feasible for the stated case rules, but global packing optimality is not proved and the missing appendix prevents reproduction.",
+        "status": "partial"
+      },
+      "inputs": [
+        "W",
+        "L",
+        "A_pan",
+        "n"
+      ],
+      "limitations": [
+        "No proof of global packing optimality for arbitrary W, L, and n.",
+        "Clearance is represented by an uncalibrated area inflation."
+      ],
+      "missing_details": [
+        "Appendix code",
+        "exact polygon-dimension formulas from area",
+        "oven-wall clearance",
+        "tie handling"
+      ],
+      "model_id": "MU-A-2013-20559-001",
+      "objectives": [
+        "Maximize N and Eff_space for each candidate shape and oven geometry."
+      ],
+      "outputs": [
+        "N",
+        "Eff_space"
+      ],
+      "page": 4,
+      "parameter_estimation": {
+        "method": "Geometry determines apothem and radius from A_pan and n; the 8 percent clearance factor is asserted rather than calibrated.",
+        "parameters": [
+          "r",
+          "R",
+          "clearance factor"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compute how many equal-area pans fit on one rectangular oven rack and convert the count into a space-utilization score.",
+      "section": "Space Optimization and Magic Numbers",
+      "strengths": [
+        "Makes packing branches and the discrete local-max mechanism explicit."
+      ],
+      "summary": "Even-sided regular polygons are routed by side-count class, checked in one or two orientations, and compared with square or hexagon tessellation after an 8 percent clearance proxy.",
+      "validation_refs": [
+        "SRC-P04",
+        "SRC-P05",
+        "SRC-P10"
+      ],
+      "variables": [
+        {
+          "definition": "Usable rack width; later reused verbally as a magic pan dimension.",
+          "normalized_name": "oven width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "length"
+        },
+        {
+          "definition": "Usable rack length.",
+          "normalized_name": "oven length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "length"
+        },
+        {
+          "definition": "Fixed area of one pan; written A in the source.",
+          "normalized_name": "pan area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A_pan",
+          "unit": "length squared"
+        },
+        {
+          "definition": "Even number of sides or the circle limit.",
+          "normalized_name": "polygon side count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "count"
+        },
+        {
+          "definition": "Center-to-side distance in the later r/R notation.",
+          "normalized_name": "apothem",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "r",
+          "unit": "length"
+        },
+        {
+          "definition": "Center-to-vertex radius.",
+          "normalized_name": "circumradius",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "R",
+          "unit": "length"
+        },
+        {
+          "definition": "Natural-number packing multiple.",
+          "normalized_name": "width multiple",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "j",
+          "unit": "count"
+        },
+        {
+          "definition": "Natural-number packing multiple written k in the magic-number equations.",
+          "normalized_name": "length multiple",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k_m",
+          "unit": "count"
+        },
+        {
+          "definition": "Largest feasible number of pans on one rack.",
+          "normalized_name": "pan count per rack",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        },
+        {
+          "definition": "Fraction of rack area occupied by nominal pan area.",
+          "normalized_name": "space efficiency",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_space",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The sensitivity section reports a 21 by 21 by 10 grid and 180 steps; it gives empirical nonconvergence thresholds but no FTCS stability derivation or refinement study.",
+        "software": [
+          "Unspecified implementation; appendix code absent"
+        ],
+        "status": "partial",
+        "steps": [
+          "Discretize the polygonal prism on a uniform grid.",
+          "Assign edge and corner control-volume surface areas.",
+          "Apply a standard forward-time centered-space diffusion update.",
+          "Apply pan and air exchange terms at selected boundary volumes.",
+          "Repeat over the cooking horizon and retain temperatures."
+        ]
+      },
+      "assumptions": [
+        "Material properties remain constant.",
+        "The pan and oven air are heat reservoirs.",
+        "Evaporation, restructuring, density change, and radiation are omitted."
+      ],
+      "base_or_modification": "hybrid",
+      "computational_cost": "Proportional to grid points times time steps times candidate shapes; the source baseline is 21*21*10*180 updates per shape before boundary work.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Pan and top surfaces receive Newton terms; other boundaries, bottom treatment, and complete corner handling are not fully stated."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Long simulations approach the fixed reservoir temperatures under the intended heating direction."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "T equals T_room at the start, inferred from the calibration solution and prose."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Pan-wall heating applies within delta_w of an edge.",
+        "Air heating applies at the top surface.",
+        "The pan and air remain constant-temperature reservoirs."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "three-dimensional transient heat diffusion with Newton boundary source terms",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-005",
+          "label": "2",
+          "normalized_latex": "\\frac{\\partial T}{\\partial t}=\\frac{K}{c\\rho}\\nabla^2T+\\frac{h_{pan}}{c\\rho}\\frac{\\Delta A}{\\Delta V}(T-T_{pan})+\\frac{h_{air}}{c\\rho}\\frac{\\Delta A}{\\Delta V}(T-T_{air})",
+          "page": 6,
+          "purpose": "Advance the temperature field with diffusion and two interface terms exactly as printed.",
+          "source_expression": "dT/dt = K/(c*rho)*Laplacian(T) + h_pan/(c*rho)*deltaA/deltaV*(T-T_pan) + h_air/(c*rho)*deltaA/deltaV*(T-T_air)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "T",
+            "t",
+            "K",
+            "c",
+            "rho",
+            "h_pan",
+            "h_air",
+            "deltaA",
+            "deltaV",
+            "T_pan",
+            "T_air"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "T"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The printed PDE has source-term signs opposite the stated heating mechanism, and incomplete boundary, grid-spacing, and time-step details prevent a unique stable implementation.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "t",
+        "K",
+        "c",
+        "rho",
+        "h_pan",
+        "h_air",
+        "deltaA",
+        "deltaV",
+        "delta_w",
+        "T_pan",
+        "T_air",
+        "T_room"
+      ],
+      "limitations": [
+        "No grid-convergence study, complete boundary conditions, or uncertainty propagation.",
+        "Printed exchange signs conflict with the heating narrative."
+      ],
+      "missing_details": [
+        "delta_w",
+        "spatial step sizes",
+        "time-step duration",
+        "boundary implementation",
+        "source code"
+      ],
+      "model_id": "MU-A-2013-20559-002",
+      "objectives": [
+        "Estimate transient temperatures and compare corner and edge heating."
+      ],
+      "outputs": [
+        "T"
+      ],
+      "page": 6,
+      "parameter_estimation": {
+        "method": "K, c, rho, h_pan, and h_air are estimated or transferred from experiment and literature.",
+        "parameters": [
+          "K",
+          "c",
+          "rho",
+          "h_pan",
+          "h_air",
+          "deltaA",
+          "deltaV",
+          "delta_w"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Simulate the brownie temperature field under pan-wall and hot-air heating.",
+      "section": "Heating of Polygons",
+      "strengths": [
+        "Connects diffusion and two physically distinct heat-transfer interfaces."
+      ],
+      "summary": "A diffusion PDE is advanced with a forward-time centered-space grid while pan and air exchange terms are applied to boundary-adjacent control volumes.",
+      "validation_refs": [
+        "SRC-P06",
+        "SRC-P12",
+        "SRC-P13",
+        "SRC-P14"
+      ],
+      "variables": [
+        {
+          "definition": "Temperature at a grid location and time.",
+          "normalized_name": "batter temperature field",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Simulation time.",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "second"
+        },
+        {
+          "definition": "Brownie thermal conductivity; also written k elsewhere.",
+          "normalized_name": "thermal conductivity",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "K",
+          "unit": "watt per meter kelvin"
+        },
+        {
+          "definition": "Brownie specific heat.",
+          "normalized_name": "specific heat",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "c",
+          "unit": "joule per kilogram kelvin"
+        },
+        {
+          "definition": "Brownie density.",
+          "normalized_name": "density",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kilogram per cubic meter"
+        },
+        {
+          "definition": "Interface coefficient between pan and brownie.",
+          "normalized_name": "pan heat-transfer coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h_pan",
+          "unit": "watt per square meter kelvin"
+        },
+        {
+          "definition": "Interface coefficient between oven air and brownie.",
+          "normalized_name": "air heat-transfer coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "h_air",
+          "unit": "watt per square meter kelvin"
+        },
+        {
+          "definition": "Boundary surface area attached to a grid point.",
+          "normalized_name": "control-volume contact area",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "deltaA",
+          "unit": "square meter"
+        },
+        {
+          "definition": "Volume represented by a grid point.",
+          "normalized_name": "control volume",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "deltaV",
+          "unit": "cubic meter"
+        },
+        {
+          "definition": "Distance from the pan edge within which the pan source is applied.",
+          "normalized_name": "edge-band width",
+          "role": "parameter",
+          "source_status": "unspecified",
+          "symbol": "delta_w",
+          "unit": "meter"
+        },
+        {
+          "definition": "Constant pan-reservoir temperature.",
+          "normalized_name": "pan temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_pan",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Constant hot-air temperature.",
+          "normalized_name": "oven air temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_air",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Initial room temperature of batter.",
+          "normalized_name": "initial batter temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_room",
+          "unit": "degree Celsius"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No numerical acceptance test is provided beyond the intended square and circle limits.",
+        "software": [
+          "Unspecified implementation; appendix code absent"
+        ],
+        "status": "partial",
+        "steps": [
+          "Classify boundary points as edges or corners.",
+          "Set edge weights to one and corner weights from equation 4.",
+          "Sum all unadjusted weights.",
+          "Multiply each weight by A_surface divided by that sum."
+        ]
+      },
+      "assumptions": [
+        "Interior angle alone adequately represents corner contact area.",
+        "One corner point per vertex captures the geometric effect."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Linear in the number of boundary grid points after classification.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Only boundary-adjacent control volumes receive deltaA values."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The limiting circle has no distinguished corners."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "Boundary grid points have been classified as edge or corner."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Edge weights are one.",
+        "Square corner weights should be two.",
+        "The corner-to-edge ratio should approach one as n approaches infinity.",
+        "Rescaled deltaA values sum to A_surface."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "angle-based boundary-control-volume weighting",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-006",
+          "label": "3",
+          "normalized_latex": "\\theta=\\frac{n-2}{n}\\pi",
+          "page": 6,
+          "purpose": "Compute the interior angle of a regular n-gon.",
+          "source_expression": "theta = (n-2)/n*pi",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "theta",
+            "n"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-007",
+          "label": "4",
+          "normalized_latex": "\\omega=2-\\sin(\\theta-\\pi/2)=\\sin\\left(\\frac{n-2}{n}\\pi-\\pi/2\\right)",
+          "page": 7,
+          "purpose": "Record the printed corner-weight equality exactly; the source reuses A for this weight.",
+          "source_expression": "A = 2 - sin(theta-pi/2) = sin((n-2)/n*pi-pi/2)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "omega",
+            "theta",
+            "n"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "theta",
+        "omega",
+        "deltaA"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The second equality in equation 4 fails the stated square limit, and the allocation has no geometric or experimental validation.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "n",
+        "A_surface"
+      ],
+      "limitations": [
+        "Equation 4 is internally inconsistent.",
+        "Corner classification and contact-area geometry are unproved."
+      ],
+      "missing_details": [
+        "corner-classification rule",
+        "grid-resolution behavior",
+        "surface-allocation validation"
+      ],
+      "model_id": "MU-A-2013-20559-003",
+      "objectives": [
+        "Preserve corner-versus-edge heating contrast without grid-placement artifacts."
+      ],
+      "outputs": [
+        "theta",
+        "omega",
+        "deltaA"
+      ],
+      "page": 6,
+      "parameter_estimation": {
+        "method": "The functional form is selected to meet stated square and circle-limit behavior; it is not fitted to measurements.",
+        "parameters": [
+          "omega"
+        ],
+        "status": "omitted-by-paper"
+      },
+      "purpose": "Assign larger pan-contact area to corner grid points while preserving total pan surface area.",
+      "section": "Determining surface area of each data point",
+      "strengths": [
+        "Explicitly narrates two rejected allocation schemes before the hybrid."
+      ],
+      "summary": "Interior angle determines an unnormalized corner weight, edge weights are one, and all weights are rescaled to the total pan surface area.",
+      "validation_refs": [
+        "SRC-P06",
+        "SRC-P07"
+      ],
+      "variables": [
+        {
+          "definition": "Number of sides.",
+          "normalized_name": "polygon side count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "count"
+        },
+        {
+          "definition": "Regular polygon interior angle.",
+          "normalized_name": "interior vertex angle",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "radian"
+        },
+        {
+          "definition": "Normalized symbol for the source's equation-4 A, relative to edge weight one.",
+          "normalized_name": "corner surface weight",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "omega",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Total boundary area distributed across edge and corner volumes.",
+          "normalized_name": "total pan contact area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A_surface",
+          "unit": "square meter"
+        },
+        {
+          "definition": "Rescaled contact area for a boundary grid point.",
+          "normalized_name": "assigned point surface area",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "deltaA",
+          "unit": "square meter"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The source reports no protection against zero denominator, transient sign, or metric-definition drift.",
+        "software": [
+          "Unspecified implementation; appendix code absent"
+        ],
+        "status": "implemented",
+        "steps": [
+          "Average designated corner temperatures over the simulation.",
+          "Average designated edge temperatures over the simulation.",
+          "Divide edge average by corner average.",
+          "In the later objective, alternatively divide E_min by E_max."
+        ]
+      },
+      "assumptions": [
+        "Temperature ratio represents absorbed-energy uniformity.",
+        "Corner and edge sample sets represent the entire perimeter."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Linear aggregation over retained boundary-time values.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Only selected boundary points enter the score."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Uniform corner and edge histories give a score of one."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "The full simulated temperature histories are available."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Corner and edge sets come from the boundary classification.",
+        "A score of one is treated as equal heating and zero as negligible edge heating."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "corner-edge thermal uniformity metric",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-008",
+          "label": null,
+          "normalized_latex": "\\mathrm{Eff}_{heating}=\\frac{\\overline{T}_{edge}}{\\overline{T}_{corner}}",
+          "page": 7,
+          "purpose": "Reconstruct the explicit prose definition of the first heating-efficiency metric.",
+          "source_expression": "Eff_heating = average edge temperature / average corner temperature",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "Eff_heating",
+            "T_edge_bar",
+            "T_corner_bar"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Eff_heating"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Both ratios are bounded under positive ordered values, but their equivalence and decision stability are not established.",
+        "status": "partial"
+      },
+      "inputs": [
+        "T_edge_bar",
+        "T_corner_bar",
+        "E_min",
+        "E_max"
+      ],
+      "limitations": [
+        "Temperature and heat absorption are used interchangeably.",
+        "The two printed metric definitions are not reconciled."
+      ],
+      "missing_details": [
+        "corner/edge point sets",
+        "time-averaging rule",
+        "relationship between temperature ratio and E_min/E_max"
+      ],
+      "model_id": "MU-A-2013-20559-004",
+      "objectives": [
+        "Score equality of heating at corners and edge midpoints."
+      ],
+      "outputs": [
+        "Eff_heating"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "No parameters are fitted; aggregation sets and the switch to E_min/E_max are not reconciled.",
+        "parameters": [],
+        "status": "omitted-by-paper"
+      },
+      "purpose": "Reduce a simulated temperature history to a zero-to-one even-heating score.",
+      "section": "Heating Efficiency Model",
+      "strengths": [
+        "Creates a common nominal zero-to-one scale for the tradeoff."
+      ],
+      "summary": "The prose first compares average edge and corner temperatures over time; the later objective instead uses minimum and maximum edge heat absorption.",
+      "validation_refs": [
+        "SRC-P07",
+        "SRC-P10"
+      ],
+      "variables": [
+        {
+          "definition": "Average over designated edge points and simulation time.",
+          "normalized_name": "mean edge temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_edge_bar",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Average over designated corner points and simulation time.",
+          "normalized_name": "mean corner temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_corner_bar",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Least absorbed heat among edge regions in the later definition.",
+          "normalized_name": "minimum edge heat absorption",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E_min",
+          "unit": "energy or proxy"
+        },
+        {
+          "definition": "Greatest absorbed heat among edge regions in the later definition.",
+          "normalized_name": "maximum edge heat absorption",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E_max",
+          "unit": "energy or proxy"
+        },
+        {
+          "definition": "Even-heating score on an intended zero-to-one scale.",
+          "normalized_name": "heating efficiency",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_heating",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residuals, confidence intervals, weighting rule, or fit diagnostic is printed.",
+        "software": [
+          "Least-squares software and code not reported"
+        ],
+        "status": "partial",
+        "steps": [
+          "Measure first-bake temperatures, mass, and volume.",
+          "Use calorimetry for c.",
+          "Discard plateau data and the contaminated second experiment.",
+          "Fit equation 6 separately to edge and center series.",
+          "Compare c, rho, and K with literature.",
+          "Compute alpha, beta, and gamma."
+        ]
+      },
+      "assumptions": [
+        "Edge temperature is dominated by the pan and center temperature by top-air heating.",
+        "Cupcake properties transfer by order of magnitude.",
+        "Filtered points remain adequate for fitting."
+      ],
+      "base_or_modification": "hybrid",
+      "computational_cost": "Small nonlinear least-squares fits over three edge and four center points plus direct algebraic reductions.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The probes represent edge and center regions at stated depths."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The calorimeter mixture is stirred until temperature equilibrates."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "First temperature in each series is 22 C."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Data at or above the 104 C plateau are removed.",
+        "Edge and center fits use effective A/V values of 50 and 250 per meter.",
+        "Mass, volume, and density are held constant despite measured changes."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "calorimetry and Newton-law least-squares calibration",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-009",
+          "label": null,
+          "normalized_latex": "q=cm\\Delta T",
+          "page": 7,
+          "purpose": "Infer heat exchange and specific heat in the calorimetry step.",
+          "source_expression": "q = c*m*deltaT",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q",
+            "c",
+            "m",
+            "deltaT"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-010",
+          "label": "6",
+          "normalized_latex": "T(t)=T_{pan}+(T_{room}-T_{pan})\\exp\\left[-\\frac{h}{c\\rho}\\frac{A}{V}t\\right]",
+          "page": 8,
+          "purpose": "Fit interface heat-transfer coefficients from time-temperature data.",
+          "source_expression": "T(t) = T_pan + (T_room-T_pan)*exp[-h/(c*rho)*(A/V)*t]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "T",
+            "t",
+            "T_pan",
+            "T_room",
+            "h",
+            "c",
+            "rho",
+            "A_over_V"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-011",
+          "label": null,
+          "normalized_latex": "\\alpha=\\frac{K}{c\\rho}",
+          "page": 9,
+          "purpose": "Reduce conductivity, heat capacity, and density to thermal diffusivity.",
+          "source_expression": "alpha = K/(c*rho)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "alpha",
+            "K",
+            "c",
+            "rho"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-012",
+          "label": "7",
+          "normalized_latex": "\\beta=\\frac{h_{pan}}{c\\rho}=2.5\\times10^{-5}\\,\\mathrm{m/s}",
+          "page": 10,
+          "purpose": "Compute the reduced pan-interface coefficient from rounded inputs.",
+          "source_expression": "beta = h_pan/(c*rho) = 2.5e-5 m/s",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "beta",
+            "h_pan",
+            "c",
+            "rho"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-013",
+          "label": "8",
+          "normalized_latex": "\\gamma=\\frac{h_{air}}{c\\rho}=4.0\\times10^{-6}\\,\\mathrm{m/s}",
+          "page": 10,
+          "purpose": "Compute the reduced air-interface coefficient from rounded inputs.",
+          "source_expression": "gamma = h_air/(c*rho) = 4.0e-6 m/s",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "gamma",
+            "h_air",
+            "c",
+            "rho"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "alpha",
+        "beta",
+        "gamma",
+        "c",
+        "rho",
+        "K"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The parameters are numerically obtainable from the stated approximations, but small samples, discarded regimes, rounded coefficients, transferred K, and missing residuals leave substantial uncertainty.",
+        "status": "partial"
+      },
+      "inputs": [
+        "m",
+        "deltaT",
+        "t",
+        "T_pan",
+        "T_room",
+        "A_over_V"
+      ],
+      "limitations": [
+        "No replication, uncertainty interval, or holdout.",
+        "K is adjusted upward to produce expected behavior."
+      ],
+      "missing_details": [
+        "raw replicate data",
+        "fit residuals",
+        "least-squares settings",
+        "calorimeter heat losses",
+        "uncertainty propagation"
+      ],
+      "model_id": "MU-A-2013-20559-005",
+      "objectives": [
+        "Provide physically plausible parameters for the heat simulation."
+      ],
+      "outputs": [
+        "c",
+        "rho",
+        "K",
+        "h_pan",
+        "h_air",
+        "alpha",
+        "beta",
+        "gamma",
+        "T"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "Calorimetry estimates c; mass and volume estimate rho; least squares on equation 6 estimates h_pan and h_air; cupcake literature supplies an order-of-magnitude K before adjustment.",
+        "parameters": [
+          "c",
+          "rho",
+          "K",
+          "h_pan",
+          "h_air",
+          "alpha",
+          "beta",
+          "gamma"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Estimate specific heat, density, interface coefficients, and reduced thermal parameters for the simulation.",
+      "section": "Determining Parameters by Experimentation",
+      "strengths": [
+        "Uses direct experiment and an external order-of-magnitude comparison."
+      ],
+      "summary": "Direct measurements, calorimetry, literature transfer, regime filtering, and least-squares fits provide c, rho, K, h_pan, h_air, alpha, beta, and gamma.",
+      "validation_refs": [
+        "SRC-P07",
+        "SRC-P08",
+        "SRC-P09",
+        "SRC-P10"
+      ],
+      "variables": [
+        {
+          "definition": "Energy exchanged in calorimetry.",
+          "normalized_name": "heat exchanged",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "joule"
+        },
+        {
+          "definition": "Brownie specific heat.",
+          "normalized_name": "specific heat",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "c",
+          "unit": "joule per kilogram kelvin"
+        },
+        {
+          "definition": "Mass used in calorimetry.",
+          "normalized_name": "sample mass",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "m",
+          "unit": "kilogram"
+        },
+        {
+          "definition": "Calorimetry temperature change.",
+          "normalized_name": "temperature change",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "deltaT",
+          "unit": "kelvin"
+        },
+        {
+          "definition": "Temperature response at time t.",
+          "normalized_name": "measured temperature",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Elapsed heating time.",
+          "normalized_name": "time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "second"
+        },
+        {
+          "definition": "Constant source temperature.",
+          "normalized_name": "pan temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_pan",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Initial batter temperature.",
+          "normalized_name": "initial temperature",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "T_room",
+          "unit": "degree Celsius"
+        },
+        {
+          "definition": "Generic coefficient in the Newton solution.",
+          "normalized_name": "fitted heat-transfer coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "watt per square meter kelvin"
+        },
+        {
+          "definition": "Effective interface area divided by volume.",
+          "normalized_name": "surface-to-volume ratio",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "A_over_V",
+          "unit": "per meter"
+        },
+        {
+          "definition": "Brownie density held constant in the simulation.",
+          "normalized_name": "density",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kilogram per cubic meter"
+        },
+        {
+          "definition": "Transferred and adjusted conductivity.",
+          "normalized_name": "thermal conductivity",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "K",
+          "unit": "watt per meter kelvin"
+        },
+        {
+          "definition": "Pan-brownie coefficient rounded to 50 in equation 7.",
+          "normalized_name": "pan coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "h_pan",
+          "unit": "watt per square meter kelvin"
+        },
+        {
+          "definition": "Air-brownie coefficient rounded to 8 in equation 8.",
+          "normalized_name": "air coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "h_air",
+          "unit": "watt per square meter kelvin"
+        },
+        {
+          "definition": "K/(c rho).",
+          "normalized_name": "thermal diffusivity",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "square meter per second"
+        },
+        {
+          "definition": "h_pan/(c rho).",
+          "normalized_name": "reduced pan coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "meter per second"
+        },
+        {
+          "definition": "h_air/(c rho).",
+          "normalized_name": "reduced air coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "gamma",
+          "unit": "meter per second"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "The paper reports about 0.1 percent accuracy without defining the error metric, sample, or independent evaluation.",
+        "software": [
+          "Unspecified least-squares implementation"
+        ],
+        "status": "omitted-by-paper",
+        "steps": []
+      },
+      "assumptions": [
+        "The fitted response remains valid over every enumerated area and shape."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Evaluation would be constant time per candidate after fitting; fitting cost is unreported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The source does not state a complete boundary specification."
+          ],
+          "status": "uncertain"
+        },
+        "equilibrium": {
+          "details": [],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "A simulation design and temperature-field outputs exist, but the design is not printed."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "The fit is used only over the simulated candidate and parameter domain."
+      ],
+      "equation_status": {
+        "reason": "The paper states that a least-squares surrogate was fitted but does not print the fitted equation.",
+        "status": "omitted-by-paper"
+      },
+      "family": "unreported fitted response surrogate",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "Eff_heating"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The surrogate cannot be reconstructed or independently checked from the existing source bytes.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "A_pan",
+        "n",
+        "alpha",
+        "beta",
+        "gamma"
+      ],
+      "limitations": [
+        "No printed equation, coefficients, residuals, or validation split."
+      ],
+      "missing_details": [
+        "functional form",
+        "coefficients",
+        "training grid",
+        "error metric",
+        "residuals",
+        "code"
+      ],
+      "model_id": "MU-A-2013-20559-006",
+      "objectives": [
+        "Replace repeated transient simulations with a fitted efficiency response."
+      ],
+      "outputs": [
+        "Eff_heating"
+      ],
+      "page": 10,
+      "parameter_estimation": {
+        "method": "Least squares is named, but the response equation, coefficients, predictors, sample sizes, and residuals are omitted.",
+        "parameters": [
+          "surrogate coefficients"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Approximate heat-simulation efficiency over area and side count for rapid candidate enumeration.",
+      "section": "Least-squares heating surrogate",
+      "strengths": [
+        "Creates an explicit computational handoff from the heat simulation to optimization."
+      ],
+      "summary": "The paper says a least-squares equation approximates simulation data to about 0.1 percent accuracy, but prints neither the equation nor its coefficients, residuals, sample grid, or fit split.",
+      "validation_refs": [
+        "SRC-P10",
+        "SRC-P12"
+      ],
+      "variables": [
+        {
+          "definition": "Candidate pan area.",
+          "normalized_name": "pan area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A_pan",
+          "unit": "length squared"
+        },
+        {
+          "definition": "Candidate side count.",
+          "normalized_name": "polygon side count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "count"
+        },
+        {
+          "definition": "Reduced diffusion parameter.",
+          "normalized_name": "thermal diffusivity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "square meter per second"
+        },
+        {
+          "definition": "Reduced pan exchange parameter.",
+          "normalized_name": "reduced pan coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "beta",
+          "unit": "meter per second"
+        },
+        {
+          "definition": "Reduced air exchange parameter.",
+          "normalized_name": "reduced air coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "gamma",
+          "unit": "meter per second"
+        },
+        {
+          "definition": "Fitted approximation to the simulated boundary score.",
+          "normalized_name": "surrogate heating efficiency",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_heating",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite candidate enumeration is implied; no optimizer tolerance, tie rule, or candidate grid is reported.",
+        "software": [
+          "Unspecified implementation; appendix code absent"
+        ],
+        "status": "implemented",
+        "steps": [
+          "For each candidate shape, compute N and Eff_space.",
+          "Obtain Eff_heating from the simulation surrogate.",
+          "Compute Eff_total for the supplied p.",
+          "Return every maximizer or apply an unreported tie rule."
+        ]
+      },
+      "assumptions": [
+        "A weighted sum represents the user's tradeoff.",
+        "The two component scales are comparable.",
+        "The restricted candidate set contains an acceptable design."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Linear in the number of candidate shapes and parameter-grid cases after upstream calculations.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Only candidates feasible under the packing model are scored."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No equilibrium condition; the decision uses finite-time heating outputs."
+          ],
+          "status": "present"
+        },
+        "initial": {
+          "details": [
+            "W, L, A_pan, p, baking settings, and candidate shapes are supplied."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "p lies from zero to one.",
+        "Both component scores are intended to lie from zero to one.",
+        "Candidate shapes are the restricted regular polygons and circle evaluated by the upstream models."
+      ],
+      "equation_status": {
+        "reason": "Central displayed or explicitly stated relations are retained.",
+        "status": "present"
+      },
+      "family": "weighted multi-objective candidate enumeration",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2013-20559-014",
+          "label": "5",
+          "normalized_latex": "\\mathrm{Eff}_{total}=p\\,\\mathrm{Eff}_{space}+(1-p)\\,\\mathrm{Eff}_{heating}",
+          "page": 7,
+          "purpose": "Combine the two component scores under the user weight.",
+          "source_expression": "Eff_total = p*Eff_space + (1-p)*Eff_heating",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Eff_total",
+            "p",
+            "Eff_space",
+            "Eff_heating"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2013-20559-015",
+          "label": "11",
+          "normalized_latex": "\\mathrm{Eff}_{total}=p\\frac{N A_{pan}}{WL}+(1-p)\\frac{E_{min}}{E_{max}}",
+          "page": 10,
+          "purpose": "Expand the total score into packing and later heating definitions.",
+          "source_expression": "Eff = p*N*A/(W*L) + (1-p)*E_min/E_max",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Eff_total",
+            "p",
+            "N",
+            "A_pan",
+            "W",
+            "L",
+            "E_min",
+            "E_max"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Eff_total",
+        "shape_star"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The score is algebraically feasible, but metric drift, uncalibrated preference weights, missing surrogate, and restricted candidates prevent the universal input claim from being demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "p",
+        "Eff_space",
+        "Eff_heating",
+        "N",
+        "A_pan",
+        "W",
+        "L",
+        "E_min",
+        "E_max"
+      ],
+      "limitations": [
+        "Weighted scores are not preference-calibrated.",
+        "Heating efficiency changes definition.",
+        "The universal optimum claim exceeds the implemented scope."
+      ],
+      "missing_details": [
+        "candidate enumeration",
+        "surrogate equation",
+        "tie rule",
+        "preference elicitation",
+        "decision uncertainty"
+      ],
+      "model_id": "MU-A-2013-20559-007",
+      "objectives": [
+        "Select the candidate shape with the largest weighted total efficiency."
+      ],
+      "outputs": [
+        "Eff_total",
+        "shape_star"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "p is supplied as a user preference; component scores come from upstream models.",
+        "parameters": [
+          "p"
+        ],
+        "status": "not-applicable"
+      },
+      "purpose": "Combine space utilization and heating uniformity under a user preference and select the highest-scoring shape.",
+      "section": "Final Algorithm for Efficiency and Optimization",
+      "strengths": [
+        "Makes the user preference and competing objectives explicit."
+      ],
+      "summary": "A convex weighted score joins two nominal zero-to-one component efficiencies; the algorithm enumerates candidates and returns the argmax for supplied geometry, area, and preference.",
+      "validation_refs": [
+        "SRC-P01",
+        "SRC-P07",
+        "SRC-P10",
+        "SRC-P11",
+        "SRC-P15"
+      ],
+      "variables": [
+        {
+          "definition": "Weight from zero to one.",
+          "normalized_name": "space preference weight",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Packing score.",
+          "normalized_name": "space efficiency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_space",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Heating-uniformity score.",
+          "normalized_name": "heating efficiency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_heating",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Packing output.",
+          "normalized_name": "pan count",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "N",
+          "unit": "count"
+        },
+        {
+          "definition": "Nominal area of each pan.",
+          "normalized_name": "pan area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A_pan",
+          "unit": "length squared"
+        },
+        {
+          "definition": "Rack width.",
+          "normalized_name": "oven width",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "W",
+          "unit": "length"
+        },
+        {
+          "definition": "Rack length.",
+          "normalized_name": "oven length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L",
+          "unit": "length"
+        },
+        {
+          "definition": "Minimum edge value in equation 11.",
+          "normalized_name": "minimum edge heat absorption",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E_min",
+          "unit": "energy or proxy"
+        },
+        {
+          "definition": "Maximum edge value in equation 11.",
+          "normalized_name": "maximum edge heat absorption",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E_max",
+          "unit": "energy or proxy"
+        },
+        {
+          "definition": "Weighted total score.",
+          "normalized_name": "combined efficiency",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Eff_total",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Candidate with maximum total efficiency.",
+          "normalized_name": "selected pan shape",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "shape_star",
+          "unit": "category"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2013-20559-c8c96095",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "c8c9609541197800312ac0390324e50d57bfb9a91c359bec3af1c2b974ef8ad0",
+  "year": "2013"
+}

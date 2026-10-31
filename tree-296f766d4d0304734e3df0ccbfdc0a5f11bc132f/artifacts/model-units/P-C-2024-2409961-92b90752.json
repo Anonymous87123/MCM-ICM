@@ -1,0 +1,782 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2409961-92b90752",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "92b907527f0d46b64d39d3e9ee6711560e6dff11e65ecc3036332253a82805ae",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q250-001",
+      "page": 6,
+      "section": "4 Instantaneous scoring rate",
+      "family": "cubic spline interpolation and its derivative",
+      "purpose": "Turn the discrete score difference into a smooth curve and read its slope as the scoring rate.",
+      "base_or_modification": "base",
+      "summary": "The relative score is player 2's cumulative points minus player 1's, at times t_i. A cubic spline with natural boundary conditions interpolates it, chosen because it keeps the first and second derivatives continuous and avoids the Runge oscillation, and because moving one point moves only part of the curve. The slope of the spline at each scoring instant is the instantaneous scoring rate. A rate below zero means that player's scoring falls, and the distance from zero measures how far. The server's rate is usually higher, which the paper calls the first-hand advantage. The linear system for the second derivatives is printed but scrambled by the footer.",
+      "variables": [
+        {
+          "symbol": "t_i",
+          "normalized_name": "point time",
+          "unit": "s",
+          "definition": "The time of the i-th point.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_i",
+          "normalized_name": "relative score",
+          "unit": "1",
+          "definition": "Player 2's cumulative points minus player 1's.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_i",
+          "normalized_name": "spacing",
+          "unit": "s",
+          "definition": "The gap between consecutive point times.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_i",
+          "normalized_name": "second derivative",
+          "unit": "1/s^2",
+          "definition": "The spline's second derivative at t_i.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "score curve",
+          "unit": "1",
+          "definition": "The interpolating spline.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ISR",
+          "normalized_name": "instantaneous scoring rate",
+          "unit": "1/s",
+          "definition": "The derivative of the spline at a scoring instant.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t_i",
+        "y_i"
+      ],
+      "outputs": [
+        "ISR"
+      ],
+      "handoff_outputs": [
+        "ISR",
+        "f"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q250-001",
+          "page": 6,
+          "label": "(1)",
+          "source_expression": "ISR_i = df/dt at t_i",
+          "normalized_latex": "ISR_i=(df/dt)(t_i)",
+          "purpose": "The scoring rate as the slope of the spline.",
+          "variable_symbols": [
+            "ISR",
+            "f",
+            "t_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-002",
+          "page": 6,
+          "label": "(2)",
+          "source_expression": "the tridiagonal system for the second derivatives under natural boundaries",
+          "normalized_latex": "A m = 6 \\Delta",
+          "purpose": "The system for the second derivatives. The printed matrix is scrambled by the footer.",
+          "variable_symbols": [
+            "m_i",
+            "h_i",
+            "y_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q250-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "f(t) = y_i + (y_{i+1}-y_i)/h_i x - h_i/2 m_i x - h_i/6 (m_{i+1}-m_i) x + m_i/2 t^2 + (m_{i+1}-m_i)/(6 h_i) t^3",
+          "normalized_latex": "f(t)=y_i+\\left(\\frac{y_{i+1}-y_i}{h_i}-\\frac{h_i}{2}m_i-\\frac{h_i}{6}(m_{i+1}-m_i)\\right)x+\\frac{m_i}{2}t^2+\\frac{m_{i+1}-m_i}{6h_i}t^3",
+          "purpose": "The spline piece between two points. The printed line merges x and t.",
+          "variable_symbols": [
+            "f",
+            "y_i",
+            "h_i",
+            "m_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Three formulas are printed. The linear system and the spline piece are scrambled by the footer."
+      },
+      "objectives": [
+        "Give every moment a scoring rate and a direction."
+      ],
+      "constraints": [
+        "Natural boundary conditions.",
+        "The points are ordered in time."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The spline needs the whole match before it can be differentiated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated. The second derivatives are solved from the linear system.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Form the relative score at each point.",
+          "Solve the tridiagonal system.",
+          "Build the spline piece on each interval.",
+          "Differentiate at each scoring instant."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The spline is twice differentiable everywhere."
+      },
+      "assumptions": [
+        "The score difference is the right quantity to interpolate."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The boundary condition is named and the system is square."
+      },
+      "validation_refs": [
+        "Figure 2: the spline against the data.",
+        "Figure 3: the scoring rate.",
+        "Figure 5: the server's advantage."
+      ],
+      "computational_cost": "One tridiagonal solve per match.",
+      "strengths": [
+        "The method is defended by the phenomenon it avoids."
+      ],
+      "limitations": [
+        "The rate uses the whole match, so it is not available at the moment it describes."
+      ],
+      "missing_details": [
+        "The exact spline coefficients, which the footer scrambles."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q250-002",
+      "page": 9,
+      "section": "5 The independence test",
+      "family": "distributional test of independence",
+      "purpose": "Decide whether the momentum and the scoring rate are independent.",
+      "base_or_modification": "paper-specific",
+      "summary": "Independence would mean that removing the server's expected advantage leaves a difference that is independent and identically distributed with bounded moments, hence normal by the central limit theorem, with one peak. The paper subtracts the expectation and divides by the sample variance, plots the result, and finds two peaks. The independence model is rejected on the shape alone. No test statistic is computed. The non-independence model is then adopted because the scoring rate still peaks with the expected difference after the serve effect is removed, so the momentum and the successive hands act together.",
+      "variables": [
+        {
+          "symbol": "ISR",
+          "normalized_name": "scoring rate",
+          "unit": "1/s",
+          "definition": "The rate handed over from the spline.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "expected rate",
+          "unit": "1/s",
+          "definition": "The expected scoring rate at that moment.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s2",
+          "normalized_name": "sample variance",
+          "unit": "1/s^2",
+          "definition": "The variance used to scale the difference.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "scaled difference",
+          "unit": "1",
+          "definition": "The rate minus its expectation, over the variance.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "ISR"
+      ],
+      "outputs": [
+        "d"
+      ],
+      "handoff_outputs": [
+        "d"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The standardization is described in prose and the rejection rests on the shape of a histogram. No statistic is printed."
+      },
+      "objectives": [
+        "Test the coach's claim that the fluctuations are random."
+      ],
+      "constraints": [
+        "The serve advantage is removed before the test."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The expected rate is computed separately for each server."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The expectation and the variance are computed from the sample. Nothing is fitted.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Subtract the expected rate given the server.",
+          "Divide by the sample variance.",
+          "Plot the distribution.",
+          "Reject independence if the plot has two peaks."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The printed histogram has two peaks."
+      },
+      "assumptions": [
+        "A normal distribution has one peak.",
+        "The central limit theorem applies once the moments are bounded."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The rejection is visible in the figure. No probability is attached to it."
+      },
+      "validation_refs": [
+        "Figure 6: the normalized histogram with two peaks."
+      ],
+      "computational_cost": "One standardization and one histogram.",
+      "strengths": [
+        "The verdict is stated before the proof, so the proof has a target."
+      ],
+      "limitations": [
+        "Two peaks reject the model with no statistic and no threshold."
+      ],
+      "missing_details": [
+        "The number of points behind the histogram."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q250-003",
+      "page": 10,
+      "section": "6 The gated network",
+      "family": "gated recurrent network with player embeddings",
+      "purpose": "Predict the momentum and attribute it to six hand-built groups of indicators.",
+      "base_or_modification": "paper-specific",
+      "summary": "The momentum is a ten-point moving average of the scoring rate, and a change is a crossing of zero. A gated network with an update gate and a reset gate fits it. Each player gets an embedding, the point features pass through a multi-head map, and the three are concatenated. Each player then gets a small network, and the predicted momentum is the difference of the two outputs, trained by squared error. Thirty-nine indicators are grouped by hand into mentality, endurance, error rate, starting advantage, skill, and key moments. Each group is compressed by a bias-free linear layer and a hyperbolic tangent. Integrated gradients attribute the output to the six groups, and only the absolute value is kept. The twelve strongest indicators are read off the trained weights. The code adds a dropout of 0.2 and an embedding over 32 players.",
+      "variables": [
+        {
+          "symbol": "ISR",
+          "normalized_name": "scoring rate",
+          "unit": "1/s",
+          "definition": "The rate being smoothed.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "momentum",
+          "unit": "1/s",
+          "definition": "The ten-point moving average.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "features",
+          "unit": "1",
+          "definition": "The point features after the multi-head map.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "player embedding",
+          "unit": "1",
+          "definition": "The learned vector of a player.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "reset gate",
+          "unit": "1",
+          "definition": "The gate that forgets part of the previous state.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "update gate",
+          "unit": "1",
+          "definition": "The gate that mixes the new state with the old.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "hidden state",
+          "unit": "1",
+          "definition": "The network's memory at this moment.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f1",
+          "normalized_name": "player 1 momentum",
+          "unit": "1",
+          "definition": "The first player's predicted momentum.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f2",
+          "normalized_name": "player 2 momentum",
+          "unit": "1",
+          "definition": "The second player's predicted momentum.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mt",
+          "normalized_name": "predicted difference",
+          "unit": "1",
+          "definition": "The difference of the two predicted momenta.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "attribute value",
+          "unit": "1",
+          "definition": "One group compressed to a number in [-1, 1].",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IG",
+          "normalized_name": "integrated gradient",
+          "unit": "1",
+          "definition": "The attribution of the output to one input.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "ISR",
+        "x"
+      ],
+      "outputs": [
+        "mt",
+        "IG"
+      ],
+      "handoff_outputs": [
+        "IG",
+        "a"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q250-004",
+          "page": 11,
+          "label": "(4)",
+          "source_expression": "m(t_i) = 1/10 sum_{k=0}^{9} ISR_{i-k}, for i >= 10",
+          "normalized_latex": "m(t_i)=\\frac{1}{10}\\sum_{k=0}^{9}ISR_{i-k}",
+          "purpose": "The ten-point moving average.",
+          "variable_symbols": [
+            "m",
+            "ISR"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-005",
+          "page": 11,
+          "label": "(5)",
+          "source_expression": "r = sigmoid(W_r [h, x]); z = sigmoid(W_z [h, x]); h~ = tanh(W [r*h, x]); h = (1-z)*h + z*h~; y = sigmoid(W_o h)",
+          "normalized_latex": "r_t=\\sigma(W_r[h_{t-1},x_t]),\\ z_t=\\sigma(W_z[h_{t-1},x_t])",
+          "purpose": "The two gates and the update. Five lines are printed as one block.",
+          "variable_symbols": [
+            "r",
+            "z",
+            "h",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q250-006",
+          "page": 12,
+          "label": "(6)",
+          "source_expression": "x = [MultiMLP(x0) || Emb(p1) || Emb(p2)]",
+          "normalized_latex": "x_t=[\\mathrm{MultiMLP}(x_t^0)\\,\\|\\,\\mathrm{Emb}(p_1)\\,\\|\\,\\mathrm{Emb}(p_2)]",
+          "purpose": "The merged input.",
+          "variable_symbols": [
+            "x",
+            "e"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-007",
+          "page": 12,
+          "label": "(7)",
+          "source_expression": "h = GRU(x)",
+          "normalized_latex": "h_t=\\mathrm{GRU}(x_t)",
+          "purpose": "The recurrent step.",
+          "variable_symbols": [
+            "h",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-008",
+          "page": 12,
+          "label": "(8)",
+          "source_expression": "f1 = MLP_1([h || Emb(p1)])",
+          "normalized_latex": "f_t^{(1)}=\\mathrm{MLP}_{p_1}([h_t\\,\\|\\,\\mathrm{Emb}(p_1)])",
+          "purpose": "The first player's momentum.",
+          "variable_symbols": [
+            "f1",
+            "h",
+            "e"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-009",
+          "page": 12,
+          "label": "(9)",
+          "source_expression": "f2 = MLP_2([h || Emb(p2)])",
+          "normalized_latex": "f_t^{(2)}=\\mathrm{MLP}_{p_2}([h_t\\,\\|\\,\\mathrm{Emb}(p_2)])",
+          "purpose": "The second player's momentum.",
+          "variable_symbols": [
+            "f2",
+            "h",
+            "e"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-010",
+          "page": 12,
+          "label": "(10)",
+          "source_expression": "m = f2 - f1",
+          "normalized_latex": "m_t=f_t^{(2)}-f_t^{(1)}",
+          "purpose": "The predicted momentum as a difference.",
+          "variable_symbols": [
+            "mt",
+            "f1",
+            "f2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q250-011",
+          "page": 14,
+          "label": "(11)",
+          "source_expression": "IG_i = (x_i - x_i') * integral_0^1 dF(x' + alpha(x-x'))/dx_i' d alpha",
+          "normalized_latex": "IG_i=(x_i-x_i')\\int_0^1\\partial_i F(x'+\\alpha(x-x'))\\,d\\alpha",
+          "purpose": "The integrated gradient. The integral is detached from its integrand.",
+          "variable_symbols": [
+            "IG",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Eight formulas are printed. The gate block and the gradient integral are scrambled."
+      },
+      "objectives": [
+        "Predict the momentum and name the indicators that move it."
+      ],
+      "constraints": [
+        "Ten-point window.",
+        "Six hand-built groups.",
+        "Attributes bounded to [-1, 1]."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The average starts at the tenth point."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The gates, the embeddings, and the six linear layers are trained by backpropagation under squared error. The grouping is manual.",
+        "parameters": [
+          "e"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Smooth the scoring rate over ten points.",
+          "Group the indicators into six attributes.",
+          "Compress each attribute.",
+          "Merge with the player embeddings.",
+          "Train against the squared error.",
+          "Attribute the output with integrated gradients.",
+          "Keep the twelve strongest indicators."
+        ],
+        "software": [
+          "PyTorch"
+        ],
+        "convergence_criteria": "No printed training loss. The test losses are in Table 3."
+      },
+      "assumptions": [
+        "The six groups are the right ones.",
+        "Only the magnitude of an effect matters."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The structure is printed in the appendix. The width, the learning rate, and the number of epochs are not."
+      },
+      "validation_refs": [
+        "Figure 7: the smoothed momentum.",
+        "Figure 10: the six attributions.",
+        "Table 3: seven test losses between 0.0132 and 0.0306."
+      ],
+      "computational_cost": "One recurrent model over 24 training matches.",
+      "strengths": [
+        "The reduction is justified by the cost of collecting the data."
+      ],
+      "limitations": [
+        "The dimensions are chosen by hand and then treated as discovered."
+      ],
+      "missing_details": [
+        "The hidden width, the learning rate, and the number of epochs."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q250-004",
+      "page": 16,
+      "section": "6.2 The capability evaluation",
+      "family": "linear system pinned by a reference player",
+      "purpose": "Recover each player's value on the six attributes.",
+      "base_or_modification": "paper-specific",
+      "summary": "An attribute's influence in a match is the difference between the two players. With 31 matches the differences alone cannot be solved, so the champion is fixed at 10 on all six attributes, which makes the system square and gives it a unique solution. The eight players show no absolute weakness, which the paper reads as confirmation that Grand Slam players share a basic strength, and the advice targets each deficiency.",
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "attribute difference",
+          "unit": "1",
+          "definition": "The winner's attribute minus the loser's, per match.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "champion value",
+          "unit": "1",
+          "definition": "Fixed at 10 on every attribute.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "player value",
+          "unit": "1",
+          "definition": "A player's value on one attribute.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "d"
+      ],
+      "outputs": [
+        "v"
+      ],
+      "handoff_outputs": [
+        "v"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The system is described as the differences plus one pinned player. No equation is printed."
+      },
+      "objectives": [
+        "Give every player a number on each of the six attributes."
+      ],
+      "constraints": [
+        "The champion is 10 on all six.",
+        "One difference per match."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The champion appears in the data, so the pinning reaches the others."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The values are solved, not fitted. The pinning value of 10 is chosen.",
+        "parameters": [
+          "c"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Form the difference on each attribute for each match.",
+          "Fix the champion at 10.",
+          "Solve the square system."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The system has a unique solution once pinned."
+      },
+      "assumptions": [
+        "The champion is the right reference.",
+        "Ten is a meaningful scale."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The paper shows the count of equations meeting the count of unknowns."
+      },
+      "validation_refs": [
+        "Figure 12: the attribute map.",
+        "The eight players have no absolute weakness."
+      ],
+      "computational_cost": "One linear solve.",
+      "strengths": [
+        "The shortage of matches is turned into a reason for the pinning."
+      ],
+      "limitations": [
+        "The scale of 10 is arbitrary, and every comparison inherits it."
+      ],
+      "missing_details": [
+        "The solved values, which are only drawn."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q250-001",
+      "to_model_id": "MU-C-Q250-002",
+      "handoff": "The scoring rate is standardized and plotted."
+    },
+    {
+      "from_model_id": "MU-C-Q250-001",
+      "to_model_id": "MU-C-Q250-003",
+      "handoff": "The scoring rate is smoothed into the training target."
+    },
+    {
+      "from_model_id": "MU-C-Q250-003",
+      "to_model_id": "MU-C-Q250-004",
+      "handoff": "The attribute differences become the linear system."
+    }
+  ]
+}

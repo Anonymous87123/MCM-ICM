@@ -1,0 +1,123 @@
+Team # 2504218                                                                                Page 12 of 25
+
+
+        placement, both binary images undergo Gaussian blurring to achieve smooth transitions be-
+        tween the foot and the stair. Multiple small random shifts are then applied in the stair coor-
+        dinate system to replicate the fact that each step is not identically placed, ultimately yielding a
+        smooth and more realistic wear pattern.
+
+3.3.1    Construction of Foot Distributions and Minor Shifts
+     A detailed description of how these front/rear foot partitions are incorporated into the stair coor-
+dinate system and how random shifts are applied is given below.
+      In practice, we first obtain two binary masks—one from the “front two-thirds” and one from the
+“rear two-thirds” of a foot image—where white represents the background and black the foot region.
+Denoting these masks by footup (x′ , y ′ ) and footdown (x′ , y ′ ), with (x′ , y ′ ) being image coordinates,
+
+
+
+
+                                                          型
+we then apply Gaussian blurring, scaling, and positional fitting to map them into the stair coordinate
+system (x, y). Multiple small random shifts and noise can be superimposed, yielding smoothed contact
+
+
+
+
+                                                        模
+distributions ϕup (x, y) and ϕdown (x, y).
+     To obtain a smoother foot distribution, the following steps are applied to each binary foot mask:
+
+
+
+
+                                                      学
+   1. Gaussian Blurring: Convolve the mask with a Gaussian kernel of width σblur to smooth foot
+      edges.
+                                                    数
+   2. Scaling and Fitting: Map image coordinates onto a small region of the stair domain Ω (for in-
+      stance, aligned with the bottom edge or centered), introducing a random perturbation if needed.
+                                                ：
+   3. Repeated Random Offsets: Overlay the foot mask multiple times, each with a small offset
+
+
+
+
+                                               el s
+      (δx, δy), and then normalize the sum to obtain the final ϕup or ϕdown .
+                                              号
+
+Here, (δx, δy) can be drawn from a Gaussian distribution N ((x0 , y0 ), Σ) to reflect that each footstep
+                                             od
+may not fall exactly in the same spot. The cumulative distribution—after normalization—provides a
+                              众
+
+
+
+foot-contact probability map over the stair surface. Specific algorithm is demonstrated below.
+                                          Hm
+
+  Algorithm 1: Build Foot Distribution (Gaussian + Random Offsets)
+                公
+
+
+
+
+    input : foot_bin: binary foot image (black=foot, white=background), rotated if needed
+                (Nx , Ny ): ladder grid size
+                                       AT
+               信
+
+
+
+
+                σblur : Gaussian blur parameter
+                offset_base = (x0 , y0 ): base offset on ladder
+                offset_std: std. for random offsets
+        微
+
+                                      M
+
+
+
+
+                foot_scale: factor controlling foot size
+                nsamples : number of random placements
+    output: A 2D distribution accum[j, i] ∈ [0, 1] representing final foot contact.
+                         ：
+
+
+
+
+  1 footBlur ← GaussianFilter(foot_bin, σblur );
+  2 footBlur ← Normalize(footBlur);
+                        号
+
+
+
+
+  3 footSmall ← Resize(footBlur, 100, 100);
+  4 accum ← 0(Ny ,Nx ) ;
+  5 for s ← 1 to nsamples do
+          信
+
+
+
+
+  6     (δx, δy) ← RandomNormal(offset_base, offset_std);
+  7     footDist2D ← 0(Ny ,Nx ) ;
+         微
+
+
+
+
+  8     foreach pixel (i, j) in footSmall[0..99, 0..99] do
+  9         val ← footSmall[    j, i ];
+ 10         x′ ← δx + i/99  × foot_scale;
+ 11         y ′ ← δy + j/99 × foot_scale;
+ 12         (iX, iY ) ← MapToGrid(x′ , y ′ );                      
+ 13         footDist2D[ iY, iX ] ← max footDist2D[ iY, iX ], val ;
+ 14     end
+ 15     accum ← accum + footDist2D;
+ 16 end
+ 17 accum ← Normalize(accum);
+ 18 Output: final distribution accum[j, i] ∈ [0, 1].

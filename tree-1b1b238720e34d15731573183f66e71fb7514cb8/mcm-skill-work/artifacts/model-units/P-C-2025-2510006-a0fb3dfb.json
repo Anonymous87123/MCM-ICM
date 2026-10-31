@@ -1,0 +1,1209 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-C-2025-2510006-a0fb3dfb",
+ "problem_type": "C",
+ "year": "2025",
+ "source_sha256": "a0fb3dfbadb35814ad16154dadb3b9cd91c34bf24d53f6a7e3b7ca28c7340f8c",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-C-Q263-001",
+   "page": 8,
+   "section": "4.1.1 Countries with Previous Medals",
+   "family": "thresholded linear trend",
+   "purpose": "Predict 2028 medal counts for a non-host country that has already medaled, one sport class at a time.",
+   "base_or_modification": "paper-specific",
+   "summary": "Six past Games are averaged when the correlation with year is below 0.5, and a six-point regression is floored at zero otherwise. New events use a Monte Carlo bracket or a ranking logistic, and the three colors are rounded by a floor.",
+   "variables": [
+    {
+     "symbol": "a_j_i",
+     "normalized_name": "predicted gold count in class i",
+     "unit": "medal",
+     "definition": "predicted gold count in class i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_jk_i",
+     "normalized_name": "past gold count in class i at Games k",
+     "unit": "medal",
+     "definition": "past gold count in class i at Games k",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "r",
+     "normalized_name": "correlation of the class series with year",
+     "unit": "dimensionless",
+     "definition": "correlation of the class series with year",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_hat_j",
+     "normalized_name": "linear-regression gold value",
+     "unit": "medal",
+     "definition": "linear-regression gold value",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "e_j_i",
+     "normalized_name": "predicted count of new medalists in class i",
+     "unit": "athlete",
+     "definition": "predicted count of new medalists in class i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "e_jk_i",
+     "normalized_name": "past count of athletes who did not compete last time",
+     "unit": "athlete",
+     "definition": "past count of athletes who did not compete last time",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "e_hat_j",
+     "normalized_name": "linear-regression value for new medalists",
+     "unit": "athlete",
+     "definition": "linear-regression value for new medalists",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_AB",
+     "normalized_name": "win probability of A against B",
+     "unit": "dimensionless",
+     "definition": "win probability of A against B",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "w_A",
+     "normalized_name": "points of country A",
+     "unit": "point",
+     "definition": "points of country A",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "w_B",
+     "normalized_name": "points of country B",
+     "unit": "point",
+     "definition": "points of country B",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "R_A",
+     "normalized_name": "ranking of country A",
+     "unit": "rank",
+     "definition": "ranking of country A",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "R_B",
+     "normalized_name": "ranking of country B",
+     "unit": "rank",
+     "definition": "ranking of country B",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "alpha_rank",
+     "normalized_name": "ranking scale",
+     "unit": "1/rank",
+     "definition": "ranking scale",
+     "role": "parameter",
+     "source_status": "inferred-from-equation"
+    },
+    {
+     "symbol": "G",
+     "normalized_name": "gold total before rounding",
+     "unit": "medal",
+     "definition": "gold total before rounding",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "S",
+     "normalized_name": "silver total before rounding",
+     "unit": "medal",
+     "definition": "silver total before rounding",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "bronze total before rounding",
+     "unit": "medal",
+     "definition": "bronze total before rounding",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "T",
+     "normalized_name": "rounded total medals",
+     "unit": "medal",
+     "definition": "rounded total medals",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "a_jk_i",
+    "e_jk_i",
+    "r",
+    "w_A",
+    "w_B",
+    "R_A",
+    "R_B"
+   ],
+   "outputs": [
+    "a_j_i",
+    "e_j_i",
+    "T"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q263-001",
+     "page": 8,
+     "label": null,
+     "source_expression": "a_j^i = (sum_{k=1}^{6} a_{jk}^i)/6 when |r| < 0.5, and max{0, a_hat_j} when |r| >= 0.5",
+     "normalized_latex": "a_j^i = \\mathrm{cases}\\ (\\sum_{k=1}^{6} a_{jk}^i)/6 , |r|<0.5; \\ \\max\\{0,\\hat a_j\\}, |r|\\ge 0.5",
+     "purpose": "Case split for a class gold forecast. The gloss says the 2024 Games.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "a_j_i",
+      "a_jk_i",
+      "r",
+      "a_hat_j"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-002",
+     "page": 8,
+     "label": null,
+     "source_expression": "a_hat_j = (-10 a_{j1}^i - 4 a_{j2}^i + 2 a_{j3}^i + 8 a_{j4}^i + 14 a_{j5}^i + 20 a_{j6}^i)/30",
+     "normalized_latex": "\\hat a_j = (-10 a_{j1}^i - 4 a_{j2}^i + 2 a_{j3}^i + 8 a_{j4}^i + 14 a_{j5}^i + 20 a_{j6}^i)/30",
+     "purpose": "Six-point regression. The weights are the printed ones.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "a_hat_j",
+      "a_jk_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-003",
+     "page": 8,
+     "label": null,
+     "source_expression": "e_j^i = (sum_{k=1}^{6} e_{jk}^i)/6 when |r| < 0.5, and max{0, e_hat_j} when |r| >= 0.5",
+     "normalized_latex": "e_j^i = \\mathrm{cases}\\ (\\sum_{k=1}^{6} e_{jk}^i)/6 , |r|<0.5; \\ \\max\\{0,\\hat e_j\\}, |r|\\ge 0.5",
+     "purpose": "The same split for athletes who missed the previous Games.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "e_j_i",
+      "e_jk_i",
+      "r",
+      "e_hat_j"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-004",
+     "page": 8,
+     "label": null,
+     "source_expression": "e_hat_j = (-10 e_{j1}^i - 4 e_{j2}^i + 2 e_{j3}^i + 8 e_{j4}^i + 14 e_{j5}^i + 20 e_{j6}^i)/30",
+     "normalized_latex": "\\hat e_j = (-10 e_{j1}^i - 4 e_{j2}^i + 2 e_{j3}^i + 8 e_{j4}^i + 14 e_{j5}^i + 20 e_{j6}^i)/30",
+     "purpose": "Six-point regression for the new-medalist count.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "e_hat_j",
+      "e_jk_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-005",
+     "page": 8,
+     "label": null,
+     "source_expression": "P_AB = w_A / (w_A + w_B)",
+     "normalized_latex": "P_{AB} = w_A/(w_A+w_B)",
+     "purpose": "Win probability from points, for a new event with a bracket.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_AB",
+      "w_A",
+      "w_B"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-006",
+     "page": 9,
+     "label": null,
+     "source_expression": "P_AB = 1 / (1 + exp(alpha (R_A - R_B)))",
+     "normalized_latex": "P_{AB} = 1/(1+\\exp(\\alpha(R_A-R_B)))",
+     "purpose": "Ranking logistic, used where only a world ranking exists.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_AB",
+      "alpha_rank",
+      "R_A",
+      "R_B"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-007",
+     "page": 9,
+     "label": null,
+     "source_expression": "T = floor(G + 1/2) + floor(S + 1/2) + floor(B + 1/2)",
+     "normalized_latex": "T = \\lfloor G+1/2\\rfloor + \\lfloor S+1/2\\rfloor + \\lfloor B+1/2\\rfloor",
+     "purpose": "Rounding. The prose says nearest integer; the display is the floor.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "T",
+      "G",
+      "S",
+      "B"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Forecast each class, then round the three colors."
+   ],
+   "constraints": [
+    "The correlation cutoff is 0.5.",
+    "A negative regression is replaced by zero.",
+    "New events with only a ranking use the logistic form."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "correlation against a fixed cutoff, then a six-point line",
+    "parameters": [
+     "0.5",
+     "the six regression weights"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Test the class series against 0.5.",
+     "Average six Games, or fit the six-point line and floor it.",
+     "Simulate a new event one million times, or use the ranking logistic.",
+     "Round each color with the floor of n plus one half."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "Athlete nationality does not change.",
+    "The five new sports are knockout tournaments."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports a chosen order, a cutoff, or a fitted interval, and does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "T"
+   ],
+   "validation_refs": [
+    "The sensitivity section reruns the cutoff from 0.3 to 0.7."
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The branch is stated in prose before the case brace.",
+    "The floor is justified by a value that may be negative."
+   ],
+   "limitations": [
+    "The gloss dates the forecast to the 2024 Games.",
+    "The same symbol P_AB is used for the points ratio and the ranking logistic."
+   ],
+   "missing_details": [
+    "No value is given for alpha.",
+    "The class names in the text do not match Table 1."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q263-002",
+   "page": 10,
+   "section": "4.1.2 Host Country: United States",
+   "family": "host boost",
+   "purpose": "Lift the United States traditional-event medals by the average host increase, then add the new-event expectation.",
+   "base_or_modification": "paper-specific",
+   "summary": "A host's medals are compared with the average of the neighboring Games. The weighted increase is one ratio minus one, in percent. The United States uses 2020 and 2024, then adds a Monte Carlo new-event expectation.",
+   "variables": [
+    {
+     "symbol": "T_boost",
+     "normalized_name": "weighted host increase",
+     "unit": "percent",
+     "definition": "weighted host increase",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "g_t",
+     "normalized_name": "host medals at Games t",
+     "unit": "medal",
+     "definition": "host medals at Games t",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "m_t",
+     "normalized_name": "host medals at the previous Games",
+     "unit": "medal",
+     "definition": "host medals at the previous Games",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n_t",
+     "normalized_name": "host medals at the next Games",
+     "unit": "medal",
+     "definition": "host medals at the next Games",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "g_t",
+    "m_t",
+    "n_t"
+   ],
+   "outputs": [
+    "T_boost"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q263-008",
+     "page": 10,
+     "label": null,
+     "source_expression": "T_boost = ( (g_1+...+g_t) / ((m_1+n_1)/2 + ... + (m_t+n_t)/2) - 1 ) x 100%",
+     "normalized_latex": "T_{boost} = \\left(\\frac{g_1+\\cdots+g_t}{(m_1+n_1)/2+\\cdots+(m_t+n_t)/2} - 1\\right)\\times 100\\%",
+     "purpose": "Weighted host increase. The notation table calls it the weighed increment.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "T_boost",
+      "g_t",
+      "m_t",
+      "n_t"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Rescale the recent United States average by the host increase."
+   ],
+   "constraints": [
+    "A missing neighbor is replaced by the closest Games.",
+    "The 1980 boycott uses 1976 and 1988."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "ratio of host medals to the neighbor average, minus one",
+    "parameters": [
+     "T_boost"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Build the host table from 1896.",
+     "Form the weighted increase.",
+     "Average 2020 and 2024, multiply by the rate, and add the new-event expectation."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The host adds events that are its strengths.",
+    "Home advantage is real and is not separated from the new events."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports a chosen order, a cutoff, or a fitted interval, and does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "T_boost"
+   ],
+   "validation_refs": [
+    "Traditional-event forecast 53.64, 51.43, 31.56, 136.63.",
+    "Combined forecast 54.57, 52.16, 32.37, totaling 139."
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The boycott rule is stated with a named example.",
+    "The four traditional-event numbers are given with respectively."
+   ],
+   "limitations": [
+    "The printed traditional total 136.63 is not the sum of 53.64, 51.43, and 31.56.",
+    "Adding the printed new-event medals does not give the printed combined medals."
+   ],
+   "missing_details": [
+    "The per-Games rates in Table 3 are not read back from a raster."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q263-003",
+   "page": 12,
+   "section": "4.1.3 Prediction for Countries Winning Medals for the First Time",
+   "family": "ARIMA plus random forest",
+   "purpose": "Forecast how many never-medaled countries win a first medal in 2028, then the chance for one such country.",
+   "base_or_modification": "hybrid",
+   "summary": "The undifferenced series is kept after an ADF check. AIC selects ARIMA(0,0,2), residual checks are reported as passed, and the point 3.09 is fed to a random forest for the interval. A second, disintegrated class is given an exponential regression and then set to zero.",
+   "variables": [
+    {
+     "symbol": "p",
+     "normalized_name": "autoregressive order",
+     "unit": "dimensionless",
+     "definition": "autoregressive order",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "d",
+     "normalized_name": "differencing order",
+     "unit": "dimensionless",
+     "definition": "differencing order",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q",
+     "normalized_name": "moving-average order",
+     "unit": "dimensionless",
+     "definition": "moving-average order",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "K",
+     "normalized_name": "number of ARIMA parameters",
+     "unit": "count",
+     "definition": "number of ARIMA parameters",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "L",
+     "normalized_name": "maximum likelihood",
+     "unit": "dimensionless",
+     "definition": "maximum likelihood",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "u",
+     "normalized_name": "first medals from countries that did not emerge by breakup",
+     "unit": "country",
+     "definition": "first medals from countries that did not emerge by breakup",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "v",
+     "normalized_name": "first medals from disintegrated countries",
+     "unit": "country",
+     "definition": "first medals from disintegrated countries",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_i",
+     "normalized_name": "predicted events entered by country i",
+     "unit": "event",
+     "definition": "predicted events entered by country i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a_total",
+     "normalized_name": "sum of predicted events over never-medaled countries",
+     "unit": "event",
+     "definition": "sum of predicted events over never-medaled countries",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "r",
+     "normalized_name": "correlation of the participation series with year",
+     "unit": "dimensionless",
+     "definition": "correlation of the participation series with year",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "L_i",
+     "normalized_name": "expected medals for country i",
+     "unit": "medal",
+     "definition": "expected medals for country i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "q_i",
+     "normalized_name": "probability that country i wins at least one medal",
+     "unit": "dimensionless",
+     "definition": "probability that country i wins at least one medal",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "r"
+   ],
+   "outputs": [
+    "u",
+    "a_i",
+    "L_i",
+    "q_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q263-009",
+     "page": 12,
+     "label": null,
+     "source_expression": "AIC = 2K - 2 ln(L)",
+     "normalized_latex": "\\mathrm{AIC} = 2K - 2\\ln(L)",
+     "purpose": "Order criterion. The winning order is ARIMA(0,0,2).",
+     "source_type": "paper",
+     "variable_symbols": [
+      "K",
+      "L"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-010",
+     "page": 12,
+     "label": null,
+     "source_expression": "a_j^i = (sum_{k=1}^{7} a_{ik})/7 when |r| < 0.5, and max{0, a_hat_j} when |r| >= 0.5",
+     "normalized_latex": "a_j^i = \\mathrm{cases}\\ (\\sum_{k=1}^{7} a_{ik})/7, |r|<0.5; \\ \\max\\{0,\\hat a_j\\}, |r|\\ge 0.5",
+     "purpose": "Seven-Games participation forecast. The index letters swap between the two lines.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "a_i",
+      "r"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-011",
+     "page": 12,
+     "label": null,
+     "source_expression": "a_hat_j = (-8 a_{i1} - 5 a_{i2} - 2 a_{i3} + a_{i4} + 4 a_{i5} + 7 a_{i6} + 10 a_{i7})/7",
+     "normalized_latex": "\\hat a_j = (-8 a_{i1} - 5 a_{i2} - 2 a_{i3} + a_{i4} + 4 a_{i5} + 7 a_{i6} + 10 a_{i7})/7",
+     "purpose": "Seven-point participation line.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "a_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-012",
+     "page": 14,
+     "label": null,
+     "source_expression": "L_i = (a_i / a) (u + v)",
+     "normalized_latex": "L_i = \\frac{a_i}{a}(u+v)",
+     "purpose": "Expected medals for one never-medaled country. The denominator is the printed a.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "L_i",
+      "a_i",
+      "a_total",
+      "u",
+      "v"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-013",
+     "page": 15,
+     "label": null,
+     "source_expression": "q_i = 1 - P(x = 0) = 1 - e^{-L_i}",
+     "normalized_latex": "q_i = 1 - e^{-L_i}",
+     "purpose": "Poisson chance of at least one medal.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "q_i",
+      "L_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Forecast the count of first medals, then one country's share."
+   ],
+   "constraints": [
+    "The original series is kept because differencing does not improve the ADF result.",
+    "A first medal in a single event is rare, so the count is Poisson."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "AIC over the ARIMA orders, then a forest interval",
+    "parameters": [
+     "p",
+     "d",
+     "q"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Test the series and its first two differences.",
+     "Pick the order by the AIC heatmap.",
+     "Check residuals with Ljung-Box and Shapiro-Wilk.",
+     "Feed the ARIMA point to the forest for the interval.",
+     "Set the disintegrated count to zero."
+    ],
+    "software": [
+     "not stated"
+    ],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "Countries that emerged from a breakup are separated from the rest.",
+    "Eighteen of the twenty-one disintegrated countries have already medaled."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports a chosen order, a cutoff, or a fitted interval, and does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "u",
+    "q_i"
+   ],
+   "validation_refs": [
+    "ADF statistic -4.01 and p-value 0.0014.",
+    "Point forecast 3.09 and interval [2.58, 4.87]."
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The order is chosen by a named plot, not by a grid printed in prose.",
+    "Both residual checks are reported as p greater than 0.05."
+   ],
+   "limitations": [
+    "The ADF label is printed twice.",
+    "The interval [0, 0.01] is then stated as the integer 0.",
+    "The participation display swaps i and j."
+   ],
+   "missing_details": [
+    "The random-forest features are named only as training set features.",
+    "No exponential-regression equation is displayed."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q263-004",
+   "page": 17,
+   "section": "4.2 Analysis of the Relationship Between Events and Medals",
+   "family": "medal-share distance",
+   "purpose": "Score how similarly two sport classes distribute medals across countries.",
+   "base_or_modification": "paper-specific",
+   "summary": "A class share is a country's medals in that class over the class total. The distance is a sum of squared share gaps, and the reported correlation is one minus the distance over its maximum.",
+   "variables": [
+    {
+     "symbol": "x_ij",
+     "normalized_name": "share of class i medals won by country j",
+     "unit": "dimensionless",
+     "definition": "share of class i medals won by country j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "u_ij",
+     "normalized_name": "medals of country j in class i",
+     "unit": "medal",
+     "definition": "medals of country j in class i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "r_i",
+     "normalized_name": "total medals in class i",
+     "unit": "medal",
+     "definition": "total medals in class i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "d_ij",
+     "normalized_name": "squared distance between class i and class j",
+     "unit": "dimensionless",
+     "definition": "squared distance between class i and class j",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "d_prime_ij",
+     "normalized_name": "normalized correlation of class i and class j",
+     "unit": "dimensionless",
+     "definition": "normalized correlation of class i and class j",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_ik",
+     "normalized_name": "share of class i medals won by country k",
+     "unit": "dimensionless",
+     "definition": "share of class i medals won by country k",
+     "role": "intermediate",
+     "source_status": "inferred-from-equation"
+    },
+    {
+     "symbol": "x_jk",
+     "normalized_name": "share of class j medals won by country k",
+     "unit": "dimensionless",
+     "definition": "share of class j medals won by country k",
+     "role": "intermediate",
+     "source_status": "inferred-from-equation"
+    }
+   ],
+   "inputs": [
+    "u_ij",
+    "r_i"
+   ],
+   "outputs": [
+    "d_ij",
+    "d_prime_ij"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q263-014",
+     "page": 17,
+     "label": null,
+     "source_expression": "x_ij = u_ij / r_i",
+     "normalized_latex": "x_{ij} = u_{ij}/r_i",
+     "purpose": "Class share. The prose says 1896 to 2024.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "x_ij",
+      "u_ij",
+      "r_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-015",
+     "page": 17,
+     "label": null,
+     "source_expression": "d_ij = sum_{k=1}^{t} (x_{ik} - x_{jk})^2 , 1 <= i, j <= 6",
+     "normalized_latex": "d_{ij} = \\sum_{k=1}^{t}(x_{ik}-x_{jk})^2",
+     "purpose": "Squared share distance. The index k runs over countries while t is also the coach score.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "d_ij",
+      "x_ik",
+      "x_jk"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-016",
+     "page": 17,
+     "label": null,
+     "source_expression": "d'_ij = 1 - d_ij / max{d_ij}",
+     "normalized_latex": "d'_{ij} = 1 - d_{ij}/\\max\\{d_{ij}\\}",
+     "purpose": "Normalized correlation. The heatmap prints this value.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "d_prime_ij",
+      "d_ij"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Rank class pairs by the normalized share distance."
+   ],
+   "constraints": [
+    "The diagonal is zero before normalization and one after it.",
+    "A larger distance is read as a weaker correlation."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "not-applicable",
+    "method": "direct calculation from medal counts",
+    "parameters": []
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Form the share.",
+     "Sum the squared gaps.",
+     "Divide by the maximum and subtract from one."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The six class names are the third set used in the paper."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports a chosen order, a cutoff, or a fitted interval, and does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "d_prime_ij"
+   ],
+   "validation_refs": [
+    "Figure 20 prints the normalized table."
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The color rule is stated before any cell is interpreted.",
+    "The diagonal is set aside before the strong pairs are named."
+   ],
+   "limitations": [
+    "The upper and lower triangles of the printed heatmap are not equal.",
+    "The symbol t is reused for the coach score."
+   ],
+   "missing_details": [
+    "No test is given for the difference between two cells."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q263-005",
+   "page": 19,
+   "section": "5.1 Evidence of the Great Coach Effect",
+   "family": "Fisher exact score",
+   "purpose": "Score a coach's tenure by medal points and report a confidence P.",
+   "base_or_modification": "paper-specific",
+   "summary": "Gold, silver, and bronze are mapped to 1.5, 1, and 0.5. The point total is (3g+2s+b)/2. A two-cell table produces alpha, and P is one minus alpha. The printed alpha is not the Fisher probability of one table.",
+   "variables": [
+    {
+     "symbol": "g",
+     "normalized_name": "gold medals during the tenure",
+     "unit": "medal",
+     "definition": "gold medals during the tenure",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "s",
+     "normalized_name": "silver medals during the tenure",
+     "unit": "medal",
+     "definition": "silver medals during the tenure",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b",
+     "normalized_name": "bronze medals during the tenure",
+     "unit": "medal",
+     "definition": "bronze medals during the tenure",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "t_points",
+     "normalized_name": "medal points",
+     "unit": "point",
+     "definition": "medal points",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "n",
+     "normalized_name": "Olympics before the coach with no medal",
+     "unit": "count",
+     "definition": "Olympics before the coach with no medal",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "m",
+     "normalized_name": "Olympics during the tenure with no medal",
+     "unit": "count",
+     "definition": "Olympics during the tenure with no medal",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "alpha",
+     "normalized_name": "printed significance level",
+     "unit": "dimensionless",
+     "definition": "printed significance level",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P",
+     "normalized_name": "printed confidence",
+     "unit": "dimensionless",
+     "definition": "printed confidence",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "g",
+    "s",
+    "b",
+    "n",
+    "m"
+   ],
+   "outputs": [
+    "t_points",
+    "P"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q263-017",
+     "page": 19,
+     "label": null,
+     "source_expression": "t = (3g + 2s + b)/2",
+     "normalized_latex": "t = (3g+2s+b)/2",
+     "purpose": "Medal points. Gold, silver, and bronze are then called 1.5, 1, and 0.5.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "t_points",
+      "g",
+      "s",
+      "b"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-018",
+     "page": 19,
+     "label": null,
+     "source_expression": "alpha = (n+m)! (m+t)! n! t! / (m! n! t! (m+n+t)!) = (n+m)! (m+t)! / (m! (m+n+t)!)",
+     "normalized_latex": "\\alpha = \\frac{(n+m)!(m+t)!n!t!}{m!n!t!(m+n+t)!}",
+     "purpose": "Printed significance. The second equality drops n! t! on top and keeps them out of the bottom.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "alpha",
+      "n",
+      "m",
+      "t_points"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q263-019",
+     "page": 19,
+     "label": null,
+     "source_expression": "P = 1 - alpha",
+     "normalized_latex": "P = 1 - \\alpha",
+     "purpose": "Printed confidence. The table reports this P.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P",
+      "alpha"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Decide whether a coach's tenure coincides with the first medals."
+   ],
+   "constraints": [
+    "The before-period has no medals in that event.",
+    "The point weights are 3, 2, and 1, then halved."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "direct substitution into the printed ratio",
+    "parameters": [
+     "the point weights 3, 2, 1"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Map the medals to points.",
+     "Fill the two-by-two table.",
+     "Compute alpha as printed and subtract from one."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "A great coach is identified only after a jump from no medal to some medal.",
+    "The timing of the coaching change may be the previous Games or a later one."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports a chosen order, a cutoff, or a fitted interval, and does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "P"
+   ],
+   "validation_refs": [
+    "Table 6 reports P for Lang Ping and Bela Karolyi."
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The two conditions are numbered and written as full sentences.",
+    "A point gap is translated back into a medal color."
+   ],
+   "limitations": [
+    "The printed alpha is an algebraically simplified ratio, not a sum over more extreme tables.",
+    "The second equality does not follow from the first.",
+    "Table 5 is captioned Table Title."
+   ],
+   "missing_details": [
+    "No source is given for the medal counts in the coach table.",
+    "The India and Brazil rows are expectations, not fitted P values."
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-C-Q263-001",
+   "to_model_id": "MU-C-Q263-002",
+   "handoff": "The new-event Monte Carlo expectation is added to the host's traditional-event forecast."
+  },
+  {
+   "from_model_id": "MU-C-Q263-003",
+   "to_model_id": "MU-C-Q263-001",
+   "handoff": "The same 0.5 cutoff and the same floor at zero are reused for the participation counts."
+  }
+ ]
+}

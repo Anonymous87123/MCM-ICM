@@ -1,0 +1,1050 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2017-72197-93a3c66b",
+  "problem_type": "F",
+  "year": "2017",
+  "source_sha256": "93a3c66bb75f324add2da297fa98ca36b9ff1df65c3f8540512652b18b31db6f",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2017-72197-WG",
+      "section": "D Addressing Income Inequality",
+      "family": "income-distribution",
+      "summary": "Wages follow an inverse curve fit to a Connecticut sample of about 27,000 and scaled to the 5,600 workers, which is 70 percent of the 80 percent of 10,000 people aged 16 or over. Ranked from poorest to richest, W(x) = 62205676/(5670-x) - 970. Anyone below $20,000 is topped up, which costs about $16.4 million. Schooling at $20,000 for each of 2,000 minors costs $40 million and government operations cost $20 million, so the tax must raise $76.4 million. Tax falls only on income above the floor, at a rate proportional to the surplus, with constant 1.56e-6, and is capped at 50 percent from rank 4925 upward. The Gini coefficient falls from 0.582 before tax to 0.365 after.",
+      "computational_cost": "Excel solver plus a symbolic integration session",
+      "purpose": "Set a wage floor and a tax that funds welfare while cutting inequality.",
+      "base_or_modification": "modification",
+      "page": 10,
+      "inputs": [
+        "x"
+      ],
+      "outputs": [
+        "W",
+        "T",
+        "Gini"
+      ],
+      "handoff_outputs": [
+        "W"
+      ],
+      "objectives": [
+        "Fund the welfare bill while pulling the Gini coefficient down."
+      ],
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "income_rank",
+          "role": "input",
+          "unit": "person",
+          "definition": "Rank from poorest at 0 to richest at 5600",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "pre_tax_wage",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Wage before tax for rank x",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "tax_paid",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Tax paid by rank x",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w0",
+          "normalized_name": "wage_floor",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Minimum wage, 20000 dollars",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "tax_constant",
+          "role": "parameter",
+          "unit": "per-currency",
+          "definition": "Proportionality constant, 1.56e-6",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rmax",
+          "normalized_name": "tax_cap",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Maximum tax rate, 0.5",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Gini",
+          "normalized_name": "gini_coefficient",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Inequality, 0.582 before tax and 0.365 after",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2017-72197-WG-1",
+          "equation_label": "Inverse wage curve",
+          "equation_text": "W(x) = 62205676/(5670-x) - 970 for 0 <= x <= 5600.",
+          "source_expression": "W(x) = 62205676/(5670-x) - 970 for 0 <= x <= 5600.",
+          "normalized_latex": "W(x)=\\frac{62205676}{5670-x}-970",
+          "purpose": "Give each rank a pre-tax wage.",
+          "variable_symbols": [
+            "W",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2017-72197-WG-2",
+          "equation_label": "Capped progressive tax",
+          "equation_text": "T(x) = k*W(x)*(W(x)-w0) up to the rank where the rate hits rmax, then rmax*W(x), and 0 below the floor.",
+          "source_expression": "T(x) = k*W(x)*(W(x)-w0) up to the rank where the rate hits rmax, then rmax*W(x), and 0 below the floor.",
+          "normalized_latex": "T(x)=k\\,W(x)\\,(W(x)-w_0)",
+          "purpose": "Raise the welfare bill with a capped progressive tax.",
+          "variable_symbols": [
+            "T",
+            "W",
+            "k",
+            "w0",
+            "rmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The wage curve is legible. The piecewise tax is broken across lines and reconstructed from the symbolic session.",
+        "reason": "Section D."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The curve is scaled to 5,600 workers drawn from a 27,000-person sample."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Rank runs from 0 to 5600. The tax rate never exceeds 50 percent."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Tax revenue is set equal to the 76.4 million dollar welfare bill."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Inverse curve fit by an Excel solver, then the tax constant solved so integrated revenue meets the bill.",
+        "parameters": [
+          "k"
+        ]
+      },
+      "algorithm": {
+        "description": "Fit the curve, integrate the subsidy, solve for the tax constant, cap the rate.",
+        "status": "implemented",
+        "steps": [
+          "Fit the inverse curve to the sample",
+          "Scale to 5,600 workers",
+          "Integrate the top-up below the floor",
+          "Solve for the tax constant",
+          "Cap the rate at 50 percent and recompute"
+        ],
+        "software": [
+          "Excel",
+          "Mathematica"
+        ],
+        "convergence_criteria": "Revenue equals the 76.4 million dollar bill."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "The appendix integrates the subsidy at 1.63952e7 and reports both Gini coefficients."
+        ],
+        "analysis": "The arithmetic is reproducible. The floor and the cap are policy choices."
+      },
+      "constraints": [
+        "Only income above the floor is taxed.",
+        "People spend exactly what they earn."
+      ],
+      "validation_refs": [
+        "Appendix symbolic session",
+        "Gini 0.582 to 0.365"
+      ],
+      "strengths": [
+        "The cap is added because the raw rate was unreasonable, and revenue is held fixed.",
+        "Both Gini coefficients are computed from the same curve."
+      ],
+      "limitations": [
+        "The sample is one American state.",
+        "The inverse form is chosen by eye."
+      ],
+      "missing_details": [
+        "The goodness of fit for the inverse curve."
+      ],
+      "assumptions": [
+        "The government is the only employer.",
+        "Nobody goes bankrupt."
+      ]
+    },
+    {
+      "model_id": "MU-F-2017-72197-HC",
+      "section": "C and E Human Capital",
+      "family": "human-capital",
+      "summary": "Human capital H is accumulated from credentials and from work. Thresholds rise by less at each step: 30 at age 10, 70 for the associate level, 100 for the bachelor's, 125 for the master's and 145 for the doctorate, plus 1 per year worked after age 25. The founding mix is 10 percent doctoral, 30 percent master's, 40 percent bachelor's and 20 percent associate. After age 20 a citizen picks one of three options, splitting time 80/20, 30/70 or 5/95 between work and learning. At 1 unit per year of work and 5 per year of learning, the options add 9, 19 and 24 units per five-year step. Average H rises, dips as the founders die, then recovers.",
+      "computational_cost": "not-stated",
+      "purpose": "Track whether lifelong learning replaces the founders' skills.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "inputs": [
+        "a"
+      ],
+      "outputs": [
+        "H"
+      ],
+      "handoff_outputs": [
+        "H"
+      ],
+      "objectives": [
+        "Replenish the skill distribution after the founders die."
+      ],
+      "variables": [
+        {
+          "symbol": "H",
+          "normalized_name": "human_capital",
+          "role": "output",
+          "unit": "unit",
+          "definition": "Accumulated skill of one person",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "age",
+          "role": "input",
+          "unit": "year",
+          "definition": "Age of the person",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_w",
+          "normalized_name": "work_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of time spent working under the chosen option",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_l",
+          "normalized_name": "learn_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of time spent learning",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_w",
+          "normalized_name": "work_return",
+          "role": "parameter",
+          "unit": "unit-per-year",
+          "definition": "Human capital gained per year of work, 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_l",
+          "normalized_name": "learn_return",
+          "role": "parameter",
+          "unit": "unit-per-year",
+          "definition": "Human capital gained per year of learning, 5",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_c",
+          "normalized_name": "credential_threshold",
+          "role": "parameter",
+          "unit": "unit",
+          "definition": "Human capital credited for a credential",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2017-72197-HC-1",
+          "equation_label": "Credential stock",
+          "equation_text": "H starts at the credential threshold: 30, 70, 100, 125 or 145, plus one unit per year worked after age 25.",
+          "source_expression": "H starts at the credential threshold: 30, 70, 100, 125 or 145, plus one unit per year worked after age 25.",
+          "normalized_latex": "H=h_c+(a-25)",
+          "purpose": "Set the starting human capital.",
+          "variable_symbols": [
+            "H",
+            "h_c",
+            "a"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2017-72197-HC-2",
+          "equation_label": "Five-year gain",
+          "equation_text": "Each five-year step adds 5*(d_w*r_w + d_l*r_l), giving 9, 19 or 24 units.",
+          "source_expression": "Each five-year step adds 5*(d_w*r_w + d_l*r_l), giving 9, 19 or 24 units.",
+          "normalized_latex": "\\Delta H=5(d_w r_w+d_l r_l)",
+          "purpose": "Add human capital from the chosen option.",
+          "variable_symbols": [
+            "H",
+            "d_w",
+            "d_l",
+            "r_w",
+            "r_l"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The thresholds and the two rates are stated in prose. The per-option totals are computed from them.",
+        "reason": "Sections C and E."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Founders are 10, 30, 40 and 20 percent doctoral, master's, bachelor's and associate."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Schooling ends at age 20. Formal schooling has diminishing returns."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Average human capital settles back near the founding level."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Rates of 1 and 5 chosen by experimentation with marginal returns. Thresholds set to show diminishing returns.",
+        "parameters": [
+          "r_w",
+          "r_l"
+        ]
+      },
+      "algorithm": {
+        "description": "Assign credentials, then step each person through a chosen option.",
+        "status": "partial",
+        "steps": [
+          "Draw the credential mix",
+          "Credit the threshold and years worked",
+          "Assign a production option",
+          "Add the five-year gain",
+          "Track the mean and the spread"
+        ],
+        "software": [],
+        "convergence_criteria": "None stated. The path is read to the year 2200."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Figures show the human capital distribution at 2110 and 2200 and the average over time."
+        ],
+        "analysis": "The path is shown. The two rates are not estimated from data."
+      },
+      "constraints": [
+        "Only three production options exist.",
+        "Learning always returns five times work."
+      ],
+      "validation_refs": [
+        "Human capital distribution at 2110",
+        "Average human capital over time"
+      ],
+      "strengths": [
+        "The dip and recovery are reported rather than smoothed away.",
+        "Growing inequality is interpreted instead of hidden."
+      ],
+      "limitations": [
+        "The rates come from experimentation, not data.",
+        "No sensitivity on the 1-to-5 ratio."
+      ],
+      "missing_details": [
+        "How citizens choose among the three options."
+      ],
+      "assumptions": [
+        "Schooling builds human capital faster than work but with decreasing returns."
+      ]
+    },
+    {
+      "model_id": "MU-F-2017-72197-DM",
+      "section": "E Education Curriculum",
+      "family": "weighted-decision-matrix",
+      "summary": "Academic disciplines are scored against two outcome classes. In the short run, values carry 30 percent and economic applications 70 percent; in the long run the split moves to 40 and 60 and the weights inside each class are reordered toward innovation, cohesion and complexity. Each discipline earns points for serving heavily weighted goals, and the two horizons produce different winners: computer science, systems engineering, chemical engineering, biology, chemistry and hydrology over ten years, against systems engineering, computer science, sociology, art, literature and mathematics over a century.",
+      "computational_cost": "not-stated",
+      "purpose": "Choose the curriculum for two time horizons.",
+      "base_or_modification": "base",
+      "page": 12,
+      "inputs": [
+        "s_ij"
+      ],
+      "outputs": [
+        "S_i"
+      ],
+      "handoff_outputs": [
+        "S_i"
+      ],
+      "objectives": [
+        "Rank disciplines by service to values and to the economy."
+      ],
+      "variables": [
+        {
+          "symbol": "s_ij",
+          "normalized_name": "discipline_score",
+          "role": "input",
+          "unit": "point",
+          "definition": "Points discipline i earns on objective j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "values_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on the values class, 0.3 short run and 0.4 long run",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "applications_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on economic applications, 0.7 and 0.6",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "objective_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rank weight of objective j inside its class",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_i",
+          "normalized_name": "discipline_total",
+          "role": "output",
+          "unit": "point",
+          "definition": "Weighted total for discipline i",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2017-72197-DM-1",
+          "equation_label": "Discipline score",
+          "equation_text": "S_i = sum over objectives of class weight times objective weight times points.",
+          "source_expression": "S_i = sum over objectives of class weight times objective weight times points.",
+          "normalized_latex": "S_i=\\sum_j c_j w_j s_{ij}",
+          "purpose": "Rank a discipline for one horizon.",
+          "variable_symbols": [
+            "S_i",
+            "s_ij",
+            "v",
+            "e",
+            "w_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The matrix is printed in the appendix with its weights. The scoring rule is read from the prose.",
+        "reason": "Section E and the appendix."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "A static scoring matrix."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Class weights sum to one. Points are zero or one."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Two separate scorings, not a dynamic equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Class weights and rank order set by judgment for each horizon.",
+        "parameters": [
+          "v",
+          "e"
+        ]
+      },
+      "algorithm": {
+        "description": "Weight the objectives, score each discipline, read off the top six.",
+        "status": "implemented",
+        "steps": [
+          "Split outcomes into values and applications",
+          "Set the class weights",
+          "Rank objectives inside each class",
+          "Score each discipline",
+          "Compare the two horizons"
+        ],
+        "software": [],
+        "convergence_criteria": "None. Direct scoring."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The appendix prints the full matrix and both totals."
+        ],
+        "analysis": "The arithmetic is reproducible. Every weight is a judgment."
+      },
+      "constraints": [
+        "Disciplines come from one standard list.",
+        "Only two horizons are scored."
+      ],
+      "validation_refs": [
+        "Appendix weighted decision matrix"
+      ],
+      "strengths": [
+        "The same matrix is rerun rather than replaced when the horizon changes.",
+        "The shift in winners is explained."
+      ],
+      "limitations": [
+        "All weights and points are subjective.",
+        "No test of how the ranking moves when weights change slightly."
+      ],
+      "missing_details": [
+        "Who assigned the zero-one points."
+      ],
+      "assumptions": [
+        "Values matter less than economic application in the first decade."
+      ]
+    },
+    {
+      "model_id": "MU-F-2017-72197-EQ",
+      "section": "F Social Equity",
+      "family": "opportunity-cost",
+      "summary": "A couple leaves the standard workforce when childcare costs more than the opportunity cost of working. Childcare cost is the number of children times the service cost times the months until school, minus the longer leave, plus the minimum wage earned in the childcare sector. Opportunity cost is the lower salary times the same months, minus the unpaid share of leave. With a service cost of $7,500, twelve months of fully paid leave for both parents, school at 60 months and a $20,000 floor, about 5 to 6 percent of the population provides childcare and the gender split stays even. Scaling women's pay by the 2014 median ratio, 39621 to 50383, roughly doubles the female exit share.",
+      "computational_cost": "Monte Carlo over 5,000 couples",
+      "purpose": "Choose the childcare cost that keeps parents in the workforce.",
+      "base_or_modification": "hybrid",
+      "page": 14,
+      "inputs": [
+        "W"
+      ],
+      "outputs": [
+        "exit",
+        "q"
+      ],
+      "handoff_outputs": [
+        "q"
+      ],
+      "objectives": [
+        "Equalize male and female retention."
+      ],
+      "variables": [
+        {
+          "symbol": "n_c",
+          "normalized_name": "child_count",
+          "role": "input",
+          "unit": "child",
+          "definition": "Number of children in the couple",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_s",
+          "normalized_name": "service_cost",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Childcare cost per child, 7500 dollars",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_s",
+          "normalized_name": "school_age",
+          "role": "parameter",
+          "unit": "month",
+          "definition": "Age at which school starts, 60 months",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_m",
+          "normalized_name": "maternity_leave",
+          "role": "parameter",
+          "unit": "month",
+          "definition": "Paid maternity leave, 12 months",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_p",
+          "normalized_name": "paternity_leave",
+          "role": "parameter",
+          "unit": "month",
+          "definition": "Paid paternity leave, 12 months",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_p",
+          "normalized_name": "paid_fraction",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of salary paid during leave, 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w0",
+          "normalized_name": "wage_floor",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Minimum wage earned in the childcare sector",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "pre_tax_wage",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Each parent's wage, drawn from the inverse curve",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "exit",
+          "normalized_name": "exit_decision",
+          "role": "output",
+          "unit": "boolean",
+          "definition": "True when one parent leaves the standard workforce",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "exit_share",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Share of the population out of the standard workforce",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2017-72197-EQ-1",
+          "equation_label": "Exit test",
+          "equation_text": "One parent exits when childcare cost exceeds opportunity cost.",
+          "source_expression": "One parent exits when childcare cost exceeds opportunity cost.",
+          "normalized_latex": "C_{child}\\ge C_{opp}",
+          "purpose": "Decide whether a parent leaves.",
+          "variable_symbols": [
+            "exit",
+            "n_c",
+            "c_s",
+            "W"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2017-72197-EQ-2",
+          "equation_label": "The two costs",
+          "equation_text": "Childcare cost = n_c*c_s*(m_s - max(L_m, L_p)) + w0. Opportunity cost = min(wages)*(m_s - leave)*(1-f_p).",
+          "source_expression": "Childcare cost = n_c*c_s*(m_s - max(L_m, L_p)) + w0. Opportunity cost = min(wages)*(m_s - leave)*(1-f_p).",
+          "normalized_latex": "C_{child}=n_c c_s(m_s-\\max L)+w_0",
+          "purpose": "Compare the cost of care with the foregone wage.",
+          "variable_symbols": [
+            "n_c",
+            "c_s",
+            "m_s",
+            "L_m",
+            "L_p",
+            "f_p",
+            "w0",
+            "W"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Both cost lines are flattened by the OCR. The reading follows the appendix definitions.",
+        "reason": "Section F."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Couples are drawn with census shares of women by number of children."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "At most one parent exits. An exiting parent enters public childcare."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The exit share rises for five years and then stabilizes near 5 to 6 percent."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Service cost chosen so that 5 to 6 percent of parents staff childcare. Other constants taken from census data or set for equality.",
+        "parameters": [
+          "c_s"
+        ]
+      },
+      "algorithm": {
+        "description": "Draw couples and apply the exit test year by year.",
+        "status": "implemented",
+        "steps": [
+          "Draw 5,000 couples",
+          "Assign children from census shares",
+          "Draw both wages from the inverse curve",
+          "Apply the exit test",
+          "Sweep the service cost"
+        ],
+        "software": [],
+        "convergence_criteria": "None. The share is averaged over iterations."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "The appendix dashboard reports the exit share from 2100 to 2110."
+        ],
+        "analysis": "The rule is reproducible. The service cost is chosen to hit a target share."
+      },
+      "constraints": [
+        "Both parents never exit together.",
+        "Leave is the same length and fully paid for both."
+      ],
+      "validation_refs": [
+        "Appendix equity dashboard",
+        "Handicapped rerun"
+      ],
+      "strengths": [
+        "The same rule is rerun under Earth-like pay to show the damage.",
+        "Every constant is listed with a reason."
+      ],
+      "limitations": [
+        "The handicap ignores the closing wage gap.",
+        "Sensitivity is reported only in words."
+      ],
+      "missing_details": [
+        "The distribution of the exit share across iterations."
+      ],
+      "assumptions": [
+        "One parent can cover all childcare.",
+        "Human capital falls 1 percent per month of leave and grows 0.2 percent from work."
+      ]
+    },
+    {
+      "model_id": "MU-F-2017-72197-SH",
+      "section": "I External Shock",
+      "family": "budget-identity",
+      "summary": "Government spending equals tax revenue. Spending is the cost per head times the population, and revenue is the average tax rate times output, which itself depends on technology, labor, physical capital, human capital and natural resources. Spending therefore scales with a sudden influx but output does not, because capital, skills and land cannot double on demand and the tax cap is already 50 percent. Doubling the population leaves only one workable response: cut welfare, either across the board or by limiting newcomers to housing and food. Either choice ends the utopia, and schooling shrinks with the funding.",
+      "computational_cost": "not-stated",
+      "purpose": "Show why a sudden evacuation breaks the colony.",
+      "base_or_modification": "base",
+      "page": 22,
+      "inputs": [
+        "n"
+      ],
+      "outputs": [
+        "G"
+      ],
+      "handoff_outputs": [
+        "G"
+      ],
+      "objectives": [
+        "Keep the budget balanced under a population shock."
+      ],
+      "variables": [
+        {
+          "symbol": "G",
+          "normalized_name": "government_spending",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Total public spending",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T_r",
+          "normalized_name": "tax_revenue",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Total tax revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_h",
+          "normalized_name": "cost_per_head",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Public spending per person",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "population",
+          "role": "input",
+          "unit": "people",
+          "definition": "Number of people in the colony",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k_t",
+          "normalized_name": "average_tax_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Average tax rate, already capped at 0.5",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "output",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Total output from technology, labor, capital, skills and resources",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2017-72197-SH-1",
+          "equation_label": "Balanced budget",
+          "equation_text": "G = T_r, with G = C_h*n and T_r = k_t*Y.",
+          "source_expression": "G = T_r, with G = C_h*n and T_r = k_t*Y.",
+          "normalized_latex": "G=C_h n=k_t Y",
+          "purpose": "State the budget identity.",
+          "variable_symbols": [
+            "G",
+            "T_r",
+            "C_h",
+            "n",
+            "k_t",
+            "Y"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 22,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2017-72197-SH-2",
+          "equation_label": "Output factors",
+          "equation_text": "Y = F(technology, labor, physical capital, human capital, resources), and only labor scales with a sudden influx.",
+          "source_expression": "Y = F(technology, labor, physical capital, human capital, resources), and only labor scales with a sudden influx.",
+          "normalized_latex": "Y=F(A,L,K,H,N)",
+          "purpose": "Show why output does not double.",
+          "variable_symbols": [
+            "Y",
+            "n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 22,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The printed lines scramble the proportionality. The prose states spending scales with population and revenue with output.",
+        "reason": "Section I."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The budget is balanced before the shock."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The tax rate cannot rise above 50 percent."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The argument shows the equilibrium cannot survive the shock."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameters are estimated. The argument is qualitative.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Compare the scaling of spending and of output under a doubled population.",
+        "status": "omitted-by-paper",
+        "steps": [
+          "Write the budget identity",
+          "List the factors of output",
+          "Note which factors can scale",
+          "Reject the tax increase",
+          "Conclude welfare must fall"
+        ],
+        "software": [],
+        "convergence_criteria": "None. A qualitative argument."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "No numerical evacuation scenario is computed."
+        ],
+        "analysis": "The direction is clear. The size of the welfare cut is not estimated."
+      },
+      "constraints": [
+        "The tax cap stays at 50 percent.",
+        "Capital and land are fixed in the short run."
+      ],
+      "validation_refs": [
+        "Section I proportionality argument"
+      ],
+      "strengths": [
+        "The failure is traced to one broken proportionality.",
+        "The tempting alternative, a higher tax, is rejected for a stated reason."
+      ],
+      "limitations": [
+        "No number is put on the welfare cut.",
+        "The production function is never specified."
+      ],
+      "missing_details": [
+        "How far welfare falls when the population doubles."
+      ],
+      "assumptions": [
+        "Migrants bring less human capital than local graduates.",
+        "Technology does not jump during the evacuation."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2017-72197-WG-1",
+      "model_id": "MU-F-2017-72197-WG",
+      "page": 10,
+      "source_expression": "W(x) = 62205676/(5670-x) - 970 for 0 <= x <= 5600."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-WG-2",
+      "model_id": "MU-F-2017-72197-WG",
+      "page": 11,
+      "source_expression": "T(x) = k*W(x)*(W(x)-w0) up to the rank where the rate hits rmax, then rmax*W(x), and 0 below the floor."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-HC-1",
+      "model_id": "MU-F-2017-72197-HC",
+      "page": 7,
+      "source_expression": "H starts at the credential threshold: 30, 70, 100, 125 or 145, plus one unit per year worked after age 25."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-HC-2",
+      "model_id": "MU-F-2017-72197-HC",
+      "page": 13,
+      "source_expression": "Each five-year step adds 5*(d_w*r_w + d_l*r_l), giving 9, 19 or 24 units."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-DM-1",
+      "model_id": "MU-F-2017-72197-DM",
+      "page": 12,
+      "source_expression": "S_i = sum over objectives of class weight times objective weight times points."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-EQ-1",
+      "model_id": "MU-F-2017-72197-EQ",
+      "page": 14,
+      "source_expression": "One parent exits when childcare cost exceeds opportunity cost."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-EQ-2",
+      "model_id": "MU-F-2017-72197-EQ",
+      "page": 14,
+      "source_expression": "Childcare cost = n_c*c_s*(m_s - max(L_m, L_p)) + w0. Opportunity cost = min(wages)*(m_s - leave)*(1-f_p)."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-SH-1",
+      "model_id": "MU-F-2017-72197-SH",
+      "page": 22,
+      "source_expression": "G = T_r, with G = C_h*n and T_r = k_t*Y."
+    },
+    {
+      "equation_id": "EQ-F-2017-72197-SH-2",
+      "model_id": "MU-F-2017-72197-SH",
+      "page": 22,
+      "source_expression": "Y = F(technology, labor, physical capital, human capital, resources), and only labor scales with a sudden influx."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2017-72197-WG",
+      "to_model_id": "MU-F-2017-72197-EQ",
+      "handoff": "The inverse wage curve supplies the two salaries in every couple"
+    },
+    {
+      "from_model_id": "MU-F-2017-72197-HC",
+      "to_model_id": "MU-F-2017-72197-EQ",
+      "handoff": "The depreciation of human capital during leave justifies equal leave lengths"
+    },
+    {
+      "from_model_id": "MU-F-2017-72197-DM",
+      "to_model_id": "MU-F-2017-72197-HC",
+      "handoff": "The curriculum decides what the lifelong learning program teaches"
+    },
+    {
+      "from_model_id": "MU-F-2017-72197-WG",
+      "to_model_id": "MU-F-2017-72197-SH",
+      "handoff": "The tax cap and the balanced budget are what the shock breaks"
+    }
+  ]
+}

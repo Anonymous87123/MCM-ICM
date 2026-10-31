@@ -1,0 +1,3113 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2018-76082-001",
+      "handoff": "The one-hop incident sea-surface power is the common input to smooth and rough reflection.",
+      "to_model_id": "MU-A-2018-76082-005"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-002",
+      "handoff": "Complex seawater permittivity parameterizes both smooth Fresnel coefficients.",
+      "to_model_id": "MU-A-2018-76082-003"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-003",
+      "handoff": "Smooth polarization coefficients form the baseline scaled by roughness and curvature.",
+      "to_model_id": "MU-A-2018-76082-004"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-003",
+      "handoff": "Smooth coefficients determine the smooth reflected-power denominator.",
+      "to_model_id": "MU-A-2018-76082-005"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-004",
+      "handoff": "The roughness correction determines rough reflected power and the rho-squared ratio.",
+      "to_model_id": "MU-A-2018-76082-005"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-005",
+      "handoff": "The rough-sea first-reflection power initializes the multi-hop SNR calculation.",
+      "to_model_id": "MU-A-2018-76082-006"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-003",
+      "handoff": "The Fresnel interface is reused with dry-ground material properties.",
+      "to_model_id": "MU-A-2018-76082-007"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-006",
+      "handoff": "The SNR stopping rule converts smooth-ground loss into a hop count.",
+      "to_model_id": "MU-A-2018-76082-007"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-006",
+      "handoff": "The same stopping rule converts mountain and foliage loss into a hop count.",
+      "to_model_id": "MU-A-2018-76082-008"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-005",
+      "handoff": "Calm and turbulent sea losses enter the four-surface comparison.",
+      "to_model_id": "MU-A-2018-76082-009"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-007",
+      "handoff": "Smooth-ground loss and hop count enter the comparison.",
+      "to_model_id": "MU-A-2018-76082-009"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-008",
+      "handoff": "Mountain loss and hop count enter the comparison.",
+      "to_model_id": "MU-A-2018-76082-009"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-004",
+      "handoff": "Wind-derived wave height supplies the ship-sway bound.",
+      "to_model_id": "MU-A-2018-76082-010"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-005",
+      "handoff": "The static ocean reflection model is extended by segment-specific vessel motion.",
+      "to_model_id": "MU-A-2018-76082-011"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-010",
+      "handoff": "Maximum sway angle motivates the segment-A motion penalty.",
+      "to_model_id": "MU-A-2018-76082-011"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-001",
+      "handoff": "Ionospheric geometry and HF frequency bounds define the coverage-path family.",
+      "to_model_id": "MU-A-2018-76082-012"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-011",
+      "handoff": "The maritime receiver model supplies the moving vessel whose time in coverage is estimated.",
+      "to_model_id": "MU-A-2018-76082-012"
+    },
+    {
+      "from_model_id": "MU-A-2018-76082-001",
+      "handoff": "The solar/time-dependent absorption and SNR equations are swept over local time.",
+      "to_model_id": "MU-A-2018-76082-013"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite formula evaluation; no iterative convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Set location, date, time, frequency, elevation, and layer height.",
+          "Compute solar geometry.",
+          "Compute absorption and free-space losses.",
+          "Assemble total loss.",
+          "Convert source power to incident power."
+        ]
+      },
+      "assumptions": [
+        "F1-layer reflection dominates; ground reflection is excluded before the sea-surface model; additional loss is read from a data sheet."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "HF band 3-30 MHz, chosen f=20 MHz, one East China Sea point, one date/time, and a 200 km layer are explicit."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "The source is 100 W; frequency is 20 MHz; ray elevation is 45 degrees; ionospheric height is 200 km; the selected time/location and lookup values are fixed."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "semi-empirical HF skywave link budget",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-001",
+          "label": "1",
+          "normalized_latex": "L_b=L_{bf}+L_i+L_g+Y_p",
+          "page": 5,
+          "purpose": "Decompose aggregate skywave loss.",
+          "source_expression": "Lb=Lbf+Li+Lg+Yp",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_b",
+            "L_bf",
+            "L_i",
+            "L_g",
+            "Y_p"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-002",
+          "label": "2",
+          "normalized_latex": "L_{bf}=32.44+20\\log_{10}f+20\\log_{10}r",
+          "page": 5,
+          "purpose": "Compute free-space loss for MHz and km units.",
+          "source_expression": "Lbf=32.44+20lg f+20lg r",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_bf",
+            "f",
+            "r"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-003",
+          "label": "3",
+          "normalized_latex": "L_i=\\frac{677.2I\\sec i_{100}}{(f+f_H)^{1.98}+10.2}",
+          "page": 6,
+          "purpose": "Represent ionospheric absorption; the printed left symbol conflicts with the prose.",
+          "source_expression": "Lbf=677.2 I sec(i100)/((f+fH)^1.98+10.2)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_i",
+            "I",
+            "i_100",
+            "f",
+            "f_H"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-004",
+          "label": "4",
+          "normalized_latex": "I=(1+0.0037R_{\\mathrm{sun}})[\\cos(0.881\\chi)]^{1.3}",
+          "page": 6,
+          "purpose": "Map solar geometry and sunspots to absorption.",
+          "source_expression": "I=(1+0.0037R)(cos(0.881 chi))^1.3",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "I",
+            "R_sun",
+            "chi"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-005",
+          "label": "5",
+          "normalized_latex": "i_{100}=\\arcsin(0.985\\cos\\Delta)",
+          "page": 6,
+          "purpose": "Map ray elevation to the absorption incidence term.",
+          "source_expression": "i100=arcsin(0.985 cos Delta)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "i_100",
+            "Delta"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-006",
+          "label": "6",
+          "normalized_latex": "\\cos\\chi=\\sin a_{\\mathrm{lat}}\\sin S_x+\\cos a_{\\mathrm{lat}}\\cos S_x\\cos\\gamma,\\quad S_x=23.44\\sin[0.9856(Y_n-80.7)],\\quad S_y=S_y(t)",
+          "page": 7,
+          "purpose": "Compute solar geometry from date, time, and site.",
+          "source_expression": "cos chi=sin a sin Sx+cos a cos Sx cos gamma; Sx=23.44 sin[0.9856(Yn-80.7)]; Sy piecewise in t",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "chi",
+            "a_lat",
+            "S_x",
+            "gamma",
+            "Y_n",
+            "S_y",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-007",
+          "label": "7",
+          "normalized_latex": "L_b=10\\log_{10}\\left(\\frac{P_r}{P_t}\\right)",
+          "page": 7,
+          "purpose": "Convert transmitted to incident power using the source's printed ratio direction.",
+          "source_expression": "Lb=10lg(Pr/Pt)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_b",
+            "P_r",
+            "P_t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "L_b",
+        "P_r",
+        "r",
+        "Delta"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The arithmetic path is stated, but missing lookup values and sign ambiguity prevent independent reproduction.",
+        "status": "partial"
+      },
+      "inputs": [
+        "f",
+        "r",
+        "f_H",
+        "R_sun",
+        "Delta",
+        "a_lat",
+        "Y_n",
+        "t",
+        "Y_p",
+        "P_t"
+      ],
+      "limitations": [
+        "Several parameters and the additional loss lack provenance; Equation 3 and Equation 7 have symbol/sign conflicts."
+      ],
+      "missing_details": [
+        "Data sheet values, unit reconciliation, source geometry, link-budget recomputation, and uncertainty."
+      ],
+      "model_id": "MU-A-2018-76082-001",
+      "objectives": [
+        "Estimate the one-hop incident power at the sea surface."
+      ],
+      "outputs": [
+        "L_b",
+        "P_r"
+      ],
+      "page": 5,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "f",
+          "r",
+          "f_H",
+          "R_sun",
+          "Delta",
+          "a_lat",
+          "Y_n",
+          "t",
+          "Y_p",
+          "P_t"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compute free-space, ionospheric, reflection, and extra-system losses and convert a 100 W source to sea-surface incident power.",
+      "section": "Skywave Basic Transmission Loss",
+      "strengths": [
+        "Makes the loss ledger and scenario handoff explicit."
+      ],
+      "summary": "The paper decomposes total skywave loss, uses free-space spreading and a solar/geomagnetic absorption relation, selects one East China Sea scenario, and reports 97.4597 dB total loss and 0.43248 mW incident power.",
+      "validation_refs": [
+        "Equations 1-7 and the 97.4597 dB / 0.43248 mW results on pages 5-7."
+      ],
+      "variables": [
+        {
+          "definition": "Aggregate link loss.",
+          "normalized_name": "basic skywave transmission loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_b",
+          "unit": "dB"
+        },
+        {
+          "definition": "Geometric spreading loss.",
+          "normalized_name": "free-space transmission loss",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_bf",
+          "unit": "dB"
+        },
+        {
+          "definition": "Absorption attributed to the ionosphere.",
+          "normalized_name": "ionospheric absorption loss",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_i",
+          "unit": "dB"
+        },
+        {
+          "definition": "Surface-reflection loss component.",
+          "normalized_name": "ground reflection loss",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_g",
+          "unit": "dB"
+        },
+        {
+          "definition": "Other local-time-dependent loss.",
+          "normalized_name": "extra system loss",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Y_p",
+          "unit": "dB"
+        },
+        {
+          "definition": "Working HF frequency.",
+          "normalized_name": "radio frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "MHz"
+        },
+        {
+          "definition": "One-hop effective path length.",
+          "normalized_name": "effective propagation path",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r",
+          "unit": "km"
+        },
+        {
+          "definition": "Solar and sunspot-dependent factor.",
+          "normalized_name": "ionospheric absorption coefficient",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "I",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Incidence term in absorption.",
+          "normalized_name": "100-km incidence angle",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "i_100",
+          "unit": "radian"
+        },
+        {
+          "definition": "Geomagnetic frequency term.",
+          "normalized_name": "100-km magnetic frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "f_H",
+          "unit": "MHz"
+        },
+        {
+          "definition": "Solar activity input.",
+          "normalized_name": "sunspot number",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_sun",
+          "unit": "count"
+        },
+        {
+          "definition": "Solar geometry input.",
+          "normalized_name": "solar zenith angle",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "chi",
+          "unit": "radian"
+        },
+        {
+          "definition": "Selected ray elevation.",
+          "normalized_name": "ray elevation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Delta",
+          "unit": "degree"
+        },
+        {
+          "definition": "Study-point latitude.",
+          "normalized_name": "site latitude",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a_lat",
+          "unit": "degree"
+        },
+        {
+          "definition": "Solar subpoint latitude.",
+          "normalized_name": "solar latitude",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "S_x",
+          "unit": "degree"
+        },
+        {
+          "definition": "Solar subpoint longitude.",
+          "normalized_name": "solar longitude",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "S_y",
+          "unit": "degree"
+        },
+        {
+          "definition": "Days from January 1.",
+          "normalized_name": "day number",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Y_n",
+          "unit": "day"
+        },
+        {
+          "definition": "Local time used by solar geometry.",
+          "normalized_name": "Beijing time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "hour"
+        },
+        {
+          "definition": "Difference between site and solar longitude.",
+          "normalized_name": "longitude difference",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "gamma",
+          "unit": "degree"
+        },
+        {
+          "definition": "Land-source carrier power.",
+          "normalized_name": "transmitted power",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "P_t",
+          "unit": "W"
+        },
+        {
+          "definition": "Power after skywave loss.",
+          "normalized_name": "incident sea-surface power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "P_r",
+          "unit": "mW"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite piecewise evaluation; no iterative convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Select the frequency branch.",
+          "Evaluate relative permittivity.",
+          "Evaluate conductivity.",
+          "Combine them with wavelength."
+        ]
+      },
+      "assumptions": [
+        "Frequency is treated as the only varying material-property input."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Piecewise breakpoints and the 20 MHz evaluation point are explicit."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Use the printed frequency breakpoints and fit coefficients; f=20 MHz and lambda=15 m."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "frequency-dependent seawater material-property fit",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-008",
+          "label": "8",
+          "normalized_latex": "\\tilde{\\epsilon}=\\epsilon_r+i60\\lambda\\sigma",
+          "page": 7,
+          "purpose": "Combine dielectric and conductive seawater behavior.",
+          "source_expression": "epsilon_tilde=epsilon_r+i60 lambda sigma",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "epsilon_tilde",
+            "epsilon_r",
+            "lambda",
+            "sigma"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-009",
+          "label": null,
+          "normalized_latex": "\\epsilon_r(f)=\\begin{cases}70,&f\\le2253.5895\\\\(a_\\epsilon+b_\\epsilon f+c_\\epsilon f^2+d_\\epsilon f^3+e_\\epsilon f^4)^{-1},&f>2253.5895\\end{cases}",
+          "page": 8,
+          "purpose": "Retain the unnumbered piecewise relative-permittivity fit.",
+          "source_expression": "epsilon_r=70 for f<=2253.5895; reciprocal quartic fit otherwise",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "epsilon_r",
+            "f",
+            "a_eps",
+            "b_eps",
+            "c_eps",
+            "d_eps",
+            "e_eps"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-010",
+          "label": "10",
+          "normalized_latex": "\\sigma(f)=\\begin{cases}5.0,&f\\le1106.207\\\\\\frac{r_\\sigma+s_\\sigma f+t_\\sigma f^2}{1+u_\\sigma f+u_\\sigma f^2+w_\\sigma f^3},&f>1106.207\\end{cases}",
+          "page": 8,
+          "purpose": "Retain the printed piecewise conductivity fit.",
+          "source_expression": "sigma=5.0 for f<=1106.207; (r+sf+tf^2)/(1+uf+uf^2+wf^3) otherwise",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "sigma",
+            "f",
+            "r_sig",
+            "s_sig",
+            "t_sig",
+            "u_sig",
+            "w_sig"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "epsilon_tilde",
+        "epsilon_r",
+        "sigma"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "f",
+        "lambda",
+        "a_eps",
+        "b_eps",
+        "c_eps",
+        "d_eps",
+        "e_eps",
+        "r_sig",
+        "s_sig",
+        "t_sig",
+        "u_sig",
+        "v_sig",
+        "w_sig"
+      ],
+      "limitations": [
+        "The unnumbered Equation 9, units, sign convention, repeated u term, and unused v coefficient are unresolved."
+      ],
+      "missing_details": [
+        "Authoritative CCIR formula, coefficient units, temperature/salinity conditions, complex convention, and numeric recomputation."
+      ],
+      "model_id": "MU-A-2018-76082-002",
+      "objectives": [
+        "Provide the material property consumed by Fresnel reflection."
+      ],
+      "outputs": [
+        "epsilon_tilde",
+        "epsilon_r",
+        "sigma"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "a_eps",
+          "b_eps",
+          "c_eps",
+          "d_eps",
+          "e_eps",
+          "r_sig",
+          "s_sig",
+          "t_sig",
+          "u_sig",
+          "v_sig",
+          "w_sig"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Compute complex sea-surface permittivity from relative permittivity, conductivity, wavelength, and frequency.",
+      "section": "Sea Surface Complex Permittivity",
+      "strengths": [
+        "Places material estimation upstream of reflection coefficients."
+      ],
+      "summary": "The paper combines a complex-permittivity relation with two CCIR-style piecewise fits and evaluates them at 20 MHz as epsilon_r=70, sigma=5.0, and printed epsilon=70+4500i.",
+      "validation_refs": [
+        "Equations 8-10 and the page-8 material-property values."
+      ],
+      "variables": [
+        {
+          "definition": "Combined dielectric and conductive property.",
+          "normalized_name": "complex sea permittivity",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "epsilon_tilde",
+          "unit": "dimensionless complex"
+        },
+        {
+          "definition": "Real seawater dielectric component.",
+          "normalized_name": "relative permittivity",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "epsilon_r",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Conductive component.",
+          "normalized_name": "seawater conductivity",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "sigma",
+          "unit": "S/m or paper-unstated"
+        },
+        {
+          "definition": "Wavelength used by the complex relation.",
+          "normalized_name": "radio wavelength",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lambda",
+          "unit": "m"
+        },
+        {
+          "definition": "Frequency used by fitted properties.",
+          "normalized_name": "radio frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "MHz"
+        },
+        {
+          "definition": "Polynomial coefficient.",
+          "normalized_name": "permittivity fit a",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "a_eps",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Polynomial coefficient.",
+          "normalized_name": "permittivity fit b",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "b_eps",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Polynomial coefficient.",
+          "normalized_name": "permittivity fit c",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "c_eps",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Polynomial coefficient.",
+          "normalized_name": "permittivity fit d",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "d_eps",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Polynomial coefficient.",
+          "normalized_name": "permittivity fit e",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "e_eps",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Rational-fit coefficient.",
+          "normalized_name": "conductivity fit r",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "r_sig",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Rational-fit coefficient.",
+          "normalized_name": "conductivity fit s",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "s_sig",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Rational-fit coefficient.",
+          "normalized_name": "conductivity fit t",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "t_sig",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Rational-fit coefficient.",
+          "normalized_name": "conductivity fit u",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "u_sig",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Declared but not visibly used coefficient.",
+          "normalized_name": "conductivity fit v",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "v_sig",
+          "unit": "fit-specific"
+        },
+        {
+          "definition": "Rational-fit coefficient.",
+          "normalized_name": "conductivity fit w",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "w_sig",
+          "unit": "fit-specific"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Closed-form evaluation; no iterative convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Read complex permittivity.",
+          "Set grazing angle.",
+          "Evaluate horizontal and vertical coefficients.",
+          "Plot power reflection against angle."
+        ]
+      },
+      "assumptions": [
+        "Multipath interference and shadowing are ignored."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Smooth specular sea and a selected 45-degree grazing angle are explicit."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "The sea is smooth and specular; the wave is circularly polarized; theta is selected as 45 degrees."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "polarization-resolved smooth-interface reflection",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-011",
+          "label": "11",
+          "normalized_latex": "R_H=\\frac{\\sin\\theta-\\sqrt{\\tilde{\\epsilon}-\\cos^2\\theta}}{\\sin\\theta+\\sqrt{\\tilde{\\epsilon}-\\cos^2\\theta}}",
+          "page": 8,
+          "purpose": "Compute horizontal-polarization reflection.",
+          "source_expression": "RH=(sin theta-sqrt(epsilon_tilde-cos^2 theta))/(sin theta+sqrt(...))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R_H",
+            "theta",
+            "epsilon_tilde"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-012",
+          "label": "12",
+          "normalized_latex": "R_V=\\frac{\\tilde{\\epsilon}\\sin\\theta-\\sqrt{\\tilde{\\epsilon}-\\cos^2\\theta}}{\\tilde{\\epsilon}\\sin\\theta+\\sqrt{\\tilde{\\epsilon}-\\cos^2\\theta}}",
+          "page": 8,
+          "purpose": "Compute vertical-polarization reflection.",
+          "source_expression": "RV=(epsilon_tilde sin theta-sqrt(epsilon_tilde-cos^2 theta))/(epsilon_tilde sin theta+sqrt(...))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R_V",
+            "theta",
+            "epsilon_tilde"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "R_H",
+        "R_V"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "theta",
+        "epsilon_tilde"
+      ],
+      "limitations": [
+        "Angle convention, complex magnitude/phase, and energy consistency are not validated."
+      ],
+      "missing_details": [
+        "Angle convention, coefficient magnitudes, measured reflection data, and uncertainty."
+      ],
+      "model_id": "MU-A-2018-76082-003",
+      "objectives": [
+        "Provide a smooth-surface baseline for rough-sea and terrain comparisons."
+      ],
+      "outputs": [
+        "R_H",
+        "R_V"
+      ],
+      "page": 8,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Compute horizontal and vertical Fresnel coefficients for a smooth sea surface.",
+      "section": "Smooth-Sea Fresnel Reflection",
+      "strengths": [
+        "Preserves polarization before power averaging."
+      ],
+      "summary": "Using complex sea permittivity and grazing angle, the paper defines two polarization coefficients and plots power reflection versus angle.",
+      "validation_refs": [
+        "Equations 11-12 and Figure 2."
+      ],
+      "variables": [
+        {
+          "definition": "Horizontal-polarization reflection coefficient.",
+          "normalized_name": "horizontal Fresnel coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "R_H",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Vertical-polarization reflection coefficient.",
+          "normalized_name": "vertical Fresnel coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "R_V",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Angle measured relative to the surface convention.",
+          "normalized_name": "grazing incidence angle",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "degree or radian"
+        },
+        {
+          "definition": "Material property inherited from Model 2.",
+          "normalized_name": "complex sea permittivity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "epsilon_tilde",
+          "unit": "dimensionless complex"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No stochastic realization count, seed, spectral discretization, or convergence check is supplied.",
+        "software": [
+          "Unspecified numerical plotting/simulation software"
+        ],
+        "status": "partial",
+        "steps": [
+          "Choose wind speed.",
+          "Compute spectrum and RMS height.",
+          "Compute q and rho.",
+          "Compute curvature factor.",
+          "Scale polarization coefficients.",
+          "Simulate/plot the surface and responses."
+        ]
+      },
+      "assumptions": [
+        "The random wave realization is summarized by a spectrum and RMS height."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "One spectrum sweep, one synthetic surface, and coefficient curves; grid sizes are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "One six-level/15 m/s wind scenario, 20 MHz, 15 m wavelength, and 45-degree grazing angle are used."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Only frequency and wave height characterize roughness; wind speed is the common driver; shadowing is ignored."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "wind-driven spectrum and Miller-Brown roughness attenuation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-013",
+          "label": "13",
+          "normalized_latex": "S_\\zeta(\\omega)=\\frac{8.1\\times10^{-3}g_{\\mathrm{acc}}^2}{\\omega^5}\\exp\\left[-0.74\\left(\\frac{g_{\\mathrm{acc}}}{v\\omega}\\right)^4\\right]",
+          "page": 10,
+          "purpose": "Represent wind-driven wave frequency content.",
+          "source_expression": "S_zeta(omega)=8.1e-3 g^2/omega^5 exp[-0.74(g/(v omega))^4]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "S_zeta",
+            "omega",
+            "g_acc",
+            "v"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-014",
+          "label": "14",
+          "normalized_latex": "h=0.0051v^2",
+          "page": 10,
+          "purpose": "Map wind speed to RMS wave height.",
+          "source_expression": "h=0.0051v^2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "h",
+            "v"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-015",
+          "label": "15",
+          "normalized_latex": "q=\\frac{h\\sin\\theta}{\\lambda},\\quad \\rho=e^{-2(2\\pi q)^2}I_0(2(2\\pi q)^2)",
+          "page": 10,
+          "purpose": "Compute local roughness attenuation.",
+          "source_expression": "rho=exp[-2(2pi q)^2] I0[2(2pi q)^2], q=h sin theta/lambda",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "q",
+            "h",
+            "theta",
+            "lambda",
+            "rho",
+            "I_0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-016",
+          "label": "16",
+          "normalized_latex": "D=\\left(1+\\frac{2G_1G_2}{R_e(G_1+G_2)\\sin\\phi}\\right)^{-1/2}",
+          "page": 11,
+          "purpose": "Apply Earth-curvature attenuation.",
+          "source_expression": "D=(1+2G1G2/(Re(G1+G2)sin phi))^-1/2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "D",
+            "G_1",
+            "G_2",
+            "R_e",
+            "phi"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-017",
+          "label": "17",
+          "normalized_latex": "\\rho'=\\rho D,\\quad R_H'=\\rho R_H,\\quad R_V'=\\rho R_V",
+          "page": 11,
+          "purpose": "Scale smooth coefficients for roughness and declared curvature.",
+          "source_expression": "rho'=rho D; R'H=rho RH; R'V=rho RV",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "rho_prime",
+            "rho",
+            "D",
+            "R_H_prime",
+            "R_H",
+            "R_V_prime",
+            "R_V"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "rho_prime",
+        "R_H_prime",
+        "R_V_prime"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "omega",
+        "v",
+        "g_acc",
+        "G_1",
+        "G_2",
+        "R_e",
+        "phi",
+        "R_H",
+        "R_V",
+        "theta",
+        "lambda"
+      ],
+      "limitations": [
+        "The spectrum citation is inconsistent, shadowing is contradictory, and Equation 17 does not clearly use rho-prime."
+      ],
+      "missing_details": [
+        "Spectrum normalization, random seed, phase/direction distributions, curvature geometry, shadow model, and measured reflection data."
+      ],
+      "model_id": "MU-A-2018-76082-004",
+      "objectives": [
+        "Estimate rough-sea reflection under a selected wind state."
+      ],
+      "outputs": [
+        "S_zeta",
+        "rho_prime",
+        "R_H_prime",
+        "R_V_prime"
+      ],
+      "page": 9,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "g_acc",
+          "R_e",
+          "v",
+          "G_1",
+          "G_2",
+          "phi"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Modify smooth-sea reflection coefficients for wind-driven wave height, roughness, and Earth curvature.",
+      "section": "Rough-Sea Stochastic Correction",
+      "strengths": [
+        "Creates a clean baseline-to-perturbation interface and exposes intermediate drivers."
+      ],
+      "summary": "The paper uses a PM spectrum and a wind-height relation, forms a Miller-Brown correction with a Bessel function, adds a curvature factor, and scales both smooth polarization coefficients.",
+      "validation_refs": [
+        "Equations 13-17 and Figures 3-5."
+      ],
+      "variables": [
+        {
+          "definition": "PM spectrum value.",
+          "normalized_name": "wave elevation spectrum",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "S_zeta",
+          "unit": "spectral density"
+        },
+        {
+          "definition": "Spectrum coordinate.",
+          "normalized_name": "wave angular frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "omega",
+          "unit": "rad/s"
+        },
+        {
+          "definition": "Shared wave-frequency and height driver.",
+          "normalized_name": "near-surface wind speed",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "v",
+          "unit": "m/s"
+        },
+        {
+          "definition": "PM spectrum constant.",
+          "normalized_name": "gravitational acceleration",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "g_acc",
+          "unit": "m/s^2"
+        },
+        {
+          "definition": "Wind-derived roughness height.",
+          "normalized_name": "RMS wave height",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "h",
+          "unit": "m"
+        },
+        {
+          "definition": "h sin(theta)/lambda.",
+          "normalized_name": "dimensionless roughness",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "q",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Miller-Brown attenuation factor.",
+          "normalized_name": "local roughness correction",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "First-kind order-zero Bessel function.",
+          "normalized_name": "modified Bessel function",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "I_0",
+          "unit": "function"
+        },
+        {
+          "definition": "Long-range curvature correction.",
+          "normalized_name": "Earth-curvature factor",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "D",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Transmitter to specular point.",
+          "normalized_name": "first path leg",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "G_1",
+          "unit": "km"
+        },
+        {
+          "definition": "Specular point to receiver.",
+          "normalized_name": "second path leg",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "G_2",
+          "unit": "km"
+        },
+        {
+          "definition": "6400-km curvature radius.",
+          "normalized_name": "effective Earth radius",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "R_e",
+          "unit": "km"
+        },
+        {
+          "definition": "Angle in the curvature factor.",
+          "normalized_name": "curvature geometry angle",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "phi",
+          "unit": "radian"
+        },
+        {
+          "definition": "rho times D.",
+          "normalized_name": "curvature-adjusted roughness",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "rho_prime",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Inherited baseline.",
+          "normalized_name": "smooth horizontal coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_H",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Inherited baseline.",
+          "normalized_name": "smooth vertical coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_V",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Corrected horizontal coefficient.",
+          "normalized_name": "rough horizontal coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "R_H_prime",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Corrected vertical coefficient.",
+          "normalized_name": "rough vertical coefficient",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "R_V_prime",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Reflection angle.",
+          "normalized_name": "grazing angle",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "degree or radian"
+        },
+        {
+          "definition": "Radio wavelength.",
+          "normalized_name": "radio wavelength",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lambda",
+          "unit": "m"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite arithmetic; no iterative convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Compute smooth coefficient power average.",
+          "Scale coefficients by roughness.",
+          "Compute both reflected powers.",
+          "Divide to obtain the ratio."
+        ]
+      },
+      "assumptions": [
+        "Circular polarization is represented as an equal horizontal/vertical power average."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Spatial, spectral, or decision boundaries are retained where the paper supplies them."
+          ],
+          "status": "uncertain"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Incident power, frequency, angle, and polarization are common across surfaces."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "controlled polarization-averaged power comparison",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-018",
+          "label": "18",
+          "normalized_latex": "\\frac{R_H^2+R_V^2}{2}=\\frac{P_1}{P_r}",
+          "page": 12,
+          "purpose": "Compute smooth reflected power for circular polarization.",
+          "source_expression": "(RH^2+RV^2)/2=P1/Pr",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R_H",
+            "R_V",
+            "P_1",
+            "P_r"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-019",
+          "label": "19",
+          "normalized_latex": "\\frac{(\\rho R_H)^2+(\\rho R_V)^2}{2}=\\frac{P_2}{P_r}",
+          "page": 12,
+          "purpose": "Compute rough reflected power.",
+          "source_expression": "((rho RH)^2+(rho RV)^2)/2=P2/Pr",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "rho",
+            "R_H",
+            "R_V",
+            "P_2",
+            "P_r"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-020",
+          "label": "20",
+          "normalized_latex": "\\kappa=\\frac{P_3}{P_1}=\\rho^2",
+          "page": 12,
+          "purpose": "Retain the printed ratio, including its P3/P2 symbol conflict.",
+          "source_expression": "P3/P1=rho^2",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "kappa",
+            "P_3",
+            "P_1",
+            "rho"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "P_1",
+        "P_2",
+        "kappa"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The ratio structure is auditable, but the reported powers violate or approach energy limits and conflict across sections.",
+        "status": "partial"
+      },
+      "inputs": [
+        "P_r",
+        "R_H",
+        "R_V",
+        "rho"
+      ],
+      "limitations": [
+        "Summary/body labels conflict; P1 exceeds incident power; Equation 20 uses undefined P3."
+      ],
+      "missing_details": [
+        "Complex magnitude handling, energy check, corrected symbols, uncertainty, and measured reflection comparator."
+      ],
+      "model_id": "MU-A-2018-76082-005",
+      "objectives": [
+        "Isolate the first-reflection effect of sea roughness."
+      ],
+      "outputs": [
+        "P_1",
+        "P_2",
+        "kappa"
+      ],
+      "page": 12,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Compare first-reflection power on smooth and rough sea using one common incident power.",
+      "section": "Smooth-versus-Rough Reflection Power",
+      "strengths": [
+        "Uses a controlled comparator and a mechanistic ratio."
+      ],
+      "summary": "The paper averages squared horizontal/vertical coefficients for circular polarization, cancels the common incident power, derives a rho-squared ratio, and reports smooth/rough powers.",
+      "validation_refs": [
+        "Equations 18-20 and the page-13 power values."
+      ],
+      "variables": [
+        {
+          "definition": "Common incident power.",
+          "normalized_name": "incident sea-surface power",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "P_r",
+          "unit": "mW"
+        },
+        {
+          "definition": "Smooth-sea output.",
+          "normalized_name": "smooth reflected power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "P_1",
+          "unit": "mW"
+        },
+        {
+          "definition": "Rough-sea output.",
+          "normalized_name": "rough reflected power",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "P_2",
+          "unit": "mW"
+        },
+        {
+          "definition": "Undefined symbol used in Equation 20.",
+          "normalized_name": "printed ratio numerator power",
+          "role": "state",
+          "source_status": "unspecified",
+          "symbol": "P_3",
+          "unit": "mW"
+        },
+        {
+          "definition": "Smooth coefficient.",
+          "normalized_name": "smooth horizontal coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_H",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Smooth coefficient.",
+          "normalized_name": "smooth vertical coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R_V",
+          "unit": "complex dimensionless"
+        },
+        {
+          "definition": "Local correction used by printed equations.",
+          "normalized_name": "roughness correction",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Reflected-power ratio.",
+          "normalized_name": "rough/smooth power ratio",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "kappa",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite threshold iteration is implied, but no trace or stopping implementation is supplied.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Initialize with rough-sea first-reflection power.",
+          "Apply skywave and surface losses for the next hop.",
+          "Compute SNR.",
+          "Increment while SNR is at least 10 dB.",
+          "Return the last usable count."
+        ]
+      },
+      "assumptions": [
+        "Atmospheric noise dominates industrial and cosmic noise; bandwidth is selected from a lookup."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The usable threshold is 10 dB and the reported hop length is 400 km."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Each hop is treated as 400 km horizontally; later surface reflections are calm; the source scenario is inherited."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "thresholded multi-hop HF usability model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-021",
+          "label": "21",
+          "normalized_latex": "E_t=137.2+20\\log_{10}f+10\\log_{10}P_t+G_t-L_b",
+          "page": 13,
+          "purpose": "Compute received field strength.",
+          "source_expression": "Et=137.2+20lg f+10lg P+Gt-Lb",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E_t",
+            "f",
+            "P_t",
+            "G_t",
+            "L_b"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-022",
+          "label": "22",
+          "normalized_latex": "E_n=F_a+10\\log_{10}B+20\\log_{10}f-96.8",
+          "page": 13,
+          "purpose": "Compute atmospheric-noise field strength.",
+          "source_expression": "En=Fa+10lg B+20lg f-96.8",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E_n",
+            "F_a",
+            "B",
+            "f"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-023",
+          "label": "23",
+          "normalized_latex": "SNR_t=201.56+10\\log_{10}P_t-20\\log_{10}f-20\\log_{10}r-10\\log_{10}B-L_i-Y_p-F_a",
+          "page": 13,
+          "purpose": "Compute the per-hop usability metric.",
+          "source_expression": "SNRt=201.56+10lg Pt-20lg f-20lg r-10lg B-Li-Yp-Fa",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "SNR_t",
+            "P_t",
+            "f",
+            "r",
+            "B",
+            "L_i",
+            "Y_p",
+            "F_a"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "N_hop",
+        "SNR_t"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The stopping concept is clear, but the eight-hop result cannot be reproduced from published intermediate values.",
+        "status": "partial"
+      },
+      "inputs": [
+        "f",
+        "P_t",
+        "G_t",
+        "L_b",
+        "F_a",
+        "B",
+        "r",
+        "L_i",
+        "Y_p",
+        "SNR_min"
+      ],
+      "limitations": [
+        "No recursive power update, intermediate SNR table, code, or unit-consistent bandwidth ledger is supplied."
+      ],
+      "missing_details": [
+        "Per-hop recurrence, surface sequence, noise units, lookup provenance, intermediate SNR values, code, and threshold robustness."
+      ],
+      "model_id": "MU-A-2018-76082-006",
+      "objectives": [
+        "Find the maximum number of surface/ionosphere hops with SNR at least 10 dB."
+      ],
+      "outputs": [
+        "SNR_t",
+        "N_hop"
+      ],
+      "page": 13,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "G_t",
+          "F_a",
+          "B",
+          "SNR_min"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Combine received field strength and atmospheric noise to stop repeated hops at SNR=10 dB.",
+      "section": "SNR and Maximum Hop Count",
+      "strengths": [
+        "Turns usability into an explicit threshold stopping rule."
+      ],
+      "summary": "The paper defines received field strength, atmospheric-noise field strength, and a combined SNR expression, then reports eight 400-km hops from the rough-sea first reflection.",
+      "validation_refs": [
+        "Equations 21-23 and the reported eight hops on page 13."
+      ],
+      "variables": [
+        {
+          "definition": "Skywave field at the receiver.",
+          "normalized_name": "received electric field strength",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "E_t",
+          "unit": "dB microvolt/m"
+        },
+        {
+          "definition": "RMS atmospheric noise field.",
+          "normalized_name": "atmospheric noise field strength",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "E_n",
+          "unit": "dB"
+        },
+        {
+          "definition": "Usability metric.",
+          "normalized_name": "received signal-to-noise ratio",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "SNR_t",
+          "unit": "dB"
+        },
+        {
+          "definition": "Working frequency.",
+          "normalized_name": "radio frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "MHz"
+        },
+        {
+          "definition": "Power term consumed by field equation.",
+          "normalized_name": "transmitter or hop power",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "P_t",
+          "unit": "kW in Eq21"
+        },
+        {
+          "definition": "Antenna radiation gain.",
+          "normalized_name": "transmitter antenna gain",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "G_t",
+          "unit": "dB"
+        },
+        {
+          "definition": "Loss inherited from Model 1.",
+          "normalized_name": "skywave transmission loss",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L_b",
+          "unit": "dB"
+        },
+        {
+          "definition": "Effective atmospheric noise figure.",
+          "normalized_name": "atmospheric noise figure",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "F_a",
+          "unit": "dB"
+        },
+        {
+          "definition": "Noise bandwidth.",
+          "normalized_name": "receiver noise bandwidth",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "B",
+          "unit": "Hz or paper-ambiguous dB"
+        },
+        {
+          "definition": "Per-hop propagation path.",
+          "normalized_name": "effective path length",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r",
+          "unit": "km"
+        },
+        {
+          "definition": "Per-hop absorption.",
+          "normalized_name": "ionospheric absorption loss",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L_i",
+          "unit": "dB"
+        },
+        {
+          "definition": "Other loss.",
+          "normalized_name": "extra system loss",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Y_p",
+          "unit": "dB"
+        },
+        {
+          "definition": "Largest count before SNR falls below 10 dB.",
+          "normalized_name": "maximum usable hop count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N_hop",
+          "unit": "count"
+        },
+        {
+          "definition": "10-dB stopping floor.",
+          "normalized_name": "usable SNR threshold",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "SNR_min",
+          "unit": "dB"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No calculation trace or iteration evidence is supplied.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Replace sea permittivity with dry-ground permittivity.",
+          "Evaluate inherited Fresnel coefficients.",
+          "Convert to reflection loss.",
+          "Apply the hop threshold model."
+        ]
+      },
+      "assumptions": [
+        "The sea-model Fresnel equations and loss convention transfer unchanged."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "One ideal dry smooth ground with relative complex permittivity 4."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Dry terrain is smooth and has the least surface obstruction; epsilon_ground=4."
+      ],
+      "equation_status": {
+        "reason": "The paper explicitly reuses earlier Fresnel and transmission equations rather than printing a new formula.",
+        "status": "omitted-by-paper"
+      },
+      "family": "inherited Fresnel dry-ground baseline",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "L_ground",
+        "N_ground"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "epsilon_ground",
+        "theta"
+      ],
+      "limitations": [
+        "No equation-level substitution, coefficient value, power update, or hop trace is printed."
+      ],
+      "missing_details": [
+        "Ground conductivity, polarization, coefficient, loss conversion, SNR trace, and measured land data."
+      ],
+      "model_id": "MU-A-2018-76082-007",
+      "objectives": [
+        "Create a smooth-land comparator under the inherited signal scenario."
+      ],
+      "outputs": [
+        "L_ground",
+        "N_ground"
+      ],
+      "page": 14,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "epsilon_ground"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Estimate smooth dry-terrain reflection loss for comparison with sea and mountain surfaces.",
+      "section": "Smooth-Terrain Reflection",
+      "strengths": [
+        "Makes cross-surface transfer explicit and keeps a common comparator."
+      ],
+      "summary": "The paper sets dry-earth complex permittivity to 4, reuses the Fresnel and transmission-loss interface, and reports 9.1133 dB reflection loss.",
+      "validation_refs": [
+        "The 9.1133 dB loss on page 14 and three-hop result on page 16."
+      ],
+      "variables": [
+        {
+          "definition": "Ground material input.",
+          "normalized_name": "dry-ground complex permittivity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "epsilon_ground",
+          "unit": "dimensionless complex"
+        },
+        {
+          "definition": "Inherited angle.",
+          "normalized_name": "grazing angle",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "degree"
+        },
+        {
+          "definition": "Reported land baseline.",
+          "normalized_name": "smooth-ground reflection loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_ground",
+          "unit": "dB"
+        },
+        {
+          "definition": "Reported maximum hops.",
+          "normalized_name": "smooth-ground hop count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N_ground",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite formula evaluation; no iterative convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Build two equivalent edges.",
+          "Compute both single-edge losses.",
+          "Compute coupling correction.",
+          "Add foliage loss.",
+          "Pass total loss to the hop model."
+        ]
+      },
+      "assumptions": [
+        "Selected heights and distances are symmetric; one attenuation coefficient represents vegetation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "One symmetric double-edge profile and 10 m foliage thickness are used."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Mountain complexity is reduced to two edges; foliage loss is linear in thickness."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "Epstein-Peterson double-edge diffraction plus linear foliage attenuation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-024",
+          "label": "24",
+          "normalized_latex": "L_1=20\\log_{10}\\left[h_1'\\sqrt{\\frac{2}{\\lambda}\\left(\\frac1{d_1}+\\frac1{d_2}\\right)}\\right]",
+          "page": 15,
+          "purpose": "Compute first-edge diffraction loss.",
+          "source_expression": "L1=20lg(h1' sqrt((2/lambda)(1/d1+1/d2)))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_1",
+            "h_1_prime",
+            "lambda",
+            "d_1",
+            "d_2"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-025",
+          "label": "25",
+          "normalized_latex": "L_2=20\\log_{10}\\left[h_2'\\sqrt{\\frac{2}{\\lambda}\\left(\\frac1{d_3}+\\frac1{d_4}\\right)}\\right]",
+          "page": 15,
+          "purpose": "Compute second-edge diffraction loss.",
+          "source_expression": "L2=20lg(h2' sqrt((2/lambda)(1/d3+1/d4)))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_2",
+            "h_2_prime",
+            "lambda",
+            "d_3",
+            "d_4"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-026",
+          "label": "26",
+          "normalized_latex": "L_c=10\\log_{10}\\left[\\frac{(a+b)(b+c)}{b(a+b+c)}\\right]",
+          "page": 15,
+          "purpose": "Correct interaction between the two equivalent edges.",
+          "source_expression": "Lc=10lg((a+b)(b+c)/(b(a+b+c)))",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_c",
+            "a",
+            "b",
+            "c"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-027",
+          "label": "27",
+          "normalized_latex": "L_a=L_1+L_2+L_c",
+          "page": 15,
+          "purpose": "Aggregate double-edge diffraction.",
+          "source_expression": "La=L1+L2+Lc",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_a",
+            "L_1",
+            "L_2",
+            "L_c"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-028",
+          "label": "28",
+          "normalized_latex": "L_s=a_Ls",
+          "page": 15,
+          "purpose": "Compute linear foliage absorption.",
+          "source_expression": "Ls=aL*s",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_s",
+            "a_L",
+            "s"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "L_mountain",
+        "N_mountain"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The geometric formulas are explicit, but the parameter conflict and missing component ledger prevent reproducing the reported loss.",
+        "status": "partial"
+      },
+      "inputs": [
+        "h_1_prime",
+        "h_2_prime",
+        "d_1",
+        "d_2",
+        "d_3",
+        "d_4",
+        "a",
+        "b",
+        "c",
+        "lambda",
+        "a_L",
+        "s"
+      ],
+      "limitations": [
+        "The chosen a_L=0.8 dB/m conflicts with the stated 0.01-0.1 range and the final aggregate is not shown."
+      ],
+      "missing_details": [
+        "Terrain provenance, edge extraction, coefficient selection, component losses, SNR trace, and measured validation."
+      ],
+      "model_id": "MU-A-2018-76082-008",
+      "objectives": [
+        "Provide a rough-land comparator under a typical double-ridge and foliage scenario."
+      ],
+      "outputs": [
+        "L_a",
+        "L_s",
+        "L_mountain",
+        "N_mountain"
+      ],
+      "page": 15,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "h_1_prime",
+          "h_2_prime",
+          "a",
+          "b",
+          "c",
+          "a_L",
+          "s"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Estimate mountainous-terrain propagation loss from two ridge diffractions, a coupling correction, and vegetation absorption.",
+      "section": "Mountain Diffraction and Foliage Loss",
+      "strengths": [
+        "Separates geometric and material mechanisms and provides an inspectable geometry diagram."
+      ],
+      "summary": "The paper reduces a typical double-edged peak to two single-edge terms, adds a geometry correction and linear foliage loss, then uses one illustrative terrain scenario.",
+      "validation_refs": [
+        "Equations 24-28, Figure 6, and the two-hop/12.1084 dB results."
+      ],
+      "variables": [
+        {
+          "definition": "Loss at the first equivalent edge.",
+          "normalized_name": "first-edge diffraction loss",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_1",
+          "unit": "dB"
+        },
+        {
+          "definition": "Loss at the second equivalent edge.",
+          "normalized_name": "second-edge diffraction loss",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_2",
+          "unit": "dB"
+        },
+        {
+          "definition": "Geometry coupling correction.",
+          "normalized_name": "double-edge correction",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "L_c",
+          "unit": "dB"
+        },
+        {
+          "definition": "Combined ridge diffraction.",
+          "normalized_name": "total diffraction loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_a",
+          "unit": "dB"
+        },
+        {
+          "definition": "Vegetation attenuation.",
+          "normalized_name": "foliage absorption loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_s",
+          "unit": "dB"
+        },
+        {
+          "definition": "First obstacle height.",
+          "normalized_name": "first effective edge height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "h_1_prime",
+          "unit": "m"
+        },
+        {
+          "definition": "Second obstacle height.",
+          "normalized_name": "second effective edge height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "h_2_prime",
+          "unit": "m"
+        },
+        {
+          "definition": "Geometry distance.",
+          "normalized_name": "first pre-edge distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_1",
+          "unit": "m"
+        },
+        {
+          "definition": "Geometry distance.",
+          "normalized_name": "first post-edge distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_2",
+          "unit": "m"
+        },
+        {
+          "definition": "Geometry distance.",
+          "normalized_name": "second pre-edge distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_3",
+          "unit": "m"
+        },
+        {
+          "definition": "Geometry distance.",
+          "normalized_name": "second post-edge distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_4",
+          "unit": "m"
+        },
+        {
+          "definition": "Double-edge geometry segment.",
+          "normalized_name": "left terrain segment",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m"
+        },
+        {
+          "definition": "Double-edge geometry segment.",
+          "normalized_name": "middle terrain segment",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "b",
+          "unit": "m"
+        },
+        {
+          "definition": "Double-edge geometry segment.",
+          "normalized_name": "right terrain segment",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "c",
+          "unit": "m"
+        },
+        {
+          "definition": "Working wavelength.",
+          "normalized_name": "radio wavelength",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lambda",
+          "unit": "m"
+        },
+        {
+          "definition": "Vegetation loss rate.",
+          "normalized_name": "foliage attenuation coefficient",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "a_L",
+          "unit": "dB/m"
+        },
+        {
+          "definition": "Vegetated path length.",
+          "normalized_name": "foliage thickness",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "s",
+          "unit": "m"
+        },
+        {
+          "definition": "Reported comparator loss.",
+          "normalized_name": "mountainous total reflection/propagation loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_mountain",
+          "unit": "dB"
+        },
+        {
+          "definition": "Reported maximum hops.",
+          "normalized_name": "mountain hop count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N_mountain",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite comparison; no convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Collect loss outputs from each surface model.",
+          "Collect hop counts.",
+          "Plot four losses.",
+          "Rank and interpret surfaces."
+        ]
+      },
+      "assumptions": [
+        "Prior sea and land model outputs are treated as comparable."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Spatial, spectral, or decision boundaries are retained where the paper supplies them."
+          ],
+          "status": "uncertain"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "The same signal scenario and comparison metric apply across surfaces."
+      ],
+      "equation_status": {
+        "reason": "The comparison consumes outputs from Models 3-8 and introduces no new governing equation.",
+        "status": "omitted-by-paper"
+      },
+      "family": "controlled terrain/sea loss and hop comparison",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "L_surface",
+        "N_surface"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "surface"
+      ],
+      "limitations": [
+        "No common calculation ledger, uncertainty, or measured benchmark establishes strict comparability."
+      ],
+      "missing_details": [
+        "Shared unit ledger, component breakdown, sensitivity, field measurements, and uncertainty intervals."
+      ],
+      "model_id": "MU-A-2018-76082-009",
+      "objectives": [
+        "Rank the four surface classes and answer the terrain comparison task."
+      ],
+      "outputs": [
+        "L_surface",
+        "N_surface"
+      ],
+      "page": 16,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Compare mountainous terrain, smooth terrain, turbulent sea, and calm sea on common loss and hop metrics.",
+      "section": "Four-Surface Propagation Comparison",
+      "strengths": [
+        "Uses a compact visual-to-finding-to-decision sequence."
+      ],
+      "summary": "The paper presents a four-bar reflection-loss chart, pairs it with land hop counts, and concludes that sea surfaces better support shortwave skywave transmission.",
+      "validation_refs": [
+        "Figure 7 and the four stated comparative findings."
+      ],
+      "variables": [
+        {
+          "definition": "Mountain, smooth ground, turbulent sea, or calm sea.",
+          "normalized_name": "surface class",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "surface",
+          "unit": "category"
+        },
+        {
+          "definition": "Comparable loss value.",
+          "normalized_name": "surface reflection loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_surface",
+          "unit": "dB"
+        },
+        {
+          "definition": "Comparable usability count.",
+          "normalized_name": "maximum hop count",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "N_surface",
+          "unit": "count"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Closed-form evaluation; no convergence applies.",
+        "software": [],
+        "status": "implemented",
+        "steps": [
+          "Select maximum wave height and wavelength.",
+          "Evaluate the maximum sway angle.",
+          "Pass the angle to the affected path segment."
+        ]
+      },
+      "assumptions": [
+        "No measured vessel trajectory is available; a literature maximum is used."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Only wind-wave-induced heave, roll, and pitch are retained."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "The antenna moves with the vessel; wind waves dominate; three motion modes summarize six DOF."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "wave-driven antenna attitude bound",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-029",
+          "label": "29",
+          "normalized_latex": "\\theta_{\\max}=\\arcsin\\left(\\frac{\\pi H_{\\max}}{\\sqrt{\\lambda_{\\mathrm{sea}}^2+\\pi^2H_{\\max}^2}}\\right)",
+          "page": 17,
+          "purpose": "Bound the antenna-angle change caused by waves.",
+          "source_expression": "theta_max=arcsin(pi Hmax/(lambda_sea^2+pi^2 Hmax^2)^(1/2))",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "theta_max",
+            "H_max",
+            "lambda_sea"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "theta_max"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "H_max",
+        "lambda_sea",
+        "motion_mode"
+      ],
+      "limitations": [
+        "The equation typography is ambiguous and no numeric inputs or sway-angle result are published."
+      ],
+      "missing_details": [
+        "Vessel dimensions, sea spectrum, six-DOF response, antenna mount, time series, calibration, and numeric evaluation."
+      ],
+      "model_id": "MU-A-2018-76082-010",
+      "objectives": [
+        "Supply an antenna-angle perturbation to the maritime path model."
+      ],
+      "outputs": [
+        "theta_max"
+      ],
+      "page": 17,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "H_max",
+          "lambda_sea"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Approximate the maximum shipborne-antenna sway angle from wave height and wavelength.",
+      "section": "Ship Sway Angle",
+      "strengths": [
+        "Makes the motion-to-angle interface explicit."
+      ],
+      "summary": "The paper reduces six-degree ship motion to heave, roll, and pitch, then cites a maximum sway-angle relation because measured vessel motion is unavailable.",
+      "validation_refs": [
+        "Equation 29 and Figure 8."
+      ],
+      "variables": [
+        {
+          "definition": "Maximum antenna-angle perturbation.",
+          "normalized_name": "maximum vessel sway angle",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "theta_max",
+          "unit": "radian"
+        },
+        {
+          "definition": "Wave-height input.",
+          "normalized_name": "maximum wave height",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "H_max",
+          "unit": "m"
+        },
+        {
+          "definition": "Wave-length input.",
+          "normalized_name": "sea-wave wavelength",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lambda_sea",
+          "unit": "m"
+        },
+        {
+          "definition": "Heave, roll, or pitch retained from six DOF.",
+          "normalized_name": "ship motion mode",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "motion_mode",
+          "unit": "category"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No simulation trace or distance sweep is supplied.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Locate the receiver segment.",
+          "Use dual path with sway in A.",
+          "Use direct path in B.",
+          "Treat C as shadow/unsupported.",
+          "Report the motion penalty."
+        ]
+      },
+      "assumptions": [
+        "With increasing range, motion effect decreases; the ship is reduced to vertical motion in A."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Three segments are named, but numeric boundaries and the shadow-zone model are missing."
+          ],
+          "status": "uncertain"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "Heave dominates in segment A; sway is negligible in segment B; no segment-C equation is shown."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "dual-path/direct-path/shadow-zone receiver model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-030",
+          "label": "30",
+          "normalized_latex": "L_A=147.5582-20\\log_{10}f+20\\log_{10}|C_{DP}+C_{RP}|",
+          "page": 18,
+          "purpose": "Compute segment-A dual-path loss.",
+          "source_expression": "La=147.5582-20lg f+20lg|CDP+CRP|",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_A",
+            "f",
+            "C_DP",
+            "C_RP"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-031",
+          "label": "31",
+          "normalized_latex": "L_B=147.5582-20\\log_{10}f+20\\log_{10}|C_{DP}|",
+          "page": 18,
+          "purpose": "Compute segment-B direct-path loss.",
+          "source_expression": "Lb=147.5582-20lg f+20lg|CDP|",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "L_B",
+            "f",
+            "C_DP"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "L_sway",
+        "L_A",
+        "L_B"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The partition is communicable, but undefined coefficients prevent numerical reproduction.",
+        "status": "partial"
+      },
+      "inputs": [
+        "d_1",
+        "d_2",
+        "d_3",
+        "f",
+        "C_DP",
+        "C_RP",
+        "segment"
+      ],
+      "limitations": [
+        "C_DP/C_RP, distance dependence, the 147.5582 constant, segment boundaries, and segment C are undefined."
+      ],
+      "missing_details": [
+        "Coefficient definitions, unit derivation, segment thresholds, routed path geometry, numeric ledger, and measured ship data."
+      ],
+      "model_id": "MU-A-2018-76082-011",
+      "objectives": [
+        "Estimate receiver loss with ship sway over the visible maritime path."
+      ],
+      "outputs": [
+        "L_A",
+        "L_B",
+        "L_sway"
+      ],
+      "page": 18,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "C_DP",
+          "C_RP"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Add ship-sway loss to the sea propagation model according to receiver range segment.",
+      "section": "Segmented Maritime Propagation with Sway",
+      "strengths": [
+        "Uses spatial segmentation to limit a new mechanism to the range where it matters."
+      ],
+      "summary": "The Earth-curved path is partitioned into A, B, and C; segment A uses dual path plus sway, B uses direct path, and C is a shadow zone. The paper reports 1.5 dB sway loss.",
+      "validation_refs": [
+        "Equations 30-31, Figure 9, and the 1.5-dB result."
+      ],
+      "variables": [
+        {
+          "definition": "Transmitter to first visible point.",
+          "normalized_name": "segment A distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_1",
+          "unit": "km"
+        },
+        {
+          "definition": "Visible transition segment.",
+          "normalized_name": "segment B distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_2",
+          "unit": "km"
+        },
+        {
+          "definition": "Shadow-zone segment.",
+          "normalized_name": "segment C distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "d_3",
+          "unit": "km"
+        },
+        {
+          "definition": "Dual-path plus sway loss.",
+          "normalized_name": "segment A loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_A",
+          "unit": "dB"
+        },
+        {
+          "definition": "Direct-path loss.",
+          "normalized_name": "segment B loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_B",
+          "unit": "dB"
+        },
+        {
+          "definition": "Reported 1.5-dB motion penalty.",
+          "normalized_name": "ship sway loss",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_sway",
+          "unit": "dB"
+        },
+        {
+          "definition": "Carrier frequency.",
+          "normalized_name": "radio frequency",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "MHz"
+        },
+        {
+          "definition": "Complex/path coefficient in segment formulas.",
+          "normalized_name": "direct-path coefficient",
+          "role": "input",
+          "source_status": "unspecified",
+          "symbol": "C_DP",
+          "unit": "paper-undefined"
+        },
+        {
+          "definition": "Reflected component in segment A.",
+          "normalized_name": "reflected-path coefficient",
+          "role": "input",
+          "source_status": "unspecified",
+          "symbol": "C_RP",
+          "unit": "paper-undefined"
+        },
+        {
+          "definition": "A, B, or C.",
+          "normalized_name": "receiver range segment",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "segment",
+          "unit": "category"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No quadrature method, grid, tolerance, or endpoint sensitivity is supplied.",
+        "software": [
+          "Unspecified numerical integration software"
+        ],
+        "status": "partial",
+        "steps": [
+          "Choose frequency endpoints and ionospheric profile.",
+          "Integrate each reflected path.",
+          "Take the path-distance difference.",
+          "Convert ship speed.",
+          "Divide coverage width by speed."
+        ]
+      },
+      "assumptions": [
+        "Different frequencies return with the same sea-surface grazing angle."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Two or more path integrals; discretization is not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The source names 3-30 MHz, 30 knots, and Earth radius, but not the integration/profile boundaries."
+          ],
+          "status": "uncertain"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "The ionosphere is layered with uniform density within sheets; lower frequency reflects more easily; endpoint paths bound coverage."
+      ],
+      "equation_status": {
+        "reason": "The paper prints or operationally specifies the retained mathematical statements.",
+        "status": "present"
+      },
+      "family": "layered-ionosphere refraction and vessel travel-time envelope",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2018-76082-032",
+          "label": "32",
+          "normalized_latex": "n_0\\sin\\theta_0=n_1\\sin\\theta_1=\\cdots=n_j\\sin\\theta_j",
+          "page": 19,
+          "purpose": "Retain the layered Snell invariant.",
+          "source_expression": "n0 sin theta0=n1 sin theta1=...=n sin thetan",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "n_j",
+            "theta_j"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2018-76082-033",
+          "label": "33",
+          "normalized_latex": "D_{\\mathrm{path}}=2\\int_{r_0}^{r_b}\\frac{r\\,dr}{\\sqrt{r^2-r_0^2\\cos^2\\alpha}}+2\\int_{r_b}^{r_t}\\frac{r_0^2\\cos\\alpha\\,dr}{r\\sqrt{r^2n_j^2-r_0^2\\cos^2\\alpha}}",
+          "page": 19,
+          "purpose": "Compute one frequency-dependent reflected path.",
+          "source_expression": "D=2 integral[r0,rb] r dr/sqrt(r^2-r0^2 cos^2 alpha)+2 integral[rb,rt] r0^2 cos alpha dr/(r sqrt(r^2 n^2-r0^2 cos^2 alpha))",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "D_path",
+            "r_0",
+            "r_b",
+            "r_t",
+            "r",
+            "alpha",
+            "n_j"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "W_cov",
+        "T_comm"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The 840-km/15.12-hour arithmetic is mutually compatible after knot conversion, but the coverage width is not reproducible from Equation 33.",
+        "status": "partial"
+      },
+      "inputs": [
+        "alpha",
+        "r_0",
+        "r_b",
+        "r_t",
+        "v_ship"
+      ],
+      "limitations": [
+        "Integral bounds, refractive-index profile, frequency endpoints, evaluation method, and coverage construction are not supplied."
+      ],
+      "missing_details": [
+        "Electron-density profile, MUF feasibility, endpoint frequencies, numerical integration, path plots, unit conversion, and measured coverage."
+      ],
+      "model_id": "MU-A-2018-76082-012",
+      "objectives": [
+        "Estimate how long a moving vessel remains inside a common multi-frequency coverage region."
+      ],
+      "outputs": [
+        "D_path",
+        "W_cov",
+        "T_comm"
+      ],
+      "page": 19,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [
+          "r_0",
+          "alpha",
+          "r_b",
+          "r_t",
+          "v_ship"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Use frequency-dependent reflected paths to estimate a signal-coverage width and maximum vessel communication time.",
+      "section": "Frequency-Envelope Coverage Time",
+      "strengths": [
+        "Converts propagation physics into a stakeholder-facing duration."
+      ],
+      "summary": "The paper treats the ionosphere as parallel refractive sheets, applies a Snell invariant and a path integral, takes the difference between high/low-frequency paths, and reports 840 km coverage and 15.12 hours at 30 knots.",
+      "validation_refs": [
+        "Equations 32-33, Figure 10, and the 840-km / 15.12-hour results."
+      ],
+      "variables": [
+        {
+          "definition": "Index of ionospheric sheet j.",
+          "normalized_name": "layer refractive index",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "n_j",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Ray angle in sheet j.",
+          "normalized_name": "layer incidence angle",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "theta_j",
+          "unit": "radian"
+        },
+        {
+          "definition": "Initial path angle.",
+          "normalized_name": "initial ray elevation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "alpha",
+          "unit": "radian"
+        },
+        {
+          "definition": "6370-km Earth radius.",
+          "normalized_name": "Earth radius",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "r_0",
+          "unit": "km"
+        },
+        {
+          "definition": "Integration coordinate.",
+          "normalized_name": "ray radial coordinate",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "r",
+          "unit": "km"
+        },
+        {
+          "definition": "Printed integral bound.",
+          "normalized_name": "lower integration radius",
+          "role": "input",
+          "source_status": "unspecified",
+          "symbol": "r_b",
+          "unit": "km"
+        },
+        {
+          "definition": "Printed integral bound.",
+          "normalized_name": "upper integration radius",
+          "role": "input",
+          "source_status": "unspecified",
+          "symbol": "r_t",
+          "unit": "km"
+        },
+        {
+          "definition": "Horizontal/curved propagation distance.",
+          "normalized_name": "frequency-dependent path distance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "D_path",
+          "unit": "km"
+        },
+        {
+          "definition": "Coverage endpoint.",
+          "normalized_name": "highest-frequency path distance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "D_high",
+          "unit": "km"
+        },
+        {
+          "definition": "Coverage endpoint.",
+          "normalized_name": "lowest-frequency path distance",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "D_low",
+          "unit": "km"
+        },
+        {
+          "definition": "Difference between endpoint paths.",
+          "normalized_name": "signal coverage width",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "W_cov",
+          "unit": "km"
+        },
+        {
+          "definition": "Selected 30-knot speed.",
+          "normalized_name": "ship speed",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "v_ship",
+          "unit": "knot or km/h"
+        },
+        {
+          "definition": "Coverage travel time.",
+          "normalized_name": "maximum communication time",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "T_comm",
+          "unit": "hour"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "Finite curve sweep; no grid convergence or numeric sensitivity statistic is reported.",
+        "software": [],
+        "status": "partial",
+        "steps": [
+          "Choose time levels.",
+          "Sweep grazing angle.",
+          "Recompute SNR and ionospheric loss.",
+          "Plot curve families.",
+          "Compare response spread."
+        ]
+      },
+      "assumptions": [
+        "The plotted curve family represents the response surface sufficiently for interpretation."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "Not quantified by the paper.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Time labels run approximately 0-22 hours and grazing angle spans the plotted range."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No independent equilibrium or stationarity demonstration is supplied."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Initial state is only partly specified by the paper."
+          ],
+          "status": "uncertain"
+        }
+      },
+      "constraints": [
+        "All non-time scenario inputs are implicitly held fixed."
+      ],
+      "equation_status": {
+        "reason": "The section reuses prior loss/SNR equations and supplies plots rather than a new sensitivity equation.",
+        "status": "omitted-by-paper"
+      },
+      "family": "one-factor time-of-day response sweep",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "SNR_t",
+        "L_i"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The source demonstrates one scenario but does not establish general identifiability or feasibility.",
+        "status": "partial"
+      },
+      "inputs": [
+        "t",
+        "theta"
+      ],
+      "limitations": [
+        "No formal sensitivity statistic, baseline, range table, decision reversal, code, or uncertainty is supplied."
+      ],
+      "missing_details": [
+        "Exact time grid, fixed-input ledger, response differences, derivative/elasticity, threshold effects, code, and seasonal sensitivity."
+      ],
+      "model_id": "MU-A-2018-76082-013",
+      "objectives": [
+        "Assess whether conclusions are stable across time of day."
+      ],
+      "outputs": [
+        "SNR_t",
+        "L_i"
+      ],
+      "page": 20,
+      "parameter_estimation": {
+        "method": "Paper supplies selected values or cited formulas but not a complete calibrated parameter process.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Inspect how local time changes SNR and ionospheric loss across grazing angles.",
+      "section": "Local-Time Sensitivity",
+      "strengths": [
+        "Uses a paired-output curve family and distinguishes strong from weak response."
+      ],
+      "summary": "Figures 11-12 show curve families labeled by time from 0 to 22 hours; the paper interprets angle/SNR as time-sensitive and ionospheric loss as weakly time-sensitive.",
+      "validation_refs": [
+        "Figures 11-12 and the sensitivity prose."
+      ],
+      "variables": [
+        {
+          "definition": "Sensitivity input.",
+          "normalized_name": "local time",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "hour"
+        },
+        {
+          "definition": "Horizontal sweep coordinate.",
+          "normalized_name": "grazing incidence angle",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "degree"
+        },
+        {
+          "definition": "Figure 11 response.",
+          "normalized_name": "signal-to-noise response",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "SNR_t",
+          "unit": "dB"
+        },
+        {
+          "definition": "Figure 12 response.",
+          "normalized_name": "ionospheric loss response",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_i",
+          "unit": "dB"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2018-76082-bbcfb427",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "bbcfb4270eef5cc6d1d6706651a7e8bd82400539ddda554de3a5e60a07745509",
+  "year": "2018"
+}

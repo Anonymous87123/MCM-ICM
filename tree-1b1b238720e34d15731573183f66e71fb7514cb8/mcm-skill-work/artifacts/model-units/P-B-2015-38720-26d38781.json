@@ -1,0 +1,2300 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-B-2015-38720-26d38781",
+  "problem_type": "B",
+  "year": "2015",
+  "source_sha256": "26d38781a179b71806799b0d20f118a5f0b09aa1cf6b8bc7a5e32562a7886a42",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-B-2015-38720-001",
+      "page": 11,
+      "section": "2.5 Searching for a Lost Object",
+      "family": "containment-times-detection search probability",
+      "purpose": "Define discovery success as the product of containment and detection so location priors and sensor performance remain separate.",
+      "base_or_modification": "paper-specific",
+      "summary": "Define discovery success as the product of containment and detection so location priors and sensor performance remain separate.",
+      "variables": [
+        {
+          "symbol": "P",
+          "normalized_name": "total discovery probability",
+          "unit": "probability",
+          "definition": "Probability that the search discovers the lost aircraft.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_C",
+          "normalized_name": "containment probability",
+          "unit": "probability",
+          "definition": "Probability the target lies in the searched area.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_D",
+          "normalized_name": "detection probability",
+          "unit": "probability",
+          "definition": "Probability the target is detected conditional on containment.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_C",
+        "P_D"
+      ],
+      "outputs": [
+        "P"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-001",
+          "page": 11,
+          "label": "(1)",
+          "source_expression": "P = P(C) * P(D)",
+          "normalized_latex": "P=P(C)P(D)",
+          "purpose": "Factor total discovery probability into containment and conditional detection.",
+          "variable_symbols": [
+            "P",
+            "P_C",
+            "P_D"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Define discovery success as the product of containment and detection so location priors and sensor performance remain separate.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Specify the searched area and its containment probability.",
+          "Specify conditional sensor discovery probability and multiply the two factors."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "Containment and detection can be combined through the stated product for the paper's search event."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "P"
+      ],
+      "validation_refs": [
+        "The later uncertainty model separates containment-cell updates from imperfect radar/operator discovery."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "The source does not fully state the conditional-independence semantics behind the product."
+      ],
+      "missing_details": [
+        "A calibrated containment prior, sensor likelihood, dependence structure, and field truth set."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-002",
+      "page": 15,
+      "section": "3.3 Lost Aircraft Profile",
+      "family": "glide-and-time rectangular search geometry",
+      "purpose": "Construct a rectangular candidate region from aircraft glide reach and the distance traveled during the uncertain failure interval.",
+      "base_or_modification": "paper-specific",
+      "summary": "Construct a rectangular candidate region from aircraft glide reach and the distance traveled during the uncertain failure interval.",
+      "variables": [
+        {
+          "symbol": "r",
+          "normalized_name": "glide range",
+          "unit": "miles",
+          "definition": "Maximum forward distance during an unpowered glide.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kappa",
+          "normalized_name": "glide ratio",
+          "unit": "forward distance per unit descent",
+          "definition": "Aircraft glide ratio.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "cruising altitude",
+          "unit": "feet",
+          "definition": "Representative altitude at failure.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "uncertain along-track distance",
+          "unit": "miles",
+          "definition": "Distance flown during the failure-time uncertainty window.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "lost-aircraft airspeed",
+          "unit": "miles per hour",
+          "definition": "Representative lost-aircraft speed.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "failure-time uncertainty",
+          "unit": "hours",
+          "definition": "Half-hour interval used to bound possible failure time.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "alpha",
+        "kappa",
+        "v",
+        "tau"
+      ],
+      "outputs": [
+        "r",
+        "L"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-002",
+          "page": 15,
+          "label": "(2)",
+          "source_expression": "r = kappa alpha",
+          "normalized_latex": "r=\\kappa\\alpha",
+          "purpose": "Convert cruise altitude and glide ratio into maximum glide range.",
+          "variable_symbols": [
+            "r",
+            "kappa",
+            "alpha"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-003",
+          "page": 15,
+          "label": "(3)",
+          "source_expression": "L = v tau",
+          "normalized_latex": "L=v\\tau",
+          "purpose": "Convert aircraft speed and the crash-time uncertainty interval into along-track distance.",
+          "variable_symbols": [
+            "L",
+            "v",
+            "tau"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Construct a rectangular candidate region from aircraft glide reach and the distance traveled during the uncertain failure interval.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "kappa",
+          "tau"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compute r and L.",
+          "Extend the path by r at both ends and by r on both sides."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "The aircraft maintains representative cruise speed until failure and then glides according to a constant ratio.",
+        "The path is straight and the candidate region can be represented by a rectangle of size (L+2r) by 2r."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "r",
+        "L"
+      ],
+      "validation_refs": [
+        "The Boeing 777 example yields L=320 miles, r=100 miles, and a 520 by 200 mile region."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "Feet-to-miles conversion is omitted from Equation 2 and the rectangular approximation ignores turns, winds, currents, and failure-state dynamics."
+      ],
+      "missing_details": [
+        "Unit conversion, trajectory uncertainty, wind/current displacement, terrain/coast effects, and a calibrated failure-time prior."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-003",
+      "page": 22,
+      "section": "5.1 Normal Distribution / Completed Simulation / Statistical Analysis",
+      "family": "Gaussian containment and Monte Carlo discovery-time harness",
+      "purpose": "Sample crash locations uniformly along the flight direction and normally across it, stop a path at detection, and summarize discovery time with histograms and approximate confidence intervals.",
+      "base_or_modification": "paper-specific",
+      "summary": "Sample crash locations uniformly along the flight direction and normally across it, stop a path at detection, and summarize discovery time with histograms and approximate confidence intervals.",
+      "variables": [
+        {
+          "symbol": "x_crash",
+          "normalized_name": "crash x coordinate",
+          "unit": "miles",
+          "definition": "Simulated along-track crash coordinate.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_crash",
+          "normalized_name": "crash y coordinate",
+          "unit": "miles",
+          "definition": "Simulated cross-track crash coordinate.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_i",
+          "normalized_name": "search-plane position",
+          "unit": "miles in local coordinates",
+          "definition": "Plane position at simulation step i.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "sensor sight radius",
+          "unit": "miles",
+          "definition": "Detection radius fixed at 10 miles for P-8 trials.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CI",
+          "normalized_name": "reported confidence interval",
+          "unit": "hours",
+          "definition": "Approximate interval for the simulated mean discovery time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "sample mean",
+          "unit": "hours",
+          "definition": "Mean time among the observations included in a summary.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SE",
+          "normalized_name": "standard error",
+          "unit": "hours",
+          "definition": "Reported standard error of the mean.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "sample standard deviation",
+          "unit": "hours",
+          "definition": "Spread of simulated discovery times.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "included sample count",
+          "unit": "count",
+          "definition": "Number of discovery-time observations used for the interval.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_crash",
+        "y_crash",
+        "S_i",
+        "d",
+        "n"
+      ],
+      "outputs": [
+        "mu",
+        "CI"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-004",
+          "page": 23,
+          "label": "(4)",
+          "source_expression": "S_i - (x_crash,y_crash) < d",
+          "normalized_latex": "\\vec S_i-(x_{\\mathrm{crash}},y_{\\mathrm{crash}})<d",
+          "purpose": "State the printed discovery stopping rule; the source visibly omits a norm.",
+          "variable_symbols": [
+            "S_i",
+            "x_crash",
+            "y_crash",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-005",
+          "page": 23,
+          "label": "(5)",
+          "source_expression": "95% CI = [mu - 2(SE), mu + 2(SE)], SE = sigma/sqrt(n)",
+          "normalized_latex": "95\\%\\ \\mathrm{CI}=[\\mu-2\\mathrm{SE},\\mu+2\\mathrm{SE}],\\quad \\mathrm{SE}=\\frac{\\sigma}{\\sqrt n}",
+          "purpose": "Summarize simulated discovery times with the paper's approximate mean interval.",
+          "variable_symbols": [
+            "CI",
+            "mu",
+            "SE",
+            "sigma",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Sample crash locations uniformly along the flight direction and normally across it, stop a path at detection, and summarize discovery time with histograms and approximate confidence intervals.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "d"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Generate a crash point from the containment distribution.",
+          "Advance the selected route until the stopping rule fires.",
+          "Repeat the declared trial count and compute mean, median, standard deviation, standard error, and the printed interval."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "Crash x is uniform over the rectangular path length and y follows the selected normal containment model.",
+        "The P-8 travels at constant speed and detects a target whenever the printed distance condition is met.",
+        "Simulated completion times are summarized as if repeated draws support the paper's approximate interval."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "mu",
+        "CI"
+      ],
+      "validation_refs": [
+        "Figures 7 and 12-24 expose crash samples and route-specific time distributions.",
+        "Reported mean/median differences reveal skew and permit within-harness comparisons."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "Equation 4 lacks a norm, and Equation 5 is an approximate interval rather than a stated hypothesis test.",
+        "No code, time step, seeds, distribution parameters, convergence analysis, or incident holdout is supplied."
+      ],
+      "missing_details": [
+        "Exact Gaussian parameters and truncation, random generator/seed, time step, failure handling, estimator definition, and raw trial output."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-004",
+      "page": 24,
+      "section": "Solution 5.1.1",
+      "family": "unbounded isotropic random walk",
+      "purpose": "Generate a baseline search path from normalized random vectors without enforcing the search boundary.",
+      "base_or_modification": "paper-specific",
+      "summary": "Generate a baseline search path from normalized random vectors without enforcing the search boundary.",
+      "variables": [
+        {
+          "symbol": "S_0",
+          "normalized_name": "initial search position",
+          "unit": "miles",
+          "definition": "Origin of the simulated route.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Position at step i.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Speed symbol used in the recurrence, although the search-plane table defines v_s.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported time increment per route step.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "random direction vector",
+          "unit": "dimensionless vector",
+          "definition": "Random vector normalized to a direction.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_0",
+        "v",
+        "delta_t"
+      ],
+      "outputs": [
+        "S_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-006",
+          "page": 24,
+          "label": "(6)",
+          "source_expression": "S_0=(0,0); S_i=S_(i-1)+v Delta t R/|R|",
+          "normalized_latex": "\\vec S_0=(0,0),\\quad \\vec S_i=\\vec S_{i-1}+v\\Delta t\\frac{\\vec R}{|\\vec R|}",
+          "purpose": "Advance an unbounded isotropic random walk by one fixed-length step.",
+          "variable_symbols": [
+            "S_0",
+            "S_i",
+            "v",
+            "delta_t",
+            "R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Generate a baseline search path from normalized random vectors without enforcing the search boundary.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize at the origin.",
+          "Draw and normalize R, advance one fixed-length step, and stop on discovery."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "Each random vector is isotropic and independent and the plane may leave the candidate rectangle."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "S_i"
+      ],
+      "validation_refs": [
+        "The source reports that most unbounded random trials do not finish, establishing an intentionally poor baseline."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "The route wastes effort outside the containment area and uses v rather than the defined search speed v_s."
+      ],
+      "missing_details": [
+        "Direction distribution, time step, seed, maximum duration, completion count, and raw paths."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-005",
+      "page": 26,
+      "section": "Solution 5.1.2",
+      "family": "boundary-corrected random walk",
+      "purpose": "Keep random search steps inside the rectangular domain by redirecting out-of-bounds coordinates toward its center axes.",
+      "base_or_modification": "paper-specific",
+      "summary": "Keep random search steps inside the rectangular domain by redirecting out-of-bounds coordinates toward its center axes.",
+      "variables": [
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Position at step i.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_ix",
+          "normalized_name": "search x coordinate",
+          "unit": "miles",
+          "definition": "Horizontal coordinate checked against the rectangle.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_iy",
+          "normalized_name": "search y coordinate",
+          "unit": "miles",
+          "definition": "Vertical coordinate checked against the rectangle.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "uncertain path length",
+          "unit": "miles",
+          "definition": "Along-track failure interval length.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "glide range",
+          "unit": "miles",
+          "definition": "Half-height and endpoint extension of the rectangle.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Speed symbol used in the recurrence.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported route increment.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "bounded-random discovery time",
+          "unit": "hours",
+          "definition": "Trial completion time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_i",
+        "L",
+        "r",
+        "v",
+        "delta_t"
+      ],
+      "outputs": [
+        "detection_time"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-007",
+          "page": 26,
+          "label": "(7)",
+          "source_expression": "if S_ix>L+2r union S_ix<0: S_(i+1)=S_i+v Delta t Norm(<(L+2r)/2-S_ix,0>)",
+          "normalized_latex": "S_{ix}>L+2r\\ \\cup\\ S_{ix}<0:\\ \\vec S_{i+1}=\\vec S_i+v\\Delta t\\operatorname{Norm}\\!\\left(\\left\\langle\\frac{L+2r}{2}-S_{ix},0\\right\\rangle\\right)",
+          "purpose": "Redirect an out-of-bounds horizontal step toward the rectangle center line.",
+          "variable_symbols": [
+            "S_ix",
+            "L",
+            "r",
+            "S_i",
+            "v",
+            "delta_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-008",
+          "page": 26,
+          "label": "(8)",
+          "source_expression": "if S_iy>r union S_iy<-r: S_(i+1)=S_i+v Delta t Norm(<0,-S_iy>)",
+          "normalized_latex": "S_{iy}>r\\ \\cup\\ S_{iy}<-r:\\ \\vec S_{i+1}=\\vec S_i+v\\Delta t\\operatorname{Norm}(\\langle0,-S_{iy}\\rangle)",
+          "purpose": "Redirect an out-of-bounds vertical step toward the flight-path axis.",
+          "variable_symbols": [
+            "S_iy",
+            "r",
+            "S_i",
+            "v",
+            "delta_t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Keep random search steps inside the rectangular domain by redirecting out-of-bounds coordinates toward its center axes.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Draw a random step.",
+          "When x or y lies outside its bound, substitute the corresponding return vector.",
+          "Stop at detection and repeat 100 trials."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "A coordinate crossing a boundary is redirected by the printed horizontal or vertical rule."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "detection_time"
+      ],
+      "validation_refs": [
+        "The 100-trial mean is 42.7105 hours, median 24.425, and reported interval [33.2348,52.1862]."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "The union symbol is used as logical OR and corner behavior/order of the two rules is not specified."
+      ],
+      "missing_details": [
+        "Corner precedence, equality behavior, normalized-vector definition, time step, seeds, and raw trials."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-006",
+      "page": 29,
+      "section": "Solution 5.1.3",
+      "family": "endpoint-weighted bounded random walk",
+      "purpose": "Bias random motion toward the farther endpoint to spend more time near the normal distribution's center while retaining stochastic exploration.",
+      "base_or_modification": "paper-specific",
+      "summary": "Bias random motion toward the farther endpoint to spend more time near the normal distribution's center while retaining stochastic exploration.",
+      "variables": [
+        {
+          "symbol": "d_A",
+          "normalized_name": "distance to endpoint A",
+          "unit": "miles",
+          "definition": "Current distance to A.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_B",
+          "normalized_name": "distance to endpoint B",
+          "unit": "miles",
+          "definition": "Current distance to B.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Position at step i.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Step-speed symbol.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported route increment.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "random direction vector",
+          "unit": "dimensionless vector",
+          "definition": "Random exploratory direction.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "left endpoint",
+          "unit": "miles in local coordinates",
+          "definition": "One flight-path endpoint.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "right endpoint",
+          "unit": "miles in local coordinates",
+          "definition": "Other flight-path endpoint.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "weighted-random discovery time",
+          "unit": "hours",
+          "definition": "Trial completion time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_i",
+        "A",
+        "B",
+        "v",
+        "delta_t"
+      ],
+      "outputs": [
+        "detection_time"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-009",
+          "page": 29,
+          "label": "(9)",
+          "source_expression": "if d_A>d_B: S_(i+1)=S_i+v Delta t Norm(15R/|R|+Norm(A-S_i))",
+          "normalized_latex": "d_A>d_B:\\ \\vec S_{i+1}=\\vec S_i+v\\Delta t\\operatorname{Norm}\\!\\left(15\\frac{\\vec R}{|\\vec R|}+\\operatorname{Norm}(A-\\vec S_i)\\right)",
+          "purpose": "Bias the bounded random step toward endpoint A when A is farther.",
+          "variable_symbols": [
+            "d_A",
+            "d_B",
+            "S_i",
+            "v",
+            "delta_t",
+            "R",
+            "A"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-010",
+          "page": 29,
+          "label": "(10)",
+          "source_expression": "if d_A<=d_B: S_(i+1)=S_i+v Delta t Norm(15R/|R|+Norm(B-S_i))",
+          "normalized_latex": "d_A\\le d_B:\\ \\vec S_{i+1}=\\vec S_i+v\\Delta t\\operatorname{Norm}\\!\\left(15\\frac{\\vec R}{|\\vec R|}+\\operatorname{Norm}(B-\\vec S_i)\\right)",
+          "purpose": "Bias the bounded random step toward endpoint B when B is at least as far.",
+          "variable_symbols": [
+            "d_A",
+            "d_B",
+            "S_i",
+            "v",
+            "delta_t",
+            "R",
+            "B"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Bias random motion toward the farther endpoint to spend more time near the normal distribution's center while retaining stochastic exploration.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compare d_A and d_B.",
+          "Bias the next normalized step toward the farther endpoint.",
+          "Apply boundary control, stop on discovery, and repeat 100 trials."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "The normalized endpoint vector is added to a random component weighted by the fixed factor 15."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "detection_time"
+      ],
+      "validation_refs": [
+        "The mean is 37.5575 hours and median 16.6; its reported interval overlaps the bounded-random interval."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "The weight 15 is unsupported and the interval comparison is treated as a significance test without a direct paired or two-sample test."
+      ],
+      "missing_details": [
+        "Weight calibration, boundary integration, seed, raw paired trials, and a valid comparison test."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-007",
+      "page": 32,
+      "section": "Solution 5.1.4",
+      "family": "descending boustrophedon stripes",
+      "purpose": "Sweep parallel horizontal tracks from the high-probability center downward with vertical spacing equal to one radar diameter.",
+      "base_or_modification": "paper-specific",
+      "summary": "Sweep parallel horizontal tracks from the high-probability center downward with vertical spacing equal to one radar diameter.",
+      "variables": [
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Current route coordinate.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_ix",
+          "normalized_name": "search x coordinate",
+          "unit": "miles",
+          "definition": "Horizontal coordinate used for turns.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Horizontal search speed symbol.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported horizontal step interval.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "horizontal direction",
+          "unit": "plus or minus one",
+          "definition": "Alternating direction sign.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "uncertain path length",
+          "unit": "miles",
+          "definition": "Rectangle length component.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "glide range",
+          "unit": "miles",
+          "definition": "Rectangle endpoint extension.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "sensor sight radius",
+          "unit": "miles",
+          "definition": "Half of the stripe separation.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "descending-stripe discovery time",
+          "unit": "hours",
+          "definition": "Trial completion time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_i",
+        "L",
+        "r",
+        "v",
+        "delta_t",
+        "d"
+      ],
+      "outputs": [
+        "detection_time"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-011",
+          "page": 32,
+          "label": "(11)",
+          "source_expression": "S_(i+1)=S_i+v Delta t epsilon <1,0>",
+          "normalized_latex": "\\vec S_{i+1}=\\vec S_i+v\\Delta t\\,\\varepsilon\\langle1,0\\rangle",
+          "purpose": "Move horizontally along one descending stripe.",
+          "variable_symbols": [
+            "S_i",
+            "v",
+            "delta_t",
+            "epsilon"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-012",
+          "page": 32,
+          "label": "(12)",
+          "source_expression": "at S_ix>=L+2r union S_ix<=0: epsilon=-epsilon; S_(i+1)=S_i+<0,-2d>",
+          "normalized_latex": "S_{ix}\\ge L+2r\\ \\cup\\ S_{ix}\\le0:\\ \\varepsilon\\leftarrow-\\varepsilon,\\quad \\vec S_{i+1}=\\vec S_i+\\langle0,-2d\\rangle",
+          "purpose": "Reverse direction at a vertical boundary and descend by one radar diameter.",
+          "variable_symbols": [
+            "S_ix",
+            "L",
+            "r",
+            "epsilon",
+            "S_i",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Sweep parallel horizontal tracks from the high-probability center downward with vertical spacing equal to one radar diameter.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t",
+          "d"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Traverse one horizontal stripe.",
+          "At an x boundary reverse direction and descend by 2d.",
+          "Stop at discovery and repeat 100 trials."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "The normal prior is symmetric but the route begins at the center and covers only one side before the other is discussed through alternatives."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "detection_time"
+      ],
+      "validation_refs": [
+        "Mean 7.10273 hours, median 7.031, reported interval [6.62073,7.58473]."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "The route order gives asymmetric discovery times across the symmetric prior and ignores turn duration."
+      ],
+      "missing_details": [
+        "Start coordinate, upper/lower completion rule, turn kinematics, exact time step, seed, and raw trials."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-008",
+      "page": 35,
+      "section": "Solution 5.1.5",
+      "family": "center-out alternating spiral stripes",
+      "purpose": "Sweep horizontal tracks in an alternating center-out order to cover the highest-probability bands before the tails.",
+      "base_or_modification": "paper-specific",
+      "summary": "Sweep horizontal tracks in an alternating center-out order to cover the highest-probability bands before the tails.",
+      "variables": [
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Current route coordinate.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Horizontal step speed.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported route increment.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "horizontal direction",
+          "unit": "plus or minus one",
+          "definition": "Alternating direction sign.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_u",
+          "normalized_name": "alternating stripe function",
+          "unit": "printed as dimensionless",
+          "definition": "Function that orders stripes about the center.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "stripe function index",
+          "unit": "count",
+          "definition": "Input to C.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_j",
+          "normalized_name": "next stripe displacement",
+          "unit": "printed as miles by context",
+          "definition": "C evaluated at transition index j.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "transition index",
+          "unit": "count",
+          "definition": "Counts horizontal boundary transitions.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "ideal spiral discovery time",
+          "unit": "hours",
+          "definition": "Trial completion time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_i",
+        "v",
+        "delta_t"
+      ],
+      "outputs": [
+        "detection_time"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-013",
+          "page": 35,
+          "label": "(13)",
+          "source_expression": "S_(i+1)=S_i+v Delta t epsilon <1,0>",
+          "normalized_latex": "\\vec S_{i+1}=\\vec S_i+v\\Delta t\\,\\varepsilon\\langle1,0\\rangle",
+          "purpose": "Move horizontally along one spiral-ordered stripe.",
+          "variable_symbols": [
+            "S_i",
+            "v",
+            "delta_t",
+            "epsilon"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-014",
+          "page": 35,
+          "label": "(14)",
+          "source_expression": "C(u)=2(-1)^u u",
+          "normalized_latex": "C(u)=2(-1)^u u",
+          "purpose": "Generate alternating stripe displacement indices around the flight path.",
+          "variable_symbols": [
+            "C_u",
+            "u"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-015",
+          "page": 35,
+          "label": "(15)",
+          "source_expression": "at either x-edge: S_(i+1)=S_i+<0,epsilon C(j)> -> (j=j+1,epsilon=-epsilon)",
+          "normalized_latex": "\\vec S_{i+1}=\\vec S_i+\\langle0,\\varepsilon C(j)\\rangle\\ \\longrightarrow\\ (j\\leftarrow j+1,\\ \\varepsilon\\leftarrow-\\varepsilon)",
+          "purpose": "Apply the next alternating vertical transition at each horizontal edge.",
+          "variable_symbols": [
+            "S_i",
+            "epsilon",
+            "C_j",
+            "j"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Sweep horizontal tracks in an alternating center-out order to cover the highest-probability bands before the tails.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Traverse a horizontal stripe.",
+          "At each x edge use C(j) to select the next alternating vertical transition.",
+          "Repeat until detection over 100 trials."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "The normal prior is symmetric about the flight path and stripe order should alternate around that center."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "detection_time"
+      ],
+      "validation_refs": [
+        "Mean 3.62286 hours, median 3.113, reported interval [3.05261,4.19311], the best ideal one-plane result."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "C(u) has no sight-range factor or declared unit, and Equation 15 does not resolve whether C is a coordinate or displacement."
+      ],
+      "missing_details": [
+        "Physical scaling of C, transition order, edge behavior, turn time, time step, seeds, and raw trials."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-009",
+      "page": 38,
+      "section": "Solution 5.1.6",
+      "family": "sinusoidal center-out stripes",
+      "purpose": "Replace straight horizontal stripes with a sinusoidal tangent-stepping path while preserving alternating center-out coverage.",
+      "base_or_modification": "paper-specific",
+      "summary": "Replace straight horizontal stripes with a sinusoidal tangent-stepping path while preserving alternating center-out coverage.",
+      "variables": [
+        {
+          "symbol": "S_i",
+          "normalized_name": "search position",
+          "unit": "miles",
+          "definition": "Current route coordinate.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_ix",
+          "normalized_name": "search x coordinate",
+          "unit": "miles",
+          "definition": "x value inside the cosine tangent.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "printed step speed",
+          "unit": "miles per hour",
+          "definition": "Path step speed.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta_t",
+          "normalized_name": "simulation time step",
+          "unit": "hours",
+          "definition": "Unreported route increment.",
+          "role": "parameter",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "path direction",
+          "unit": "plus or minus one",
+          "definition": "Alternating direction sign.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda",
+          "normalized_name": "sine wavelength",
+          "unit": "miles",
+          "definition": "Wavelength fixed to 2d by the prose.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_u",
+          "normalized_name": "alternating stripe function",
+          "unit": "printed as dimensionless",
+          "definition": "Function used to change sine stripes.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "stripe function index",
+          "unit": "count",
+          "definition": "Input to C.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_j",
+          "normalized_name": "next stripe transition",
+          "unit": "printed as dimensionless",
+          "definition": "C evaluated at transition j.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "printed transition multiplier",
+          "unit": "miles",
+          "definition": "Glide-range symbol reused in Equation 18.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "j",
+          "normalized_name": "transition index",
+          "unit": "count",
+          "definition": "Counts edge transitions.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "sinusoidal discovery time",
+          "unit": "hours",
+          "definition": "Trial completion time.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "S_i",
+        "v",
+        "delta_t",
+        "lambda",
+        "r"
+      ],
+      "outputs": [
+        "detection_time"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-016",
+          "page": 38,
+          "label": "(16)",
+          "source_expression": "S_(i+1)=S_i+v Delta t epsilon Norm(<1,pi cos((2pi/lambda)S_ix)>)",
+          "normalized_latex": "\\vec S_{i+1}=\\vec S_i+v\\Delta t\\,\\varepsilon\\operatorname{Norm}\\!\\left(\\left\\langle1,\\pi\\cos\\!\\left(\\frac{2\\pi}{\\lambda}S_{ix}\\right)\\right\\rangle\\right)",
+          "purpose": "Step along the tangent direction of the paper's sinusoidal search path.",
+          "variable_symbols": [
+            "S_i",
+            "v",
+            "delta_t",
+            "epsilon",
+            "lambda",
+            "S_ix"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-017",
+          "page": 38,
+          "label": "(17)",
+          "source_expression": "C(u)=2(-1)^(u-1)u",
+          "normalized_latex": "C(u)=2(-1)^{u-1}u",
+          "purpose": "Generate alternating transitions between sinusoidal stripes.",
+          "variable_symbols": [
+            "C_u",
+            "u"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-018",
+          "page": 38,
+          "label": "(18)",
+          "source_expression": "at either x-edge: S_(i+1)=S_i+C(j)r -> (j=j+1,epsilon=-epsilon)",
+          "normalized_latex": "\\vec S_{i+1}=\\vec S_i+C(j)r\\ \\longrightarrow\\ (j\\leftarrow j+1,\\ \\varepsilon\\leftarrow-\\varepsilon)",
+          "purpose": "Retain the source's printed sinusoidal edge-transition update, including its scalar-vector ambiguity.",
+          "variable_symbols": [
+            "S_i",
+            "C_j",
+            "r",
+            "j",
+            "epsilon"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Replace straight horizontal stripes with a sinusoidal tangent-stepping path while preserving alternating center-out coverage.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "v",
+          "delta_t",
+          "lambda"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Advance along the normalized tangent vector.",
+          "At an x edge apply the printed C(j)r transition and update j and epsilon.",
+          "Repeat 100 discovery trials."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "A sine path of amplitude d and wavelength 2d is intended to cover the plane without leaving sensor gaps."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "detection_time"
+      ],
+      "validation_refs": [
+        "Mean 6.44989 hours, median 4.489, and reported interval [5.23314,7.66664]."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "Equation 18 adds a scalar to a vector, reuses glide range r, and updates epsilon although the next recurrence's semantics are unclear."
+      ],
+      "missing_details": [
+        "Correct vector transition, amplitude/wavelength derivation, physical stripe spacing, time step, seed, and raw paths."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-010",
+      "page": 41,
+      "section": "5.2 Normal Distribution with Discovery Uncertainty",
+      "family": "Bayesian missed-detection grid update",
+      "purpose": "Update searched-cell containment after imperfect detection, choose the next high-probability stripe, and compare adaptive Bayesian and fixed spiral routes under a 24-hour cap.",
+      "base_or_modification": "paper-specific",
+      "summary": "Update searched-cell containment after imperfect detection, choose the next high-probability stripe, and compare adaptive Bayesian and fixed spiral routes under a 24-hour cap.",
+      "variables": [
+        {
+          "symbol": "P_C_post",
+          "normalized_name": "searched-cell posterior",
+          "unit": "probability",
+          "definition": "Posterior of cell C after an unsuccessful search.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_C",
+          "normalized_name": "searched-cell prior",
+          "unit": "probability",
+          "definition": "Prior mass of cell C.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_Du",
+          "normalized_name": "uncertain discovery probability",
+          "unit": "probability",
+          "definition": "Probability that radar and operator jointly detect the target.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_Ci_post",
+          "normalized_name": "other-cell posterior",
+          "unit": "probability",
+          "definition": "Renormalized posterior for cell i.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_Ci",
+          "normalized_name": "other-cell prior",
+          "unit": "probability",
+          "definition": "Prior mass of an unsearched cell.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_R",
+          "normalized_name": "radar detection probability",
+          "unit": "probability",
+          "definition": "Probability the radar registers the aircraft.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_O",
+          "normalized_name": "operator recognition probability",
+          "unit": "probability",
+          "definition": "Unconditional operator recognition term printed in Equation 22.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_O_given_R",
+          "normalized_name": "operator recognition given radar",
+          "unit": "probability",
+          "definition": "Conditional recognition probability.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "posterior_grid",
+          "normalized_name": "updated containment grid",
+          "unit": "probability distribution",
+          "definition": "Cell probabilities after each unsuccessful pass.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detection_time",
+          "normalized_name": "conditional discovery time",
+          "unit": "hours",
+          "definition": "Time among trials discovered before the cap.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "success_rate",
+          "normalized_name": "24-hour completion proportion",
+          "unit": "proportion",
+          "definition": "Fraction of all trials discovered by 24 hours.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_C",
+        "P_Ci",
+        "P_R",
+        "P_O",
+        "P_O_given_R"
+      ],
+      "outputs": [
+        "P_C_post",
+        "P_Ci_post",
+        "posterior_grid",
+        "detection_time",
+        "success_rate"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-B-2015-38720-019",
+          "page": 42,
+          "label": "(19)",
+          "source_expression": "P'(C)=P(C)(1-P(D_u))/((1-P(C))+P(C)(1-P(D_u)))=P(C)(1-P(D_u))/(1-P(C)P(D_u))<P(C)",
+          "normalized_latex": "P'(C)=\\frac{P(C)[1-P(D_u)]}{[1-P(C)]+P(C)[1-P(D_u)]}=\\frac{P(C)[1-P(D_u)]}{1-P(C)P(D_u)}<P(C)",
+          "purpose": "Reduce the posterior probability of a searched cell after an unsuccessful pass.",
+          "variable_symbols": [
+            "P_C_post",
+            "P_C",
+            "P_Du"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-020",
+          "page": 42,
+          "label": "(20)",
+          "source_expression": "P'(C_i)=P(C_i)/(1-P(C)P(D_u))>P(C_i)",
+          "normalized_latex": "P'(C_i)=\\frac{P(C_i)}{1-P(C)P(D_u)}>P(C_i)",
+          "purpose": "Renormalize unsearched cells upward after a missed detection elsewhere.",
+          "variable_symbols": [
+            "P_Ci_post",
+            "P_Ci",
+            "P_C",
+            "P_Du"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-021",
+          "page": 42,
+          "label": "(21)",
+          "source_expression": "P(D_u)=P(R)P(O|R)",
+          "normalized_latex": "P(D_u)=P(R)P(O\\mid R)",
+          "purpose": "Factor imperfect discovery into radar detection and operator recognition.",
+          "variable_symbols": [
+            "P_Du",
+            "P_R",
+            "P_O_given_R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-022",
+          "page": 43,
+          "label": "(22)",
+          "source_expression": "P(O) approximately 1; P(O|R) approximately 1",
+          "normalized_latex": "P(O)\\approx1,\\quad P(O\\mid R)\\approx1",
+          "purpose": "Round the cited operator success rate to certainty for the simulation.",
+          "variable_symbols": [
+            "P_O",
+            "P_O_given_R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-B-2015-38720-023",
+          "page": 43,
+          "label": "(23)",
+          "source_expression": "P(D_u)=P(R)P(O|R) approximately 0.8",
+          "normalized_latex": "P(D_u)=P(R)P(O\\mid R)\\approx0.8",
+          "purpose": "Fix the uncertain-discovery probability used by the Bayesian and spiral trials.",
+          "variable_symbols": [
+            "P_Du",
+            "P_R",
+            "P_O_given_R"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All displayed equations assigned to this component were visually reconciled against bounded page proxies and focused formula review."
+      },
+      "objectives": [
+        "Update searched-cell containment after imperfect detection, choose the next high-probability stripe, and compare adaptive Bayesian and fixed spiral routes under a 24-hour cap.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "P_Du",
+          "P_R",
+          "P_O",
+          "P_O_given_R"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Initialize the Gaussian containment grid.",
+          "Search the current highest-priority stripe/cell.",
+          "On a miss apply Equations 19-20 and renormalize.",
+          "Repeat 500 trials and report success proportion plus conditional discovery-time statistics."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "The containment field is discretized into cells even though cell size is not defined.",
+        "Radar succeeds with probability 0.8 and a cited 0.97 operator rate is rounded to one.",
+        "An unsuccessful search lowers the visited cell and proportionally raises all others.",
+        "Trials stop at discovery or 24 hours."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "P_C_post",
+        "P_Ci_post",
+        "posterior_grid",
+        "detection_time",
+        "success_rate"
+      ],
+      "validation_refs": [
+        "Bayesian B777 finds 475/500 and uncertain spiral 399/500; C172 Bayesian finds 411/500.",
+        "Posterior maps in Figures 25-28 expose the center-first update sequence."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "Cell discretization and likelihood independence are omitted, operator detection is rounded upward, and means exclude capped failures.",
+        "The Bayesian B777 reported lower CI bound is arithmetically inconsistent with its mean and SE."
+      ],
+      "missing_details": [
+        "Cell dimensions, normalization checks, posterior code, likelihood calibration, censored-time analysis, raw outcomes, seeds, and field validation."
+      ]
+    },
+    {
+      "model_id": "MU-B-2015-38720-011",
+      "page": 49,
+      "section": "6 Solution Stability / 7 Results / 8 Conclusion",
+      "family": "scenario stability and conditional decision synthesis",
+      "purpose": "Compare target classes, one versus two search planes, route distributions, completion proportions, and rescue timing to recommend Bayesian adaptive search with explicit scope limits.",
+      "base_or_modification": "paper-specific",
+      "summary": "Compare target classes, one versus two search planes, route distributions, completion proportions, and rescue timing to recommend Bayesian adaptive search with explicit scope limits.",
+      "variables": [
+        {
+          "symbol": "aircraft_class",
+          "normalized_name": "lost-aircraft class",
+          "unit": "categorical",
+          "definition": "Boeing 777 or Cessna 172 scenario.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "search_plane_count",
+          "normalized_name": "search-plane count",
+          "unit": "count",
+          "definition": "One- or two-plane resource scenario.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "route",
+          "normalized_name": "candidate route",
+          "unit": "categorical",
+          "definition": "Random, bounded, weighted, stripe, spiral, sinusoidal, or Bayesian route.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mean_time",
+          "normalized_name": "reported mean discovery time",
+          "unit": "hours",
+          "definition": "Mean among included trial times.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "median_time",
+          "normalized_name": "reported median discovery time",
+          "unit": "hours",
+          "definition": "Median among included trial times.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "success_rate",
+          "normalized_name": "completion proportion",
+          "unit": "proportion",
+          "definition": "Fraction found before any cap.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "survival_benchmark",
+          "normalized_name": "rescue benchmark",
+          "unit": "hours",
+          "definition": "The 18-hour cold-water survival comparison used in the recommendation.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "recommendation",
+          "normalized_name": "search recommendation",
+          "unit": "categorical decision",
+          "definition": "Bayesian-adjusted center-first search with resource adaptation.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "aircraft_class",
+        "search_plane_count",
+        "route",
+        "survival_benchmark"
+      ],
+      "outputs": [
+        "mean_time",
+        "median_time",
+        "success_rate",
+        "recommendation"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The paper gives this comparison and recommendation layer in prose, plots, and reported statistics without another displayed equation."
+      },
+      "objectives": [
+        "Compare target classes, one versus two search planes, route distributions, completion proportions, and rescue timing to recommend Bayesian adaptive search with explicit scope limits.",
+        "Produce a traceable search-time, completion, posterior, comparison, or recommendation output without treating the simulation as field validation."
+      ],
+      "constraints": [
+        "Retain the paper's rectangular search domain, units, aircraft class, sensor range, time step, stopping rule, and trial population at every interface.",
+        "Preserve visible notation defects as source evidence; any repaired implementation must be labeled as an extension rather than silently substituted."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The crash prior, search-plane start, aircraft specifications, path state, and simulation controls must be initialized before this component runs."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The component is bounded by the stated open-ocean rectangular domain, idealized weather and sensor assumptions, and any 24-hour uncertainty-model cap."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The paper uses finite path recurrences and Monte Carlo trials rather than an equilibrium solution."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper fixes representative values from cited specifications and simulation choices; it does not fit a calibrated field model.",
+        "parameters": [
+          "survival_benchmark"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Collect route-level distribution summaries and success proportions.",
+          "Repeat selected tests for Cessna and two-plane scenarios.",
+          "Compare evidence against the rescue benchmark and state a bounded recommendation."
+        ],
+        "software": [
+          "The paper describes simulated path generation and statistical summaries but gives no source code, environment, time step, pseudo-random generator, or seed."
+        ],
+        "convergence_criteria": "Each run stops at discovery or the stated time cap; the paper reports no time-step, sample-size, or random-seed convergence study."
+      },
+      "assumptions": [
+        "Within-model simulations are comparable only when target, prior, sensor, time cap, and handling of failures are aligned.",
+        "Cold-water survival is used as a decision benchmark rather than as a modeled physiological distribution."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source supplies a finite simulation and decision workflow, but not executable code, seeds, field calibration, or an independent incident holdout."
+      },
+      "handoff_outputs": [
+        "mean_time",
+        "median_time",
+        "success_rate",
+        "recommendation"
+      ],
+      "validation_refs": [
+        "Cessna and two-plane scenarios test limited transfer; Figures 34-36 compare intervals and Figure 37 supplies the external survival context."
+      ],
+      "computational_cost": "Cost scales with simulated crash points, path time steps, posterior-grid updates, routes, aircraft, and Monte Carlo trials; runtime and hardware are not reported.",
+      "strengths": [
+        "The component has a source-ordered input-to-output role in the paper's containment-to-path-to-detection-to-decision chain.",
+        "Equations, reported statistics, and downstream handoffs remain distinguishable from later warnings and independent improvements."
+      ],
+      "limitations": [
+        "Overlapping intervals are misused as significance tests, capped failures are excluded from means, and the stability checks change several mechanisms without a factorial design."
+      ],
+      "missing_details": [
+        "Common estimand across capped and uncapped routes, survival/censoring analysis, paired trials, hypothesis tests, scenario matrix, operational constraints, and incident holdout."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-B-2015-38720-001",
+      "to_model_id": "MU-B-2015-38720-003",
+      "handoff": "Containment and detection factors define the discovery criterion used by the simulation harness."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-002",
+      "to_model_id": "MU-B-2015-38720-003",
+      "handoff": "Glide range r and uncertain distance L define the 520-by-200-mile B777 simulation domain and crash prior support."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-003",
+      "to_model_id": "MU-B-2015-38720-004",
+      "handoff": "The common crash sampler and detection-time statistics evaluate the unbounded random route."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-003",
+      "to_model_id": "MU-B-2015-38720-005",
+      "handoff": "The same crash samples, rectangle, and stopping rule evaluate bounded random search."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-005",
+      "to_model_id": "MU-B-2015-38720-006",
+      "handoff": "Boundary control is retained while endpoint-directed bias modifies the bounded random route."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-003",
+      "to_model_id": "MU-B-2015-38720-007",
+      "handoff": "The common ideal-detection harness evaluates descending stripes."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-007",
+      "to_model_id": "MU-B-2015-38720-008",
+      "handoff": "Straight stripe coverage is reordered center-out using alternating vertical transitions."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-008",
+      "to_model_id": "MU-B-2015-38720-009",
+      "handoff": "The center-out ordering is retained while each stripe becomes sinusoidal."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-003",
+      "to_model_id": "MU-B-2015-38720-010",
+      "handoff": "The Gaussian containment prior and detection harness become a discrete posterior grid with imperfect discovery."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-008",
+      "to_model_id": "MU-B-2015-38720-010",
+      "handoff": "The ideal spiral route supplies the fixed-path comparator under discovery uncertainty."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-010",
+      "to_model_id": "MU-B-2015-38720-011",
+      "handoff": "Bayesian/spiral success proportions and conditional time distributions enter the final comparison."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-007",
+      "to_model_id": "MU-B-2015-38720-011",
+      "handoff": "Descending-stripe results enter the route comparison and two-plane extension."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-008",
+      "to_model_id": "MU-B-2015-38720-011",
+      "handoff": "Ideal spiral results establish the best one-plane ideal-detection baseline."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-009",
+      "to_model_id": "MU-B-2015-38720-011",
+      "handoff": "Sinusoidal results provide the final systematic-route alternative."
+    },
+    {
+      "from_model_id": "MU-B-2015-38720-002",
+      "to_model_id": "MU-B-2015-38720-011",
+      "handoff": "Aircraft geometry is changed for the C172 transfer check."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+Team # 55585                                                                   Page 27 of 34
+
+
+        t1 = (delta >= safe_space_min[speed]) ? true : false;
+      }
+      else {
+        t1 = (delta >= safe_space_min[speed] - safe_space_min[r[nowlane][find].speed] + 1
+        + 2 * r[nowlane][find].speed) ? true : false;
+      }
+      if (!iscar(aimlane, aimlaneahead)) t2 = true;
+      else if (iscar(aimlane, aimlaneahead) == 1) {
+        t2 = (aimlaneahead - num >= safe_space_min[speed]) ? true : false;
+      }
+      else {
+        t2 = (aimlaneahead - num >= safe_space_min[speed] - safe_space_min[r[aimlane][
+        aimlaneahead].speed] + 2 * r[aimlane][aimlaneahead].speed + 1) ? true : false;
+      }
+      if (!iscar(aimlane, aimlanenext)) t3 = true;
+      else if (iscar(aimlane, aimlanenext) == 1) {
+        t3 = (num - aimlanenext >= safe_space_min[r[aimlane][aimlanenext].speed]) ? true
+        : false;
+      }
+      else {
+        t3 = (num - aimlanenext >= safe_space_min[r[aimlane][aimlanenext].speed] -
+        safe_space_min[speed] + 2 * speed + 1) ? true : false;
+      }
+      if (t1 && t2 && t3) ans = true;
+    }
+    return ans;
+}
+
+//Get the value of LCM
+bool change_lane_motivation(int nowlane, int aimlane, int num, Cars **r) {
+  //No car can change lane to the dedicated lane for SDVs
+  if (aimlane >= lane_num - dedicated_lane) return false;
+
+    int kind = r[nowlane][num].kind, speed = r[nowlane][num].speed;
+    int light = 0;
+    int turning_light = r[nowlane][num].turning_light;
+    int find = direction_cal(nowlane,num, r);
+    int delta = find - num;
+    int aimlaneahead = direction_cal(aimlane, num, r);
+
+    if (delta > safe_space_max[speed]) return false;
+    if (kind == 1) {
+      if ((aimlaneahead > safe_space_max[speed] || r[aimlane][aimlaneahead].speed >=
+      speed) &&
+        r[nowlane][find].speed < speed) return true;
+      return false;
+    }
+    else {
+      if (r[nowlane][find].kind == 1) {
+        if ((aimlaneahead > safe_space_max[speed] || r[aimlane][aimlaneahead].speed >=
+        speed) &&
+           r[nowlane][find].speed < speed) return true;
+        return false;
+      }
+      else {
+        if (r[nowlane][find].turning_light == aimlane - nowlane) {
+           return true;
+        }
+        else return false;
+      }
+    }
+}
+
+//Whether a car is on the road
+inline bool validlane(int lane) {
+  return (lane >= 0 && lane < lane_num);

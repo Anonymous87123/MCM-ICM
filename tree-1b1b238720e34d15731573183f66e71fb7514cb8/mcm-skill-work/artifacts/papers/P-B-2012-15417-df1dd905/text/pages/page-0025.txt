@@ -1,0 +1,84 @@
+      Team # 15417                                                                                       Page 23 of 24
+
+
+427
+428      /**
+429        * Prints a summary of the scheduling algorithm,
+430        * indicating how close the schedule came to meeting our three goals.
+431        */
+432      public void printSummary()
+433      {
+434           System.out.println("There were " + tripCount + " trips.");
+435           System.out.println("There were " + this.countCrossovers() + " crossovers.");
+436           System.out.println(lateTrips + " trips were rescheduled.");
+437      }
+438
+439      /**
+440        * Prints out the schedule in ASCII form.
+441        */
+442      public void printTable()
+443      {
+444           System.out.print("    ");
+445           for (int i = 0; i < NUM_DAYS; i++)
+446           {
+447               System.out.printf("|%4d ", i);
+448           }
+449           System.out.println();
+450           for (int i = 0; i < numSites; i++)
+451           {
+452               System.out.printf("%3d", i);
+453               for (int j = 0; j < NUM_DAYS; j++)
+454               {
+455                   if (schedule[j][i] == null)
+456                       System.out.print("| --- ");
+457                   else System.out.print("|"+schedule[j][i]);
+458               }
+459               System.out.println();
+460           }
+461      }
+462
+463      /**
+464        * Tests the program with a uniform distribution in trip lengths.
+465        * @param numSites The number of camp sites to test with.
+466        */
+467      public static void testUniform(int numSites)
+468      {
+469           Random rand = new Random();
+470           LinkedList<Boat> requests = new LinkedList<Boat>();
+471           for (int i = 0; i < 2000; i++)
+472           {
+473               if (rand.nextInt() % 2 == 0)
+474               {
+475                    requests.offer(new Boat(String.format("M%04d",i), Boat.Type.Motor,
+476                            Math.abs(rand.nextInt()) % 13 + 7));
+477               }
+478               else
+479               {
+480                    requests.offer(new Boat(String.format("R%04d",i), Boat.Type.Oar,
+481                            Math.abs(rand.nextInt()) % 13 + 7));
+482               }
+483           }
+484
+485          River river = new River(numSites, requests);
+486          river.generateSchedule();
+487          river.printTable();
+488          river.printSummary();
+489          river.checkSchedule();
+490      }
+491
+492      /**
+493        * Tests the program with a Gaussian distribution in trip lengths.
+494        * @param numSites The number of camp sites to test with.
+495        */
+496      public static void testGaussian(int numSites)
+497      {
+498           Random rand = new Random();
+499           LinkedList<Boat> requests = new LinkedList<Boat>();
+500           for (int i = 0; i < 2000; i++)
+501           {
+502               if (rand.nextInt() % 2 == 0)
+503               {
+504                    requests.offer(new Boat(String.format("M%04d",i), Boat.Type.Motor,
+505                            Math.min(Math.max((int)Math.round(rand.nextGaussian()*3)+13, 7), 19)));
+506               }
+507               else

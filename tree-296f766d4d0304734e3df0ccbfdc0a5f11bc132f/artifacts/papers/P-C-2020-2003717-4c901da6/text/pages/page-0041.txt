@@ -1,0 +1,76 @@
+     Team 2003717                                                                   Page 40
+
+
+63           row_data = torch.load(’{}/{}. pt ’. format ( default_path , product ))
+64           data , max_per_feature , min_per_feature = standardization ( row_data )
+65           seq_length = row_data .shape [1]
+66           input = torch . from_numpy (data [:, :-1, :])
+67           target = torch . from_numpy (data [:, 1:, :])
+68           test_input = torch. from_numpy (data [:, :-1, :])
+69           test_target = torch. from_numpy (data [:, 1:, :])
+70
+71           # build the model
+72           seq = Sequence ()
+73           seq. double ()
+74           criterion = nn. MSELoss ()
+75           optimizer = optim.LBFGS(seq. parameters (), lr =0.8)
+76
+77           # begin to train
+78           for i in range (15):
+79               print(’START at step ’, i)
+80               start_time = time.time ()
+81
+82                  def closure ():
+83                      optimizer . zero_grad ()
+84                      out = seq( input )
+85                      loss = criterion (out , target )
+86                      print (’===> loss:’, loss.item ())
+87                      loss. backward ()
+88                      return loss
+89                  optimizer .step( closure )
+90                  print(’FINISH : {}s’. format (time.time () - start_time ))
+91
+92           # begin to predict , no need to track gradient here
+93           with torch . no_grad ():
+94               future = 1000
+95               pred = seq(input , future = future )
+96               y = pred [:, seq_length :, :]. detach ().numpy ()
+97           torch .save(y, open(’{}/{}. pt ’. format (output_path , product ), ’wb ’))
+
+
+
+
+     C.5   Reputation Model
+
+ 1   from __future__ import print_function
+ 2
+ 3   import time
+ 4
+ 5 import matplotlib
+ 6 import matplotlib . pyplot as plt
+ 7 import numpy as np
+ 8
+ 9 import torch
+10 import torch .nn as nn
+11 import torch . optim as optim
+12 from utils import *
+13
+14   matplotlib .use(’Agg ’)
+15
+16 default_path = ’3_LSTM /’
+17 output_path = ’3 _LSTM / batch_size_1 ’
+18 products = [’hair_dryer ’, ’microwave ’, ’pacifier ’]
+19 features = [’star_rating ’, ’helpful_votes ’, ’total_votes ’,
+20             ’vine ’, ’verified_purchase ’, ’review_date ’]
+21 batch_size = 1
+22 num_feature = len( features )
+23 hidden_size = 200
+
+
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯

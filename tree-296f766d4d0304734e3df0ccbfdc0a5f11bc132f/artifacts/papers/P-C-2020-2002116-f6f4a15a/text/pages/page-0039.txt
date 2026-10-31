@@ -1,0 +1,78 @@
+Team # 2002116                                                            Page 38 of 38
+
+
+    for i in range(len(data)):
+        if data[i][0]==5:
+            total+=1
+            if s in str(data[i][1]):
+                count+=1
+    return count/total
+def train(str):
+    s=str
+    data=pd.concat([data1,data2,data3],axis=0)
+    data=data[[’head’,’body’,’0’,’star’]]
+    five_prob=countfive_prob(data)
+    word_star=countfive_word(data,s)
+    word_freqency=word_freq(data,s)
+    result=word_star*five_prob/word_freqency
+    return result
+textdata=pd.read_csv(loadurl)[[’review_body’,’review_head’]]
+wordlist=pd.read_csv(loadurl2)
+#get beyes prob value of each highly frequent word
+result=[]
+for i in word:
+    result.append([i,train(i)])
+r=pd.DataFrame(result)
+
+
+
+Appendix H         Source Code for Time Series Prediction
+from statsmodels.tsa.ar_model import AR
+# train autoregression
+model = AR(train)
+model_fit = model.fit()
+window = model_fit.k_ar
+coef = model_fit.params
+# walk forward over time steps in test
+history = train[len(train)-window:]
+history = [history[i] for i in range(len(history))]
+predictions = list()
+for t in range(len(test)):
+    length = len(history)
+    lag = [history[i] for i in range(length-window,length)]
+    yhat = coef[0]
+    for d in range(window):
+        yhat += coef[d+1] * lag[window-d-1]
+    predictions.append(yhat)
+error = mean_squared_error(test, predictions)
+print(’Test MSE: %.3f’ % error)
+print(’Test RMSE: %.3f’ % math.sqrt(error))
+
+
+
+Appendix I       Source Code for Wordcloud Picture
+from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
+txt=pd.read_csv(loadurl)
+my_wordcloud = WordCloud(
+    background_color=’white’,
+    mask=imageio.imread(pictureurl),    #param set
+    max_words=100,
+    max_font_size=100,
+    random_state=50,
+    width=1000,
+    min_font_size=20,
+    relative_scaling=0.4,
+    color_func=genclr,
+).generate(txt)
+# show word cloud picture
+plt.imshow(my_wordcloud)
+
+
+
+
+                                                                           2
+                                                                                关注数学模型
+                                                                  MATHmodels
+
+
+                                                                                获取更多资讯

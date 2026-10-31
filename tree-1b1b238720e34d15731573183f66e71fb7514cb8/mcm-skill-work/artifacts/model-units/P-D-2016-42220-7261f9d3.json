@@ -1,0 +1,404 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2016-42220-7261f9d3",
+  "problem_type": "D",
+  "year": "2016",
+  "source_sha256": "7261f9d39a7ea76762c94cb79be0add3c41fd4436b482d654dd2b14107f4fc6e",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q277-INNER",
+      "page": 7,
+      "section": "Inner Layer",
+      "family": "network",
+      "purpose": "Compute the propagation probability and delay between two nodes inside one region.",
+      "base_or_modification": "paper-specific",
+      "summary": "Five attribute groups feed a node vector and an edge vector. The propagation probability is a logistic function of their weighted sum, and the delay is the weighted sum itself. Coefficients are fit by maximum likelihood with a time-decay factor.",
+      "variables": [
+        {
+          "symbol": "phim",
+          "normalized_name": "media_effect",
+          "unit": "index",
+          "definition": "market-share-weighted effect of six media",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phin",
+          "normalized_name": "node_vector",
+          "unit": "index",
+          "definition": "sender, receiver and content attributes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phie",
+          "normalized_name": "edge_vector",
+          "unit": "index",
+          "definition": "interest similarity, structural similarity and closeness",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "propagation_probability",
+          "unit": "probability",
+          "definition": "logistic of the weighted attribute sum",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "phim",
+        "phin",
+        "phie"
+      ],
+      "outputs": [
+        "p"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q277-INNER-1",
+          "page": 7,
+          "source_expression": "p(u,v,c) = 1 / (1 + ln(-f(u,v,c)))",
+          "normalized_latex": "p(u,v,c) = 1/(1+\\ln(-f(u,v,c)))",
+          "purpose": "logistic map from the attribute sum to a probability",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "p"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Compute the propagation probability and delay between two nodes inside one region."
+      ],
+      "constraints": [
+        "a node spreads the same message at most once"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "maximum likelihood on the accumulated propagation probability",
+        "parameters": [
+          "k1",
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "build the node and edge vectors",
+          "fit coefficients by maximum likelihood",
+          "evaluate the logistic"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "media usage is constant inside one region"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "coefficients are fit but the fitted values are not reported"
+      },
+      "handoff_outputs": [
+        "p"
+      ],
+      "validation_refs": [
+        "market share of six media in America and China"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "node and edge attributes are named separately"
+      ],
+      "limitations": [
+        "several weights are trained but never reported"
+      ],
+      "missing_details": [
+        "the fitted values of k, alpha and beta are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q277-OUTER",
+      "page": 10,
+      "section": "Outer Layer",
+      "family": "network",
+      "purpose": "Correct the inner probability and delay for distance between regions.",
+      "base_or_modification": "paper-specific",
+      "summary": "Seven countries are chosen by GDP per capita. A reaction-diffusion argument gives a divergence inversely proportional to radial distance, so the between-region probability is divided by distance and the delay is multiplied by it. The lower media effect of the two countries is used.",
+      "variables": [
+        {
+          "symbol": "p",
+          "normalized_name": "inner_probability",
+          "unit": "probability",
+          "definition": "propagation probability from the inner layer",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "duv",
+          "normalized_name": "distance",
+          "unit": "length",
+          "definition": "distance between the two regions",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pex",
+          "normalized_name": "external_probability",
+          "unit": "probability",
+          "definition": "inner probability divided by distance",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p",
+        "duv"
+      ],
+      "outputs": [
+        "pex"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q277-OUTER-1",
+          "page": 10,
+          "source_expression": "pex = k1 * p(u,v,c) / duv",
+          "normalized_latex": "p_{ex} = k_1 p(u,v,c)/d_{uv}",
+          "purpose": "distance correction of the propagation probability",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "p",
+            "duv",
+            "pex"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Correct the inner probability and delay for distance between regions."
+      ],
+      "constraints": [
+        "only links to neighboring regions are kept"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "not-stated",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "not-applicable",
+        "steps": [],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "the firewall between countries is ignored",
+        "no new medium is invented before 2050"
+      ],
+      "identifiability_feasibility": {
+        "status": "uncertain",
+        "analysis": "the distance correction is assumed, not estimated"
+      },
+      "handoff_outputs": [
+        "pex"
+      ],
+      "validation_refs": [
+        "market share of six media in America and China"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "node and edge attributes are named separately"
+      ],
+      "limitations": [
+        "several weights are trained but never reported"
+      ],
+      "missing_details": [
+        "the fitted values of k, alpha and beta are not printed"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q277-OPIN",
+      "page": 16,
+      "section": "Public Opinion",
+      "family": "opinion-dynamics",
+      "purpose": "Track how one piece of information moves public opinion.",
+      "base_or_modification": "paper-specific",
+      "summary": "Opinion of a node lies in the unit interval, with 0.5 neutral. Two nodes exchange opinion only when their difference stays below a threshold, and each moves a fraction mu toward the other. Public opinion is the mean over all nodes. On the Ebola example it settles near 0.65.",
+      "variables": [
+        {
+          "symbol": "si",
+          "normalized_name": "node_opinion",
+          "unit": "index",
+          "definition": "opinion of node i, between 0 and 1",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "confidence_bound",
+          "unit": "index",
+          "definition": "maximum opinion gap that still allows spread",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "update_weight",
+          "unit": "index",
+          "definition": "fraction of the gap closed at each step",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phio",
+          "normalized_name": "public_opinion",
+          "unit": "index",
+          "definition": "mean opinion over all nodes",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "si"
+      ],
+      "outputs": [
+        "phio"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q277-OPIN-1",
+          "page": 16,
+          "source_expression": "si(t+1) = si(t) + mu*(sj(t) - si(t))",
+          "normalized_latex": "s_i(t+1) = s_i(t) + \\mu(s_j(t) - s_i(t))",
+          "purpose": "bounded-confidence update of one node's opinion",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "si",
+            "mu"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Track how one piece of information moves public opinion."
+      ],
+      "constraints": [
+        "opinion changes only through the spread information, not through acquaintances"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "not-stated",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "spread the message on the inner layer",
+          "update opinions inside the confidence bound",
+          "average over nodes"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "the receiver effect is constant except where this model overrides it"
+      ],
+      "identifiability_feasibility": {
+        "status": "uncertain",
+        "analysis": "mu and the confidence bound are chosen, not fit"
+      },
+      "handoff_outputs": [
+        "phio"
+      ],
+      "validation_refs": [
+        "market share of six media in America and China"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "node and edge attributes are named separately"
+      ],
+      "limitations": [
+        "several weights are trained but never reported"
+      ],
+      "missing_details": [
+        "the fitted values of k, alpha and beta are not printed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q277-INNER",
+      "to_model_id": "MU-D-Q277-OUTER",
+      "handoff": "the inner propagation probability and delay"
+    },
+    {
+      "from_model_id": "MU-D-Q277-INNER",
+      "to_model_id": "MU-D-Q277-OPIN",
+      "handoff": "the spread path that moves each node's opinion"
+    }
+  ]
+}

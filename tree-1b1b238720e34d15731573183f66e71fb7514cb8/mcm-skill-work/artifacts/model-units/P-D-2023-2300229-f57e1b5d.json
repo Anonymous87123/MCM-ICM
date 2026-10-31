@@ -1,0 +1,1292 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-D-2023-2300229-f57e1b5d",
+ "problem_type": "D",
+ "year": "2023",
+ "source_sha256": "f57e1b5dfaed3d5434f3910edb8b98c7d87fb177da1055127c479f92dcf5937d",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-D-2023-2300229-DATA",
+   "page": 6,
+   "section": "4.1.2 Data Processing",
+   "family": "data-preparation",
+   "purpose": "Fill missing series values by linear regression and rescale every series to [0,1] by its direction.",
+   "base_or_modification": "base",
+   "summary": "Each series is regressed on year, missing entries are filled by the fitted line, and a negative prediction is floored at zero when the quantity cannot be negative. Larger-the-better and smaller-the-better series are then mapped to [0,1] by min-max formulas so the later rank correlation is not distorted by scale.",
+   "variables": [
+    {
+     "symbol": "yhat",
+     "normalized_name": "fitted value",
+     "unit": "series unit",
+     "definition": "predicted value of a series at year x",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b",
+     "normalized_name": "slope",
+     "unit": "series unit per year",
+     "definition": "ordinary least squares slope of the series on year",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x",
+     "normalized_name": "year",
+     "unit": "year",
+     "definition": "the year a series value belongs to",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "a",
+     "normalized_name": "intercept",
+     "unit": "series unit",
+     "definition": "intercept, equal to the mean of y minus b times the mean of x",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Iprime",
+     "normalized_name": "normalized series value",
+     "unit": "1",
+     "definition": "series value after min-max rescaling to [0,1]",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "I",
+     "normalized_name": "raw series value",
+     "unit": "series unit",
+     "definition": "observed value of series i in year t for country c",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "x",
+    "I"
+   ],
+   "outputs": [
+    "yhat",
+    "Iprime"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2023-2300229-01",
+     "page": 6,
+     "label": "(1)",
+     "source_expression": "yhat = b x + a, with a = mean(y) - b mean(x)",
+     "normalized_latex": "\\hat{y}=bx+a,\\quad a=\\bar{y}-b\\bar{x}",
+     "purpose": "impute a missing series value from a straight line on year",
+     "variable_symbols": [
+      "yhat",
+      "b",
+      "x",
+      "a"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-02",
+     "page": 6,
+     "label": "(2)",
+     "source_expression": "I' = (I - min I) / (max I - min I)",
+     "normalized_latex": "I'_{i,t,c}=(I_{i,t,c}-\\min I)/(\\max I-\\min I)",
+     "purpose": "rescale a larger-the-better series to [0,1]",
+     "variable_symbols": [
+      "Iprime",
+      "I"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-03",
+     "page": 6,
+     "label": "(3)",
+     "source_expression": "I' = (max I - I) / (max I - min I)",
+     "normalized_latex": "I'_{i,t,c}=(\\max I-I_{i,t,c})/(\\max I-\\min I)",
+     "purpose": "rescale a smaller-the-better series to [0,1]",
+     "variable_symbols": [
+      "Iprime",
+      "I"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (1) to (3) are printed and were read from the page raster"
+   },
+   "objectives": [
+    "keep as much of the observed series as possible while filling gaps",
+    "remove scale effects before correlation"
+   ],
+   "constraints": [
+    "a prediction is replaced by zero when the quantity cannot be negative and the fit is negative"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "no time state; each series is treated independently"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "rescaled values are forced into [0,1] by construction"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "no equilibrium is defined"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "ordinary least squares of each series on year; min and max taken over the observed years",
+    "parameters": [
+     "b",
+     "a"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "regress each series on year",
+     "fill a missing entry with the fitted value",
+     "replace a negative fitted value by zero when the quantity cannot be negative",
+     "apply the larger-the-better or smaller-the-better rescaling"
+    ],
+    "software": [],
+    "convergence_criteria": "closed form; no iteration"
+   },
+   "assumptions": [
+    "the series moves linearly with year over 2003-2018",
+    "every value in the source is authentic"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "both the slope and the rescaling are closed form and were applied to all 95 series"
+   },
+   "handoff_outputs": [
+    "Iprime"
+   ],
+   "validation_refs": [
+    "section 4.1.2 states the rescaling makes the later correlation more reasonable"
+   ],
+   "computational_cost": "one regression and two passes per series; negligible",
+   "strengths": [
+    "uses the observed years rather than dropping incomplete series",
+    "respects the direction of each indicator"
+   ],
+   "limitations": [
+    "a straight line cannot represent a series that bends",
+    "flooring at zero biases any series that is genuinely near zero"
+   ],
+   "missing_details": [
+    "which of the 95 series are larger-the-better is not listed",
+    "the count of filled entries is not reported"
+   ]
+  },
+  {
+   "model_id": "MU-D-2023-2300229-GRAPH",
+   "page": 7,
+   "section": "4.2 Graph Construction and 4.3 Graph Measurement",
+   "family": "network",
+   "purpose": "Build an undirected signed graph of the 17 goals and score each goal by six centralities.",
+   "base_or_modification": "hybrid",
+   "summary": "Each series becomes a 16-year vector. Spearman correlation on the rank vectors gives the edge evidence; edges are counted as positive, negative or neutral at a 0.6 threshold and dropped when fewer than ten series connect the two goals. The signed weight is the positive share minus the negative share. Betweenness, closeness and eigenvector centrality are then computed separately on the positive edges and on the negative edges.",
+   "variables": [
+    {
+     "symbol": "xvec",
+     "normalized_name": "series vector",
+     "unit": "1",
+     "definition": "sixteen annual normalized values of series k of goal i, 2003-2018",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "bcorr",
+     "normalized_name": "spearman coefficient",
+     "unit": "1",
+     "definition": "spearman correlation between the rank vectors of two series",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "aij",
+     "normalized_name": "connection share vector",
+     "unit": "1",
+     "definition": "three shares: positive above 0.6, negative below -0.6, and the remainder",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "wij",
+     "normalized_name": "signed edge weight",
+     "unit": "1",
+     "definition": "positive share minus negative share; sign is synergy or trade-off, magnitude is strength",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "BC",
+     "normalized_name": "betweenness centrality",
+     "unit": "1",
+     "definition": "share of shortest paths between other nodes that pass through the node",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "CC",
+     "normalized_name": "closeness centrality",
+     "unit": "1",
+     "definition": "inverse of the total shortest-path distance to the other nodes",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "EC",
+     "normalized_name": "eigenvector centrality",
+     "unit": "1",
+     "definition": "centrality proportional to the sum of neighbours' centralities",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Nij",
+     "normalized_name": "connection count",
+     "unit": "1",
+     "definition": "number of series pairs between goal i and goal j",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "dij",
+     "normalized_name": "shortest distance",
+     "unit": "1",
+     "definition": "length of the shortest path between two nodes",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "alpha",
+     "normalized_name": "eigenvector scale",
+     "unit": "1",
+     "definition": "reciprocal of the largest eigenvalue of the adjacency matrix",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "rij",
+     "normalized_name": "adjacency entry",
+     "unit": "1",
+     "definition": "entry of the adjacency matrix used in the eigenvector equation",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "xvec",
+    "Nij"
+   ],
+   "outputs": [
+    "wij",
+    "BC",
+    "CC",
+    "EC"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2023-2300229-04",
+     "page": 7,
+     "label": "(4)",
+     "source_expression": "x_ik = [x_ik1, ..., x_ik16]^T",
+     "normalized_latex": "x_{ik}=[x_{ik1},\\ldots,x_{ik16}]^{T}",
+     "purpose": "pack sixteen annual values of one series",
+     "variable_symbols": [
+      "xvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-05",
+     "page": 7,
+     "label": "(5)",
+     "source_expression": "b = spearman correlation of the rank vectors r_ik and r_jp",
+     "normalized_latex": "b_{ik,jp}=\\mathrm{spearman}(r_{ik},r_{jp})",
+     "purpose": "measure the tie between two series without assuming linearity",
+     "variable_symbols": [
+      "bcorr"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-06",
+     "page": 7,
+     "label": "(6)",
+     "source_expression": "a_ij = (share of b>0.6, share of b<=-0.6, share of the rest), written with crad for cardinality",
+     "normalized_latex": "a_{ij}=(\\mathrm{card}\\{b>0.6\\}/N_{ij},\\mathrm{card}\\{b\\le -0.6\\}/N_{ij},\\mathrm{card}\\{|b|\\le 0.6\\}/N_{ij})",
+     "purpose": "collapse the series-level ties into three shares per goal pair",
+     "variable_symbols": [
+      "aij",
+      "bcorr",
+      "Nij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-07",
+     "page": 7,
+     "label": "(7)",
+     "source_expression": "w_ij = a_ij1 - a_ij2",
+     "normalized_latex": "w_{ij}=a_{ij1}-a_{ij2}",
+     "purpose": "reduce the three shares to one signed weight",
+     "variable_symbols": [
+      "wij",
+      "aij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-08",
+     "page": 8,
+     "label": "(8)",
+     "source_expression": "BC(i) = sum over j<k of n_i(j,k)/n(j,k)",
+     "normalized_latex": "BC(i)=\\sum_{j<k,\\,j\\ne i\\ne k} n_i(j,k)/n(j,k)",
+     "purpose": "score a node by how often it lies on shortest paths",
+     "variable_symbols": [
+      "BC"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-09",
+     "page": 8,
+     "label": "(9)",
+     "source_expression": "CC(i) = 1 / sum_{j!=i} d(i,j)",
+     "normalized_latex": "CC(i)=1/\\sum_{j\\ne i} d(i,j)",
+     "purpose": "score a node by the inverse of its total distance",
+     "variable_symbols": [
+      "CC",
+      "dij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-10",
+     "page": 8,
+     "label": "(10)",
+     "source_expression": "EC(i) = alpha * sum_j r_ij * EC(j)",
+     "normalized_latex": "EC(i)=\\alpha\\sum_{j} r_{ij}\\,EC(j)",
+     "purpose": "score a node by the importance of its neighbours",
+     "variable_symbols": [
+      "EC",
+      "alpha",
+      "rij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (4) to (10) are printed; the cardinality operator is written crad in the source"
+   },
+   "objectives": [
+    "represent synergy and trade-off between the 17 goals",
+    "give each goal a centrality on both kinds of edge"
+   ],
+   "constraints": [
+    "an edge is removed when fewer than ten series connect the two goals",
+    "the 0.6 threshold splits positive, negative and neutral ties"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "the graph is built once from the whole 2003-2018 window"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "the edge set is restricted by the reliability gate of ten connections"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "no equilibrium is defined"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "spearman correlation computed from the data; the 0.6 threshold and the minimum of ten connections are chosen, not estimated",
+    "parameters": [
+     "alpha"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute spearman correlation for every series pair",
+     "count positive, negative and neutral ties at the 0.6 threshold",
+     "drop pairs with fewer than ten connections",
+     "form the signed weight",
+     "compute the three centralities on positive edges and again on negative edges"
+    ],
+    "software": [],
+    "convergence_criteria": "the eigenvector centrality uses the largest eigenvalue; no tolerance is stated"
+   },
+   "assumptions": [
+    "spearman correlation captures the non-linear ties better than pearson and reacts less to outliers",
+    "a tie supported by fewer than ten series is not reliable"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "the graph and all six centralities are computed for Turkey, Indonesia and Mexico and shown in the figures and tables"
+   },
+   "handoff_outputs": [
+    "wij",
+    "BC",
+    "CC",
+    "EC"
+   ],
+   "validation_refs": [
+    "section 4.4 reads the graphs against the stated purpose of the goals"
+   ],
+   "computational_cost": "pairwise rank correlation over 95 series and three centrality computations on a 17-node graph, twice",
+   "strengths": [
+    "keeps synergy and trade-off separate instead of cancelling them",
+    "the reliability gate removes thinly supported edges"
+   ],
+   "limitations": [
+    "one symbol n(j,k) is used both for the total number of shortest paths and for the number passing through the node",
+    "the 0.6 threshold and the minimum of ten connections are unexplained"
+   ],
+   "missing_details": [
+    "no derivation is given for the 0.6 cutoff",
+    "no software or shortest-path algorithm is named"
+   ]
+  },
+  {
+   "model_id": "MU-D-2023-2300229-PRIORITY",
+   "page": 12,
+   "section": "5.1 Establishment of the Model",
+   "family": "weighting",
+   "purpose": "Combine the six centralities into one priority score per goal by entropy weights and TOPSIS.",
+   "base_or_modification": "hybrid",
+   "summary": "The three centralities of the negative edges are sign-flipped and stacked with the three positive ones into a 17 by 6 matrix. Entropy over the column shares gives six weights. TOPSIS then scores each goal by its weighted distance to the column-wise best and worst, and the priority order follows the resulting score.",
+   "variables": [
+    {
+     "symbol": "cvec",
+     "normalized_name": "six-index vector",
+     "unit": "1",
+     "definition": "betweenness, closeness and eigenvector centrality on positive edges, then the same three on negative edges after sign correction",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Cmat",
+     "normalized_name": "centrality matrix",
+     "unit": "1",
+     "definition": "seventeen by six matrix stacking the six-index vectors",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "zmin",
+     "normalized_name": "column min-max value",
+     "unit": "1",
+     "definition": "centrality after column min-max rescaling, used to form the entropy shares",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "pij",
+     "normalized_name": "column share",
+     "unit": "1",
+     "definition": "share of a goal in one index, treated as a probability",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "ej",
+     "normalized_name": "entropy",
+     "unit": "1",
+     "definition": "normalized entropy of index j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "dj",
+     "normalized_name": "information utility",
+     "unit": "1",
+     "definition": "one minus the entropy of index j",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "wj",
+     "normalized_name": "entropy weight",
+     "unit": "1",
+     "definition": "normalized information utility of index j",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "zij",
+     "normalized_name": "topsis entry",
+     "unit": "1",
+     "definition": "centrality divided by the column euclidean norm",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Zmat",
+     "normalized_name": "normalized matrix",
+     "unit": "1",
+     "definition": "seventeen by six matrix of the topsis entries",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "zplus",
+     "normalized_name": "positive ideal",
+     "unit": "1",
+     "definition": "vector of the six column maxima",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "zminus",
+     "normalized_name": "negative ideal",
+     "unit": "1",
+     "definition": "vector of the six column minima",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Dplus",
+     "normalized_name": "distance to best",
+     "unit": "1",
+     "definition": "weighted distance from a goal to the positive ideal",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Dminus",
+     "normalized_name": "distance to worst",
+     "unit": "1",
+     "definition": "weighted distance from a goal to the negative ideal",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "si",
+     "normalized_name": "priority score",
+     "unit": "1",
+     "definition": "closeness coefficient; a higher score means a higher priority",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "cvec"
+   ],
+   "outputs": [
+    "si",
+    "wj"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2023-2300229-11",
+     "page": 12,
+     "label": "(11)",
+     "source_expression": "c_i = [BC+_i, CC+_i, EC+_i, BC-_i, CC-_i, EC-_i]^T",
+     "normalized_latex": "c_i=[BC^{+}_{i},CC^{+}_{i},EC^{+}_{i},BC^{-}_{i},CC^{-}_{i},EC^{-}_{i}]^{T}",
+     "purpose": "assemble the six centralities of one goal",
+     "variable_symbols": [
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-12",
+     "page": 12,
+     "label": "(12)",
+     "source_expression": "C = [c_1, ..., c_17]^T",
+     "normalized_latex": "C=[c_1,\\ldots,c_{17}]^{T}",
+     "purpose": "stack the seventeen goals into one matrix",
+     "variable_symbols": [
+      "Cmat",
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-13",
+     "page": 12,
+     "label": "(13)",
+     "source_expression": "z~_ij = (c_ij - min_i c_ij) / (max_i c_ij - min_i c_ij)",
+     "normalized_latex": "\\tilde{z}_{ij}=(c_{ij}-\\min_i c_{ij})/(\\max_i c_{ij}-\\min_i c_{ij})",
+     "purpose": "rescale one column before the entropy shares",
+     "variable_symbols": [
+      "zmin",
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-14",
+     "page": 12,
+     "label": "(14)",
+     "source_expression": "p_ij = z~_ij / sum_i z~_ij",
+     "normalized_latex": "p_{ij}=\\tilde{z}_{ij}/\\sum_{i=1}^{17}\\tilde{z}_{ij}",
+     "purpose": "turn the rescaled column into shares",
+     "variable_symbols": [
+      "pij",
+      "zmin"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-15",
+     "page": 12,
+     "label": "(15)",
+     "source_expression": "e_j = -(1/ln 17) * sum_i p_ij ln p_ij",
+     "normalized_latex": "e_j=-(1/\\ln 17)\\sum_{i=1}^{17} p_{ij}\\ln p_{ij}",
+     "purpose": "measure how evenly an index is spread",
+     "variable_symbols": [
+      "ej",
+      "pij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-16",
+     "page": 12,
+     "label": "(16)",
+     "source_expression": "d_j = 1 - e_j",
+     "normalized_latex": "d_j=1-e_j",
+     "purpose": "convert entropy into information utility",
+     "variable_symbols": [
+      "dj",
+      "ej"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-17",
+     "page": 12,
+     "label": "(17)",
+     "source_expression": "w_j = d_j / sum_j d_j",
+     "normalized_latex": "w_j=d_j/\\sum_{j=1}^{6} d_j",
+     "purpose": "normalize the utilities into weights",
+     "variable_symbols": [
+      "wj",
+      "dj"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-18",
+     "page": 12,
+     "label": "(18)",
+     "source_expression": "z_ij = c_ij / sqrt(sum_i c_ij^2)",
+     "normalized_latex": "z_{ij}=c_{ij}/\\sqrt{\\sum_{i=1}^{17} c_{ij}^{2}}",
+     "purpose": "standardize a column by its euclidean norm",
+     "variable_symbols": [
+      "zij",
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-19",
+     "page": 13,
+     "label": "(19)",
+     "source_expression": "Z = (z_ij)",
+     "normalized_latex": "Z=(z_{ij})",
+     "purpose": "collect the standardized entries",
+     "variable_symbols": [
+      "Zmat",
+      "zij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-20",
+     "page": 13,
+     "label": "(20)",
+     "source_expression": "z+ = (max of each column)",
+     "normalized_latex": "z^{+}=(\\max_i z_{i1},\\ldots,\\max_i z_{i6})",
+     "purpose": "define the positive ideal",
+     "variable_symbols": [
+      "zplus",
+      "zij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-21",
+     "page": 13,
+     "label": "(21)",
+     "source_expression": "z- = (min of each column)",
+     "normalized_latex": "z^{-}=(\\min_i z_{i1},\\ldots,\\min_i z_{i6})",
+     "purpose": "define the negative ideal",
+     "variable_symbols": [
+      "zminus",
+      "zij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-22",
+     "page": 13,
+     "label": "(22)",
+     "source_expression": "D+_i = sqrt(sum_j w_j (z+_j - c_ij)^2)",
+     "normalized_latex": "D^{+}_{i}=\\sqrt{\\sum_{j=1}^{6} w_j(z^{+}_{j}-c_{ij})^{2}}",
+     "purpose": "distance from a goal to the positive ideal",
+     "variable_symbols": [
+      "Dplus",
+      "wj",
+      "zplus",
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-23",
+     "page": 13,
+     "label": "(23)",
+     "source_expression": "D-_i = sqrt(sum_j w_j (z-_j - c_ij)^2)",
+     "normalized_latex": "D^{-}_{i}=\\sqrt{\\sum_{j=1}^{6} w_j(z^{-}_{j}-c_{ij})^{2}}",
+     "purpose": "distance from a goal to the negative ideal",
+     "variable_symbols": [
+      "Dminus",
+      "wj",
+      "zminus",
+      "cvec"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-24",
+     "page": 13,
+     "label": "(24)",
+     "source_expression": "s_i = D-_i / (D-_i + D+_i)",
+     "normalized_latex": "s_i=D^{-}_{i}/(D^{-}_{i}+D^{+}_{i})",
+     "purpose": "combine the two distances into the priority score",
+     "variable_symbols": [
+      "si",
+      "Dminus",
+      "Dplus"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (11) to (24) are printed and were read from the page rasters"
+   },
+   "objectives": [
+    "produce one priority score per goal that uses all six centralities",
+    "let the data set the relative importance of the six indexes"
+   ],
+   "constraints": [
+    "weights are non-negative and sum to one",
+    "the score lies between zero and one"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "the score is computed once per country"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "the ideals are the column maxima and minima, so they depend on the country"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "no equilibrium is defined"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "entropy weight method on the column shares; no external weights",
+    "parameters": [
+     "wj"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "sign-correct the three negative-edge centralities",
+     "stack the six indexes",
+     "compute entropy weights",
+     "standardize columns by their euclidean norm",
+     "form the positive and negative ideals",
+     "compute the two weighted distances and the closeness coefficient",
+     "rank goals by the score, highest first"
+    ],
+    "software": [],
+    "convergence_criteria": "closed form; no iteration"
+   },
+   "assumptions": [
+    "a higher centrality means a more important goal",
+    "an index that varies more across goals deserves more weight"
+   ],
+   "identifiability_feasibility": {
+    "status": "demonstrated",
+    "analysis": "scores are computed for all three countries and reported in the top-five table and the radar figure"
+   },
+   "handoff_outputs": [
+    "si"
+   ],
+   "validation_refs": [
+    "section 5.2 checks the ranking against the real importance of health and education"
+   ],
+   "computational_cost": "closed-form weights and distances on a 17 by 6 matrix",
+   "strengths": [
+    "no subjective weights",
+    "the score uses both how close a goal is to the best and how far it is from the worst"
+   ],
+   "limitations": [
+    "the distance formulas subtract the raw index c_ij from the standardized ideal z_j, mixing the two matrices",
+    "a zero share makes the entropy logarithm undefined and no fix is stated"
+   ],
+   "missing_details": [
+    "no handling is given for a column whose max equals its min",
+    "the sign correction is described in prose only"
+   ]
+  },
+  {
+   "model_id": "MU-D-2023-2300229-TOWER",
+   "page": 15,
+   "section": "6 Temporal Champagne Tower Model",
+   "family": "dynamics",
+   "purpose": "Allocate a fixed yearly resource to goals in priority order, carry synergy and trade-off forward one year, and keep finished goals at the top.",
+   "base_or_modification": "paper-specific",
+   "summary": "Completion percentages evolve for ten years. The highest-priority unfinished goal is served first; the resource left after it flows to the next, and so on. A correlation term spreads part of each goal's gain to the goals linked with it, scaled by a constant set to 5. A finished goal moves to a complete queue that outranks every unfinished goal, and returns to the top of the active list if it slips back. For the shock, the allocation is scaled by a threat coefficient and the priority vector gains a seventh entry.",
+   "variables": [
+    {
+     "symbol": "Gt",
+     "normalized_name": "completion vector",
+     "unit": "1",
+     "definition": "percentage complete of the seventeen goals in year t",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "St",
+     "normalized_name": "priority set",
+     "unit": "1",
+     "definition": "goals currently being served, headed by the complete queue",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Sprime",
+     "normalized_name": "correlated set",
+     "unit": "1",
+     "definition": "goals outside the priority set that share a nonzero weight with one inside it",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "vt",
+     "normalized_name": "correlation change",
+     "unit": "1",
+     "definition": "change in completion coming from the linked goals",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "dt",
+     "normalized_name": "allocated resource",
+     "unit": "1",
+     "definition": "resource given to a goal in year t",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Cpar",
+     "normalized_name": "correlation efficiency",
+     "unit": "1",
+     "definition": "constant scaling the correlation effect, set to 5",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Dpar",
+     "normalized_name": "yearly resource",
+     "unit": "1",
+     "definition": "total resource per year, seventeen times the slope of accumulated resource on year",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "gamma",
+     "normalized_name": "threat coefficient",
+     "unit": "1",
+     "definition": "factor applied to a goal's allocation under the shock",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "MI",
+     "normalized_name": "mitigation level",
+     "unit": "1",
+     "definition": "seventh priority attribute measuring how far a goal softens or worsens the shock",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "wij2",
+     "normalized_name": "edge weight",
+     "unit": "1",
+     "definition": "signed weight inherited from the graph",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "si2",
+     "normalized_name": "priority score",
+     "unit": "1",
+     "definition": "priority score inherited from the priority model",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "wij2",
+    "si2"
+   ],
+   "outputs": [
+    "Gt"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2023-2300229-25",
+     "page": 15,
+     "label": "(25)",
+     "source_expression": "G_t = [g_t(1), ..., g_t(17)]",
+     "normalized_latex": "G_t=[g_t(1),\\ldots,g_t(17)]",
+     "purpose": "hold the completion of all seventeen goals in one vector",
+     "variable_symbols": [
+      "Gt"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-26",
+     "page": 15,
+     "label": "(26)",
+     "source_expression": "S'_t = {V_j | w_ij != 0, V_i in S_t, V_j not in S_t}",
+     "normalized_latex": "S'_t=\\{V_j\\mid w_{ij}\\ne 0,\\ V_i\\in S_t,\\ V_j\\notin S_t\\}",
+     "purpose": "collect the goals one step away from the served set",
+     "variable_symbols": [
+      "Sprime",
+      "St",
+      "wij2"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-27",
+     "page": 15,
+     "label": "(27)",
+     "source_expression": "S_{t+1} = S_t union S'_t",
+     "normalized_latex": "S_{t+1}=S_t\\cup S'_t",
+     "purpose": "grow the served set by the correlated goals",
+     "variable_symbols": [
+      "St",
+      "Sprime"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-28",
+     "page": 16,
+     "label": "(28)",
+     "source_expression": "v_t(i) = (1/C) * sum_{j in S_i} w_ij (v_{t-1}(j) + d_{t-1}(j))",
+     "normalized_latex": "v_t(i)=(1/C)\\sum_{V_j\\in S_i} w_{ij}(v_{t-1}(j)+d_{t-1}(j))",
+     "purpose": "spread last year's gain along the edges",
+     "variable_symbols": [
+      "vt",
+      "Cpar",
+      "wij2",
+      "dt"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-29",
+     "page": 16,
+     "label": "(29)",
+     "source_expression": "d_t(i) = 0 if v_t(i)+g_{t-1}(i) >= 1, else min(1 - v_t(i) - g_{t-1}(i), D - sum of the gaps of higher goals)",
+     "normalized_latex": "d_t(i)=0\\ \\text{if}\\ v_t(i)+g_{t-1}(i)\\ge 1,\\ \\text{else}\\ \\min(1-v_t(i)-g_{t-1}(i), D-\\sum_{s(j)>s(i)}\\max(0,1-v_t(j)-g_{t-1}(j)))",
+     "purpose": "serve the highest unfinished goal first and pass the remainder down",
+     "variable_symbols": [
+      "dt",
+      "vt",
+      "Gt",
+      "Dpar",
+      "si2"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-30",
+     "page": 16,
+     "label": "(30)",
+     "source_expression": "g_t(i) = min(g_{t-1}(i) + d_t(i) + v_t(i), 1)",
+     "normalized_latex": "g_t(i)=\\min(g_{t-1}(i)+d_t(i)+v_t(i),1)",
+     "purpose": "update completion and cap it at one",
+     "variable_symbols": [
+      "Gt",
+      "dt",
+      "vt"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-31",
+     "page": 16,
+     "label": "(31)",
+     "source_expression": "the collected display: G_t, S_t = S_{t-1} union S'_{t-1}, S' defined from S_t, then (28), (29), (30)",
+     "normalized_latex": "G_t;\\ S_t=S_{t-1}\\cup S'_{t-1};\\ S'=\\{V_j\\mid w_{ij}\\ne 0, V_i\\in S_t, V_j\\notin S_t\\}",
+     "purpose": "restate the recurrence in one block",
+     "variable_symbols": [
+      "Gt",
+      "St",
+      "Sprime",
+      "wij2"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-32",
+     "page": 20,
+     "label": "(32)",
+     "source_expression": "equation (29) with the else branch multiplied by gamma_i",
+     "normalized_latex": "d_t(i)=\\gamma_i\\min(\\ldots)\\ \\text{in the else branch}",
+     "purpose": "scale a threatened goal's allocation",
+     "variable_symbols": [
+      "dt",
+      "gamma",
+      "vt",
+      "Gt",
+      "Dpar",
+      "si2"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2023-2300229-33",
+     "page": 20,
+     "label": "(33)",
+     "source_expression": "c_i gains a seventh component MI_i",
+     "normalized_latex": "c_i=[BC^{+}_{i},CC^{+}_{i},EC^{+}_{i},BC^{-}_{i},CC^{-}_{i},EC^{-}_{i},MI_i]^{T}",
+     "purpose": "let the shock change the priority order",
+     "variable_symbols": [
+      "MI"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (25) to (33) are printed and were read from crops of the page rasters"
+   },
+   "objectives": [
+    "finish the highest-priority goals first",
+    "keep a finished goal finished",
+    "show how a shock slows the ten-year plan"
+   ],
+   "constraints": [
+    "completion stays at most one",
+    "the yearly allocation never exceeds the yearly resource",
+    "any finished goal outranks any unfinished goal"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "v_0(i)=0 and d_0(i)=0",
+      "S_1 holds the single highest-priority goal",
+      "g_0 comes from the reported current completion"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "completion is capped at one",
+      "a goal that falls back re-enters at the top of the active list"
+     ]
+    },
+    "equilibrium": {
+     "status": "omitted-by-paper",
+     "details": [
+      "no fixed point is derived; the run stops at ten years"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "D is seventeen times the slope of a regression of accumulated resource on year; C is set to 5 by appeal to Pareto's principle and is not estimated; gamma and MI are taken from expert data in a cited study and no values are printed",
+    "parameters": [
+     "Cpar",
+     "Dpar",
+     "gamma",
+     "MI"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "set v_0 and d_0 to zero and S_1 to the top goal",
+     "for each of ten years and each goal, update the correlation change",
+     "allocate the resource in priority order",
+     "update completion and cap it at one",
+     "rebuild the correlated set and the served set",
+     "move a finished goal into the complete queue",
+     "for the shock, scale the allocation by the threat coefficient and append the seventh priority attribute"
+    ],
+    "software": [],
+    "convergence_criteria": "fixed horizon of ten years; no convergence test"
+   },
+   "assumptions": [
+    "one percent of completion on one goal equals one percent on any other",
+    "the stock of resources grows linearly with year",
+    "a finished goal keeps its priority rather than being dropped"
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the ten-year run is carried out for Indonesia and compared with a linear forecast, but C is not identified from data and gamma and MI are never given numerical values"
+   },
+   "handoff_outputs": [
+    "Gt"
+   ],
+   "validation_refs": [
+    "section 6.5 compares the run with the current plan",
+    "section 8 sweeps C and D"
+   ],
+   "computational_cost": "ten years by seventeen goals, each step a short sum over the served set",
+   "strengths": [
+    "the ordering rule, the spillover and the relapse are all explicit",
+    "the shock enters by rewriting two numbered equations rather than by a new model"
+   ],
+   "limitations": [
+    "the collected display shifts the queue index by one against the earlier recurrence and defines the correlated set from the set it is defining",
+    "C equals 5 only by appeal to a principle",
+    "the threat coefficient and the mitigation level have no printed values"
+   ],
+   "missing_details": [
+    "no numerical values for the threat coefficient or the mitigation level",
+    "no rule for how far a finished goal must fall before it re-enters"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-D-2023-2300229-DATA",
+   "to_model_id": "MU-D-2023-2300229-GRAPH",
+   "handoff": "rescaled series values feed the rank correlation"
+  },
+  {
+   "from_model_id": "MU-D-2023-2300229-GRAPH",
+   "to_model_id": "MU-D-2023-2300229-PRIORITY",
+   "handoff": "six centralities per goal feed the priority score"
+  },
+  {
+   "from_model_id": "MU-D-2023-2300229-GRAPH",
+   "to_model_id": "MU-D-2023-2300229-TOWER",
+   "handoff": "signed edge weights carry the synergy and trade-off forward a year"
+  },
+  {
+   "from_model_id": "MU-D-2023-2300229-PRIORITY",
+   "to_model_id": "MU-D-2023-2300229-TOWER",
+   "handoff": "priority scores fix the order in which the yearly resource is served"
+  }
+ ]
+}

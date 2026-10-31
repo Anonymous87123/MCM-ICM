@@ -1,0 +1,1337 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2025-2517690-93ab5dac",
+  "problem_type": "C",
+  "year": "2025",
+  "source_sha256": "93ab5dace1e67591ba9d66e9dd267a3971496568353a7987350fdd8242729a68",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q272-001",
+      "page": 9,
+      "section": "5.1 Medal Table Prediction Model Based on Random Forest",
+      "family": "weighted strength index plus random-forest regression",
+      "purpose": "Predict 2028 medal counts and select one regressor from four named models.",
+      "base_or_modification": "hybrid",
+      "summary": "Event strength is a fixed-weight sum. The medal count is then predicted by a Random Forest selected after a four-model comparison. No forest equation is printed.",
+      "variables": [
+        {
+          "symbol": "H_mi",
+          "normalized_name": "comprehensive strength of event i for country m",
+          "unit": "unspecified",
+          "definition": "comprehensive strength of event i for country m",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_ij",
+          "normalized_name": "gold medals in event j of sport i",
+          "unit": "unspecified",
+          "definition": "gold medals in event j of sport i",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_ij",
+          "normalized_name": "silver medals in event j of sport i",
+          "unit": "unspecified",
+          "definition": "silver medals in event j of sport i",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_ij",
+          "normalized_name": "bronze medals in event j of sport i",
+          "unit": "unspecified",
+          "definition": "bronze medals in event j of sport i",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_ij",
+          "normalized_name": "non-medal participants in event j of sport i",
+          "unit": "unspecified",
+          "definition": "non-medal participants in event j of sport i",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "a_ij",
+        "b_ij",
+        "c_ij",
+        "d_ij"
+      ],
+      "outputs": [
+        "H_mi"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-001",
+          "page": 9,
+          "label": "(1)",
+          "source_expression": "H_mi = 0.45 sum_j a_ij + 0.35 sum_j b_ij + 0.15 sum_j c_ij + 0.05 sum_j d_ij",
+          "normalized_latex": "H_{mi}=0.45\\sum_{j} a_{ij}+0.35\\sum_{j} b_{ij}+0.15\\sum_{j} c_{ij}+0.05\\sum_{j} d_{ij}",
+          "purpose": "Weighted event strength from gold, silver, bronze, and non-medal participants.",
+          "variable_symbols": [
+            "H_mi",
+            "a_ij",
+            "b_ij",
+            "c_ij",
+            "d_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Display (1) is the only printed governing expression. The forest itself is described in prose."
+      },
+      "objectives": [
+        "Predict the 2028 medal table."
+      ],
+      "constraints": [
+        "Weights are the subjective Table 3 values 0.45, 0.35, 0.15, and 0.05."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Ten-fold cross-validation and a 90/10 hold-out are both named. No forest parameter estimate is printed.",
+        "parameters": [
+          "0.45",
+          "0.35",
+          "0.15",
+          "0.05"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compare Random Forest, Lasso, XGBoost, and Neural Network regression.",
+          "Select Random Forest after the comparison.",
+          "Predict the 2028 table from the trained forest."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence criterion is printed."
+      },
+      "assumptions": [
+        "Assumption 1 says the 2028 sport list does not change.",
+        "Assumption 3 says the sport level of each country remains stable."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The winner is stated in prose. Table 4 metric values were not recovered, so the selection cannot be recomputed."
+      },
+      "handoff_outputs": [
+        "H_mi"
+      ],
+      "validation_refs": [
+        "Summary test-set R^2 0.92.",
+        "Section 8.2 error plots."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The prose lists feature selection, low overfitting risk, and generalization as advantages."
+      ],
+      "limitations": [
+        "Table 4 values are unread.",
+        "No tree count, depth, or forest equation is printed.",
+        "Table 5 point estimates differ from Figure 8 point estimates."
+      ],
+      "missing_details": [
+        "Table 4 R^2, MSE, and MAE values.",
+        "Random Forest hyperparameters.",
+        "Software."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q272-002",
+      "page": 12,
+      "section": "5.2 Prediction of First Medal Wins for Medal-less Countries",
+      "family": "binary logistic regression",
+      "purpose": "Predict which never-medaled countries win a first medal in 2028.",
+      "base_or_modification": "base",
+      "summary": "Three inputs enter a sigmoid. Parameters are maximized by likelihood. A 0.5 threshold classifies. The fitted intercept and slopes are printed.",
+      "variables": [
+        {
+          "symbol": "X_1",
+          "normalized_name": "number of medal-less athletes",
+          "unit": "unspecified",
+          "definition": "number of medal-less athletes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_2",
+          "normalized_name": "number of events participated in",
+          "unit": "unspecified",
+          "definition": "number of events participated in",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_3",
+          "normalized_name": "number of Olympic Games participated in",
+          "unit": "unspecified",
+          "definition": "number of Olympic Games participated in",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "linear predictor",
+          "unit": "unspecified",
+          "definition": "linear predictor",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_0",
+          "normalized_name": "intercept",
+          "unit": "unspecified",
+          "definition": "intercept",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "normalized_name": "coefficient on medal-less athletes",
+          "unit": "unspecified",
+          "definition": "coefficient on medal-less athletes",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "coefficient on events",
+          "unit": "unspecified",
+          "definition": "coefficient on events",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_3",
+          "normalized_name": "coefficient on Olympic participations",
+          "unit": "unspecified",
+          "definition": "coefficient on Olympic participations",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "probability of a first medal",
+          "unit": "unspecified",
+          "definition": "probability of a first medal",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_hat",
+          "normalized_name": "classification at threshold 0.5",
+          "unit": "unspecified",
+          "definition": "classification at threshold 0.5",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Odds",
+          "normalized_name": "odds ratio",
+          "unit": "unspecified",
+          "definition": "odds ratio",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "parameter vector",
+          "unit": "unspecified",
+          "definition": "parameter vector",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "likelihood",
+          "unit": "unspecified",
+          "definition": "likelihood",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X_1",
+        "X_2",
+        "X_3"
+      ],
+      "outputs": [
+        "P",
+        "Y_hat",
+        "Odds"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-002",
+          "page": 12,
+          "label": "(2)",
+          "source_expression": "z = beta_0 + beta_1 X_1 + beta_2 X_2 + beta_3 X_3",
+          "normalized_latex": "z=\\beta_0+\\beta_1 X_1+\\beta_2 X_2+\\beta_3 X_3",
+          "purpose": "Linear predictor for a first medal.",
+          "variable_symbols": [
+            "z",
+            "beta_0",
+            "beta_1",
+            "beta_2",
+            "beta_3",
+            "X_1",
+            "X_2",
+            "X_3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-003",
+          "page": 12,
+          "label": "(3)",
+          "source_expression": "P(Y=1|X)=1/(1+e^{-z})",
+          "normalized_latex": "P(Y=1\\mid X)=\\frac{1}{1+e^{-z}}",
+          "purpose": "Sigmoid map. The printed second equality repeats the same map.",
+          "variable_symbols": [
+            "P",
+            "z"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-004",
+          "page": 12,
+          "label": "(4)",
+          "source_expression": "L(beta)=prod_i P(Y_i|X_i)^{Y_i}(1-P(Y_i|X_i))^{1-Y_i}",
+          "normalized_latex": "L(\\beta)=\\prod_i P(Y_i\\mid X_i)^{Y_i}(1-P(Y_i\\mid X_i))^{1-Y_i}",
+          "purpose": "Likelihood. The printed product sign is placed before L.",
+          "variable_symbols": [
+            "L",
+            "beta",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-005",
+          "page": 12,
+          "label": "(5)",
+          "source_expression": "log L(beta)=sum_i [Y_i log P(Y_i|X_i)+(1-Y_i) log(1-P(Y_i|X_i))]",
+          "normalized_latex": "\\log L(\\beta)=\\sum_i\\left[Y_i\\log P(Y_i\\mid X_i)+(1-Y_i)\\log(1-P(Y_i\\mid X_i))\\right]",
+          "purpose": "Log-likelihood. The printed sum is split around the bracket.",
+          "variable_symbols": [
+            "L",
+            "beta",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-006",
+          "page": 13,
+          "label": "(6)",
+          "source_expression": "beta_hat = arg max log L(beta)",
+          "normalized_latex": "\\hat\\beta=\\arg\\max \\log L(\\beta)",
+          "purpose": "Maximum likelihood estimate.",
+          "variable_symbols": [
+            "beta",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-007",
+          "page": 13,
+          "label": "(7)",
+          "source_expression": "P_hat(Y=1|X)=1/(1+e^{-(beta_hat_0+...+beta_hat_n X_n)})",
+          "normalized_latex": "\\hat P(Y=1\\mid X)=\\frac{1}{1+e^{-(\\hat\\beta_0+\\cdots+\\hat\\beta_n X_n)}}",
+          "purpose": "Predicted probability. The index runs to n although three inputs were defined.",
+          "variable_symbols": [
+            "P",
+            "beta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-008",
+          "page": 13,
+          "label": "(8)",
+          "source_expression": "Y_hat = 1 if P_hat >= 0.5, else 0",
+          "normalized_latex": "\\hat Y=\\begin{cases}1,&\\hat P\\ge 0.5\\\\0,&\\hat P<0.5\\end{cases}",
+          "purpose": "Classification rule. The display boxes were watermark-garbled.",
+          "variable_symbols": [
+            "Y_hat",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q272-009",
+          "page": 13,
+          "label": "(9)",
+          "source_expression": "P_hat(Y=1|X)=1/(1+e^{-(0.006+0.14 X_1+0.28 X_2+0.34 X_3)})",
+          "normalized_latex": "\\hat P(Y=1\\mid X)=\\frac{1}{1+e^{-(0.006+0.14 X_1+0.28 X_2+0.34 X_3)}}",
+          "purpose": "Fitted first-medal probability.",
+          "variable_symbols": [
+            "P",
+            "X_1",
+            "X_2",
+            "X_3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-010",
+          "page": 13,
+          "label": "(10)",
+          "source_expression": "Odds = P/(1-P)",
+          "normalized_latex": "\\mathrm{Odds}=\\frac{P}{1-P}",
+          "purpose": "Odds ratio.",
+          "variable_symbols": [
+            "Odds",
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (2) through (10) are printed. Display (8) is low confidence."
+      },
+      "objectives": [
+        "Predict the probability of a first medal."
+      ],
+      "constraints": [
+        "Classify as 1 when the predicted probability is at least 0.5."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Maximum likelihood, displays (4) through (6). Ten-fold cross-validation is named.",
+        "parameters": [
+          "0.006",
+          "0.14",
+          "0.28",
+          "0.34"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Prepare the binary sample.",
+          "Form the linear predictor.",
+          "Map it by the sigmoid.",
+          "Maximize the log-likelihood.",
+          "Classify at 0.5."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence tolerance is printed."
+      },
+      "assumptions": [
+        "Assumption 2 says new projects have less impact on non-winning countries."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The fitted equation is printed. The fourth country row is watermark-shifted, so the four-country claim cannot be fully checked."
+      },
+      "handoff_outputs": [
+        "P",
+        "Odds"
+      ],
+      "validation_refs": [
+        "Table 6 probabilities and odds."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The fitted equation and the 0.5 rule are both printed."
+      ],
+      "limitations": [
+        "The prose calls predicted probabilities p-values.",
+        "Table 6 rows are shifted.",
+        "Display (3) repeats the sigmoid.",
+        "Display (7) indexes to n."
+      ],
+      "missing_details": [
+        "Software.",
+        "The fourth country name and its probability."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q272-003",
+      "page": 15,
+      "section": "5.3.1 Grey Relational Analysis",
+      "family": "grey relational analysis",
+      "purpose": "Measure association between each event and a country's total medals.",
+      "base_or_modification": "base",
+      "summary": "Event medal counts are subsequences. Country totals are the mother sequence. Mean standardization, a coefficient with rho usually 0.5, and an average degree follow.",
+      "variables": [
+        {
+          "symbol": "x_0",
+          "normalized_name": "mother sequence of total medals",
+          "unit": "unspecified",
+          "definition": "mother sequence of total medals",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "normalized_name": "subsequence of medals in one event",
+          "unit": "unspecified",
+          "definition": "subsequence of medals in one event",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z_ij",
+          "normalized_name": "mean-standardized element",
+          "unit": "unspecified",
+          "definition": "mean-standardized element",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "grey relational coefficient",
+          "unit": "unspecified",
+          "definition": "grey relational coefficient",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "distinguishing coefficient",
+          "unit": "unspecified",
+          "definition": "distinguishing coefficient",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "two-level minimum difference",
+          "unit": "unspecified",
+          "definition": "two-level minimum difference",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "two-level maximum difference",
+          "unit": "unspecified",
+          "definition": "two-level maximum difference",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_i",
+          "normalized_name": "grey relational degree",
+          "unit": "unspecified",
+          "definition": "grey relational degree",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_0",
+        "x_i"
+      ],
+      "outputs": [
+        "r_i"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-011",
+          "page": 15,
+          "label": "(11)",
+          "source_expression": "Z_ij = x_ij / mean(x_ij)",
+          "normalized_latex": "Z_{ij}=\\frac{x_{ij}}{\\overline{x}_{ij}}",
+          "purpose": "Mean standardization. The printed denominator is x_ij with a bar that the text layer dropped.",
+          "variable_symbols": [
+            "Z_ij",
+            "x_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-012",
+          "page": 15,
+          "label": "(12)",
+          "source_expression": "Z = (Z_ij)",
+          "normalized_latex": "Z=(Z_{ij})",
+          "purpose": "Standardized matrix. Watermark split the row index.",
+          "variable_symbols": [
+            "Z_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q272-013",
+          "page": 15,
+          "label": "(13)",
+          "source_expression": "gamma(x_0(k), x_i(k)) = (a + rho b)/(|x_0(k)-x_i(k)| + rho b)",
+          "normalized_latex": "\\gamma(x_0(k),x_i(k))=\\frac{a+\\rho b}{|x_0(k)-x_i(k)|+\\rho b}",
+          "purpose": "Grey relational coefficient.",
+          "variable_symbols": [
+            "gamma",
+            "x_0",
+            "x_i",
+            "a",
+            "b",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q272-014",
+          "page": 15,
+          "label": "(14)",
+          "source_expression": "a = min_i min_k |x_0(k)-x_i(k)|, b = max_i max_k |x_0(k)-x_i(k)|",
+          "normalized_latex": "a=\\min_i\\min_k|x_0(k)-x_i(k)|,\\quad b=\\max_i\\max_k|x_0(k)-x_i(k)|",
+          "purpose": "Two-level minimum and maximum differences.",
+          "variable_symbols": [
+            "a",
+            "b",
+            "x_0",
+            "x_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-015",
+          "page": 16,
+          "label": "(15)",
+          "source_expression": "r_i = (1/n) sum_k gamma(x_0(k), x_i(k))",
+          "normalized_latex": "r_i=\\frac{1}{n}\\sum_k \\gamma(x_0(k),x_i(k))",
+          "purpose": "Grey relational degree. The printed line doubles the sum.",
+          "variable_symbols": [
+            "r_i",
+            "gamma",
+            "x_0",
+            "x_i",
+            "a",
+            "b",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (11) through (15) are printed. Displays (11), (12), and (15) are watermark-split."
+      },
+      "objectives": [
+        "Rank events by association with the total medal count."
+      ],
+      "constraints": [
+        "The distinguishing coefficient is usually taken as 0.5."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The coefficient is a usual value, not an estimate.",
+        "parameters": [
+          "0.5"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set the mother sequence and subsequences.",
+          "Divide each indicator by its mean.",
+          "Compute the coefficient.",
+          "Average the coefficients."
+        ],
+        "software": [],
+        "convergence_criteria": "Not applicable. The degree is a direct average."
+      },
+      "assumptions": [
+        "No sampling assumption is printed for this model."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Table 7 prints degrees for five countries and five events."
+      },
+      "handoff_outputs": [
+        "r_i"
+      ],
+      "validation_refs": [
+        "Table 7."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The mother and subsequence roles are explicit."
+      ],
+      "limitations": [
+        "The summary spells the method Gray.",
+        "Display (15) repeats the sum.",
+        "The prose says track and field where the table header says Athletics."
+      ],
+      "missing_details": [
+        "The bar on the display (11) denominator.",
+        "The full country-event matrix beyond Table 7."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q272-004",
+      "page": 17,
+      "section": "6.1 Analysis of the great coach effect",
+      "family": "two-sample mean test and chi-square test",
+      "purpose": "Test whether a great coach changes medal performance.",
+      "base_or_modification": "base",
+      "summary": "A before-after mean test uses a 95% confidence level and a 0.05 threshold. A 2 by 2 coach-presence table is tested by chi-square. The weighted score Total = 4 Gold + 2 Silver + Bronze is printed without a display number.",
+      "variables": [
+        {
+          "symbol": "mu_1",
+          "normalized_name": "mean medal score before the coach",
+          "unit": "unspecified",
+          "definition": "mean medal score before the coach",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_2",
+          "normalized_name": "mean medal score after the coach",
+          "unit": "unspecified",
+          "definition": "mean medal score after the coach",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ij",
+          "normalized_name": "joint probability of coach presence and medal outcome",
+          "unit": "unspecified",
+          "definition": "joint probability of coach presence and medal outcome",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_i",
+          "normalized_name": "marginal probability of a country row",
+          "unit": "unspecified",
+          "definition": "marginal probability of a country row",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_j",
+          "normalized_name": "marginal probability of a coach column",
+          "unit": "unspecified",
+          "definition": "marginal probability of a coach column",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_ij",
+          "normalized_name": "cell count",
+          "unit": "unspecified",
+          "definition": "cell count",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_i",
+          "normalized_name": "row total",
+          "unit": "unspecified",
+          "definition": "row total",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_j",
+          "normalized_name": "column total",
+          "unit": "unspecified",
+          "definition": "column total",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "table total",
+          "unit": "unspecified",
+          "definition": "table total",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "chi2",
+          "normalized_name": "chi-square statistic",
+          "unit": "unspecified",
+          "definition": "chi-square statistic",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_value",
+          "normalized_name": "test p-value",
+          "unit": "unspecified",
+          "definition": "test p-value",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mu_1",
+        "mu_2",
+        "n_ij"
+      ],
+      "outputs": [
+        "chi2",
+        "p_value"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-016",
+          "page": 18,
+          "label": "(16)",
+          "source_expression": "H_0: mu_1 = mu_2, H_1: mu_1 != mu_2",
+          "normalized_latex": "H_0:\\mu_1=\\mu_2,\\quad H_1:\\mu_1\\neq\\mu_2",
+          "purpose": "Two-sample mean hypotheses.",
+          "variable_symbols": [
+            "mu_1",
+            "mu_2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-017",
+          "page": 19,
+          "label": "(17)",
+          "source_expression": "H_0: p_ij = p_i p_j",
+          "normalized_latex": "H_0:p_{ij}=p_i p_{.j}",
+          "purpose": "Independence hypothesis for coach presence and medals.",
+          "variable_symbols": [
+            "p_ij",
+            "p_i",
+            "p_j"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-018",
+          "page": 19,
+          "label": "(18)",
+          "source_expression": "p_i = n_i/n, p_j = n_j/n",
+          "normalized_latex": "p_i=\\frac{n_i}{n},\\quad p_{.j}=\\frac{n_{.j}}{n}",
+          "purpose": "Maximum likelihood margins under the null.",
+          "variable_symbols": [
+            "p_i",
+            "p_j",
+            "n_i",
+            "n_j",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-C-Q272-019",
+          "page": 19,
+          "label": "(19)",
+          "source_expression": "chi^2 = sum_i sum_j (n_ij - n p_hat_ij)^2 / (n p_hat_ij)",
+          "normalized_latex": "\\chi^2=\\sum_{i=1}^{2}\\sum_{j=1}^{2}\\frac{(n_{ij}-n\\hat p_{ij})^2}{n\\hat p_{ij}}",
+          "purpose": "Chi-square statistic.",
+          "variable_symbols": [
+            "chi2",
+            "n_ij",
+            "n",
+            "p_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displays (16) through (19) are printed. The weighted medal score has no display number."
+      },
+      "objectives": [
+        "Test a coach effect on medal counts."
+      ],
+      "constraints": [
+        "Reject when the p-value is less than the significance level. The prose also says greater than 0.05 means no significant change."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The tests use printed counts. No parameter search is printed.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Define before and after samples.",
+          "Test equal means in SPSS.",
+          "Build the coach-presence table.",
+          "Compute the chi-square statistic."
+        ],
+        "software": [
+          "SPSS"
+        ],
+        "convergence_criteria": "Not applicable. The tests are direct."
+      },
+      "assumptions": [
+        "The two samples are treated as independent."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Table 8 and Table 9 print the inputs. The prose p-value 0.07 does not match Table 8 p 0.09, and p 0.05 is called significant."
+      },
+      "handoff_outputs": [
+        "p_value"
+      ],
+      "validation_refs": [
+        "Table 8.",
+        "Table 9.",
+        "Calculated p-value 0.009."
+      ],
+      "computational_cost": "SPSS is named. No runtime is given.",
+      "strengths": [
+        "Both a mean test and a categorical test are used."
+      ],
+      "limitations": [
+        "p 0.05 is called significant beside a greater-than-0.05 rule.",
+        "Prose p 0.07 stands beside table p 0.09."
+      ],
+      "missing_details": [
+        "The test statistic for the mean test.",
+        "Degrees of freedom."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q272-005",
+      "page": 19,
+      "section": "6.2 Contribution of great coach Based on the Logistic",
+      "family": "binary logistic regression",
+      "purpose": "Quantify coach contribution and screen investment events.",
+      "base_or_modification": "base",
+      "summary": "Coaching time, converted historical medals, and participant count enter a second logistic. The fitted coefficients are printed. Investment sets coaching time to 4 and compares probabilities.",
+      "variables": [
+        {
+          "symbol": "x_1",
+          "normalized_name": "coaching time of a great coach",
+          "unit": "unspecified",
+          "definition": "coaching time of a great coach",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_2",
+          "normalized_name": "historical medal count of the event, converted",
+          "unit": "unspecified",
+          "definition": "historical medal count of the event, converted",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_3",
+          "normalized_name": "number of participating athletes",
+          "unit": "unspecified",
+          "definition": "number of participating athletes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "probability that the event wins an award",
+          "unit": "unspecified",
+          "definition": "probability that the event wins an award",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "intercept 2.12",
+          "unit": "unspecified",
+          "definition": "intercept 2.12",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b1",
+          "normalized_name": "coefficient 4.14 on coaching time",
+          "unit": "unspecified",
+          "definition": "coefficient 4.14 on coaching time",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b2",
+          "normalized_name": "coefficient 7.25 on historical medals",
+          "unit": "unspecified",
+          "definition": "coefficient 7.25 on historical medals",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b3",
+          "normalized_name": "coefficient 1.98 on participants",
+          "unit": "unspecified",
+          "definition": "coefficient 1.98 on participants",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_1",
+        "x_2",
+        "x_3"
+      ],
+      "outputs": [
+        "p"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-020",
+          "page": 20,
+          "label": "(20)",
+          "source_expression": "P_hat(y=1|x)=1/(1+e^{-(2.12+4.14 x_1+7.25 x_2+1.98 x_3)}), logit = 2.12+4.14 x_1+7.25 x_2+1.98 x_3",
+          "normalized_latex": "\\hat P(y=1\\mid x)=\\frac{1}{1+e^{-(2.12+4.14 x_1+7.25 x_2+1.98 x_3)}}",
+          "purpose": "Fitted coach-effect logistic. The logit line repeats the same linear predictor.",
+          "variable_symbols": [
+            "p",
+            "x_1",
+            "x_2",
+            "x_3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Display (20) prints both the probability and the logit."
+      },
+      "objectives": [
+        "Estimate whether a great coach raises the award probability."
+      ],
+      "constraints": [
+        "If there is no great coach, x_1 = 0.",
+        "Investment comparisons set x_1 = 4."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The fitted coefficients and their standard errors and p-values are printed in Table 10. The estimator is not named again.",
+        "parameters": [
+          "2.12",
+          "4.14",
+          "7.25",
+          "1.98"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Standardize the three inputs.",
+          "Fit the logistic model.",
+          "Set coaching time to 4 for screened events.",
+          "Compare award probabilities."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence tolerance is printed."
+      },
+      "assumptions": [
+        "Events with medals in the past four Games are treated as already mature enough."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Table 10 prints coefficient tests. Table 11 probabilities were not read."
+      },
+      "handoff_outputs": [
+        "p"
+      ],
+      "validation_refs": [
+        "Table 10."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The fitted equation and the coefficient tests are both printed."
+      ],
+      "limitations": [
+        "The prose calls the 7.25 historical-medal coefficient the athlete level.",
+        "Table 11 values are unread."
+      ],
+      "missing_details": [
+        "Table 11 probabilities.",
+        "Software."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q272-006",
+      "page": 22,
+      "section": "7.3 N-player game and 8.1 Sensitivity Analysis",
+      "family": "verbal n-player game plus fold-count sensitivity",
+      "purpose": "Describe host event-setting as a game, and test logistic fold sensitivity.",
+      "base_or_modification": "paper-specific",
+      "summary": "The game has no payoff equation. Equilibrium is a prose gloss. Sensitivity changes the logistic fold count among 8, 9, 10, and 11. Display (21) divides omega by omega.",
+      "variables": [
+        {
+          "symbol": "phi",
+          "normalized_name": "coefficient of variation",
+          "unit": "unspecified",
+          "definition": "coefficient of variation",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega",
+          "normalized_name": "cross-validated accuracy and its absolute change",
+          "unit": "unspecified",
+          "definition": "cross-validated accuracy and its absolute change",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "omega"
+      ],
+      "outputs": [
+        "phi"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q272-021",
+          "page": 23,
+          "label": "(21)",
+          "source_expression": "phi = omega / omega",
+          "normalized_latex": "\\phi=\\frac{\\omega}{\\omega}",
+          "purpose": "Coefficient of variation. The prose assigns both the baseline accuracy and the absolute change to omega.",
+          "variable_symbols": [
+            "phi",
+            "omega"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Display (21) is the only printed expression in this block. The game has no equation."
+      },
+      "objectives": [
+        "Judge whether the logistic classification is robust to the fold count."
+      ],
+      "constraints": [
+        "Folds are set to 8, 9, 10, and 11."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial strategy profile is printed."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary condition is printed."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The Nash gloss says neither side can raise its medal count by a unilateral strategy change. No payoff is printed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No game parameter is estimated. The variation ratio uses printed percents.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Refit the logistic model at each fold count.",
+          "Compute the coefficient of variation.",
+          "Call the model robust if the accuracy change stays within 5%."
+        ],
+        "software": [],
+        "convergence_criteria": "No game convergence criterion is printed."
+      },
+      "assumptions": [
+        "Each player is said usually to maximize own utility, such as winning more medals."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "No payoff, strategy set, or equilibrium computation is printed. The fold table omits the 10-fold row."
+      },
+      "handoff_outputs": [
+        "phi"
+      ],
+      "validation_refs": [
+        "Table 12."
+      ],
+      "computational_cost": "Not stated.",
+      "strengths": [
+        "The no-unilateral-gain gloss is explicit."
+      ],
+      "limitations": [
+        "Display (21) uses one symbol for two roles.",
+        "The fold table prints 8, 9, and 11, not the announced 10.",
+        "Reference 8 is a medical NASH paper."
+      ],
+      "missing_details": [
+        "A payoff function.",
+        "The 10-fold row of Table 12."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q272-001",
+      "to_model_id": "MU-C-Q272-002",
+      "handoff": "The medal-table model leaves never-medaled countries to the first-medal logistic."
+    },
+    {
+      "from_model_id": "MU-C-Q272-001",
+      "to_model_id": "MU-C-Q272-003",
+      "handoff": "Event medal counts from the same data become grey subsequences."
+    },
+    {
+      "from_model_id": "MU-C-Q272-004",
+      "to_model_id": "MU-C-Q272-005",
+      "handoff": "A significant coach test is followed by a logistic that quantifies coaching time."
+    },
+    {
+      "from_model_id": "MU-C-Q272-005",
+      "to_model_id": "MU-C-Q272-006",
+      "handoff": "The coach logistic is the model whose fold count is varied."
+    }
+  ]
+}

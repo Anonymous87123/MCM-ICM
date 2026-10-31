@@ -1,0 +1,1352 @@
+Problem Chosen         2024                     Team Control Number
+                  MCM/ICM
+      D         Summary Sheet                       2429211
+
+Dynamic Dams Model: A Multigranular, Human-Centered Approach For
+
+Modeling Water In The Great Lakes               ‡æò
+
+                     Summary
+
+‡¨Ü The Great Lakes serve as the heart of North America with their ebbs and flows providing the
+
+lifeblood of both the surrounding environment and societies. Because of the lake‚Äôs incredible
+‡øê importance, it is in the best interest of the world to protect them. Plan 2014, proposed by the
+
+International Joint Committee (ƒ≤C), manages the water in the Great Lakes by building up water
+behind both the Compensating Works dam at the Sault St. Marie River and Moses-Saunders dam
+and taking action as needed. To better serve the Great Lakes region, we seek to expand Plan 2014
+
+to regulate water levels optimizing for human needs and the preservation of ecosystems.
+
+‡∂î To determine optimal dam scheduling we modeled the Great Lakes as a dynamic flow network
+
+and created two control algorithms that utilize linear programming to solve for optimal dam
+
+ƒü ls schedules and water levels. The first control algorithm determines the optimal water level in each
+
+lake that is achievable through use of the Compensating Works and Moses-Saunders dams over the
+
+e course of a multiple-month time horizon. After the optimal water levels have been determined, we
+‚Ä´ ›º‚Ä¨d employ another control algorithm to plan how to schedule the dams over a daily time horizon to
+o achieve the water levels that equitably benefit stakeholders, but still adhere to the larger schedule. By
+
+utilizing these two control algorithms, it is possible to generate dam schedules that meet stakeholder
+
+·áô m needs while avoiding catastrophic events like flooding or dangerously low water levels.
+    An important aspect of our model is that it is mechanistic. Since we model real flows, it is
+
+‚Ä´ ‹Ñ‚Ä¨H important to determine accurate parameters to encode natural and artificial processes. However,
+‡æê T the Great Lakes are a highly complex system, and they are influenced by several stochastic and
+
+highly volatile processes. To account for this complexity, we utilized a data-based approach to best
+
+A coincide with the data that the ƒ≤C will have access to. By utilizing time lagged cross-correlation,
+
+we were able to determine the relationship of flow rates between Great Lakes. We also utilized
+
+‡∫± M linear regression to model the relationship between the height of each Great Lake and the rate
+
+of flow in its distributaries. This allowed us to include necessary complexities while maintaining
+
+ƒü accurate and faithful parameters.
+‚Ä´ ›º‚Ä¨Our model provides a number of key insights into effective management of the Great Lakes. We
+
+observe that using adaptive control algorithms, it is possible to determine schedules that avoid
+flooding in most cases and allow the ƒ≤C to be prepared when flooding is inevitable and to influence
+the location and time of the flood. Moreover, we observe that despite the large amount of time it
+
+‡æê takes for Lake Ontario to experience the effects of changes in Lake Superior, it is crucial to manage
+
+Lake Superior with the downstream effects on Lake Ontario in mind. When Lake Ontario faces a
+
+‡∫± challenging climate event, effective scheduling at Lake Superior can mitigate the damage and allow
+Lake Ontario to maintain optimal water levels.
+
+Keywords: Linear Program; Dynamic Flow Network; Human-Centered; Multigranular Approach.
+
+                                                          2          ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                     ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                MATHmodels
+Team # 2429211            Page 2 of 24
+
+                Contents
+
+1 Introduction                                                                                    3
+
+   1.1  ‡æò Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.2                                                                                            3
+        Restatement Of The Question . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+   1.3 Overview of Linear Programs . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      4
+2                                                                                                 5
+   ‡¨Ü 1.4 Assumptions And Justifications . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+   ‡øê Macroschedule Model                                                                          6
+
+3  2.1 Dynamic Network Formulation . . . . . . . . . . . . . . . . . . . . . . . . . . . .         6
+4                                                                                                  7
+   ‡∂î 2.2 Ideal Water Determination Algorithm . . . . . . . . . . . . . . . . . . . . . . . .       7
+5                                                                                                  9
+6  2.3 Linear Program Formulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       10
+                                                                                                  12
+   ƒü ls 2.4 Methods for Stakeholder Management . . . . . . . . . . . . . . . . . . . . . . . .
+   e 2.5 Data-Based Model Of The Hydrosphere . . . . . . . . . . . . . . . . . . . . . . .        12
+   ‚Ä´ ›º‚Ä¨d 2.6 Additional Considerations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+   ·áô o Microschedule Model                                                                        13
+   ‚Ä´ ‹Ñ‚Ä¨Hm Model Insights                                                                            14
+   ‡æê T 4.1 Dynamic Control Of The System . . . . . . . . . . . . . . . . . . . . . . . . . . .    15
+
+   4.2 Robustness to Severe Climate Events . . . . . . . . . . . . . . . . . . . . . . . . .      16
+
+   ‡∫± MA Sensitivity Analysis                                                                      17
+   ƒü Conclusions                                                                                  18
+   ‚Ä´ ›º‚Ä¨6.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+   6.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     18
+7                                                                                                 19
+8  ‡æê Future Exploration                                                                           20
+   ‡∫± Memo To The ƒ≤C
+
+A Notation                                                                                        21
+
+                                    2                                                             ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                  ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                          MATHmodels
+Team # 2429211                                       Page 3 of 24
+
+1 Introduction
+
+1.1 Background
+
+The Great Lakes are one of the most promi-
+
+nent features of the North American continent;     ‡æò
+they not only make up 20 percent of the world‚Äôs
+freshwater, but they also have a tremendous im-
+
+pact on the economy, climate, and ecosystems     ‡øê‡¨Ü
+of the United States and Canada. The Great
+Lakes region is one of the largest economies
+in the world, supporting 1.5 million people and
+forming the backbone for other industries which
+
+are valued at over 6 trillion dollars [8]. Addi-
+
+tionally, they also are the source of life for over
+
+3500 species of plants and animals across a
+
+‡∂î wide range of biomes making them indispens-
+
+able to the North American ecosystems [18].
+
+ƒü ls Due to the invaluable benefit that the Great Figure 1: A cloudless view of all of the Great
+
+Lakes provide us, it is of the utmost importance Lakes taken by a NASA satellite in August 2010
+
+e to society that they are flourishing in the best [13].
+‚Ä´ ›º‚Ä¨d way possible.
+o To ensure that the Great Lakes community is well-serviced, it is necessary to analyze the impacts
+·áô on the stakeholders dependent on the lakes. The stakeholders identified in the report by the Inter-
+m national Joint Committee (ƒ≤C) are: domestic water supply, commercial navigation, hydropower,
+
+environment, recreational boaters, docking companies, and shoreline (riparian) property owners
+
+‚Ä´ ‹Ñ‚Ä¨H [10].
+‡æê T The current methodology of managing the water flow in Lake Ontario is based on Plan 2014.
+A Plan 2014 prioritizes natural flow out of Lake Ontario into the St. Lawrence River while continually
+
+checking if a number of critical points have been reached. When a critical point has been reached,
+
+‡∫± the ƒ≤C takes action to control the level of water in the dam [2]. After the initiation of Plan 2014
+M in 2017, record precipitation hit the area and Lake Ontario experienced severe flooding [7]. This
+ƒü caused millions of dollars of damage and increased the risk for invasive species (like zebra mussels),
+‚Ä´ ›º‚Ä¨harmful algae bloom, and sewage blockage [15] [19] [10]. This event brought the effectiveness of
+
+the plan under scrutiny. Flooding has proven to be a continual threat to the lives and livelihoods
+of the stakeholders. Thus, ICM has set out to formulate water level control mechanisms that could
+‡æê prevent such dire events.
+
+1.2 Restatement Of The Question
+‡∫± To address the concerns of the ƒ≤C, we propose a number of human-centered algorithms that
+
+control the water levels of the Great Lakes to best address the residents‚Äô concerns around Lake
+Ontario and the St. Lawrence River. Our models and algorithms are fit to address the needs of
+
+various stakeholders, while ensuring that the water levels within the lakes remain safe. Motivated
+
+by the flooding damage from 2017, our model focuses on achieving water levels and currents that
+
+                                                           2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                              ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                 MATHmodels
+Team # 2429211                             Page 4 of 24
+
+benefit the stakeholders subject to hard constraints on the risk of flooding and low-water levels. Our
+
+outlook differs significantly from that of Plan 2014 to be more resilient in a highly volatile climate.
+
+We propose using a linear program to model the needs of the stakeholders with respect to the water
+
+level and modulating it with dynamic control of dams that account for the transportation times of
+
+the water. Inspired by the successes of Plan 2014 as a method to solve a complex constrained
+scheduling problem and equipped with the knowledge of where Plan 2014 falls short, we propose
+a model that utilizes the Compensating Works dam at the Sault. St. Marie River as well as the
+
+‡æò Moses-Saunders dam to do the following:
+‡¨Ü 1. Center the human impacts by modeling the needs of the stakeholders
+2. Robustness to severe climate events  ‡øê
+
+   3. Dynamic control of the system
+
+‡∂î 1.3 Overview of Linear Programs
+
+    Our control algorithms are implemented as linear programs. Linear programming is a widely-
+
+ƒü ls used optimization technique in the field of operations research and network science. It has various
+
+applications from policymaking to power plant deployment to production logistics to watershed
+
+e management [11, 20]. Linear programs rapidly found applications across the natural sciences,
+‚Ä´ ›º‚Ä¨d industry, government, and many other fields, and are a natural way to model many scheduling
+o problems where it is important to understand how to plan a series of actions to maximize an
+·áô objective (typically profit or some other measure of overall utility) subject to some constraints (e.g.
+m there might only be so much time available to us) [21]. Within the realm of environmental decisions,
+
+linear programming has been applied to solve complex questions like green-energy planning [5].
+
+‚Ä´ ‹Ñ‚Ä¨H Inspired by the success of linear programs in related fields, our control algorithms employ linear
+
+programming to determine how to utilize the dams within the Great Lakes. The advantages to be
+
+‡æê T expected from utilizing linear programming are as follows:
+ A ‚Ä¢ Algorithms for solving linear programs are widely available and extremely fast. Due to the
+ ‡∫± effectiveness of the famous Simplex algorithm and its variants, linear programs can be solved
+ M with incredible speed which is advantageous for testing out a variety of weather scenarios.
+ ƒü ‚Ä¢ Linear programs are interpretable. Practitioners need access to a white-box control algo-
+
+       rithm where it is possible to understand their decision.
+
+ ‚Ä´ ‚Ä¢ ›º‚Ä¨Linear programs are not defined with specific parameter values in mind. If practitioners need
+       to revise their predictions for environmental factors, they can easily rerun the model with the
+ ‡æê adjusted parameters.
+‡∫± However, it‚Äôs also important to acknowledge the downsides that accompany linear programs:
+‚Ä¢ The objective and constraints must be linear. This limits the ways we can model our system
+  considerably and, as such, it is important to recognize parts of the model that are remnants
+  of the required linearity.
+
+                                                     2                                       ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                           MATHmodels
+Team # 2429211                                                           Page 5 of 24
+
+‚Ä¢ When a linear program is impossible to solve, it is difficult to visualize what is going wrong.
+  If our control algorithms determine that there is no valid schedule that meets all constraints,
+  it will be difficult for the practitioner to find a way to determine a valid schedule.
+
+By keeping these disadvantages in mind, we designed our control algorithms to be effective even
+with the drawbacks of linear programming.
+
+‡æò 1.4 Assumptions And Justifications
+
+    As mentioned in the problem statement, the dynamic network flow problem is wicked. As such,
+
+‡¨Ü we make use of several assumptions to manage the complexity of our models.
+                ‚Üì i ‡øê Hydrology: The lake‚Äôs sizes remain con-
+
+                                                             stant and our system can be simplified
+
+                          ‡∂î to five nodes by not factoring in the
+
+                                                             auxiliaries like lake St. Claire.
+W e stant provides us with a consistent con-
+                                               ƒü ls Justification: Keeping the lake sizes con-
+                                          ‚Ä´ ›º‚Ä¨d tween flow and height for each lake.
+                                               o Based on the correlation data for the
+·áô Figure 2: Since water levels do not vary     version metric, as seen in figure 2 be-
+
+m much relative to total depth, we can approxi-
+                                               flow rates, the other nodes are negligi-
+‚Ä´ ‹Ñ‚Ä¨H We can then convert flow to marginal height
+                                               ble as compared to the main outflows
+
+mate the lake surface area as being constant.  between the Great Lakes.
+‡æê AT Systemic: Dams can be fully opened or closed within an hour and they have zero downtime.
+       Additionally, the lag times calculated from correlation data are accurate (Figure 2).
+
+‡∫± M Justification: We want to encapsulate granular dam schedules to minimize flooding and drought of
+ ƒü the Great Lakes community. Also, we need the lag times to be accurate to simulate the water
+by dividing by surface area.
+
+ ‚Ä´ ›º‚Ä¨flowing between the lakes.
+
+Scaling: The regressions we found for the flow rates from the lakes are linear (Figure 3) and the
+ ‡æê time horizon of the data is on the order of a few months.
+
+Justification: The regressions are done on the order of the change in height of the lakes, so the
+‡∫± flow rates for our purposes should be accurate. Since the time scale of our time lags is on the
+
+order of a few months, our time horizon encapsulates the lag time and our model should be
+used dynamically based on current data.
+
+                                                                                   2                 ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                     ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                         MATHmodels
+Team # 2429211                                                       Page 6 of 24
+
+2 Macroschedule Model
+
+    Here, we describe our algorithm for determining the optimal achievable water levels in the great
+lakes over a large time-period.
+
+2.1 Dynamic Network Formulation
+
+    We begin with a high-level overview of the model. The Great Lake water level problem can be
+
+‡æò studied as a dynamic network flow problem on the network shown in Figure 3. There are two arcs
+
+that we have some level of control over. The Sault St. Marie Dam allows us to send a constrained
+
+‡¨Ü amount of water from Lake Superior to Lakes Huron and Michigan. Water then flows naturally
+‡øê from Lakes Huron and Michigan into Lake Erie and from Lake Erie to Lake Ontario. Through the
+
+Moses-Saunders Dam, we can let a constrained amount of water out of Lake Ontario into the St.
+Lawrence River.
+    The reason why our analysis differs from the well-studied static flow problem is because it takes
+time for water to flow between each node. For instance, it takes roughly one month for flows in
+
+‡∂î Lake Superior to be observed in Lakes Huron and Michigan; it takes roughly three months to be
+
+observed in Lake Ontario. Thus, the network flow becomes dynamic‚Äìwhich significantly increases
+
+ƒü ls the problem‚Äôs modeling and computational difficulty.
+‚Ä´ ›º‚Ä¨de Superior
+  ·áô o Ì†µÌ±ê1,Ì†µÌ±°1          Erie
+     ‚Ä´ ‹Ñ‚Ä¨Hm H.M
+                                                       Ontario  Ì†µÌ±ê2  St. Law
+‡æê AT Figure 3: Network used in the model. Ì†µÌ±êÌ†µÌ±ñ is the capacity of the arc and Ì†µÌ±°Ì†µÌ±ñ is the transit time of the
+
+arc. All unlabeled arcs correspond to uncontrolled flows of water.
+
+‡∫± M More formally, the dynamic flow problem is defined over a network Ì†µÌ±Å = (Ì†µÌ±â, Ì†µÌ∞∏, Ì†µÌºá, Ì†µÌºè, Ì†µÌ±â+, Ì†µÌ±â‚àí).
+ƒü The vertex set is given by Ì†µÌ±â ‚à™ Ì†µÌ±â+ ‚à™ Ì†µÌ±â‚àí where Ì†µÌ±â+ represent source nodes, Ì†µÌ±â‚àí represent sink nodes,
+‚Ä´ ›º‚Ä¨and Ì†µÌ±â represent transit nodes. Each edge Ì†µÌ∞∏Ì†µÌ±ñ has a corresponding capacity Ì†µÌºáÌ†µÌ±ñÌ†µÌ±° and transit time Ì†µÌºèÌ†µÌ±ñ [6].
+
+The goal is to find the min-cost flow over a fixed time horizon Ì†µÌ±á that satisfies a particular objective.
+    To make this problem tractable, we employ Ford and Fulkerson‚Äôs time-expansion method
+to convert the problem into static flow [14]. We discretize the model over a fixed timestep, and
+
+‡æê we create copies of each node for each one over the entire time-horizon. We then assign edges
+
+based on the transit times between nodes. With this, the problem is now described by a network
+
+‡∫± Ì†µÌ±Å‚ó¶ = (Ì†µÌ±â, Ì†µÌ∞∏, Ì†µÌºá, Ì†µÌ±â+, Ì†µÌ±â‚àí). I.e. an augmented network that includes vertex copies but no transit times.
+This formulation is amenable to static-flow analysis.
+
+                                                                               2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                  ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                     MATHmodels
+Team # 2429211  Page 7 of 24
+
+2.2 Ideal Water Determination Algorithm
+
+    To determine the ideal water levels for each body of water, we developed a utility function
+for each shareholder that determines their optimal water level based on the historical averages.
+This optimal water level is determined based on the fluctuations in the water level and what each
+
+‡æò of the stakeholders listed as their ideal scenario from the ƒ≤C report. While navigation, docks,
+
+hydropower, and recreational boaters all prefer a fixed level of water, riparian owners, domestic
+water supply, and the environment prefer natural oscillations in water level [10]. To account for
+
+‡¨Ü this discrepancy, we simulated sinusoidal oscillations about the mean height of the lake for their
+
+preferred timescales and amplitudes scaled compared to the natural processes:
+
+Environment: The environment prefers natural annual water level oscillations to best align with
+
+ ‡øê the natural mating seasons of species like wetland birds [12].
+
+Domestic Water Supply: To preserve high water quality, the domestic water supply needs to
+
+ ‡∂î oscillate close to the average to prevent the inflow of sewage and harmful algae blooms
+
+       [15][10].
+
+ƒü ls Riparian Owners: The riparian owners prefer lower water levels with smaller amplitude os-
+       cillations, with higher frequency to increase the amount of sand re-deposition and dune
+ e replenishment [10].
+
+‚Ä´ ›º‚Ä¨d Navigation: Navigation prefers steadily high water levels because lower water levels can increase
+ o costs by 30 percent and double emissions in the Great Lakes [16]. Additionally, they want it
+ ·áô to not flood because they need ships to get through [10].
+
+m Hydropower: The dams prefer their flow rates to be constant or near their ideal operating range of
+ ‚Ä´ ‹Ñ‚Ä¨H around 7, 000Ì†µÌ±ö3 , so they prefer to be above the average water levels, similar to navigation, to
+
+                                  Ì†µÌ±†
+
+ ‡æê T maintain that [9].
+A Boaters: Boaters also prefer to be in a similar range of slightly above the average water level to
+
+       improve the speed they can travel through the water during the day [10].
+
+‡∫± M Docks: For the shipping ports in Montreal, they prefer to have constant low water levels so the
+       amount of the ideal amount of water coming downstream from the Moses-Saunders Dam
+ ƒü should be minimized during working hours.
+‚Ä´ ›º‚Ä¨There are conflicting interests among the stakeholders, and it is impossible to please each
+stakeholder. To account for this, we introduced a weighting system into our model to allow each
+
+‡æê stakeholder to be considered with different severity. As a result, our ideal water plots look like
+‡∫± figure 4 compared to the historical data
+
+2.3 Linear Program Formulation
+
+    Here we describe the Linear Program (LP) we propose to determine long-term dam schedules
+for the Great Lakes. We consider two sets that our decision variables and parameters belong to: (1)
+Bodies of Water and (2) Time. Our decision variables are the amount of water we let flow from the
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211                                                                                                                                                           Page 8 of 24
+
+                    Lake Superior ideal water level curve                                                                          Lake Ontario ideal water level curve
+
+                                                              Ideal                                                                                                                Ideal
+                                                                                                                                                                                   Historic
+183.45                                                        Historic                                             75.1
+
+183.40                                                                                                             75.0
+
+183.35Water level (m)                                                                                              74.9                                                  ‡æò
+183.30                                                                                            Water level (m)  74.8
+
+183.25                                                                                                             74.7                                        ‡¨Ü
+183.20                                                                                                             74.6
+
+        0       50  100 150 200 250 300 350                                                                              0     50     100       ‡øê150 200         250     300       350
+                                                                                                                                                    Day of year
+                        Day of year
+
+‡∂î Superior to the St. Mary River at each time-step and the amount of water we let flow from Lake
+ƒü ls Ontario to the St. Lawrence River1. The objective of the LP is to minimize the absolute difference
+
+between the achieved water level and the ‚Äúideal‚Äù water level. The LP is constrained by limits on the
+
+e water level ensuring no flooding occurs and the water level is never critically low. The variables
+‚Ä´ ›º‚Ä¨d and parameters and described in the first table in Appendix A. The algebraic form of the linear
+o program is shown below:
+Figure 4: Plot of the ideal water levels (solid orange lines) based on stakeholder needs for Lake
+Superior and Lake Ontario compared to the historical averages (dotted blue lines) from the dataset.
+
+·áô minimize
+                    m Ì†µÌ±ñ‚ààÌ†µÌ∞µ,Ì†µÌ±°‚ààÌ†µÌ±á‚àëÔ∏Å
+                                         ‚ÑéÀÜ Ì†µÌ±ñ,Ì†µÌ±° |             ‚àëÔ∏Å ‚àëÔ∏Å                                                                 Ì†µÌ±ìÀÜÌ†µÌ±° |
+                                                           (1 ‚àí Ì†µÌºîÌ†µÌ±ñ) | Ì†µÌ±ìÌ†µÌ±°
+‚Ä´ ‹Ñ‚Ä¨H subject to ‚Ñé1,Ì†µÌ±° = ‚Ñé1,Ì†µÌ±°‚àí1 ‚àí Ì†µÌ±•Ì†µÌ±°‚àí1 + Ì†µÌ±ü1,Ì†µÌ±°‚àí1Ì†µÌºîÌ†µÌ±ñ |‚ÑéÌ†µÌ±ñ,Ì†µÌ±°‚àí+                                                               ‚àí
+
+                                                                        Ì†µÌ±ñ‚ààÌ†µÌ∞µ Ì†µÌ±°‚ààÌ†µÌ±á
+
+                    ‡æê T ‚Ñé2,Ì†µÌ±°                                                                                                                   ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+                                                              (Ì†µÌªº2 ‚Ñé2,Ì†µÌ±° ‚àí1+Ì†µÌªΩ2)                                                                ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+                                                                     Ì†µÌ±†2
+                    A ‚Ñé3,Ì†µÌ±°=‚Ñé2,Ì†µÌ±°‚àí1  +  Ì†µÌ±†1  Ì†µÌ±•Ì†µÌ±°  ‚àíÌ†µÌ∞ø     ‚àí                                                             +  Ì†µÌ±ü2,Ì†µÌ±°‚àí1
+                                        Ì†µÌ±†2
+
+           ‡∫± M ‚Ñé4,Ì†µÌ±°=   ‚Ñé3,Ì†µÌ±°‚àí1      +  (Ì†µÌªº2 ‚Ñé2,Ì†µÌ±° ‚àíÌ†µÌ∞ø +Ì†µÌªΩ2)         ‚àí  (Ì†µÌªº3 ‚Ñé3,Ì†µÌ±° ‚àí1+Ì†µÌªΩ3)                                     +      Ì†µÌ±ü3,Ì†µÌ±°‚àí1  ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+                                               Ì†µÌ±†3                             Ì†µÌ±†3
+
+                    =                +  (Ì†µÌªº3 ‚Ñé3,Ì†µÌ±° ‚àí1+Ì†µÌªΩ3)           ‚àí                                             + Ì†µÌ±ü4,Ì†µÌ±°‚àí1                   ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+                                               Ì†µÌ±†4
+                    ‚ÑéÌ†µÌ±ñ,Ì†µÌ±° ‚â§ Ì†µÌ∞πÌ†µÌ±ñ‚Ñé4,Ì†µÌ±°‚àí1                                Ì†µÌ±¶Ì†µÌ±°‚àí1
+
+                    ƒü ‚ÑéÌ†µÌ±ñ,Ì†µÌ±° ‚â• Ì†µÌ∞∑Ì†µÌ±ñ                                                                                                             ‚àÄÌ†µÌ±ñ ‚àà Ì†µÌ∞µ, Ì†µÌ±° ‚àà [1, Ì†µÌ±á]
+                    ‚Ä´ ›º‚Ä¨Ì†µÌ±•Ì†µÌ±° ‚â§ Ì†µÌ±Ä1                                                                                                                ‚àÄÌ†µÌ±ñ ‚àà Ì†µÌ∞µ, Ì†µÌ±° ‚àà [1, Ì†µÌ±á]
+                    ‡æêÌ†µÌ±¶Ì†µÌ±° ‚â§ Ì†µÌ±Ä2                                                                                                                 ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+                                                                                                                                                ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+
+                ‡∫±Ì†µÌ±ìÌ†µÌ±° = Ì†µÌ±§ Ì†µÌ±ìÌ†µÌ±°‚àí1 + (1 ‚àí Ì†µÌ±§)Ì†µÌ±¶Ì†µÌ±°                                                                                                ‚àÄÌ†µÌ±° ‚àà [1, Ì†µÌ±á]
+
+    1In Appendix A, more variables are listed, but these are completely determined by equality constraints and are thus
+not listed as decision variables here.
+
+                                                                                                                                                                                2            ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                                                                                                      MATHmodels
+Team # 2429211                          Page 9 of 24
+
+All decision variables are nonnegative. The first four constraints capture how the height of
+
+water in each lake changes over time by tracking how much water enters the lake and how much
+
+leaves. We use the index Ì†µÌ±•Ì†µÌ±°‚àíÌ†µÌ∞ø to capture the fact that there is a lag between the changes in Lake
+
+Superior and the changes at other lakes. The 5th and 6th constraints allow us to ensure that no
+
+flooding or dangerously-low water levels occur. To capture the fact that dams can only let out so
+‡æò much water at a time, we introduce the 7th and 8th constraints to bound the amount of water we
+
+can let out of the dams. Lastly, we track the flow in the St. Lawrence River with the 9th constraint.
+‡¨Ü 2.4 Methods for Stakeholder Management
+    As ƒ≤C notes, this problem is particularly difficult because of the often-conflicting requests from
+‡øê the various stakeholders around the Lake Ontario and St. Lawrence River regions. Our algorithm
+
+provides a method to weight stakeholder interests, however, it relies on the practitioner to assign
+these weights manually. This has the potential to create divides between groups of stakeholders.
+Thus, some sort of heuristic should be used to equitably assign these weights on a per-stakeholder
+basis.
+
+‡∂î We propose the following methodology to determine fair weightings between ideal water level
+
+curves:
+ƒü els ‚Ä¢ We create an initial set of weights Ì†µÌ±§0 and set them as parameters in the model.
+‚Ä´ ›º‚Ä¨d ‚Ä¢ Then we simulate roughly five months2, and observe the forecasted ideal water levels.
+·áô o ‚Ä¢ We then proceed with the schedule for two months.
+m We simulate beyond the necessary time horizon to ensure that our model accounts for future
+‚Ä´ ‹Ñ‚Ä¨H impacts of flows in the other lakes. In particular, we designate a three-month buffer since this is
+
+the time taken for an effect in Lake Superior to be observed in Lake Ontario.
+
+‡æê T After adopting the given schedule for the two month period, we calculate the net error between
+A the real observed water levels and the ideal curves provided per stakeholder.
+‡∫± M Ì†µÌºÄÌ†µÌ±ñ = ‚àëÔ∏Å |‚ÑéÌ†µÌ±° ‚àí ‚ÑéÀÜÌ†µÌ±°|
+      ƒüÌ†µÌ±°                 Ì†µÌ±° ‚àà [1, 60]
+
+‚Ä´ ›º‚Ä¨This gives us per-stakeholder errors {Ì†µÌºÄ1, . . . Ì†µÌºÄÌ†µÌ±õ} for Ì†µÌ±õ stakeholders. Note that higher values of
+
+Ì†µÌºÄÌ†µÌ±ñ correspond to a lower level of stakholder Ì†µÌ±ñ‚Äôs satisfaction. Keeping this in mind, we can reassign
+weights for the next time horizon with
+
+      ‡æê Ì†µÌ±§1Ì†µÌ±ñ = Ì†µÌºÄÌ†µÌ±ñ
+                                                             Ì†µÌ±ò Ì†µÌºÄÌ†µÌ±ò
+
+‡∫± That is, the new stakeholder weights are their normalized net errors from the last time period.
+This allows stakeholders that had greater deviations to be prioritized during the next time period.
+
+    2The chosen time horizon is left up to the practitioner, but we recommend choosing one of the same order. I.e. 2-6
+months
+
+                                                  2                                          ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                        MATHmodels
+Team # 2429211                                                                                                                                    Page 10 of 24
+
+2.5 Data-Based Model Of The Hydrosphere
+
+Modeling the movement of water in the Great Lakes is difficult and requires a number of
+
+assumptions to make the problem tractable. To ground our model in reality we used a data-based
+
+approach to determine time lag, flow rates out of lakes, and other sources of water outside of the
+
+flow between the lakes.
+    We first needed to approximate the time lags between the lakes for our LP to create dam
+
+‡æò schedules. For instance, we needed to know that it takes roughly two months for the effect of a flow
+
+in Lake Michigan to be observed in Lake Ontario. To identify the latencies, we used time-lagged
+
+‡¨Ü cross correlation on the provided water level time series to find where the correlation is maximized.
+‡øê For example, the time-lagged cross-correlation between the water levels in Lake Superior and Lake
+
+Michigan is given by Figure 5.
+‡∂î 0.85
+  Time lagged cross-correlation between Lake Huron and Lake Erie                                              Time lagged cross-correlation between Lake Erie and Lake Ontario
+
+0.90                                                                                                            0. 7
+
+ƒü ls 0.80                                                                                                     0. 6
+
+                                                                                                              0. 5
+e 0.75
+Correlation                                                                                                   0. 4
+                                                                                                 Correlation
+‚Ä´ ›º‚Ä¨od 0.70                                                                                                     0. 3
+
+                                                                                                              0. 2
+
+·áô 0.65                                                                                                        0. 1
+m ‚àí10
+                                                                                                              0. 0
+
+‚Ä´ ‹Ñ‚Ä¨H Figure 5: Time lagged cross-correlation examples for between Lake Huron and Erie and between              ‚àí 0.1
+‡æê T Lake Erie and Ontario computed from the dataset given for Problem D in [1].
+                ‚àí5  0                  5      10                                                                     ‚àí 10  ‚àí5  0                  5            10
+
+                    Time lag (months)                                                                                          Time lag (months)
+
+A The correlation is maximized at a time lag of 1. Thus, we can interpret that a flow in Lake
+‡∫± Superior will take approximately a month to propagate in Lake Michigan. The full matrix of these
+M time-lagged correlations is given by Table 1.
+                                          ƒüSup. Mich + Huron Erie Ont.
+                    ‚Ä´ ›º‚Ä¨Mich. + Huron -1Sup.0                                                                   1            33
+
+                                                                                                              0            12
+
+                    ‡æêErie                 -3                                                                  -2           00
+                        Ont.              -3                                                                  -2           00
+
+   ‡∫±Table 1: Time lag matrix between the Great Lakes
+
+Additionally, we used the datasets to run a linear regression, pictured in figure 6, to obtain the
+flow rates as a function of the height of the lake, which we will use to model the flow in and out of
+
+the lakes. We suspect this to be true because if we approximate flow using Bernoulli‚Äôs principle in
+
+fluid mechanics, we find that by expanding for small oscillations we will have locally linear results.
+
+                                                                                                                                                            2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                               ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                                                                                  MATHmodels
+Team # 2429211                                                                                                                                    Page 11 of 24
+
+                Niagara Riverflow vs Lake Erie height                                                                                          Detroit River Ô¨Çow vs Lake Michigan/Huron height
+
+8000
+                                                                                                      7500
+
+7500                                                                                                                                     7000
+
+Niagara river Ô¨Çow ( m3s‚àí 1)7000                                                                                                          6500      ‡æò
+                                                                                                             Detroit River Ô¨Çow (m3s‚àí 1)65006000
+
+6000                                                                                                                                     5500     ‡¨Ü
+5500                                                                                                                                     5000
+
+5000                                                                                                                                     4500  ‡øê
+                                                                                                                                         4000
+
+‡∂î Figure 6: Flow along the Niagara River and Detroit River as a function of the height (relative to
+
+sea level) of the lakes they flow from. The regression formulae are given by:
+         173.8 174.0 174.2 174.4 174.6 174.8 175.0 175.2                                                                                 175.50 175.75 176.00 176.25 176.50 176.75 177.00 177.25 177.50
+                               Lake Erie height ( m )                                                                                                          Lake Michigan/Huron height ( m)
+
+                ƒü ls Ì†µÌ±ìNiagara = 2088.917‚ÑéErie ‚àí 357993.824 with (R2 = 0.928)
+                e Ì†µÌ±ìDetroit = 1611.581‚ÑéHuron ‚àí 278618.674 with (R2 = 0.850)
+‚Ä´ ›º‚Ä¨od Lastly, we also approximated other aspects of the hydrosphere (precipitation, groundwater,
+·áô evaporation, and surface runoff) by modeling the inflow of water based on how much it rained
+m because according to the biohydrological database for the Great Lakes makes up 20 percent of the
+
+water flowing into the Great Lakes [3]. Using the NOAA data set of rainfall, evaporation, and
+
+‚Ä´ ‹Ñ‚Ä¨H runoff into the Great Lakes [17], we determined the total inflow that would occur each month based
+
+on historical data. We visualize the historical rainfall that occurred during each month in Figure 7.
+         ‡æê T Lake Superior net exogenous Ô¨Çow
+‡∫± 0.15                                                 A 25p                                                                                   Lake Ontario net exogenous Ô¨Çow
+ƒüM 0.10                                                50p
+                                                                                                                                                                                                                          25p
+                                                       75p                                                       0. 4                                                                                                     50p
+                                                                                                                                                                                                                          75p
+
+Marginal height (m)                                                                                              0. 3
+                                                                                            Marginal height (m)
+0. 05                    ‚Ä´›º‚Ä¨                                                                                       0. 2
+
+  0. 00               ‡æê                                                                                          0. 1
+‚àí 0.05
+
+         ‡∫± Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec                                                                                     Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+                                            Month
+                                                                                                                                                                                  Month
+
+Figure 7: 1st (in blue), 2nd (in red), and 3rd (in orange) quartiles of exogenous flow into Lakes
+
+Superior and Ontario
+
+                                                                                                                                                            2                                                                  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                                                               ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                                                                                  MATHmodels
+Team # 2429211                                                                         Page 12 of 24
+
+2.6 Additional Considerations
+
+    Aside from the data-driven parameters we obtained, we considered other parameters to help
+make our model more realistic:
+
+‡æò Seasonal Wave Attenuation: To consider the seasonality of the Great Lakes we also add an
+       attenuation factor that reduces the flow between the lakes. We added this factor because a
+       study by Peng Bai showed that ice attenuates the waves in the Great Lakes and thus should
+ ‡¨Ü reduce their flow from their turbulent effects [4].
+
+Fuzzing The Model: Since exogenous inflow is highly random, we added noise to historical inflow
+data to increase the robustness of our model. This makes the model more robust by removing
+biases towards certain shores at different water levels and helps us accurately assess the
+
+‡øê drought and flooding risk factors.
+3 Microschedule Model
+
+‡∂î One aspect that our Macroschedule model does not incorporate are the proximal effects of
+ƒü ls opening the Moses-Saunders Dam. As noted by the problem statement, even small variances in the
+
+water level can have drastic implications for stakeholders around Lake Ontario and the St. Lawrence
+
+e River. As such, it is not enough to know how to release water in a day. It is also important to time
+‚Ä´ ›º‚Ä¨d outflows when it is generally most beneficial for these stakeholders. We develop a linear program
+
+that schedules intra-day outflows to maximize community benefit.
+
+·áô o Unlike the macroscheduling problem, there is no substantial time lag on flows between nodes in
+m the microscheduling problem. Thus, we can exert more immediate control over the water level and
+
+flows in Lake Ontario and the St. Lawrence River. We use a similarly formulated linear program
+
+‚Ä´ ‹Ñ‚Ä¨H to represent these flows, and the objective of maximizing proximity to ideal water levels and flows.
+
+The variables of the problems are defined in the second table of Appendix A
+
+‡æê T And the LP is formulated as follows:
+‡∫± A minimize
+  ‚Ä´›º‚Ä¨ƒüM subject to‚àëÔ∏Å                      ‚àí  ‚ÑéÀÜ Ì†µÌ±° |  + Ì†µÌªº2| Ì†µÌ±ìÌ†µÌ±°  ‚àí  Ì†µÌ±ìÀÜÌ†µÌ±° |
+                    Ì†µÌªº1 | ‚ÑéÌ†µÌ±°
+
+                Ì†µÌ±° ‚ààÌ†µÌ±á                                                       ‚àÄÌ†µÌ±° ‚àà Ì†µÌ±á
+                                                                             ‚àÄÌ†µÌ±° ‚àà Ì†µÌ±á
+                ‚ÑéÌ†µÌ±° = ‚ÑéÌ†µÌ±°‚àí1 + Ì†µÌ∞πÌ†µÌ±° ‚àí Ì†µÌ±•Ì†µÌ±°                                    ‚àÄÌ†µÌ±° ‚àà Ì†µÌ±á
+                Ì†µÌ±ìÌ†µÌ±° = Ì†µÌºî Ì†µÌ±ìÌ†µÌ±°‚àí1 + Ì†µÌ±ò (1 ‚àí Ì†µÌºî)Ì†µÌ±•Ì†µÌ±°
+                Ì†µÌ±•Ì†µÌ±° ‚â§ Ì†µÌ±Ç
+                ‚ÑéÌ†µÌ±á = Ì†µÀÜÌ∞ª
+
+‡æê The first two constraints implement height and flow rate updates in Lake Ontario and the St.
+
+Lawrence river respectively. Notice that the second constraint models the river flow rate as a convex
+‡∫± combination of inflow from the dam and its prior flow rate. This is influenced by sound physical
+
+intuition, but it is difficult to accurately model this parameter based on available data. The third
+constraint limits total outflow from the dam, and the fourth enforces that a certain amount of water
+has left Lake Ontario by the end of the day. This ensures that the microscheduler adheres to the
+
+daily requirements set forth by the larger schedule. Our proposed synthesis of the macroscheduler
+
+and microscheduler is show in Figure 8
+
+                                                                                                 2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                    ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                       MATHmodels
+Team # 2429211                                                                Page 13 of 24
+
+    Due to lower lag times, the model can satisfy daily requirements relatively well. This is important
+because there are likely days when dam usage must be limited to coordinate with monthly schedules.
+However, the water level can still be modulated to a level where stakeholders can still be largely
+satisfied.
+
+                Set Time Horizon                                               ‡æò
+
+                                                                              ‡¨Ü
+                Macroscheduler                ‡øê Microscheduler
+
+Manage Stakeholder                             Find Ideal Curves
+     Expectations
+                                                     Fit Micro
+ ‡∂î Fit Macro                                       Parameters
+ ƒü ls Parameters
+‚Ä´ ›º‚Ä¨e Generate Schedule                         Generate Schedule
+                                Approve
+
+                            Test & Determine
+                               Robustness
+                ·áô mod Collect Data
+                ‚Ä´ ‹Ñ‚Ä¨H Figure 8: The pipeline for using our control algorithms.Improve Model
+‡æê AT 4 Model Insights
+‡∫± ƒüM Here we outline a brief overview of the main insights of our model:
+‚Ä´ ‚Ä¢ ›º‚Ä¨Effectively managing Lake Ontario means effectively Managing Lake Superior. Lake Supe-
+  rior is able to influence Lake Ontario after a significant time delay which makes proactive
+  scheduling at Lake Superior able to create desirable water levels at Lake Ontario.
+‡æê ‚Ä¢ Our model successfully achieves the desired water levels in most lakes even with varying
+  degrees of rainfall.
+‡∫± ‚Ä¢ After determining optimal water levels through our macro-schedule algorithm, our micro-
+  schedule algorithm is able to determine realistic and effective schedules for scheduling a dam
+during any particular day.
+
+                                                                                        2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                           ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                              MATHmodels
+Team # 2429211                                                                      Page 14 of 24
+
+4.1 Dynamic Control Of The System
+
+Most dams use a heuristic approach for dam scheduling called rule curves. That is, dams are
+
+given fixed schedules depending on water level and precipitation thresholds. While our model is
+
+amenable to producting rule curves, we believe that the dynamic nature of scheduling makes it
+
+‡æò superior to this approach.
+    One of the most critical aspects of the model is that it can make decisions by ‚Äúlooking ahead‚Äù.
+‡¨Ü That is, given a range of forecasts, the model can schedule flows that are both robust to climate
+
+events and still satisfy the needs of stakeholders. This way, action can be taken to mitigate potential
+crises well before they actually occur.
+‡øê After we ‚Äúlook ahead‚Äù we can then use a combination of the macroscheduler and microscheduler
+
+model to forecast both the four-month time horizon and then locally on the daily horizon. By
+                   ‡∂î Microscheduler Ô¨Çow error rate
+modeling both of these time horizons, we gain valuable insights on the importance of factoring in
+the time lags to forecasting the dam schedules. The efficacy of our model is shown in Figure 9:
+
+Error (%)ƒü els 1.4
+         ‚Ä´ ›º‚Ä¨d 1.2
+         o 1.0     5  10           15  20
+         ·áô m 0.8
+         ‚Ä´ ‹Ñ‚Ä¨H 0.6
+         ‡æê T 0.4
+         A 0.2
+         ‡∫± M 0.0
+          ƒü 0
+                          Hour
+‚Ä´ ›º‚Ä¨Figure 9: Plot of the percent error between ideal flow and the flow achieved by the microscheduler
+‡æê after the optimal water levels were determined by the macroscheduling algorithm.
+                ‡∫±
+
+                                                                                              2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                 ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                    MATHmodels
+Team # 2429211                                                                                                                                                                                                                                                             Page 15 of 24
+
+4.2 Robustness to Severe Climate Events
+
+We tested the schedules produced by our
+
+control algorithm using past rain/runoff/evap-                                                                                                                                                                             Quartile 1
+oration data collected from [17]. We deter-
+                                                                                                                                                                                                                   Superior
+
+mined the average amount of total rain, runoff,                                                                                                                                     Water Height                                                             176.5         ‡æòHuron/Michigan
+                                                                                                                                                                                                                                                             176.4
+                                                                                                                                                                               183.4                                                                         176.3
+
+and evaporation for each month from 1980 to                                                                                                                                                                                  ‡øê 175.8                         ‡¨Ü176.2        Ontario
+2020. Due to the fact that our model uses 183.2                                                                                                                                                                                                         175.7
+a time-step of one day and the data available 183.0                                                                                                                                                                                                          176.1
+form [17] tracks how much rain/runoff/evap- 182.8                                                                                                                                                                                                            176.0
+oration occurred each month, we determined 182.6                                                                                                                                                                                                             175.9
+how much it rained per day by running a cu-
+bic spline through the historical averages and 174.5                                                                                                                                                               Erie
+
+then dividing the value for total rain, runoff,                                                                                                                                                   174.4                                                      75.0
+                                                                                                                                                                                                  174.3
+and evaporation by 30 to account for the fact                                                                                                                                       Water Height  174.2                                                      74.8
+                                                                                                                                                                                                  174.1
+‡∂î that the month data was the total over a month                                                                                                                                                  174.0                                                      74.6
+
+(roughly 30 days). This allows us to capture the                                                                                                                                                            0                                                74.4
+
+natural patterns of rain, runoff, and evaporation                                                                                                                                                 183.4                                                      74.2
+                                                                                                                                                                                                  183.3
+ƒü ls while making the data usable in our model. We                                                                                                                                                183.2            50 100 150 200 250 300 350                          0 50 100 150 200 250 300 350
+                                                                                                                                                                                                  183.1
+ran a similar procedure to determine the 25th                                                                                                                                                     183.0                        Days                                                      Days
+                                                                                                                                                                                                  182.9
+e and 75th percentile amount of rain, runoff, and                                                                                                                                                                            Qaurtile 2
+‚Ä´ ›º‚Ä¨d evaporation that occurred on each day.                                                                                                                                                        174.50
+o After obtaining these rain values, we ran our                                                                                                                                                   174.45           Superior                                           Huron/Michigan
+·áô linear program using the historic rain level (ei-                                                                                                                                               174.40
+m ther the 25th, 50th or 75th percentile) at body of                                                                                                                                              174.35                                                     176.5
+‚Ä´ ‹Ñ‚Ä¨H water Ì†µÌ±ñ during time Ì†µÌ±° for the Ì†µÌ±üÌ†µÌ±ñ,Ì†µÌ±° parameter. The                                                                                                                                        174.30
+                                                                                                                                                                                                  174.25                                                     176.4
+time horizon for these experiments was set to a                                                                                                                                                   174.20
+                                                   Water Height                                                                                                                                                                                              176.3
+‡æê T year and the ideal water was determined using
+                                                                                                                                                                                                                                                             176.2
+the techniques in Section 2.2. The water levels
+                                                                                                                                                                                                                                                             176.1
+A achieved by the model are shown in Figures 10
+                                                                                                                                                                                                                                                             176.0
+and 11.
+                                                                                                                                                                                                                                                             175.9
+‡∫± M We observe that the Lake Ontario water lev-
+ƒü els are very consistent across different levels of                                                                                                                                                                                                         175.8
+
+                                                                                                                                                                                                                   Erie                                                                 Ontario
+
+                                                   Water Height                                                                                                                                                                                              75.1
+                                                                                                                                                                                                                                                             75.0
+                                                                                                                                                                                                                                                             74.9
+                                                                                                                                                                                                                                                             74.8
+                                                                                                                                                                                                                                                             74.7
+                                                                                                                                                                                                                                                             74.6
+
+‚Ä´ ›º‚Ä¨total rain, runoff, and evaporation while Lake                                                                                                                                                  174.15                                                     74.5
+                                                                                                                                                                                                                                                             74.4
+Superior‚Äôs levels are not. This demonstrates
+that effectively scheduling Lake Superior is cru-                                                                                                                                                 0            50  100 150 200 250 300 350                          0  50  100 150 200 250 300 350
+
+                                                                                                                                                                                                                   Days                                                                 Days
+
+‡æê cial to having desirable water levels at Lake On- Figure 10: Plots of the 1st and 2nd quartiles of the
+
+tario. The types of schedules that are required in water levels in each of the Great Lakes drawn from
+‡∫± Lake Superior to create desirable water levels at the historic rain data. The water levels achieved
+
+Lake Ontario are non-robust to severe changes by the model are shown with dotted blue lines and
+in total inflow to the Great Lakes, but the water the ideal water levels with solid orange lines.
+levels in the rest of the Great Lakes are indeed
+
+robust to climate events.
+
+                                                                                                                                                                                                                                                                                     2        ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                                                                                                                                                                                                              ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                                                                                                                                                                                                           MATHmodels
+Team # 2429211                                                                          Page 16 of 24
+
+                                            Quartile 3
+
+                      Superior                              Huron/Michigan
+
+              183.45                              176.5
+
+              183.40                              176.4
+
+Water Height  183.35                              176.3                                 ‡æò
+              183.30                              176.2
+
+              183.25                              176.1                     ‡¨Ü
+              183.20                              176.0
+
+              ‡øê 174.5                                       Ontario
+                                      Erie
+                                                  75.1
+              174.6                               75.0
+              ‡∂î 174.4                             74.9
+Water Height  ƒü ls 174.2                          74.8
+               ‚Ä´ ›º‚Ä¨de 0                             74.7
+              174.3                               74.6
+
+o Figure 11: Plots of achieved water levels using the third quartile rain data (extreme rain). The water0
+·áô levels achieved by the model are shown with dotted blue lines and the ideal water levels are shown
+m with solid orange lines.
+                      50 100 150 200 250 300 350            50 100 150 200 250 300 350
+
+                                     Days                            Days
+
+‚Ä´ ‹Ñ‚Ä¨H 5 Sensitivity Analysis
+‡æê T Since our model is primarily mechanistic, it relies heavily on parameters that represent real-life
+A values such as flow rates, flow decay, and attenuation. As such, it is reasonable to observe how the
+
+model‚Äôs output changes as we modulate some of these parameters. Specifically, we vary Ì†µÌºî‚Äìthe St.
+
+‡∫± M Lawrence river flow decay rate.
+ƒü Moreover, we determine that it is possible to avoid flooding and dangerously low water levels
+‚Ä´ ›º‚Ä¨while achieving desirable water levels in all lakes even with varying degrees of total inflow to
+
+the lakes. This demonstrates the value of our linear programming approach as a valuable tool to
+determine dam schedules.
+‡æê The value that was used in the final model was 0.8. This was chosen based off observing flows in
+
+the St. Lawrence River and how they change with respect to the height of Lake Ontario. However,
+‡∫± since there isn‚Äôt data on the status of the dam at these times, this link is admittedly tenuous. Thus,
+
+we decided to observe the effects of modulating this parameter on the net flow error in the St.
+Lawrence River. That is, with different decay rates, we measure how hard is it for our control
+algorithm to match the desired flow rate in the St. Lawrence River.
+
+                                                                                                  2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                                     ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                        MATHmodels
+Team # 2429211                                                                  Page 17 of 24
+
+    We uniformly vary the parameter Ì†µÌºî in the range [0.7, 0.825] and observe the net error rate. We
+see that:
+
+                                                       Yearly average Ô¨Çow error based on œâ
+
+                Net Ô¨Çow error  1000                                            ‡¨Ü‡æò
+                                980
+
+                               960
+
+                               940                                       ‡øê
+
+                ‡∂î Figure 12: Flow in the St. Lawrence River is sensitive to Ì†µÌºî920
+
+                                     0.70  0.72  0.74  0.76  0.78  0.80  0.82
+
+                                                       œâ
+ƒü ls The error here varies quite significantly. In some sense, this is not surprising. Complex systems
+e such as the Great Lakes are very sensitive to slight physical changes. To maximize the effectiveness
+‚Ä´ ›º‚Ä¨d of the model, it is therefore important to be able to measure these parameters accurately, and provide
+
+them to the model with high-resolution.
+
+·áô o In conclusion, the model is largely robust to changes in climate forecasting. However, due
+m to its mechanistic nature, it is quite sensitive to parameters describing natural and artificial flow
+
+processes.
+
+‚Ä´ ‹Ñ‚Ä¨H 6 Conclusions
+ ‡æê T ‚Ä¢ Our model demonstrates that to effectively manage Lake Ontario, the ƒ≤C must also effectively
+ A manage Lake Superior. Lake Superior has the capacity to send large amounts of water to
+
+       Lake Ontario. While the time it takes for Lake Ontario to feel the effects of actions taken at
+
+ ‡∫± M Lake Superior, by proactively increasing the water sent from Lake Superior, Lake Ontario
+ ƒü can more effectively manage its water levels.
+‚Ä¢ Dam schedules will consistently make tradeoffs betweeen flood/drought security and stake-
+  holder satisfaction. It is important to manage stakeholder expectations and use equitable
+
+‚Ä´ ›º‚Ä¨prioritization methods to ensure overall contentedness.
+
+‚Ä¢ Testing schedules against different severities of exogenous inflow yield outcomes that are
+
+‡æê significantly more robust to climate and hydrologic events. Regardless of the scheduling
+
+  algorithm, plans should always be tested against real historical inflows as well as randomly
+
+‡∫± simulated climate events.
+
+                                                                                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                                MATHmodels
+Team # 2429211  Page 18 of 24
+
+6.1 Strengths
+
+   1. Due the speed of solving linear programs, our model can be employed to develop schedules
+       for a large number of potential forecasts and ideal water levels. This allows practitioners to
+       be more prepared for extreme weather events by being able to prep schedules for best-case,
+
+ ‡æò worst-case, and average-case weather events. If it becomes evident that the environmental
+
+       data that the dam control schedule was created from is poor, a new schedule can be quickly
+       substituted in to mitigate damage.
+
+‡¨Ü 2. Our control algorithms can effectively meet stakeholder demands while the water levels re-
+       main close to historical averages. The Great Lakes water system needs to flow naturally while
+ ‡øê still accounting for the demands of stakeholders, so our model must meet this benchmark.
+   3. Due to the constrained nature of our control algorithms, practitioners will always be aware
+
+       of the maximum and minimum water levels that are produced by the schedule. Since actions
+       taken at Lake Superior affect Lake Ontario with a severe delay, there is an associated risk
+
+ ‡∂î with increasing or decreasing the flow through the Compensating Works dam. Our control
+
+       algorithms allow for practitioners to predict the effect of the schedules they implement.
+
+ƒü ls 4. Our model is extremely flood and drought-resistant. In our analysis using realistic precipita-
+       tion data our model didn‚Äôt experience any droughts or floods.
+
+‚Ä´ ›º‚Ä¨ode 6.2 Weaknesses
+·áô Practitioners need to be aware of the flaws of our model so that unexpected results from our
+m control algorithms can be mitigated. The weaknesses of our model are as follows:
+ ‚Ä´ ‹Ñ‚Ä¨H ‚Ä¢ Due to the mechanistic nature of our model, the schedule of the model is noticeably sensitive
+ ‡æê T to changes in parameters related to natural processes. For example, if the rate of flow decay
+
+       in the St. Lawrence River is poorly measured, the model will produce a schedule that differs
+
+ A slightly, but noticeably, from the true ideal schedule. Practitioners should be aware of this
+
+       flaw and apply the model several times with varying values for parameters like the decay rate
+
+ ‡∫± M and rain schedule. While the schedule will be sensitive to poor measurements, it will provide
+ ƒü valuable insights into how to best manage the dams.
+
+    ‚Ä¢ Our model assumes a linear relationship between the height of a body of water and the total
+       outflow which may change over time as the landscape of the Great Lakes changes. To account
+
+ ‚Ä´ ›º‚Ä¨for this, practitioners should routinely track the relationship between the height of each lake
+
+       and the observed flows of each lake‚Äôs distributaries.
+
+ ‡æê ‚Ä¢ Due to the constraints placed on flooding and dangerously low water levels, our model will
+       occasionally determine that an adequate schedule is possible. If practitioners encounter this
+ ‡∫± issue when using our proposed control algorithms, they must choose the location and extent
+       of flooding that will necessarily occur. We believe that no model can completely avoid
+       flooding, so we believe that our model‚Äôs ability to have controlled and predictable flooding
+       is sufficiently safe.
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211  Page 19 of 24
+
+7 Future Exploration
+
+    To address some of the weaknesses we identified, we believe that our model could be expanded
+in the following ways:
+
+    ‚Ä¢ Pull from more refined data: By pulling from more refined data, our model would have more
+       accurate information hydrological information. As a result, our model could improve the
+
+ ‡æò mechanistic nature of our model.
+
+    ‚Ä¢ Safety Optimizer: Another extension of our model could be using the results from running
+
+ ‡¨Ü many fuzzy trials to determine which dam schedule is optimal against random weather
+
+       conditions. This would allow practitioners to understand the risk assosiated with the schedules
+
+ ‡øê they select.
+
+    ‚Ä¢ Create an algorithm to determine which stakeholders to prioritize. The time of year has a
+       large effect on the possibility of pleasing any particular stakeholder. A future direction of
+
+ ‡∫±‡æê‚Ä´‹Ñ‚Ä¨·áôƒü‚Ä´›º‚Ä¨MƒüAT‡∂îHmodels this work would be to implement the time of year into our weighting of the stakeholders.
+        ‚Ä´›º‚Ä¨
+
+      ‡æê
+    ‡∫±
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211  Page 20 of 24
+
+8 Memo To The ƒ≤C
+
+Dear ƒ≤C Leadership,
+
+    In light of the successes and failures experienced by Plan 2014 in regards to controlling the
+Moses-Saunders dam at Lake Ontario, we developed two linear programming-based control
+algorithms to effectively determine how to jointly manage the Compensating Works Dam at Lake
+Superior and the Moses-Saunders Dam at Lake Ontario to achieve ideal water levels throughout the
+
+‡æò Great Lakes. We believe that our algorithms build off of the adaptive control approach that Plan
+
+2014 has successfully implemented while avoiding the limitations of Plan 2014 that have allowed
+
+‡¨Ü for flooding in recent years.
+‡øê In our model, we employ linear programming and a series of algorithms that forecast the needs
+
+of the stakeholders to determine how much we need to open dams at Lake Superior and Ontario.
+Because we are using a linear program, our model can simulate hundreds of thousands of scenarios
+within a few minutes, this would allow for the ƒ≤C to have a more holistic approach to assessing
+
+‡∂î the risks of running certain dam schedules for their stakeholders. Our algorithm for determining
+
+the optimal levels of stakeholders is based on their desires outlined in the ƒ≤C report and draws from
+historical water levels [10]. Our model also utilizes historical data to simulate natural processes
+
+ƒü ls in the hydrosphere in the following ways:
+ ‚Ä´ ›º‚Ä¨e ‚Ä¢ We account for the time it takes water to flow between lakes. We were able to correlate the
+ d water level data between different lakes to estimate the time it taken for flows to propagate
+ o through the system.
+ ·áô m ‚Ä¢ We use a data-driven approach to determine flow rates of naturally flowing sources. More-
+
+       over, using the data available to us, we found a strong linear relationship between height and
+
+ ‚Ä´ ‹Ñ‚Ä¨H the rate and which water flows out.
+ ‡æê T ‚Ä¢ Our model accounts for various levels of rainfall and other hydrological processes. We utilized
+
+       a combination of precipitation from NOAA and preexisting models to get randomized, but
+
+ A representative rain data to run our situations [17] [22].
+‡∫± M To show the resilience of our model we ran it under various extreme climate events and found
+
+it was effective in preventing floods and droughts. Specifically, the way our algorithms achieve
+
+ƒü near-optimal water levels even with severe climate events is by creatively managing Lake Superior.
+
+By incorporating the relationship between Lake Superior and Lake Ontario into our model, we are
+
+‚Ä´ ›º‚Ä¨able to achieve schedules that allow Lake Ontario to remain safe and beneficial to the stakeholders.
+‡æê We believe that our model provides the ƒ≤C with valuable insights about how to best manage
+
+the Compensating Works and Sault. St. Marie dams. Our model will allow the ƒ≤C to use the
+
+‡∫± most recent sets of data being gathered at the monitoring points along the Great Lakes and adapt
+
+an optimal dam schedule based on current conditions and predictive forecasts.
+
+    Thank you for your consideration,
+
+    Team #2429211
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211                                                     Page 21 of 24
+
+A Notation
+
+Name Type                Description.
+
+Ì†µÌ±á  Set                  Set of time-steps.
+
+Ì†µÌ∞µ  Set                 ‡æò Set of Bodies of Water.
+
+Ì†µÌ±•Ì†µÌ±° Variable      Height of water let through the Sault St. Marie Dam at time Ì†µÌ±°.
+                   Height of water let through the Moses-Saunders Dam at time Ì†µÌ±°.
+Ì†µÌ±¶Ì†µÌ±° Variable
+                       ‡¨Ü Flow at River Lawrence at time Ì†µÌ±°.
+Ì†µÌ±ìÌ†µÌ±° Variable        ‡øê Height of water in body of water Ì†µÌ±ñ at time Ì†µÌ±°.
+
+‚ÑéÌ†µÌ±ñ,Ì†µÌ±° Variable
+
+‡∂î Ì†µÌ±†Ì†µÌ±ñ Parameter
+Ì†µÌºîÌ†µÌ±ñ Parameter        Weighting term for the objective function. High Ì†µÌºîÌ†µÌ±ñ
+
+Ì†µÌ±üÌ†µÌ±ñ,Ì†µÌ±° Parameter The total height added by environmental factors in body of water Ì†µÌ±ñ at time Ì†µÌ±°.
+ƒü ls Ì†µÌªºÌ†µÌ±ñ Parameter
+                         The surface area of body of water Ì†µÌ±ñ.
+
+e Ì†µÌªΩÌ†µÌ±ñ Parameter
+                         Determined slope from regression.
+‚Ä´ ›º‚Ä¨d Ì†µÌ∞ø Parameter
+                         Determined bias from regression.
+o Ì†µÌ∞πÌ†µÌ±ñ Parameter
+                      Lag time between specified bodies of water.
+·áô Ì†µÌ∞∑Ì†µÌ±ñ Parameter
+m Ì†µÌ±Ä1 Parameter Maximum height of water releasable from Lake Superior during a time-step.
+                      Height of water required for a flood at body of water Ì†µÌ±ñ.
+
+‚Ä´ ‹Ñ‚Ä¨H Ì†µÌ±Ä2 Parameter Maximum height of water releasable from Lake Ontario during a time-step
+                   Height required for dangerously low water at body of water Ì†µÌ±ñ.
+
+‡æê T Ì†µÌ±§ Parameter Influence of the Mosses-Saunders Dam on the flow of the St. Lawrence River
+A Table 2: Description of variables involed in the mathematical program used to determine dam
+‡∫± schedules. All heights are in meters, all flows are in cubic meters per second, and all areas are
+ƒüM given meters squared, all lag times are given in days
+                      ‚Ä´›º‚Ä¨
+                   ‡æê
+                ‡∫±
+
+                                                                             2      ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                    ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                   MATHmodels
+Team # 2429211                                                      Page 22 of 24
+
+                Name Type     Description.
+
+                Ì†µÌ∞µÌ†µÌ±ñ   Set Bodies of water (Ontario, St. Lawrence)
+
+                Ì†µÌ±á Param      Time Horizon
+
+                Ì†µÌ∞πÌ†µÌ±° Param    Hourly inflow into Lake Ontario       ‡æò
+                ‚ÑéÀÜ Ì†µÌ±° Param            Ideal water levels
+
+                Ì†µÌ±ìÀÜÌ†µÌ±°  Param        Ideal flow levels            ‡¨Ü
+                              Flow conversion coefficient
+                Ì†µÌ±ò Param
+                ‡øê Ì†µÌªºÌ†µÌ±ñ Param Weights for stakeholder importance
+                Ì†µÌ±ôÌ†µÌ±ñ   Param  Initial water and flow levels
+
+                ‡∂î Ì†µÌ±Ç Param
+
+                Ì†µÀÜÌ∞ª Param
+                Ì†µÌºî Param      Hourly flow decay coefficient
+
+                ƒü ls ‚ÑéÌ†µÌ±° Variable
+                              Dam outflow limit
+                              Final water height
+                ‚Ä´ ›º‚Ä¨e Ì†µÌ±ìÌ†µÌ±° Variable
+                od Ì†µÌ±•Ì†µÌ±° VariableWater level
+
+                              Flow level
+·áô Table 3: Microschedule LP formulation. All water levels are heights in meters, all times are in
+‡∫±‡æê‚Ä´ ‹Ñ‚Ä¨ƒüMATHm hours, and all flows are in cubic meters per secondMoses-Saunders Dam outflow
+
+                       ‡æê  ‚Ä´›º‚Ä¨
+
+                ‡∫±
+
+                                                                              2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                 ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                    MATHmodels
+Team # 2429211  Page 23 of 24
+
+References
+
+ [1] 2024MCM/ICM Problems. https://www.immchallenge.org/mcm/index.html.
+
+ [2] International Joint Commission (2014). Lake Ontario St. Lawrence River Plan 201: Protecting
+      against extreme water levels, restoring wetlands and preparing for climate change, 2014.
+
+‡æò [3] US army Corps of Engineers. John glenn great lakes basin program biohydrological informa-
+      tion base, 2007.
+
+‡¨Ü [4] Peng Bai, Jia Wang, Philip Chu, Nathan Hawley, Ayumi Fujisaki-Manome, James Kessler,
+      Brent M Lofgren, Dmitry Beletsky, Eric J Anderson, and Yaru Li. Modeling the ice-attenuated
+      waves in the great lakes. Ocean Dynamics, 70:991‚Äì1003, 2020.
+
+ [5] Chiranjib Bhowmik, Sumit Bhowmik, Amitava Ray, and Krishna Murari Pandey. Optimal
+      green energy planning for sustainable development: A review. Renewable and Sustainable
+
+ ‡øê Energy Reviews, 71:796‚Äì813, 2017.
+
+ [6] Thomas Bl√§sius, Adrian Feilhauer, and Jannik Westenfelder. Dynamic flows with time-
+      dependent capacities, 2023.
+
+‡∂î [7] Murray Clamen and Daniel Macfarlane. Plan 2014: The historical evolution of lake ontario‚Äì
+
+      st. lawrence river regulation. Canadian Water Resources Journal/Revue canadienne des
+
+ ƒü ls ressources hydriques, 43(4):416‚Äì431, 2018.
+e [8] Great Lakes Commission.
+‚Ä´ ›º‚Ä¨d [9] International Joint Commission. Options for managing lake ontario and st. lawrence river
+
+      water levels and flows (final report), 2006.
+
+·áô o [10] International Joint Commission. Section 5: Impacts on various interests, 2023.
+m [11] George B Dantzig. Linear programming. History of mathematical programming, pages
+ ‚Ä´ ‹Ñ‚Ä¨19‚Äì31, 1991.
+H [12] Jean-Luc Desgranges, Joel Ingram, Bruno Drolet, Jean Morin, Caroline Savage, and Daniel
+ ‡æê T Borcard. Modelling wetland bird response to water level changes in the lake ontario‚Äìst.
+
+      lawrence river hydrosystem. Environmental monitoring and assessment, 113:329‚Äì365, 2006.
+
+A [13] Google Earth. Great lakes, no clouds, 2010.
+‡∫± M [14] Lester Randolph Ford. Flows in networks. 2015.
+
+[15] Inga Kanoshina, Urmas Lips, and Juha-Markku Lepp√§nen. The influence of weather con-
+
+ ƒü ditions (temperature and wind) on cyanobacterial bloom development in the gulf of finland
+
+      (baltic sea). Harmful Algae, 2(1):29‚Äì41, 2003.
+
+‚Ä´[ ›º‚Ä¨16] Frank Millerd. The economic impact of climate change on canadian commercial navigation
+      on the great lake. Canadian Water Resources Journal, 30(4):269‚Äì280, 2005.
+
+‡æê [17] NOAA. Noaa glerl data, 2021.
+‡∫± [18] National Oceanic and Atmospheric Administration. Great lakes ecoregion - national oceanic
+
+      and atmospheric administration, 2019.
+
+[19] Frank J Rahel and Julian D Olden. Assessing the effects of climate change on aquatic invasive
+      species. Conservation biology, 22(3):521‚Äì533, 2008.
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211  Page 24 of 24
+
+[20] Charles S. Revelle, Daniel P. Loucks, and Walter R. Lynn. Linear programming applied to
+      water quality management. Water Resources Research, 4(1):1‚Äì9, 1968.
+
+[21] Michael H Veatch. Linear and convex optimization: A Mathematical Approach. John Wiley
+      & Sons, 2020.
+
+‡æò [22] Daniel S Wilks and Robert L Wilby. The weather generation game: a review of stochastic
+      weather models. Progress in physical geography, 23(3):329‚Äì357, 1999.
+
+                     ‡¨Ü
+                  ‡øê
+   ‡∫±‡æê‚Ä´‹Ñ‚Ä¨·áôƒü‚Ä´›º‚Ä¨MƒüAT‡∂îHmodels
+        ‚Ä´›º‚Ä¨
+      ‡æê
+    ‡∫±
+
+                          2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                             ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                MATHmodels
+Team # 2429211                                                                     Page 25
+
+                       Report on Use of AI
+
+Dear ICM Judges,
+
+No AI was used in the writing, code, or development of this project.
+
+We wish you the best.                                                  ‡æò
+
+                                            ‡øê                         ‡¨Ü
+
+‡∫±‡æê‚Ä´‹Ñ‚Ä¨·áôƒü‚Ä´›º‚Ä¨MƒüAT‡∂îHmodels
+                       ‚Ä´›º‚Ä¨
+                   ‡æê
+                ‡∫±
+
+                                                                                2  ‹±·áø‡∂î‡øê‡¨Ü‡æò
+                                                                                   ‡†Ü‡±º€∑‚Ä´ÿü‚Ä¨·àß‡øü
+                                                                      MATHmodels
+

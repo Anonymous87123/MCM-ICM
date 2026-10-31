@@ -1,0 +1,64 @@
+Team # 55285  Page 28 of 32
+
+                             else break;
+                     }
+                     int loc = lastQueue[i][0];
+                     double dt = max(human[loc].departTime, lastDepartTime[i]);
+
+                     human[loc].departTime = dt + max(human[loc].baggageCheckTime, human[loc].bodyCheckT
+                     lastEnterTime[i] = dt;
+                     lastDepartTime[i] = dt + human[loc].bodyCheckTime;
+                     if (human[loc].isError) zoneDQueue.push(loc);
+                     sumLastQueue[i]--;
+                     for (int k = 0; k < sumLastQueue[i]; ++k) lastQueue[i][k] = lastQueue[i][k + 1];
+              } while (sumLastQueue[i]);
+       }
+
+       //Zone D
+       while (!zoneDQueue.empty()) {
+
+              int loc = zoneDQueue.front();
+              double dt = max(human[loc].departTime, zoneDDepartTime) + human[loc].zoneDTime;
+              human[loc].departTime = dt;
+              zoneDDepartTime = dt;
+              zoneDQueue.pop();
+       }
+}
+
+ofstream outFileAve[3];
+ofstream outFileStd[3];
+
+void assessment(double sumAve[][2], double sumVar[][2]) {
+       double sumVIP[2] = {0}, sumPax[2] = {0}, sumAll[2] = {0};
+       int humanVIP[2] = {0}, humanPax[2] = {0};
+       for (int i = 0; i < Number; ++i) {
+              double a = human[i].arrivalTime;
+              double d = human[i].departTime;
+              int k = human[i].waitKind;
+              if (k != 3) {
+                     if (human[i].isVIP) sumVIP[k - 1] += d - a;
+                     if (!human[i].isVIP) sumPax[k - 1] += d - a;
+                     if (human[i].isVIP) humanVIP[k - 1]++;
+                     if (!human[i].isVIP) humanPax[k - 1]++;
+                     sumAll[k - 1] += d - a;
+              }
+       }
+       double aveVIP[2];
+       double avePax[2];
+       double aveAll[2];
+       for (int i = 0; i < 2; ++i) {
+              aveVIP[i] = sumVIP[i] / humanVIP[i];
+              avePax[i] = sumPax[i] / humanPax[i];
+              aveAll[i] = sumAll[i] / (humanVIP[i] + humanPax[i]);
+              sumVIP[i] = sumPax[i] = sumAll[i] = 0;
+       }
+       for (int i = 0; i < Number; ++i) {
+              double a = human[i].arrivalTime;
+              double d = human[i].departTime;
+              int k = human[i].waitKind;
+              if (k != 3) {
+                     if (human[i].isVIP) sumVIP[k - 1] += (d - a - aveVIP[k - 1]) * (d - a - aveVIP[k -
+                     if (!human[i].isVIP) sumPax[k - 1] += (d - a - avePax[k - 1]) * (d - a - avePax[k -
+                     sumAll[k - 1] += (d - a - aveAll[k - 1]) * (d - a - aveAll[k - 1]);
+              }
+       }

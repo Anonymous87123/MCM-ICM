@@ -1,0 +1,61 @@
+Team # 1906204                                                                     Page 6 of 38
+
+
+3.1.2    Mathematical Formulation
+
+Since there are 100 zones and 69 different opioids, we create a 100×69 matrix. Each line represents a zone
+number and each column stands for a opioid drug number. Then cell(i, j) in this matrix will represent some
+information of number j drug in zone i. The information will be somehow different for different purposes.
+
+
+3.1.3    Similarity Design
+
+How can we tell two zones are similar is closely related to the performance of the model. In our model,
+we carefully take three main factors into account. (1) Trend over time (2) Geographical factor (3) Drug
+identification size.
+
+      • Factor (1): based on the mathematical formulation above, we store a list in each cell(i, j), which
+        contains six years of data(2010-2016) for the j’th drug in i’th zone. When calculating the similarity be-
+        tween any pair zones, we find the correlation for each kind of drug, then make weighted summation.
+        The definition of correlation is as follows:
+                                                  cov(X, Y )   E[(X − µX )(Y − µY )]
+                                  Corr(X, Y ) =              =
+                                                    σX σY             σX σY
+        Using the numpy.corrcoef() method from "Numpy" package in python can implement the calculation
+        quickly and conveniently.
+
+      • Factor (2): In practice, geographical factor plays critical role in drug spread. People are inclined to
+        migrate from one zone to adjacent zones. This process may trigger drug spread, resulting that drug
+        identification situation in one zone is more likely to be similar to that in adjacent zones. We can easily
+        calculate distance between any zone pair based on their longitudes and latitudes. According to our
+        test, controlling distance within 200 km makes model perform well.
+
+      • Factor (3): The size of drug identification is another significant factor should be taken into account.
+        A zone with fewer drug identification cases has the tendency to be stable and growth or decline may
+        have mutation, compared to zones with larger size of drug identification cases. When computing the
+        similarity, we take summation of all six years of data and also invoke time decay factor.
+                                                            2016
+                                                            X
+                                                T otal =            datai ν i−1
+                                                           i=2010
+
+        with ν = 0.7, the later the data is, the more important the data should be.
+
+For each zone, we use Factor (2) to find the "close zones" and give each close zone a score based on the
+factor (1) and (3). Pick the 10 zones with highest score, by sorting.
+
+
+3.2     "Walk Around" in Graph to find Origin
+
+In this part, we mainly want to find the source of some opioids.Imagine that we are browsing the webpage,
+we will open a web address, browse the page, and then select the favorite topic according to the URL on
+the page. We will continue to open the new webpage along the link of the page.The spread of opioids has
+similar behavior. An opioid is popular from a city and slowly affects surrounding cities. However, due to
+the different characteristics of the city, the speed of transmission of specific opioids in surrounding cities
+will vary greatly. Here we assume that cities with similar characteristics will have similar patterns when
+opioids are transmitted. Therefore, the probability that opioids will spread to neighboring cities will be
+different. This probability is described by the similarity between the cities in the above sections.
+
+
+The first step in our model is to construct a propagation graph model for opioids.Suppose we are looking
+for the source of heroin. The first step in our model is to construct a propagation map model for opioids.

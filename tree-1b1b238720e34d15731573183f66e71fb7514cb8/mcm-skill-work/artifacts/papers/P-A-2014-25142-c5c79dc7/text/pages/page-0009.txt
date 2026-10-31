@@ -1,0 +1,49 @@
+Team # 25142                                                             Page 9 of 34
+
+
+   • When G > Gs , the vehicle tends to accelerate (Later we will introduce a
+     probability model to simulate the tendency.), until achieving the freeway
+     speed limit or its maximum possible velocity;
+
+   • When G < Gs , whether to overtake or to follow is determined by the over-
+     taking probability Po and the overtaking conditions (Po and overtaking
+     conditions are to be discussed in the overtaking model).
+
+    When following, a vehicle can accelerate, decelerate or keep the original
+speed. We introduce two parameters [SUN yue 2005], the acceleration proba-
+bility Pa and deceleration probability Pb . The higher the speed, the smaller the
+Pa and the greater the Pb . Vl represents the higher speed limit of the freeway,
+and Vmax is the maximum speed the vehicle can reach. This probability model
+takes into account the fact that speeding can’t be ignored. When V > Vl , Pa gets
+even smaller and Pb gets even bigger, which makes it possible for speeding but
+the possibility is small. We use a stochastic variable R for implementation:
+
+   • If R < Pb , the vehicle decelerates;
+
+   • If R > 1 − Pa , the vehicle accelerates;
+
+   • Otherwise, the vehicle maintains the current speed.
+
+   Based on the probability model, we create several rules for the Cellular Au-
+tomata:( The maximum possible speed of vehicle i is Vmax , the current gap is
+G, the minimum safe gap is Gs and its velocity is denoted as V , Pa and Pb are
+functions of velocity V , and Pa + Pb ≤ 1.)
+
+   • Free driving rule: If G ≥ Gs,
+                       
+                        min(Vmax , V + 1), with probability Pa ;
+                 V0 =      max(Vmin , V − 1), with probability Pb ;
+                                   V,               others.
+                       
+
+
+   • Safe deceleration rule: If G < Gs but won’t crash if moving forward,
+
+                                 V 0 = max(Vmin , V − 1)
+
+     Vmin is under-posted the lower speed limit
+
+   • Crash-free rule: If moving forward causes crash, stop behind the former
+     vehicle.
+
+The values of Pa and Pb are listed in table 2 for fast cars, table 3 for slow ones.

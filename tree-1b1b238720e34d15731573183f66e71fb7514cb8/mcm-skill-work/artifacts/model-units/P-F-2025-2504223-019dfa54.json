@@ -1,0 +1,938 @@
+{
+  "paper_id": "P-F-2025-2504223-019dfa54",
+  "problem_type": "F",
+  "year": "2025",
+  "source_sha256": "019dfa5430336e03e0eb74df85609a54474eea6c12bc99030132d7b0f430d331",
+  "schema_version": 2,
+  "review_status": "validated",
+  "coverage_note": "All five models in the paper captured: VBGMM, MultiLogit, DID, Cox TVPH, SEM.",
+  "models": [
+    {
+      "model_id": "MU-F-2025-2504223-VBGMM",
+      "purpose": "Cluster countries into attacking and victim categories using high-dimensional cybercrime indicators after PCA dimensionality reduction.",
+      "base_or_modification": "paper-specific",
+      "page": 7,
+      "variables": [
+        {
+          "symbol": "X",
+          "role": "input",
+          "normalized_name": "x",
+          "unit": "dimensionless",
+          "definition": "PCA-reduced indicator matrix",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "role": "parameter",
+          "normalized_name": "k",
+          "unit": "dimensionless",
+          "definition": "Number of clusters",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "role": "output",
+          "normalized_name": "c",
+          "unit": "dimensionless",
+          "definition": "Cluster assignments",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2504223-VBGMM-1",
+          "source_expression": "VBGMM with Yeo-Johnson transformation and standardization",
+          "normalized_latex": "p(X|\\theta) = \\sum_{k=1}^{K} \\pi_k \\mathcal{N}(X|\\mu_k, \\Sigma_k)",
+          "purpose": "Gaussian mixture likelihood for clustering",
+          "variable_symbols": [
+            "X",
+            "K"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_label": "VBGMM mixture likelihood",
+          "equation_text": "VBGMM with Yeo-Johnson transformation and standardization",
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Mixture model formulation described with EM algorithm in Table 2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Random initialization of parameters theta_0."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Clustering model has no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Convergence criterion: parameter change < epsilon."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Variational Bayesian EM algorithm with convergence check.",
+        "parameters": [
+          "pi_k",
+          "mu_k",
+          "Sigma_k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Initialize parameters",
+          "E-step: compute expectations",
+          "M-step: maximize Q function",
+          "Check convergence",
+          "Return theta"
+        ],
+        "software": [
+          "Not specified (implied Python sklearn)"
+        ],
+        "convergence_criteria": "Parameter change < epsilon or log-likelihood change < epsilon"
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": "PCA ensures 90% variance explained; VBGMM adaptively selects K.",
+        "analysis": "Regularization via variational Bayes prevents overfitting; soft assignment handles boundary cases."
+      },
+      "constraints": [
+        "Data standardized to zero mean unit variance",
+        "Yeo-Johnson transform for normality"
+      ],
+      "validation_refs": [
+        "PCA scatter plot visualization (Figure 4)",
+        "Cluster type analysis (Figure 5)"
+      ],
+      "strengths": [
+        "Adaptive cluster count selection",
+        "Handles high-dimensional data",
+        "Soft assignment for boundary samples"
+      ],
+      "limitations": [
+        "Assumes multivariate normal distribution",
+        "Requires sufficient sample size per cluster"
+      ],
+      "missing_details": [
+        "Exact K selected not stated explicitly"
+      ],
+      "assumptions": [
+        "Data drawn from multivariate normal distribution",
+        "Features on same scale after standardization"
+      ],
+      "section": "VBGMM Clustering",
+      "family": "unsupervised-clustering",
+      "summary": "Variational Bayesian Gaussian Mixture Model with PCA for country clustering into attacking/victim types.",
+      "computational_cost": "not-stated",
+      "inputs": [
+        "X"
+      ],
+      "outputs": [
+        "C"
+      ],
+      "handoff_outputs": [
+        "C"
+      ],
+      "objectives": [
+        "Cluster countries into attacking and victim types using high-dimensional cybercrime indicators after PCA reduction."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2504223-MLOGIT",
+      "purpose": "Analyze factors affecting cybercrime outcomes (success, thwarted, reported, prosecuted) at case and country levels.",
+      "base_or_modification": "paper-specific",
+      "page": 9,
+      "variables": [
+        {
+          "symbol": "Y",
+          "role": "output",
+          "normalized_name": "y",
+          "unit": "dimensionless",
+          "definition": "Cybercrime outcome category (0-3)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_i",
+          "role": "input",
+          "normalized_name": "x_i",
+          "unit": "dimensionless",
+          "definition": "Level-1 factors (attack type, asset security, risk carrier, hacker method)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z_i",
+          "role": "input",
+          "normalized_name": "z_i",
+          "unit": "dimensionless",
+          "definition": "Level-2 factors (law, technology, organization, capacity, cooperation)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_i",
+          "role": "parameter",
+          "normalized_name": "beta_i",
+          "unit": "dimensionless",
+          "definition": "Level-1 intercepts (linked to level-2)",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2504223-MLOGIT-1",
+          "source_expression": "log P(Y=1)/P(Y=0) = beta_1 - 6.684*X1 + 2.593*X2 - 11.348*X3 - 6.405*X4",
+          "normalized_latex": "\\log\\frac{P(Y=1)}{P(Y=0)} = \\beta_1 - 6.684 X_1 + 2.593 X_2 - 11.348 X_3 - 6.405 X_4",
+          "purpose": "First-layer logit for thwarted vs. successful outcome",
+          "variable_symbols": [
+            "Y"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_label": "Equation (1)",
+          "equation_text": "log P(Y=1)/P(Y=0) = beta_1 - 6.684*X1 + 2.593*X2 - 11.348*X3 - 6.405*X4",
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2025-2504223-MLOGIT-2",
+          "source_expression": "beta_1 = 0.337 + 0.324*Z1 + 0.087*Z2 - 0.288*Z3 + 0.035*Z4 - 0.147*Z5",
+          "normalized_latex": "\\beta_1 = 0.337 + 0.324 Z_1 + 0.087 Z_2 - 0.288 Z_3 + 0.035 Z_4 - 0.147 Z_5",
+          "purpose": "Second-layer linking level-2 GCI factors to level-1 intercept",
+          "variable_symbols": [
+            "beta_i",
+            "Z_i",
+            "Y"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_label": "Equation (4)",
+          "equation_text": "beta_1 = 0.337 + 0.324*Z1 + 0.087*Z2 - 0.288*Z3 + 0.035*Z4 - 0.147*Z5",
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations 1-6 fully specified with numerical coefficients."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Regression model, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary conditions for logistic regression."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "MLE convergence implied."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Maximum likelihood estimation with VIF collinearity check.",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_3",
+          "X coefficients",
+          "Z coefficients"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "VIF collinearity test",
+          "Fit level-1 multinomial logit",
+          "Fit level-2 linking equations",
+          "Interpret coefficients"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "MLE convergence"
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": "VIF < 10 for all variables ensures no multicollinearity.",
+        "analysis": "Four outcome categories with sufficient sample size per category."
+      },
+      "constraints": [
+        "VIF < 10 for all independent variables",
+        "Unordered multinomial response"
+      ],
+      "validation_refs": [
+        "Collinearity test (VIF)",
+        "Sensitivity analysis (Section 8)"
+      ],
+      "strengths": [
+        "Integrates micro and macro factors",
+        "Handles unordered categorical outcomes"
+      ],
+      "limitations": [
+        "Assumes independence of irrelevant alternatives (IIA)",
+        "Limited to linear effects in logit"
+      ],
+      "missing_details": [
+        "IIA test not reported"
+      ],
+      "assumptions": [
+        "No natural ordering between outcome categories",
+        "Level-1 and level-2 independence"
+      ],
+      "section": "Multi-level Logistic Regression",
+      "family": "classification-regression",
+      "summary": "Two-level unordered multinomial logistic regression linking case-level and country-level factors to cybercrime outcomes.",
+      "computational_cost": "not-stated",
+      "inputs": [
+        "X_i",
+        "Z_i"
+      ],
+      "outputs": [
+        "Y"
+      ],
+      "handoff_outputs": [
+        "Y"
+      ],
+      "objectives": [
+        "Analyze factors affecting cybercrime outcomes (success, thwarted, reported, prosecuted) at case and country levels."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2504223-DID",
+      "purpose": "Evaluate causal effect of cybersecurity policies on cybercrime rates across attacking and victim countries over 2005-2022.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "variables": [
+        {
+          "symbol": "crime_it",
+          "role": "output",
+          "normalized_name": "crime_it",
+          "unit": "dimensionless",
+          "definition": "Cybercrime rate of country i in year t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "did_it",
+          "role": "input",
+          "normalized_name": "did_it",
+          "unit": "dimensionless",
+          "definition": "Policy interaction term (country x time dummy)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "post_it",
+          "role": "input",
+          "normalized_name": "post_it",
+          "unit": "dimensionless",
+          "definition": "Control variable at cybercrime level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u_i",
+          "role": "parameter",
+          "normalized_name": "u_i",
+          "unit": "dimensionless",
+          "definition": "Country fixed effect",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_t",
+          "role": "parameter",
+          "normalized_name": "lambda_t",
+          "unit": "dimensionless",
+          "definition": "Time fixed effect",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_1",
+          "role": "parameter",
+          "normalized_name": "beta_1",
+          "unit": "dimensionless",
+          "definition": "Policy effect coefficient",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2504223-DID-1",
+          "source_expression": "crime_it = alpha - beta_1 * did_it + beta_2 * post_it + u_i + lambda_t + epsilon_it",
+          "normalized_latex": "\\text{crime}_{it} = \\alpha - \\beta_1 \\cdot \\text{did}_{it} + \\beta_2 \\cdot \\text{post}_{it} + u_i + \\lambda_t + \\varepsilon_{it}",
+          "purpose": "Core DID regression for policy effect estimation",
+          "variable_symbols": [
+            "crime_it",
+            "did_it",
+            "post_it",
+            "u_i",
+            "lambda_t",
+            "beta_1"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_label": "Equation (8)",
+          "equation_text": "crime_it = alpha - beta_1 * did_it + beta_2 * post_it + u_i + lambda_t + epsilon_it",
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equation 8 is the core DID specification; equations 9-18 are instantiations for 5 policy dimensions x 2 country types."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Panel regression, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Fixed effects estimation."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Fixed effects panel regression with parallel trend and placebo tests.",
+        "parameters": [
+          "alpha",
+          "beta_1",
+          "beta_2"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Composite sampling of 60 countries",
+          "Parallel trend test",
+          "Estimate DID for 5 dimensions x 2 country types",
+          "Placebo test",
+          "Radar chart visualization"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Standard panel regression convergence"
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": "Parallel trend test passed; placebo test confirms non-spurious results.",
+        "analysis": "18-year panel (2005-2022) with 60 countries provides sufficient variation."
+      },
+      "constraints": [
+        "Parallel trend assumption",
+        "18-year panel 2005-2022",
+        "60 countries (30 attacking + 30 victim)"
+      ],
+      "validation_refs": [
+        "Parallel trend test (Figure 6)",
+        "Placebo test (Figure 7)",
+        "Radar chart (implied)"
+      ],
+      "strengths": [
+        "Controls for unobserved time-invariant characteristics",
+        "Handles staggered policy adoption",
+        "Reduces selection bias"
+      ],
+      "limitations": [
+        "May be affected by unobserved time-varying factors",
+        "Requires large panel data",
+        "Exogenous shocks may confound results"
+      ],
+      "missing_details": [
+        "Specific R-squared or F-statistics not reported"
+      ],
+      "assumptions": [
+        "Parallel trends hold pre-treatment",
+        "No anticipation effects",
+        "SUTVA holds"
+      ],
+      "section": "Multi-period DID",
+      "family": "causal-inference",
+      "summary": "Multi-period difference-in-differences model evaluating causal effect of 5 policy dimensions on cybercrime rates.",
+      "computational_cost": "not-stated",
+      "inputs": [
+        "did_it",
+        "post_it"
+      ],
+      "outputs": [
+        "crime_it"
+      ],
+      "handoff_outputs": [
+        "crime_it"
+      ],
+      "objectives": [
+        "Evaluate causal effect of cybersecurity policies on cybercrime rates across 60 countries over 2005-2022."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2504223-COXTVPH",
+      "purpose": "Analyze temporal dynamics of policy implementation on cybercrime risk using survival analysis.",
+      "base_or_modification": "paper-specific",
+      "page": 17,
+      "variables": [
+        {
+          "symbol": "h(t|x)",
+          "role": "output",
+          "normalized_name": "ht_x",
+          "unit": "dimensionless",
+          "definition": "Instantaneous hazard rate given covariates",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h_0(t)",
+          "role": "parameter",
+          "normalized_name": "h_0t",
+          "unit": "dimensionless",
+          "definition": "Baseline hazard rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "role": "input",
+          "normalized_name": "x_i",
+          "unit": "dimensionless",
+          "definition": "Policy covariates (capabilities, cooperation, law, organization, implementation, duration, technology)",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2504223-COXTVPH-1",
+          "source_expression": "h(t|x) = h_0(t) exp(-1.33x1 - 0.61x2 + 0.16x3 + 1.01x4 - 0.06x5 + 0.06x6 + 0.54x7)",
+          "normalized_latex": "h(t|x) = h_0(t) \\exp(-1.33 x_1 - 0.61 x_2 + 0.16 x_3 + 1.01 x_4 - 0.06 x_5 + 0.06 x_6 + 0.54 x_7)",
+          "purpose": "Cox proportional hazard for attacking country cybercrime risk",
+          "variable_symbols": [
+            "h(t|x)",
+            "h_0(t)"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_label": "Equation (21)",
+          "equation_text": "h(t|x) = h_0(t) exp(-1.33x1 - 0.61x2 + 0.16x3 + 1.01x4 - 0.06x5 + 0.06x6 + 0.54x7)",
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2025-2504223-COXTVPH-2",
+          "source_expression": "h(t|x) = h_0(t) exp(-0.30x1 + 0.08x2 + 0.92x3 + 0.10x4 - 0.86x5 + 0.07x6 - 0.13x7)",
+          "normalized_latex": "h(t|x) = h_0(t) \\exp(-0.30 x_1 + 0.08 x_2 + 0.92 x_3 + 0.10 x_4 - 0.86 x_5 + 0.07 x_6 - 0.13 x_7)",
+          "purpose": "Cox proportional hazard for victim country cybercrime risk",
+          "variable_symbols": [
+            "h(t|x)",
+            "h_0(t)"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_label": "Equation (22)",
+          "equation_text": "h(t|x) = h_0(t) exp(-0.30x1 + 0.08x2 + 0.92x3 + 0.10x4 - 0.86x5 + 0.07x6 - 0.13x7)",
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations 21-22 with numerical coefficients for attacking and victim countries."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Kaplan-Meier survival curve as baseline (Figure 9)."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Survival model, no boundary conditions."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Hazard model, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Partial likelihood estimation with forest plot visualization.",
+        "parameters": [
+          "x_1 through x_7 coefficients"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Kaplan-Meier survival estimation",
+          "Fit Cox PH model",
+          "Forest plot for coefficient visualization"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Partial likelihood convergence"
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": "Forest plot shows significant coefficients; KM curve confirms survival differences.",
+        "analysis": "Time-varying covariates capture dynamic policy effects over implementation period."
+      },
+      "constraints": [
+        "Proportional hazards assumption",
+        "Right-censored data"
+      ],
+      "validation_refs": [
+        "Kaplan-Meier curve (Figure 9)",
+        "Forest plot (Figure 10)"
+      ],
+      "strengths": [
+        "Captures temporal dynamics of policy implementation",
+        "Handles censored data"
+      ],
+      "limitations": [
+        "Proportional hazards may not hold for all covariates",
+        "Baseline hazard not specified parametrically"
+      ],
+      "missing_details": [
+        "PH assumption test not reported",
+        "Schoenfeld residual analysis absent"
+      ],
+      "assumptions": [
+        "Proportional hazards hold",
+        "Non-informative censoring"
+      ],
+      "section": "Cox Survival Analysis",
+      "family": "survival-analysis",
+      "summary": "Cox time-varying proportional hazard model for temporal dynamics of policy implementation on cybercrime risk.",
+      "computational_cost": "not-stated",
+      "inputs": [
+        "x_i"
+      ],
+      "outputs": [
+        "h(t|x)"
+      ],
+      "handoff_outputs": [
+        "h(t|x)"
+      ],
+      "objectives": [
+        "Analyze temporal dynamics of policy implementation on cybercrime hazard using survival analysis."
+      ]
+    },
+    {
+      "model_id": "MU-F-2025-2504223-SEM",
+      "purpose": "Model causal pathways from demographic factors and policy to cybercrime through latent variables for both attacking and victim countries.",
+      "base_or_modification": "paper-specific",
+      "page": 19,
+      "variables": [
+        {
+          "symbol": "xi",
+          "role": "input",
+          "normalized_name": "xi",
+          "unit": "dimensionless",
+          "definition": "Exogenous latent variables (policy, demographics)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "role": "output",
+          "normalized_name": "eta",
+          "unit": "dimensionless",
+          "definition": "Endogenous latent variables (cybercrime)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lambda_x",
+          "role": "parameter",
+          "normalized_name": "lambda_x",
+          "unit": "dimensionless",
+          "definition": "Factor loading matrix for exogenous variables",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lambda_y",
+          "role": "parameter",
+          "normalized_name": "lambda_y",
+          "unit": "dimensionless",
+          "definition": "Factor loading matrix for endogenous variables",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "role": "parameter",
+          "normalized_name": "beta",
+          "unit": "dimensionless",
+          "definition": "Path coefficient matrix between endogenous latent variables",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Gamma",
+          "role": "parameter",
+          "normalized_name": "gamma",
+          "unit": "dimensionless",
+          "definition": "Path coefficient matrix from exogenous to endogenous",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2025-2504223-SEM-1",
+          "source_expression": "X = Lambda_x * xi + delta",
+          "normalized_latex": "X = \\Lambda_x \\xi + \\delta",
+          "purpose": "Measurement model for exogenous observed variables",
+          "variable_symbols": [
+            "Lambda_x",
+            "xi"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_label": "Equation (23)",
+          "equation_text": "X = Lambda_x * xi + delta",
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2025-2504223-SEM-2",
+          "source_expression": "Y = Lambda_y * eta + epsilon",
+          "normalized_latex": "Y = \\Lambda_y \\eta + \\varepsilon",
+          "purpose": "Measurement model for endogenous observed variables",
+          "variable_symbols": [
+            "Lambda_y",
+            "eta"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_label": "Equation (24)",
+          "equation_text": "Y = Lambda_y * eta + epsilon",
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2025-2504223-SEM-3",
+          "source_expression": "eta = beta * eta + Gamma * xi + zeta",
+          "normalized_latex": "\\eta = \\beta \\eta + \\Gamma \\xi + \\zeta",
+          "purpose": "Structural equation for causal paths between latent variables",
+          "variable_symbols": [
+            "eta",
+            "beta",
+            "Gamma",
+            "xi"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 19,
+          "equation_label": "Equation (25)",
+          "equation_text": "eta = beta * eta + Gamma * xi + zeta",
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations 23-25 define measurement and structural models."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "SEM is a structural model, no initial conditions."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No boundary conditions for SEM."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Model fit assessed via fit indices."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Maximum likelihood estimation via AMOS software.",
+        "parameters": [
+          "Lambda_x",
+          "Lambda_y",
+          "beta",
+          "Gamma"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Define hypotheses H1-H4",
+          "Construct path diagram in AMOS",
+          "Estimate parameters",
+          "Fitness test (CMIN, RMSEA, RMR, GFI, CFI, IFI, TLI)"
+        ],
+        "software": [
+          "AMOS"
+        ],
+        "convergence_criteria": "CMIN 1-3, RMSEA < 0.08, GFI > 0.90, CFI > 0.90"
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": "Fitness test passed: CMIN=1.774, GFI=0.949, CFI=0.944, IFI=0.985.",
+        "analysis": "All fit indices within acceptable or good ranges for both country types."
+      },
+      "constraints": [
+        "Linear relationships between variables",
+        "Multivariate normality assumption"
+      ],
+      "validation_refs": [
+        "Fitness test (Table 4)",
+        "Structural equation diagram (Figure 12)"
+      ],
+      "strengths": [
+        "Handles multiple dependencies simultaneously",
+        "Represents latent variables",
+        "Quantifies direct and indirect effects"
+      ],
+      "limitations": [
+        "Requires large sample size",
+        "Assumes linear relationships",
+        "Sensitive to missing data and outliers"
+      ],
+      "missing_details": [
+        "Attacking country fit test values not shown (stated as passed)"
+      ],
+      "assumptions": [
+        "Linear relationships between variables",
+        "Multivariate normality",
+        "No specification error"
+      ],
+      "section": "Structural Equation Model",
+      "family": "structural-equation-model",
+      "summary": "SEM with measurement and structural equations linking demographics, policy, and cybercrime via latent variables.",
+      "computational_cost": "not-stated",
+      "inputs": [
+        "xi"
+      ],
+      "outputs": [
+        "eta"
+      ],
+      "handoff_outputs": [
+        "eta"
+      ],
+      "objectives": [
+        "Model causal pathways from demographic factors and policy to cybercrime through latent variables."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2025-2504223-VBGMM",
+      "to_model_id": "MU-F-2025-2504223-MLOGIT",
+      "handoff": "VBGMM clustering assigns countries to attacking/victim categories used in multi-level logistic regression."
+    },
+    {
+      "from_model_id": "MU-F-2025-2504223-VBGMM",
+      "to_model_id": "MU-F-2025-2504223-DID",
+      "handoff": "VBGMM clustering defines country categories for DID composite sampling."
+    },
+    {
+      "from_model_id": "MU-F-2025-2504223-DID",
+      "to_model_id": "MU-F-2025-2504223-COXTVPH",
+      "handoff": "DID policy effect estimates inform Cox survival model covariates."
+    },
+    {
+      "from_model_id": "MU-F-2025-2504223-DID",
+      "to_model_id": "MU-F-2025-2504223-SEM",
+      "handoff": "DID policy dimensions structure the exogenous variables in SEM."
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2025-2504223-VBGMM-1",
+      "model_id": "MU-F-2025-2504223-VBGMM",
+      "page": 7,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-MLOGIT-1",
+      "model_id": "MU-F-2025-2504223-MLOGIT",
+      "page": 10,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-MLOGIT-2",
+      "model_id": "MU-F-2025-2504223-MLOGIT",
+      "page": 10,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-DID-1",
+      "model_id": "MU-F-2025-2504223-DID",
+      "page": 12,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-COXTVPH-1",
+      "model_id": "MU-F-2025-2504223-COXTVPH",
+      "page": 17,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-COXTVPH-2",
+      "model_id": "MU-F-2025-2504223-COXTVPH",
+      "page": 17,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-SEM-1",
+      "model_id": "MU-F-2025-2504223-SEM",
+      "page": 19,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-SEM-2",
+      "model_id": "MU-F-2025-2504223-SEM",
+      "page": 19,
+      "visual_checked": true
+    },
+    {
+      "equation_id": "EQ-F-2025-2504223-SEM-3",
+      "model_id": "MU-F-2025-2504223-SEM",
+      "page": 19,
+      "visual_checked": true
+    }
+  ]
+}

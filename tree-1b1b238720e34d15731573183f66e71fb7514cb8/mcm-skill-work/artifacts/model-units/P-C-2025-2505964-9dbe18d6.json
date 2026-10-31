@@ -1,0 +1,973 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-C-2025-2505964-9dbe18d6",
+ "problem_type": "C",
+ "year": "2025",
+ "source_sha256": "9dbe18d63d9f58da62cdf0f8faeb50cd5de319e057e7d6e43a119210b38ebe7d",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-C-Q261-001",
+   "page": 8,
+   "section": "3.1.3 Four-Dimensional Capability Features",
+   "family": "random forest",
+   "purpose": "Score each 2024 athlete's chance of a medal and of a gold.",
+   "base_or_modification": "paper-specific",
+   "summary": "Two random forests, one for any medal and one for gold, take four lagged athlete features plus year, sex, NOC, and event.",
+   "variables": [
+    {
+     "symbol": "PastTotalMedals",
+     "normalized_name": "lagged count of any medal",
+     "unit": "medal",
+     "definition": "lagged count of any medal",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "MedalBinary",
+     "normalized_name": "indicator that the athlete medaled",
+     "unit": "dimensionless",
+     "definition": "indicator that the athlete medaled",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PastGoldMedals",
+     "normalized_name": "lagged count of gold medals",
+     "unit": "medal",
+     "definition": "lagged count of gold medals",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "GoldBinary",
+     "normalized_name": "indicator that the athlete won gold",
+     "unit": "dimensionless",
+     "definition": "indicator that the athlete won gold",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PastBestResult",
+     "normalized_name": "lagged best score",
+     "unit": "score",
+     "definition": "lagged best score",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Score",
+     "normalized_name": "medal score with gold 3, silver 2, bronze 1",
+     "unit": "score",
+     "definition": "medal score with gold 3, silver 2, bronze 1",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PastWeightedRatio",
+     "normalized_name": "lagged mean of past scores",
+     "unit": "score",
+     "definition": "lagged mean of past scores",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Participations",
+     "normalized_name": "number of previous participations",
+     "unit": "count",
+     "definition": "number of previous participations",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_positive",
+     "normalized_name": "predicted probability of the positive class",
+     "unit": "dimensionless",
+     "definition": "predicted probability of the positive class",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "p_negative",
+     "normalized_name": "predicted probability of the negative class",
+     "unit": "dimensionless",
+     "definition": "predicted probability of the negative class",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "MedalBinary",
+    "GoldBinary",
+    "Score",
+    "Participations"
+   ],
+   "outputs": [
+    "p_positive",
+    "p_negative",
+    "PastTotalMedals",
+    "PastBestResult",
+    "PastWeightedRatio"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-001",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastTotalMedals is the sum of MedalBinary, then shift(1) to drop the current year.",
+     "normalized_latex": "PastTotalMedals = shift_1(\\sum MedalBinary)",
+     "purpose": "Lagged medal count.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastTotalMedals",
+      "MedalBinary"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-002",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastBestResult is the cumulative maximum of Score (gold 3, silver 2, bronze 1, none 0), then shift(1).",
+     "normalized_latex": "PastBestResult = shift_1(\\max Score)",
+     "purpose": "Lagged best score.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastBestResult",
+      "Score"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-003",
+     "page": 8,
+     "label": null,
+     "source_expression": "PastWeightedRatio is the cumulative sum of previous scores divided by the number of previous participations, then shift(1).",
+     "normalized_latex": "PastWeightedRatio = shift_1(\\sum Score / Participations)",
+     "purpose": "Lagged mean score.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "PastWeightedRatio",
+      "Score",
+      "Participations"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-004",
+     "page": 10,
+     "label": null,
+     "source_expression": "Usually, p_positive + p_negative = 1",
+     "normalized_latex": "p_{positive} + p_{negative} = 1",
+     "purpose": "The two class probabilities sum to one.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "p_positive",
+      "p_negative"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Predict whether an athlete wins a medal and whether that medal is gold."
+   ],
+   "constraints": [
+    "A sport with fewer than 5 rows, or a single class, falls back to the historical average."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "random forest class probabilities, with a historical-average fallback",
+    "parameters": [
+     "PastTotalMedals",
+     "PastGoldMedals",
+     "PastBestResult",
+     "PastWeightedRatio"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Build four lagged features with shift(1).",
+     "Fit one forest for MedalBinary and one for GoldBinary.",
+     "Fall back to the historical rate when a sport is too small or has one class.",
+     "Call predict_proba for Prob_Medal and Prob_Gold."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "Athletes in the 2024 roster reappear in 2028.",
+    "The 2024 event program stands in for the unpublished 2028 program."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "p_positive"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "A separate forest per sport can follow that sport's own pattern.",
+    "The lag keeps the current Games out of the feature."
+   ],
+   "limitations": [
+    "The point allocation gives gold to the single highest Prob_Gold and does not use the forest as a draw.",
+    "The paper later calls the same split one model per event."
+   ],
+   "missing_details": [
+    "Tree count, depth, and the split criterion are not stated.",
+    "The host-country and coach equations on later pages were read from the text layer after the proxy cap."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-002",
+   "page": 10,
+   "section": "3.1.6 Medal Distribution",
+   "family": "monte carlo allocation",
+   "purpose": "Turn athlete probabilities into a 2028 medal table and a 95 percent interval.",
+   "base_or_modification": "paper-specific",
+   "summary": "Gold goes to the athlete with the highest Prob_Gold. Silver and bronze go to the next two by Prob_Medal. A Monte Carlo redraws the table.",
+   "variables": [
+    {
+     "symbol": "Prob_Gold",
+     "normalized_name": "probability of gold",
+     "unit": "dimensionless",
+     "definition": "probability of gold",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Prob_Medal",
+     "normalized_name": "probability of any medal",
+     "unit": "dimensionless",
+     "definition": "probability of any medal",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PredictedGold",
+     "normalized_name": "indicator of the assigned gold",
+     "unit": "dimensionless",
+     "definition": "indicator of the assigned gold",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "PredictedMedal",
+     "normalized_name": "indicator of any assigned medal",
+     "unit": "dimensionless",
+     "definition": "indicator of any assigned medal",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M",
+     "normalized_name": "number of Monte Carlo repetitions",
+     "unit": "count",
+     "definition": "number of Monte Carlo repetitions",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "Prob_Gold",
+    "Prob_Medal",
+    "M"
+   ],
+   "outputs": [
+    "PredictedGold",
+    "PredictedMedal"
+   ],
+   "governing_equations": [],
+   "equation_status": {
+    "status": "omitted-by-paper",
+    "reason": "The paper gives a procedure and no displayed equation."
+   },
+   "objectives": [
+    "Produce a point table and a 95 percent interval for 2028."
+   ],
+   "constraints": [
+    "Each event awards one gold and two further medals."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "percentile interval of repeated medal draws",
+    "parameters": [
+     "M"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Assign gold to the maximum Prob_Gold.",
+     "Sort the rest by Prob_Medal and assign two medals.",
+     "Repeat the draw M times and read the 2.5 and 97.5 percentiles."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The 2024 roster is the 2028 roster."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "PredictedMedal"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The interval shows the draw, not only the point table.",
+    "The point rule and the random rule are both written down."
+   ],
+   "limitations": [
+    "The prose uses 1000 draws, while the step list also offers 5000 and 10000.",
+    "The first-medal simulation later uses 500 draws and a different selection rule."
+   ],
+   "missing_details": [
+    "The random-number generator and the percentile method are not named."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-003",
+   "page": 16,
+   "section": "3.3.2 Poisson regression",
+   "family": "poisson regression",
+   "purpose": "Relate a strong sport's medal count to its number of events.",
+   "base_or_modification": "base",
+   "summary": "A log-linear Poisson mean is fit for USA swimming and, separately, for China table tennis. A second USA fit, a negative binomial, and a zero-inflated Poisson are used as checks.",
+   "variables": [
+    {
+     "symbol": "TotalMedals",
+     "normalized_name": "medal count in the sport",
+     "unit": "medal",
+     "definition": "medal count in the sport",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta0",
+     "normalized_name": "intercept of the log mean",
+     "unit": "dimensionless",
+     "definition": "intercept of the log mean",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta1",
+     "normalized_name": "log effect of one more event",
+     "unit": "dimensionless",
+     "definition": "log effect of one more event",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "NumEvents",
+     "normalized_name": "number of events in the sport",
+     "unit": "count",
+     "definition": "number of events in the sport",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Elasticity",
+     "normalized_name": "beta1 times the event count",
+     "unit": "dimensionless",
+     "definition": "beta1 times the event count",
+     "role": "output",
+     "source_status": "inferred-from-equation"
+    }
+   ],
+   "inputs": [
+    "NumEvents"
+   ],
+   "outputs": [
+    "TotalMedals",
+    "Elasticity"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-005",
+     "page": 16,
+     "label": null,
+     "source_expression": "log(E[TotalMedals]) = β0 + β1 × (NumEvents) + …",
+     "normalized_latex": "\\log(E[TotalMedals]) = \\beta_0 + \\beta_1 \\times NumEvents",
+     "purpose": "Log-linear Poisson mean.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "TotalMedals",
+      "beta0",
+      "beta1",
+      "NumEvents"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-006",
+     "page": 18,
+     "label": null,
+     "source_expression": "e^{0.0517} ≈ 1.053, about 5.3 percent more medals per added swimming event.",
+     "normalized_latex": "e^{0.0517} \\approx 1.053",
+     "purpose": "Multiplicative reading of the narrative swimming coefficient.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "beta1"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-007",
+     "page": 18,
+     "label": null,
+     "source_expression": "e^{0.912} ≈ 1.211, about 21.1 percent, printed beside β1 = 0.1912.",
+     "normalized_latex": "e^{0.912} \\approx 1.211",
+     "purpose": "Multiplicative reading printed for the Table 4 coefficient.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "beta1"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q261-008",
+     "page": 19,
+     "label": null,
+     "source_expression": "Elasticity = β1 × (NumEvents), equal to 0 at 0 events, 1.912 at 10, and about 3.824 at 20.",
+     "normalized_latex": "Elasticity = \\beta_1 \\times NumEvents",
+     "purpose": "Elasticity of medals with respect to events.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "Elasticity",
+      "beta1",
+      "NumEvents"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Test whether more events in a strong sport raise that country's medals."
+   ],
+   "constraints": [
+    "Medal counts are non-negative integers.",
+    "The mean is log-linear in the event count."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "Poisson maximum likelihood, with negative binomial and zero-inflated checks",
+    "parameters": [
+     "beta0",
+     "beta1"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Fit the Poisson mean.",
+     "Read the coefficient as a percent.",
+     "Re-fit with a negative binomial and a zero-inflated Poisson and compare AIC."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The same sport keeps its meaning from 1896 to 1964 for swimming and from 1988 to 2024 for table tennis."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "TotalMedals"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The sign of the event coefficient is stated before the number.",
+    "Three distributions are compared on the same coefficient."
+   ],
+   "limitations": [
+    "The narrative fit (2.4595 and 0.0517) and Table 4 (0.7933 and 0.1912) are not the same regression.",
+    "The printed exponent 0.912 drops a digit from 0.1912."
+   ],
+   "missing_details": [
+    "The link function beyond the displayed log mean is not written.",
+    "Which years enter Table 4 is not stated."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-004",
+   "page": 21,
+   "section": "3.3.6 Host Country Effect",
+   "family": "multiple linear regression",
+   "purpose": "Estimate how many extra medals a host gains.",
+   "base_or_modification": "base",
+   "summary": "Medals or golds are regressed on a host dummy, the host's event count, and the average medal count over the last three Games. The United States and China are reported separately.",
+   "variables": [
+    {
+     "symbol": "Y_i",
+     "normalized_name": "total medals or gold medals for country i",
+     "unit": "medal",
+     "definition": "total medals or gold medals for country i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b0",
+     "normalized_name": "intercept",
+     "unit": "medal",
+     "definition": "intercept",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b1",
+     "normalized_name": "host-dummy coefficient",
+     "unit": "medal",
+     "definition": "host-dummy coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X1_i",
+     "normalized_name": "host dummy, 1 if host and 0 otherwise",
+     "unit": "dimensionless",
+     "definition": "host dummy, 1 if host and 0 otherwise",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b2",
+     "normalized_name": "event-count coefficient",
+     "unit": "medal per event",
+     "definition": "event-count coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X2_i",
+     "normalized_name": "number of events for the host",
+     "unit": "count",
+     "definition": "number of events for the host",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "b3",
+     "normalized_name": "historical-mean coefficient",
+     "unit": "dimensionless",
+     "definition": "historical-mean coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X3_i",
+     "normalized_name": "average medals over the last three Games",
+     "unit": "medal",
+     "definition": "average medals over the last three Games",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps_i",
+     "normalized_name": "error term",
+     "unit": "medal",
+     "definition": "error term",
+     "role": "state",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "X1_i",
+    "X2_i",
+    "X3_i"
+   ],
+   "outputs": [
+    "Y_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-009",
+     "page": 21,
+     "label": null,
+     "source_expression": "Y_i = β0 + β1 · X1_i + β2 · X2_i + β3 · X3_i + ε_i",
+     "normalized_latex": "Y_i = \\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + \\beta_3 X_{3i} + \\epsilon_i",
+     "purpose": "Host-country medal regression.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "Y_i",
+      "b0",
+      "b1",
+      "X1_i",
+      "b2",
+      "X2_i",
+      "b3",
+      "X3_i",
+      "eps_i"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Estimate the host increment for the United States and for China."
+   ],
+   "constraints": [
+    "The host effect is linear in the dummy and the two covariates.",
+    "Errors are additive."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "ordinary least squares reported through R-squared and one coefficient",
+    "parameters": [
+     "b0",
+     "b1",
+     "b2",
+     "b3"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Code the host dummy.",
+     "Average the last three Games.",
+     "Fit the regression separately by country."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "No force majeure and no large external shock, as in Assumptions 3 and 4."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "Y_i"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The United States increment and the China increment are reported side by side.",
+    "A p-value of 0.055 is described as close to significant rather than rounded down."
+   ],
+   "limitations": [
+    "Only the host coefficient is given; the event-count and history coefficients are discussed as not significant without their values.",
+    "The United States uses 25 observations and China 9."
+   ],
+   "missing_details": [
+    "Standard errors for the host coefficients are not printed.",
+    "The equation was read from the text layer, not from a page raster."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q261-005",
+   "page": 23,
+   "section": "3.4 The Great Coach Model",
+   "family": "additive medal-score decomposition",
+   "purpose": "Separate a coach's medal points from the team's previous level.",
+   "base_or_modification": "paper-specific",
+   "summary": "Winning capability is the athlete baseline plus a constant coach contribution. The baseline is the average of the three previous Games, and the coach term is the difference. Noise is set to zero.",
+   "variables": [
+    {
+     "symbol": "P",
+     "normalized_name": "winning capability on a 0 to 3 scale",
+     "unit": "score",
+     "definition": "winning capability on a 0 to 3 scale",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_a",
+     "normalized_name": "athlete baseline, the mean of the three previous Games",
+     "unit": "score",
+     "definition": "athlete baseline, the mean of the three previous Games",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_c",
+     "normalized_name": "coach contribution",
+     "unit": "score",
+     "definition": "coach contribution",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps",
+     "normalized_name": "competition noise, set to zero",
+     "unit": "score",
+     "definition": "competition noise, set to zero",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "P_prev",
+     "normalized_name": "sum of the three previous capabilities",
+     "unit": "score",
+     "definition": "sum of the three previous capabilities",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "P_prev",
+    "P"
+   ],
+   "outputs": [
+    "P_c",
+    "P"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q261-010",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e} = P_{n,y,e|a} + P_{n,y,e|c} + ε, with both P and ε in [0, 3].",
+     "normalized_latex": "P = P_a + P_c + \\epsilon",
+     "purpose": "Capability is baseline plus coach plus noise.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P",
+      "P_a",
+      "P_c",
+      "eps"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q261-011",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e|a} = (P_{n-1} + P_{n-2} + P_{n-3}) / 3",
+     "normalized_latex": "P_a = P_{prev} / 3",
+     "purpose": "Baseline is the three-Games average before the coach.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_a",
+      "P_prev"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    },
+    {
+     "equation_id": "EQ-C-Q261-012",
+     "page": 23,
+     "label": null,
+     "source_expression": "P_{n,y,e|c} = P_{n,y,e} - P_{n,y,e|a}, after setting ε to 0.",
+     "normalized_latex": "P_c = P - P_a",
+     "purpose": "Coach contribution is the residual.",
+     "source_type": "paper",
+     "variable_symbols": [
+      "P_c",
+      "P",
+      "P_a"
+     ],
+     "visual_checked": true,
+     "transcription_confidence": "medium"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displayed equations are transcribed."
+   },
+   "objectives": [
+    "Estimate the coach contribution and spend it on three countries."
+   ],
+   "constraints": [
+    "The coach contribution is a constant.",
+    "The noise term is set to zero during the coach's tenure.",
+    "Capability is 0, 1, 2, or 3 for none, bronze, silver, and gold."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial state is used."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is used."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium is computed."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "three-Games average subtracted from the observed score",
+    "parameters": [
+     "P_c"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "Score the three previous Games.",
+     "Average them.",
+     "Subtract the average from the Games under the coach.",
+     "Average across events when the coach leads more than one."
+    ],
+    "software": [],
+    "convergence_criteria": "not stated"
+   },
+   "assumptions": [
+    "The three Games before the coach represent the team without that coach."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports p-values and intervals but does not discuss identifiability."
+   },
+   "handoff_outputs": [
+    "P_c"
+   ],
+   "validation_refs": [
+    "reported p-values, intervals, and information criteria"
+   ],
+   "computational_cost": "not stated",
+   "strengths": [
+    "The baseline window is stated.",
+    "A worked case, Lang Ping, is calculated in public."
+   ],
+   "limitations": [
+    "The printed average of the two American contributions is 1.16, which is not the mean of 2 and 1.33.",
+    "The 2012 American term is printed without the three Games that would produce it."
+   ],
+   "missing_details": [
+    "Ranking data are absent, so the paper cannot score places below a medal.",
+    "The formulas were read from the text layer, not from a page raster."
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-C-Q261-001",
+   "to_model_id": "MU-C-Q261-002",
+   "handoff": "Prob_Medal and Prob_Gold"
+  },
+  {
+   "from_model_id": "MU-C-Q261-003",
+   "to_model_id": "MU-C-Q261-004",
+   "handoff": "the claim that a host can add events in its strong sports"
+  }
+ ]
+}

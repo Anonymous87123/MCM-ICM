@@ -1,0 +1,49 @@
+Team # 13855                                                            Page 5 of 19
+
+
+4.2 Preprocessing
+
+  Before we present our models, we would like to address the preprocessing
+works we have done to the data.
+   First, we find that there are two self-towards messages, which are sent by p3
+and p30 to themselves. We expurgate these two messages since we believe that it
+makes no sense to send a message to oneself. Also, we discover a message whose
+topic is 18, which is invalid, so we expurgate this message as well. Still, there
+are different employees with same names in the office complex who are distin-
+guished primarily by node IDs, are renamed with a suffix though. For instance,
+p4 Gretchen 1 and p32 Gretchen 2.
+   We build a graph model using the provided data, in which people are vertices
+and messages are edges.
+    In addition, since we have assumed that a message has bidirectional influence
+(in Section 3), we have done the following modifications to the graph. For each
+edge in the graph (i.e. a message), we create another message of the same topic
+whose sender and receiver are swapped, which is a common trick to turn a di-
+rected graph into an undirected one. For this reason, in the remaining part of
+this article, every time we mention receiving a message, we mean both sending
+and receiving a message.
+   When a message contains more than one topics, we split it into several mes-
+sages for the convenience of manipulation.
+   These preliminary works could answer why M equals 910 rather than 400.
+
+
+4.3 Methodology
+
+4.3.1 Overview
+
+    As we described in the abstract, our method exploits the propagation of sus-
+piciousness in the message network to determine how likely a person is involved
+in the conspiracy.
+    Our model can be better understood based on the following intuition. Sus-
+piciousness can be passed along with the message. i.e. You become more sus-
+picious when you received a message from a suspected person. On the other
+hand, the topic of the message can affect the probability of transmission of
+suspiciousness. Talking with someone about a dubious topic would increase the
+likelihood of transmitting his suspiciousness to you.
+    Following this intuition, we defined Si for each person pi and Ri for each topic
+ti and calculate them in turn during an iterative propagation process.
+
+Definition 1 (Person Suspiciousness Function S). Si is the likelihood of person pi to
+be involved in the conspiracy.
+
+Definition 2 (Topic Suspiciousness Function R). Ri is defined as the suspiciousness
+transmission rate of topic ti .

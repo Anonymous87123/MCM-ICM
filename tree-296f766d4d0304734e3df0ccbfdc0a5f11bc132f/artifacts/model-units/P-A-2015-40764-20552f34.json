@@ -1,0 +1,2714 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2015-40764-20552f34",
+  "problem_type": "A",
+  "year": "2015",
+  "source_sha256": "20552f3436da8b1ccbf8620d4efe94ff24a0c166e232ad7823ac3960552137da",
+  "models": [
+    {
+      "model_id": "MU-A-2015-40764-001",
+      "page": 3,
+      "section": "General state-transition model",
+      "family": "three-state compartment transition model",
+      "purpose": "Represent Ebola population states and all eight birth, death, infection, recovery, and vaccination transitions",
+      "base_or_modification": "base",
+      "summary": "The general model compresses the outbreak into infected, vulnerable healthy, and immune healthy states while retaining eight transition-rate mechanisms.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_n",
+        "I_n",
+        "H_n",
+        "alpha",
+        "beta",
+        "nu",
+        "gamma",
+        "delta",
+        "epsilon"
+      ],
+      "outputs": [
+        "P_n",
+        "I_n",
+        "H_n"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-001",
+          "page": 5,
+          "label": null,
+          "source_expression": "sum_i p_i <= 1",
+          "normalized_latex": "\\sum_{i=1}^{8}p_i\\le 1",
+          "purpose": "one-event stochastic timestep validity",
+          "variable_symbols": [
+            "P_n",
+            "I_n",
+            "H_n",
+            "alpha",
+            "beta",
+            "nu",
+            "gamma",
+            "delta",
+            "epsilon"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-002",
+          "page": 3,
+          "label": null,
+          "source_expression": "state transition graph",
+          "normalized_latex": "P_n+I_n+H_n=N_n",
+          "purpose": "three-state population accounting",
+          "variable_symbols": [
+            "P_n",
+            "I_n",
+            "H_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "represent all state transitions",
+        "preserve population accounting"
+      ],
+      "constraints": [
+        "binary instantaneous states",
+        "homogeneous population",
+        "constant rates"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Draw state graph.",
+          "Assign numbered transition rates.",
+          "Define state and boundary assumptions."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "only three countries are modeled",
+        "no mutation",
+        "recovered immunity is complete"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "P_n",
+        "I_n",
+        "H_n"
+      ],
+      "validation_refs": [
+        "Fig.1, Table 1, pp.3-4"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "No spatial, age, gender, incubation, or deceased-transmission states."
+      ],
+      "missing_details": [
+        "regional case flows",
+        "time-varying treatment"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-002",
+      "page": 5,
+      "section": "Stochastic Model",
+      "family": "discrete-event stochastic simulation",
+      "purpose": "Generate random integer state trajectories and count cases/deaths",
+      "base_or_modification": "base",
+      "summary": "Each timestep selects at most one of eight events using cumulative probabilities derived from transition rates.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "timestep index",
+          "unit": "count",
+          "definition": "discrete event step",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dt",
+          "normalized_name": "timestep size",
+          "unit": "day",
+          "definition": "fraction of a day per event step",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "random draw",
+          "unit": "dimensionless",
+          "definition": "uniform pseudo-random draw in [0,1]",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_1",
+          "normalized_name": "birth event probability",
+          "unit": "probability",
+          "definition": "probability of vulnerable birth",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_7",
+          "normalized_name": "infection event probability",
+          "unit": "probability",
+          "definition": "probability of infection transition",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "case counter",
+          "unit": "person",
+          "definition": "cumulative case counter",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "death counter",
+          "unit": "person",
+          "definition": "cumulative death counter",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_n",
+        "I_n",
+        "H_n",
+        "dt",
+        "n",
+        "r"
+      ],
+      "outputs": [
+        "P_n",
+        "I_n",
+        "H_n",
+        "C",
+        "D"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-003",
+          "page": 5,
+          "label": null,
+          "source_expression": "p1=epsilon(Pn+Hn)dt",
+          "normalized_latex": "p_1=\\epsilon(P_n+H_n)dt",
+          "purpose": "vulnerable birth event",
+          "variable_symbols": [
+            "p_1",
+            "epsilon",
+            "P_n",
+            "H_n",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-004",
+          "page": 5,
+          "label": null,
+          "source_expression": "p7=alpha In Pn dt",
+          "normalized_latex": "p_7=\\alpha I_nP_n dt",
+          "purpose": "infection event",
+          "variable_symbols": [
+            "p_7",
+            "alpha",
+            "I_n",
+            "P_n",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-005",
+          "page": 5,
+          "label": null,
+          "source_expression": "state n+1 selected by cumulative r",
+          "normalized_latex": "X_{n+1}=X_n+\\Delta X_j\\;\\text{if }r\\in[\\sum_{i<j}p_i,\\sum_{i\\le j}p_i)",
+          "purpose": "random cumulative-probability event selection",
+          "variable_symbols": [
+            "r",
+            "p_1",
+            "p_7",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-006",
+          "page": 5,
+          "label": null,
+          "source_expression": "sum pi <=1",
+          "normalized_latex": "\\sum_{i=1}^{8}p_i\\le1",
+          "purpose": "maximum one event per timestep",
+          "variable_symbols": [
+            "p_1",
+            "p_7",
+            "dt"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "simulate outbreak paths",
+        "retain event-level randomness",
+        "count cases and deaths"
+      ],
+      "constraints": [
+        "dt small enough that sum probabilities is at most one",
+        "nonnegative state counts"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute event probabilities.",
+          "Draw r.",
+          "Select cumulative interval.",
+          "Update state/counters."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "pseudo-random draw is uniform",
+        "all other events follow the transition table"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "P_n",
+        "I_n",
+        "H_n",
+        "C",
+        "D"
+      ],
+      "validation_refs": [
+        "Eq.1-Eq.2, Table 2, p.5"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "Random seed, timestep selection algorithm, and code are not reported."
+      ],
+      "missing_details": [
+        "seed/convergence audit",
+        "replicate confidence interval"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-003",
+      "page": 6,
+      "section": "Deterministic Model",
+      "family": "difference-equation recurrence",
+      "purpose": "Produce day-by-day state counts and analytical steady-state equations",
+      "base_or_modification": "modification",
+      "summary": "The deterministic model reuses the stochastic state variables and rates but updates them once per day without random event transitions.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_next",
+          "normalized_name": "next vulnerable state",
+          "unit": "person",
+          "definition": "next vulnerable state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_next",
+          "normalized_name": "next infected state",
+          "unit": "person",
+          "definition": "next infected state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_next",
+          "normalized_name": "next immune state",
+          "unit": "person",
+          "definition": "next immune state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "vulnerable recurrence",
+          "unit": "person",
+          "definition": "next vulnerable state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "infected recurrence",
+          "unit": "person",
+          "definition": "next infected state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "immune recurrence",
+          "unit": "person",
+          "definition": "next immune state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "P_n",
+        "I_n",
+        "H_n",
+        "alpha",
+        "beta",
+        "nu",
+        "gamma",
+        "delta",
+        "epsilon"
+      ],
+      "outputs": [
+        "P_next",
+        "I_next",
+        "H_next",
+        "f",
+        "g",
+        "h"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-007",
+          "page": 6,
+          "label": null,
+          "source_expression": "Pn+1=Pn(1+epsilon-delta-nu-alpha In)+epsilon Hn",
+          "normalized_latex": "P_{next}=P_n(1+\\epsilon-\\delta-\\nu-\\alpha I_n)+\\epsilon H_n",
+          "purpose": "vulnerable recurrence",
+          "variable_symbols": [
+            "P_n",
+            "P_next",
+            "epsilon",
+            "delta",
+            "nu",
+            "alpha",
+            "I_n",
+            "H_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-008",
+          "page": 6,
+          "label": null,
+          "source_expression": "In+1=In(1+epsilon-gamma-beta)+alpha In Pn",
+          "normalized_latex": "I_{next}=I_n(1+\\epsilon-\\gamma-\\beta)+\\alpha I_nP_n",
+          "purpose": "infected recurrence",
+          "variable_symbols": [
+            "I_n",
+            "I_next",
+            "epsilon",
+            "gamma",
+            "beta",
+            "alpha",
+            "P_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-009",
+          "page": 6,
+          "label": null,
+          "source_expression": "Hn+1=Hn(1-delta)+beta In+nu Pn",
+          "normalized_latex": "H_{next}=H_n(1-\\delta)+\\beta I_n+\\nu P_n",
+          "purpose": "immune recurrence",
+          "variable_symbols": [
+            "H_n",
+            "H_next",
+            "delta",
+            "beta",
+            "I_n",
+            "nu",
+            "P_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-010",
+          "page": 6,
+          "label": null,
+          "source_expression": "(f,g,h)=(Pn+1,In+1,Hn+1)",
+          "normalized_latex": "(f,g,h)=(P_next,I_next,H_next)",
+          "purpose": "deterministic map definition",
+          "variable_symbols": [
+            "f",
+            "g",
+            "h",
+            "P_next",
+            "I_next",
+            "H_next"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "iterate daily state counts",
+        "solve fixed points",
+        "analyze stability"
+      ],
+      "constraints": [
+        "one-day timestep",
+        "same transition rates as stochastic model"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Define f,g,h.",
+          "Iterate n days.",
+          "Use outputs for long-term analysis."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "deterministic model does not track event-level transitions",
+        "initial states match stochastic validation state"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "P_next",
+        "I_next",
+        "H_next",
+        "f",
+        "g",
+        "h"
+      ],
+      "validation_refs": [
+        "Eq.3, Table 3, p.6"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "Indirect validation through stochastic agreement; no direct transition-count comparison."
+      ],
+      "missing_details": [
+        "time-varying rates",
+        "stochastic-deterministic coupling uncertainty"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-004",
+      "page": 7,
+      "section": "Model Parameters",
+      "family": "data transformation and calibration",
+      "purpose": "Estimate rates and initial conditions from population and WHO tables",
+      "base_or_modification": "paper-specific",
+      "summary": "Population, birth/death, case/death, residence-time, and transmission estimates are converted into model parameters; K and T are fitted to WHO endpoints.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "birth count",
+          "unit": "person/day",
+          "definition": "reported births",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "death count",
+          "unit": "person/day",
+          "definition": "reported non-Ebola deaths",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_0",
+          "normalized_name": "initial population",
+          "unit": "person",
+          "definition": "population at the start of the WHO window",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_0",
+          "normalized_name": "initial cases",
+          "unit": "person",
+          "definition": "reported cases at window start",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_0",
+          "normalized_name": "initial deaths",
+          "unit": "person",
+          "definition": "reported deaths at window start",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "residence time",
+          "unit": "day",
+          "definition": "average infected residence time",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "secondary transmissions",
+          "unit": "person",
+          "definition": "average healthy people infected per infected person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M",
+          "normalized_name": "mortality rate",
+          "unit": "dimensionless",
+          "definition": "deaths divided by total cases",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_0",
+          "normalized_name": "initial infected",
+          "unit": "person",
+          "definition": "initial infected proxy",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_0",
+          "normalized_name": "initial vulnerable",
+          "unit": "person",
+          "definition": "initial population minus initial infected",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "B",
+        "Q",
+        "N_0",
+        "C_0",
+        "D_0",
+        "T",
+        "K"
+      ],
+      "outputs": [
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
+        "epsilon",
+        "I_0",
+        "P_0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-011",
+          "page": 7,
+          "label": null,
+          "source_expression": "epsilon=Birth Rate/Population",
+          "normalized_latex": "\\epsilon=B/N",
+          "purpose": "birth-rate conversion",
+          "variable_symbols": [
+            "epsilon",
+            "B",
+            "N_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-012",
+          "page": 7,
+          "label": null,
+          "source_expression": "delta=Death Rate/Population",
+          "normalized_latex": "\\delta=Q/N",
+          "purpose": "death-rate conversion",
+          "variable_symbols": [
+            "delta",
+            "Q",
+            "N_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-013",
+          "page": 7,
+          "label": null,
+          "source_expression": "N0=FinalPopulation-85(Birth-Death)",
+          "normalized_latex": "N_0=N_{85}-85(B-Q)",
+          "purpose": "initial population reconstruction",
+          "variable_symbols": [
+            "N_0",
+            "B",
+            "Q"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-014",
+          "page": 8,
+          "label": null,
+          "source_expression": "I0=TotalCases-TotalDeaths",
+          "normalized_latex": "I_0=C_0-D_0",
+          "purpose": "initial infected proxy",
+          "variable_symbols": [
+            "C_0",
+            "D_0",
+            "I_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-015",
+          "page": 9,
+          "label": null,
+          "source_expression": "gamma=Mortality/T; beta=(1-Mortality)/T; alpha=K/(T P0)",
+          "normalized_latex": "\\gamma=M/T,\\;\\beta=(1-M)/T,\\;\\alpha=K/(TP_0)",
+          "purpose": "mortality, recovery, and transmission calibration",
+          "variable_symbols": [
+            "gamma",
+            "beta",
+            "M",
+            "T",
+            "alpha",
+            "K",
+            "P_0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "produce reproducible initial conditions",
+        "fit WHO case/death endpoints",
+        "retain unit-bearing rates"
+      ],
+      "constraints": [
+        "WHO window is 85 days",
+        "population-weighted overall region",
+        "H_0=0"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon",
+          "T",
+          "K"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Transform source tables.",
+          "Set initial states.",
+          "Fit K/T.",
+          "Run both models."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "reported cases not resulting in death are treated as infected",
+        "WHO undercount and anecdotal T are acknowledged"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
+        "epsilon",
+        "I_0",
+        "P_0"
+      ],
+      "validation_refs": [
+        "Tables 4-9, Eqs.4-13, pp.7-9"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "K and T can be artifacts of other model aspects; country data are sparse."
+      ],
+      "missing_details": [
+        "uncertainty distributions",
+        "holdout calibration"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-005",
+      "page": 9,
+      "section": "Validation",
+      "family": "replicated endpoint validation",
+      "purpose": "Compare ten stochastic runs and deterministic endpoints with WHO data and each other",
+      "base_or_modification": "paper-specific",
+      "summary": "The validation protocol reports ten stochastic replicates per region over 85 days, endpoint errors and standard deviations, then checks deterministic agreement with stochastic states.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "replicate index",
+          "unit": "count",
+          "definition": "stochastic simulation replicate",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_M",
+          "normalized_name": "modeled cases",
+          "unit": "person",
+          "definition": "simulated endpoint cases",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_M",
+          "normalized_name": "modeled deaths",
+          "unit": "person",
+          "definition": "simulated endpoint deaths",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_W",
+          "normalized_name": "WHO cases",
+          "unit": "person",
+          "definition": "reported endpoint cases",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_W",
+          "normalized_name": "WHO deaths",
+          "unit": "person",
+          "definition": "reported endpoint deaths",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "replicate standard deviation",
+          "unit": "person",
+          "definition": "standard deviation across ten stochastic runs",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "R",
+        "C_W",
+        "D_W",
+        "P_n",
+        "I_n",
+        "H_n"
+      ],
+      "outputs": [
+        "C_M",
+        "D_M",
+        "sigma"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-016",
+          "page": 10,
+          "label": null,
+          "source_expression": "relative error=(model-WHO)/WHO",
+          "normalized_latex": "e_C=(C_M-C_W)/C_W,\\;e_D=(D_M-D_W)/D_W",
+          "purpose": "endpoint validation error",
+          "variable_symbols": [
+            "C_M",
+            "D_M",
+            "C_W",
+            "D_W"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-017",
+          "page": 11,
+          "label": null,
+          "source_expression": "deterministic state compared with stochastic state",
+          "normalized_latex": "(P_D,I_D,H_D)\\approx(P_S,I_S,H_S)",
+          "purpose": "indirect deterministic validation",
+          "variable_symbols": [
+            "P_n",
+            "I_n",
+            "H_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "quantify fit to WHO",
+        "explain residuals",
+        "check stochastic-deterministic consistency"
+      ],
+      "constraints": [
+        "four modeled regions",
+        "85-day window",
+        "ten stochastic runs"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Run ten stochastic replicates.",
+          "Compute endpoint mean/SD/errors.",
+          "Compare deterministic endpoint.",
+          "Explain timestep/randomness residual."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "irregular WHO reporting dates",
+        "constant treatment rates"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "C_M",
+        "D_M",
+        "sigma"
+      ],
+      "validation_refs": [
+        "Tables 10-11, Fig.2-Fig.3, pp.9-12"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "Short window, reporting irregularity, and undercount limit external validity."
+      ],
+      "missing_details": [
+        "holdout time window",
+        "calibration residual distribution"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-006",
+      "page": 12,
+      "section": "Treatment Options",
+      "family": "counterfactual parameter intervention",
+      "purpose": "Map medical services, medicine, and vaccine policies to alpha, beta/gamma, and nu",
+      "base_or_modification": "modification",
+      "summary": "Each treatment is modeled independently by changing the rate parameter with the corresponding mechanism, while baseline rates remain fixed.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "vaccinated fraction",
+          "unit": "dimensionless",
+          "definition": "fraction successfully vaccinated over two years",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K_min",
+          "normalized_name": "minimum transmission proxy",
+          "unit": "person",
+          "definition": "0.54 lower bound from isolation mix",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Horizon",
+          "normalized_name": "forecast horizon",
+          "unit": "day",
+          "definition": "six-month, one-year, two-year, or long-term horizon",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Deaths",
+          "normalized_name": "new deaths",
+          "unit": "person",
+          "definition": "deaths over a treatment horizon",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cases",
+          "normalized_name": "new cases",
+          "unit": "person",
+          "definition": "cases over a treatment horizon",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "alpha",
+        "beta",
+        "gamma",
+        "nu",
+        "V",
+        "Horizon"
+      ],
+      "outputs": [
+        "Deaths",
+        "Cases"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-018",
+          "page": 12,
+          "label": null,
+          "source_expression": "Kmin=0.75(0.12)+0.25(1.8)",
+          "normalized_latex": "K_{min}=0.75(0.12)+0.25(1.8)=0.54",
+          "purpose": "medical-service lower-bound transmission",
+          "variable_symbols": [
+            "K_min"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-019",
+          "page": 15,
+          "label": null,
+          "source_expression": "nu=V/730",
+          "normalized_latex": "\\nu=V/730",
+          "purpose": "vaccination-rate mapping",
+          "variable_symbols": [
+            "nu",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "compare interventions",
+        "preserve counterfactual isolation",
+        "rank death reduction"
+      ],
+      "constraints": [
+        "one intervention at a time",
+        "other parameters held constant",
+        "three countries targeted independently"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon",
+          "K_min"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set 5-Feb-2015 baseline.",
+          "Perturb one rate.",
+          "Simulate horizon.",
+          "Compare deaths/cases."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "medical services reduce transmission",
+        "medicine changes recovery/death",
+        "vaccine changes vulnerable-to-immune transition"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "Deaths",
+        "Cases"
+      ],
+      "validation_refs": [
+        "Sec.4.1, Eqs.14-15, pp.12-15"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "No costs, capacity, adherence, or interaction between interventions."
+      ],
+      "missing_details": [
+        "joint intervention optimization",
+        "operational feasibility"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-007",
+      "page": 15,
+      "section": "Sensitivity Analysis",
+      "family": "horizon-stratified intervention sensitivity",
+      "purpose": "Compare short, medium, and long treatment effects by country and treatment type",
+      "base_or_modification": "paper-specific",
+      "summary": "Ten-run stochastic averages quantify six-month, one-year, and two-year changes; figures compare death reduction against percentage treatment change.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "vaccinated fraction",
+          "unit": "dimensionless",
+          "definition": "fraction successfully vaccinated over two years",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K_min",
+          "normalized_name": "minimum transmission proxy",
+          "unit": "person",
+          "definition": "0.54 lower bound from isolation mix",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Horizon",
+          "normalized_name": "forecast horizon",
+          "unit": "day",
+          "definition": "six-month, one-year, two-year, or long-term horizon",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Deaths",
+          "normalized_name": "new deaths",
+          "unit": "person",
+          "definition": "deaths over a treatment horizon",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cases",
+          "normalized_name": "new cases",
+          "unit": "person",
+          "definition": "cases over a treatment horizon",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "efficiency proxy",
+          "unit": "person/%",
+          "definition": "deaths reduced per percentage treatment change",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "trendline threshold",
+          "unit": "person",
+          "definition": "dotted-line screening threshold for relative efficiency",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Horizon",
+        "alpha",
+        "beta",
+        "gamma",
+        "nu",
+        "Deaths",
+        "Cases"
+      ],
+      "outputs": [
+        "Deaths",
+        "Cases",
+        "E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-020",
+          "page": 15,
+          "label": null,
+          "source_expression": "efficiency=death reduction / percentage treatment change",
+          "normalized_latex": "E=\\Delta Deaths/\\Delta Treatment",
+          "purpose": "treatment efficiency proxy",
+          "variable_symbols": [
+            "E",
+            "Deaths"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-021",
+          "page": 17,
+          "label": null,
+          "source_expression": "above dotted line is relatively efficient",
+          "normalized_latex": "E>L",
+          "purpose": "visual efficiency screening",
+          "variable_symbols": [
+            "E",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "identify dominant treatment by horizon",
+        "identify target country",
+        "separate gross death reduction from proxy efficiency"
+      ],
+      "constraints": [
+        "ten stochastic replicates",
+        "10% changes and target levels",
+        "all other parameters fixed"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon",
+          "K_min"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Run baseline.",
+          "Run treatment scenarios.",
+          "Average ten runs.",
+          "Plot reduction versus treatment change.",
+          "Attach policy caveat."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "short-term immunity assumption more plausible",
+        "efficiency is not monetary cost-effectiveness"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "Deaths",
+        "Cases",
+        "E"
+      ],
+      "validation_refs": [
+        "Tables 12-20, Fig.4-Fig.5, pp.13-17"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "One-factor scenarios omit interactions, costs, and uncertainty intervals."
+      ],
+      "missing_details": [
+        "global/joint sensitivity",
+        "cost-benefit model"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-008",
+      "page": 18,
+      "section": "Fixed Point and Stability",
+      "family": "fixed-point and Jacobian stability analysis",
+      "purpose": "Enumerate steady states and derive conditions for stable eradication",
+      "base_or_modification": "modification",
+      "summary": "The deterministic map is solved for all eight steady-state cases, then Case 6 with I=0 is tested with the Jacobian and Jury inequalities.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_next",
+          "normalized_name": "next vulnerable state",
+          "unit": "person",
+          "definition": "next vulnerable state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_next",
+          "normalized_name": "next infected state",
+          "unit": "person",
+          "definition": "next infected state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_next",
+          "normalized_name": "next immune state",
+          "unit": "person",
+          "definition": "next immune state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "vulnerable recurrence",
+          "unit": "person",
+          "definition": "next vulnerable state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "infected recurrence",
+          "unit": "person",
+          "definition": "next infected state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "immune recurrence",
+          "unit": "person",
+          "definition": "next immune state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "J",
+          "normalized_name": "Jacobian",
+          "unit": "matrix",
+          "definition": "derivative matrix of deterministic map",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "trJ",
+          "normalized_name": "Jacobian trace",
+          "unit": "dimensionless",
+          "definition": "trace of J",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detJ",
+          "normalized_name": "Jacobian determinant",
+          "unit": "dimensionless",
+          "definition": "determinant of J",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M_star",
+          "normalized_name": "stability helper",
+          "unit": "dimensionless",
+          "definition": "beta+gamma-1-alpha P-delta",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "f",
+        "g",
+        "h",
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
+        "nu",
+        "epsilon"
+      ],
+      "outputs": [
+        "J",
+        "trJ",
+        "detJ",
+        "M_star"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-022",
+          "page": 18,
+          "label": null,
+          "source_expression": "fixed point f=g=h=identity",
+          "normalized_latex": "P_{next}=P_n,\\;I_{next}=I_n,\\;H_{next}=H_n",
+          "purpose": "fixed point system",
+          "variable_symbols": [
+            "P_next",
+            "I_next",
+            "H_next",
+            "P_n",
+            "I_n",
+            "H_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-023",
+          "page": 19,
+          "label": null,
+          "source_expression": "J=partial(f,g,h)/partial(P,I,H)",
+          "normalized_latex": "J=\\partial(f,g,h)/\\partial(P_n,I_n,H_n)",
+          "purpose": "Jacobian of deterministic map",
+          "variable_symbols": [
+            "J",
+            "f",
+            "g",
+            "h",
+            "P_n",
+            "I_n",
+            "H_n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-024",
+          "page": 19,
+          "label": null,
+          "source_expression": "|tr(J)|<1+det(J)<2",
+          "normalized_latex": "|tr(J)|<1+det(J)<2",
+          "purpose": "Jury stability condition",
+          "variable_symbols": [
+            "trJ",
+            "detJ"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-025",
+          "page": 20,
+          "label": null,
+          "source_expression": "M=beta+gamma-1-alpha P-delta",
+          "normalized_latex": "M=\\beta+\\gamma-1-\\alpha P_n-\\delta",
+          "purpose": "stability helper",
+          "variable_symbols": [
+            "M_star",
+            "beta",
+            "gamma",
+            "alpha",
+            "P_n",
+            "delta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "find I=0 fixed point",
+        "screen eight cases",
+        "derive stability inequality"
+      ],
+      "constraints": [
+        "Case 6 assumes epsilon=delta and I=0",
+        "parameters nonnegative",
+        "Jury conditions apply"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Solve fixed-point equations.",
+          "Exclude unrealistic cases.",
+          "Construct J.",
+          "Apply Jury condition.",
+          "Simplify Case 6."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "case selection is model-specific",
+        "long-term birth/death asymptotics are idealized"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "J",
+        "trJ",
+        "detJ",
+        "M_star"
+      ],
+      "validation_refs": [
+        "Table 21, Eqs.16-26, pp.18-20"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "Algebra uses simplified state and population assumptions; no external stability validation."
+      ],
+      "missing_details": [
+        "symbolic derivation audit",
+        "numerical eigenvalue check"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-40764-009",
+      "page": 20,
+      "section": "Vaccination Threshold",
+      "family": "asymptotic stability reduction",
+      "purpose": "Reduce the Case 6 Jury condition to a vaccination threshold",
+      "base_or_modification": "paper-specific",
+      "summary": "After treating the population-growth limit, the paper obtains nu > 1-delta and interprets vaccination as the only long-term guarantee under its model assumptions.",
+      "variables": [
+        {
+          "symbol": "P_n",
+          "normalized_name": "vulnerable healthy population",
+          "unit": "person",
+          "definition": "healthy population susceptible to infection",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_n",
+          "normalized_name": "infected population",
+          "unit": "person",
+          "definition": "people currently infected with Ebola",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_n",
+          "normalized_name": "immune healthy population",
+          "unit": "person",
+          "definition": "healthy people immune to the modeled strain",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "infection rate",
+          "unit": "1/(person day)",
+          "definition": "per-person transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "recovery rate",
+          "unit": "1/day",
+          "definition": "daily recovery transition rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "vaccination rate",
+          "unit": "1/day",
+          "definition": "daily successful vaccination rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "infected death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for infected people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "delta",
+          "normalized_name": "healthy death rate",
+          "unit": "1/day",
+          "definition": "daily death rate for healthy people",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "birth rate",
+          "unit": "1/day",
+          "definition": "daily birth rate per person",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_next",
+          "normalized_name": "next vulnerable state",
+          "unit": "person",
+          "definition": "next vulnerable state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_next",
+          "normalized_name": "next infected state",
+          "unit": "person",
+          "definition": "next infected state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H_next",
+          "normalized_name": "next immune state",
+          "unit": "person",
+          "definition": "next immune state",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "vulnerable recurrence",
+          "unit": "person",
+          "definition": "next vulnerable state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "infected recurrence",
+          "unit": "person",
+          "definition": "next infected state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "immune recurrence",
+          "unit": "person",
+          "definition": "next immune state function",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "J",
+          "normalized_name": "Jacobian",
+          "unit": "matrix",
+          "definition": "derivative matrix of deterministic map",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "trJ",
+          "normalized_name": "Jacobian trace",
+          "unit": "dimensionless",
+          "definition": "trace of J",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "detJ",
+          "normalized_name": "Jacobian determinant",
+          "unit": "dimensionless",
+          "definition": "determinant of J",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M_star",
+          "normalized_name": "stability helper",
+          "unit": "dimensionless",
+          "definition": "beta+gamma-1-alpha P-delta",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_inf",
+          "normalized_name": "asymptotic population",
+          "unit": "person",
+          "definition": "limit of vulnerable population under birth excess",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "nu",
+        "delta",
+        "P_n",
+        "N_inf"
+      ],
+      "outputs": [
+        "nu"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-40764-026",
+          "page": 20,
+          "label": null,
+          "source_expression": "lim Pn=infinity",
+          "normalized_latex": "\\lim_{n\\to\\infty}P_n=\\infty",
+          "purpose": "asymptotic population assumption",
+          "variable_symbols": [
+            "P_n",
+            "N_inf"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-A-2015-40764-027",
+          "page": 20,
+          "label": null,
+          "source_expression": "nu>1-delta",
+          "normalized_latex": "\\nu>1-\\delta",
+          "purpose": "model-conditional vaccination eradication threshold",
+          "variable_symbols": [
+            "nu",
+            "delta"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All visually checked central equations are retained."
+      },
+      "objectives": [
+        "derive a closed long-term condition",
+        "translate stability to policy"
+      ],
+      "constraints": [
+        "epsilon=delta in initial analysis",
+        "P tends to infinity in asymptotic argument",
+        "Case 6 selected"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial infected, immune, and vulnerable populations are specified from the WHO window and population tables."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The modeled outbreak is confined to Guinea, Liberia, Sierra Leone, and their population-weighted overall region."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "Long-term equilibrium is analyzed through fixed points and Jury stability; stochastic treatment scenarios do not prove equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "WHO cases/deaths, CountryMeters birth/death data, literature plausibility checks, and fitted K/T values with Matlab simulation.",
+        "parameters": [
+          "alpha",
+          "beta",
+          "nu",
+          "gamma",
+          "delta",
+          "epsilon"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Substitute Case 6.",
+          "Take population limit.",
+          "Reduce inequality.",
+          "State model-conditional policy implication."
+        ],
+        "software": [
+          "Matlab stochastic simulation, deterministic iteration, and numerical plotting; random cumulative-probability event selection."
+        ],
+        "convergence_criteria": "Ten-run averages and endpoint comparisons are reported; solver seeds, stopping rules, and full code are not specified."
+      },
+      "assumptions": [
+        "vaccination threshold is not an externally validated epidemiological theorem",
+        "cost and delivery are omitted"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The state-transition mechanism is explicit, but K, residence time, initial recovered cases, reporting undercount, and intervention mappings are only partly identifiable."
+      },
+      "handoff_outputs": [
+        "nu"
+      ],
+      "validation_refs": [
+        "Eqs.27-29, p.20"
+      ],
+      "computational_cost": "Stochastic event simulation scales with timesteps, states, and replicate count; deterministic iteration and fixed-point/Jacobian algebra scale with state dimension.",
+      "strengths": [
+        "The paper separates simulation uncertainty from analytical long-term stability.",
+        "Each policy intervention is mapped to named transition rates and compared at multiple horizons.",
+        "WHO endpoint tables and figures connect parameters to observed data."
+      ],
+      "limitations": [
+        "The conclusion is conditional on the reduced model, fixed rates, complete immunity, and asymptotic population argument."
+      ],
+      "missing_details": [
+        "finite-population threshold",
+        "waning immunity",
+        "cost/capacity"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2015-40764-001",
+      "to_model_id": "MU-A-2015-40764-002",
+      "handoff": "state graph and rates become stochastic event probabilities"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-002",
+      "to_model_id": "MU-A-2015-40764-003",
+      "handoff": "stochastic state definitions are reused by daily deterministic recurrence"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-003",
+      "to_model_id": "MU-A-2015-40764-004",
+      "handoff": "deterministic and stochastic states receive WHO-derived initial/rate parameters"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-004",
+      "to_model_id": "MU-A-2015-40764-005",
+      "handoff": "calibrated models enter replicated external validation"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-005",
+      "to_model_id": "MU-A-2015-40764-006",
+      "handoff": "validated baseline becomes treatment counterfactual input"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-006",
+      "to_model_id": "MU-A-2015-40764-007",
+      "handoff": "intervention parameter mappings become horizon-stratified sensitivity scenarios"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-003",
+      "to_model_id": "MU-A-2015-40764-008",
+      "handoff": "deterministic recurrence becomes fixed-point/Jacobian analysis"
+    },
+    {
+      "from_model_id": "MU-A-2015-40764-008",
+      "to_model_id": "MU-A-2015-40764-009",
+      "handoff": "Case 6 stability inequality becomes asymptotic vaccination threshold"
+    }
+  ],
+  "review_status": "validated"
+}

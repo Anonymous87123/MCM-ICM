@@ -1,0 +1,602 @@
+{
+  "schema_version": 1,
+  "paper_id": "P-C-2023-2307166-ec54f9ce",
+  "problem_type": "C",
+  "year": "2023",
+  "source": {
+    "relative_path": "2023美赛特等奖/C/2307166.pdf",
+    "sha256": "ec54f9ce2f32d01fd30a52f3562c75799c2b26548f5f86396ccfbb7d53de844b",
+    "page_count": 25
+  },
+  "source_quality": {
+    "text_layer": "text-rich",
+    "equation_authority": "rendered page"
+  },
+  "task_reconstruction": {
+    "official_task": "2023 MCM Problem C, as restated on physical page 5.",
+    "required_outputs": [
+      "a model for the number of reported results with prediction interval",
+      "whether word attributes affect Hard Mode percentage",
+      "a model predicting try distribution for a given word, applied to EERIE",
+      "a model classifying word difficulty, applied to EERIE",
+      "interesting features and a letter to the puzzle editor"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "summary": "abstract: page 1, ~420 words in 6 paragraphs"
+    },
+    {
+      "page": 2,
+      "summary": "memo: pages 2-3, ~680 words in 8 paragraphs (letter to NYT Puzzle Editor)"
+    },
+    {
+      "page": 4,
+      "summary": "introduction: pages 4-5, ~220 words in 6 items"
+    },
+    {
+      "page": 5,
+      "summary": "assumptions: page 5, ~60 words in 3 items"
+    },
+    {
+      "page": 6,
+      "summary": "data-preprocessing: pages 6-9, ~1100 words in 15 paragraphs (outlier removal + feature engineering)"
+    },
+    {
+      "page": 9,
+      "summary": "model-establishment: pages 9-13, ~1200 words in 16 paragraphs (PCQL ODE model)"
+    },
+    {
+      "page": 13,
+      "summary": "problem-analysis: pages 13-15, ~500 words in 6 paragraphs (Hard Mode investigation)"
+    },
+    {
+      "page": 15,
+      "summary": "results: pages 15-20, ~900 words in 12 paragraphs (KNN regression + EERIE prediction)"
+    },
+    {
+      "page": 20,
+      "summary": "sensitivity-robustness: pages 20-22, ~650 words in 8 paragraphs (difficulty classification + insights)"
+    },
+    {
+      "page": 23,
+      "summary": "strengths-limitations: page 23, minimal text with figures"
+    },
+    {
+      "page": 24,
+      "summary": "references: page 24, 6 entries"
+    }
+  ],
+  "contributions": [
+    {
+      "page": 1,
+      "summary": "Abstract uses borrowed-domain analogy framing: epidemiology for game spread, KNN for distribution prediction."
+    },
+    {
+      "page": 6,
+      "summary": "Novel character-level features (regularity via Markov chain, purity via negentropy) grounded in information theory."
+    },
+    {
+      "page": 11,
+      "summary": "PCQL model extends SIR by splitting Recovered into Quitted and Loyal, capturing habitual player persistence."
+    },
+    {
+      "page": 14,
+      "summary": "Clean null result on Hard Mode: R²=0.022 plus temporal confound argument."
+    },
+    {
+      "page": 16,
+      "summary": "KNN regression exploits sum-preservation property for distributional prediction; K=15 by 10-fold CV."
+    },
+    {
+      "page": 20,
+      "summary": "KNN classifier (K=8) achieves 75.28% accuracy for 3-class difficulty classification."
+    },
+    {
+      "page": 21,
+      "summary": "Cross-model validation: Hard Mode proportion trend matches PCQL loyal-player proportion."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from": "MU-C-Q234-001",
+      "to": "MU-C-Q234-002",
+      "label": "PCQL loyal-player trend motivates confounding argument in regression null result."
+    },
+    {
+      "from": "MU-C-Q234-003",
+      "to": "MU-C-Q234-004",
+      "label": "KNN regression distributional output informs difficulty median computation which feeds classifier."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 5,
+      "summary": "Words in the given data are English words sharing common probabilistic identities with dictionary words."
+    },
+    {
+      "page": 5,
+      "summary": "Players prefer generality: familiar-looking words are recalled first."
+    },
+    {
+      "page": 10,
+      "summary": "Consistency of Behavior: TPers do TP everyday, non-TPers never do."
+    },
+    {
+      "page": 10,
+      "summary": "Viral Marketing: conversion probability proportional to contact with active TPers."
+    },
+    {
+      "page": 10,
+      "summary": "Potential Customers: only a subset of population can become TPers."
+    },
+    {
+      "page": 10,
+      "summary": "No Return: ex-TPers never return to TP."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 6,
+      "summary": "Two types of outliers removed: non-5-letter words and unusually low report counts."
+    },
+    {
+      "page": 6,
+      "summary": "Normalization to mean 0, variance 1 for KNN distance computation."
+    },
+    {
+      "page": 6,
+      "summary": "Regularity feature: geometric mean of bigram transition probabilities with BOW/EOW."
+    },
+    {
+      "page": 7,
+      "summary": "Purity feature: negentropy of successor character distribution."
+    },
+    {
+      "page": 8,
+      "summary": "Repetition features: count of repeated letters and maximum repetition count."
+    },
+    {
+      "page": 9,
+      "summary": "Word frequency from movie subtitle corpus (Hermit Dave)."
+    }
+  ],
+  "models": [
+    {
+      "page": 11,
+      "model_id": "MU-C-Q234-001",
+      "summary": "PCQL compartmental ODE extending SIR: 4 variables (Potential/Crowd/Quitted/Loyal), 4 parameters. Fitted via GA + Nelder-Mead, Bootstrap 95% CI [11173, 17069] for March 1 2023."
+    },
+    {
+      "page": 14,
+      "model_id": "MU-C-Q234-002",
+      "summary": "Linear regression of Hard Mode percentage on regularity. R²=0.022 (weighted), 0.013 (unweighted). Conclusion: word attributes do not meaningfully affect Hard Mode ratio."
+    },
+    {
+      "page": 16,
+      "model_id": "MU-C-Q234-003",
+      "summary": "KNN regression (K=15) using 5 word features to predict 7-bin try distribution. Cross-validated MSE=12.35. EERIE: (0.20, 4.87, 23.55, 35.36, 23.75, 9.94, 2.33). Bootstrap 95% CI."
+    },
+    {
+      "page": 20,
+      "model_id": "MU-C-Q234-004",
+      "summary": "KNN classifier (K=8) using repeated letters, weighted purity, weighted regularity. 3 difficulty levels. Accuracy 75.28%, CI [63.16%, 82.76%]. EERIE: normal."
+    }
+  ],
+  "verification": [
+    {
+      "page": 12,
+      "summary": "GA + Nelder-Mead optimization with MSE loss. Bootstrap 1000 samples for prediction intervals."
+    },
+    {
+      "page": 14,
+      "summary": "R² and adjusted R² reported for both weighted and unweighted regularity regressions."
+    },
+    {
+      "page": 18,
+      "summary": "10-fold cross-validation for KNN regression feature and K selection. MSE=12.35."
+    },
+    {
+      "page": 20,
+      "summary": "Cross-validation for KNN classifier K selection. Accuracy 75.28% with CI [63.16%, 82.76%]."
+    },
+    {
+      "page": 21,
+      "summary": "Cross-model consistency: PCQL loyal-player proportion matches Hard Mode proportion trend."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 12,
+      "summary": "PCQL model fitted parameters: alpha=0.177, beta=0.0177, gamma=0.00104, delta=0.00114. Prediction: March 1 2023 in [11173, 17069]."
+    },
+    {
+      "page": 14,
+      "summary": "R²=0.022 for weighted regularity regression: word attributes do not explain Hard Mode variation."
+    },
+    {
+      "page": 19,
+      "summary": "EERIE try distribution: (0.20, 4.87, 23.55, 35.36, 23.75, 9.94, 2.33) with ~5% prediction interval."
+    },
+    {
+      "page": 20,
+      "summary": "EERIE classified as ordinary (normal) difficulty by KNN classifier (K=8, 75.28% accuracy)."
+    },
+    {
+      "page": 21,
+      "summary": "Hard Mode proportion increases over time, matching PCQL loyal-player proportion trend."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "Abstract opens with virality context-setting, then method summaries per model, closes with cross-model corroboration finding."
+    },
+    {
+      "page": 2,
+      "summary": "Memo to NYT editor: gratitude opening, lifecycle diagnosis, actionable recommendations, null-result framing, bonus insights."
+    },
+    {
+      "page": 9,
+      "summary": "Model section opens with manual EDA (shape + mechanism), reviews SIR baseline, identifies gap, extends to PCQL."
+    },
+    {
+      "page": 13,
+      "summary": "Hard Mode analysis uses dramatic section titles (It Seems True / Very Likely Not True) as narrative reversal."
+    },
+    {
+      "page": 16,
+      "summary": "KNN regression justified by sum-preservation property; two-stage feature selection (covariance then CV)."
+    },
+    {
+      "page": 21,
+      "summary": "Insights section connects back to PCQL model, using temporal parallel as cross-model validation."
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "summary": "Abstract uses phenomenon-virality context-setting with platform exemplification: 'has been spreading widely around the world and has a high level of buzz on social media such as Twitter.'"
+    },
+    {
+      "page": 1,
+      "summary": "Significance claim links domain study to broader value: 'may shed some light on important issues such as...'"
+    },
+    {
+      "page": 1,
+      "summary": "Method constraint as selection criterion: 'KNN regression has the excellent property of ensuring that the predicted distribution still sums to zero.'"
+    },
+    {
+      "page": 2,
+      "summary": "Memo opens with gratitude + dual-scope significance: 'important not only for your company, but also for...'"
+    },
+    {
+      "page": 2,
+      "summary": "Lifecycle diagnosis from proxy: 'our epidemiology-like model tells us that Wordle has entered the tail end, or plateau, of its life cycle.'"
+    },
+    {
+      "page": 2,
+      "summary": "Confound warning: 'statistical tools such as regression may misidentify this trend over time as a direct relationship.'"
+    },
+    {
+      "page": 9,
+      "summary": "Double justification for model choice: shape similarity ('typical sequence') AND mechanism ('can be very viral')."
+    },
+    {
+      "page": 11,
+      "summary": "Variable reinterpretation: 'we can deem S as target customers, I as score sharers, and R as those who tried and had been tired.'"
+    },
+    {
+      "page": 11,
+      "summary": "Model extension motivation: 'not all the score sharers would be cured quickly; some people would pick up the habit.'"
+    },
+    {
+      "page": 12,
+      "summary": "Two-stage optimization rationale: 'the formal solution is difficult to compute' + 'the time cost is high, so we choose Nelder-Mead.'"
+    },
+    {
+      "page": 14,
+      "summary": "R-squared dismissal: 'only 0.022 and 0.019, which represents that the weighted regularity explains only about 2%.'"
+    },
+    {
+      "page": 21,
+      "summary": "Cross-model consonance: 'this phenomenon is consistent with our PCQL Model, in which we assume that there are loyal TPers.'"
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 1,
+      "summary": "V-Q234-01: Table of Contents: numbered sections from Letter through References"
+    },
+    {
+      "page": 4,
+      "summary": "V-Q234-02: Figure 1: Flow chart of Wordle game mechanics"
+    },
+    {
+      "page": 5,
+      "summary": "V-Q234-03: Table 1: Notations — symbols and definitions"
+    },
+    {
+      "page": 6,
+      "summary": "V-Q234-04: Outlier data table: dates, contest numbers, words, report counts"
+    },
+    {
+      "page": 6,
+      "summary": "V-Q234-05: Figure 2: Virtual characters and transition processes (BOW/EOW Markov chain)"
+    },
+    {
+      "page": 7,
+      "summary": "V-Q234-06: Figure 3: Purity and succeeding character visualization"
+    },
+    {
+      "page": 10,
+      "summary": "V-Q234-07: Figure 4: Number of Reported Scores and the Fitted Curve of Our Model"
+    },
+    {
+      "page": 12,
+      "summary": "V-Q234-08: Figure 5: Average Transition Quantity per Time Step (compartmental flow diagram)"
+    },
+    {
+      "page": 13,
+      "summary": "V-Q234-09: GA-optimized initial parameters table (alpha, beta, gamma, delta, N)"
+    },
+    {
+      "page": 14,
+      "summary": "V-Q234-10: Figure 6: Covariance Matrix (Hard Mode analysis)"
+    },
+    {
+      "page": 14,
+      "summary": "V-Q234-11: Table 5: Regression results of Hard Mode on weighted regularity"
+    },
+    {
+      "page": 14,
+      "summary": "V-Q234-12: Table 6: Regression results of Hard Mode on unweighted regularity"
+    },
+    {
+      "page": 16,
+      "summary": "V-Q234-13: Figure 7: Time Trend of Hard Mode Report Ratio and Weighted Regularity"
+    },
+    {
+      "page": 17,
+      "summary": "V-Q234-14: Figure 8: Covariance Matrix (1) — score distribution correlations"
+    },
+    {
+      "page": 17,
+      "summary": "V-Q234-15: Figure 9: Covariance Matrix (2) — additional correlations"
+    },
+    {
+      "page": 18,
+      "summary": "V-Q234-16: Figure 10: Cross-Validation Results for KNN feature/K selection"
+    },
+    {
+      "page": 19,
+      "summary": "V-Q234-17: EERIE attributes table (frequency, weighted purity, weighted regularity, repeats)"
+    },
+    {
+      "page": 19,
+      "summary": "V-Q234-18: EERIE predicted try distribution table"
+    },
+    {
+      "page": 19,
+      "summary": "V-Q234-19: Figure 11: Predicted tries Distribution for EERIE and 95% Confidence Intervals"
+    },
+    {
+      "page": 20,
+      "summary": "V-Q234-20: Figure 12: Covariance Matrix for difficulty classification"
+    },
+    {
+      "page": 21,
+      "summary": "V-Q234-21: Figure 13: Cross-Validation Results for KNN classifier"
+    },
+    {
+      "page": 22,
+      "summary": "V-Q234-22: Figure 14: Proportion of Hard Mode in Total Reports"
+    },
+    {
+      "page": 22,
+      "summary": "V-Q234-23: Figure 15: Proportion of Loyal Players in PCQL Model"
+    },
+    {
+      "page": 23,
+      "summary": "V-Q234-24: Figure 16: Covariance Matrix (insights section)"
+    },
+    {
+      "page": 23,
+      "summary": "V-Q234-25: Figure 17: Proportion of First-Try Correct vs Total Reported Scores"
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 1,
+      "summary": "Abstract covers all four questions systematically with method + finding per paragraph.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 11,
+      "summary": "PCQL model is creative epidemiological analogy; judges value novel cross-domain modeling.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 14,
+      "summary": "Honest null result on Hard Mode with confound analysis shows intellectual rigor.",
+      "evidence_class": "J"
+    },
+    {
+      "page": 21,
+      "summary": "Cross-model validation (Hard Mode vs PCQL loyal) is a sophisticated consistency check.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 1,
+      "summary": "Abstract uses 'buzz' colloquially; academic papers typically avoid informal register in the summary sheet."
+    },
+    {
+      "page": 5,
+      "summary": "Section 5 title 'Is Word Itself affect Hard Mode Ratio' contains grammatical error (missing auxiliary 'Does')."
+    },
+    {
+      "page": 6,
+      "summary": "Outlier data table shows 'rprobe' and 'clen' and 'tash' removed without explaining how correct words were identified."
+    },
+    {
+      "page": 6,
+      "summary": "Normalization formula uses x_ij* notation but the denominator shows sigma(x_j) without specifying whether it is standard deviation or variance."
+    },
+    {
+      "page": 9,
+      "summary": "Claim 'no periodicity under weekly frequency' cites F-test but provides no test statistic, p-value, or degrees of freedom."
+    },
+    {
+      "page": 10,
+      "summary": "'TP' and 'TPer' terminology is idiosyncratic; would benefit from clearer connection to standard epidemiology terms."
+    },
+    {
+      "page": 11,
+      "summary": "SIR review shows 3 equations but labels it 'a system of four differential equations' — the R equation is present but S+I+R=N is the implicit fourth constraint, not an equation."
+    },
+    {
+      "page": 12,
+      "summary": "PCQL model page shows transition diagram but the symbolic labels in the diagram are partially illegible in the PDF rendering."
+    },
+    {
+      "page": 12,
+      "summary": "Fitted parameters alpha=0.177, beta=0.0177, gamma=0.00104, delta=0.00114 are presented without confidence intervals or sensitivity analysis."
+    },
+    {
+      "page": 13,
+      "summary": "Bootstrap interval [11173, 17069] is wide (53% range relative to midpoint); practical prediction utility is limited."
+    },
+    {
+      "page": 14,
+      "summary": "Regression slope -0.022 is statistically significant (p=0.005) but practically negligible (R²=0.022); paper correctly identifies this but the dual-significance messaging could confuse readers."
+    },
+    {
+      "page": 16,
+      "summary": "KNN regression MSE of 12.35 is reported without units or baseline comparison."
+    },
+    {
+      "page": 18,
+      "summary": "Feature selection abbreviation key uses '&' and '!' which may not be standard notation."
+    },
+    {
+      "page": 19,
+      "summary": "EERIE predicted distribution (0.20, 4.87, 23.55, 35.36, 23.75, 9.94, 2.33) sums to 100.0 — verified internally consistent."
+    },
+    {
+      "page": 20,
+      "summary": "Only 3 words have median=6; merging with median=5 is pragmatic but the 'hard' category mixes genuinely different difficulty levels."
+    },
+    {
+      "page": 21,
+      "summary": "Cross-model validation (PCQL loyal proportion vs Hard Mode ratio) is qualitative visual similarity, not a formal statistical test."
+    },
+    {
+      "page": 24,
+      "summary": "Only 6 references for a 24-page paper is sparse; feature engineering claims lack citation support."
+    }
+  ],
+  "independent_extensions": [
+    {
+      "extension_id": "E-C-2023-2307166-01",
+      "page": 12,
+      "summary": "Report formal sensitivity analysis for PCQL parameters and ODE solver details."
+    },
+    {
+      "extension_id": "E-C-2023-2307166-02",
+      "page": 16,
+      "summary": "Report KNN regression MSE units and compare against a baseline predictor."
+    }
+  ],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-C-Q234-LAN-001",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-005",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-008",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-013",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-025",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-040",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-050",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-060",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-070",
+      "impact": "Opens one candidate language move from a single paper."
+    },
+    {
+      "rule_id": "R-C-Q234-LAN-079",
+      "impact": "Opens one candidate language move from a single paper."
+    }
+  ],
+  "unresolved_questions": [
+    "Whether the PCQL parameter N (total potential population) was fixed or estimated, and its value.",
+    "The exact ODE solver method and step size used for numerical integration.",
+    "Whether the KNN regression distance metric was standard Euclidean or weighted.",
+    "The strengths-limitations section is not explicitly labeled and contains mostly figures."
+  ],
+  "review_status": "validated",
+  "dimension_counts": {
+    "assumption": 0,
+    "data": 0,
+    "language": 79,
+    "logic": 8,
+    "modeling": 15,
+    "other": 0,
+    "result": 0,
+    "verification": 4,
+    "visualization": 7,
+    "weakness": 0
+  },
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-C-2023-2307166-ec54f9ce.json",
+      "schema_version": 3,
+      "unit_count": 79,
+      "chapters": [
+        "abstract",
+        "memo",
+        "introduction",
+        "assumptions",
+        "data-preprocessing",
+        "model-establishment",
+        "problem-analysis",
+        "results",
+        "sensitivity-robustness",
+        "strengths-limitations",
+        "references"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-C-2023-2307166-ec54f9ce.json",
+      "schema_version": 2,
+      "model_count": 4,
+      "equation_count": 6,
+      "review_status": "validated"
+    }
+  }
+}

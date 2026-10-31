@@ -1,0 +1,2522 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2021-2101587-01",
+      "handoff": "Distance influence and standardized elevation feed AHP habitat weighting.",
+      "to_model_id": "MU-C-2021-2101587-02"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-02",
+      "handoff": "The weighted current-nest surface feeds next-year spread.",
+      "to_model_id": "MU-C-2021-2101587-03"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-04",
+      "handoff": "The labeled multi-source image corpus feeds ResNet candidates and the binary downgrade.",
+      "to_model_id": "MU-C-2021-2101587-05"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-05",
+      "handoff": "The image target score feeds report credibility.",
+      "to_model_id": "MU-C-2021-2101587-06"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-01",
+      "handoff": "Current confirmed/nest distances feed the near-report branch.",
+      "to_model_id": "MU-C-2021-2101587-06"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-03",
+      "handoff": "Future-nest distance feeds the mid/near branches.",
+      "to_model_id": "MU-C-2021-2101587-06"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-05",
+      "handoff": "New expert-labeled images trigger CNN refresh.",
+      "to_model_id": "MU-C-2021-2101587-07"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-06",
+      "handoff": "New confirmed outcomes trigger spatial updates.",
+      "to_model_id": "MU-C-2021-2101587-07"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-06",
+      "handoff": "Verified sightings from the triage workflow supply ordered times.",
+      "to_model_id": "MU-C-2021-2101587-08"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-03",
+      "handoff": "Current and future maps feed search and beekeeper communication.",
+      "to_model_id": "MU-C-2021-2101587-09"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-06",
+      "handoff": "Queue groups and paired ranks feed agency handling advice.",
+      "to_model_id": "MU-C-2021-2101587-09"
+    },
+    {
+      "from_model_id": "MU-C-2021-2101587-08",
+      "handoff": "The survival indicator feeds the interface state and candidate victory review.",
+      "to_model_id": "MU-C-2021-2101587-09"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "bound each sighting region",
+          "calculate distance influence",
+          "sum sighting surfaces",
+          "standardize elevation"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "spatial influence model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2021-2101587-001",
+          "label": "Eq.1 / nest distance influence",
+          "normalized_latex": "P(x)=\\frac{\\lambda^x}{x!}e^{-\\lambda}",
+          "page": 7,
+          "purpose": "map one confirmed sighting to possible nest distance",
+          "source_expression": "Poisson-shaped worker-distance kernel",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "lambda",
+            "x"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-002",
+          "label": "Eq.2 / multi-sighting nest surface",
+          "normalized_latex": "P_{pt}(long,lat)=\\sum_s P_s(long,lat)",
+          "page": 7,
+          "purpose": "aggregate confirmed-sighting influence",
+          "source_expression": "sum of sighting influence values",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "P_pt"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-003",
+          "label": "Eq.3 / standardized elevation",
+          "normalized_latex": "ASL_{std}(long,lat)=\\frac{ASL(long,lat)-\\min(ASL)}{\\max(ASL)-\\min(ASL)}",
+          "page": 8,
+          "purpose": "place elevation on a unit scale",
+          "source_expression": "local min-max terrain scaling",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "ASL",
+            "ASL_std"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "distance influences",
+        "current-nest candidate surface"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "confirmed coordinates",
+        "worker patrol range",
+        "local elevation"
+      ],
+      "limitations": [
+        "Poisson distance, radius and influence aggregation are not calibrated as a posterior."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-01",
+      "objectives": [
+        "infer a candidate current-nest surface from confirmed workers"
+      ],
+      "outputs": [
+        "distance influences",
+        "current-nest candidate surface"
+      ],
+      "page": 6,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "confirmed coordinates",
+          "worker patrol range",
+          "local elevation"
+        ],
+        "status": "partial"
+      },
+      "purpose": "infer a candidate current-nest surface from confirmed workers",
+      "section": "Current-Nest Inference",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "spatial influence model: infer a candidate current-nest surface from confirmed workers",
+      "validation_refs": [
+        "physical page 6 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity Poisson; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "poisson",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Poisson",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity confirmed coordinates; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "confirmed_coordinates",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "confirmed coordinates",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity current-nest candidate surface; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "current_nest_candidate_surface",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "current-nest candidate surface",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity distance; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "distance",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "distance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity distance influences; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "distance_influences",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "distance influences",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity influence; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "influence",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "influence",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity kernel; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "kernel",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "kernel",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity local; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "local",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "local",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity local elevation; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "local_elevation",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "local elevation",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity max; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "max",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "max",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity min; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "min",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "min",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity of; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "of",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "of",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity scaling; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "scaling",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "scaling",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity shaped; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "shaped",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "shaped",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity sighting; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "sighting",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sighting",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity sum; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "sum",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity terrain; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "terrain",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "terrain",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity values; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "values",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "values",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity worker; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "worker",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "worker",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity worker patrol range; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "worker_patrol_range",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "worker patrol range",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity lambda; use only in its local equation and source scope.",
+          "normalized_name": "lambda",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "lambda",
+          "unit": "source Poisson scale"
+        },
+        {
+          "definition": "Q217 source quantity x; use only in its local equation and source scope.",
+          "normalized_name": "x",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "distance from sighting to candidate nest"
+        },
+        {
+          "definition": "Q217 source quantity P_pt; use only in its local equation and source scope.",
+          "normalized_name": "p_pt",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "P_pt",
+          "unit": "aggregated current-nest influence"
+        },
+        {
+          "definition": "Q217 source quantity ASL; use only in its local equation and source scope.",
+          "normalized_name": "asl",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "ASL",
+          "unit": "elevation"
+        },
+        {
+          "definition": "Q217 source quantity ASL_std; use only in its local equation and source scope.",
+          "normalized_name": "asl_std",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "ASL_std",
+          "unit": "standardized elevation"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "state habitat facts",
+          "build pairwise matrix",
+          "calculate eigenvalue and CR",
+          "apply weights"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "factor-weighted spatial model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2021-2101587-004",
+          "label": "Eq.4 / AHP consistency and weights",
+          "normalized_latex": "\\lambda_{max}=3.02,\\quad CR=0.016,\\quad w=(0.285,0.498,0.217)",
+          "page": 9,
+          "purpose": "gate and weight distance, tree and elevation",
+          "source_expression": "judgment matrix eigenvalue, CR and factor weights",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "D",
+            "T_tree",
+            "E"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-005",
+          "label": "Eq.5 / weighted nest score",
+          "normalized_latex": "S=0.285D+0.498T+0.217E",
+          "page": 9,
+          "purpose": "combine current-nest factors",
+          "source_expression": "AHP-weighted spatial score",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "S",
+            "D",
+            "T_tree",
+            "E"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "factor weights",
+        "consistency ratio",
+        "weighted nest map"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "distance surface",
+        "tree proxy",
+        "elevation layer",
+        "judgment matrix"
+      ],
+      "limitations": [
+        "CR tests internal consistency while tree/elevation proxy validity remains untested."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-02",
+      "objectives": [
+        "combine distance, tree and elevation evidence"
+      ],
+      "outputs": [
+        "factor weights",
+        "consistency ratio",
+        "weighted nest map"
+      ],
+      "page": 8,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "distance surface",
+          "tree proxy",
+          "elevation layer",
+          "judgment matrix"
+        ],
+        "status": "partial"
+      },
+      "purpose": "combine distance, tree and elevation evidence",
+      "section": "AHP Habitat Weighting",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "factor-weighted spatial model: combine distance, tree and elevation evidence",
+      "validation_refs": [
+        "physical page 8 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity AHP; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "ahp",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "AHP",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity CR; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "cr",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "CR",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity and; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "and",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "and",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity consistency ratio; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "consistency_ratio",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "consistency ratio",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity distance surface; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "distance_surface",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "distance surface",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity eigenvalue; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "eigenvalue",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "eigenvalue",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity elevation layer; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "elevation_layer",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "elevation layer",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity factor; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "factor",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "factor",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity factor weights; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "factor_weights",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "factor weights",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity judgment; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "judgment",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "judgment",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity judgment matrix; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "judgment_matrix",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "judgment matrix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity matrix; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "matrix",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "matrix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity score; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "score",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "score",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity spatial; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "spatial",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "spatial",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity tree proxy; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "tree_proxy",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tree proxy",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity weighted; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "weighted",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "weighted",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity weighted nest map; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "weighted_nest_map",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "weighted nest map",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity weights; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "weights",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "weights",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity D; use only in its local equation and source scope.",
+          "normalized_name": "d",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "D",
+          "unit": "distance factor"
+        },
+        {
+          "definition": "Q217 source quantity T_tree; use only in its local equation and source scope.",
+          "normalized_name": "t_tree",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "T_tree",
+          "unit": "tree factor"
+        },
+        {
+          "definition": "Q217 source quantity E; use only in its local equation and source scope.",
+          "normalized_name": "e",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "E",
+          "unit": "elevation factor"
+        },
+        {
+          "definition": "Q217 source quantity S; use only in its local equation and source scope.",
+          "normalized_name": "s",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "S",
+          "unit": "AHP weighted nest score"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "take current map",
+          "apply annual distance influence",
+          "filter by habitat",
+          "render next-year map"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "next-year spatial propagation model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2021-2101587-006",
+          "label": "Eq.6 / next-year dispersal influence",
+          "normalized_latex": "P_{spread}(d)=\\frac{2^d}{d!}e^{-2}",
+          "page": 9,
+          "purpose": "propagate possible nests to the next year",
+          "source_expression": "Poisson-shaped annual movement kernel",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "d"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "next-year candidate-nest surface"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "weighted current-nest surface",
+        "queen movement distance",
+        "habitat preference"
+      ],
+      "limitations": [
+        "The forecast has no observed future-nest validation and reuses the current-location structure."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-03",
+      "objectives": [
+        "propagate possible current nests through annual queen movement"
+      ],
+      "outputs": [
+        "next-year candidate-nest surface"
+      ],
+      "page": 9,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "weighted current-nest surface",
+          "queen movement distance",
+          "habitat preference"
+        ],
+        "status": "partial"
+      },
+      "purpose": "propagate possible current nests through annual queen movement",
+      "section": "Annual Hornet Spread",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "next-year spatial propagation model: propagate possible current nests through annual queen movement",
+      "validation_refs": [
+        "physical page 9 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity Poisson; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "poisson",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Poisson",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity annual; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "annual",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "annual",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity habitat preference; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "habitat_preference",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "habitat preference",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity kernel; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "kernel",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "kernel",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity movement; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "movement",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "movement",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity next-year candidate-nest surface; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "next_year_candidate_nest_surface",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "next-year candidate-nest surface",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity queen movement distance; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "queen_movement_distance",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "queen movement distance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity shaped; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "shaped",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "shaped",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity weighted current-nest surface; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "weighted_current_nest_surface",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "weighted current-nest surface",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity d; use only in its local equation and source scope.",
+          "normalized_name": "d",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "d",
+          "unit": "annual dispersal distance"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "filter unresolved records",
+          "extract nouns",
+          "manually reconcile species",
+          "tag images",
+          "download 200 images per class",
+          "split data"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "hybrid text-image preprocessing model",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "thirteen species labels",
+        "training/evaluation images",
+        "source strata"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "lab status",
+        "lab comments",
+        "GlobalID images",
+        "external bugguide images"
+      ],
+      "limitations": [
+        "Selection, annotation, source mismatch, duplicates and split leakage are not audited."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-04",
+      "objectives": [
+        "build a supervised insect image corpus"
+      ],
+      "outputs": [
+        "thirteen species labels",
+        "training/evaluation images",
+        "source strata"
+      ],
+      "page": 10,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "lab status",
+          "lab comments",
+          "GlobalID images",
+          "external bugguide images"
+        ],
+        "status": "partial"
+      },
+      "purpose": "build a supervised insect image corpus",
+      "section": "Labeled Image Corpus",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "hybrid text-image preprocessing model: build a supervised insect image corpus",
+      "validation_refs": [
+        "physical page 10 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity GlobalID images; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "globalid_images",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "GlobalID images",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity external bugguide images; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "external_bugguide_images",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "external bugguide images",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity lab comments; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "lab_comments",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lab comments",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity lab status; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "lab_status",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "lab status",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity source strata; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "source_strata",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "source strata",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity thirteen species labels; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "thirteen_species_labels",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "thirteen species labels",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity training/evaluation images; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "training_evaluation_images",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "training/evaluation images",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "train three depths",
+          "compare by source",
+          "manually crop 107 images",
+          "retest",
+          "narrow to binary",
+          "inspect confusion matrix"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "multiclass then binary image classification model",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "thirteen-class labels",
+        "binary target score",
+        "confusion matrix"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "labeled images",
+        "ResNet18/34/50",
+        "website/uploaded/cropped strata"
+      ],
+      "limitations": [
+        "Overall binary accuracy under rare targets does not establish recall, specificity or calibrated target probability."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-05",
+      "objectives": [
+        "classify insects and later narrow to target versus non-target"
+      ],
+      "outputs": [
+        "thirteen-class labels",
+        "binary target score",
+        "confusion matrix"
+      ],
+      "page": 11,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "labeled images",
+          "ResNet18/34/50",
+          "website/uploaded/cropped strata"
+        ],
+        "status": "partial"
+      },
+      "purpose": "classify insects and later narrow to target versus non-target",
+      "section": "ResNet Recognition and Task Downgrade",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "multiclass then binary image classification model: classify insects and later narrow to target versus non-target",
+      "validation_refs": [
+        "physical page 11 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity ResNet18/34/50; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "resnet18_34_50",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "ResNet18/34/50",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity binary target score; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "binary_target_score",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "binary target score",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity confusion matrix; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "confusion_matrix",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "confusion matrix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity labeled images; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "labeled_images",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "labeled images",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity thirteen-class labels; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "thirteen_class_labels",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "thirteen-class labels",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity website/uploaded/cropped strata; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "website_uploaded_cropped_strata",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "website/uploaded/cropped strata",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "choose distance branch",
+          "calculate component scores",
+          "combine weights",
+          "remove below cutoff",
+          "staff by group",
+          "reassign empty-queue capacity"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "spatial-image triage model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2021-2101587-007",
+          "label": "Eq.7 / remote-report credibility",
+          "normalized_latex": "c_{sight}=p_{vm}",
+          "page": 14,
+          "purpose": "score reports beyond 70 km",
+          "source_expression": "image-only Group 3 score",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "c_sight",
+            "p_vm"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-008",
+          "label": "Eq.8 / mid-range spread score",
+          "normalized_latex": "p_{spread}=\\frac{2^{d_s}}{d_s!}e^{-2}",
+          "page": 14,
+          "purpose": "score 20-70 km reports",
+          "source_expression": "Poisson-shaped distance component",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "p_spread",
+            "d_s"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-009",
+          "label": "Eq.9 / mid-range credibility",
+          "normalized_latex": "c_{sight}=0.6p_{vm}+0.4p_{spread}",
+          "page": 14,
+          "purpose": "rank Group 2 reports",
+          "source_expression": "weighted image and spread score",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "c_sight",
+            "p_vm",
+            "p_spread"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-010",
+          "label": "Eq.10 / near-range nest score",
+          "normalized_latex": "p_{nest}=\\frac{2^{d_n}}{d_n!}e^{-2}",
+          "page": 14,
+          "purpose": "score reports within 20 km",
+          "source_expression": "current-nest distance component",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "medium",
+          "variable_symbols": [
+            "p_nest",
+            "d_n"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-011",
+          "label": "Eq.11 / near-range credibility",
+          "normalized_latex": "c_{sight}=0.5p_{vm}+0.2p_{spread}+0.3p_{next}",
+          "page": 14,
+          "purpose": "rank Group 1 reports",
+          "source_expression": "weighted image, spread and nest score",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "c_sight",
+            "p_vm",
+            "p_spread",
+            "p_next"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-012",
+          "label": "Eq.12 / automatic rejection",
+          "normalized_latex": "c_{sight}<0.01\\Rightarrow remove",
+          "page": 14,
+          "purpose": "reduce manual-review load",
+          "source_expression": "low-credibility queue cutoff",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "c_sight"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "credibility",
+        "three groups",
+        "ranked queues",
+        "auto-reject action"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "image score",
+        "distance to confirmed/current/future nests",
+        "review capacity"
+      ],
+      "limitations": [
+        "Thresholds, weights and probabilities are uncalibrated, one symbol is inconsistent and deletion lacks false-negative safeguards."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-06",
+      "objectives": [
+        "rank reports for manual review under three distance regimes"
+      ],
+      "outputs": [
+        "credibility",
+        "three groups",
+        "ranked queues",
+        "auto-reject action"
+      ],
+      "page": 13,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "image score",
+          "distance to confirmed/current/future nests",
+          "review capacity"
+        ],
+        "status": "partial"
+      },
+      "purpose": "rank reports for manual review under three distance regimes",
+      "section": "Piecewise Priority Queue",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "spatial-image triage model: rank reports for manual review under three distance regimes",
+      "validation_refs": [
+        "physical page 13 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity Group; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "group",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Group",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity Poisson; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "poisson",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Poisson",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity and; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "and",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "and",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity auto-reject action; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "auto_reject_action",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "auto-reject action",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity component; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "component",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "component",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity credibility; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "credibility",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "credibility",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity current; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "current",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "current",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity cutoff; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "cutoff",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "cutoff",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity distance; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "distance",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "distance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity distance to confirmed/current/future nests; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "distance_to_confirmed_current_future_nests",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "distance to confirmed/current/future nests",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity image; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "image",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "image",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity image score; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "image_score",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "image score",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity low; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "low",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "low",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity nest; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "nest",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "nest",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity only; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "only",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "only",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity queue; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "queue",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "queue",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity ranked queues; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "ranked_queues",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "ranked queues",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity review capacity; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "review_capacity",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "review capacity",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity score; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "score",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "score",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity shaped; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "shaped",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "shaped",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity spread; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "spread",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "spread",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity three groups; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "three_groups",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "three groups",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity weighted; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "weighted",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "weighted",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity c_sight; use only in its local equation and source scope.",
+          "normalized_name": "c_sight",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "c_sight",
+          "unit": "report credibility score"
+        },
+        {
+          "definition": "Q217 source quantity p_vm; use only in its local equation and source scope.",
+          "normalized_name": "p_vm",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "p_vm",
+          "unit": "image target score"
+        },
+        {
+          "definition": "Q217 source quantity p_spread; use only in its local equation and source scope.",
+          "normalized_name": "p_spread",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "p_spread",
+          "unit": "future-nest distance score"
+        },
+        {
+          "definition": "Q217 source quantity d_s; use only in its local equation and source scope.",
+          "normalized_name": "d_s",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "d_s",
+          "unit": "distance to predicted future nest"
+        },
+        {
+          "definition": "Q217 source quantity p_nest; use only in its local equation and source scope.",
+          "normalized_name": "p_nest",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "p_nest",
+          "unit": "current-nest distance score"
+        },
+        {
+          "definition": "Q217 source quantity d_n; use only in its local equation and source scope.",
+          "normalized_name": "d_n",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "d_n",
+          "unit": "distance to predicted current nest"
+        },
+        {
+          "definition": "Q217 source quantity p_next; use only in its local equation and source scope.",
+          "normalized_name": "p_next",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "p_next",
+          "unit": "source symbol inconsistent with p_nest"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "add new evidence",
+          "expire prior-year nest state",
+          "refresh geography",
+          "retrain image model"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "model-maintenance policy",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "updated nest map",
+        "updated spread map",
+        "expanded CNN training set"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "new confirmed sighting",
+        "new expert-labeled photo",
+        "new year",
+        "new geographic area"
+      ],
+      "limitations": [
+        "No cadence, validation gate, version, rollback, drift alarm or owner is defined."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-07",
+      "objectives": [
+        "refresh each model when its own evidence changes"
+      ],
+      "outputs": [
+        "updated nest map",
+        "updated spread map",
+        "expanded CNN training set"
+      ],
+      "page": 16,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "new confirmed sighting",
+          "new expert-labeled photo",
+          "new year",
+          "new geographic area"
+        ],
+        "status": "partial"
+      },
+      "purpose": "refresh each model when its own evidence changes",
+      "section": "Event-Triggered Updating",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "model-maintenance policy: refresh each model when its own evidence changes",
+      "validation_refs": [
+        "physical page 16 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity expanded CNN training set; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "expanded_cnn_training_set",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "expanded CNN training set",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity new confirmed sighting; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "new_confirmed_sighting",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "new confirmed sighting",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity new expert-labeled photo; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "new_expert_labeled_photo",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "new expert-labeled photo",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity new geographic area; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "new_geographic_area",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "new geographic area",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity new year; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "new_year",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "new year",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity updated nest map; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "updated_nest_map",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "updated nest map",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity updated spread map; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "updated_spread_map",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "updated spread map",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "state cited base formula",
+          "replace last gap by average gap",
+          "add second difference",
+          "restrict active-season window",
+          "compare with cutoff"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "modified nonparametric monitoring model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2021-2101587-013",
+          "label": "Eq.13 / base sighting-gap survival indicator",
+          "normalized_latex": "p=\\frac{t_n-t_{n-1}}{T-t_{n-1}}",
+          "page": 17,
+          "purpose": "form a sighting-based survival signal",
+          "source_expression": "Solow-Roberts gap ratio",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "p",
+            "t_n",
+            "T_obs"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-014",
+          "label": "Eq.14 / average sighting interval",
+          "normalized_latex": "f=\\frac{\\sum_{i=2}^{n}(t_i-t_{i-1})}{n-1}=\\frac{t_n-t_1}{n-1},\\quad p=\\frac{f}{f+(T-t_n)}",
+          "page": 17,
+          "purpose": "include average sighting frequency",
+          "source_expression": "mean interval and first modified ratio",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "f",
+            "n",
+            "t_n",
+            "T_obs",
+            "p"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-015",
+          "label": "Eq.15 / interval-change term",
+          "normalized_latex": "c=\\frac{\\sum_{x=2}^{n-1}[(t_{x+1}-t_x)-(t_x-t_{x-1})]}{n-2}",
+          "page": 17,
+          "purpose": "represent changing sighting frequency",
+          "source_expression": "average second difference of sighting intervals",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "c",
+            "n"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2021-2101587-016",
+          "label": "Eq.16 / altered survival indicator",
+          "normalized_latex": "p=\\frac{f+c}{f+c+(T-t_n)}",
+          "page": 17,
+          "purpose": "trigger candidate eradication review",
+          "source_expression": "average interval plus trend ratio",
+          "source_note": "Q217 formula/decision structure reconciled against text and bounded focus proxy; original raster is authoritative for exponents, factorials, table values and symbol inconsistencies.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "p",
+            "f",
+            "c",
+            "t_n",
+            "T_obs"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "average interval",
+        "interval-change term",
+        "survival indicator",
+        "0.05 trigger"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "ordered verified sighting times",
+        "observation duration",
+        "active season"
+      ],
+      "limitations": [
+        "The modifications are not derived as probabilities and changing observation effort can mimic extinction."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-08",
+      "objectives": [
+        "form a candidate eradication trigger from sighting intervals"
+      ],
+      "outputs": [
+        "average interval",
+        "interval-change term",
+        "survival indicator",
+        "0.05 trigger"
+      ],
+      "page": 17,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "ordered verified sighting times",
+          "observation duration",
+          "active season"
+        ],
+        "status": "partial"
+      },
+      "purpose": "form a candidate eradication trigger from sighting intervals",
+      "section": "Sighting-Gap Survival Signal",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "modified nonparametric monitoring model: form a candidate eradication trigger from sighting intervals",
+      "validation_refs": [
+        "physical page 17 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity 0.05 trigger; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "0_05_trigger",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "0.05 trigger",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity Roberts; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "roberts",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Roberts",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity Solow; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "solow",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Solow",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity active season; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "active_season",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "active season",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity and; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "and",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "and",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity average; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "average",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "average",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity average interval; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "average_interval",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "average interval",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity difference; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "difference",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "difference",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity first; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "first",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "first",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity gap; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "gap",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "gap",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity interval; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "interval",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "interval",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity interval-change term; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "interval_change_term",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "interval-change term",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity intervals; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "intervals",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "intervals",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity mean; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "mean",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "mean",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity modified; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "modified",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "modified",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity observation duration; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "observation_duration",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "observation duration",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity of; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "of",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "of",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity ordered verified sighting times; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "ordered_verified_sighting_times",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "ordered verified sighting times",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity plus; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "plus",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "plus",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity ratio; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "ratio",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "ratio",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity second; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "second",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "second",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity sighting; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "sighting",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sighting",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity survival indicator; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "survival_indicator",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "survival indicator",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity trend; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "trend",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "trend",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity p; use only in its local equation and source scope.",
+          "normalized_name": "p",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "source survival indicator"
+        },
+        {
+          "definition": "Q217 source quantity t_n; use only in its local equation and source scope.",
+          "normalized_name": "t_n",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "t_n",
+          "unit": "time of latest sighting"
+        },
+        {
+          "definition": "Q217 source quantity T_obs; use only in its local equation and source scope.",
+          "normalized_name": "t_obs",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "T_obs",
+          "unit": "observation-period duration"
+        },
+        {
+          "definition": "Q217 source quantity f; use only in its local equation and source scope.",
+          "normalized_name": "f",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "f",
+          "unit": "average sighting interval"
+        },
+        {
+          "definition": "Q217 source quantity n; use only in its local equation and source scope.",
+          "normalized_name": "n",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "n",
+          "unit": "number of sightings"
+        },
+        {
+          "definition": "Q217 source quantity c; use only in its local equation and source scope.",
+          "normalized_name": "c",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "c",
+          "unit": "average interval change"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No spatial calibration criterion, repeated split, target-recall gate, queue service target, update release gate or eradication false-negative rule is reported.",
+        "software": [
+          "The source names Python, PyTorch/torchvision, ResNet and geodesic queue code, but data files, versions, seeds and full preprocessing utilities are not frozen."
+        ],
+        "status": "partial",
+        "steps": [
+          "compress to three steps",
+          "assign outputs to actors",
+          "state peak-load use",
+          "show interface panels",
+          "invite feedback"
+        ]
+      },
+      "assumptions": [
+        "Use supplied expert-resolved sightings, comments, coordinates, photos and active-season times within the paper's Washington scope.",
+        "Keep nest inference, AHP weighting, annual spread, corpus construction, image recognition, priority, updating, survival monitoring and memorandum as separate claim types."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No data-labeling, training, image-repair, field-search, queue-service, update or monitoring cost budget is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Washington and nearby 2019-2020 sightings, source-specific external images and the May-November active window define the empirical scope."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "Current/future maps, trained image models, finite queues and a sighting-gap indicator are used; no ecological equilibrium is solved."
+          ],
+          "status": "not-applicable"
+        },
+        "initial": {
+          "details": [
+            "The source supplies resolved and unresolved reports, comments, images, coordinates, spatial layers, tables, figures and partial code, but no frozen dataset or complete run environment."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "Nest posterior uncertainty, forest proxy error, class-label error, split variance, image calibration, queue costs and imperfect detection are not jointly propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve source domain, task label scope, class imbalance, distance branch, score weights, queue action, update trigger, active-season window and decision owner.",
+        "Do not promote influence maps to true nests, CR to ecological validity, website accuracy to citizen-photo performance, binary accuracy to target recall, credibility to calibrated probability or p below 0.05 to eradication proof."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "decision handoff",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "search zones",
+        "beekeeper warning",
+        "rough screening",
+        "priority action",
+        "interface state"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Reporting effort, expert selection, external image source, habitat proxy, intervention and true nest presence remain entangled with model outputs.",
+        "status": "not-demonstrated"
+      },
+      "inputs": [
+        "current/future maps",
+        "image results",
+        "queue ranks",
+        "update triggers",
+        "survival indicator"
+      ],
+      "limitations": [
+        "The memo strengthens the 98 percent and eradication claims and the interface is illustrative rather than deployed."
+      ],
+      "missing_details": [
+        "Forest layer, normalized nest posterior, row-level corpus ledger, source-aware sealed split, class-sensitive metrics, probability calibration, threshold/weight sensitivity, queue simulation, versioned update policy and imperfect-detection extinction analysis are absent."
+      ],
+      "model_id": "MU-C-2021-2101587-09",
+      "objectives": [
+        "translate maps, image scores, queues and survival state for officers and beekeepers"
+      ],
+      "outputs": [
+        "search zones",
+        "beekeeper warning",
+        "rough screening",
+        "priority action",
+        "interface state"
+      ],
+      "page": 20,
+      "parameter_estimation": {
+        "method": "The source reports AHP values, source-stratified accuracies, paired ranks and sighting formulas, but most thresholds and weights are asserted and independent validation is incomplete.",
+        "parameters": [
+          "current/future maps",
+          "image results",
+          "queue ranks",
+          "update triggers",
+          "survival indicator"
+        ],
+        "status": "partial"
+      },
+      "purpose": "translate maps, image scores, queues and survival state for officers and beekeepers",
+      "section": "Agency Memorandum and Interface",
+      "strengths": [
+        "The source exposes a missing-data proxy, reports severe domain failure, tests a local crop repair, admits the repair remains weak, narrows the task explicitly, names confusion classes, compares paired queue ranks and limits utility to backlog periods."
+      ],
+      "summary": "decision handoff: translate maps, image scores, queues and survival state for officers and beekeepers",
+      "validation_refs": [
+        "physical page 20 source role",
+        "six bounded q217 review proxies in one guarded context",
+        "original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q217 source quantity beekeeper warning; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "beekeeper_warning",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "beekeeper warning",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity current/future maps; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "current_future_maps",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "current/future maps",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity image results; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "image_results",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "image results",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity interface state; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "interface_state",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "interface state",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity priority action; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "priority_action",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "priority action",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity queue ranks; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "queue_ranks",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "queue ranks",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity rough screening; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "rough_screening",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "rough screening",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity search zones; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "search_zones",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "search zones",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity survival indicator; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "survival_indicator",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "survival indicator",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q217 source quantity update triggers; preserve its local sighting, image, distance, time, score or decision role.",
+          "normalized_name": "update_triggers",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "update triggers",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-C-2021-2101587-8b253851",
+  "problem_type": "C",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "8b2538512847fb2c1c1822863f654c51a2a1571e9d567b800cd0f83a33c2aed3",
+  "team_control_number": "2101587",
+  "title": "Fighting the Horde: a Comprehensive Model for Monitoring and Controlling Hornet Invasions",
+  "year": "2021"
+}

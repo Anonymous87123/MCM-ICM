@@ -1,0 +1,68 @@
+Team # 55285  Page 26 of 32
+
+       adjustQueue(IDCheckQueue[2], IDCheckQueue[1], 0);
+       adjustQueue(IDCheckQueue[1], IDCheckQueue[2], 0);
+       adjustQueue(IDCheckQueue[0], IDCheckQueue[1], 0);
+       adjustQueue(IDCheckQueue[0], IDCheckQueue[2], 0);
+}
+
+int x = Number, y = 0, temp = 1;
+if (human[loc].waitKind == nowPoint) temp = 0;
+if (human[loc].isVIP) {
+
+       for (int i = 0; i < sumIDCheck - temp; ++i) {
+              if (IDCheckQueue[i].size() < x) {
+                     x = IDCheckQueue[i].size();
+                     y = i;
+              }
+
+       }
+}
+else {
+
+       for (int i = vipIDCheck; i < sumIDCheck - temp; ++i) {
+              if (IDCheckQueue[i].size() < x) {
+                     x = IDCheckQueue[i].size();
+                     y = i;
+              }
+
+       }
+}
+IDCheckQueue[y].push(loc);
+
+for (int i = 0; i < sumLanes; ++i) {
+       bool flag1 = true;
+       bool flag2 = true;
+       while (flag1 || flag2) {
+              flag1 = flag2 = false;
+              while (!LanesQueue[i].empty()) {
+                     int loc = LanesQueue[i].front();
+                     double dt = max(LanesLastDepartTime[i], human[loc].departTime);
+                     if (sumLastQueue[i] < ContainMost && dt <= nowTime) {
+                             flag2 = true;
+                             dt = max(dt, lastEnterTime[i]);
+                             LanesLastDepartTime[i] = dt;
+                             human[loc].departTime = dt + human[loc].removeThingsTime;
+
+                             LanesQueue[i].pop();
+                             int j = sumLastQueue[i] - 1;
+                             for (; j >= 0; --j) {
+
+                                    if (j == -1) break;
+                                    if (human[lastQueue[i][j]].departTime > human[loc].departTime) last
+                                    else break;
+                             }
+                             sumLastQueue[i]++;
+                             lastQueue[i][j + 1] = loc;
+                     }
+                     else break;
+              }
+              while (sumLastQueue[i]) {
+                     int loc = lastQueue[i][0];
+                     double dt = max(human[loc].departTime, lastDepartTime[i]);
+                     if (dt <= nowTime) {
+                             flag1 = true;
+                             human[loc].departTime = dt + max(human[loc].baggageCheckTime, human[loc
+                             lastEnterTime[i] = dt;
+                             lastDepartTime[i] = dt + human[loc].bodyCheckTime;
+                             if (human[loc].isError) zoneDQueue.push(loc);

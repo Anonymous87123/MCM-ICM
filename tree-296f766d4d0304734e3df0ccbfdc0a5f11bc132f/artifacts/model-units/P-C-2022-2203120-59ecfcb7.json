@@ -1,0 +1,1748 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2022-2203120-59ecfcb7",
+  "problem_type": "C",
+  "year": "2022",
+  "source_sha256": "59ecfcb7486b62c2f39a98de99570928bdffaa5b8f01e561f489c2247ace0978",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-2022-2203120-01",
+      "page": 6,
+      "section": "3.1 Data Preprocessing; 3.2.1 Price Prediction Model",
+      "family": "ARIMA price forecast",
+      "purpose": "Forecast each asset one period ahead from its own past prices.",
+      "base_or_modification": "base",
+      "summary": "The paper standardizes by period, then splits the forecast into an autoregressive part, a difference and a moving-average part, and reports ARIMA(2,1,1) for gold and ARIMA(2,1,2) for bitcoin. The where-clause of equation (1) has no subject, equation (2) names a variance it never gives, and the closing sentence writes both d and D for the differencing order.",
+      "variables": [
+        {
+          "symbol": "y_t",
+          "normalized_name": "series value at t",
+          "unit": "price",
+          "role": "output",
+          "definition": "Left side of the AR and MA equations; the paper does not say which price it is.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "autoregressive coefficient",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Printed alpha_0 through alpha_p; the where-clause names alpha without a subject.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_order",
+          "normalized_name": "autoregressive order",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Printed p; the closing sentence also writes D for the differencing order.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon_t",
+          "normalized_name": "residual at t",
+          "unit": "price",
+          "role": "intermediate",
+          "definition": "Printed epsilon_t, called white noise of variance with no variance given.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_const",
+          "normalized_name": "moving-average constant",
+          "unit": "price",
+          "role": "parameter",
+          "definition": "Printed c in equation (2).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta_ma",
+          "normalized_name": "moving-average coefficient",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Printed theta_1 through theta_q.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_order",
+          "normalized_name": "moving-average order",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Printed q in the MA component.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_order",
+          "normalized_name": "differencing order",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Printed d, with the prose saying first order is generally enough; D is also used.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_raw",
+          "normalized_name": "raw value before scaling",
+          "unit": "price",
+          "role": "input",
+          "definition": "Printed x in the standardization formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_bar",
+          "normalized_name": "period mean",
+          "unit": "price",
+          "role": "intermediate",
+          "definition": "Printed x bar; the period it is computed over is the training window.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sd",
+          "normalized_name": "period standard deviation",
+          "unit": "price",
+          "role": "intermediate",
+          "definition": "Printed SD; no fallback is given when it is zero.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_raw"
+      ],
+      "outputs": [
+        "y_t"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2203120-001",
+          "page": 6,
+          "label": "(1)",
+          "source_expression": "y_t = alpha_0 + alpha_1*y_{t-1} + ... + alpha_p*y_{t-p} + epsilon_t",
+          "normalized_latex": "y_t=\\alpha_0+\\alpha_1 y_{t-1}+\\cdots+\\alpha_p y_{t-p}+\\epsilon_t",
+          "variable_symbols": [
+            "y_t",
+            "alpha",
+            "p_order",
+            "epsilon_t"
+          ],
+          "purpose": "Autoregressive component; the printed where-clause has no subject before \"and alpha is the coefficient\".",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p06-table1.jpg",
+            "proxy_sha256": "8701672b00a39ee2e1f0babd60b729436958210b7d5ca7d9dc1eee1871b9d2ee",
+            "proxy_bytes": 229546,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0006.txt",
+            "sha256": "5f36eb8de619e4430126a3661c3068e04b2ac3724563689b1db258effca560ad"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-002",
+          "page": 6,
+          "label": "(2)",
+          "source_expression": "y_t = c + epsilon_t + theta_1*epsilon_{t-1} + ... + theta_q*epsilon_{t-q}",
+          "normalized_latex": "y_t=c+\\epsilon_t+\\theta_1\\epsilon_{t-1}+\\cdots+\\theta_q\\epsilon_{t-q}",
+          "variable_symbols": [
+            "y_t",
+            "c_const",
+            "epsilon_t",
+            "theta_ma",
+            "q_order"
+          ],
+          "purpose": "Moving-average component; the where-clause calls epsilon_t white noise of variance but prints no variance.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p06-eq2.jpg",
+            "proxy_sha256": "bc8ddbf22dffe3090826279edf1c3ec88b18d518cffd3e6dbe7bc51c770af5f2",
+            "proxy_bytes": 76931,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0006.txt",
+            "sha256": "5f36eb8de619e4430126a3661c3068e04b2ac3724563689b1db258effca560ad"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-019",
+          "page": 6,
+          "label": null,
+          "source_expression": "x' = (x - x_bar) / SD",
+          "normalized_latex": "x'=\\frac{x-\\bar x}{SD}",
+          "variable_symbols": [
+            "x_raw",
+            "x_bar",
+            "sd"
+          ],
+          "purpose": "Per-period standardization; no guard is printed for a zero standard deviation.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p06-table1.jpg",
+            "proxy_sha256": "8701672b00a39ee2e1f0babd60b729436958210b7d5ca7d9dc1eee1871b9d2ee",
+            "proxy_bytes": 229546,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 6,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0006.txt",
+            "sha256": "5f36eb8de619e4430126a3661c3068e04b2ac3724563689b1db258effca560ad"
+          },
+          "mathematical_correctness_claimed": false
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The printed formulas are transcribed above, defects included."
+      },
+      "objectives": [
+        "Produce a one-period-ahead price for each asset from its own history."
+      ],
+      "constraints": [
+        "Only the asset's own past enters the fit.",
+        "The standard deviation in the scaling formula must be nonzero; no fallback is printed."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": []
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The window runs from 2016-09-11 to 2021-09-10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed for this component."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Orders are reported as (2,1,1) and (2,1,2); the estimation routine and the white-noise test are named but not specified.",
+        "parameters": [
+          "p_order",
+          "d_order",
+          "q_order",
+          "alpha",
+          "theta_ma",
+          "c_const"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Scale each period by its own mean and standard deviation.",
+          "Fit the autoregressive part.",
+          "Difference, with first order stated as generally enough.",
+          "Fit the moving-average part.",
+          "Report the two coefficients."
+        ],
+        "software": [
+          "unspecified"
+        ],
+        "convergence_criteria": "No convergence tolerance or stopping rule is printed."
+      },
+      "assumptions": [
+        "The series is linear enough for ARIMA.",
+        "First-order differencing is enough, stated without evidence at that point."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The orders and the two coefficients are printed; the fit itself was not re-run, and the prose reads a small p value as evidence of white noise."
+      },
+      "handoff_outputs": [
+        "y_t"
+      ],
+      "validation_refs": [
+        "Equations (1), (2) and the standardization, visually checked on page 6."
+      ],
+      "computational_cost": "No runtime or resource figure is given.",
+      "strengths": [
+        "Each component is named, given an order, and followed by its formula.",
+        "The reason for scaling by period is stated before the scaling."
+      ],
+      "limitations": [
+        "The where-clause of (1) is missing its subject.",
+        "d and D both denote the differencing order.",
+        "The reported white-noise reading is the reverse of the usual one."
+      ],
+      "missing_details": [
+        "The estimation algorithm, the white-noise test statistic, and the zero-SD case."
+      ],
+      "source_pages": [
+        6,
+        7,
+        8
+      ],
+      "source_text_bindings": [
+        {
+          "page": 6,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0006.txt",
+          "sha256": "5f36eb8de619e4430126a3661c3068e04b2ac3724563689b1db258effca560ad"
+        },
+        {
+          "page": 7,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0007.txt",
+          "sha256": "771e5d521e166f5059ed5744e2b97d1b458f0f11567cfd1f7a8f70821ac3c91e"
+        },
+        {
+          "page": 8,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0008.txt",
+          "sha256": "5b2e6dfb99dde33af8ffc859304db389592c9928b7c6218df7d1539c5aa2b4b0"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "ARIMA, cited as widely used over the last decade.",
+        "paper_modification": "The paper fits it per period on 30 days and tests on the next 3, stepping by 3.",
+        "claimed_benefit": [
+          "Each component is named, given an order, and followed by its formula.",
+          "The reason for scaling by period is stated before the scaling."
+        ],
+        "evidence_of_benefit": "Section 3.2.1 and Table 2.",
+        "interface": [
+          "y_t"
+        ],
+        "transfer_boundary": "Transfer the name-then-order-then-formula sequence, not the claim that ARIMA is the right model because a citation says so."
+      },
+      "data_provenance": {
+        "source": "Two price files named in section 1.1; nothing was re-run.",
+        "observation_unit": "Daily gold and bitcoin prices on different calendars.",
+        "coverage": "2016-09-11 to 2021-09-10.",
+        "cleaning": "Missing gold prices are filled; the summary and section 3.1 name different fills.",
+        "transformation": "Raw period prices are scaled, then fit, then reported as one coefficient per asset.",
+        "leakage_risk": "The summary fills gaps with past prices only; section 3.1 fills them with the mean of the day before and the day after, which uses the next day."
+      },
+      "result_translation": "The forecast is handed to the trading rule as the predicted average price.",
+      "validation_scope": "Visual transcription only; no formula was re-evaluated and no dollar figure was reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "The printed assumptions are recorded, not verified.",
+      "assumption_consequence": "Using the next day to fill a gap leaks the future into a model the paper says is past-only.",
+      "numerical_stability": "No numerical stability check was re-run."
+    },
+    {
+      "model_id": "MU-C-2022-2203120-02",
+      "page": 9,
+      "section": "3.2.2 Trading Strategy Model",
+      "family": "threshold trading rule with a risk penalty",
+      "purpose": "Turn the forecast into a buy or a sell when the move exceeds a threshold, and penalize risk.",
+      "base_or_modification": "paper-specific",
+      "summary": "Equation (3) defines the decision coefficient as a ratio of sums of squares, and the prose says closer to 1 is better, which that ratio does not mean. Equation (5) writes the risk over a 30-day window but sums a term that does not change with the index, so it is identically zero as printed. Equation (6) prices the sale at the next period's price, and the bitcoin sale condition uses the previous period's forecast. Equation (7) prints the gold symbol on both branches of the bitcoin update. Equation (9) maximizes assets minus a risk penalty.",
+      "variables": [
+        {
+          "symbol": "R2",
+          "normalized_name": "decision coefficient",
+          "unit": "dimensionless",
+          "role": "output",
+          "definition": "Printed R_i^2; the formula is a residual ratio while the prose treats it as a fit score.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_pred",
+          "normalized_name": "predicted value",
+          "unit": "price",
+          "role": "intermediate",
+          "definition": "Printed x_{i,j}, the forecast inside equation (3).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_real",
+          "normalized_name": "realized value",
+          "unit": "price",
+          "role": "input",
+          "definition": "Printed y_{i,j}, the realized price inside equation (3).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_mean",
+          "normalized_name": "realized mean over the window",
+          "unit": "price",
+          "role": "intermediate",
+          "definition": "Printed Y_{(i)}; the parentheses are part of the subscript.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t_len",
+          "normalized_name": "window length",
+          "unit": "count",
+          "role": "parameter",
+          "definition": "Printed t, the upper limit of the sums in equations (3) and (4).",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DS",
+          "normalized_name": "hit rate",
+          "unit": "percent",
+          "role": "output",
+          "definition": "Printed DS_i; a sign agreement rate averaged over the window.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_sign",
+          "normalized_name": "sign agreement indicator",
+          "unit": "binary",
+          "role": "intermediate",
+          "definition": "Printed d_j, 1 when predicted and realized moves share a sign; the where-clause writes d_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_risk",
+          "normalized_name": "risk term",
+          "unit": "asset units",
+          "role": "intermediate",
+          "definition": "Printed S_j; as printed the summand does not depend on the index, so it is identically zero.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_total",
+          "normalized_name": "total assets",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed A_i; cash plus marked gold plus marked bitcoin.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_cash",
+          "normalized_name": "cash",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed C_i; starts at 1000.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_gold",
+          "normalized_name": "gold holding",
+          "unit": "troy ounces",
+          "role": "state",
+          "definition": "Printed G_i; starts at 0. The bitcoin update is printed with this symbol too.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_bitcoin",
+          "normalized_name": "bitcoin holding",
+          "unit": "coins",
+          "role": "state",
+          "definition": "Printed B_i; starts at 0. Equation (7) prints G where this symbol would be expected.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_share",
+          "normalized_name": "purchase share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed w_g, w_b and the high and low variants w_Hg, w_Lg, w_Hb.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_share",
+          "normalized_name": "sale share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed m_g, m_b; equation (16) is labelled with m_g but uses a purchase weight.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_pred",
+          "normalized_name": "predicted average price",
+          "unit": "USD",
+          "role": "intermediate",
+          "definition": "Printed X_{g(i)}, X_{b(i)}; Table 1 calls them predicted average prices.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_real",
+          "normalized_name": "realized average price",
+          "unit": "USD",
+          "role": "input",
+          "definition": "Printed Y_{g(i)}, Y_{b(i)}; Table 1 defines both with a sentence that names only gold.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "up-move threshold share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed beta_g, beta_b; Table 5 keeps beta_g at 0.50 for all three trader types.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_thr",
+          "normalized_name": "down-move threshold share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed gamma_g, gamma_b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_fee",
+          "normalized_name": "commission rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed alpha_g = 1% and alpha_b = 2%.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "risk penalty weight",
+          "unit": "dimensionless",
+          "role": "parameter",
+          "definition": "Printed lambda in the objective; the memo credits it with the trader split, the body does not.",
+          "source_status": "unspecified"
+        },
+        {
+          "symbol": "q_cash",
+          "normalized_name": "cash share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed q_i; Table 1 calls it a proportion of assets, Table 4 a cash retention ratio.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "X_pred",
+        "Y_real",
+        "A_total"
+      ],
+      "outputs": [
+        "C_cash",
+        "G_gold",
+        "B_bitcoin"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2203120-003",
+          "page": 9,
+          "label": "(3)",
+          "source_expression": "R_i^2 = sum_{j=1}^{t}(x_{i,j}-Y_{(i)})^2 / sum_{j=1}^{t}(y_{i,j}-Y_{(i)})^2",
+          "normalized_latex": "R_i^2=\\frac{\\sum_{j=1}^{t}(x_{i,j}-Y_{(i)})^2}{\\sum_{j=1}^{t}(y_{i,j}-Y_{(i)})^2}",
+          "variable_symbols": [
+            "R2",
+            "x_pred",
+            "y_real",
+            "Y_mean",
+            "t_len"
+          ],
+          "purpose": "Printed residual ratio; prose says closer to 1 means a better fit, which the expression does not support.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p09-eq3-4.jpg",
+            "proxy_sha256": "4cd50a699d62df9d079ec1f6f2fa7ba4113cf2c0dedde750ede51bf92c0130a9",
+            "proxy_bytes": 150809,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 9,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0009.txt",
+            "sha256": "3d397b662568bed43e1b69f7ced65f0681655c1df4373de38c6cc3db4c8c97fc"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-004",
+          "page": 9,
+          "label": "(4)",
+          "source_expression": "DS_i = (1/t) * sum_{j=1}^{t} d_j * 100%, d_j = 1 when signs agree else 0, j=1,2,3",
+          "normalized_latex": "DS_i=\\frac{1}{t}\\sum_{j=1}^{t}d_j\\times 100\\%",
+          "variable_symbols": [
+            "DS",
+            "d_sign",
+            "t_len"
+          ],
+          "purpose": "Hit rate; the 100% sits inside the sum and the where-clause writes d_i for d_j.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p09-eq3-4.jpg",
+            "proxy_sha256": "4cd50a699d62df9d079ec1f6f2fa7ba4113cf2c0dedde750ede51bf92c0130a9",
+            "proxy_bytes": 150809,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 9,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0009.txt",
+            "sha256": "3d397b662568bed43e1b69f7ced65f0681655c1df4373de38c6cc3db4c8c97fc"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-005",
+          "page": 10,
+          "label": "(5)",
+          "source_expression": "S_j = sqrt( sum_{j=i-30}^{i-1}(A_i - (sum_{j=i-30}^{i-1} A_i)/30 )^2 / 30 )",
+          "normalized_latex": "S_j=\\sqrt{\\sum_{j=i-30}^{i-1}\\left(A_i-\\frac{\\sum_{j=i-30}^{i-1}A_i}{30}\\right)^2/30}",
+          "variable_symbols": [
+            "S_risk",
+            "A_total"
+          ],
+          "purpose": "Printed risk; the summed term is A_i, constant in j, so the expression is identically zero as printed.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p10-eq5-9.jpg",
+            "proxy_sha256": "c76fcf135f7b422485fec6c4b7de27f4d5bebd4a76c2c80e480cbb6e4c4cb90c",
+            "proxy_bytes": 196841,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+            "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-006",
+          "page": 10,
+          "label": "(6)",
+          "source_expression": "gold: C_{i-1}-G_i*w_g when X_{g(i)}-Y_{g(i-1)} > beta_g*A_{i-1}; C_{i-1}+G_i*m_g*(1-alpha_g)*Y_{g(i+1)} when Y_{g(i-1)}-X_{g(i)} > gamma_g*A_{i-1}",
+          "normalized_latex": "C_i=\\begin{cases}C_{i-1}-G_i w_g,& X_{g(i)}-Y_{g(i-1)}>\\beta_g A_{i-1}\\\\ C_{i-1}+G_i m_g(1-\\alpha_g)Y_{g(i+1)},& Y_{g(i-1)}-X_{g(i)}>\\gamma_g A_{i-1}\\end{cases}",
+          "variable_symbols": [
+            "C_cash",
+            "G_gold",
+            "w_share",
+            "m_share",
+            "X_pred",
+            "Y_real",
+            "beta",
+            "gamma_thr",
+            "A_total",
+            "alpha_fee"
+          ],
+          "purpose": "Numbered gold cash update; the sell branch prices the trade at the next period and there is no else branch.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p10-eq5-9.jpg",
+            "proxy_sha256": "c76fcf135f7b422485fec6c4b7de27f4d5bebd4a76c2c80e480cbb6e4c4cb90c",
+            "proxy_bytes": 196841,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+            "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-007",
+          "page": 10,
+          "label": "(7)",
+          "source_expression": "gold numbered: G_{i-1}+C_i*w_g*(1-alpha_g) or G_{i-1}-G_{i-1}*m_g; bitcoin unnumbered, both branches start from G_{i-1}",
+          "normalized_latex": "G_i=\\begin{cases}G_{i-1}+C_i w_g(1-\\alpha_g)\\\\ G_{i-1}-G_{i-1}m_g\\end{cases}",
+          "variable_symbols": [
+            "G_gold",
+            "C_cash",
+            "w_share",
+            "m_share",
+            "alpha_fee",
+            "B_bitcoin"
+          ],
+          "purpose": "Numbered gold holding update; the unnumbered bitcoin pair is printed with G_{i-1} on both branches.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p10-eq5-9.jpg",
+            "proxy_sha256": "c76fcf135f7b422485fec6c4b7de27f4d5bebd4a76c2c80e480cbb6e4c4cb90c",
+            "proxy_bytes": 196841,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+            "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-008",
+          "page": 10,
+          "label": "(8)",
+          "source_expression": "A_i = C_i + G_i*Y_{g(i)} + B_i*Y_{b(i)}",
+          "normalized_latex": "A_i=C_i+G_i Y_{g(i)}+B_i Y_{b(i)}",
+          "variable_symbols": [
+            "A_total",
+            "C_cash",
+            "G_gold",
+            "B_bitcoin",
+            "Y_real"
+          ],
+          "purpose": "Marked total assets at period i.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p10-eq5-9.jpg",
+            "proxy_sha256": "c76fcf135f7b422485fec6c4b7de27f4d5bebd4a76c2c80e480cbb6e4c4cb90c",
+            "proxy_bytes": 196841,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+            "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-009",
+          "page": 10,
+          "label": "(9)",
+          "source_expression": "max_{w_j,m_j}(A_j - lambda*S_j) subject to five printed constraints",
+          "normalized_latex": "\\max_{w_j,m_j}(A_j-\\lambda S_j)",
+          "variable_symbols": [
+            "A_total",
+            "S_risk",
+            "lam",
+            "w_share",
+            "m_share"
+          ],
+          "purpose": "Printed objective; the prose says assets are positive while the constraint prints greater than or equal to zero.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p10-eq5-9.jpg",
+            "proxy_sha256": "c76fcf135f7b422485fec6c4b7de27f4d5bebd4a76c2c80e480cbb6e4c4cb90c",
+            "proxy_bytes": 196841,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 10,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+            "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+          },
+          "mathematical_correctness_claimed": false
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The printed formulas are transcribed above, defects included."
+      },
+      "objectives": [
+        "Maximize printed A_j minus lambda times S_j over the buy and sell shares."
+      ],
+      "constraints": [
+        "Cash, gold, bitcoin and total assets at least zero.",
+        "Hit rate at least 0.5.",
+        "Cash at least q times total assets.",
+        "Commissions fixed at 1% and 2%.",
+        "Start from 1000 cash and zero holdings."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "A_0 = 1000, C_0 = C_1 = 1000, G_0 = G_1 = B_0 = B_1 = 0."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The window runs from 2016-09-11 to 2021-09-10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed for this component."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "lambda is printed in the objective and never given a value; the prose says assets are positive while the constraint prints greater than or equal to zero.",
+        "parameters": [
+          "beta",
+          "gamma_thr",
+          "w_share",
+          "m_share",
+          "alpha_fee",
+          "lam",
+          "q_cash"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compute the decision coefficient and the hit rate.",
+          "Compare the forecast move with the threshold.",
+          "Update cash and holdings on the printed branches.",
+          "Mark total assets to the realized prices."
+        ],
+        "software": [],
+        "convergence_criteria": "No convergence tolerance or stopping rule is printed."
+      },
+      "assumptions": [
+        "A larger forecast move should trigger a larger trade.",
+        "Risk can stand in for variance of price changes."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "As printed, the risk term is identically zero, the bitcoin holding update is written in the gold symbol, and the sale price is the next period's price. None of this was re-run."
+      },
+      "handoff_outputs": [
+        "C_cash",
+        "G_gold",
+        "B_bitcoin"
+      ],
+      "validation_refs": [
+        "Equations (3) through (9), visually checked on pages 9 and 10."
+      ],
+      "computational_cost": "No runtime or resource figure is given.",
+      "strengths": [
+        "The objective, the constraints and the update rules are all printed, so the gaps are visible.",
+        "The prose states the rule as a comparison, which makes the direction checkable."
+      ],
+      "limitations": [
+        "Equation (5) is identically zero as printed.",
+        "Equation (6) sells at the next period's price.",
+        "Equation (7) writes G on the bitcoin branches.",
+        "The prose reads equation (3) backwards."
+      ],
+      "missing_details": [
+        "The value of lambda, the else branch when no threshold is crossed, and the solver."
+      ],
+      "source_pages": [
+        9,
+        10
+      ],
+      "source_text_bindings": [
+        {
+          "page": 9,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0009.txt",
+          "sha256": "3d397b662568bed43e1b69f7ced65f0681655c1df4373de38c6cc3db4c8c97fc"
+        },
+        {
+          "page": 10,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0010.txt",
+          "sha256": "ac1607c2f97b0f9c32fd25bb51952d4ba361866821c278e8809b92f756cbc645"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "A dynamic program with assets as the objective and risk as a penalty term.",
+        "paper_modification": "Thresholds scale with current assets, and the sale uses the next period's price.",
+        "claimed_benefit": [
+          "The objective, the constraints and the update rules are all printed, so the gaps are visible.",
+          "The prose states the rule as a comparison, which makes the direction checkable."
+        ],
+        "evidence_of_benefit": "Section 3.2.2, equations (3) to (9).",
+        "interface": [
+          "C_cash",
+          "G_gold",
+          "B_bitcoin"
+        ],
+        "transfer_boundary": "Transfer the comparison-then-action shape, never the printed formulas as correct algebra."
+      },
+      "data_provenance": {
+        "source": "Two price files named in section 1.1; nothing was re-run.",
+        "observation_unit": "Daily gold and bitcoin prices on different calendars.",
+        "coverage": "2016-09-11 to 2021-09-10.",
+        "cleaning": "Missing gold prices are filled; the summary and section 3.1 name different fills.",
+        "transformation": "Forecast and realized price enter the thresholds; cash and holdings come out.",
+        "leakage_risk": "The sale branch uses Y at i+1, which is the next period's realized price."
+      },
+      "result_translation": "The resulting holdings and the terminal value are handed to the results section.",
+      "validation_scope": "Visual transcription only; no formula was re-evaluated and no dollar figure was reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "The printed assumptions are recorded, not verified.",
+      "assumption_consequence": "Using the next period's price to settle a sale makes the reported profit depend on a price the trader did not yet have.",
+      "numerical_stability": "No numerical stability check was re-run."
+    },
+    {
+      "model_id": "MU-C-2022-2203120-03",
+      "page": 11,
+      "section": "3.3 Model Solving",
+      "family": "guarded execution of the trading rule",
+      "purpose": "State when the rule is allowed to trade and how the three labelled cases update the book.",
+      "base_or_modification": "modification",
+      "summary": "The solver sets the up and down thresholds proportional to current assets and the cash share as cash over total assets. It then prints three labelled cases, and in each one the label names a different weight from the weight the formula uses. All three cases buy gold and leave bitcoin unchanged. The prose says the smaller the decision coefficient, the more stable the model, which reverses the earlier reading.",
+      "variables": [
+        {
+          "symbol": "e_up",
+          "normalized_name": "up-move threshold",
+          "unit": "USD",
+          "role": "intermediate",
+          "definition": "Printed e_{g(i+1)} = beta_g * A_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_down",
+          "normalized_name": "down-move threshold",
+          "unit": "USD",
+          "role": "intermediate",
+          "definition": "Printed f_{g(i+1)} = gamma_g * A_i.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_cash",
+          "normalized_name": "cash share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed q_i; Table 1 calls it a proportion of assets, Table 4 a cash retention ratio.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "up-move threshold share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed beta_g, beta_b; Table 5 keeps beta_g at 0.50 for all three trader types.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma_thr",
+          "normalized_name": "down-move threshold share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed gamma_g, gamma_b.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A_total",
+          "normalized_name": "total assets",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed A_i; cash plus marked gold plus marked bitcoin.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_cash",
+          "normalized_name": "cash",
+          "unit": "USD",
+          "role": "state",
+          "definition": "Printed C_i; starts at 1000.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_gold",
+          "normalized_name": "gold holding",
+          "unit": "troy ounces",
+          "role": "state",
+          "definition": "Printed G_i; starts at 0. The bitcoin update is printed with this symbol too.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_bitcoin",
+          "normalized_name": "bitcoin holding",
+          "unit": "coins",
+          "role": "state",
+          "definition": "Printed B_i; starts at 0. Equation (7) prints G where this symbol would be expected.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_real",
+          "normalized_name": "realized average price",
+          "unit": "USD",
+          "role": "input",
+          "definition": "Printed Y_{g(i)}, Y_{b(i)}; Table 1 defines both with a sentence that names only gold.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_share",
+          "normalized_name": "purchase share",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed w_g, w_b and the high and low variants w_Hg, w_Lg, w_Hb.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_fee",
+          "normalized_name": "commission rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed alpha_g = 1% and alpha_b = 2%.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_case",
+          "normalized_name": "labelled trading case",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Printed R with subscripts W_Hg, W_Lg and m_g; each label uses a different weight inside.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "A_total",
+        "C_cash",
+        "beta",
+        "gamma_thr"
+      ],
+      "outputs": [
+        "e_up",
+        "f_down",
+        "q_cash",
+        "R_case"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2203120-010",
+          "page": 11,
+          "label": "(10)",
+          "source_expression": "e_{g(i+1)} = beta_g*A_i",
+          "normalized_latex": "e_{g(i+1)}=\\beta_g A_i",
+          "variable_symbols": [
+            "e_up",
+            "beta",
+            "A_total"
+          ],
+          "purpose": "Up-move threshold for the next period, proportional to current assets.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p11-eq10-12.jpg",
+            "proxy_sha256": "fcbd74ce0d96f47d103311e16c80e2fd424eb7839b83dc4b3cae9458ed39aee2",
+            "proxy_bytes": 138224,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 11,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0011.txt",
+            "sha256": "69e5aa2665f49485f6481b53d92f11e59a3d8aa78f26920b53f2e0dd31bca69e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-011",
+          "page": 11,
+          "label": "(11)",
+          "source_expression": "f_{g(i+1)} = gamma_g*A_i",
+          "normalized_latex": "f_{g(i+1)}=\\gamma_g A_i",
+          "variable_symbols": [
+            "f_down",
+            "gamma_thr",
+            "A_total"
+          ],
+          "purpose": "Down-move threshold for the next period, proportional to current assets.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p11-eq10-12.jpg",
+            "proxy_sha256": "fcbd74ce0d96f47d103311e16c80e2fd424eb7839b83dc4b3cae9458ed39aee2",
+            "proxy_bytes": 138224,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 11,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0011.txt",
+            "sha256": "69e5aa2665f49485f6481b53d92f11e59a3d8aa78f26920b53f2e0dd31bca69e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-012",
+          "page": 11,
+          "label": "(12)",
+          "source_expression": "q_i = C_i / (C_i + G_i*Y_{g(i)} + B_i*Y_{b(i)})",
+          "normalized_latex": "q_i=\\frac{C_i}{C_i+G_i Y_{g(i)}+B_i Y_{b(i)}}",
+          "variable_symbols": [
+            "q_cash",
+            "C_cash",
+            "G_gold",
+            "B_bitcoin",
+            "Y_real"
+          ],
+          "purpose": "Cash share of total assets; the text layer had read this as a sum and that reading is void.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p11-eq10-11b.jpg",
+            "proxy_sha256": "2737005c80bf336d51c08a306d102d87ba81e019c860e5b95a45fa2b867c98a5",
+            "proxy_bytes": 43411,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 11,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0011.txt",
+            "sha256": "69e5aa2665f49485f6481b53d92f11e59a3d8aa78f26920b53f2e0dd31bca69e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-013",
+          "page": 12,
+          "label": "(13)",
+          "source_expression": "A_{i+1} = C_{i+1} + G_{i+1}*Y_{g(i+1)} + B_{i+1}*Y_{b(i+1)}",
+          "normalized_latex": "A_{i+1}=C_{i+1}+G_{i+1}Y_{g(i+1)}+B_{i+1}Y_{b(i+1)}",
+          "variable_symbols": [
+            "A_total",
+            "C_cash",
+            "G_gold",
+            "B_bitcoin",
+            "Y_real"
+          ],
+          "purpose": "Next-period total assets, the recurrence form of equation (8).",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p12-eq13-16.jpg",
+            "proxy_sha256": "11588b9687f6a8ce776f4e944ba4b9520fe165f13283aa8bda1d4928b132f025",
+            "proxy_bytes": 156609,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 12,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0012.txt",
+            "sha256": "2893247f35a170f1766ec6e723bc24e91ba2b85b9a5693dfc1839c85b30efc2e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-014",
+          "page": 12,
+          "label": "(14)",
+          "source_expression": "label R_{W_Hg} but the body uses w_Lg: C_{i+1}=C_i-C_i*w_Lg, G_{i+1}=G_i+C_i*w_Lg*(1-alpha_g)/Y_{g(i+1)}",
+          "normalized_latex": "R_{W_{Hg}}:\\ C_{i+1}=C_i-C_i w_{Lg},\\ G_{i+1}=G_i+\\frac{C_i w_{Lg}(1-\\alpha_g)}{Y_{g(i+1)}}",
+          "variable_symbols": [
+            "R_case",
+            "C_cash",
+            "G_gold",
+            "w_share",
+            "alpha_fee",
+            "Y_real"
+          ],
+          "purpose": "Case labelled with the high gold weight but computed with the low one; gold is divided by the next real price.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p12-eq13-16.jpg",
+            "proxy_sha256": "11588b9687f6a8ce776f4e944ba4b9520fe165f13283aa8bda1d4928b132f025",
+            "proxy_bytes": 156609,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 12,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0012.txt",
+            "sha256": "2893247f35a170f1766ec6e723bc24e91ba2b85b9a5693dfc1839c85b30efc2e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-015",
+          "page": 12,
+          "label": "(15)",
+          "source_expression": "label R_{W_Lg} but the body uses w_Hg",
+          "normalized_latex": "R_{W_{Lg}}:\\ C_{i+1}=C_i-C_i w_{Hg},\\ G_{i+1}=G_i+\\frac{C_i w_{Hg}(1-\\alpha_g)}{Y_{g(i+1)}}",
+          "variable_symbols": [
+            "R_case",
+            "C_cash",
+            "G_gold",
+            "w_share",
+            "alpha_fee",
+            "Y_real"
+          ],
+          "purpose": "Case labelled with the low gold weight but computed with the high one.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p12-eq13-16.jpg",
+            "proxy_sha256": "11588b9687f6a8ce776f4e944ba4b9520fe165f13283aa8bda1d4928b132f025",
+            "proxy_bytes": 156609,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 12,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0012.txt",
+            "sha256": "2893247f35a170f1766ec6e723bc24e91ba2b85b9a5693dfc1839c85b30efc2e"
+          },
+          "mathematical_correctness_claimed": false
+        },
+        {
+          "equation_id": "EQ-C-2022-2203120-016",
+          "page": 12,
+          "label": "(16)",
+          "source_expression": "label R_{m_g} but the body uses w_Lg, not m_g",
+          "normalized_latex": "R_{m_g}:\\ C_{i+1}=C_i-C_i w_{Lg},\\ G_{i+1}=G_i+\\frac{C_i w_{Lg}(1-\\alpha_g)}{Y_{g(i+1)}}",
+          "variable_symbols": [
+            "R_case",
+            "C_cash",
+            "G_gold",
+            "w_share",
+            "alpha_fee",
+            "Y_real"
+          ],
+          "purpose": "Case labelled as a sale but computed as a purchase at the low weight; bitcoin is unchanged in all three cases.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p12-eq13-16.jpg",
+            "proxy_sha256": "11588b9687f6a8ce776f4e944ba4b9520fe165f13283aa8bda1d4928b132f025",
+            "proxy_bytes": 156609,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 12,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0012.txt",
+            "sha256": "2893247f35a170f1766ec6e723bc24e91ba2b85b9a5693dfc1839c85b30efc2e"
+          },
+          "mathematical_correctness_claimed": false
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The printed formulas are transcribed above, defects included."
+      },
+      "objectives": [
+        "Carry the rule to a per-period update with the constraints enforced."
+      ],
+      "constraints": [
+        "Trade only when the move clears the threshold.",
+        "Trade only when cash stays above the reserved share.",
+        "Walk the printed constraints in order."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": []
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The window runs from 2016-09-11 to 2021-09-10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed for this component."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The parameters are chosen, not estimated; Table 5 lists one column per trader type.",
+        "parameters": [
+          "beta",
+          "gamma_thr",
+          "w_share",
+          "alpha_fee"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set the two thresholds from current assets.",
+          "Set the cash share.",
+          "Apply the labelled case.",
+          "Recompute next-period assets."
+        ],
+        "software": [
+          "unspecified"
+        ],
+        "convergence_criteria": "No convergence tolerance or stopping rule is printed."
+      },
+      "assumptions": [
+        "Reserving a cash share avoids being unable to trade later.",
+        "A smaller decision coefficient means a more stable model, as the prose says here."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The labels and the weights inside equations (14) to (16) do not match, so the printed cases cannot be executed unambiguously."
+      },
+      "handoff_outputs": [
+        "e_up",
+        "f_down",
+        "q_cash",
+        "R_case"
+      ],
+      "validation_refs": [
+        "Equations (10) through (16), visually checked on pages 11 and 12."
+      ],
+      "computational_cost": "No runtime or resource figure is given.",
+      "strengths": [
+        "The constraints are explained one by one, in the order printed.",
+        "Each case is labelled, which exposes the mismatch instead of hiding it."
+      ],
+      "limitations": [
+        "Equations (14) to (16) each use a weight other than the one in the label.",
+        "Equation (16) is a purchase although its label says a sale.",
+        "The stability reading here reverses the earlier one."
+      ],
+      "missing_details": [
+        "The case that sells, and the rule for choosing among the three cases."
+      ],
+      "source_pages": [
+        11,
+        12
+      ],
+      "source_text_bindings": [
+        {
+          "page": 11,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0011.txt",
+          "sha256": "69e5aa2665f49485f6481b53d92f11e59a3d8aa78f26920b53f2e0dd31bca69e"
+        },
+        {
+          "page": 12,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0012.txt",
+          "sha256": "2893247f35a170f1766ec6e723bc24e91ba2b85b9a5693dfc1839c85b30efc2e"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "The trading rule from the previous section.",
+        "paper_modification": "Thresholds and the cash share are written out as formulas, and three cases are labelled.",
+        "claimed_benefit": [
+          "The constraints are explained one by one, in the order printed.",
+          "Each case is labelled, which exposes the mismatch instead of hiding it."
+        ],
+        "evidence_of_benefit": "Section 3.3, equations (10) to (16), Figure 7.",
+        "interface": [
+          "e_up",
+          "f_down",
+          "q_cash",
+          "R_case"
+        ],
+        "transfer_boundary": "Transfer the constraint-by-constraint walk, not the crossed labels."
+      },
+      "data_provenance": {
+        "source": "Two price files named in section 1.1; nothing was re-run.",
+        "observation_unit": "Daily gold and bitcoin prices on different calendars.",
+        "coverage": "2016-09-11 to 2021-09-10.",
+        "cleaning": "Missing gold prices are filled; the summary and section 3.1 name different fills.",
+        "transformation": "Current assets and the chosen shares produce the next period's book.",
+        "leakage_risk": "All three cases divide by the next period's realized gold price."
+      },
+      "result_translation": "The updated book is what the results section reports.",
+      "validation_scope": "Visual transcription only; no formula was re-evaluated and no dollar figure was reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "The printed assumptions are recorded, not verified.",
+      "assumption_consequence": "Following the labels and following the formulas give different trades.",
+      "numerical_stability": "No numerical stability check was re-run."
+    },
+    {
+      "model_id": "MU-C-2022-2203120-04",
+      "page": 17,
+      "section": "4.3 Yield",
+      "family": "deposit benchmark after inflation",
+      "purpose": "Compare the trading result with cash left on deposit for five years.",
+      "base_or_modification": "paper-specific",
+      "summary": "Equation (17) prints the deposit value as a power, with the whole factor in the exponent. Substituting the printed inputs gives neither the reported $139.2436 nor the ordinary compound value. The formula, the inputs and the reported result are all kept as printed.",
+      "variables": [
+        {
+          "symbol": "A_deposit",
+          "normalized_name": "deposit value after five years",
+          "unit": "USD",
+          "role": "output",
+          "definition": "Printed A in equation (17); the reported $139.2436 matches neither reading of the formula.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_principal",
+          "normalized_name": "deposit principal",
+          "unit": "USD",
+          "role": "input",
+          "definition": "Printed a = 1000.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_rate",
+          "normalized_name": "deposit rate",
+          "unit": "fraction per year",
+          "role": "parameter",
+          "definition": "Printed r = 0.5%, with no source given.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I_infl",
+          "normalized_name": "inflation rate",
+          "unit": "fraction per year",
+          "role": "parameter",
+          "definition": "Printed I = 7%, with no source given; the where-clause prints \"I,deposit\" without a space.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "a_principal",
+        "r_rate",
+        "I_infl"
+      ],
+      "outputs": [
+        "A_deposit"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2203120-017",
+          "page": 17,
+          "label": "(17)",
+          "source_expression": "A = a^{(1+r-I)^5}",
+          "normalized_latex": "A=a^{(1+r-I)^5}",
+          "variable_symbols": [
+            "A_deposit",
+            "a_principal",
+            "r_rate",
+            "I_infl"
+          ],
+          "purpose": "Deposit value after five years, printed as a power; with the stated inputs it matches neither reading of the reported $139.2436.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p17-eq17b.jpg",
+            "proxy_sha256": "d6bdf0b0611778a713709c93bbad4abcb45e7366a310c146f537c38a95e1aaaf",
+            "proxy_bytes": 115192,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 17,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0017.txt",
+            "sha256": "17964e32dffb8197b3fffa21f2237f55a10d7115bda749a7b1426af88c018ed8"
+          },
+          "mathematical_correctness_claimed": false
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The printed formulas are transcribed above, defects included."
+      },
+      "objectives": [
+        "Give a single number for doing nothing with the cash, so the trading result has something to beat."
+      ],
+      "constraints": [
+        "The principal, the rate and the inflation are the printed ones."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": []
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The window runs from 2016-09-11 to 2021-09-10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed for this component."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The rate 0.5% and inflation 7% are stated with no source.",
+        "parameters": [
+          "r_rate",
+          "I_infl"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set the principal, the rate and the inflation.",
+          "Apply the printed power.",
+          "Compare with the three trading results."
+        ],
+        "software": [
+          "unspecified"
+        ],
+        "convergence_criteria": "No convergence tolerance or stopping rule is printed."
+      },
+      "assumptions": [
+        "A deposit is the right thing to compare against.",
+        "One rate and one inflation hold for all five years."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The printed power, the ordinary compound reading and the reported $139.2436 are three different numbers."
+      },
+      "handoff_outputs": [
+        "A_deposit"
+      ],
+      "validation_refs": [
+        "Equation (17), visually checked on page 17."
+      ],
+      "computational_cost": "No runtime or resource figure is given.",
+      "strengths": [
+        "The benchmark is stated before the comparison, so the reader knows what \"higher\" means."
+      ],
+      "limitations": [
+        "The formula and the reported result disagree.",
+        "Neither rate has a source."
+      ],
+      "missing_details": [
+        "The source of both rates, and which reading of the formula the result came from."
+      ],
+      "source_pages": [
+        17
+      ],
+      "source_text_bindings": [
+        {
+          "page": 17,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0017.txt",
+          "sha256": "17964e32dffb8197b3fffa21f2237f55a10d7115bda749a7b1426af88c018ed8"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "A five-year deposit used as the alternative to trading.",
+        "paper_modification": "Inflation is subtracted inside the exponent.",
+        "claimed_benefit": [
+          "The benchmark is stated before the comparison, so the reader knows what \"higher\" means."
+        ],
+        "evidence_of_benefit": "Section 4.3.",
+        "interface": [
+          "A_deposit"
+        ],
+        "transfer_boundary": "Transfer the move of setting a do-nothing benchmark before claiming a gain, not the formula."
+      },
+      "data_provenance": {
+        "source": "Two price files named in section 1.1; nothing was re-run.",
+        "observation_unit": "Daily gold and bitcoin prices on different calendars.",
+        "coverage": "2016-09-11 to 2021-09-10.",
+        "cleaning": "Missing gold prices are filled; the summary and section 3.1 name different fills.",
+        "transformation": "Principal, rate and inflation become one deposit value.",
+        "leakage_risk": "None inside this formula; it does not use prices."
+      },
+      "result_translation": "The deposit value is the benchmark the three strategies are said to beat.",
+      "validation_scope": "Visual transcription only; no formula was re-evaluated and no dollar figure was reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "The printed assumptions are recorded, not verified.",
+      "assumption_consequence": "The claim that trading beats the deposit depends on a result the printed formula does not produce.",
+      "numerical_stability": "No numerical stability check was re-run."
+    },
+    {
+      "model_id": "MU-C-2022-2203120-05",
+      "page": 18,
+      "section": "5.1 Sensitivity Definition; 5.2 Impact of Transaction Costs",
+      "family": "one-factor cost sensitivity",
+      "purpose": "Measure how much the trading frequency moves when one commission changes.",
+      "base_or_modification": "paper-specific",
+      "summary": "Equation (18) prints the average absolute change in frequency over ten steps, with no left side and no equals sign. The prose then changes one commission at a time and reports the strategy more sensitive to the bitcoin cost than to the gold cost. The summary quotes only the common-type column.",
+      "variables": [
+        {
+          "symbol": "h_freq",
+          "normalized_name": "transaction frequency",
+          "unit": "count",
+          "role": "output",
+          "definition": "Printed h_k; the change rate of this frequency is what the prose calls sensitivity.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha_fee",
+          "normalized_name": "commission rate",
+          "unit": "fraction",
+          "role": "parameter",
+          "definition": "Printed alpha_g = 1% and alpha_b = 2%.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "h_freq",
+        "alpha_fee"
+      ],
+      "outputs": [
+        "h_freq"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2022-2203120-018",
+          "page": 18,
+          "label": "(18)",
+          "source_expression": "( sum_{k=1}^{10} |h_k - h_{k-1}|/h_{k-1} * 100% ) / 10",
+          "normalized_latex": "\\left(\\sum_{k=1}^{10}\\frac{|h_k-h_{k-1}|}{h_{k-1}}\\times 100\\%\\right)/10",
+          "variable_symbols": [
+            "h_freq"
+          ],
+          "purpose": "Sensitivity expression with no left side and no equals sign; the section heading prints Difinition.",
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "visual_evidence": {
+            "proxy": "tmp/q224-g0-proxies-v1/p18-eq18.jpg",
+            "proxy_sha256": "ea5a07b490e37f8b8b334aed4722fe2e4ec2cc0c813dd14ffe1083dc0ac5cc10",
+            "proxy_bytes": 85670,
+            "reviewer": "read-only subagent, one JPEG per call, text returned to root"
+          },
+          "source_text_binding": {
+            "page": 18,
+            "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0018.txt",
+            "sha256": "9df78f523699382c44ba937e5010bd72ae76db00b332c0fa44edb98f9438e982"
+          },
+          "mathematical_correctness_claimed": false
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The printed formulas are transcribed above, defects included."
+      },
+      "objectives": [
+        "Say which of the two costs the result depends on more."
+      ],
+      "constraints": [
+        "Each case changes exactly one rate.",
+        "The average runs over the printed ten steps."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "omitted-by-paper",
+          "details": []
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The window runs from 2016-09-11 to 2021-09-10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is printed for this component."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The step sizes are printed per case; the definition uses ten steps.",
+        "parameters": [
+          "alpha_fee"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Record the starting frequency.",
+          "Move one rate, ten times.",
+          "Average the absolute relative changes.",
+          "Compare the two assets."
+        ],
+        "software": [
+          "unspecified"
+        ],
+        "convergence_criteria": "No convergence tolerance or stopping rule is printed."
+      },
+      "assumptions": [
+        "Frequency is the right quantity to watch.",
+        "Moving one rate at a time isolates its effect."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The expression is printable and the comparison is stated; the underlying reruns were not repeated here."
+      },
+      "handoff_outputs": [
+        "h_freq"
+      ],
+      "validation_refs": [
+        "Equation (18), visually checked on page 18.",
+        "Table 7 and Figures 12 to 15 on pages 18 and 19."
+      ],
+      "computational_cost": "No runtime or resource figure is given.",
+      "strengths": [
+        "The definition comes after the scenario, so the reader sees what is being measured.",
+        "One observation is reported per sentence."
+      ],
+      "limitations": [
+        "The expression has no left side.",
+        "The summary reports one column of Table 7 without saying which."
+      ],
+      "missing_details": [
+        "The base frequency h_0 and the exact schedule of rate changes."
+      ],
+      "source_pages": [
+        18,
+        19
+      ],
+      "source_text_bindings": [
+        {
+          "page": 18,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0018.txt",
+          "sha256": "9df78f523699382c44ba937e5010bd72ae76db00b332c0fa44edb98f9438e982"
+        },
+        {
+          "page": 19,
+          "file": "tmp/q224-extraction-v1/P-C-2022-2203120-59ecfcb7/text/pages/page-0019.txt",
+          "sha256": "cfa5c536d2e5547fa31799fdf7e195685bf9678e0ff135217b6b5f0a0b0ab0c8"
+        }
+      ],
+      "base_modification_contract": {
+        "base": "A relative change averaged over a fixed number of steps.",
+        "paper_modification": "Applied to trading frequency under single-factor cost moves.",
+        "claimed_benefit": [
+          "The definition comes after the scenario, so the reader sees what is being measured.",
+          "One observation is reported per sentence."
+        ],
+        "evidence_of_benefit": "Section 5 and Table 7.",
+        "interface": [
+          "h_freq"
+        ],
+        "transfer_boundary": "Transfer the one-factor-at-a-time comparison, not the reported sensitivities as verified."
+      },
+      "data_provenance": {
+        "source": "Two price files named in section 1.1; nothing was re-run.",
+        "observation_unit": "Daily gold and bitcoin prices on different calendars.",
+        "coverage": "2016-09-11 to 2021-09-10.",
+        "cleaning": "Missing gold prices are filled; the summary and section 3.1 name different fills.",
+        "transformation": "A sequence of frequencies becomes one relative-change number per asset.",
+        "leakage_risk": "None beyond whatever the underlying reruns used."
+      },
+      "result_translation": "The comparison is the answer to the third request and is restated in the summary.",
+      "validation_scope": "Visual transcription only; no formula was re-evaluated and no dollar figure was reproduced.",
+      "review_status": "source-checked",
+      "reproduction_status": "not-reproduced",
+      "assumption_evidence_boundary": "The printed assumptions are recorded, not verified.",
+      "assumption_consequence": "Reporting one trader type's column as the whole result overstates how settled the number is.",
+      "numerical_stability": "No numerical stability check was re-run."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2022-2203120-01",
+      "to_model_id": "MU-C-2022-2203120-02",
+      "handoff": "The one-period forecast becomes the predicted average price inside the trading rule."
+    },
+    {
+      "from_model_id": "MU-C-2022-2203120-02",
+      "to_model_id": "MU-C-2022-2203120-03",
+      "handoff": "The threshold rule and its constraints become the per-period update."
+    },
+    {
+      "from_model_id": "MU-C-2022-2203120-03",
+      "to_model_id": "MU-C-2022-2203120-04",
+      "handoff": "The reported terminal value is set against the deposit benchmark."
+    },
+    {
+      "from_model_id": "MU-C-2022-2203120-03",
+      "to_model_id": "MU-C-2022-2203120-05",
+      "handoff": "The same rule is rerun with one commission moved at a time."
+    }
+  ],
+  "printed_defects_retained": [
+    "Equation (1) where-clause has no subject.",
+    "Equation (5) is identically zero as printed.",
+    "Equation (6) sells at the next period price; the bitcoin condition uses the previous forecast.",
+    "Equation (7) prints G on both bitcoin branches.",
+    "Equations (14) to (16) labels do not match the weights used.",
+    "Equation (17) power, inputs and reported result are mutually inconsistent.",
+    "Equation (18) has no left side and no equals sign.",
+    "Equation (3) is a residual ratio; the prose reads it as a fit score."
+  ],
+  "formal_progress_changed": false,
+  "history_appended": false
+}

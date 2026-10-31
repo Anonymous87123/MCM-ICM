@@ -1,0 +1,56 @@
+Team 68942  Page 34 of 36
+
+      set n1-length replace-item (which-queue) n1-length (min n1-length + 1)
+      ;show n1-length
+   ]
+   let p [5 15 25 35 45 55]
+   if not(is-precheck)[set which-queue which-queue + num-precheck-lanes]
+   facexy (item which-queue p) (37 + queue-pos * .3)
+   set fd-speed (distancexy (item which-queue p) (37 + queue-pos * .3)) / (3 * speed-factor)
+   ;show fd-speed
+   set stage stage + 1
+   set walking-time 0
+   set walking true
+end
+
+to through-security
+   ask my-links[die]
+   ; join queue - represented by stage 3
+   set stage 3
+   if random 100 < cant-scan[
+      set patdown-time 0
+      set p-length rescreen-length
+      set is-waiting false
+      if delay-on [set delayer random 5 + 5]
+      patdown
+   ]
+   ifelse is-precheck[
+      set p1-length replace-item (which-queue) p1-length (item which-queue p1-length - 1)
+      ifelse is-cutter and random 100 < cutting-prob[
+         set queue-pos 0
+      ][
+         set queue-pos item int(which-queue / 2) a2-length
+      ]
+      set a2-length replace-item (int(which-queue / 2)) a2-length (queue-pos + 1)
+      ;show a2-length
+   ][
+      set n1-length replace-item (which-queue - num-precheck-lanes) n1-length ((item (which-queue - num-pr
+            ifelse is-cutter and random 100 < cutting-prob[
+         set queue-pos 0
+      ][
+         set queue-pos item int(which-queue / 2) a2-length
+      ]
+      set a2-length replace-item (int(which-queue / 2)) a2-length (queue-pos + 1)
+      ;show a2-length
+   ]
+
+   let p [8 28 48]
+   facexy (item int(which-queue / 2) p) (33 + queue-pos * .3)
+   set fd-speed (distancexy (item int(which-queue / 2) p) (33 + queue-pos * .3)) / int(3 * speed-factor)
+   set walking-time 0
+   set walking true
+end
+
+to repack
+   ; join queue - represented by stage 7
+   ask my-links[die]

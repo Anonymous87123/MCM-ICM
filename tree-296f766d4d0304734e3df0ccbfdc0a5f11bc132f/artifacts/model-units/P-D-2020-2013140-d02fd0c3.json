@@ -1,0 +1,834 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2020-2013140-d02fd0c3",
+  "problem_type": "D",
+  "year": "2020",
+  "source_sha256": "d02fd0c3c9b545ffad05da1d5ec25261ba7457fbe01f864e421fa14a3ef19503",
+  "models": [
+    {
+      "model_id": "MU-D-2020-2013140-MultiLevelNetwork",
+      "page": 3,
+      "section": "3.1 Model 1: Multi-level Network Analysis Model",
+      "family": "network-analysis",
+      "purpose": "Analyze team passing structure at macro (formation), micro (4 tactics), and middle (4 styles) levels",
+      "base_or_modification": "base",
+      "summary": "Constructs passing network from event data; identifies formation via average positions, screens four small-range tactics (BPBC, OPSP, DPOP, LRT) via coordinate inequalities, and classifies four tactical styles (defensive counterattack, pressure attack, tiki-taka, gegenpressing) via 15-min possession-position matrix.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute total passes per player to identify main players",
+          "Average passing positions to determine formation (5-4-1)",
+          "Screen each tactic via coordinate inequalities (formulas 1-4)",
+          "Classify 15-min intervals by possession rate and ball position into 4 styles"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Exact screening; no iteration needed"
+      },
+      "assumptions": [
+        "Undirected passing network (direction ignored)",
+        "Player as particle; ball route as connection",
+        "Two-dimensional plane only"
+      ],
+      "computational_cost": "Low: linear scan of passing events per match",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        }
+      },
+      "constraints": [
+        "Coordinate inequalities must be satisfied for tactic identification",
+        "LRT requires lateral distance > 50 units between players A and C"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All governing equations transcribed from source PDF."
+      },
+      "handoff_outputs": [
+        "R1"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "All parameters directly computed from passing event data; no estimation needed."
+      },
+      "missing_details": [
+        "Coordinate system origin and scale not specified"
+      ],
+      "objectives": [
+        "Characterize team structure at three granularity levels"
+      ],
+      "parameter_estimation": {
+        "method": "Direct computation from data",
+        "parameters": [],
+        "status": "not-applicable"
+      },
+      "strengths": [
+        "Multi-scale decomposition captures formation, tactics, and style",
+        "Coordinate inequalities are deterministic and reproducible"
+      ],
+      "validation_refs": [
+        "Game 9 (2-5 defeat) and Game 15 (2-0 win) as contrasting cases"
+      ],
+      "variables": [
+        {
+          "symbol": "x_A",
+          "normalized_name": "x_a",
+          "unit": "pitch-unit",
+          "definition": "x-coordinate of player A's position",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_B",
+          "normalized_name": "x_b",
+          "unit": "pitch-unit",
+          "definition": "x-coordinate of player B's position",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_C",
+          "normalized_name": "x_c",
+          "unit": "pitch-unit",
+          "definition": "x-coordinate of player C's position",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_A",
+          "normalized_name": "y_a",
+          "unit": "pitch-unit",
+          "definition": "y-coordinate of player A's position",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_B",
+          "normalized_name": "y_b",
+          "unit": "pitch-unit",
+          "definition": "y-coordinate of player B's position",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_A'",
+          "normalized_name": "x_a_prime",
+          "unit": "pitch-unit",
+          "definition": "x-coordinate of player A after movement",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_B'",
+          "normalized_name": "x_b_prime",
+          "unit": "pitch-unit",
+          "definition": "x-coordinate of player B after movement",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_A'",
+          "normalized_name": "y_a_prime",
+          "unit": "pitch-unit",
+          "definition": "y-coordinate of player A after movement",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R1",
+          "normalized_name": "r1",
+          "unit": "count",
+          "definition": "Total number of small-range tactical teamwork per game",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_A",
+        "x_B",
+        "x_C",
+        "y_A",
+        "y_B"
+      ],
+      "outputs": [
+        "R1"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2013140-01",
+          "page": 4,
+          "source_expression": "x_A > x_B; x_A' < x_B'; x_B' > x_B",
+          "normalized_latex": "x_A > x_B,\\; x_{A'} < x_{B'},\\; x_{B'} > x_B",
+          "purpose": "Coordinate inequality for Back Pass Back Cut (BPBC) identification",
+          "label": "BPBC screening",
+          "variable_symbols": [
+            "x_A",
+            "x_B",
+            "x_A'",
+            "x_B'"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-02",
+          "page": 5,
+          "source_expression": "x_A > x_B; x_A' < x_B'; |y_A' - y_A| > |y_A - y_B|",
+          "normalized_latex": "x_A > x_B,\\; x_{A'} < x_{B'},\\; |y_{A'}-y_A| > |y_A - y_B|",
+          "purpose": "Coordinate inequality for Oblique Pass Straight Penetration (OPSP)",
+          "label": "OPSP screening",
+          "variable_symbols": [
+            "x_A",
+            "x_B",
+            "x_A'",
+            "x_B'",
+            "y_A",
+            "y_A'",
+            "y_B"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-03",
+          "page": 5,
+          "source_expression": "x_A > x_B; x_A' < x_B'; |y_A' - y_A| > |y_A - y_B|",
+          "normalized_latex": "x_A > x_B,\\; x_{A'} < x_{B'},\\; |y_{A'}-y_A| > |y_A - y_B|",
+          "purpose": "Coordinate inequality for Direct Pass Oblique Penetration (DPOP)",
+          "label": "DPOP screening",
+          "variable_symbols": [
+            "x_A",
+            "x_B",
+            "x_A'",
+            "x_B'",
+            "y_A",
+            "y_A'",
+            "y_B"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-04",
+          "page": 6,
+          "source_expression": "x_A > x_B; x_C > x_B; |y_A - y_C| > 50",
+          "normalized_latex": "x_A > x_B,\\; x_C > x_B,\\; |y_A - y_C| > 50",
+          "purpose": "Coordinate inequality for Large Range Triangulation (LRT)",
+          "label": "LRT screening",
+          "variable_symbols": [
+            "x_A",
+            "x_B",
+            "x_C",
+            "y_A"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Only four predefined tactics screened; other patterns missed",
+        "Coordinate system and thresholds not justified"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2013140-PerformanceEvaluation",
+      "page": 8,
+      "section": "3.2 Multi-angle Team Performance Evaluation Model",
+      "family": "composite-index",
+      "purpose": "Establish total attributional indicator (TAI) from six factors via entropy weight method, test correlation with goal difference",
+      "base_or_modification": "base",
+      "summary": "Defines six attributional factors (Pezzali P, H indicator, R1 tactical count, R2 player ability, R3 tactical adaptability, R4 flexibility), weights them via entropy weight method (EWM) into TAI, and validates via SPSS correlation with goal difference (significance 0.024).",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute GD per game as actual performance",
+          "Compute Pezzali score P = goals(team)*attempts(opp) / (attempts(team)*goals(opp))",
+          "Compute H indicator as harmonic combination of 5 passing measures",
+          "Count R1 small-range tactics, compute R2 via AHP, count R3 style changes, compute R4 pass time",
+          "Min-max standardize all six factors (formula 9)",
+          "Compute information entropy per factor (formula 10)",
+          "Derive EWM weights (formula 12)",
+          "Compute TAI = weighted sum of six factors (formula 13)",
+          "SPSS correlation analysis TAI vs GD"
+        ],
+        "software": [
+          "MATLAB",
+          "SPSS"
+        ],
+        "convergence_criteria": "Closed-form computation; no iteration"
+      },
+      "assumptions": [
+        "Linear summation of indicators",
+        "Equal opponent strength",
+        "Player position assumption (no misplacement)"
+      ],
+      "computational_cost": "Low: per-game statistics aggregated over season",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        }
+      },
+      "constraints": [
+        "All six factors must be non-negative after standardization",
+        "EWM weights must sum to 1",
+        "Pij = 0 handled by limit convention (formula 11)"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All governing equations transcribed from source PDF."
+      },
+      "handoff_outputs": [
+        "TAI",
+        "GD"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "All weights derived from data via closed-form EWM; no free parameters."
+      },
+      "missing_details": [
+        "Formula numbering skips from 5 to 7 in source text"
+      ],
+      "objectives": [
+        "Construct composite performance metric with statistical validation"
+      ],
+      "parameter_estimation": {
+        "method": "Entropy weight method (data-driven)",
+        "parameters": [
+          "W_1..W_6"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Objective weighting via EWM avoids subjective bias",
+        "Statistical validation via SPSS correlation"
+      ],
+      "validation_refs": [
+        "SPSS significance 0.024",
+        "Q-Q diagram verification",
+        "z-score standardized polygraph"
+      ],
+      "variables": [
+        {
+          "symbol": "GD",
+          "normalized_name": "gd",
+          "unit": "goals",
+          "definition": "Goal difference per game",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "p_pezzali",
+          "unit": "dimensionless",
+          "definition": "Pezzali score: attack-defense efficiency ratio",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "h_indicator",
+          "unit": "dimensionless",
+          "definition": "Harmonic combination of 5 passing measures",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R1",
+          "normalized_name": "r1",
+          "unit": "count",
+          "definition": "Number of small-range tactical teamwork",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R2",
+          "normalized_name": "r2",
+          "unit": "dimensionless",
+          "definition": "Player ability index via AHP",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R3",
+          "normalized_name": "r3",
+          "unit": "count",
+          "definition": "Tactical adaptability: number of style changes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R4",
+          "normalized_name": "r4",
+          "unit": "seconds",
+          "definition": "Team flexibility: mean 3-player pass time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TAI",
+          "normalized_name": "tai",
+          "unit": "dimensionless",
+          "definition": "Total attributional indicator",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_i",
+          "normalized_name": "x_i",
+          "unit": "various",
+          "definition": "Raw value of indicator i",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_ij",
+          "normalized_name": "y_ij",
+          "unit": "dimensionless",
+          "definition": "Min-max standardized value of indicator i for game j",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_ij",
+          "normalized_name": "p_ij",
+          "unit": "dimensionless",
+          "definition": "Proportion of indicator i for game j in entropy computation",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_j",
+          "normalized_name": "e_j",
+          "unit": "dimensionless",
+          "definition": "Information entropy of indicator j",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_i",
+          "normalized_name": "w_i",
+          "unit": "dimensionless",
+          "definition": "EWM weight for indicator i",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega",
+          "normalized_name": "omega",
+          "unit": "passes",
+          "definition": "Total passing volume of team",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_p",
+          "normalized_name": "mu_p",
+          "unit": "passes",
+          "definition": "Average passing volume of players",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_p",
+          "normalized_name": "sigma_p",
+          "unit": "passes",
+          "definition": "Variance of players' passing volume",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu_z",
+          "normalized_name": "mu_z",
+          "unit": "passes",
+          "definition": "Average passing volume of zones",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma_z",
+          "normalized_name": "sigma_z",
+          "unit": "passes",
+          "definition": "Variance of zones' passing volume",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "GD",
+        "P",
+        "H",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "outputs": [
+        "TAI"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2013140-05",
+          "page": 9,
+          "source_expression": "Pezzali Score = goals(team)*attempts(opponent) / (attempts(team)*goals(opponent))",
+          "normalized_latex": "P = \\frac{\\text{goals}(\\text{team}) \\cdot \\text{attempts}(\\text{opp})}{\\text{attempts}(\\text{team}) \\cdot \\text{goals}(\\text{opp})}",
+          "purpose": "Pezzali score measuring attack-defense efficiency",
+          "label": "Pezzali Score",
+          "variable_symbols": [
+            "P"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-07",
+          "page": 10,
+          "source_expression": "H = 5*omega / (1 + 1/mu_p + 1/sigma_p + 1/mu_z + 1/sigma_z)",
+          "normalized_latex": "H = \\frac{5\\omega}{1 + \\frac{1}{\\mu_p} + \\frac{1}{\\sigma_p} + \\frac{1}{\\mu_z} + \\frac{1}{\\sigma_z}}",
+          "purpose": "H indicator: harmonic combination of five passing measures",
+          "label": "H Indicator",
+          "variable_symbols": [
+            "H",
+            "omega",
+            "mu_p",
+            "sigma_p",
+            "mu_z",
+            "sigma_z"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-08",
+          "page": 11,
+          "source_expression": "F = 0.1998*beta1 + 0.0873*beta2 + 0.1135*beta3 + 0.2591*beta4 + 0.3404*beta5; M = ...; D = ...",
+          "normalized_latex": "F = 0.1998\\beta_1 + \\ldots + 0.3404\\beta_5;\\; M = 0.3757\\beta_1 + \\ldots;\\; D = 0.0958\\beta_1 + \\ldots",
+          "purpose": "Position-specific player ability formulas from AHP weights",
+          "label": "AHP Player Ability",
+          "variable_symbols": [
+            "R2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-09",
+          "page": 11,
+          "source_expression": "Y_ij = (X_ij - min(X_i)) / (max(X_i) - min(X_i))",
+          "normalized_latex": "Y_{ij} = \\frac{X_{ij} - \\min(X_i)}{\\max(X_i) - \\min(X_i)}",
+          "purpose": "Min-max standardization of indicator values",
+          "label": "EWM Standardization",
+          "variable_symbols": [
+            "Y_ij",
+            "X_i"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-10",
+          "page": 11,
+          "source_expression": "E_j = -ln(n)^{-1} * sum(P_ij * ln(P_ij))",
+          "normalized_latex": "E_j = -\\frac{1}{\\ln n} \\sum_{i=1}^{n} P_{ij} \\ln P_{ij}",
+          "purpose": "Information entropy of indicator j",
+          "label": "Information Entropy",
+          "variable_symbols": [
+            "E_j",
+            "P_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-11",
+          "page": 12,
+          "source_expression": "lim_{P_ij->0} P_ij * ln(P_ij) = 0",
+          "normalized_latex": "\\lim_{P_{ij}\\to 0} P_{ij} \\ln P_{ij} = 0",
+          "purpose": "Limit convention for zero-proportion entropy",
+          "label": "Zero Entropy Convention",
+          "variable_symbols": [
+            "P_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-12",
+          "page": 12,
+          "source_expression": "W_i = (1 - E_i) / (k - sum(E_i))",
+          "normalized_latex": "W_i = \\frac{1 - E_i}{k - \\sum_{i=1}^{k} E_i}",
+          "purpose": "EWM weight derivation from information entropy",
+          "label": "EWM Weight",
+          "variable_symbols": [
+            "W_i",
+            "E_j"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-13",
+          "page": 12,
+          "source_expression": "TAI = 0.3575*P + 0.0908*H + 0.1625*R1 + 0.1168*R2 + 0.1883*R3 + 0.0842*R4",
+          "normalized_latex": "TAI = 0.3575P + 0.0908H + 0.1625R_1 + 0.1168R_2 + 0.1883R_3 + 0.0842R_4",
+          "purpose": "Total attributional indicator as weighted sum of six factors",
+          "label": "TAI Formula",
+          "variable_symbols": [
+            "TAI",
+            "P",
+            "H",
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2013140-14",
+          "page": 13,
+          "source_expression": "x* = (x - x_bar) / sigma",
+          "normalized_latex": "x^* = \\frac{x - \\bar{x}}{\\sigma}",
+          "purpose": "Z-score standardization for TAI-GD visual comparison",
+          "label": "Z-score",
+          "variable_symbols": [
+            "TAI"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Formula numbering gap (5 to 7)",
+        "EWM assumes indicator independence",
+        "Correlation does not imply causation"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2013140-AHPPlayerAbility",
+      "page": 10,
+      "section": "3.2.2 Measurement of Attributional Factors",
+      "family": "multi-criteria-decision",
+      "purpose": "Compute position-specific player ability indices using Analytic Hierarchy Process",
+      "base_or_modification": "base",
+      "summary": "Defines five ability sub-indicators (pass success rate, ground duel, air duel, smart pass, acceleration), constructs position-specific judgment matrices (F, M, D) via AHP, derives weight vectors, and computes composite ability R2 per player.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Standardize five ability indicators per player",
+          "Construct 5x5 judgment matrices F, M, D for forward, midfield, defender",
+          "Compute eigenvector weights via column normalization",
+          "Check consistency: CI values 0.1121, 0.0341, 0.0342 all pass",
+          "Apply position-specific weights to standardized indicators"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "CI < 0.1 consistency threshold"
+      },
+      "assumptions": [
+        "Player position assumption: manager respects specialization"
+      ],
+      "computational_cost": "Negligible: 5x5 matrix eigenvalue decomposition",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Not applicable"
+          ]
+        }
+      },
+      "constraints": [
+        "Consistency index CI must pass threshold for each position",
+        "Weights must sum to 1 per position"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "All governing equations transcribed from source PDF."
+      },
+      "handoff_outputs": [
+        "R2"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Judgment matrices given in appendix; eigenvector computation is deterministic."
+      },
+      "missing_details": [
+        "Judgment matrix values partially illegible in PDF appendix"
+      ],
+      "objectives": [
+        "Position-aware player ability quantification"
+      ],
+      "parameter_estimation": {
+        "method": "AHP eigenvector",
+        "parameters": [
+          "beta_1",
+          "beta_2",
+          "beta_3",
+          "beta_4",
+          "beta_5"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Position-specific weighting reflects real tactical demands"
+      ],
+      "validation_refs": [
+        "CI values 0.1121, 0.0341, 0.0342 all pass consistency test"
+      ],
+      "variables": [
+        {
+          "symbol": "beta_1",
+          "normalized_name": "beta1",
+          "unit": "dimensionless",
+          "definition": "Pass successful rate indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_2",
+          "normalized_name": "beta2",
+          "unit": "dimensionless",
+          "definition": "Ground duel ability indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_3",
+          "normalized_name": "beta3",
+          "unit": "dimensionless",
+          "definition": "Air duel ability indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_4",
+          "normalized_name": "beta4",
+          "unit": "dimensionless",
+          "definition": "Smart pass ability indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_5",
+          "normalized_name": "beta5",
+          "unit": "dimensionless",
+          "definition": "Acceleration ability indicator",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R2",
+          "normalized_name": "r2",
+          "unit": "dimensionless",
+          "definition": "Composite player ability index",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "beta_1",
+        "beta_2",
+        "beta_3",
+        "beta_4",
+        "beta_5"
+      ],
+      "outputs": [
+        "R2"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2013140-08a",
+          "page": 11,
+          "source_expression": "F = 0.1998*beta1 + 0.0873*beta2 + 0.1135*beta3 + 0.2591*beta4 + 0.3404*beta5",
+          "normalized_latex": "F = 0.1998\\beta_1 + 0.0873\\beta_2 + 0.1135\\beta_3 + 0.2591\\beta_4 + 0.3404\\beta_5",
+          "purpose": "Forward ability formula from AHP weights",
+          "label": "Forward Ability",
+          "variable_symbols": [
+            "R2",
+            "beta_1",
+            "beta_2",
+            "beta_3",
+            "beta_4",
+            "beta_5"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "AHP judgment matrices are subjective despite consistency check"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2020-2013140-MultiLevelNetwork",
+      "to_model_id": "MU-D-2020-2013140-PerformanceEvaluation",
+      "handoff": "R1 (small-range tactical count) feeds as input factor"
+    },
+    {
+      "from_model_id": "MU-D-2020-2013140-AHPPlayerAbility",
+      "to_model_id": "MU-D-2020-2013140-PerformanceEvaluation",
+      "handoff": "R2 (player ability index) feeds as input factor"
+    }
+  ],
+  "review_status": "validated"
+}

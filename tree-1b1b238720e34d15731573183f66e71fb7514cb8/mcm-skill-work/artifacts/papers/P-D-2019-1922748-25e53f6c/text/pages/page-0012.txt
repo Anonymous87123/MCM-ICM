@@ -1,0 +1,50 @@
+Team#1922748  page 10 of 20
+
+the model. The value on the line connecting the source point to the room node indicates
+the initial number of rooms in the corresponding room. The connection between the room
+nodes indicates the connection between the rooms, and the value indicates the maximum
+ﬂow allowed by the channel. The connection between the sink point and the exit room nodes
+indicates the connection between the exit and the exterior of the building, and its value
+indicates the maximum passenger ﬂow allowed by the exit.
+
+    The original Ford-Fulkerson algorithm is an iterative algorithm. In each iteration, the
+value of the stream is increased by looking for an ”augment path”[16]. The augmented path
+can be seen as a path from the source point to the sink point, and more streams can be
+added along this path. Iterating until the augmented path can no longer be found, at least
+one of the paths from the source point to the sink point must be full (ie, the size of the edge
+stream is equal to the size of the edge). The resulting stream at this point is the maximum
+ﬂow in this case, which can be proved by the maximum ﬂow minimum cut theorem. And we
+will not prove this here.
+
+5.3.2 Application of Ford-Fulkerson algorithm
+
+Since the model we built is not a traditional single-node to single-node mode, and the situ-
+ation we considered is far more complicated than the Ford-Fulkerson algorithm. Therefore,
+we properly use the Ford-Fulkerson algorithm in the solution of the problem and propose a
+dynamic system planning algorithm based on the Ford-Fulkerson algorithm[17]. The algo-
+rithm takes the general planning and the planning of some rooms in emergency into account.
+The speciﬁc ﬂow chart is shown in Figure A-1 (shown in appendix).
+
+    As shown in the ﬂow chart of Figure A-1, the algorithm is divided into two parts, e-
+mergency handling and general case processing. In general case processing, each iteration
+represents a situation within a time period, such as within 0 to 1 second. When the number
+of people in the source point is less than 0.5, the iteration stops and the algorithm ends. In
+each iteration, the ﬂow matrix and the margin matrix can be derived by the Ford-Fulkerson
+algorithm. Then, the value of the edge between the source point and the room node in the
+original model, which is the initial number of people in each room is corrected by the ﬂow
+matrix. And the current ﬂow velocity model is used to correct the maximum ﬂow of the
+channel by the current ﬂow density in each channel and the ﬂow density at the exit. This
+will provide a picture of the ﬂow of people in each time period. Finally, speciﬁc path planning
+is obtained from all traﬃc matrices. And the degree of use of each channel can be derived
+from the margin matrix[18].
+
+    In emergency handling, we make the following processing. As shown in the emergency
+processing section of Figure A-1, ﬁrst, the person in the emergency room is transferred to the
+adjacent non-emergency room by default, and the entrance degree of the emergency room
+is set to zero. According to the maximum ﬂow rate of the connecting channel, the time
+required for the transition TT can be calculated. Since the emergency transfer route remains
+unchanged from 0 to TT , regardless of the external situation. In this way, in the general case,
+at the beginning of each iteration from 0 to TT , the number of people transferred from the
+emergency room during the time period is added to the remaining number of people in the
+non-emergency room. And set the corresponding route and ﬁnally integrated into the traﬃc
+matrix.

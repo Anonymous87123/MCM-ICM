@@ -1,0 +1,69 @@
+Team # 1906204                                                        Page 23 of 38
+
+
+
+Appendices
+Here are programmes we used in our model.
+Data preprocessing, Kmeans algorithm
+import xlrd
+import pandas as pd
+import numpy as np
+from math import radians, cos, sin, asin, sqrt
+import xlwt
+import operator
+import copy
+from functools import reduce
+
+# initialize
+def init(table):
+    nrows = table.nrows
+    ncols = table.ncols
+    # use FIPS_combined as key to record info
+    county = {}
+    for i in range(1, nrows):
+        FIPS_Combined = table.row_values(i)[6]
+        if FIPS_Combined not in county.keys():
+            lat = table.row_values(i)[12]
+            lon = table.row_values(i)[13]
+            county[FIPS_Combined] = (lon, lat)
+    return county
+
+def haversine(pos1, pos2):
+    """
+    Calculate the great circle distance between two points
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal into arc system
+    lon1, lat1 = pos1
+    lon2, lat2 = pos2
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    r = 6371 # radius of earth, unit as kilometer
+    return c * r * 1000
+
+def renew_cluster(centers, pos, cities):
+    label = dict().fromkeys([i for i in range(len(centers))], [])
+    for city in cities:
+        dist = []
+        for center in centers:
+            dist.append(haversine(pos[city], center))
+        index = dist.index(min(dist))
+        cluster = copy.deepcopy(label[index])
+        cluster.append(city)
+        label[index] = cluster
+    new_centers = []
+
+    for i in range(len(centers)):
+        positions = list(map(lambda x: pos[x], label[i]))
+        new_centers.append(np.mean(positions, axis=0))
+    return new_centers, label
+
+# convert positions into k clusters
+def k_means(k, pos):
+    cities = list(pos.keys())
+    if k > len(cities):

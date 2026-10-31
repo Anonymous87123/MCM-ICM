@@ -1,0 +1,1887 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2022-2216547-001",
+      "handoff": "current Pmax supplies energy replenishment and feasible power",
+      "to_model_id": "MU-A-2022-2216547-002"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-002",
+      "handoff": "Pmax and E boundaries define power-curve failure",
+      "to_model_id": "MU-A-2022-2216547-003"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-003",
+      "handoff": "rider curve parameters constrain power decisions",
+      "to_model_id": "MU-A-2022-2216547-006"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-004",
+      "handoff": "road segment geometry supplies slope and curvature to mechanics",
+      "to_model_id": "MU-A-2022-2216547-005"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-005",
+      "handoff": "acceleration and curve limits supply DP transitions",
+      "to_model_id": "MU-A-2022-2216547-006"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-006",
+      "handoff": "the baseline plan supplies weather scenarios",
+      "to_model_id": "MU-A-2022-2216547-007"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-006",
+      "handoff": "the baseline plan supplies execution-error scenarios",
+      "to_model_id": "MU-A-2022-2216547-008"
+    },
+    {
+      "from_model_id": "MU-A-2022-2216547-006",
+      "handoff": "the individual model supplies rider states to the team extension",
+      "to_model_id": "MU-A-2022-2216547-009"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Fatigue and recovery can be collapsed into one maximum-power state."
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "single-state fatigue-recovery ODE",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-001",
+          "label": "1",
+          "normalized_latex": "\\dot P_{max}=-k_fP_{max}P_{rider}/P_{max0}",
+          "page": 6,
+          "purpose": "Update current maximum muscle power under simultaneous fatigue and recovery.",
+          "source_expression": "dPmax/dt=-kf*Pmax*Prider/Pmax0",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-002",
+          "label": "2",
+          "normalized_latex": "\\dot P_{max}=k_r(P_{max0}-P_{max})",
+          "page": 6,
+          "purpose": "muscle recovery",
+          "source_expression": "dPmax/dt=kr(Pmax0-Pmax)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-003",
+          "label": "3",
+          "normalized_latex": "\\dot P_{max}=-k_fP_{max}P_{rider}/P_{max0}+k_r(P_{max0}-P_{max})",
+          "page": 7,
+          "purpose": "combined state",
+          "source_expression": "dPmax/dt=-kf Pmax Prider/Pmax0+kr(Pmax0-Pmax)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Pmax"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Prider",
+        "Pmax0",
+        "kf",
+        "kr"
+      ],
+      "limitations": [
+        "Printed coefficient units, calibration uncertainty, and state clipping are incomplete."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-001",
+      "objectives": [
+        "Update current maximum muscle power under simultaneous fatigue and recovery."
+      ],
+      "outputs": [
+        "Pmax"
+      ],
+      "page": 6,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Update current maximum muscle power under simultaneous fatigue and recovery.",
+      "section": "4.1.1 muscle fatigue-recovery",
+      "strengths": [
+        "Provides an inspectable interface from Prider, Pmax0, kf, kr to Pmax."
+      ],
+      "summary": "Eq.1-Eq.3 combine power-dependent fatigue with exponential recovery toward Pmax0.",
+      "validation_refs": [
+        "Rendered physical page 6 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Current maximum muscle power.",
+          "normalized_name": "Pmax",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax",
+          "unit": "W"
+        },
+        {
+          "definition": "Initial fully rested maximum muscle power.",
+          "normalized_name": "Pmax0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax0",
+          "unit": "W"
+        },
+        {
+          "definition": "Chosen rider mechanical power.",
+          "normalized_name": "Prider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Prider",
+          "unit": "W"
+        },
+        {
+          "definition": "Fatigue coefficient.",
+          "normalized_name": "kf",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kf",
+          "unit": "s^-1"
+        },
+        {
+          "definition": "Recovery coefficient.",
+          "normalized_name": "kr",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kr",
+          "unit": "s^-1"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Usable energy is represented by a scalar reserve and replenishment rises with muscle fatigue."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "usable-energy balance",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-004",
+          "label": "4",
+          "normalized_latex": "P_{in}=k_{in}(P_{max0}-P_{max})",
+          "page": 7,
+          "purpose": "Update usable energy from fatigue-linked replenishment and total physiological output.",
+          "source_expression": "Pin=kin(Pmax0-Pmax)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr",
+            "E",
+            "E0",
+            "Pin",
+            "Pout",
+            "kin",
+            "kout"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-005",
+          "label": "5",
+          "normalized_latex": "P_{out}=P_{rider}+P_{other}=k_{out}P_{rider}",
+          "page": 8,
+          "purpose": "total output rate",
+          "source_expression": "Pout=Prider+Pother=kout Prider",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr",
+            "E",
+            "E0",
+            "Pin",
+            "Pout",
+            "kin",
+            "kout"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-006",
+          "label": "6",
+          "normalized_latex": "E(t)=E_0+\\int_0^tP_{in}dt-\\int_0^tP_{out}dt",
+          "page": 8,
+          "purpose": "energy balance",
+          "source_expression": "E=E0+integral Pin-integral Pout",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr",
+            "E",
+            "E0",
+            "Pin",
+            "Pout",
+            "kin",
+            "kout"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "Pin",
+        "Pout",
+        "E"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "Pmax",
+        "Pmax0",
+        "Prider",
+        "kin",
+        "kout",
+        "E0"
+      ],
+      "limitations": [
+        "E in joules is verbally equated to blood-glucose concentration without a conversion model."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-002",
+      "objectives": [
+        "Update usable energy from fatigue-linked replenishment and total physiological output."
+      ],
+      "outputs": [
+        "Pin",
+        "Pout",
+        "E"
+      ],
+      "page": 7,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Update usable energy from fatigue-linked replenishment and total physiological output.",
+      "section": "4.1.2 energy reserve",
+      "strengths": [
+        "Provides an inspectable interface from Pmax, Pmax0, Prider, kin, kout, E0 to Pin, Pout, E."
+      ],
+      "summary": "Eq.4-Eq.6 define Pin, Pout, and the integrated reserve E.",
+      "validation_refs": [
+        "Rendered physical page 7 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Current maximum muscle power.",
+          "normalized_name": "Pmax",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax",
+          "unit": "W"
+        },
+        {
+          "definition": "Initial fully rested maximum muscle power.",
+          "normalized_name": "Pmax0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax0",
+          "unit": "W"
+        },
+        {
+          "definition": "Chosen rider mechanical power.",
+          "normalized_name": "Prider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Prider",
+          "unit": "W"
+        },
+        {
+          "definition": "Fatigue coefficient.",
+          "normalized_name": "kf",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kf",
+          "unit": "s^-1"
+        },
+        {
+          "definition": "Recovery coefficient.",
+          "normalized_name": "kr",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kr",
+          "unit": "s^-1"
+        },
+        {
+          "definition": "Remaining directly usable energy.",
+          "normalized_name": "E",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "E",
+          "unit": "J"
+        },
+        {
+          "definition": "Initial usable energy.",
+          "normalized_name": "E0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "E0",
+          "unit": "J"
+        },
+        {
+          "definition": "Energy replenishment rate.",
+          "normalized_name": "Pin",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Pin",
+          "unit": "W"
+        },
+        {
+          "definition": "Total energy output rate.",
+          "normalized_name": "Pout",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Pout",
+          "unit": "W"
+        },
+        {
+          "definition": "Energy replenishment coefficient.",
+          "normalized_name": "kin",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kin",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Mechanical-to-total output multiplier.",
+          "normalized_name": "kout",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kout",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "The source's laboratory closure, common-capacity, rate-proportionality, and trait-factor premises are retained for faithful reconstruction."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "constant-power time-to-failure simulation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-007",
+          "label": "ALG1",
+          "normalized_latex": "\\tau(P)=\\inf\\{t:P>P_{max}(t)\\ \\lor\\ E(t)<0\\}",
+          "page": 9,
+          "purpose": "Generate power-duration points by simulating constant Prider until Pmax or E becomes infeasible.",
+          "source_expression": "tau(P)=first t with Prider>Pmax(t) or E(t)<0",
+          "source_type": "reconstructed",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Pmax",
+            "Pmax0",
+            "Prider",
+            "kf",
+            "kr",
+            "E",
+            "E0",
+            "Pin",
+            "Pout",
+            "kin",
+            "kout",
+            "dt",
+            "tau"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "tau"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "kf",
+        "kr",
+        "Pmax0",
+        "E0",
+        "kin",
+        "kout",
+        "Prider",
+        "dt"
+      ],
+      "limitations": [
+        "Time step, integration scheme, power grid, fitting objective, and convergence are not disclosed."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-003",
+      "objectives": [
+        "Generate power-duration points by simulating constant Prider until Pmax or E becomes infeasible."
+      ],
+      "outputs": [
+        "tau"
+      ],
+      "page": 9,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [
+          "dt"
+        ],
+        "status": "partial"
+      },
+      "purpose": "Generate power-duration points by simulating constant Prider until Pmax or E becomes infeasible.",
+      "section": "4.1.4 power curve algorithm",
+      "strengths": [
+        "Provides an inspectable interface from kf, kr, Pmax0, E0, kin, kout, Prider, dt to tau."
+      ],
+      "summary": "Algorithm 1 sweeps trial power, updates Pmax/E, stops at a boundary, and plots duration versus power.",
+      "validation_refs": [
+        "Rendered physical page 9 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Current maximum muscle power.",
+          "normalized_name": "Pmax",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax",
+          "unit": "W"
+        },
+        {
+          "definition": "Initial fully rested maximum muscle power.",
+          "normalized_name": "Pmax0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax0",
+          "unit": "W"
+        },
+        {
+          "definition": "Chosen rider mechanical power.",
+          "normalized_name": "Prider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Prider",
+          "unit": "W"
+        },
+        {
+          "definition": "Fatigue coefficient.",
+          "normalized_name": "kf",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kf",
+          "unit": "s^-1"
+        },
+        {
+          "definition": "Recovery coefficient.",
+          "normalized_name": "kr",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kr",
+          "unit": "s^-1"
+        },
+        {
+          "definition": "Remaining directly usable energy.",
+          "normalized_name": "E",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "E",
+          "unit": "J"
+        },
+        {
+          "definition": "Initial usable energy.",
+          "normalized_name": "E0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "E0",
+          "unit": "J"
+        },
+        {
+          "definition": "Energy replenishment rate.",
+          "normalized_name": "Pin",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Pin",
+          "unit": "W"
+        },
+        {
+          "definition": "Total energy output rate.",
+          "normalized_name": "Pout",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Pout",
+          "unit": "W"
+        },
+        {
+          "definition": "Energy replenishment coefficient.",
+          "normalized_name": "kin",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kin",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Mechanical-to-total output multiplier.",
+          "normalized_name": "kout",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "kout",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Simulation time step.",
+          "normalized_name": "dt",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "dt",
+          "unit": "s"
+        },
+        {
+          "definition": "Maximum maintainable duration.",
+          "normalized_name": "tau",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "tau",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Earth coordinates can be mapped to a local frame about one reference point."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "local 3D segment and curvature geometry",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-008",
+          "label": "7",
+          "normalized_latex": "L_i=\\|p_i-p_{i-1}\\|,\\ h_i=z_i-z_{i-1}",
+          "page": 12,
+          "purpose": "Convert Google Earth points into local coordinates, segment attributes, and curvature radii.",
+          "source_expression": "L_i=||p_i-p_{i-1}||; h_i=z_i-z_{i-1}; theta_i=arctan(h_i/horizontal_i)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "p_prime",
+            "p",
+            "L_i",
+            "h_i",
+            "theta_i",
+            "R_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-009",
+          "label": "ROAD-VECTOR",
+          "normalized_latex": "p'=(\\phi,\\lambda,z)\\mapsto p=(x,y,z)",
+          "page": 12,
+          "purpose": "local coordinate transform",
+          "source_expression": "p'=(latitude,longitude,height) -> p=(x,y,z)",
+          "source_type": "reconstructed",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "p_prime",
+            "p",
+            "L_i",
+            "h_i",
+            "theta_i",
+            "R_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-010",
+          "label": "ROAD-CURVATURE",
+          "normalized_latex": "R_i=R(p_{i-1},p_i,p_{i+1})",
+          "page": 13,
+          "purpose": "three-point curvature",
+          "source_expression": "R_i=radius of circumcircle through p_{i-1},p_i,p_{i+1}",
+          "source_type": "reconstructed",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "p_prime",
+            "p",
+            "L_i",
+            "h_i",
+            "theta_i",
+            "R_i"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "p",
+        "L_i",
+        "h_i",
+        "theta_i",
+        "R_i"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "p_prime"
+      ],
+      "limitations": [
+        "Projection method, manual sampling rule, collinear-point handling, and reconstruction error are absent."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-004",
+      "objectives": [
+        "Convert Google Earth points into local coordinates, segment attributes, and curvature radii."
+      ],
+      "outputs": [
+        "p",
+        "L_i",
+        "h_i",
+        "theta_i",
+        "R_i"
+      ],
+      "page": 12,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Convert Google Earth points into local coordinates, segment attributes, and curvature radii.",
+      "section": "4.2 road data structure",
+      "strengths": [
+        "Provides an inspectable interface from p_prime to p, L_i, h_i, theta_i, R_i."
+      ],
+      "summary": "The road interface stores x/y/z coordinates, Eq.7 length/height/slope, and a three-point circumcircle radius.",
+      "validation_refs": [
+        "Rendered physical page 12 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Google Earth latitude, longitude, altitude point.",
+          "normalized_name": "p_prime",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p_prime",
+          "unit": "lat/lon/m"
+        },
+        {
+          "definition": "Local Cartesian point.",
+          "normalized_name": "p",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "p",
+          "unit": "m"
+        },
+        {
+          "definition": "Segment length.",
+          "normalized_name": "L_i",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "L_i",
+          "unit": "m"
+        },
+        {
+          "definition": "Height difference.",
+          "normalized_name": "h_i",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "h_i",
+          "unit": "m"
+        },
+        {
+          "definition": "Segment inclination.",
+          "normalized_name": "theta_i",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "theta_i",
+          "unit": "rad"
+        },
+        {
+          "definition": "Local radius of curvature.",
+          "normalized_name": "R_i",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "R_i",
+          "unit": "m"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Optimal gearing is absorbed into k_wheel and wheel rotational inertia is neglected."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "straight-road force balance and curve-speed bound",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-011",
+          "label": "8",
+          "normalized_latex": "m_ta=k_wP/v-\\frac12C_d\\rho Av^2-m_tg(\\mu\\cos\\theta+\\sin\\theta)-F_b",
+          "page": 13,
+          "purpose": "Map rider power and road attributes to acceleration and safe curve speed.",
+          "source_expression": "m_t a=k_wheel Prider/v-0.5 Cd rho A v^2-m_t g(mu cos theta+sin theta)-Fb",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "m_t",
+            "a",
+            "k_wheel",
+            "Prider",
+            "v",
+            "Cd",
+            "rho",
+            "A",
+            "mu",
+            "theta",
+            "Fb",
+            "R",
+            "v_curve"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-012",
+          "label": "CURVE",
+          "normalized_latex": "v\\le\\sqrt{\\mu_0g\\cos\\theta R}",
+          "page": 14,
+          "purpose": "curve speed bound",
+          "source_expression": "v_curve<=sqrt(mu0 g cos(theta) R)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "m_t",
+            "a",
+            "k_wheel",
+            "Prider",
+            "v",
+            "Cd",
+            "rho",
+            "A",
+            "mu",
+            "theta",
+            "Fb",
+            "R",
+            "v_curve"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "a",
+        "v_curve"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "k_wheel",
+        "Prider",
+        "v",
+        "Cd",
+        "rho",
+        "A",
+        "mu",
+        "theta",
+        "Fb",
+        "R"
+      ],
+      "limitations": [
+        "The v=0 singularity, force signs, braking policy, and wet/static friction distinction are unresolved."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-005",
+      "objectives": [
+        "Map rider power and road attributes to acceleration and safe curve speed."
+      ],
+      "outputs": [
+        "a",
+        "v_curve"
+      ],
+      "page": 13,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Map rider power and road attributes to acceleration and safe curve speed.",
+      "section": "4.3 Newtonian cycling",
+      "strengths": [
+        "Provides an inspectable interface from k_wheel, Prider, v, Cd, rho, A, mu, theta, Fb, R to a, v_curve."
+      ],
+      "summary": "Eq.8 balances power-derived thrust, aerodynamic drag, rolling/slope forces, and braking; the curve interface caps speed by static friction.",
+      "validation_refs": [
+        "Rendered physical page 13 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Total mass.",
+          "normalized_name": "m_t",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "m_t",
+          "unit": "kg"
+        },
+        {
+          "definition": "Acceleration.",
+          "normalized_name": "a",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m/s^2"
+        },
+        {
+          "definition": "Power conversion efficiency.",
+          "normalized_name": "k_wheel",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "k_wheel",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Rider power.",
+          "normalized_name": "Prider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Prider",
+          "unit": "W"
+        },
+        {
+          "definition": "Speed.",
+          "normalized_name": "v",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "v",
+          "unit": "m/s"
+        },
+        {
+          "definition": "Air drag coefficient.",
+          "normalized_name": "Cd",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Cd",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Air density.",
+          "normalized_name": "rho",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "rho",
+          "unit": "kg/m^3"
+        },
+        {
+          "definition": "Frontal area.",
+          "normalized_name": "A",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "A",
+          "unit": "m^2"
+        },
+        {
+          "definition": "Rolling/static friction coefficient.",
+          "normalized_name": "mu",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "mu",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Road inclination.",
+          "normalized_name": "theta",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta",
+          "unit": "rad"
+        },
+        {
+          "definition": "Brake force.",
+          "normalized_name": "Fb",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Fb",
+          "unit": "N"
+        },
+        {
+          "definition": "Curve radius.",
+          "normalized_name": "R",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R",
+          "unit": "m"
+        },
+        {
+          "definition": "Maximum curve speed.",
+          "normalized_name": "v_curve",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "v_curve",
+          "unit": "m/s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "The source's laboratory closure, common-capacity, rate-proportionality, and trait-factor premises are retained for faithful reconstruction."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "0<=v<=min(vmax,sqrt(mu g cos theta R)); 0<=E<=E0; 0<=Prider<=Pmax."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "0<=v<=min(vmax,sqrt(mu g cos theta R)); 0<=E<=E0; 0<=Prider<=Pmax."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "four-state constrained dynamic program",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-013",
+          "label": "9",
+          "normalized_latex": "\\min_{P_{rider}(t)}T=\\int_{x_0}^{x_f}\\frac{dx}{v(t)}",
+          "page": 15,
+          "purpose": "Choose Prider transitions over x, v, Pmax, and E to minimize finish time.",
+          "source_expression": "min T=integral dx/v subject to speed, energy, and power limits",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "x",
+            "v",
+            "Pmax",
+            "E",
+            "Prider",
+            "Delta_t",
+            "T",
+            "a",
+            "E0",
+            "Pmax0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-014",
+          "label": "10",
+          "normalized_latex": "s_j\\xrightarrow[P_{rider}]{\\Delta t}s_i",
+          "page": 15,
+          "purpose": "state transition",
+          "source_expression": "Delta_t=(x_i-x_j)/v_j; update v,Pmax,E",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "x",
+            "v",
+            "Pmax",
+            "E",
+            "Prider",
+            "Delta_t",
+            "T",
+            "a",
+            "E0",
+            "Pmax0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-A-2022-2216547-015",
+          "label": "11",
+          "normalized_latex": "T(s_i)=\\max_{P_{rider}}\\{T(s_j)+\\Delta t\\}",
+          "page": 16,
+          "purpose": "printed Bellman recurrence",
+          "source_expression": "T(s_i)=max_Prider[T(s_j)+Delta_t]",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "x",
+            "v",
+            "Pmax",
+            "E",
+            "Prider",
+            "Delta_t",
+            "T",
+            "a",
+            "E0",
+            "Pmax0"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "T",
+        "Delta_t"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "x",
+        "v",
+        "Pmax",
+        "E",
+        "Prider",
+        "a",
+        "E0",
+        "Pmax0"
+      ],
+      "limitations": [
+        "The printed Bellman recurrence uses max although T is defined as minimum cost; grid convergence and path reconstruction are absent."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-006",
+      "objectives": [
+        "Choose Prider transitions over x, v, Pmax, and E to minimize finish time."
+      ],
+      "outputs": [
+        "T",
+        "Delta_t"
+      ],
+      "page": 15,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Choose Prider transitions over x, v, Pmax, and E to minimize finish time.",
+      "section": "4.4 minimum-time dynamic programming",
+      "strengths": [
+        "Provides an inspectable interface from x, v, Pmax, E, Prider, a, E0, Pmax0 to T, Delta_t."
+      ],
+      "summary": "Eq.9 defines the constrained minimum-time problem, Eq.10 the state transfer, and Eq.11 the Bellman recurrence.",
+      "validation_refs": [
+        "Rendered physical page 15 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Course position.",
+          "normalized_name": "x",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "m"
+        },
+        {
+          "definition": "Speed.",
+          "normalized_name": "v",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "v",
+          "unit": "m/s"
+        },
+        {
+          "definition": "Current maximum power.",
+          "normalized_name": "Pmax",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax",
+          "unit": "W"
+        },
+        {
+          "definition": "Remaining energy.",
+          "normalized_name": "E",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "E",
+          "unit": "J"
+        },
+        {
+          "definition": "Power decision.",
+          "normalized_name": "Prider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Prider",
+          "unit": "W"
+        },
+        {
+          "definition": "Transition time.",
+          "normalized_name": "Delta_t",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "Delta_t",
+          "unit": "s"
+        },
+        {
+          "definition": "Minimum cumulative time.",
+          "normalized_name": "T",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "T",
+          "unit": "s"
+        },
+        {
+          "definition": "Acceleration from mechanics.",
+          "normalized_name": "a",
+          "role": "intermediate",
+          "source_status": "explicit-defined",
+          "symbol": "a",
+          "unit": "m/s^2"
+        },
+        {
+          "definition": "Initial energy.",
+          "normalized_name": "E0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "E0",
+          "unit": "J"
+        },
+        {
+          "definition": "Initial maximum power.",
+          "normalized_name": "Pmax0",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "Pmax0",
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "The source's laboratory closure, common-capacity, rate-proportionality, and trait-factor premises are retained for faithful reconstruction."
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "wind and ground-humidity scenario model",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-016",
+          "label": "12",
+          "normalized_latex": "v=|v_{rider}\\pm v_{wind}|\\cos\\theta_w",
+          "page": 19,
+          "purpose": "Modify aerodynamic relative speed and ground friction under wind and wet/dry conditions.",
+          "source_expression": "v=|v_rider +/- v_wind| cos(theta_w)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "v",
+            "v_rider",
+            "v_wind",
+            "theta_w",
+            "mu"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "v"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "v_rider",
+        "v_wind",
+        "theta_w",
+        "mu"
+      ],
+      "limitations": [
+        "The scalar composition and humidity-to-mu direction require physical correction and calibration."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-007",
+      "objectives": [
+        "Modify aerodynamic relative speed and ground friction under wind and wet/dry conditions."
+      ],
+      "outputs": [
+        "v"
+      ],
+      "page": 19,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Modify aerodynamic relative speed and ground friction under wind and wet/dry conditions.",
+      "section": "5.4 weather extension",
+      "strengths": [
+        "Provides an inspectable interface from v_rider, v_wind, theta_w, mu to v."
+      ],
+      "summary": "Eq.12 supplies a scalar wind-speed modification and humidity changes mu for scenario simulations.",
+      "validation_refs": [
+        "Rendered physical page 19 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Modified air-relative speed.",
+          "normalized_name": "v",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "v",
+          "unit": "m/s"
+        },
+        {
+          "definition": "Rider ground speed.",
+          "normalized_name": "v_rider",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "v_rider",
+          "unit": "m/s"
+        },
+        {
+          "definition": "Wind speed.",
+          "normalized_name": "v_wind",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "v_wind",
+          "unit": "m/s"
+        },
+        {
+          "definition": "Wind-direction angle.",
+          "normalized_name": "theta_w",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "theta_w",
+          "unit": "rad"
+        },
+        {
+          "definition": "Ground friction coefficient.",
+          "normalized_name": "mu",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "mu",
+          "unit": "dimensionless"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Execution error is normally distributed."
+      ],
+      "base_or_modification": "modification",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "Gaussian target-power perturbation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-017",
+          "label": "13",
+          "normalized_latex": "P_{real}(t)=P_{plan}(t)+\\epsilon(t)",
+          "page": 20,
+          "purpose": "Represent actual rider power as the planned plan plus random execution error.",
+          "source_expression": "P_real(t)=P_plan(t)+epsilon(t)",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "P_real",
+            "P_plan",
+            "epsilon",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "P_real"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "P_plan",
+        "epsilon",
+        "t"
+      ],
+      "limitations": [
+        "Variance, correlation, clipping, seed, replicates, and uncertainty are absent."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-008",
+      "objectives": [
+        "Represent actual rider power as the planned plan plus random execution error."
+      ],
+      "outputs": [
+        "P_real"
+      ],
+      "page": 20,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Represent actual rider power as the planned plan plus random execution error.",
+      "section": "5.5 execution deviation",
+      "strengths": [
+        "Provides an inspectable interface from P_plan, epsilon, t to P_real."
+      ],
+      "summary": "Eq.13 adds a normally distributed error process to the target power trajectory.",
+      "validation_refs": [
+        "Rendered physical page 20 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Actual rider power.",
+          "normalized_name": "P_real",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "P_real",
+          "unit": "W"
+        },
+        {
+          "definition": "Planned optimal power.",
+          "normalized_name": "P_plan",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "P_plan",
+          "unit": "W"
+        },
+        {
+          "definition": "Random execution error.",
+          "normalized_name": "epsilon",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "epsilon",
+          "unit": "W"
+        },
+        {
+          "definition": "Time.",
+          "normalized_name": "t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "t",
+          "unit": "s"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No formal convergence tolerance is reported; finite horizon, one-day stepping, plotted trajectory, or bounded parameter grid provides only the paper's stopping condition.",
+        "software": [
+          "Python with NumPy, pandas, and Matplotlib is printed on pages 24-25; custom modules, CSV files, versions, and an environment lock are not supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "Resolve source inputs and parameter values in dependency order.",
+          "Evaluate the displayed or reconstructed equation with the declared units and conditions.",
+          "Pass the named outputs to the downstream model, result panel, or decision artifact.",
+          "Cross-compare equations, prose, tables, figures, and printed code where available."
+        ]
+      },
+      "assumptions": [
+        "Riders are point objects and rotate periodically through fixed drag positions."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "The paper reports a small species system and finite daily or hourly horizon; asymptotic cost, runtime, memory, and numerical conditioning are not reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "The source discusses balance qualitatively but supplies no independent equilibrium or stability proof for this interface."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Use the physical-page inputs, units, initial state, climate case, and horizon declared by the source."
+          ],
+          "status": "present"
+        }
+      },
+      "constraints": [
+        "Preserve the source's species set, time resolution, capacity convention, environmental range, and transformed-variable scale."
+      ],
+      "equation_status": {
+        "reason": "The displayed formula, prose reconstruction, or printed-code recurrence was checked against the rendered physical page.",
+        "status": "present"
+      },
+      "family": "six-position drafting and replacement simulation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2022-2216547-018",
+          "label": "TEAM",
+          "normalized_latex": "\\tau^*=\\arg\\min_\\tau T_{team}(d_1,\\ldots,d_6,\\tau)",
+          "page": 20,
+          "purpose": "Apply position-specific drag multipliers and search a replacement interval for a six-rider mountain train.",
+          "source_expression": "d=(1.00,0.63,0.58,0.56,0.55,0.54); choose tau_pull minimizing T_team",
+          "source_type": "extension",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "d_i",
+            "tau_pull",
+            "P_i",
+            "T_team",
+            "i"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "T_team"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "The interface and source parameter route are inspectable, but parameter identifiability, interaction separability, proxy validity, uncertainty, and field feasibility are only partially demonstrated.",
+        "status": "partial"
+      },
+      "inputs": [
+        "d_i",
+        "tau_pull",
+        "P_i",
+        "i"
+      ],
+      "limitations": [
+        "Rider-specific fatigue, handovers, spacing, yaw, interval grid, fourth-rider rule, and solver details are absent."
+      ],
+      "missing_details": [
+        "Confidence intervals, out-of-range behavior, solver error controls, and end-to-end executable parity are not fully supplied."
+      ],
+      "model_id": "MU-A-2022-2216547-009",
+      "objectives": [
+        "Apply position-specific drag multipliers and search a replacement interval for a six-rider mountain train."
+      ],
+      "outputs": [
+        "T_team"
+      ],
+      "page": 20,
+      "parameter_estimation": {
+        "method": "Use the paper's transformed regressions, curve normalization, assumed constants, or hard-coded values; full calibration and uncertainty are incomplete.",
+        "parameters": [],
+        "status": "partial"
+      },
+      "purpose": "Apply position-specific drag multipliers and search a replacement interval for a six-rider mountain train.",
+      "section": "5.6 team time trial",
+      "strengths": [
+        "Provides an inspectable interface from d_i, tau_pull, P_i, i to T_team."
+      ],
+      "summary": "The team extension uses 100/63/58/56/55/54 percent drag positions and periodic leader-to-tail rotation.",
+      "validation_refs": [
+        "Rendered physical page 20 was visually checked at original resolution.",
+        "The source expression was cross-compared with its prose definition, table entry, figure use, and appendix implementation where available."
+      ],
+      "variables": [
+        {
+          "definition": "Drag multiplier at team position i.",
+          "normalized_name": "d_i",
+          "role": "parameter",
+          "source_status": "explicit-defined",
+          "symbol": "d_i",
+          "unit": "dimensionless"
+        },
+        {
+          "definition": "Leader replacement interval.",
+          "normalized_name": "tau_pull",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "tau_pull",
+          "unit": "s"
+        },
+        {
+          "definition": "Power of rider i.",
+          "normalized_name": "P_i",
+          "role": "state",
+          "source_status": "explicit-defined",
+          "symbol": "P_i",
+          "unit": "W"
+        },
+        {
+          "definition": "Team finish time.",
+          "normalized_name": "T_team",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "T_team",
+          "unit": "s"
+        },
+        {
+          "definition": "Team position index.",
+          "normalized_name": "i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "i",
+          "unit": "index"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-A-2022-2216547-e72f44f2",
+  "problem_type": "A",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "e72f44f27992f052e0049d343c6411e56ec45efc640be9594f4ba42691c37df0",
+  "year": "2022"
+}

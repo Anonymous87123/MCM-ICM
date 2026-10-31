@@ -1,0 +1,2072 @@
+{
+  "schema_version": 1,
+  "paper_id": "P-C-2022-2218931-a1aa7569",
+  "problem_type": "C",
+  "year": "2022",
+  "source": {
+    "relative_path": "2022美赛特等奖/C/2218931.pdf",
+    "sha256": "a1aa75696256cdd6e10f53986ba043f221a3b03495411ea020725c2b2b31ac62",
+    "page_count": 25
+  },
+  "source_quality": {
+    "text_layer": "text-rich",
+    "equation_authority": "rendered page"
+  },
+  "task_reconstruction": {
+    "official_task": "2022 MCM Problem C, as restated on physical page 3.",
+    "required_outputs": [
+      "the best daily trading strategy",
+      "the portfolio value after the five-year trading period",
+      "evidence that the parameters and the strategy are optimal",
+      "a one to two page memorandum to the trader"
+    ]
+  },
+  "section_map": [
+    {
+      "page": 1,
+      "summary": "abstract runs from page 1 to page 1"
+    },
+    {
+      "page": 3,
+      "summary": "introduction runs from page 3 to page 5"
+    },
+    {
+      "page": 6,
+      "summary": "assumptions runs from page 6 to page 7"
+    },
+    {
+      "page": 7,
+      "summary": "notation runs from page 7 to page 7"
+    },
+    {
+      "page": 7,
+      "summary": "model-establishment runs from page 7 to page 14"
+    },
+    {
+      "page": 12,
+      "summary": "results runs from page 12 to page 15"
+    },
+    {
+      "page": 16,
+      "summary": "robustness-verification runs from page 16 to page 17"
+    },
+    {
+      "page": 17,
+      "summary": "sensitivity-analysis runs from page 17 to page 20"
+    },
+    {
+      "page": 20,
+      "summary": "strengths-limitations runs from page 20 to page 20"
+    },
+    {
+      "page": 21,
+      "summary": "memo runs from page 21 to page 22"
+    },
+    {
+      "page": 25,
+      "summary": "appendix runs from page 25 to page 25"
+    }
+  ],
+  "contributions": [
+    {
+      "page": 7,
+      "summary": "An LM-BP forecast of both prices is accurate enough to trade on."
+    },
+    {
+      "page": 13,
+      "summary": "A four-stage rule that buys on a forecast rise and sizes by the Sharpe ratio yields one daily portfolio."
+    },
+    {
+      "page": 16,
+      "summary": "The strategy is the best one because its parameters are optimal and it beats the alternatives."
+    },
+    {
+      "page": 17,
+      "summary": "The result leans heavily on the bitcoin commission and barely on the gold commission."
+    }
+  ],
+  "dependency_graph": [
+    {
+      "from_model_id": "MU-C-2022-2218931-LMBP",
+      "to_model_id": "MU-C-2022-2218931-RDM",
+      "handoff": "The forecast prices O_k decide whether each asset's rise clears its threshold and supply the returns inside the Sharpe ratio."
+    }
+  ],
+  "assumptions": [
+    {
+      "page": 6,
+      "summary": "The traded amount is too small to move the market."
+    },
+    {
+      "page": 6,
+      "summary": "The model uses only prices known on or before the trading day."
+    },
+    {
+      "page": 6,
+      "summary": "Gold and bitcoin follow different trading calendars."
+    },
+    {
+      "page": 6,
+      "summary": "Short selling is excluded."
+    }
+  ],
+  "data_and_preprocessing": [
+    {
+      "page": 11,
+      "summary": "Both assets are forecast from seven days of prices."
+    },
+    {
+      "page": 11,
+      "summary": "The sample is split 70:15:15 into training, testing, and validation."
+    },
+    {
+      "page": 13,
+      "summary": "The portfolio starts at one thousand dollars in cash on 11 September 2016."
+    }
+  ],
+  "models": [
+    {
+      "page": 8,
+      "model_id": "MU-C-2022-2218931-LMBP",
+      "summary": "A standard backpropagation network whose gradient step is replaced by the Levenberg-Marquardt update, because the authors say plain gradient descent converges too slowly and falls into local optima. The MATLAB trainlm routine does the fitting. Gold uses ten hidden nodes and bitcoin sixteen, the data are split 70:15:15, and training stops at 1000 iterations or when the mean square error drops below a set value."
+    },
+    {
+      "page": 13,
+      "model_id": "MU-C-2022-2218931-RDM",
+      "summary": "The authors reject both the statistical and the black-box portfolio models because the only input is price, and they build a four-stage rule instead. The model waits until both assets have seven days of prices, buys when the forecast rise clears a threshold, sizes the purchase by the Sharpe ratio, and sells when the forecast turns down. Recomputing the forecast every day is what earns the model its name."
+    }
+  ],
+  "verification": [
+    {
+      "page": 11,
+      "summary": "The fit is reported above 0.99 on every subset for gold and claimed for bitcoin."
+    },
+    {
+      "page": 16,
+      "summary": "The threshold grid returns the values the model already used."
+    },
+    {
+      "page": 17,
+      "summary": "The model ranks first against five control strategies."
+    },
+    {
+      "page": 19,
+      "summary": "The strategy is recomputed while the commission varies."
+    }
+  ],
+  "results_trace": [
+    {
+      "page": 15,
+      "summary": "One thousand dollars on 11 September 2016 becomes 270836 dollars on 10 September 2021."
+    },
+    {
+      "page": 17,
+      "summary": "Table 2 ranks the model first and the five controls below it."
+    },
+    {
+      "page": 18,
+      "summary": "With the strategy fixed, gold at a 26 percent commission still returns 270836 dollars."
+    },
+    {
+      "page": 19,
+      "summary": "With the strategy free, the result flips at a 5 percent bitcoin commission."
+    }
+  ],
+  "writing_logic": [
+    {
+      "page": 1,
+      "summary": "goal then however, name the models, give each model its own for-block, then one block per problem number",
+      "section_id": "ORG-C-Q229-abstract",
+      "normalized_chapter": "abstract",
+      "five_part_contract": [
+        "the task of turning a cash stake into a daily decision for two assets",
+        "set the goal and the obstacle, name both models, then route one result to each problem number",
+        "compress the forecast method, the decision rule, the terminal value, and the sensitivity direction",
+        "a reader who knows the two model names, the test bar, and the headline value before any section",
+        "the introduction, which opens on a quotation rather than on the numbers"
+      ],
+      "positive_pattern": "goal then however, name the models, give each model its own for-block, then one block per problem number"
+    },
+    {
+      "page": 3,
+      "summary": "quotation, concession, then proof; restate each task as an imperative; split the literature into two families; list the work",
+      "section_id": "ORG-C-Q229-introduction",
+      "normalized_chapter": "introduction",
+      "five_part_contract": [
+        "the headline result from the summary, not yet justified",
+        "borrow authority, concede the field's failures, restate the task, sort the literature, and preview the work",
+        "fix the stake, the dates, the no-lookahead rule, and the four jobs the paper owes",
+        "a work plan the reader can check the rest of the paper against",
+        "the assumptions, reached after a figure that replaces a long description"
+      ],
+      "positive_pattern": "quotation, concession, then proof; restate each task as an imperative; split the literature into two families; list the work"
+    },
+    {
+      "page": 6,
+      "summary": "announce the pairing once, then give every assumption as statement then consequence",
+      "section_id": "ORG-C-Q229-assumptions",
+      "normalized_chapter": "assumptions",
+      "five_part_contract": [
+        "the task list from the introduction",
+        "tell the reader each assumption is followed by its explanation, then keep the list open",
+        "fix market impact, the data available, the trading calendar, and the ban on short selling",
+        "four assumptions, each justified by the failure it prevents, plus a promise of more later",
+        "the notation table, which shares the next page"
+      ],
+      "positive_pattern": "announce the pairing once, then give every assumption as statement then consequence"
+    },
+    {
+      "page": 7,
+      "summary": "name the table, limit its scope, and defer the rest to the point of use",
+      "section_id": "ORG-C-Q229-notation",
+      "normalized_chapter": "notation",
+      "five_part_contract": [
+        "the assumptions",
+        "point at the table and warn that it is incomplete on purpose",
+        "collect the symbols used across both models",
+        "one table and a rule that later symbols are defined where they appear",
+        "the model chapter, which opens on the same page"
+      ],
+      "positive_pattern": "name the table, limit its scope, and defer the rest to the point of use"
+    },
+    {
+      "page": 7,
+      "summary": "derive the structure from the decision, choose by a named defect, and earn the model's name from its update cycle",
+      "section_id": "ORG-C-Q229-model-establishment",
+      "normalized_chapter": "model-establishment",
+      "five_part_contract": [
+        "the assumptions, the notation, and the literature's two families",
+        "derive the two steps from the decision, justify the forecast choice by one defect, and justify the decision model by rejecting both reviewed families",
+        "set the forecast horizons, the training split, the hidden-node counts, the four thresholds, and the Sharpe cutoff",
+        "a trained forecast and a four-stage decision rule",
+        "the results, which replay the scenario through the rule"
+      ],
+      "positive_pattern": "derive the structure from the decision, choose by a named defect, and earn the model's name from its update cycle"
+    },
+    {
+      "page": 12,
+      "summary": "name the algorithm, point at the code, then put the value inside the original scenario",
+      "section_id": "ORG-C-Q229-results",
+      "normalized_chapter": "results",
+      "five_part_contract": [
+        "the four-stage decision rule",
+        "deliver the number by replaying the scenario the introduction set up",
+        "run the rule from the start date to the end date",
+        "the terminal value the later tests have to defend",
+        "the proof section, which promised evidence that the strategy is best"
+      ],
+      "positive_pattern": "name the algorithm, point at the code, then put the value inside the original scenario"
+    },
+    {
+      "page": 16,
+      "summary": "state the principle, show the search returns the values already chosen, then read the ranking as one lesson per row",
+      "section_id": "ORG-C-Q229-robustness-verification",
+      "normalized_chapter": "robustness-verification",
+      "five_part_contract": [
+        "the reported terminal value and the optimality demand from the restatement",
+        "commit the section to one claim, then answer it twice, from inside the model and against outside strategies",
+        "search the threshold grid and compute five control strategies",
+        "a grid winner that matches the values already used, and a ranking that puts the model first",
+        "the sensitivity section, which changes the cost instead of the strategy"
+      ],
+      "positive_pattern": "state the principle, show the search returns the values already chosen, then read the ranking as one lesson per row"
+    },
+    {
+      "page": 17,
+      "summary": "name the lever, read each curve into a sentence, prove the flat one with an extreme, and close by restating the direction",
+      "section_id": "ORG-C-Q229-sensitivity-analysis",
+      "normalized_chapter": "sensitivity-analysis",
+      "five_part_contract": [
+        "the ranking and the commission hidden inside the buying rule",
+        "define the cost and its lever, hold the strategy fixed, then let the strategy change",
+        "recompute the terminal value across commission ratios in both regimes",
+        "one lever the result leans on, one it ignores, and the point where the behavior flips",
+        "the evaluation, which lists what the tests already showed"
+      ],
+      "positive_pattern": "name the lever, read each curve into a sentence, prove the flat one with an extreme, and close by restating the direction"
+    },
+    {
+      "page": 20,
+      "summary": "compare a strength with the reduced version, and pair each limit with the claim it qualifies",
+      "section_id": "ORG-C-Q229-strengths-limitations",
+      "normalized_chapter": "strengths-limitations",
+      "five_part_contract": [
+        "the tests and the sensitivity result",
+        "ground each strength on a named rival and concede the limits that touch the paper's own claims",
+        "no new computation; the section judges what was built",
+        "a short verdict the letter can soften",
+        "the memorandum, which repeats the result for the trader"
+      ],
+      "positive_pattern": "compare a strength with the reduced version, and pair each limit with the claim it qualifies"
+    },
+    {
+      "page": 21,
+      "summary": "open with the request, retell each model in one block ending on its number, and repeat the body's three answers as a checked list",
+      "section_id": "ORG-C-Q229-memo",
+      "normalized_chapter": "memo",
+      "five_part_contract": [
+        "the whole paper, addressed to someone who did not read it",
+        "restate the brief as news, retell both models without symbols, and repeat the three findings",
+        "restate the terminal value and the sensitivity direction",
+        "a recommendation the trader can act on",
+        "nothing follows; the letter closes on the reader's benefit"
+      ],
+      "positive_pattern": "open with the request, retell each model in one block ending on its number, and repeat the body's three answers as a checked list"
+    },
+    {
+      "page": 25,
+      "summary": "place the repeated claim directly under the figure it supports",
+      "section_id": "ORG-C-Q229-appendix",
+      "normalized_chapter": "appendix",
+      "five_part_contract": [
+        "the sameness claim made for the second asset in the forecast section",
+        "repeat the fit claim next to the figure the body only pointed at",
+        "show the second asset clearing the same bar",
+        "the figure that makes the earlier sameness claim checkable",
+        "nothing follows; the paper ends on the figure"
+      ],
+      "positive_pattern": "place the repeated claim directly under the figure it supports"
+    }
+  ],
+  "language_observations": [
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-001",
+      "summary": "actor and goal, then the obstacle behind However, then the method class with no model name yet"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-002",
+      "summary": "model I and model II named with a colon, then the sentence that joins them and names the user and the assets"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-003",
+      "summary": "For model I, then the algorithm, the input window, the horizons split by asset, and the test number last"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-004",
+      "summary": "For model II, the idea in a quoted phrase, four stages, the waiting rule, the buying rule, then the four threshold numbers"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-005",
+      "summary": "a risk measure introduced by the job it does, then a second job hung on the same measure with and use it to"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-006",
+      "summary": "a preamble naming the three checks, then one block per problem number, the first block burying its for problem one"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-007",
+      "summary": "the evidence claim split by a semicolon into parameters optimized and returns higher than three named comparator types"
+    },
+    {
+      "page": 1,
+      "language_unit_id": "LU-C-2022-2218931-008",
+      "summary": "Finally for the memo and what it contains, then Moreover for the evaluation added as an extra"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-009",
+      "summary": "a displayed quotation from a named authority, then the field's history, a concession with Although, and one number as proof"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-010",
+      "summary": "Compared with the old method, two gerunds naming the new method, then the verb and two payoffs joined by while"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-011",
+      "summary": "Through the background and the given constraints, the restatement can be expressed as follows"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-012",
+      "summary": "the task in an imperative, then Note that for the constraint, then That is for the same constraint in plain words"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-013",
+      "summary": "start date, stake, the holdings with their units, the model as decision source, and the output, all in one sentence"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-014",
+      "summary": "two imperatives: Present evidence that the parameters and the strategy are optimal, then Prove that the strategy beats others"
+    },
+    {
+      "page": 3,
+      "language_unit_id": "LU-C-2022-2218931-015",
+      "summary": "Considering the results above, the deliverable, its length as a range, its audience, and its contents"
+    },
+    {
+      "page": 4,
+      "language_unit_id": "LU-C-2022-2218931-016",
+      "summary": "In order to names the goal, three verbs chain the plan, then a broken sentence hands the credit to the scholars"
+    },
+    {
+      "page": 4,
+      "language_unit_id": "LU-C-2022-2218931-017",
+      "summary": "the object's properties, the old method's weakness, then cited remedies in pairs sharing one verdict, the newest standing alone"
+    },
+    {
+      "page": 4,
+      "language_unit_id": "LU-C-2022-2218931-018",
+      "summary": "two cited facts, the old method, Compared with marking the loser, then two comparisons where the second is marked further"
+    },
+    {
+      "page": 4,
+      "language_unit_id": "LU-C-2022-2218931-019",
+      "summary": "a claim, then roughly divided into two categories, One is with its example, The other with its example and a does-not-rely verdict"
+    },
+    {
+      "page": 4,
+      "language_unit_id": "LU-C-2022-2218931-020",
+      "summary": "To more intuitively reflect the situation, we draw a figure based on the review just given"
+    },
+    {
+      "page": 5,
+      "language_unit_id": "LU-C-2022-2218931-021",
+      "summary": "The problem requires states the demand from outside, then Our work mainly includes announces the list"
+    },
+    {
+      "page": 5,
+      "language_unit_id": "LU-C-2022-2218931-022",
+      "summary": "the data, the first model built passive, its output used to build the second, then the two joined and what they provide"
+    },
+    {
+      "page": 5,
+      "language_unit_id": "LU-C-2022-2218931-023",
+      "summary": "the optimality claim with the two methods named in the by-phrase"
+    },
+    {
+      "page": 5,
+      "language_unit_id": "LU-C-2022-2218931-024",
+      "summary": "two imperatives, change the ratio and analyze the impact, naming both assets and both affected things"
+    },
+    {
+      "page": 5,
+      "language_unit_id": "LU-C-2022-2218931-025",
+      "summary": "two reasons for a figure, avoid complication and show the process, then the passive announcement"
+    },
+    {
+      "page": 6,
+      "language_unit_id": "LU-C-2022-2218931-026",
+      "summary": "the reason assumptions are needed, then the promise that each one is followed by its explanation"
+    },
+    {
+      "page": 6,
+      "language_unit_id": "LU-C-2022-2218931-027",
+      "summary": "Assumption numbered, the statement, then an arrow and Explanation giving the consequence if it failed"
+    },
+    {
+      "page": 7,
+      "language_unit_id": "LU-C-2022-2218931-028",
+      "summary": "a forward pointer that more assumptions appear later, at the point of use"
+    },
+    {
+      "page": 7,
+      "language_unit_id": "LU-C-2022-2218931-029",
+      "summary": "the table introduced as the necessary symbols, with the rest promised at the point of use"
+    },
+    {
+      "page": 7,
+      "language_unit_id": "LU-C-2022-2218931-030",
+      "summary": "what the trader needs, a reasonable estimate then a strategy, then Therefore the model includes two steps in order"
+    },
+    {
+      "page": 7,
+      "language_unit_id": "LU-C-2022-2218931-031",
+      "summary": "the method's virtues listed, then We consider using it, grounded on the literature and on the object's traits"
+    },
+    {
+      "page": 7,
+      "language_unit_id": "LU-C-2022-2218931-032",
+      "summary": "the baseline's defect, the convergence is too slow, then many improved algorithms, divided into two categories"
+    },
+    {
+      "page": 8,
+      "language_unit_id": "LU-C-2022-2218931-033",
+      "summary": "two bullets, the simple family dismissed as fit for simple problems, the numerical family praised for using both derivatives and called a better choice for complex problems"
+    },
+    {
+      "page": 8,
+      "language_unit_id": "LU-C-2022-2218931-034",
+      "summary": "Since the trends are complex and the data large, the numerical method is more suitable, then a citation for the LM algorithm's speed, then Given the advantages this section uses it"
+    },
+    {
+      "page": 8,
+      "language_unit_id": "LU-C-2022-2218931-035",
+      "summary": "the process split into forward propagation and backpropagation, the stop condition, and the fallback"
+    },
+    {
+      "page": 8,
+      "language_unit_id": "LU-C-2022-2218931-036",
+      "summary": "a numbered step, its name, then That is restating it as the quantity to determine"
+    },
+    {
+      "page": 8,
+      "language_unit_id": "LU-C-2022-2218931-037",
+      "summary": "a step saying what is initialized and then the usual range"
+    },
+    {
+      "page": 9,
+      "language_unit_id": "LU-C-2022-2218931-038",
+      "summary": "the iteration stops when the error falls below a set value, and the training ends"
+    },
+    {
+      "page": 10,
+      "language_unit_id": "LU-C-2022-2218931-039",
+      "summary": "the overfitting and the local optimum and the slow convergence, then In order to improve, this paper uses the algorithm"
+    },
+    {
+      "page": 10,
+      "language_unit_id": "LU-C-2022-2218931-040",
+      "summary": "the algorithm as a combination of two methods, behaving like the safe one far away and the fast one nearby"
+    },
+    {
+      "page": 10,
+      "language_unit_id": "LU-C-2022-2218931-041",
+      "summary": "the authors decline the full derivation because a toolbox implements it, then give pseudo-code so the reader still sees the principle"
+    },
+    {
+      "page": 11,
+      "language_unit_id": "LU-C-2022-2218931-042",
+      "summary": "the toolbox function named, then we only need to set the parameters and test the effect"
+    },
+    {
+      "page": 11,
+      "language_unit_id": "LU-C-2022-2218931-043",
+      "summary": "the reason for two horizons, the shared input and short output, then the long outputs split by asset with the reason"
+    },
+    {
+      "page": 11,
+      "language_unit_id": "LU-C-2022-2218931-044",
+      "summary": "In order to avoid overfitting, the split ratio, the hidden-node counts per asset, the performance measure, and the iteration cap"
+    },
+    {
+      "page": 11,
+      "language_unit_id": "LU-C-2022-2218931-045",
+      "summary": "the figure shows the metric exceeds the bar on every subset, the same holds for the other asset, and the plain verdict"
+    },
+    {
+      "page": 11,
+      "language_unit_id": "LU-C-2022-2218931-046",
+      "summary": "In order to make the reader feel the accuracy, the comparison, the chart, then the curves almost overlap, proving the model and laying a foundation"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-047",
+      "summary": "the two families from the review, their virtues, then the preconditions differ, the input is too single, Therefore we build our own"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-048",
+      "summary": "the building idea, a strategy implemented by an algorithm, then Since the constraint, the simplest strategy, named in quotes"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-049",
+      "summary": "the daily information, then the need to update every decision, so the model gets its name"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-050",
+      "summary": "Please assume the portfolio and its initial state, taken from the meaning of the question"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-051",
+      "summary": "a starred stage name, what the stage does, and the condition that ends it"
+    },
+    {
+      "page": 13,
+      "language_unit_id": "LU-C-2022-2218931-052",
+      "summary": "the stage announces the two questions it answers, then the conditions per asset with their numbers"
+    },
+    {
+      "page": 14,
+      "language_unit_id": "LU-C-2022-2218931-053",
+      "summary": "the measure in plain words, the formula, then the choice of the larger of two rates with the reason in parentheses, then the reading of the value"
+    },
+    {
+      "page": 14,
+      "language_unit_id": "LU-C-2022-2218931-054",
+      "summary": "There are two situations, then a bullet per situation with the portfolio state written out"
+    },
+    {
+      "page": 15,
+      "language_unit_id": "LU-C-2022-2218931-055",
+      "summary": "the selling rule in one sentence, then a refusal to repeat the arithmetic, then the update reminder"
+    },
+    {
+      "page": 15,
+      "language_unit_id": "LU-C-2022-2218931-056",
+      "summary": "the algorithm named as their own, the pseudo-code pointer, then Substitute and solve, then the terminal value with both dates"
+    },
+    {
+      "page": 16,
+      "language_unit_id": "LU-C-2022-2218931-057",
+      "summary": "the section's job in one sentence, stated as what it will do"
+    },
+    {
+      "page": 16,
+      "language_unit_id": "LU-C-2022-2218931-058",
+      "summary": "the general principle, the origin of the chosen values, then In order to prove, the optimization is performed"
+    },
+    {
+      "page": 16,
+      "language_unit_id": "LU-C-2022-2218931-059",
+      "summary": "the ranges, the goal of maximum profit, the comparison, and the chosen values declared consistent with the earlier ones"
+    },
+    {
+      "page": 16,
+      "language_unit_id": "LU-C-2022-2218931-060",
+      "summary": "To validate, a control group, the kinds considered, then We set up the following and omit the calculation"
+    },
+    {
+      "page": 16,
+      "language_unit_id": "LU-C-2022-2218931-061",
+      "summary": "a control group numbered, the action, the dates, and the end asset"
+    },
+    {
+      "page": 17,
+      "language_unit_id": "LU-C-2022-2218931-062",
+      "summary": "the ranking sentence, then three numbered insights, the first claiming the win, the next two explaining the losers"
+    },
+    {
+      "page": 17,
+      "language_unit_id": "LU-C-2022-2218931-063",
+      "summary": "what the cost is and why, what it depends on, then Just imagine the mechanism, then the decision to vary the ratio"
+    },
+    {
+      "page": 18,
+      "language_unit_id": "LU-C-2022-2218931-064",
+      "summary": "the strategy fixed, the three cases listed, the figure announced"
+    },
+    {
+      "page": 18,
+      "language_unit_id": "LU-C-2022-2218931-065",
+      "summary": "From figure, four bullets: the sensitive lever, the insensitive one with an example number, the shape of the relationship, and the summary"
+    },
+    {
+      "page": 19,
+      "language_unit_id": "LU-C-2022-2218931-066",
+      "summary": "the optimal strategy will also change, then the goal stated, then the buying rule rewritten as a formula of the commission"
+    },
+    {
+      "page": 19,
+      "language_unit_id": "LU-C-2022-2218931-067",
+      "summary": "the figure read into a threshold: above it no effect, below it high sensitivity and a drastic change"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-068",
+      "summary": "After the above analysis, the finding restated as sensitive to one and less sensitive to the other"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-069",
+      "summary": "a one-line frame offering the strengths"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-070",
+      "summary": "the method used, then Compared with named rivals, the two gains, then At the same time the extra feature"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-071",
+      "summary": "the practice, then the comparative verdict against using one alone"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-072",
+      "summary": "the model named as a greedy algorithm, then the consequence that the result may be local rather than global"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-073",
+      "summary": "the concentration, the evidence from the simulation, and the two thinking habits it reflects"
+    },
+    {
+      "page": 20,
+      "language_unit_id": "LU-C-2022-2218931-074",
+      "summary": "Due to time constraints the strategy is simple, then Considering the complexity, a future model is named"
+    },
+    {
+      "page": 21,
+      "language_unit_id": "LU-C-2022-2218931-075",
+      "summary": "the letterhead fields, then Dear, then We are honored to inform you of the model and the strategy"
+    },
+    {
+      "page": 21,
+      "language_unit_id": "LU-C-2022-2218931-076",
+      "summary": "At your request, the model and the daily decision it supports"
+    },
+    {
+      "page": 21,
+      "language_unit_id": "LU-C-2022-2218931-077",
+      "summary": "a subheading, then the forecast's importance, the reason the neural method fits, the baseline's defect, Therefore the model, and the test result"
+    },
+    {
+      "page": 21,
+      "language_unit_id": "LU-C-2022-2218931-078",
+      "summary": "the decision idea, the buy rule, the threshold's link to costs, and the risk measure's job"
+    },
+    {
+      "page": 22,
+      "language_unit_id": "LU-C-2022-2218931-079",
+      "summary": "a subheading, the strategy in one sentence, then the praise and the condition that makes it appropriate"
+    },
+    {
+      "page": 22,
+      "language_unit_id": "LU-C-2022-2218931-080",
+      "summary": "the three checks named again, then three ticked conclusions repeating the body's three findings"
+    },
+    {
+      "page": 22,
+      "language_unit_id": "LU-C-2022-2218931-081",
+      "summary": "the closing offer, hoping the study provides useful information"
+    },
+    {
+      "page": 25,
+      "language_unit_id": "LU-C-2022-2218931-082",
+      "summary": "one sentence repeating the fit claim, placed under the figure it refers to"
+    }
+  ],
+  "visualization_observations": [
+    {
+      "page": 5,
+      "summary": "Caption 'Figure 1: Literature Review Framework of Model'. Two-branch diagram. A left label 'Quantitative Trading Model' sends curved arrows to 'Prediction' and 'Decision'. Prediction splits into GOLD, pointing at 'ARIMA Model', 'Neural Network Model', and 'LSTM Model', and BITCOIN, pointing at 'Time Series Model', 'Autoregressive Ensemble Model', and 'Deep Learning Model'. Decision holds 'Traditional methods based on expert experience' and 'Quantitative Model', which points at 'Statistical Analysis Theory: Mean-Variance Model' and 'Artificial Intelligence Theory: Reinforcement Learning'.",
+      "visual_record_id": "V-C-2022-2218931-F01",
+      "source_visual_id": "Figure 1",
+      "source_checked_record": {
+        "page": 5,
+        "visual_record_id": "V-C-2022-2218931-F01",
+        "source_visual_id": "Figure 1",
+        "observation_id": "O-C-2022-2218931-VISUAL-F01",
+        "analytical_purpose": "Summarize the literature review so the reader sees which family was chosen.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 1: Literature Review Framework of Model'. Two-branch diagram. A left label 'Quantitative Trading Model' sends curved arrows to 'Prediction' and 'Decision'. Prediction splits into GOLD, pointing at 'ARIMA Model', 'Neural Network Model', and 'LSTM Model', and BITCOIN, pointing at 'Time Series Model', 'Autoregressive Ensemble Model', and 'Deep Learning Model'. Decision holds 'Traditional methods based on expert experience' and 'Quantitative Model', which points at 'Statistical Analysis Theory: Mean-Variance Model' and 'Artificial Intelligence Theory: Reinforcement Learning'.",
+        "exact_claim_supported": "The review closes by saying the figure reflects the scholars' work.",
+        "missing_or_unverified": "Text inside the boxes is cramped and wraps.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 1",
+        "form": "two-branch framework diagram",
+        "encodings": "boxes and curved arrows; no axes",
+        "construction": "Two-branch diagram. A left label 'Quantitative Trading Model' sends curved arrows to 'Prediction' and 'Decision'. Prediction splits into GOLD, pointing at 'ARIMA Model', 'Neural Network Model', and 'LSTM Model', and BITCOIN, pointing at 'Time Series Model', 'Autoregressive Ensemble Model', and 'Deep Learning Model'. Decision holds 'Traditional methods based on expert experience' and 'Quantitative Model', which points at 'Statistical Analysis Theory: Mean-Variance Model' and 'Artificial Intelligence Theory: Reinforcement Learning'.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "Text inside the boxes is cramped and wraps.",
+        "record_class": "important-positive",
+        "purpose_class": "explain the literature the model is chosen from"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F01",
+      "analytical_purpose": "Summarize the literature review so the reader sees which family was chosen.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 6,
+      "summary": "Caption 'Figure 2: Flow Chart of Our Work'. Four dashed regions. 'Problem 1:Develop the best possible strategy' holds 'Model 1:LM-BP Neural Network Model', where 'Historical data' leads to 'Construct the neural network structure' and then 'Forecast data', which branches to 'short-term forecast' and 'long-term forecast', and 'Model 2:Decision Model', where 'Gold' and 'Bitcoin' meet at 'Buy' annotated 'Sharpe Ratio' and 'ensure benefits outweigh costs', then 'Hold' and 'Sell' annotated 'Sold before entering into a sluggish market'. 'Problem 2:Provide evidence of the best strategy' holds 'Set up control groups', 'parameter optimization', 'long term trading', and 'short-term trading'. 'Problem 3:Sensitivity analysis' holds 'Change commission ratio', 'Gold trading', and 'Bitcoin trading'.",
+      "visual_record_id": "V-C-2022-2218931-F02",
+      "source_visual_id": "Figure 2",
+      "source_checked_record": {
+        "page": 6,
+        "visual_record_id": "V-C-2022-2218931-F02",
+        "source_visual_id": "Figure 2",
+        "observation_id": "O-C-2022-2218931-VISUAL-F02",
+        "analytical_purpose": "Replace a long description of the work with one picture.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 2: Flow Chart of Our Work'. Four dashed regions. 'Problem 1:Develop the best possible strategy' holds 'Model 1:LM-BP Neural Network Model', where 'Historical data' leads to 'Construct the neural network structure' and then 'Forecast data', which branches to 'short-term forecast' and 'long-term forecast', and 'Model 2:Decision Model', where 'Gold' and 'Bitcoin' meet at 'Buy' annotated 'Sharpe Ratio' and 'ensure benefits outweigh costs', then 'Hold' and 'Sell' annotated 'Sold before entering into a sluggish market'. 'Problem 2:Provide evidence of the best strategy' holds 'Set up control groups', 'parameter optimization', 'long term trading', and 'short-term trading'. 'Problem 3:Sensitivity analysis' holds 'Change commission ratio', 'Gold trading', and 'Bitcoin trading'.",
+        "exact_claim_supported": "Section 1.4 ends by sending the reader to this figure.",
+        "missing_or_unverified": "Spaces are missing after the colons, and 'long term' is printed without the hyphen that 'short-term' carries.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 2",
+        "form": "flowchart in four dashed regions",
+        "encodings": "boxes, arrows, annotations; no axes",
+        "construction": "Four dashed regions. 'Problem 1:Develop the best possible strategy' holds 'Model 1:LM-BP Neural Network Model', where 'Historical data' leads to 'Construct the neural network structure' and then 'Forecast data', which branches to 'short-term forecast' and 'long-term forecast', and 'Model 2:Decision Model', where 'Gold' and 'Bitcoin' meet at 'Buy' annotated 'Sharpe Ratio' and 'ensure benefits outweigh costs', then 'Hold' and 'Sell' annotated 'Sold before entering into a sluggish market'. 'Problem 2:Provide evidence of the best strategy' holds 'Set up control groups', 'parameter optimization', 'long term trading', and 'short-term trading'. 'Problem 3:Sensitivity analysis' holds 'Change commission ratio', 'Gold trading', and 'Bitcoin trading'.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "Spaces are missing after the colons, and 'long term' is printed without the hyphen that 'short-term' carries.",
+        "record_class": "important-positive",
+        "purpose_class": "explain the workflow"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F02",
+      "analytical_purpose": "Replace a long description of the work with one picture.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 9,
+      "summary": "Caption 'Figure 3: Algorithm flow chart of LM-BP'. A vertical flowchart. 'Parameter Initialization' leads to 'Enter a random sample', 'Forward propagation / Calculate the output value', 'Error Calculation', 'Error back propagation', and 'Update network parameters', then a diamond 'Whether the stop condition is met'. 'YES' drops to 'End'. 'NO' runs in red back to the top.",
+      "visual_record_id": "V-C-2022-2218931-F03",
+      "source_visual_id": "Figure 3",
+      "source_checked_record": {
+        "page": 9,
+        "visual_record_id": "V-C-2022-2218931-F03",
+        "source_visual_id": "Figure 3",
+        "observation_id": "O-C-2022-2218931-VISUAL-F03",
+        "analytical_purpose": "Show the training loop as a cycle with one exit.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 3: Algorithm flow chart of LM-BP'. A vertical flowchart. 'Parameter Initialization' leads to 'Enter a random sample', 'Forward propagation / Calculate the output value', 'Error Calculation', 'Error back propagation', and 'Update network parameters', then a diamond 'Whether the stop condition is met'. 'YES' drops to 'End'. 'NO' runs in red back to the top.",
+        "exact_claim_supported": "The chart sits between the forward-propagation equations and the error equation.",
+        "missing_or_unverified": "None visible. The chart restates the seven prose steps.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 3",
+        "form": "vertical flowchart with one decision diamond",
+        "encodings": "boxes, one diamond, a red NO arc; no axes",
+        "construction": "A vertical flowchart. 'Parameter Initialization' leads to 'Enter a random sample', 'Forward propagation / Calculate the output value', 'Error Calculation', 'Error back propagation', and 'Update network parameters', then a diamond 'Whether the stop condition is met'. 'YES' drops to 'End'. 'NO' runs in red back to the top.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "None visible. The chart restates the seven prose steps.",
+        "record_class": "important-positive",
+        "purpose_class": "explain the training loop"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F03",
+      "analytical_purpose": "Show the training loop as a cycle with one exit.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 11,
+      "summary": "Caption 'Figure 4: Bitcoin's short-term prediction model'. A three-stage network diagram. 'Input / Historical Price Data' is marked 7 and feeds a 'Hidden' block marked 16, drawn with W, b, and a circled plus, then an 'Output' block marked 1 with the same symbols, ending at 'Output / Forecast Data' marked 1.",
+      "visual_record_id": "V-C-2022-2218931-F04",
+      "source_visual_id": "Figure 4",
+      "source_checked_record": {
+        "page": 11,
+        "visual_record_id": "V-C-2022-2218931-F04",
+        "source_visual_id": "Figure 4",
+        "observation_id": "O-C-2022-2218931-VISUAL-F04",
+        "analytical_purpose": "Show the shape of the bitcoin short-term network.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 4: Bitcoin's short-term prediction model'. A three-stage network diagram. 'Input / Historical Price Data' is marked 7 and feeds a 'Hidden' block marked 16, drawn with W, b, and a circled plus, then an 'Output' block marked 1 with the same symbols, ending at 'Output / Forecast Data' marked 1.",
+        "exact_claim_supported": "The text says the input window is seven days and bitcoin uses 16 hidden nodes, which the marks repeat.",
+        "missing_or_unverified": "The word 'Output' labels both the middle block and the final box.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 4",
+        "form": "layered network topology",
+        "encodings": "blocks annotated with node counts; no axes",
+        "construction": "A three-stage network diagram. 'Input / Historical Price Data' is marked 7 and feeds a 'Hidden' block marked 16, drawn with W, b, and a circled plus, then an 'Output' block marked 1 with the same symbols, ending at 'Output / Forecast Data' marked 1.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The word 'Output' labels both the middle block and the final box.",
+        "record_class": "important-positive",
+        "purpose_class": "show the model structure"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F04",
+      "analytical_purpose": "Show the shape of the bitcoin short-term network.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 12,
+      "summary": "Caption 'Figure 5: Fit Accuracy Plot for Gold'. Four scatter panels of open circles against a solid fit line and a dotted Y = T line. Both axes run from about 1200 to 2000, labeled 'Target' across and 'Output' up. Training in blue reads 'Training: R=0.99843' and 'Output ~= 1*Target + 4.9'. Validation in green reads 'Validation: R=0.99862' and 'Output ~= 1*Target + 4'. Test in red reads 'Test: R=0.99867' and 'Output ~= 0.99*Target + 6.9'. All in black reads 'All: R=0.99849' and 'Output ~= 1*Target + 4.8'.",
+      "visual_record_id": "V-C-2022-2218931-F05",
+      "source_visual_id": "Figure 5",
+      "source_checked_record": {
+        "page": 12,
+        "visual_record_id": "V-C-2022-2218931-F05",
+        "source_visual_id": "Figure 5",
+        "observation_id": "O-C-2022-2218931-VISUAL-F05",
+        "analytical_purpose": "Show the gold forecast fitting on every subset.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 5: Fit Accuracy Plot for Gold'. Four scatter panels of open circles against a solid fit line and a dotted Y = T line. Both axes run from about 1200 to 2000, labeled 'Target' across and 'Output' up. Training in blue reads 'Training: R=0.99843' and 'Output ~= 1*Target + 4.9'. Validation in green reads 'Validation: R=0.99862' and 'Output ~= 1*Target + 4'. Test in red reads 'Test: R=0.99867' and 'Output ~= 0.99*Target + 6.9'. All in black reads 'All: R=0.99849' and 'Output ~= 1*Target + 4.8'.",
+        "exact_claim_supported": "The text claims the fit clears 0.99 for the training, test, validation, and full sets.",
+        "missing_or_unverified": "The panels print R, while the prose on page 11 calls the same statistic R2 and says it exceeds 0.99.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 5",
+        "form": "four-panel regression scatter",
+        "encodings": "open circles, solid fit, dotted identity line, per-panel color",
+        "construction": "Four scatter panels of open circles against a solid fit line and a dotted Y = T line. Both axes run from about 1200 to 2000, labeled 'Target' across and 'Output' up. Training in blue reads 'Training: R=0.99843' and 'Output ~= 1*Target + 4.9'. Validation in green reads 'Validation: R=0.99862' and 'Output ~= 1*Target + 4'. Test in red reads 'Test: R=0.99867' and 'Output ~= 0.99*Target + 6.9'. All in black reads 'All: R=0.99849' and 'Output ~= 1*Target + 4.8'.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The panels print R, while the prose on page 11 calls the same statistic R2 and says it exceeds 0.99.",
+        "record_class": "important-positive",
+        "purpose_class": "diagnose the forecast fit"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F05",
+      "analytical_purpose": "Show the gold forecast fitting on every subset.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 12,
+      "summary": "Caption 'Figure 6: Predicted price and actual price comparison chart'. Two panels, captioned '(a) gold' and '(b) bitcoin', each with two nearly overlapping price curves against 'Time'. Panel (a) shows y ticks at 2000, 1800, 1600, 1400, and 1200. Panel (b) scales the y axis by 10^4 with ticks from 0 to 6. Time ticks run to roughly 1400 in (a) and 1800 in (b).",
+      "visual_record_id": "V-C-2022-2218931-F06",
+      "source_visual_id": "Figure 6",
+      "source_checked_record": {
+        "page": 12,
+        "visual_record_id": "V-C-2022-2218931-F06",
+        "source_visual_id": "Figure 6",
+        "observation_id": "O-C-2022-2218931-VISUAL-F06",
+        "analytical_purpose": "Let the reader see the forecast track the price.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 6: Predicted price and actual price comparison chart'. Two panels, captioned '(a) gold' and '(b) bitcoin', each with two nearly overlapping price curves against 'Time'. Panel (a) shows y ticks at 2000, 1800, 1600, 1400, and 1200. Panel (b) scales the y axis by 10^4 with ticks from 0 to 6. Time ticks run to roughly 1400 in (a) and 1800 in (b).",
+        "exact_claim_supported": "The text says the predicted curve and the actual curve almost wholly overlap.",
+        "missing_or_unverified": "The y-axis title of panel (a) is not readable, and the two-entry legend of panel (b) is too small to read.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 6",
+        "form": "two-panel overlaid line chart",
+        "encodings": "two curves per panel, time axis, price axis",
+        "construction": "Two panels, captioned '(a) gold' and '(b) bitcoin', each with two nearly overlapping price curves against 'Time'. Panel (a) shows y ticks at 2000, 1800, 1600, 1400, and 1200. Panel (b) scales the y axis by 10^4 with ticks from 0 to 6. Time ticks run to roughly 1400 in (a) and 1800 in (b).",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The y-axis title of panel (a) is not readable, and the two-entry legend of panel (b) is too small to read.",
+        "record_class": "important-positive",
+        "purpose_class": "diagnose the forecast fit"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F06",
+      "analytical_purpose": "Let the reader see the forecast track the price.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 14,
+      "summary": "Caption 'Figure 7: \"Stand by\" stage'. Two horizontal timelines. Bitcoin runs day 1 to 13 and beyond, with days 4 to 10 shaded and an arrow 'predict data for the next day and next week(bicton:7days ; gold:5 days)' landing on day 11, boxed 'First Decision' and dated 16.9.21. Gold runs with days 1 to 5 filled, a gap, then days 6 and 7, under a bracket 'Gather seven data' dated 16.9.12, and days 8, 12, 13 shaded.",
+      "visual_record_id": "V-C-2022-2218931-F07",
+      "source_visual_id": "Figure 7",
+      "source_checked_record": {
+        "page": 14,
+        "visual_record_id": "V-C-2022-2218931-F07",
+        "source_visual_id": "Figure 7",
+        "observation_id": "O-C-2022-2218931-VISUAL-F07",
+        "analytical_purpose": "Show why the first decision waits ten days.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 7: \"Stand by\" stage'. Two horizontal timelines. Bitcoin runs day 1 to 13 and beyond, with days 4 to 10 shaded and an arrow 'predict data for the next day and next week(bicton:7days ; gold:5 days)' landing on day 11, boxed 'First Decision' and dated 16.9.21. Gold runs with days 1 to 5 filled, a gap, then days 6 and 7, under a bracket 'Gather seven data' dated 16.9.12, and days 8, 12, 13 shaded.",
+        "exact_claim_supported": "The text says the model starts once both assets have seven days of prices.",
+        "missing_or_unverified": "The arrow text prints 'bicton' and leaves a space before the semicolon.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 7",
+        "form": "two annotated timelines",
+        "encodings": "shaded day cells, one arrow, date labels; no numeric axis",
+        "construction": "Two horizontal timelines. Bitcoin runs day 1 to 13 and beyond, with days 4 to 10 shaded and an arrow 'predict data for the next day and next week(bicton:7days ; gold:5 days)' landing on day 11, boxed 'First Decision' and dated 16.9.21. Gold runs with days 1 to 5 filled, a gap, then days 6 and 7, under a bracket 'Gather seven data' dated 16.9.12, and days 8, 12, 13 shaded.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The arrow text prints 'bicton' and leaves a space before the semicolon.",
+        "record_class": "important-positive",
+        "purpose_class": "show the timing of the first decision"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F07",
+      "analytical_purpose": "Show why the first decision waits ten days.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 18,
+      "summary": "Caption 'Figure 8: Fixed strategy, the impact of transaction costs on assets'. A colored surface. 'BTC Cost' runs from 0 to 1 in steps of 0.1, 'Gold Cost' from 0 to 1, and 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 3. A colorbar runs from 0 to 1. A data tip reads X 0.01, Y 0.01, Z 270836. The surface falls as the bitcoin cost rises and stays nearly flat along the gold cost.",
+      "visual_record_id": "V-C-2022-2218931-F08",
+      "source_visual_id": "Figure 8",
+      "source_checked_record": {
+        "page": 18,
+        "visual_record_id": "V-C-2022-2218931-F08",
+        "source_visual_id": "Figure 8",
+        "observation_id": "O-C-2022-2218931-VISUAL-F08",
+        "analytical_purpose": "Show the terminal value against both commission rates while the strategy stays fixed.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 8: Fixed strategy, the impact of transaction costs on assets'. A colored surface. 'BTC Cost' runs from 0 to 1 in steps of 0.1, 'Gold Cost' from 0 to 1, and 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 3. A colorbar runs from 0 to 1. A data tip reads X 0.01, Y 0.01, Z 270836. The surface falls as the bitcoin cost rises and stays nearly flat along the gold cost.",
+        "exact_claim_supported": "The text says gold at a 26 percent commission still returns 270836 dollars.",
+        "missing_or_unverified": "The data tip covers part of the surface.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 8",
+        "form": "three-dimensional surface with a data tip",
+        "encodings": "two cost axes, a money axis, a colorbar",
+        "construction": "A colored surface. 'BTC Cost' runs from 0 to 1 in steps of 0.1, 'Gold Cost' from 0 to 1, and 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 3. A colorbar runs from 0 to 1. A data tip reads X 0.01, Y 0.01, Z 270836. The surface falls as the bitcoin cost rises and stays nearly flat along the gold cost.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The data tip covers part of the surface.",
+        "record_class": "important-positive",
+        "purpose_class": "reveal sensitivity to transaction costs"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F08",
+      "analytical_purpose": "Show the terminal value against both commission rates while the strategy stays fixed.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 19,
+      "summary": "Caption 'Figure 9: Strategies vary with transaction costs , the impact of transaction costs on assets'. A second surface with the same 'BTC Cost' and 'Gold Cost' axes from 0 to 1. 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 14. Yellow, cyan, blue, and purple bands sit high only near zero bitcoin cost and then drop to a flat purple plane.",
+      "visual_record_id": "V-C-2022-2218931-F09",
+      "source_visual_id": "Figure 9",
+      "source_checked_record": {
+        "page": 19,
+        "visual_record_id": "V-C-2022-2218931-F09",
+        "source_visual_id": "Figure 9",
+        "observation_id": "O-C-2022-2218931-VISUAL-F09",
+        "analytical_purpose": "Show the terminal value once the strategy is allowed to change with the commission.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 9: Strategies vary with transaction costs , the impact of transaction costs on assets'. A second surface with the same 'BTC Cost' and 'Gold Cost' axes from 0 to 1. 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 14. Yellow, cyan, blue, and purple bands sit high only near zero bitcoin cost and then drop to a flat purple plane.",
+        "exact_claim_supported": "The text says the result is highly sensitive below a 5 percent bitcoin commission and barely moves above it.",
+        "missing_or_unverified": "The caption prints a space before the comma. No data tip and no numeric legend are given.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 9",
+        "form": "three-dimensional surface",
+        "encodings": "two cost axes, a money axis, colored bands",
+        "construction": "A second surface with the same 'BTC Cost' and 'Gold Cost' axes from 0 to 1. 'Money Changes With Cost' is scaled by 10^5 with ticks from 0 to 14. Yellow, cyan, blue, and purple bands sit high only near zero bitcoin cost and then drop to a flat purple plane.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The caption prints a space before the comma. No data tip and no numeric legend are given.",
+        "record_class": "important-positive",
+        "purpose_class": "reveal sensitivity to transaction costs"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F09",
+      "analytical_purpose": "Show the terminal value once the strategy is allowed to change with the commission.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 25,
+      "summary": "Caption 'Figure 10: Fitting Accuracy Plot for Bitcoin'. Four regression panels with the same legend as Figure 5: circle 'Data', solid 'Fit', dotted 'Y = T'. Both axes are scaled by 10^4 with ticks from 0 to 6. Training in blue reads 'Training: R=0.99848' and 'Output ~= 1*Target + 16'. Validation in green reads 'Validation: R=0.99851' and 'Output ~= 0.99*Target + 56'. Test in red reads 'Test: R=0.99843' and 'Output ~= 0.99*Target + 31'. All in black reads 'All: R=0.99847' and 'Output ~= 0.99*Target + 24'.",
+      "visual_record_id": "V-C-2022-2218931-F10",
+      "source_visual_id": "Figure 10",
+      "source_checked_record": {
+        "page": 25,
+        "visual_record_id": "V-C-2022-2218931-F10",
+        "source_visual_id": "Figure 10",
+        "observation_id": "O-C-2022-2218931-VISUAL-F10",
+        "analytical_purpose": "Show the bitcoin forecast clearing the same bar claimed for gold.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Figure 10: Fitting Accuracy Plot for Bitcoin'. Four regression panels with the same legend as Figure 5: circle 'Data', solid 'Fit', dotted 'Y = T'. Both axes are scaled by 10^4 with ticks from 0 to 6. Training in blue reads 'Training: R=0.99848' and 'Output ~= 1*Target + 16'. Validation in green reads 'Validation: R=0.99851' and 'Output ~= 0.99*Target + 56'. Test in red reads 'Test: R=0.99843' and 'Output ~= 0.99*Target + 31'. All in black reads 'All: R=0.99847' and 'Output ~= 0.99*Target + 24'.",
+        "exact_claim_supported": "The appendix repeats the fit claim for the second asset.",
+        "missing_or_unverified": "The panels print R, while the one sentence above the figure says R2 exceeds 0.99.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 10",
+        "form": "four-panel regression scatter",
+        "encodings": "open circles, solid fit, dotted identity line, per-panel color",
+        "construction": "Four regression panels with the same legend as Figure 5: circle 'Data', solid 'Fit', dotted 'Y = T'. Both axes are scaled by 10^4 with ticks from 0 to 6. Training in blue reads 'Training: R=0.99848' and 'Output ~= 1*Target + 16'. Validation in green reads 'Validation: R=0.99851' and 'Output ~= 0.99*Target + 56'. Test in red reads 'Test: R=0.99843' and 'Output ~= 0.99*Target + 31'. All in black reads 'All: R=0.99847' and 'Output ~= 0.99*Target + 24'.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The panels print R, while the one sentence above the figure says R2 exceeds 0.99.",
+        "record_class": "important-positive",
+        "purpose_class": "diagnose the forecast fit"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F10",
+      "analytical_purpose": "Show the bitcoin forecast clearing the same bar claimed for gold.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 21,
+      "summary": "Caption 'Schematic diagram of quantitative trading decision model'. An unnumbered strip inside the memorandum. Under the heading 'Quantitative Trading Decision Model' the flow runs 'Historical Price Data' marked 'input', 'LM-BP Neural Network Model', 'Long and short term forecast' marked 'Output', 'Recurrent Decision Model', and 'Best Strategy'.",
+      "visual_record_id": "V-C-2022-2218931-F11",
+      "source_visual_id": "Figure 11",
+      "source_checked_record": {
+        "page": 21,
+        "visual_record_id": "V-C-2022-2218931-F11",
+        "source_visual_id": "Figure 11",
+        "observation_id": "O-C-2022-2218931-VISUAL-F11",
+        "analytical_purpose": "Retell the pipeline for a reader who skips the body.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Schematic diagram of quantitative trading decision model'. An unnumbered strip inside the memorandum. Under the heading 'Quantitative Trading Decision Model' the flow runs 'Historical Price Data' marked 'input', 'LM-BP Neural Network Model', 'Long and short term forecast' marked 'Output', 'Recurrent Decision Model', and 'Best Strategy'.",
+        "exact_claim_supported": "The memorandum describes the two models and then shows this strip.",
+        "missing_or_unverified": "The figure has no number. 'input' and 'Output' differ in capitalization, and 'term' wraps onto its own line.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Figure 11",
+        "form": "single-row flow strip",
+        "encodings": "five labeled boxes; no axes",
+        "construction": "An unnumbered strip inside the memorandum. Under the heading 'Quantitative Trading Decision Model' the flow runs 'Historical Price Data' marked 'input', 'LM-BP Neural Network Model', 'Long and short term forecast' marked 'Output', 'Recurrent Decision Model', and 'Best Strategy'.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The figure has no number. 'input' and 'Output' differ in capitalization, and 'term' wraps onto its own line.",
+        "record_class": "important-positive",
+        "purpose_class": "explain the workflow to the stakeholder"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-F11",
+      "analytical_purpose": "Retell the pipeline for a reader who skips the body.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 7,
+      "summary": "Caption 'Table 1: Notions and Symbol Description'. Two columns. The rows read H_j hidden layer output, O_k output of the output layer, W_ij weights from the input layer to the hidden layer, W_jk weights from the hidden layer to the output layer, a_j thresholding in the hidden layer, f an assumed functional relation which maps a parameter vector, t the buying day, t' the selling day, alpha_1,2 the short-term predicted price increase threshold for gold or bitcoin, and beta_1,2 the long-term predicted price increase threshold.",
+      "visual_record_id": "V-C-2022-2218931-T01",
+      "source_visual_id": "Table 1",
+      "source_checked_record": {
+        "page": 7,
+        "visual_record_id": "V-C-2022-2218931-T01",
+        "source_visual_id": "Table 1",
+        "observation_id": "O-C-2022-2218931-VISUAL-T01",
+        "analytical_purpose": "Collect the symbols used in both models.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Table 1: Notions and Symbol Description'. Two columns. The rows read H_j hidden layer output, O_k output of the output layer, W_ij weights from the input layer to the hidden layer, W_jk weights from the hidden layer to the output layer, a_j thresholding in the hidden layer, f an assumed functional relation which maps a parameter vector, t the buying day, t' the selling day, alpha_1,2 the short-term predicted price increase threshold for gold or bitcoin, and beta_1,2 the long-term predicted price increase threshold.",
+        "exact_claim_supported": "The notation section points at this table and defers every other symbol.",
+        "missing_or_unverified": "The caption prints 'Notions'. The row for f defines the activation as a mapping of a parameter vector, which is the definition the LM section later gives to a different f.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Table 1",
+        "form": "two-column symbol table",
+        "encodings": "symbol, definition",
+        "construction": "Two columns. The rows read H_j hidden layer output, O_k output of the output layer, W_ij weights from the input layer to the hidden layer, W_jk weights from the hidden layer to the output layer, a_j thresholding in the hidden layer, f an assumed functional relation which maps a parameter vector, t the buying day, t' the selling day, alpha_1,2 the short-term predicted price increase threshold for gold or bitcoin, and beta_1,2 the long-term predicted price increase threshold.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The caption prints 'Notions'. The row for f defines the activation as a mapping of a parameter vector, which is the definition the LM section later gives to a different f.",
+        "record_class": "important-positive",
+        "purpose_class": "define the notation"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-T01",
+      "analytical_purpose": "Collect the symbols used in both models.",
+      "disposition": "important-visual-record"
+    },
+    {
+      "page": 17,
+      "summary": "Caption 'Table 2: Asset Value Comparison of Different Strategies'. Four columns: classification, strategy, asset value in dollars, ranking. The rows read Quantitative Trading, our model, 270836.00, rank 1; Long-Term Trading, Control Group 2, 73097.98, rank 2; Long-Term Trading, Control Group 3, 37219.59, rank 3; Actual Trading, Control Group 4, 3712.93, rank 4; Short-term trading, Control Group 5, 3117.20, rank 5; Long-Term Trading, Control Group 1, 1341.28, rank 6.",
+      "visual_record_id": "V-C-2022-2218931-T02",
+      "source_visual_id": "Table 2",
+      "source_checked_record": {
+        "page": 17,
+        "visual_record_id": "V-C-2022-2218931-T02",
+        "source_visual_id": "Table 2",
+        "observation_id": "O-C-2022-2218931-VISUAL-T02",
+        "analytical_purpose": "Rank the model against the five control strategies.",
+        "disposition": "important-visual-record",
+        "author_language_evidence": true,
+        "third_party": false,
+        "summary": "Caption 'Table 2: Asset Value Comparison of Different Strategies'. Four columns: classification, strategy, asset value in dollars, ranking. The rows read Quantitative Trading, our model, 270836.00, rank 1; Long-Term Trading, Control Group 2, 73097.98, rank 2; Long-Term Trading, Control Group 3, 37219.59, rank 3; Actual Trading, Control Group 4, 3712.93, rank 4; Short-term trading, Control Group 5, 3117.20, rank 5; Long-Term Trading, Control Group 1, 1341.28, rank 6.",
+        "exact_claim_supported": "The text says the model ranked first and its asset value was much higher than the others.",
+        "missing_or_unverified": "The classification labels are not defined anywhere else, and 'Short-term' is the only one hyphenated.",
+        "visual_evidence": "JPEG proxy read at high detail; root-verified for Figures 3 and 7",
+        "reproduction_status": "not reproduced",
+        "source_model_or_data": "Table 2",
+        "form": "four-column ranked comparison table",
+        "encodings": "classification, strategy, dollar value, rank",
+        "construction": "Four columns: classification, strategy, asset value in dollars, ranking. The rows read Quantitative Trading, our model, 270836.00, rank 1; Long-Term Trading, Control Group 2, 73097.98, rank 2; Long-Term Trading, Control Group 3, 37219.59, rank 3; Actual Trading, Control Group 4, 3712.93, rank 4; Short-term trading, Control Group 5, 3117.20, rank 5; Long-Term Trading, Control Group 1, 1341.28, rank 6.",
+        "applicability": "A 2022 Problem C trading paper. The figure shows what this paper drew, not a general result.",
+        "accessibility": "The classification labels are not defined anywhere else, and 'Short-term' is the only one hyphenated.",
+        "record_class": "important-positive",
+        "purpose_class": "compare the strategy with the controls"
+      },
+      "observation_id": "O-C-2022-2218931-VISUAL-T02",
+      "analytical_purpose": "Rank the model against the five control strategies.",
+      "disposition": "important-visual-record"
+    }
+  ],
+  "judge_relevance_hypotheses": [
+    {
+      "page": 16,
+      "summary": "A judge checking the required proof finds it answered twice, from inside the model and against five controls.",
+      "evidence_class": "J"
+    }
+  ],
+  "weaknesses": [
+    {
+      "page": 8,
+      "warning_id": "W-C-2022-2218931-01",
+      "summary": "The hidden output is f of the sum of W_ij plus a_j."
+    },
+    {
+      "page": 8,
+      "warning_id": "W-C-2022-2218931-02",
+      "summary": "The output sums W_jk H_j from j = 1 to n."
+    },
+    {
+      "page": 9,
+      "warning_id": "W-C-2022-2218931-03",
+      "summary": "The threshold update adds eta H_j times the weighted error."
+    },
+    {
+      "page": 16,
+      "warning_id": "W-C-2022-2218931-04",
+      "summary": "The long-term threshold is beta_1 for gold and beta_1 for bitcoin."
+    },
+    {
+      "page": 15,
+      "warning_id": "W-C-2022-2218931-05",
+      "summary": "Algorithm 2 sells when the Sharpe ratio is positive and buys when the forecast is down."
+    },
+    {
+      "page": 11,
+      "warning_id": "W-C-2022-2218931-06",
+      "summary": "The R2 of every subset is more than 0.99."
+    },
+    {
+      "page": 15,
+      "warning_id": "W-C-2022-2218931-07",
+      "summary": "The gold Sharpe ratio uses the standard deviation over the last five days."
+    },
+    {
+      "page": 13,
+      "warning_id": "W-C-2022-2218931-08",
+      "summary": "Bitcoin is bought when the rise over the next five days exceeds 4.5 percent."
+    },
+    {
+      "page": 16,
+      "warning_id": "W-C-2022-2218931-09",
+      "summary": "An asset growing at 30 percent a year for five years from 1000 dollars ends at 3712.93 dollars."
+    },
+    {
+      "page": 10,
+      "warning_id": "W-C-2022-2218931-10",
+      "summary": "Algorithm 1 computes the gain ratio rho from F(x) - F(x_new) over L(0) - L(h_lm)."
+    },
+    {
+      "page": 14,
+      "warning_id": "W-C-2022-2218931-11",
+      "summary": "The stand-by figure predicts the next week for bicton at seven days and gold at five days."
+    },
+    {
+      "page": 20,
+      "warning_id": "W-C-2022-2218931-12",
+      "summary": "The decision model is a greedy algorithm and may give only a local optimum."
+    }
+  ],
+  "independent_extensions": [],
+  "candidate_rule_impacts": [
+    {
+      "rule_id": "R-C-Q229-PATTERN-STAKESHOWEVER-001",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-001"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOMODELJOIN-002",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-002"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FORMODELRESULT-003",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-003"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STAGESANDTHRESHOLDS-004",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-004"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEASURETWICE-005",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-005"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PERPROBLEM-006",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-006"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOEVIDENCE-007",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-007"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FINALLYMOREOVER-008",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-008"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-QUOTEHISTORY-009",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-009"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-COMPAREDWITH-010",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-010"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-RESTATEFRAME-011",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-011"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CONSTRAINTTWICE-012",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-012"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SCENARIOONE-013",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-013"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PRESENTPROVE-014",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-014"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMOASK-015",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-015"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PURPOSETHENREVIEW-016",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-016"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CITATIONPAIRS-017",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-017"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-HEADTOHEAD-018",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-018"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOCATEGORIES-019",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-019"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FIGBACKWARD-020",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-020"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PROBLEMREQUIRES-021",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-021"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PIPELINETHREE-022",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-022"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PROVEBY-023",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-023"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CHANGEANDANALYZE-024",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-024"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FIGSPAREPROSE-025",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-025"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ASSUMPTIONPAIR-026",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-026"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ASSUMPTIONEXPLAIN-027",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-027"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ASSUMPTIONDEFER-028",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-028"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-NOTATIONTABLE-029",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-029"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOSTEPS-030",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-030"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CHOOSEBYVIRTUE-031",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-031"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-DEFECTTHENTAXONOMY-032",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-032"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FAMILYBYSIZE-033",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-033"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SINCEGIVEN-034",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-034"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOPARTSIF-035",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-035"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STEPTHATIS-036",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-036"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-USUALLYRANGE-037",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-037"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STOPUNTIL-038",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-038"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-THREEFAILURES-039",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-039"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-HYBRIDWHERE-040",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-040"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CODEINSTEAD-041",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-041"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ONLYNEEDSET-042",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-042"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-HORIZONSREASON-043",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-043"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TRAININGCONTROLS-044",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-044"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-BARTHENSAME-045",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-045"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FOUNDATIONNEXT-046",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-046"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-REJECTBOTH-047",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-047"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SIMPLESTBECAUSE-048",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-048"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-NAMEFROMCYCLE-049",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-049"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-PLEASEASSUME-050",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-050"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STAGEEXIT-051",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-051"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STAGEQUESTIONS-052",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-052"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-RATIOTHENREAD-053",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-053"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TWOSITUATIONS-054",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-054"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-NODETAILS-055",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-055"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-REPLAYRESULT-056",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-056"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SECTIONWILL-057",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-057"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ONLYWHENOPTIMAL-058",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-058"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CONSISTENTWITH-059",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-059"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-OMITWORKING-060",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-060"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CONTROLBULLET-061",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-061"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-TABLEINSIGHTS-062",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-062"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-LEVERCHOOSE-063",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-063"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FIXEDTHREEcases-064",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-064"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-EXTREMEEXAMPLE-065",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-065"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-RULEREBUILT-066",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-066"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CUTOFFBAR-067",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-067"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SENSITIVECLOSE-068",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-068"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STRENGTHFRAME-069",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-069"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-STRENGTHCOMPARE-070",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-070"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-BOTHNOTONE-071",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-071"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-LOCALNOTGLOBAL-072",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-072"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-CONCENTRATEDWEIGHT-073",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-073"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-FUTUREMODEL-074",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-074"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMOOPEN-075",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-075"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-ATYOURREQUEST-076",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-076"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMOMODELBLOCK-077",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-077"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMORULE-078",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-078"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-SIMPLEWHEN-079",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-079"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMORESULTS-080",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-080"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-MEMOCLOSE-081",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-081"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-PATTERN-APPENDIXREPEAT-082",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LANG-082"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-LOGIC-01",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LOGIC-01"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-LOGIC-02",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LOGIC-02"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-LOGIC-03",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LOGIC-03"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-LOGIC-04",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-LOGIC-04"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-MODEL-LMBP",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-MODEL-LMBP"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-MODEL-RDM",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-MODEL-RDM"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F01",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F01"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F02",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F02"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F03",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F03"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F04",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F04"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F05",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F05"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F06",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F06"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F07",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F07"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F08",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F08"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F09",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F09"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F10",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F10"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-F11",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-F11"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-T01",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-T01"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-VISUAL-T02",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-VISUAL-T02"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-01",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-01"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-02",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-02"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-03",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-03"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-04",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-04"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-05",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-05"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-06",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-06"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-07",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-07"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-08",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-08"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-09",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-09"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-10",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-10"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-11",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-11"
+      ]
+    },
+    {
+      "rule_id": "R-C-Q229-WARN-12",
+      "action": "add-evidence",
+      "evidence_ids": [
+        "O-C-2022-2218931-WARN-12"
+      ]
+    }
+  ],
+  "unresolved_questions": [
+    "Equation (1) sums the weights without the input, so the hidden output ignores the data.",
+    "The prose reports R2 above 0.99 while Figures 5 and 10 print R near 0.9985.",
+    "Algorithm 2 reverses the buy and sell lines relative to the prose.",
+    "The bitcoin long horizon is five days in the buying rule and seven days in the forecast.",
+    "Control group 4 ends at 3712.93 dollars from a stated 30 percent annual growth."
+  ],
+  "review_status": "validated",
+  "protocol_v2_records": {
+    "language": {
+      "path": "artifacts/language-units/P-C-2022-2218931-a1aa7569.json",
+      "schema_version": 3,
+      "unit_count": 82,
+      "chapters": [
+        "abstract",
+        "introduction",
+        "assumptions",
+        "notation",
+        "model-establishment",
+        "results",
+        "robustness-verification",
+        "sensitivity-analysis",
+        "strengths-limitations",
+        "memo",
+        "appendix"
+      ],
+      "review_status": "validated"
+    },
+    "models": {
+      "path": "artifacts/model-units/P-C-2022-2218931-a1aa7569.json",
+      "schema_version": 2,
+      "model_count": 2,
+      "equation_count": 10,
+      "review_status": "validated"
+    }
+  },
+  "dimension_counts": {
+    "language": 82,
+    "modeling": 2,
+    "logic": 4,
+    "visualization": 13,
+    "verification": 4,
+    "data": 3,
+    "assumption": 4,
+    "result": 4,
+    "weakness": 12,
+    "other": 0
+  }
+}

@@ -1,0 +1,55 @@
+Team # 2010638                                                                   Page 18 of 20
+
+
+   fp.write(string_data1 + &apos;\n&apos;)
+   fp.close()
+with open(&apos;C:/Users/lenovo/Desktop/comments_nagative.txt&apos;,encoding=&apos;utf-8&a
+pos;) as fn2:
+   string_data2 = fn2.read()
+   pattern = re.compile(u&apos;\t|\n|\.|-|——|：|！|、|，|,|。|;|\)|\(|\?|"&apos;)
+   string_data2 = re.sub(pattern, &apos;&apos;, string_data2)
+   print(string_data2)
+   fp = open(&apos;C:/Users/lenovo/Desktop/comments_neg.txt&apos;,&apos;a&apos;,encoding
+=&apos;utf8&apos;)
+   fp.write(string_data2 + &apos;\n&apos;)
+   fp.close()
+data1 = pd.read_csv(&apos;C:/Users/lenovo/Desktop/comments_post.txt&apos;,encoding=&apos;utf
+-8&apos;,header=None)
+data2 = pd.read_csv(&apos;C:/Users/lenovo/Desktop/comments_neg.txt&apos;,encoding=&apos;utf
+-8&apos;,header=None)
+#mycut = lambda s: &apos; &apos;.join(word_tokenize(s))
+#data1 = data1[0].apply(mycut)
+#data2 = data2[0].apply(mycut)
+#mycut = lambda s: &apos; &apos;.join(word_tokenize(s))
+data1 = data1[0]
+data2 = data2[0]
+data1.to_csv(&apos;C:/Users/lenovo/Desktop/comments_post_cut.txt&apos;,index=False,header=Fa
+lse,encoding=&apos;utf-8&apos;)
+data2.to_csv(&apos;C:/Users/lenovo/Desktop/comments_neg_cut.txt&apos;,index=False,header=Fal
+se,encoding=&apos;utf-8&apos;)
+print(data2)
+post = pd.read_csv(&apos;C:/Users/lenovo/Desktop/comments_post_cut.txt&apos;,encoding=&apos
+;utf-8&apos;,header=None,error_bad_lines=False)
+neg = pd.read_csv(&apos;C:/Users/lenovo/Desktop/comments_neg_cut.txt&apos;,encoding=&apos;
+utf-8&apos;,header=None,error_bad_lines=False)
+stop = pd.read_csv(&apos;C:/Users/lenovo/Desktop/stoplist.txt&apos;,encoding=&apos;utf-8&apos;
+,header=None,sep=&apos;tipdm&apos;,engine=&apos;python&apos;)
+stop = [&apos; &apos;,&apos;&apos;] + list(stop[0])
+post[1] = post[0].apply(lambda s: s.split(&apos; &apos;))
+post[2] = post[1].apply(lambda x: [i for i in x if i not in stop])
+neg[1] = neg[0].apply(lambda s: s.split(&apos; &apos;))
+neg[2] = neg[1].apply(lambda x: [i for i in x if i not in stop])
+post_dict = corpora.Dictionary(post[2])
+post_corpus = [post_dict.doc2bow(i) for i in post[2]]
+post_lda = models.LdaModel(post_corpus, num_topics=4, id2word=post_dict)
+for i in range(3):
+   print(post_lda.print_topic(i))
+print(&apos)
+
+
+                                                                                          2
+                                                                                              关注数学模型
+                                                                                 MATHmodels
+
+
+                                                                                              获取更多资讯

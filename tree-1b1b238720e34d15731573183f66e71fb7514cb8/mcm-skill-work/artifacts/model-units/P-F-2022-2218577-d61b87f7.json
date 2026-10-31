@@ -1,0 +1,573 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2022-2218577-d61b87f7",
+  "problem_type": "F",
+  "year": "2022",
+  "source_sha256": "d61b87f715be27ff18e4650548705d78038a716268ccec34fba5a0236fd508c0",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2022-2218577-GEI",
+      "section": "3 Global Equity Model",
+      "family": "composite-index",
+      "summary": "TOPSIS equity evaluation: 4 first-level indicators (social, energy, technology, economic), 21 second-level. Weights from EWM + coefficient of variation, combined with lambda=0.5. 32 countries ranked.",
+      "computational_cost": "not-stated",
+      "purpose": "Measure global equity across 32 countries with an objective combined-weight TOPSIS model.",
+      "base_or_modification": "paper-specific",
+      "page": 5,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "C_i"
+      ],
+      "handoff_outputs": [
+        "C_i"
+      ],
+      "objectives": [
+        "Rank 32 countries by closeness to ideal equity level."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Value of jth indicator for ith country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E_j",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of jth indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_ej",
+          "normalized_name": "ewm_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy weight of jth indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cv_i",
+          "normalized_name": "coeff_variation",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Coefficient of variation of indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_cvj",
+          "normalized_name": "cv_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Coefficient-of-variation weight",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "preference_coeff",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Blend coefficient lambda = 0.5",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W_j",
+          "normalized_name": "combined_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined weight: lambda*W_e + (1-lambda)*W_cv",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_plus",
+          "normalized_name": "positive_distance",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Distance to positive ideal solution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D_minus",
+          "normalized_name": "negative_distance",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Distance to negative ideal solution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_i",
+          "normalized_name": "closeness",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "TOPSIS closeness score for country i",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2218577-GEI-1",
+          "equation_label": "Entropy",
+          "equation_text": "E_j = -1/ln(n) * sum_i(p_ij * ln(p_ij))",
+          "source_expression": "E_j = -1/ln(n) * sum_i(p_ij * ln(p_ij))",
+          "normalized_latex": "E_j = -\\frac{1}{\\ln n}\\sum_{i=1}^{n} p_{ij}\\ln p_{ij}",
+          "purpose": "Information entropy of indicator j",
+          "variable_symbols": [
+            "E_j",
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-GEI-2",
+          "equation_label": "Entropy weight",
+          "equation_text": "W_ej = (1 - E_j) / (k - sum(E_j))",
+          "source_expression": "W_ej = (1 - E_j) / (k - sum(E_j))",
+          "normalized_latex": "W_{ej} = \\frac{1 - E_j}{k - \\sum E_j}",
+          "purpose": "Normalized entropy weight",
+          "variable_symbols": [
+            "W_ej",
+            "E_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-GEI-3",
+          "equation_label": "Coefficient of variation",
+          "equation_text": "cv_i = SD_i / x_bar_i",
+          "source_expression": "cv_i = SD_i / x_bar_i",
+          "normalized_latex": "cv_i = \\frac{SD_i}{\\bar{x}_i}",
+          "purpose": "Relative dispersion of indicator",
+          "variable_symbols": [
+            "cv_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-GEI-4",
+          "equation_label": "Combined weight",
+          "equation_text": "W_j = lambda * W_ej + (1 - lambda) * W_cvj, lambda = 0.5",
+          "source_expression": "W_j = lambda * W_ej + (1 - lambda) * W_cvj, lambda = 0.5",
+          "normalized_latex": "W_j = \\lambda W_{ej} + (1-\\lambda) W_{cvj}",
+          "purpose": "Blend of entropy and variation weights",
+          "variable_symbols": [
+            "W_j",
+            "W_ej",
+            "W_cvj",
+            "lam"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-GEI-5",
+          "equation_label": "TOPSIS closeness",
+          "equation_text": "C_i = D_minus / (D_minus + D_plus)",
+          "source_expression": "C_i = D_minus / (D_minus + D_plus)",
+          "normalized_latex": "C_i = \\frac{D_i^-}{D_i^- + D_i^+}",
+          "purpose": "Closeness to ideal equity level",
+          "variable_symbols": [
+            "C_i",
+            "D_minus",
+            "D_plus"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations on pages 8-10.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "32 countries, 21 indicators, data from UN, WIPO, World Bank, World Energy Council."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index model."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EWM + coefficient of variation, lambda = 0.5 fixed",
+        "parameters": [
+          "W_j",
+          "lam"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize indicators (cost/benefit/moderate), compute EWM and CV weights, blend at lambda=0.5, run TOPSIS, rank 32 countries.",
+        "status": "implemented",
+        "steps": [
+          "Normalize 21 indicators",
+          "Entropy weights",
+          "Coefficient of variation weights",
+          "Blend at lambda 0.5",
+          "TOPSIS distances",
+          "Closeness scores",
+          "Rank countries"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Ranking stable under lambda perturbation."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Germany 0.648 rank 1, Switzerland 0.645, Sweden 0.635. Morocco 0.406 rank 32."
+        ],
+        "analysis": "Developed countries cluster at top, developing at bottom."
+      },
+      "constraints": [
+        "4 first-level indicators.",
+        "21 second-level indicators.",
+        "32 countries."
+      ],
+      "validation_refs": [
+        "Figure 2 weight chart",
+        "Figure 3 equity map",
+        "Table 2 country ranking"
+      ],
+      "strengths": [
+        "Combines two objective weighting methods.",
+        "Avoids AHP subjectivity."
+      ],
+      "limitations": [
+        "Only 32 countries.",
+        "Lambda fixed at 0.5 without justification."
+      ],
+      "missing_details": [
+        "Full weight vector values."
+      ],
+      "assumptions": [
+        "21 indicators represent global equity.",
+        "Data from authoritative sources is accurate."
+      ]
+    },
+    {
+      "model_id": "MU-F-2022-2218577-SEC",
+      "section": "4-5 Sector Assignment and Comparative Advantage",
+      "family": "clustering-allocation",
+      "summary": "K-means assigns 32 countries to 8 asteroid mining sectors. Ricardo comparative advantage reallocation lets more countries participate. Grey model GM(1,1) forecasts equity trend 2021-2025.",
+      "computational_cost": "not-stated",
+      "purpose": "Compare capability-based vs comparative-advantage sector allocation and forecast equity impact over time.",
+      "base_or_modification": "paper-specific",
+      "page": 14,
+      "inputs": [
+        "C_i",
+        "a_Li"
+      ],
+      "outputs": [
+        "Q_i",
+        "equity_trend"
+      ],
+      "handoff_outputs": [
+        "equity_trend"
+      ],
+      "objectives": [
+        "Show that comparative-advantage allocation reduces the negative equity impact of asteroid mining."
+      ],
+      "variables": [
+        {
+          "symbol": "C_i",
+          "normalized_name": "closeness",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "TOPSIS closeness score from equity model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_Li",
+          "normalized_name": "productivity",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Production efficiency of country in sector i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q_i",
+          "normalized_name": "workload",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Workload allocated to sector i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L_res",
+          "normalized_name": "total_resource",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Total resources owned by a country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_i",
+          "normalized_name": "sector_profit",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Profit brought by sector i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "equity_trend",
+          "normalized_name": "forecast_equity",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Grey-model forecast of equity over time",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2022-2218577-SEC-1",
+          "equation_label": "K-means objective",
+          "equation_text": "min E = sum_i sum_j ||x_j - m_i||^2",
+          "source_expression": "min E = sum_i sum_j ||x_j - m_i||^2",
+          "normalized_latex": "\\min E = \\sum_{i=1}^{k}\\sum_{j=1}^{t_i}\\|x_j - m_i\\|^2",
+          "purpose": "Minimize within-cluster sum of squares",
+          "variable_symbols": [
+            "C_i"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-SEC-2",
+          "equation_label": "Workload constraint",
+          "equation_text": "sum_i(a_Li * Q_i) = L",
+          "source_expression": "sum_i(a_Li * Q_i) = L",
+          "normalized_latex": "\\sum_{i=1}^{8} a_{Li} Q_i = L",
+          "purpose": "Total workload uses all resources",
+          "variable_symbols": [
+            "a_Li",
+            "Q_i",
+            "L_res"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-SEC-3",
+          "equation_label": "Sector workload",
+          "equation_text": "Q_1 = L/a_L1 - sum_{i=2..8}(a_Li/a_L1 * Q_i)",
+          "source_expression": "Q_1 = L/a_L1 - sum_{i=2..8}(a_Li/a_L1 * Q_i)",
+          "normalized_latex": "Q_1 = \\frac{L}{a_{L1}} - \\sum_{i=2}^{8}\\frac{a_{Li}}{a_{L1}}Q_i",
+          "purpose": "Residual workload for first sector",
+          "variable_symbols": [
+            "Q_i",
+            "a_Li",
+            "L_res"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2022-2218577-SEC-4",
+          "equation_label": "GM whitening equation",
+          "equation_text": "dx^(0)/dt + a*x^(0)(t) = b",
+          "source_expression": "dx^(0)/dt + a*x^(0)(t) = b",
+          "normalized_latex": "\\frac{dx^{(0)}}{dt} + ax^{(0)}(t) = b",
+          "purpose": "Grey differential model for equity forecast",
+          "variable_symbols": [
+            "equity_trend"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations on pages 15-20.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "32 countries, 8 sectors, data 2010-2020 for grey forecast."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Level-ratio test required before grey forecast."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Comparative advantage allocation is the preferred equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "K-means on sector indicators; GM(1,1) regression after level-ratio test",
+        "parameters": [
+          "a_Li",
+          "P_i"
+        ]
+      },
+      "algorithm": {
+        "description": "K-means clusters countries into 8 sectors. Ricardo model reallocates by comparative advantage. GM(1,1) forecasts both scenarios to 2025.",
+        "status": "implemented",
+        "steps": [
+          "K-means with Euclidean distance",
+          "Assign countries to sectors",
+          "Apply comparative advantage condition",
+          "Reallocate workloads",
+          "Level-ratio test on time series",
+          "GM(1,1) forecast both scenarios"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "K-means square error minimized. Grey model level-ratio test passed."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Capability allocation widens gap. Comparative advantage flattens the negative slope over time."
+        ],
+        "analysis": "More participation reduces inequity."
+      },
+      "constraints": [
+        "8 sectors.",
+        "Workload sums to total resources.",
+        "Forecast limited to short horizon."
+      ],
+      "validation_refs": [
+        "Figure 6-7 cluster division",
+        "Figure 9 comparative advantage division",
+        "Figure 11-12 time-varying effects"
+      ],
+      "strengths": [
+        "Compares two allocation doctrines directly.",
+        "Time dimension via grey model."
+      ],
+      "limitations": [
+        "K-means K not justified.",
+        "Grey model ignores structural breaks."
+      ],
+      "missing_details": [
+        "Exact K value and cluster centroids."
+      ],
+      "assumptions": [
+        "Eight sectors cover the mining chain.",
+        "Comparative advantage applies to space mining."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2022-2218577-GEI-1",
+      "model_id": "MU-F-2022-2218577-GEI",
+      "page": 8,
+      "source_expression": "E_j = -1/ln(n) * sum_i(p_ij * ln(p_ij))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-GEI-2",
+      "model_id": "MU-F-2022-2218577-GEI",
+      "page": 9,
+      "source_expression": "W_ej = (1 - E_j) / (k - sum(E_j))"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-GEI-3",
+      "model_id": "MU-F-2022-2218577-GEI",
+      "page": 9,
+      "source_expression": "cv_i = SD_i / x_bar_i"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-GEI-4",
+      "model_id": "MU-F-2022-2218577-GEI",
+      "page": 9,
+      "source_expression": "W_j = lambda * W_ej + (1 - lambda) * W_cvj, lambda = 0.5"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-GEI-5",
+      "model_id": "MU-F-2022-2218577-GEI",
+      "page": 10,
+      "source_expression": "C_i = D_minus / (D_minus + D_plus)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-SEC-1",
+      "model_id": "MU-F-2022-2218577-SEC",
+      "page": 15,
+      "source_expression": "min E = sum_i sum_j ||x_j - m_i||^2"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-SEC-2",
+      "model_id": "MU-F-2022-2218577-SEC",
+      "page": 17,
+      "source_expression": "sum_i(a_Li * Q_i) = L"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-SEC-3",
+      "model_id": "MU-F-2022-2218577-SEC",
+      "page": 17,
+      "source_expression": "Q_1 = L/a_L1 - sum_{i=2..8}(a_Li/a_L1 * Q_i)"
+    },
+    {
+      "equation_id": "EQ-F-2022-2218577-SEC-4",
+      "model_id": "MU-F-2022-2218577-SEC",
+      "page": 20,
+      "source_expression": "dx^(0)/dt + a*x^(0)(t) = b"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2022-2218577-GEI",
+      "to_model_id": "MU-F-2022-2218577-SEC",
+      "handoff": "TOPSIS closeness scores feed the sector clustering and equity comparison"
+    }
+  ]
+}

@@ -1,0 +1,1003 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2020-2006782-8d6d48b4",
+  "problem_type": "D",
+  "year": "2020",
+  "source_sha256": "8d6d48b45e09b0bec2542829debc5b773fdd5100ae602aefd11ef5850b067eb5",
+  "models": [
+    {
+      "model_id": "MU-D-2020-2006782-BallPassingNetwork",
+      "page": 4,
+      "section": "3.1 Ball Passing Network",
+      "family": "graph-theory",
+      "purpose": "Represent passing interactions between soccer players as an undirected weighted network to extract structural features of team coordination.",
+      "base_or_modification": "base",
+      "summary": "Undirected weighted graph where nodes are players and edges are passes. Adjacency matrix A encodes pass counts. Network parameters (degree, total links, density, diameter, clustering coefficient) characterize team structure.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Construct adjacency matrix A from passing events",
+          "Compute node degree, total links, network density, diameter, weighted/average clustering coefficients",
+          "Visualize with Gephi (undirected weighted layout)"
+        ],
+        "software": [
+          "Gephi for visualization; custom computation for parameters"
+        ],
+        "convergence_criteria": "N/A (direct computation)"
+      },
+      "assumptions": [
+        "Network is undirected (pass direction ignored)",
+        "Substitution players inherit position without formation change",
+        "All players have equal individual ability"
+      ],
+      "computational_cost": "Low — O(n^2) for n=11 players per team",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Adjacency matrix initialized from match passing event data"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Discrete network, no spatial boundary"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Static snapshot per match/period"
+          ]
+        }
+      },
+      "constraints": [
+        "Undirected edges only",
+        "No self-loops",
+        "Weights are non-negative integers"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Adjacency matrix, degree, density, diameter, clustering coefficient formulas provided"
+      },
+      "handoff_outputs": [
+        "A",
+        "C_avg",
+        "d_i",
+        "D",
+        "C_w"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "All parameters directly computable from passing event data"
+      },
+      "missing_details": [
+        "Edge weight normalization not specified",
+        "Gephi layout algorithm not named"
+      ],
+      "objectives": [
+        "Extract structural passing patterns",
+        "Compare team coordination across matches"
+      ],
+      "parameter_estimation": {
+        "method": "direct computation from data",
+        "parameters": [
+          "degree",
+          "total links",
+          "density",
+          "diameter",
+          "clustering coefficients"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Simple interpretable representation",
+        "Standard graph metrics applicable",
+        "Multi-scale decomposition (time/region) possible"
+      ],
+      "validation_refs": [
+        "Visual validation via Gephi plots (Figures 1-3)",
+        "Comparison with known team formations"
+      ],
+      "variables": [
+        {
+          "symbol": "A",
+          "normalized_name": "adjacency_matrix",
+          "unit": "dimensionless",
+          "definition": "n×n matrix where A_ij = number of passes between player i and j",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "player_count",
+          "unit": "count",
+          "definition": "Number of players in team (typically 11)",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_i",
+          "normalized_name": "node_degree",
+          "unit": "count",
+          "definition": "Number of edges incident to player i",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "network_density",
+          "unit": "dimensionless",
+          "definition": "Ratio of actual links to possible links: 2L/(n(n-1))",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_w",
+          "normalized_name": "weighted_clustering_coefficient",
+          "unit": "dimensionless",
+          "definition": "Weighted clustering coefficient per node",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_avg",
+          "normalized_name": "average_clustering_coefficient",
+          "unit": "dimensionless",
+          "definition": "Mean of node clustering coefficients across team",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_ij",
+          "normalized_name": "aij",
+          "unit": "dimensionless",
+          "definition": "Variable a_ij used in equation EQ-D-2020-2006782-01",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "l",
+          "unit": "dimensionless",
+          "definition": "Variable L used in equation EQ-D-2020-2006782-03",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s_i",
+          "normalized_name": "si",
+          "unit": "dimensionless",
+          "definition": "Variable s_i used in equation EQ-D-2020-2006782-04",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_ij",
+          "normalized_name": "wij",
+          "unit": "dimensionless",
+          "definition": "Variable w_ij used in equation EQ-D-2020-2006782-04",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "n"
+      ],
+      "outputs": [
+        "A",
+        "C_avg",
+        "d_i",
+        "D",
+        "C_w"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2006782-01",
+          "page": 4,
+          "source_expression": "A = (a_{ij})_{n×n}",
+          "normalized_latex": "A = (a_{ij})_{n \\times n}",
+          "purpose": "Define adjacency matrix of passing network",
+          "label": "(1)",
+          "variable_symbols": [
+            "A",
+            "a_ij",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-02",
+          "page": 5,
+          "source_expression": "d_i = Σ_j a_{ij}",
+          "normalized_latex": "d_i = \\sum_{j} a_{ij}",
+          "purpose": "Node degree as sum of adjacency row",
+          "label": "(2)",
+          "variable_symbols": [
+            "d_i",
+            "a_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-03",
+          "page": 5,
+          "source_expression": "D = 2L / (n(n-1))",
+          "normalized_latex": "D = \\frac{2L}{n(n-1)}",
+          "purpose": "Network density",
+          "label": "(3)",
+          "variable_symbols": [
+            "D",
+            "L",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-04",
+          "page": 6,
+          "source_expression": "C_w(v_i) = (1/(s_i(d_i-1))) Σ_{j,k} (w_{ij}+w_{ik})/2 · a_{ij}a_{ik}a_{jk}",
+          "normalized_latex": "C_w(v_i) = \\frac{1}{s_i(d_i - 1)} \\sum_{j,k} \\frac{w_{ij} + w_{ik}}{2} a_{ij} a_{ik} a_{jk}",
+          "purpose": "Weighted clustering coefficient",
+          "label": "(4)",
+          "variable_symbols": [
+            "C_w",
+            "s_i",
+            "d_i",
+            "w_ij",
+            "a_ij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-05",
+          "page": 6,
+          "source_expression": "C_avg = (1/n) Σ_i C_w(v_i)",
+          "normalized_latex": "C_{\\text{avg}} = \\frac{1}{n} \\sum_i C_w(v_i)",
+          "purpose": "Average clustering coefficient",
+          "label": "(5)",
+          "variable_symbols": [
+            "C_avg",
+            "C_w",
+            "n"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "limitations": [
+        "Ignores pass direction (could lose tactical asymmetry)",
+        "Does not weight by pass quality or outcome",
+        "Static per-match snapshot"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2006782-KMeansClustering",
+      "page": 7,
+      "section": "3.2 Dyadic and Triadic Configurations",
+      "family": "clustering",
+      "purpose": "Identify dyadic (2-player) and triadic (3-player) passing subgroups using K-means clustering on network similarity.",
+      "base_or_modification": "base",
+      "summary": "Apply K-means algorithm to adjacency rows to cluster players into dyadic and triadic configurations. Identifies key passing partnerships and triangles that characterize team coordination patterns.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute pairwise similarity/distance between players from adjacency matrix rows",
+          "Run K-means with K chosen to identify dyadic (K≈5) and triadic (K≈3-4) groups",
+          "Map clusters back to player positions on pitch"
+        ],
+        "software": [
+          "Not specified (likely MATLAB given appendix)"
+        ],
+        "convergence_criteria": "Standard K-means convergence (centroid stability)"
+      },
+      "assumptions": [
+        "Euclidean distance on adjacency vectors is meaningful",
+        "K chosen manually to match tactical interpretation"
+      ],
+      "computational_cost": "Low — K-means on 11 points",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Random centroid initialization (standard K-means)"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Discrete clustering"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Converges to local optimum"
+          ]
+        }
+      },
+      "constraints": [
+        "Each player assigned to exactly one cluster",
+        "K must be pre-specified"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "K-means objective and similarity formula provided"
+      },
+      "handoff_outputs": [
+        "μ_k"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Standard algorithm with known convergence"
+      },
+      "missing_details": [
+        "Exact K values used",
+        "Number of restarts",
+        "Initialization method"
+      ],
+      "objectives": [
+        "Identify key passing partnerships",
+        "Characterize team sub-structure"
+      ],
+      "parameter_estimation": {
+        "method": "K-means iterative optimization",
+        "parameters": [
+          "cluster centroids",
+          "assignments"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Simple interpretable output",
+        "Maps to tactical concepts (dyads, triads)"
+      ],
+      "validation_refs": [
+        "Visual comparison with known formations (Figure 5)"
+      ],
+      "variables": [
+        {
+          "symbol": "K",
+          "normalized_name": "cluster_count",
+          "unit": "count",
+          "definition": "Number of clusters to form",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "μ_k",
+          "normalized_name": "centroid",
+          "unit": "dimensionless",
+          "definition": "Mean adjacency vector for cluster k",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "J",
+          "normalized_name": "j",
+          "unit": "dimensionless",
+          "definition": "Variable J used in equation EQ-D-2020-2006782-06",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "x",
+          "unit": "dimensionless",
+          "definition": "Variable x used in equation EQ-D-2020-2006782-06",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_k",
+          "normalized_name": "ck",
+          "unit": "dimensionless",
+          "definition": "Variable C_k used in equation EQ-D-2020-2006782-06",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sim",
+          "normalized_name": "sim",
+          "unit": "dimensionless",
+          "definition": "Variable sim used in equation EQ-D-2020-2006782-07",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_i",
+          "normalized_name": "xi",
+          "unit": "dimensionless",
+          "definition": "Variable x_i used in equation EQ-D-2020-2006782-07",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_j",
+          "normalized_name": "xj",
+          "unit": "dimensionless",
+          "definition": "Variable x_j used in equation EQ-D-2020-2006782-07",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "d",
+          "unit": "dimensionless",
+          "definition": "Variable d used in equation EQ-D-2020-2006782-07",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "K"
+      ],
+      "outputs": [
+        "μ_k"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2006782-06",
+          "page": 7,
+          "source_expression": "J = Σ_k Σ_{x∈C_k} ||x - μ_k||²",
+          "normalized_latex": "J = \\sum_{k=1}^{K} \\sum_{x \\in C_k} \\|x - \\mu_k\\|^2",
+          "purpose": "K-means objective function",
+          "label": "(6)",
+          "variable_symbols": [
+            "J",
+            "K",
+            "x",
+            "μ_k",
+            "C_k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-07",
+          "page": 7,
+          "source_expression": "sim(x_i, x_j) = 1 - d(x_i, x_j)/max(d)",
+          "normalized_latex": "\\text{sim}(x_i, x_j) = 1 - \\frac{d(x_i, x_j)}{\\max(d)}",
+          "purpose": "Normalized similarity between players",
+          "label": "(7)",
+          "variable_symbols": [
+            "sim",
+            "x_i",
+            "x_j",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "K chosen manually, not optimized",
+        "Local optimum only",
+        "Sensitive to initialization"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2006782-AdversarialRegression",
+      "page": 13,
+      "section": "4.2 Adversarial Regression",
+      "family": "regression",
+      "purpose": "Evaluate teamwork performance by regressing match outcome on five network indicators, with adversarial terms incorporating opponent's counter-performance.",
+      "base_or_modification": "modification",
+      "summary": "Linear regression scoring team performance S via five indicators (Coordination, Distribution, Tempo, Flexibility, Pressing) with weights constrained so that S_our - S_opponent matches game result (win/loss/draw). Greedy algorithm enumerates weight combinations; lowest-error combination selected as final model.",
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Step 1: Compute 5 indicators from network parameters for each team per match",
+          "Step 2: Enumerate weight coefficient combinations via Greedy Algorithm",
+          "Step 3: For each combination, compute S_our and S_opponent",
+          "Step 4: Constrain |S_our - S_opponent| < ε for correct match result direction",
+          "Step 5: Select weight combination with LowestError across all matches"
+        ],
+        "software": [
+          "MATLAB (appendix code)"
+        ],
+        "convergence_criteria": "Exhaustive search over feasible weight space; LowestError selection"
+      },
+      "assumptions": [
+        "Linear relationship between indicators and performance",
+        "Five indicators sufficient to capture teamwork quality",
+        "Adversarial framing: team score meaningful only relative to opponent"
+      ],
+      "computational_cost": "Moderate — exhaustive enumeration of weight combinations (20 feasible found)",
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Weight search starts from all feasible combinations"
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Weights non-negative, error limit ε constrains score difference"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Optimization problem, not dynamical system"
+          ]
+        }
+      },
+      "constraints": [
+        "β_i ≥ 0 for all i",
+        "|S_our - S_opp| < ε must match game result",
+        "Σβ_i = 1 (implied normalization)"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Regression equation, indicator definitions, and error formula provided"
+      },
+      "handoff_outputs": [
+        "β_i",
+        "S"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Exhaustive search guarantees global optimum within discretized weight space"
+      },
+      "missing_details": [
+        "Weight discretization step size",
+        "Exact ε value used in training",
+        "Cross-validation procedure"
+      ],
+      "objectives": [
+        "Score teamwork performance",
+        "Identify most important indicators",
+        "Enable strategy comparison"
+      ],
+      "parameter_estimation": {
+        "method": "exhaustive enumeration with LowestError selection",
+        "parameters": [
+          "β_1 (Coordination)",
+          "β_2 (Distribution)",
+          "β_3 (Tempo)",
+          "β_4 (Flexibility)",
+          "β_5 (Pressing)"
+        ],
+        "status": "implemented"
+      },
+      "strengths": [
+        "Adversarial formulation captures relative performance",
+        "Interpretable indicator weights",
+        "Exhaustive search avoids local optima"
+      ],
+      "validation_refs": [
+        "Match result prediction accuracy",
+        "Sensitivity to ε (Section 7.1)"
+      ],
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "team_score",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of five performance indicators",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_i",
+          "normalized_name": "indicator_weight",
+          "unit": "dimensionless",
+          "definition": "Weight for i-th performance indicator",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_1",
+          "normalized_name": "coordination",
+          "unit": "dimensionless",
+          "definition": "Average Clustering Coefficient of passing network",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_2",
+          "normalized_name": "distribution",
+          "unit": "dimensionless",
+          "definition": "Standard deviation of node degree (contribution uniformity)",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_3",
+          "normalized_name": "tempo",
+          "unit": "seconds",
+          "definition": "Time for 50 consecutive ball passes",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_4",
+          "normalized_name": "flexibility",
+          "unit": "dimensionless",
+          "definition": "Standard deviation of y-coordinates of pass endpoints",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x_5",
+          "normalized_name": "pressing",
+          "unit": "dimensionless",
+          "definition": "Mean x-coordinate of pass endpoints (field position)",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ε",
+          "normalized_name": "error_limit",
+          "unit": "dimensionless",
+          "definition": "Maximum allowed score difference deviation from game result",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_1",
+          "normalized_name": "β1",
+          "unit": "dimensionless",
+          "definition": "Variable β_1 used in equation EQ-D-2020-2006782-08",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_2",
+          "normalized_name": "β2",
+          "unit": "dimensionless",
+          "definition": "Variable β_2 used in equation EQ-D-2020-2006782-08",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_3",
+          "normalized_name": "β3",
+          "unit": "dimensionless",
+          "definition": "Variable β_3 used in equation EQ-D-2020-2006782-08",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_4",
+          "normalized_name": "β4",
+          "unit": "dimensionless",
+          "definition": "Variable β_4 used in equation EQ-D-2020-2006782-08",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β_5",
+          "normalized_name": "β5",
+          "unit": "dimensionless",
+          "definition": "Variable β_5 used in equation EQ-D-2020-2006782-08",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Error",
+          "normalized_name": "error",
+          "unit": "dimensionless",
+          "definition": "Variable Error used in equation EQ-D-2020-2006782-10",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "x_5",
+        "x_4",
+        "x_2",
+        "x_3",
+        "ε",
+        "x_1"
+      ],
+      "outputs": [
+        "β_i",
+        "S"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2006782-08",
+          "page": 13,
+          "source_expression": "S = β_1·x_1 + β_2·x_2 + β_3·x_3 + β_4·x_4 + β_5·x_5",
+          "normalized_latex": "S = \\beta_1 x_1 + \\beta_2 x_2 + \\beta_3 x_3 + \\beta_4 x_4 + \\beta_5 x_5",
+          "purpose": "Team performance score as weighted linear combination of five indicators",
+          "label": "(8)",
+          "variable_symbols": [
+            "S",
+            "β_1",
+            "β_2",
+            "β_3",
+            "β_4",
+            "β_5",
+            "x_1",
+            "x_2",
+            "x_3",
+            "x_4",
+            "x_5"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-09",
+          "page": 13,
+          "source_expression": "S_our - S_opp > 0 ↔ win; < 0 ↔ loss; ≈ 0 ↔ draw",
+          "normalized_latex": "S_{\\text{our}} - S_{\\text{opp}} \\gtrless 0",
+          "purpose": "Adversarial constraint linking score difference to match outcome",
+          "label": "(9)",
+          "variable_symbols": [
+            "S"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-10",
+          "page": 14,
+          "source_expression": "Error = Σ|S_our - S_opp - actual_diff|",
+          "normalized_latex": "\\text{Error} = \\sum |S_{\\text{our}} - S_{\\text{opp}} - \\Delta_{\\text{actual}}|",
+          "purpose": "Total prediction error across matches for weight selection",
+          "label": "(10)",
+          "variable_symbols": [
+            "S",
+            "Error"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Linear model may miss nonlinear interactions",
+        "Small sample size (one season)",
+        "Discretized weight search loses precision",
+        "No cross-validation reported"
+      ]
+    },
+    {
+      "model_id": "MU-D-2020-2006782-GeneralizationModel",
+      "page": 19,
+      "section": "6.1 Generalization to Other Teamwork",
+      "family": "analogy-extension",
+      "purpose": "Extend soccer teamwork indicators to general team domains by defining analogous concepts: leadership intensity and effective coordination.",
+      "base_or_modification": "modification",
+      "summary": "Maps five soccer indicators to general teamwork via analogy. Introduces two new composite indicators: Leadership Intensity (weighted function of leader experience, power, personality) and Effective Coordination (time-averaged coordination with decay). Qualitative framework without empirical validation.",
+      "algorithm": {
+        "status": "not-applicable",
+        "steps": [
+          "Map Coordination → team interaction quality",
+          "Map Distribution → task allocation uniformity",
+          "Map Flexibility → role adaptability",
+          "Define Leadership Intensity as f(experience, power, personality)",
+          "Define Effective Coordination as time-averaged coordination"
+        ],
+        "software": [
+          "N/A (conceptual framework)"
+        ],
+        "convergence_criteria": "N/A"
+      },
+      "assumptions": [
+        "Soccer teamwork indicators have meaningful analogues in other domains",
+        "Leadership can be quantified as intensity"
+      ],
+      "computational_cost": "N/A — conceptual",
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Conceptual model"
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Conceptual model"
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Conceptual model"
+          ]
+        }
+      },
+      "constraints": [
+        "Conceptual model without formal constraints"
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Leadership intensity and effective coordination formulas provided"
+      },
+      "handoff_outputs": [
+        "L",
+        "C_eff"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "No empirical data for generalized version"
+      },
+      "missing_details": [
+        "How to measure experience/power/personality quantitatively",
+        "Validation in non-sports domain",
+        "Decay function form"
+      ],
+      "objectives": [
+        "Demonstrate model transferability",
+        "Provide team design guidance"
+      ],
+      "parameter_estimation": {
+        "method": "not estimated",
+        "parameters": [
+          "leadership weights",
+          "coordination decay rate"
+        ],
+        "status": "not-applicable"
+      },
+      "strengths": [
+        "Creative cross-domain analogy",
+        "Introduces time dimension via effective coordination"
+      ],
+      "validation_refs": [
+        "Italy National Team comparison (qualitative)"
+      ],
+      "variables": [
+        {
+          "symbol": "L",
+          "normalized_name": "leadership_intensity",
+          "unit": "dimensionless",
+          "definition": "Composite of leader experience, power, and personality",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_eff",
+          "normalized_name": "effective_coordination",
+          "unit": "dimensionless",
+          "definition": "Time-averaged coordination with decay",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "arbitrary",
+          "definition": "Time variable for coordination averaging",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "α",
+          "normalized_name": "α",
+          "unit": "dimensionless",
+          "definition": "Variable α used in equation EQ-D-2020-2006782-11",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "β",
+          "normalized_name": "β",
+          "unit": "dimensionless",
+          "definition": "Variable β used in equation EQ-D-2020-2006782-11",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "γ",
+          "normalized_name": "γ",
+          "unit": "dimensionless",
+          "definition": "Variable γ used in equation EQ-D-2020-2006782-11",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "t",
+          "unit": "dimensionless",
+          "definition": "Variable T used in equation EQ-D-2020-2006782-12",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "c",
+          "unit": "dimensionless",
+          "definition": "Variable C used in equation EQ-D-2020-2006782-12",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "λ",
+          "normalized_name": "λ",
+          "unit": "dimensionless",
+          "definition": "Variable λ used in equation EQ-D-2020-2006782-12",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t"
+      ],
+      "outputs": [
+        "L",
+        "C_eff"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2020-2006782-11",
+          "page": 20,
+          "source_expression": "L = α·Experience + β·Power + γ·Personality",
+          "normalized_latex": "L = \\alpha \\cdot \\text{Experience} + \\beta \\cdot \\text{Power} + \\gamma \\cdot \\text{Personality}",
+          "purpose": "Leadership intensity as weighted sum of three factors",
+          "label": "(11)",
+          "variable_symbols": [
+            "L",
+            "α",
+            "β",
+            "γ"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2020-2006782-12",
+          "page": 20,
+          "source_expression": "C_eff(T) = (1/T) ∫_0^T C(t)·e^{-λ(T-t)} dt",
+          "normalized_latex": "C_{\\text{eff}}(T) = \\frac{1}{T} \\int_0^T C(t) e^{-\\lambda(T-t)} \\, dt",
+          "purpose": "Effective coordination as exponentially weighted time average",
+          "label": "(12)",
+          "variable_symbols": [
+            "C_eff",
+            "T",
+            "C",
+            "t",
+            "λ"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "limitations": [
+        "Purely conceptual — no empirical validation",
+        "Leadership factors not operationally defined",
+        "Decay rate λ not estimated",
+        "Persuasibility (persuasiveness) concern raised by authors themselves"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-2020-2006782-BallPassingNetwork",
+      "to_model_id": "MU-D-2020-2006782-KMeansClustering",
+      "handoff": "Adjacency matrix A used as input features for clustering"
+    },
+    {
+      "from_model_id": "MU-D-2020-2006782-BallPassingNetwork",
+      "to_model_id": "MU-D-2020-2006782-AdversarialRegression",
+      "handoff": "Network parameters feed five indicators (coordination, distribution, tempo, flexibility, pressing)"
+    },
+    {
+      "from_model_id": "MU-D-2020-2006782-AdversarialRegression",
+      "to_model_id": "MU-D-2020-2006782-GeneralizationModel",
+      "handoff": "Five-indicator framework analogized to general teamwork"
+    }
+  ],
+  "review_status": "validated"
+}

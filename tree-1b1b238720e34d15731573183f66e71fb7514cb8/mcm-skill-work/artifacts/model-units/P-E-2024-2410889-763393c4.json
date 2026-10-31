@@ -1,0 +1,1227 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2024-2410889-763393c4",
+  "problem_type": "E",
+  "year": "2024",
+  "source_sha256": "763393c4fd12e84c40754f1a5617532f0dbde6ee6d3a077b58b4f9c36604c42e",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2024-2410889-UDM",
+      "section": "Underwriting Decision Model",
+      "family": "simulation",
+      "summary": "An underwriting rule driven by the sign of profit. Policy risk is 0.6 times an external risk, the count of extreme weather events in a year divided by 365, plus 0.4 times an internal risk, the average score on a risk checklist. The premium rate is a base of 0.3 percent plus 0.1 percent times the risk, and the premium is the insured amount, drawn from a normal distribution around the mean property value, times that rate. Premium income is split three ways: half is kept as a reserve that does not grow, high-risk policies above an unnamed threshold are reinsured at 0.8 of the premium with a recovery of 0.4 of the payout, and the rest is invested at the region's expected return. Claims are the insured amount times a damage ratio, paid only when a Monte Carlo draw says the policy is in force, with the payout probability set to the risk divided by 10. One hundred scenarios of 1000 policies decide the region: Guangdong is profitable in 63 percent of them and is underwritten, Florida in 26 percent and is refused. The company turns profitable once the base rate reaches about 0.0034.",
+      "computational_cost": "100 Monte Carlo scenarios of 1000 policies each",
+      "purpose": "Decide whether an insurer should underwrite a region hit by extreme weather.",
+      "base_or_modification": "paper-specific",
+      "page": 6,
+      "inputs": [
+        "ewn",
+        "TO",
+        "Aval",
+        "rate"
+      ],
+      "outputs": [
+        "Profit",
+        "decision"
+      ],
+      "handoff_outputs": [
+        "ROE"
+      ],
+      "objectives": [
+        "Underwrite a region exactly when the simulated profit is positive more often than not."
+      ],
+      "variables": [
+        {
+          "symbol": "ROE",
+          "normalized_name": "external_risk",
+          "role": "intermediate",
+          "unit": "per-day",
+          "definition": "Frequency of extreme weather events over a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ewn",
+          "normalized_name": "event_count",
+          "role": "input",
+          "unit": "count",
+          "definition": "Number of occurrences of one extreme weather type in a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "weather_type_count",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of extreme weather types in the region",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ROI",
+          "normalized_name": "internal_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Average score on the risk checklist",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TO",
+          "normalized_name": "checklist_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Score of one indicator on the risk checklist",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "indicator_count",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of checklist indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RO",
+          "normalized_name": "policy_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of external and internal risk",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wE",
+          "normalized_name": "external_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on external risk, set at 0.6",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wI",
+          "normalized_name": "internal_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on internal risk, set at 0.4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CO",
+          "normalized_name": "premium",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Premium charged for one policy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "AO",
+          "normalized_name": "insured_amount",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Amount insured, drawn from a normal distribution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "FO",
+          "normalized_name": "policy_rate",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Base rate plus a risk loading",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Aval",
+          "normalized_name": "mean_property_value",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Average property value in the area, the mean of the draw",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "value_spread",
+          "role": "parameter",
+          "unit": "currency",
+          "definition": "Spread of insured amounts, set at 0.2 of the mean",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "base_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Base premium rate, set at 0.003",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "risk_rate_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Loading per unit of risk, set at 0.001",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RI",
+          "normalized_name": "premium_income",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Total premium collected over the year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RIa",
+          "normalized_name": "reserve",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Half the premium income, held as cash",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RIb",
+          "normalized_name": "reinsurance_fund",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Premium of the high-risk policies, sent to reinsurers",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RIc",
+          "normalized_name": "investment_fund",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "What remains after reserve and reinsurance",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EO",
+          "normalized_name": "reinsured_value",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Value of one reinsured policy after a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "reinsurance_premium_ratio",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Reinsurance premium as a share of the original, set at 0.8",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kappa",
+          "normalized_name": "reinsurance_payout_ratio",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Payout recovered from the reinsurer, set at 0.4",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rate",
+          "normalized_name": "investment_return",
+          "role": "input",
+          "unit": "per-year",
+          "definition": "Expected annual return in the region",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rtrue",
+          "normalized_name": "true_income",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Reserve plus reinsurance value plus grown investment",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ccost",
+          "normalized_name": "claim_cost",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Sum of payouts on policies that are in force",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PO",
+          "normalized_name": "payout",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Insured amount times the damage ratio",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ZO",
+          "normalized_name": "in_force",
+          "role": "state",
+          "unit": "binary",
+          "definition": "One when the policy pays out, zero otherwise",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "damage_ratio",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Loss per unit area divided by the maximum",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TLj",
+          "normalized_name": "total_loss",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Total loss of the area in a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sj",
+          "normalized_name": "land_area",
+          "role": "input",
+          "unit": "area",
+          "definition": "Land area of the region",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lmax",
+          "normalized_name": "max_loss_density",
+          "role": "parameter",
+          "unit": "currency-per-area",
+          "definition": "Largest loss per unit area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Profit",
+          "normalized_name": "profit",
+          "role": "output",
+          "unit": "currency",
+          "definition": "True income minus claim cost",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "decision",
+          "normalized_name": "underwrite_decision",
+          "role": "output",
+          "unit": "binary",
+          "definition": "Underwrite when profit is positive in most scenarios",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "payout_prob",
+          "normalized_name": "payout_probability",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Policy risk divided by ten",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-1",
+          "equation_label": "External risk",
+          "equation_text": "ROE = (sum over weather types of ewn_i) / (n * 365).",
+          "source_expression": "ROE = (sum over weather types of ewn_i) / (n * 365).",
+          "normalized_latex": "ROE = \\sum_i ewn_i /(n \\times 365)",
+          "purpose": "Measure external risk by how often extreme weather hits.",
+          "variable_symbols": [
+            "ROE",
+            "ewn",
+            "n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-2",
+          "equation_label": "Internal risk",
+          "equation_text": "ROI = (sum of checklist scores) / m.",
+          "source_expression": "ROI = (sum of checklist scores) / m.",
+          "normalized_latex": "ROI = \\sum_i TO_i / m",
+          "purpose": "Average the checklist into one score.",
+          "variable_symbols": [
+            "ROI",
+            "TO",
+            "m"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-3",
+          "equation_label": "Policy risk",
+          "equation_text": "RO = w_E * ROE + w_I * ROI, with weights 0.6 and 0.4.",
+          "source_expression": "RO = w_E * ROE + w_I * ROI, with weights 0.6 and 0.4.",
+          "normalized_latex": "RO = 0.6 ROE + 0.4 ROI",
+          "purpose": "Weight the risk nobody can change above the one they can.",
+          "variable_symbols": [
+            "RO",
+            "wE",
+            "ROE",
+            "wI",
+            "ROI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-4",
+          "equation_label": "Premium and rate",
+          "equation_text": "CO = AO * FO and FO = alpha + lam * RO, with the amount drawn around the mean property value.",
+          "source_expression": "CO = AO * FO and FO = alpha + lam * RO, with the amount drawn around the mean property value.",
+          "normalized_latex": "CO = AO(\\alpha + \\lambda RO)",
+          "purpose": "Price the policy from its risk.",
+          "variable_symbols": [
+            "CO",
+            "AO",
+            "FO",
+            "alpha",
+            "lam",
+            "RO",
+            "Aval",
+            "sigma"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-5",
+          "equation_label": "Three-way split",
+          "equation_text": "RIa = 0.5 * RI, RIb = sum of premiums over high-risk policies, RIc = RI - RIa - RIb.",
+          "source_expression": "RIa = 0.5 * RI, RIb = sum of premiums over high-risk policies, RIc = RI - RIa - RIb.",
+          "normalized_latex": "RI_a = 0.5 RI,\\ RI_c = RI - RI_a - RI_b",
+          "purpose": "Divide the premium among cash, reinsurance, and investment.",
+          "variable_symbols": [
+            "RIa",
+            "RI",
+            "RIb",
+            "RIc",
+            "CO"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-6",
+          "equation_label": "True income",
+          "equation_text": "R_true = RIa + sum of EO + RIc * (1 + rate), where a reinsured policy returns its premium minus 0.8 of it, plus 0.4 of the payout when it is in force.",
+          "source_expression": "R_true = RIa + sum of EO + RIc * (1 + rate), where a reinsured policy returns its premium minus 0.8 of it, plus 0.4 of the payout when it is in force.",
+          "normalized_latex": "R = RI_a + \\sum EO + RI_c(1+rate)",
+          "purpose": "Count what the three funds are worth after a year.",
+          "variable_symbols": [
+            "Rtrue",
+            "RIa",
+            "EO",
+            "RIc",
+            "rate",
+            "rho",
+            "kappa"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDM-7",
+          "equation_label": "Claims and the decision",
+          "equation_text": "Cost = sum of AO * beta * ZO, Profit = R_true - Cost, and the company underwrites when the profit is positive.",
+          "source_expression": "Cost = sum of AO * beta * ZO, Profit = R_true - Cost, and the company underwrites when the profit is positive.",
+          "normalized_latex": "P = R - \\sum AO\\,\\beta\\,Z_O",
+          "purpose": "Underwrite only where the profit stays positive.",
+          "variable_symbols": [
+            "Ccost",
+            "AO",
+            "beta",
+            "ZO",
+            "Profit",
+            "Rtrue",
+            "decision",
+            "TLj",
+            "Sj",
+            "Lmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 17 print with the MATHmodels watermark cutting through the sums. The recorded forms follow the prose gloss beside each one.",
+        "reason": "Sections 4.1 to 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Each scenario is drawn fresh; nothing carries over."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "A region is treated as one unit with one risk."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The decision is a frequency, not an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The base rate 0.003, the loading 0.001, the weights 0.6 and 0.4, and the reinsurance ratios 0.8 and 0.4 are all set by the authors. The payout probability is the risk divided by 10, chosen by debugging.",
+        "parameters": [
+          "alpha",
+          "lam",
+          "wE",
+          "wI",
+          "rho",
+          "kappa"
+        ]
+      },
+      "algorithm": {
+        "description": "Draw the policies, split the premium, settle the claims, and count the profitable scenarios.",
+        "status": "implemented",
+        "steps": [
+          "Draw 1000 insured amounts from a normal distribution",
+          "Score each policy and price it",
+          "Split the premium three ways",
+          "Draw which policies are in force",
+          "Repeat for 100 scenarios and take the frequency of positive profit"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Not stated. The count of 100 scenarios is fixed."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Figure 3 shows the two regions separating cleanly."
+        ],
+        "analysis": "The decision is reproducible in direction, but the risk threshold that marks a policy as high-risk is never given."
+      },
+      "constraints": [
+        "The company underwrites only when profit is positive.",
+        "Premiums cannot be set freely, because customers leave."
+      ],
+      "validation_refs": [
+        "Figure 3, the two regions",
+        "Figure 4, profit against the base rate"
+      ],
+      "strengths": [
+        "The decision rule is a single sign, so it is easy to audit.",
+        "The premium is split into uses an insurer would recognize."
+      ],
+      "limitations": [
+        "The payout probability is the risk divided by ten, with no basis beyond debugging.",
+        "The threshold separating high-risk from low-risk policies is not stated."
+      ],
+      "missing_details": [
+        "The risk threshold for reinsurance.",
+        "The checklist indicators and their scoring rules, which sit in an unreadable table."
+      ],
+      "assumptions": [
+        "Demand for policies does not change with the rate.",
+        "The payout probability rises with the policy risk.",
+        "Every building in a region shares one external risk.",
+        "Risk can be passed on by reinsurance."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2410889-UDGP",
+      "section": "Underwriting Decision Goal Programming",
+      "family": "optimization",
+      "summary": "A siting model built on the underwriting risk. External risk at a point is the regional external risk times a function of distance to the nearest disaster, fitted on 30 points in [0, 3] with 1000 Monte Carlo samples each as 0.5454 plus 0.0874 times the log of distance, with a residual sum of squares of 0.008. Convenience is 1 minus half the distance to the nearest living service, and zero past 2 km. The objective weights the two equally and is maximized over a rectangle by particle swarm optimization, keeping clear of the disaster and service points. The best cell shown is at (1.2, 0.4). Below a satisfaction of 0.5 the paper advises against building; close to a disaster it advises expensive materials.",
+      "computational_cost": "1000 Monte Carlo samples at each of 30 distances, then a particle swarm search",
+      "purpose": "Choose where to build so that safety and convenience are both high.",
+      "base_or_modification": "modification",
+      "page": 13,
+      "inputs": [
+        "ROE"
+      ],
+      "outputs": [
+        "x",
+        "y"
+      ],
+      "handoff_outputs": [
+        "IS"
+      ],
+      "objectives": [
+        "Maximize the average of housing security and living convenience inside the rectangle."
+      ],
+      "variables": [
+        {
+          "symbol": "ROE",
+          "normalized_name": "regional_external_risk",
+          "role": "input",
+          "unit": "per-day",
+          "definition": "External risk of the whole region, taken from the underwriting model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ROEp",
+          "normalized_name": "local_external_risk",
+          "role": "intermediate",
+          "unit": "per-day",
+          "definition": "Regional risk scaled by distance to the disaster",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dI",
+          "normalized_name": "disaster_distance",
+          "role": "intermediate",
+          "unit": "length",
+          "definition": "Distance from the site to the nearest disaster",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "fit_intercept",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Intercept of the distance function, 0.5454",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "fit_slope",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Slope on the log distance, 0.0874",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "IS",
+          "normalized_name": "housing_security",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Security, read off the distance function",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dL",
+          "normalized_name": "service_distance",
+          "role": "intermediate",
+          "unit": "length",
+          "definition": "Distance from the site to the nearest living service",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RS",
+          "normalized_name": "living_convenience",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Convenience, falling linearly to zero at 2 km",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rmax",
+          "normalized_name": "service_radius",
+          "role": "parameter",
+          "unit": "length",
+          "definition": "Radius of a living service area, 2 km",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "site_x",
+          "role": "output",
+          "unit": "length",
+          "definition": "Horizontal coordinate of the chosen site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "site_y",
+          "role": "output",
+          "unit": "length",
+          "definition": "Vertical coordinate of the chosen site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xi",
+          "normalized_name": "disaster_x",
+          "role": "input",
+          "unit": "length",
+          "definition": "Horizontal coordinate of a disaster site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yi",
+          "normalized_name": "disaster_y",
+          "role": "input",
+          "unit": "length",
+          "definition": "Vertical coordinate of a disaster site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xj",
+          "normalized_name": "service_x",
+          "role": "input",
+          "unit": "length",
+          "definition": "Horizontal coordinate of a living service",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yj",
+          "normalized_name": "service_y",
+          "role": "input",
+          "unit": "length",
+          "definition": "Vertical coordinate of a living service",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "region_length",
+          "role": "parameter",
+          "unit": "length",
+          "definition": "Length of the rectangular region",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "region_width",
+          "role": "parameter",
+          "unit": "length",
+          "definition": "Width of the rectangular region",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Obj",
+          "normalized_name": "satisfaction",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Equal-weighted sum of security and convenience",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2410889-UDGP-1",
+          "equation_label": "Distance-scaled risk",
+          "equation_text": "ROE_local = ROE * (a + b * ln(dI)), with a = 0.5454 and b = 0.0874.",
+          "source_expression": "ROE_local = ROE * (a + b * ln(dI)), with a = 0.5454 and b = 0.0874.",
+          "normalized_latex": "ROE' = ROE(0.5454 + 0.0874\\ln d_I)",
+          "purpose": "Let risk fall, slowly, as the site moves away from the disaster.",
+          "variable_symbols": [
+            "ROEp",
+            "ROE",
+            "a",
+            "b",
+            "dI"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDGP-2",
+          "equation_label": "Convenience",
+          "equation_text": "RS = 1 - dL/2 when dL is within 2 km, and 0 beyond.",
+          "source_expression": "RS = 1 - dL/2 when dL is within 2 km, and 0 beyond.",
+          "normalized_latex": "g(d_L) = 1 - d_L/2 \\ (d_L \\le 2)",
+          "purpose": "Cut convenience off past the service radius.",
+          "variable_symbols": [
+            "RS",
+            "dL",
+            "rmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-UDGP-3",
+          "equation_label": "Siting objective",
+          "equation_text": "Maximize 0.5*IS + 0.5*RS over the rectangle, with the site kept off the disaster and service points.",
+          "source_expression": "Maximize 0.5*IS + 0.5*RS over the rectangle, with the site kept off the disaster and service points.",
+          "normalized_latex": "\\max 0.5 f(d_{I\\min}) + 0.5 g(d_{L\\min})",
+          "purpose": "Balance safety and convenience with equal weights.",
+          "variable_symbols": [
+            "Obj",
+            "IS",
+            "RS",
+            "x",
+            "y",
+            "xi",
+            "yi",
+            "xj",
+            "yj",
+            "m",
+            "n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 18 to 22 print with the piecewise braces and the square roots broken by the watermark. The recorded forms follow the prose.",
+        "reason": "Sections 5.1 and 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The search has no time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The site stays inside the rectangle and off the existing points."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The result is an optimum, not an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The distance function is fit by least squares on 30 points, each scored by 1000 Monte Carlo samples. The residual sum of squares is 0.008.",
+        "parameters": [
+          "a",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "description": "Fit the distance curve, then search the rectangle.",
+        "status": "implemented",
+        "steps": [
+          "Sample 30 distances in [0, 3]",
+          "Score each with 1000 Monte Carlo draws",
+          "Fit the log curve by least squares",
+          "Search the rectangle by particle swarm",
+          "Read the best cell off the raster"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Not stated for the swarm. The fit is judged by a residual sum of squares of 0.008."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Figure 6 shows the satisfaction surface and names the best coordinate."
+        ],
+        "analysis": "The surface and the winning cell are both shown."
+      },
+      "constraints": [
+        "The site lies inside the rectangle.",
+        "The site is not placed on a disaster or a service point.",
+        "Both goals carry equal weight."
+      ],
+      "validation_refs": [
+        "Figure 5, the fitted curve",
+        "Figure 6, the satisfaction surface"
+      ],
+      "strengths": [
+        "The distance function is fit and its residual is reported.",
+        "The advice comes with a cutoff, 0.5, below which building is refused."
+      ],
+      "limitations": [
+        "The rectangle's length and width are never given numbers.",
+        "The swarm settings are not reported."
+      ],
+      "missing_details": [
+        "The coordinates of the disaster and service points used in the demo.",
+        "The particle count and iteration limit."
+      ],
+      "assumptions": [
+        "A region can be treated as a rectangle.",
+        "Security is well proxied by the insurer's willingness to underwrite.",
+        "Living convenience drops linearly inside 2 km and vanishes beyond it."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2410889-PVAM",
+      "section": "Protection Value Assessment Model",
+      "family": "decision",
+      "summary": "A conservation score on four indicators, culture, history, economics, and community, each with two sub-indicators. Scores are min-max normalized, weighted by entropy, and ranked by TOPSIS. The score falls into four bands: none below 0.1, primary to 0.3, secondary to 0.5, tertiary above 0.5. Each band gets its own measures, from monthly inspections up to legal protection, a digital twin, and relocation. The Forbidden City scores 0.618, above the Mogao Caves at 0.364 and the Canton Tower at 0.215, and is placed in the top band. Moving one indicator changes the score by at most 5 percent.",
+      "computational_cost": "not-stated",
+      "purpose": "Decide whether a building is worth protecting and at what intensity.",
+      "base_or_modification": "base",
+      "page": 16,
+      "inputs": [
+        "X"
+      ],
+      "outputs": [
+        "S",
+        "level"
+      ],
+      "handoff_outputs": [
+        "S"
+      ],
+      "objectives": [
+        "Rank buildings by closeness to the ideal profile and assign each a protection band."
+      ],
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "raw_score",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Score of one building on one sub-indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xmax",
+          "normalized_name": "indicator_max",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Largest raw score on an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xmin",
+          "normalized_name": "indicator_min",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Smallest raw score on an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xst",
+          "normalized_name": "normalized_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Min-max normalized score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "score_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of one building in an indicator's total",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "indicator_entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "indicator_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weight from one minus the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "building_count",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of buildings scored",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "weighted_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized score times its weight",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Dp",
+          "normalized_name": "distance_to_best",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Distance from a building to the ideal profile",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Dm",
+          "normalized_name": "distance_to_worst",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Distance from a building to the worst profile",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "protection_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Closeness to the ideal profile",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "level",
+          "normalized_name": "protection_level",
+          "role": "output",
+          "unit": "category",
+          "definition": "Band: none, primary, secondary, or tertiary",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2410889-PVAM-1",
+          "equation_label": "Min-max normalization",
+          "equation_text": "X_st = (X - X_min) / (X_max - X_min).",
+          "source_expression": "X_st = (X - X_min) / (X_max - X_min).",
+          "normalized_latex": "st\\_X = (X - X_{\\min})/(X_{\\max}-X_{\\min})",
+          "purpose": "Put every sub-indicator on one scale.",
+          "variable_symbols": [
+            "Xst",
+            "X",
+            "Xmin",
+            "Xmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-PVAM-2",
+          "equation_label": "Entropy weight",
+          "equation_text": "H = -1/ln(n) * sum of p ln p, and W = (1 - H) / sum of (1 - H).",
+          "source_expression": "H = -1/ln(n) * sum of p ln p, and W = (1 - H) / sum of (1 - H).",
+          "normalized_latex": "W_j = (1-H_j)/\\sum(1-H_k)",
+          "purpose": "Give more weight to the indicator that varies more.",
+          "variable_symbols": [
+            "H",
+            "p",
+            "n",
+            "W"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2410889-PVAM-3",
+          "equation_label": "TOPSIS score",
+          "equation_text": "S = D_minus / (D_plus + D_minus), with the distances measured to the best and worst weighted profiles.",
+          "source_expression": "S = D_minus / (D_plus + D_minus), with the distances measured to the best and worst weighted profiles.",
+          "normalized_latex": "S_i = D_i^-/(D_i^+ + D_i^-)",
+          "purpose": "Rank a building by how close it sits to the ideal.",
+          "variable_symbols": [
+            "S",
+            "Dp",
+            "Dm",
+            "Z"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 23 to 26 print with the sums and the maxima detached from their indices. The recorded forms follow the prose definitions.",
+        "reason": "Section 6.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The scoring has no time state."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Each building is scored on its own indicators."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is involved."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The weights come entirely from the entropy of the collected scores. Nothing is set by hand.",
+        "parameters": [
+          "W"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize, weight, rank, and bin.",
+        "status": "implemented",
+        "steps": [
+          "Min-max normalize the eight sub-indicators",
+          "Compute entropy and weights",
+          "Weight the scores",
+          "Measure distance to the best and worst profile",
+          "Bin the score into four bands"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Not applicable. The procedure is closed-form."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Table 2 gives three landmarks with their scores and Figure 9 shows the bands."
+        ],
+        "analysis": "The ranking is shown for three real buildings."
+      },
+      "constraints": [
+        "All indicators are treated as benefit indicators, so none is reversed.",
+        "The four bands are fixed in advance."
+      ],
+      "validation_refs": [
+        "Figure 8, the weights",
+        "Figure 9, the four bands",
+        "Table 2, three landmarks"
+      ],
+      "strengths": [
+        "The weights are computed, not chosen.",
+        "Each band is given measures whose cost rises with the band."
+      ],
+      "limitations": [
+        "The band cutoffs, 0.1, 0.3, and 0.5, are declared without a reason.",
+        "Nearly all the data come from China."
+      ],
+      "missing_details": [
+        "The full list of buildings behind the weights.",
+        "The scoring rule for era of construction and major historical events."
+      ],
+      "assumptions": [
+        "A building's worth is captured by culture, history, economics, and community.",
+        "More variation in an indicator means it deserves more weight.",
+        "Closeness to an ideal profile is the right reading of value."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-1",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 6,
+      "source_expression": "ROE = (sum over weather types of ewn_i) / (n * 365)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-2",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 7,
+      "source_expression": "ROI = (sum of checklist scores) / m."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-3",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 7,
+      "source_expression": "RO = w_E * ROE + w_I * ROI, with weights 0.6 and 0.4."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-4",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 7,
+      "source_expression": "CO = AO * FO and FO = alpha + lam * RO, with the amount drawn around the mean property value."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-5",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 8,
+      "source_expression": "RIa = 0.5 * RI, RIb = sum of premiums over high-risk policies, RIc = RI - RIa - RIb."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-6",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 9,
+      "source_expression": "R_true = RIa + sum of EO + RIc * (1 + rate), where a reinsured policy returns its premium minus 0.8 of it, plus 0.4 of the payout when it is in force."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDM-7",
+      "model_id": "MU-E-2024-2410889-UDM",
+      "page": 10,
+      "source_expression": "Cost = sum of AO * beta * ZO, Profit = R_true - Cost, and the company underwrites when the profit is positive."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDGP-1",
+      "model_id": "MU-E-2024-2410889-UDGP",
+      "page": 12,
+      "source_expression": "ROE_local = ROE * (a + b * ln(dI)), with a = 0.5454 and b = 0.0874."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDGP-2",
+      "model_id": "MU-E-2024-2410889-UDGP",
+      "page": 13,
+      "source_expression": "RS = 1 - dL/2 when dL is within 2 km, and 0 beyond."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-UDGP-3",
+      "model_id": "MU-E-2024-2410889-UDGP",
+      "page": 13,
+      "source_expression": "Maximize 0.5*IS + 0.5*RS over the rectangle, with the site kept off the disaster and service points."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-PVAM-1",
+      "model_id": "MU-E-2024-2410889-PVAM",
+      "page": 16,
+      "source_expression": "X_st = (X - X_min) / (X_max - X_min)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-PVAM-2",
+      "model_id": "MU-E-2024-2410889-PVAM",
+      "page": 16,
+      "source_expression": "H = -1/ln(n) * sum of p ln p, and W = (1 - H) / sum of (1 - H)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2410889-PVAM-3",
+      "model_id": "MU-E-2024-2410889-PVAM",
+      "page": 17,
+      "source_expression": "S = D_minus / (D_plus + D_minus), with the distances measured to the best and worst weighted profiles."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2024-2410889-UDM",
+      "to_model_id": "MU-E-2024-2410889-UDGP",
+      "handoff": "The regional external risk is rescaled by distance to site the building."
+    },
+    {
+      "from_model_id": "MU-E-2024-2410889-UDM",
+      "to_model_id": "MU-E-2024-2410889-PVAM",
+      "handoff": "The underwriting frequency and the protection score are both reported for the same landmark."
+    }
+  ]
+}

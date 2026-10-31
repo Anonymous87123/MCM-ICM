@@ -1,0 +1,113 @@
+Team # 2505964                                                                         Page 8 of 24
+
+
+    Since the distribution of events has not yet been disclosed, we will also rely on the data from
+the 2024 Olympics.
+   4. Feature Compilation
+
+
+
+
+                                                                    型
+   - Four-dimensional capability features
+   - Basic information: Year, Sex (0/1 for male/female), one-hot encoded features for NOC and
+
+
+
+
+                                                                  模
+Event.
+   5.Target Outputs
+
+
+
+
+                                                                学
+   - Medal Model: Train a random forest model to predict ‘MedalBinary‘ (whether an athlete
+wins a medal).
+
+
+
+
+                                                              数
+   - Gold Model: Train another random forest model to predict ‘GoldBinary‘ (whether an athlete
+
+
+
+
+                                                          ：
+wins a gold medal).
+
+
+
+
+                                                         el s
+   6.Training/Test Set Split
+
+
+                                                        号
+    If a specific sport’s data volume is very small (e.g., fewer than 5 entries), or if the training
+
+
+
+
+                                                       od
+set contains only one class, we will use fallback methods (i.e., replace predictions with historical
+                                         众
+average probabilities). During training, we will attempt stratified sampling to maintain the ratio
+
+
+
+
+                                                    Hm
+of positive to negative samples; if the classification is too imbalanced, we will revert to standard
+                            公
+
+splitting methods.                               AT
+    This structured approach ensures that each model can effectively leverage historical data and
+                           信
+
+
+athlete characteristics to provide accurate predictions for medal outcomes in the Olympic Games.
+                     微
+
+
+
+3.1.5    Model Solution
+                                                M
+
+   1. Feature Transformation
+                                     ：
+
+
+    Similarly, apply the ‘encode_features‘ function to this dataset to generate a one-hot feature
+structure consistent with the training phase.
+                                    号
+
+
+
+
+    Extract or revert to the corresponding event’s random forest model and call ‘predict_proba(...)‘
+                       信
+
+
+
+
+to obtain ‘Prob_Medal‘ and ‘Prob_Gold‘.
+   2. Result Explanation
+                      微
+
+
+
+
+   If a model exists for a specific event, provide each athlete with ‘Prob_Medal‘ and ‘Prob_Gold‘;
+otherwise, use fallback probabilities.
+   Below is a pseudocode representation of the model’s solution process of one time to help
+readers understand:
+        Algorithm MEDAL_PREDICTION ( RandomForestModel, NewData ):
+        # [Data Preparation]
+        # RandomForestModel is the pre−trained random forest model.
+        # NewData is the raw information of a new athlete/team (specific event,
+           ,→ year, country).
+
+        # [Feature Transformation]

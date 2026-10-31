@@ -1,0 +1,43 @@
+Team # 2229059                                                                               Page 6 of 21
+
+                             Figure 3: Flow Chart Describing our buy logic.
+
+This is given by the momentum metric. Our justification for this is that if the momen-
+tum is extremely high, the trend will carry on for longer, and profit is more likely. For
+reversion-to-the-mean trades, we say that the profitability is proportional to the square of
+the distance from the mean. Given the assumption that the price will revert to the mean,
+our model makes small trades for normal oscillations, and in large drops in price that
+fall far below the moving average, the model recognizes this as a crash and buys larger
+amounts.
+
+3.4 Selling
+
+Our selling mechanism is simple and conservative. One of our assumptions is that the
+price oscillates. That is, after a period of increase, there will be a period of decrease. Our
+selling implementation compares the price of the asset on the day with the average price
+paid for an asset. Adding in fees, the model then determines if the profit made from a sell
+would be greater than a margin L. This looks like
+
+                  S = (1 − fa) · P −                 n    (1  −  fai )Ci  −  L
+                                                     i=0
+
+                                                              i
+
+Where fa is the fee of an asset, P is the price of the asset, and C is the cost paid for
+an asset. We sum over the differing costs paid, including the reduction from fees, to
+
+calculate the average cost of an asset we have on the market. Specifically, this says that
+
+the sell indicator S is (1 − fg) · P (the amount gained from a sell, including fees) minus
+n
+0  (1−  fgn  )Cn  (the average price of an asset in  the  market) minus      the margin  L.  If S  >  0,  the
+
+   n
+
+model sells.
+
+3.5 Extreme Market Conditions
+
+Bitcoin is a highly volatile asset, and is subject to large jumps in price. Capitalizing
+on these movements successfully is critical to making large profits. We implement an
+’extreme market condition’ that takes over the model when activated. The condition for

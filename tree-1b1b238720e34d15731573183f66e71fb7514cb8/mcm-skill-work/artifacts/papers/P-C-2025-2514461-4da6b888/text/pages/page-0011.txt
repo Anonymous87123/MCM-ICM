@@ -1,0 +1,127 @@
+                                                                                Team # 2514461                               Page 10 of 25
+
+                                                                                could provide a more granular and realistic analysis prediction.
+
+                                                                                    First, we tried every means to categorize each event within dataset summerOly_athletes.csv
+                                                                                under its respective discipline. Subsequently, the gold, silver, and bronze medal counts for each
+                                                                                country within each discipline were calculated and converted into percentages, representing the
+                                                                                likelihood of each country achieving correlative medal success. This approach considered the
+                                                                                overall performance within each discipline while also acknowledging the significant differences
+                                                                                between disciplines within the same sport (e.g., Swimming and Diving under Aquatics), thus
+                                                                                avoiding overgeneralization.
+
+                                                                                5.3 Baseline: LSTM model
+
+                                                                                5.3.1 Model Overview
+
+                                                                                 ྘ In this section, a baseline LSTM model was built and trained using Pytorch. The model
+
+                                                                                took as input all the gold / silver / bronze medal counts of all countries before the 2024 Games,
+                                                                                and was fitted to the medal counts in 2024. For the loss function, instead of the typically-used
+                                                                                MSE loss, we added a punishment term, punishing deviations of the sum of medal counts of all
+
+                                                                                ଆ countries for a certain discipline from the discipline’s known event count. In the predict step,
+
+                                                                                all past years’ data were fed into the model to predict the medal counts for all countries in all
+
+                                                                                ࿐ disciplines. Summing up the disciplines, we yielded the medal count for all countries.
+
+                                                                                5.3.2 Training Process
+
+                                                                                 ඔ The training process used the Adam optimizer with the following parameters: learning rate
+                                                                                ğ ls lrinitial = 0.001, β1 = 0.9, β2 = 0.999, and ϵ = 1 × 10−8. The One Cycle Learning Rate
+
+                                                                                Scheduler was applied with a maximum learning rate max_lr = 0.001 for a total of 100,000
+
+                                                                                e epochs. The learning rate was gradually increased and then decreased in a cyclical manner
+                                                                                ‫ ݼ‬d during training.
+                                                                                ᇙ o 5.3.3 Results
+                                                                                 m The final loss dropped to 0.0058, indicating good convergence, however, plain LSTM yielded
+                                                                                ‫ ܄‬H poor results, as indicated in the following two figures. Fig. 4 repeated the medal count in 2024,
+                                                                                ྐ T and is a clear overfit, while Fig. 5 predicts that China will earn 8 Olympic Gold medals in Table
+
+                                                                                Tennis in 2028, while we know that there are only 5, and China can earn at most 5 (as it did
+
+                                                                                A in 2024). Therefore, we must take into consideration varying in the number of events held in
+                                                                                ັ each discipline, and avoid overfitting. Also, we should consider host effect. All of these will be
+                                                                                ğM addressed in our advanced XGBoost Model in the following section.
+
+                                                                                       ‫ݼ‬
+                                                                                     ྐ
+                                                                                   ັ
+
+                                                                                      Figure 4: China’s Diving, Overfitting  Figure 5: China’s Table Tennis, Underfitting
+
+mmmmmmm          mmm        mm m mm                            mmmmm            mm
+
+m           m    mm m m mmmmm                           m mm           mm
+
+m mmm m           m               m              mm     m mm           mmm
+
+m mmm m m mmmm                       mm          mmm            m      m mmm
+
+m mmm m          m m m mmmmm                         mm        mmmmmm m
+
+m           m        mm        mm                mm        mmm         mm
+
+mmmmmmm          mm      m        mmmm               m     mm m m mmm
+
+               mmm mm             mm             mm m mmm              m        mm
+
+    m      mm    mmmm             mm          m mmm            mmmmmmmm
+
+mm             mm m m m mmmm                         mmmmmmmm                      m
+
+   m mmmm m m mmmmmm mm m m m mm                                       m           m
+
+mmm m          m m mmm                  m        mmmm m mmmm mm m
+
+            mm                 mm                m mmmmm mm               m
+
+       mmm            mmmmm m m m                       m      m m mm mm
+
+       m mm m         m        mmmmm mm mm                     m mmmmmmm
+
+           m mmm            mm          mm           m          mm           m
+
+       mm m          mm           m               m        mmm mmm              m
+
+mmmm           mmm mm mm m m m mm                               mmmm m m
+
+mmmm             mm                  m        mm        m      mm         mmmm
+
+mm        mm mm      mm mmm                mmm       m m mmm mmm m
+
+   mm       m     mmmmm                          m mm      m mm           mm
+
+m      m              m m mmmmmmmm mmmm                               mm        m
+
+m mmm mmmmm m                  m           mmmmm mm             mm m m m
+
+mmm              m m mmm                mm              m          mm m mm
+
+mm m        mmm m mm mmmm m mmmm m                                 mm              m
+
+mm m           mmmm         m        m            m     mm            mm           m
+
+mmmm mm m m m                  mmm            m      m         m mm m              m
+
+       mm         m                  m mmmmm m                     mm m mm
+
+       m    m         mm             mmm m           mm m             mmm mm
+
+                  mm           mmmm               mmm
+
+mmmmmmm m m m m m m m m m m m mmmmmmm
+
+m           m mm m          mm mmmmmm                      mmm m                   m
+
+m mmm m mmm m m mm                            mmmmmmmmm m mmm m
+
+m mmm m m             mm                   m               mmm m mmm m
+
+m mmm m              mm           m mmm                    mm m mmm m
+
+m           m mm      mm             m m mmmmmmm                   m               m
+
+mmmmmmm mmmmm                     m        mmm             mm      mmmmmmm

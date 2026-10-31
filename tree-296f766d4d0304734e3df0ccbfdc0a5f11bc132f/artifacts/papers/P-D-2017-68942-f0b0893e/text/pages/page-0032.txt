@@ -1,0 +1,56 @@
+Team 68942  Page 31 of 36
+
+   set p1-length n-values num-precheck-lanes [0]
+   set n1-length n-values num-normal-lanes [0]
+   set a2-length n-values ((num-precheck-lanes + num-normal-lanes + 2) / 2) [0]
+   set pd-length n-values (num-precheck-lanes + num-normal-lanes + 2) [0]
+   set total-wait-queue-p0 [];before id
+   set total-wait-queue-n0 []
+   set total-wait-queue-p1 [];before unpack
+   set total-wait-queue-n1 []
+   set total-wait-queue-p2 [];before scan
+   set total-wait-queue-n2 []
+   set total-wait-queue-p3 [];before repack
+   set total-wait-queue-n3 []
+   set total-wait-queue-pd [] ;before patdowns
+   set total-alive-time []
+   set total-waiting-time []
+end
+
+to increment-queues
+   ask officers with [not(patters)][
+      let p-in-queue (passengers with [walking = false and id-check-time = 0 and which-queue = [which-queu
+      if count p-in-queue >= 1 and count my-links = 0[
+      ask min-one-of p-in-queue [queue-pos][
+            face myself
+            set fd-speed (distancexy [xcor] of myself [ycor] of myself - 1) / 2
+            create-id-check-with myself
+            set walking true
+         ]
+      ]
+   ]
+   ask unpackers with [active][
+      let p-in-queue (passengers with [stage = 2 and walking = false and which-queue = [which-queue] of my
+      ;show p-in-queue
+      if count p-in-queue >= 1[
+         ask p-in-queue[
+            if (count p-in-queue < unpack-capacity + personal-space) or (member? self (min-n-of (unpack-capa
+               create-unpack-link-with myself
+            ]
+         ]
+      ]
+   ]
+   ask mmscanners with [active][
+      let p-in-queue (passengers with [stage = 4 and walking = false and int(which-queue / 2) = [which-que
+      if count p-in-queue >= 1 and count my-links <= capacity - 1[
+         ask min-one-of p-in-queue [queue-pos][
+            face myself
+            set fd-speed (distancexy [xcor] of myself [ycor] of myself) / 2
+            create-scan-link-with myself
+            set walking-time 0
+            set walking true
+         ]
+      ]
+   ]
+   ask xrays with [active][
+      let p-in-queue (passengers with [stage = 4 and walking = false and int(which-queue / 2) = [which-que

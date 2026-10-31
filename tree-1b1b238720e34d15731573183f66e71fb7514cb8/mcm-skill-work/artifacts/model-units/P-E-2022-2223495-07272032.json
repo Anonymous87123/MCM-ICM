@@ -1,0 +1,916 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2022-2223495-07272032",
+  "problem_type": "E",
+  "year": "2022",
+  "source_sha256": "07272032ae74c39ffeeb84df291666090fbaf52bbe9aa84dfa1ef23ab8013a3e",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2022-2223495-SEQ",
+      "section": "Whole Process Carbon Sequestration Model",
+      "family": "evaluation",
+      "summary": "A modified Volterra system for the carbon held by a forest and by the wood cut from it. Trees are split into four age stages of about ten to fifteen years: juvenile 27.0 percent, mid-age 25.6, near-mature 24.3, and mature 23.1. The over-ripe stage, about 0.01 percent, is dropped. Stages A and B are never cut, because the stock is small. Stage C is cut moderately and stage D heavily. Saplings reach maturity at a retention of 85 percent, so the mortality at a stage is about 5 percent. Growth and mortality are borrowed from Ameray and coauthors in 2021 and pinned to Prince Albert, Oak Ridge, and Manaus. Ninety percent of a tree becomes wood, and the products lose about ten percent of their carbon a stage. The initial area is the natural distribution and the wood products start with no stored carbon. SciPy integrates the system. On 100 square kilometers of northern-China larch, with a carbon fixation of 25 tonnes per square kilometer from the CO2FIX measurement, moderate cutting (0.3 of the near-mature trees and all of the mature) holds 1360.3 kilotons, no cutting holds 1242.7, and heavy cutting (0.6 and all) holds 1123.6. The store rises up to a 25 percent cut, holds from 30 to 50, and falls past 55. The best cut of near-mature trees is about 37.48 percent.",
+      "computational_cost": "One SciPy integration per harvest rate on a 100 square kilometer stand",
+      "purpose": "Find the harvest rate that holds the most carbon in trees and wood together.",
+      "base_or_modification": "hybrid",
+      "page": 6,
+      "inputs": [
+        "A0"
+      ],
+      "outputs": [
+        "S"
+      ],
+      "handoff_outputs": [
+        "S",
+        "mu"
+      ],
+      "objectives": [
+        "Maximize the carbon held by the standing forest and the wood products together."
+      ],
+      "variables": [
+        {
+          "symbol": "A0",
+          "normalized_name": "initial_area",
+          "role": "input",
+          "unit": "km2",
+          "definition": "Area of the stand in the natural state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ai",
+          "normalized_name": "stage_area",
+          "role": "state",
+          "unit": "km2",
+          "definition": "Area of trees in one age stage",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "stage_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of one age stage in the natural stand",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rou",
+          "normalized_name": "mortality",
+          "role": "parameter",
+          "unit": "per stage",
+          "definition": "Natural mortality at one stage, about 5 percent",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "per stage",
+          "definition": "Growth rate borrowed from the climate class",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "felling_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of a harvestable stage that is cut",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "fixation",
+          "role": "parameter",
+          "unit": "t per km2",
+          "definition": "Carbon fixed per square kilometer at one age",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "total_carbon",
+          "role": "output",
+          "unit": "kt",
+          "definition": "Carbon held by trees and wood products together",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223495-SEQ-1",
+          "equation_label": "Stage share",
+          "equation_text": "The share of the next age stage is the share of this one times one minus the mortality, and the mortality is about 5 percent because 85 percent of saplings reach maturity.",
+          "source_expression": "The share of the next age stage is the share of this one times one minus the mortality, and the mortality is about 5 percent because 85 percent of saplings reach maturity.",
+          "normalized_latex": "p_{i+1}=p_i(1-\\rho),\\quad \\rho\\approx 0.05",
+          "purpose": "Turn the retention into a stage share.",
+          "variable_symbols": [
+            "p",
+            "rou"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223495-SEQ-2",
+          "equation_label": "Modified Volterra",
+          "equation_text": "The area of a harvestable stage grows at the climate rate, loses the natural mortality, and loses the cut, starting from the natural-state area.",
+          "source_expression": "The area of a harvestable stage grows at the climate rate, loses the natural mortality, and loses the cut, starting from the natural-state area.",
+          "normalized_latex": "dA_i/dt=\\lambda A_i-\\rho A_i-\\mu A_i",
+          "purpose": "Move the area of stages C and D through one stage.",
+          "variable_symbols": [
+            "Ai",
+            "lam",
+            "rou",
+            "mu",
+            "A0"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223495-SEQ-3",
+          "equation_label": "Total carbon",
+          "equation_text": "The carbon of the whole system is the fixation of each stage times the area of that stage, trees and wood products together.",
+          "source_expression": "The carbon of the whole system is the fixation of each stage times the area of that stage, trees and wood products together.",
+          "normalized_latex": "S=\\sum_i \\beta_i A_i",
+          "purpose": "Add the standing forest to the wood products.",
+          "variable_symbols": [
+            "S",
+            "beta",
+            "Ai"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 5 print blank. The recorded forms follow the prose: a stage share from an 85 percent retention, a modified Volterra step, and a sum of fixation times area.",
+        "reason": "Sections 4.1 to 4.5."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each stage starts at its natural-state area, and the wood products start with no stored carbon."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Stages A and B are not cut, and a stage area cannot exceed the stage before it."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The reported totals are the carbon once the system has stopped changing."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Mortality is set near 5 percent from an 85 percent retention, and the growth rates are taken from Ameray and coauthors 2021.",
+        "parameters": [
+          "rou",
+          "lam",
+          "beta"
+        ]
+      },
+      "algorithm": {
+        "description": "Integrate the modified Volterra system and read the carbon at equilibrium.",
+        "status": "partial",
+        "steps": [
+          "Set the four stage shares from the retention",
+          "Integrate the harvestable stages with SciPy",
+          "Add fixation times area for trees and for wood",
+          "Sweep the near-mature cut and keep the peak"
+        ],
+        "software": [
+          "SciPy"
+        ],
+        "convergence_criteria": "The run stops when the carbon of each part barely changes."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Three harvest rates and a sweep are reported, but the differential equations themselves print blank."
+        ],
+        "analysis": "The peak at 37.48 percent is read off the sweep in Figure 6."
+      },
+      "constraints": [
+        "Stages A and B are not harvested.",
+        "Wood conversion is 90 percent and product carbon falls about 10 percent a stage."
+      ],
+      "validation_refs": [
+        "Figure 5, the three harvest paths",
+        "Figure 6, the sweep of the near-mature cut"
+      ],
+      "strengths": [
+        "The wood products are counted with the standing trees.",
+        "Three paths are shown, not one."
+      ],
+      "limitations": [
+        "Equations 1 to 5 print blank.",
+        "The same figure number 4 is used twice."
+      ],
+      "missing_details": [
+        "The printed differential equations.",
+        "The per-stage fixation weights inside Table 2."
+      ],
+      "assumptions": [
+        "The over-ripe stage can be ignored.",
+        "Disasters are left out because they are stochastic."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223495-VAL",
+      "section": "Forest System Value Balance Model",
+      "family": "evaluation",
+      "summary": "Six values of a forest, summed and maximized by simulated annealing. Output value is the timber sold. Carbon-tax transfer prices the carbon the stand holds. Tourism uses a security factor, a scenic rating, and a reception capacity. Ecological value is taken as already accounted in the literature. Biomass uses an IPCC expansion factor, a carbon transfer of 0.5, and a root-to-stem ratio of 0.42. Other value covers science and a bequest, tied to the age mix. The total is their sum. Biomass and ecology rank first, output and tourism second, and the tax and the rest last, though the worked case weights them equally. The carbon price is weighted to 51.2 dollars a tonne and checked against a reported 50. The world carbon tax averages 60 dollars and the trading price averages 2. Annealing cools by 0.85 and stops below 10 to the minus 30. On northern-China larch, with a stage of ten to fifteen years, the total falls between 27283 and 40924.5 dollars per square kilometer per year.",
+      "computational_cost": "One simulated-annealing search per carbon price",
+      "purpose": "Maximize the total value of the forest without dropping a party.",
+      "base_or_modification": "hybrid",
+      "page": 11,
+      "inputs": [
+        "S"
+      ],
+      "outputs": [
+        "TTF"
+      ],
+      "handoff_outputs": [
+        "TTF"
+      ],
+      "objectives": [
+        "Maximize the sum of the six forest values."
+      ],
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "total_carbon",
+          "role": "input",
+          "unit": "kt",
+          "definition": "Carbon held by the stand, from the sequestration model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EF",
+          "normalized_name": "output_value",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Value of the timber sold",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "MF",
+          "normalized_name": "carbon_tax",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Payment for the carbon the stand holds",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LF",
+          "normalized_name": "tourism_value",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Value of visits to the forest",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "GEP",
+          "normalized_name": "ecological_value",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Ecological value taken from the literature",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CF",
+          "normalized_name": "biomass_value",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Value of the standing biomass",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "OF",
+          "normalized_name": "other_value",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Science and bequest value",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pw",
+          "normalized_name": "timber_price",
+          "role": "parameter",
+          "unit": "dollars per unit",
+          "definition": "Average timber price over the period",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Hv",
+          "normalized_name": "harvest_volume",
+          "role": "intermediate",
+          "unit": "mixed",
+          "definition": "Volume of timber sold in the period",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pc",
+          "normalized_name": "carbon_price",
+          "role": "parameter",
+          "unit": "dollars per tonne",
+          "definition": "Carbon price, weighted to 51.2 dollars",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "TTF",
+          "normalized_name": "total_value",
+          "role": "output",
+          "unit": "dollars per km2 per year",
+          "definition": "Sum of the six values",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223495-VAL-1",
+          "equation_label": "Output value",
+          "equation_text": "The output value is the average timber price over the period times the volume sold.",
+          "source_expression": "The output value is the average timber price over the period times the volume sold.",
+          "normalized_latex": "EF=P_w H_v",
+          "purpose": "Price the timber that the harvest sells.",
+          "variable_symbols": [
+            "EF",
+            "Pw",
+            "Hv"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223495-VAL-2",
+          "equation_label": "Carbon tax",
+          "equation_text": "The carbon-tax transfer is the carbon the stand holds in the period times the price per tonne.",
+          "source_expression": "The carbon-tax transfer is the carbon the stand holds in the period times the price per tonne.",
+          "normalized_latex": "MF=S\\cdot P_c",
+          "purpose": "Pay the stand for the carbon it keeps.",
+          "variable_symbols": [
+            "MF",
+            "S",
+            "Pc"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223495-VAL-3",
+          "equation_label": "Total value",
+          "equation_text": "The total value is the sum of output, carbon tax, tourism, ecology, biomass, and the rest.",
+          "source_expression": "The total value is the sum of output, carbon tax, tourism, ecology, biomass, and the rest.",
+          "normalized_latex": "TTF=EF+MF+LF+GEP+CF+OF",
+          "purpose": "Add the six pots.",
+          "variable_symbols": [
+            "TTF",
+            "EF",
+            "MF",
+            "LF",
+            "GEP",
+            "CF",
+            "OF"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 6 to 22 print blank. The recorded forms follow the prose: timber price times volume, carbon times its price, and the sum of the six values.",
+        "reason": "Sections 5.1 to 5.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The search has a temperature schedule, not a forest initial state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The cut is bounded, and the six weights are positive."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The reported total is a maximized value, not a dynamic equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The carbon price is a weighted recent US price, checked against the news, and the biomass coefficients are taken from the IPCC.",
+        "parameters": [
+          "Pc",
+          "Pw"
+        ]
+      },
+      "algorithm": {
+        "description": "Simulated annealing over the harvest plan, cooling by 0.85.",
+        "status": "partial",
+        "steps": [
+          "Build the six values from the harvest",
+          "Sum them into the total",
+          "Accept a worse neighbor with the annealing probability",
+          "Cool by 0.85 until the temperature falls below 10 to the minus 30"
+        ],
+        "software": [
+          "Python"
+        ],
+        "convergence_criteria": "Stop when the temperature is below 10 to the minus 30."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "A range is reported and the carbon price is checked, but the objective prints blank."
+        ],
+        "analysis": "The range 27283 to 40924.5 is the only printed optimum."
+      },
+      "constraints": [
+        "The timber price is an average over the period.",
+        "Near-mature trees are kept back for the next cut."
+      ],
+      "validation_refs": [
+        "The carbon price checked against about 50 dollars",
+        "The northern-China total-value range"
+      ],
+      "strengths": [
+        "The carbon price is checked against a published price.",
+        "Six values are named before they are added."
+      ],
+      "limitations": [
+        "The total economic value is credited to Freeman in 2022.",
+        "Equations 6 to 22 print blank."
+      ],
+      "missing_details": [
+        "The weights actually used in the equal-weight case.",
+        "The security factor, the scenic rating, and the reception capacity."
+      ],
+      "assumptions": [
+        "Every log finds a buyer, by the appeal to Say's law.",
+        "Biomass and ecology outrank the other values."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223495-MGT",
+      "section": "Forest Management Strategy Model",
+      "family": "decision",
+      "summary": "An inverse map from the best total value back to the cut of near-mature trees, then four strategies tried on four climates. The carbon-tax value at the equilibrium is inverted, and the result is divided by 100 because the plan was simulated on 100 square kilometers. Biomass, output, tourism, and the other value are held fixed in the short run. The four strategies are general, soft, natural, and excessive cutting. The four climates are tropical, temperate and subtropical, boreal, and polar or highland. Wood output above 500 is normal and the cut stays, between 100 and 500 the cut falls, and below 100 the cut stops. The tropics take the general cut, the temperate zone the soft cut, and the boreal zone only the natural one. Polar forests can bear no logging strategy. Reserves such as Ratanakiri, Parsar, and Jiufeng rest, so their cut is essentially zero. For a subtropical forest in southern China, 80 percent of the mature trees are cut and 20 percent kept, and the near-mature cut sits between 41.5 and 55 percent as the carbon price runs from 2 to 60 dollars. Over a century, 100 square kilometers take up 442.2 to 820.8 kilotons, a net gain of 68 to 88.",
+      "computational_cost": "One inverse evaluation per climate and strategy",
+      "purpose": "Turn the best value into a harvest rate that the climate can carry.",
+      "base_or_modification": "modification",
+      "page": 16,
+      "inputs": [
+        "TTF"
+      ],
+      "outputs": [
+        "mu"
+      ],
+      "handoff_outputs": [
+        "mu"
+      ],
+      "objectives": [
+        "Choose the harvest rate whose wood output the climate can carry."
+      ],
+      "variables": [
+        {
+          "symbol": "TTF",
+          "normalized_name": "total_value",
+          "role": "input",
+          "unit": "dollars",
+          "definition": "Best total value from the balance model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "felling_rate",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Cut of near-mature trees recovered from the value",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "wood_output",
+          "role": "intermediate",
+          "unit": "mixed",
+          "definition": "Wood the forest can carry at steady state",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223495-MGT-1",
+          "equation_label": "Inverse felling rate",
+          "equation_text": "The cut of near-mature trees is the inverse of the best total value, divided by 100 because the plan was simulated on 100 square kilometers.",
+          "source_expression": "The cut of near-mature trees is the inverse of the best total value, divided by 100 because the plan was simulated on 100 square kilometers.",
+          "normalized_latex": "\\mu=f^{-1}(TTF)/100",
+          "purpose": "Recover the harvest rate from the value.",
+          "variable_symbols": [
+            "mu",
+            "TTF"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 23 prints blank. The recorded form follows the prose: invert the carbon-tax value at the equilibrium and divide by 100.",
+        "reason": "Section 6.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The map reads one equilibrium value, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Wood output above 500 keeps the cut, 100 to 500 lowers it, and below 100 stops it."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No new equilibrium is solved here."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The short-run values are held at the numbers already computed.",
+        "parameters": [
+          "TTF"
+        ]
+      },
+      "algorithm": {
+        "description": "Invert the value, then read the wood output against three bands.",
+        "status": "partial",
+        "steps": [
+          "Invert the best value to a near-mature cut",
+          "Divide by 100",
+          "Try the four strategies on the four climates",
+          "Keep the strategy whose wood output the climate can carry"
+        ],
+        "software": [
+          "Surfer"
+        ],
+        "convergence_criteria": "The map is closed form."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "A subtropical plan and a century uptake are printed."
+        ],
+        "analysis": "Figure 10 separates the climates and Figure 11 gives the value-effective band."
+      },
+      "constraints": [
+        "Polar forests are not cut.",
+        "Twenty percent of the mature trees are kept."
+      ],
+      "validation_refs": [
+        "Figure 10, the four strategies on four climates",
+        "Figure 11, the value-effective band"
+      ],
+      "strengths": [
+        "The climate that cannot carry a cut is spared.",
+        "The band is tied to the carbon price."
+      ],
+      "limitations": [
+        "The best rate of 37.48 percent and the later band of 41.5 to 55 percent are not reconciled.",
+        "Equation 23 prints blank."
+      ],
+      "missing_details": [
+        "The printed inverse function.",
+        "The wood-output number behind each band edge."
+      ],
+      "assumptions": [
+        "Biomass, output, tourism, and the other value do not move in the short run."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223495-GAME",
+      "section": "Demand-sensitive Management Strategy Game",
+      "family": "decision",
+      "summary": "An evolutionary game between forest managers and local residents over the harvest. Managers harvest with probability alpha or rest with probability one minus alpha. Residents support with probability beta or oppose. A manager who cuts gets the carbon value and the timber, and may lose the carbon-tax transfer when the public objects. A manager who rests gets only the tax. The two expectations are written out and left blank on the page. MATLAB integrates the game. Even a manager who prefers restoration eight to two, and the indifferent case of one half, converge on the moderate cut. The new policy lengthens the cycle by ten years. In all six simulated forest types the new policy meets the old one and then passes it.",
+      "computational_cost": "One MATLAB dynamic game per starting preference",
+      "purpose": "Show that the moderate cut is the strategy the two parties settle on.",
+      "base_or_modification": "paper-specific",
+      "page": 19,
+      "inputs": [
+        "mu"
+      ],
+      "outputs": [
+        "alpha"
+      ],
+      "handoff_outputs": [
+        "alpha"
+      ],
+      "objectives": [
+        "Find the harvest probability that both parties settle on."
+      ],
+      "variables": [
+        {
+          "symbol": "mu",
+          "normalized_name": "felling_rate",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Harvest rate proposed by the strategy model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "harvest_probability",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Probability that the manager harvests",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "support_probability",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Probability that residents support the manager",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EA",
+          "normalized_name": "manager_payoff",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Expected payoff of the manager",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EB",
+          "normalized_name": "resident_payoff",
+          "role": "intermediate",
+          "unit": "dollars",
+          "definition": "Expected payoff of the residents",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Gh",
+          "normalized_name": "harvest_gain",
+          "role": "parameter",
+          "unit": "dollars",
+          "definition": "Manager gain from cutting, which depends on the rate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Gc",
+          "normalized_name": "conservation_gain",
+          "role": "parameter",
+          "unit": "dollars",
+          "definition": "Manager gain from resting",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Gs",
+          "normalized_name": "support_gain",
+          "role": "parameter",
+          "unit": "dollars",
+          "definition": "Resident gain when the manager cuts",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ga",
+          "normalized_name": "oppose_gain",
+          "role": "parameter",
+          "unit": "dollars",
+          "definition": "Resident gain when the manager rests",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223495-GAME-1",
+          "equation_label": "Manager expectation",
+          "equation_text": "The manager's expected payoff is the support-weighted mix of the harvest gain and the conservation gain, and the harvest gain depends on the felling rate.",
+          "source_expression": "The manager's expected payoff is the support-weighted mix of the harvest gain and the conservation gain, and the harvest gain depends on the felling rate.",
+          "normalized_latex": "E_A=\\beta G_h(\\mu)+(1-\\beta)G_c",
+          "purpose": "Give the manager a payoff for each public response.",
+          "variable_symbols": [
+            "EA",
+            "beta",
+            "Gh",
+            "Gc",
+            "mu"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223495-GAME-2",
+          "equation_label": "Resident expectation",
+          "equation_text": "The residents' expected payoff is the harvest-probability-weighted mix of the gain when the manager cuts and the gain when the manager rests.",
+          "source_expression": "The residents' expected payoff is the harvest-probability-weighted mix of the gain when the manager cuts and the gain when the manager rests.",
+          "normalized_latex": "E_B=\\alpha G_s+(1-\\alpha)G_a",
+          "purpose": "Give the residents a payoff for each manager choice.",
+          "variable_symbols": [
+            "EB",
+            "alpha",
+            "Gs",
+            "Ga"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 24 and 25 print blank. The recorded forms follow the prose: each side's expectation is the mix of its two payoffs, weighted by the other side's probability.",
+        "reason": "Section 7.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The game is started from a restoration preference of 0.8 and from indifference at 0.5."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "The probabilities stay inside zero to one by construction."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Both starts converge on the moderate harvest."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The payment matrix is described in words and not numbered.",
+        "parameters": [
+          "Gh",
+          "Gc"
+        ]
+      },
+      "algorithm": {
+        "description": "A dynamic evolutionary game in MATLAB from two starting preferences.",
+        "status": "partial",
+        "steps": [
+          "Fill the payment matrix from the value model",
+          "Write each side's expectation",
+          "Integrate from a restoration preference and from indifference",
+          "Compare the new policy with the old one over a cycle ten years longer"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "The run is read when the strategy has settled."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The direction of convergence is reported, but the payoffs are not numbered."
+        ],
+        "analysis": "Figure 12 shows the convergence and Figure 13 the crossing of the two policies."
+      },
+      "constraints": [
+        "Extreme policy cases are left out of the game.",
+        "The new cycle is ten years longer than the old one."
+      ],
+      "validation_refs": [
+        "Figure 12, the evolutionary game",
+        "Figure 13, the policy transition"
+      ],
+      "strengths": [
+        "Even the protector is shown ending at the moderate cut.",
+        "The new policy is compared with the old one in six forests."
+      ],
+      "limitations": [
+        "The payment matrix prints with the symbols stripped.",
+        "Equations 24 and 25 print blank."
+      ],
+      "missing_details": [
+        "The numerical payoffs in Table 4.",
+        "The time step of the MATLAB integration."
+      ],
+      "assumptions": [
+        "Managers and residents are the only two players.",
+        "A manager who rests still receives the carbon-tax transfer."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2022-2223495-SEQ-1",
+      "model_id": "MU-E-2022-2223495-SEQ",
+      "page": 8,
+      "source_expression": "The share of the next age stage is the share of this one times one minus the mortality, and the mortality is about 5 percent because 85 percent of saplings reach maturity."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-SEQ-2",
+      "model_id": "MU-E-2022-2223495-SEQ",
+      "page": 9,
+      "source_expression": "The area of a harvestable stage grows at the climate rate, loses the natural mortality, and loses the cut, starting from the natural-state area."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-SEQ-3",
+      "model_id": "MU-E-2022-2223495-SEQ",
+      "page": 10,
+      "source_expression": "The carbon of the whole system is the fixation of each stage times the area of that stage, trees and wood products together."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-VAL-1",
+      "model_id": "MU-E-2022-2223495-VAL",
+      "page": 12,
+      "source_expression": "The output value is the average timber price over the period times the volume sold."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-VAL-2",
+      "model_id": "MU-E-2022-2223495-VAL",
+      "page": 12,
+      "source_expression": "The carbon-tax transfer is the carbon the stand holds in the period times the price per tonne."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-VAL-3",
+      "model_id": "MU-E-2022-2223495-VAL",
+      "page": 14,
+      "source_expression": "The total value is the sum of output, carbon tax, tourism, ecology, biomass, and the rest."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-MGT-1",
+      "model_id": "MU-E-2022-2223495-MGT",
+      "page": 16,
+      "source_expression": "The cut of near-mature trees is the inverse of the best total value, divided by 100 because the plan was simulated on 100 square kilometers."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-GAME-1",
+      "model_id": "MU-E-2022-2223495-GAME",
+      "page": 19,
+      "source_expression": "The manager's expected payoff is the support-weighted mix of the harvest gain and the conservation gain, and the harvest gain depends on the felling rate."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223495-GAME-2",
+      "model_id": "MU-E-2022-2223495-GAME",
+      "page": 20,
+      "source_expression": "The residents' expected payoff is the harvest-probability-weighted mix of the gain when the manager cuts and the gain when the manager rests."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2022-2223495-SEQ",
+      "to_model_id": "MU-E-2022-2223495-VAL",
+      "handoff": "The carbon held by trees and wood becomes the base of the carbon-tax value."
+    },
+    {
+      "from_model_id": "MU-E-2022-2223495-VAL",
+      "to_model_id": "MU-E-2022-2223495-MGT",
+      "handoff": "The best total value is inverted to a harvest rate."
+    },
+    {
+      "from_model_id": "MU-E-2022-2223495-MGT",
+      "to_model_id": "MU-E-2022-2223495-GAME",
+      "handoff": "The harvest rate is what the manager and the residents bargain over."
+    }
+  ]
+}

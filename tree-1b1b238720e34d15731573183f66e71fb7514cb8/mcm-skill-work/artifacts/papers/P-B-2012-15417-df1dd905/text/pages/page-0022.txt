@@ -1,0 +1,84 @@
+      Team # 15417                                                                                       Page 20 of 24
+
+
+184
+185                  if (nextSite >= numSites && nextBoat.getDaysLeft() > 1)
+186                  {
+187                      // The boat shouldn’t be leaving yet, but is trying to, so hold it back
+188                      nextSite = numSites-1;
+189                  }
+190
+191                  if (nextSite >= numSites)
+192                  {
+193                      nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+194                      if (nextBoat.getDaysLeft() < 0)
+195                      {
+196                          // Update stats for late boats
+197                          lateTrips++;
+198                          maxDaysLate = Math.max(maxDaysLate, -nextBoat.getDaysLeft());
+199                          totalDaysLate -= nextBoat.getDaysLeft();
+200
+201                             // The boat arrived late, so we have to reschedule it.
+202                             reschedule(nextBoat);
+203                      }
+204                      else
+205                      {
+206                             // Best case scenario: the boat is out of the river; add a point to our score
+207                             tripCount++;
+208                             boatsOut.add(nextBoat);
+209                       }
+210                  }
+211                  else if (schedule[i][nextSite] == null)
+212                  {
+213                       // Nearly best case: there is an opening in the preferred site, move the boat there.
+214                       nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+215                       nextBoat.setCurrentSite(nextSite);
+216                       schedule[i][nextSite] = nextBoat;
+217                  }
+218                  else
+219                  {
+220                       // Not best case: there is a boat in the site our boat would like to move to.
+221                       boolean found = false; // Keep track of whether we have found an alternate site.
+222                       // Check every site, moving up the river, until we get where the boat stopped last night.
+223                       for (int j = nextSite - 1; !found && j >= nextBoat.getCurrentSite(); j--)
+224                       {
+225                           if (schedule[i][j] == null)
+226                           {
+227                               // If we find an alternate spot, we are in luck, the problem does not percolate.
+228                               nextBoat.setCurrentSite(j);
+229                               schedule[i][j] = nextBoat;
+230                               found = true;
+231                           }
+232                       }
+233
+234                      // We are done moving this boat: either a site was found,
+235                      // or the boat cannot move forward and is stuck.
+236                      nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+237
+238                      if (!found)
+239                      {
+240                          // Worst case scenario:
+241                          // A site was not found, so our boat and the boat currently in the spot our boat had
+242                          // yesterday swap roles, since our boat can’t go backwards up the river.
+243                          Boat temp = nextBoat;
+244                          nextBoat = schedule[i][nextBoat.getCurrentSite()];
+245                          schedule[i][nextBoat.getCurrentSite()] = temp;
+246                      }
+247
+248                      while (!found) // Repeat until the issue is resolved
+249                      {
+250                          // Find the site where the boat we are dealing with now was yesterday.
+251                          int lastSite = -1;
+252                          for (int j = 0; j < numSites; j++)
+253                          {
+254                              if (schedule[i-1][j] == nextBoat)
+255                              {
+256                                  lastSite = j;
+257                              }
+258                          }
+259
+260                             // Try to back up this boat until it finds an empty site or a boat with lower priority
+261                             // who it can swap roles with.
+262                             boolean swapped = false;
+263                             for (int j = nextBoat.getCurrentSite() - 1; !found && !swapped && j >= lastSite; j--)
+264                             {

@@ -1,0 +1,47 @@
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+         Team #82150                           Page 32 of 36
+
+
+          numV=size(bounds,1);
+          cs=[0 cumsum(bits)];
+          for i=1:numV
+          a=bval((cs(i)+1):cs(i+1));
+          fval(i)=sum(2.^(size(a,2)-1:-1:0).*a)*scale(i)+bounds(i,1);
+          end
+
+
+
+
+          function [selectpop]=NonlinearRankSelect(FUN,pop,bounds,bits)
+          global m n
+          selectpop=zeros(m,n);
+          fit=zeros(m,1);
+          for i=1:m
+                fit(i)=feval(FUN(1,:),(b2f(pop(i,:),bounds,bits)));
+          end
+          selectprob=fit/sum(fit);
+          q=max(selectprob);
+          x=zeros(m,2);
+          x(:,1)=[m:-1:1]';
+          [y x(:,2)]=sort(selectprob);
+          r=q/(1-(1-q)^m);
+          newfit(x(:,2))=r*(1-q).^(x(:,1)-1);
+          newfit=cumsum(newfit);
+          rNums=sort(rand(m,1));
+          fitIn=1;newIn=1;
+          while newIn<=m
+                if rNums(newIn)<newfit(fitIn)
+                     selectpop(newIn,:)=pop(fitIn,:);
+                     newIn=newIn+1;
+                else
+                     fitIn=fitIn+1;
+                end
+          end
+
+
+
+
+          function [NewPop]=CrossOver(OldPop,pCross,opts)
+          global m n NewPop
+          r=rand(1,m);
+          y1=find(r<pCross);

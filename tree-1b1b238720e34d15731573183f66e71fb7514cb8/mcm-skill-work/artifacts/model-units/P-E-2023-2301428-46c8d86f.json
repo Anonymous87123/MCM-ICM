@@ -1,0 +1,1016 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2023-2301428-46c8d86f",
+  "problem_type": "E",
+  "year": "2023",
+  "source_sha256": "46c8d86fee1ff1dafead3f986b0e3342251802ea9291f09a62891e306df1e2da",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2023-2301428-LPA",
+      "section": "Light Pollution Impact Quantification",
+      "family": "evaluation",
+      "summary": "A score for the harm of light pollution and a separate score for its benefit, over thirteen indicators in three groups. Human health carries death rate, life expectancy, physical health, obesity, mental health, anxiety, and well-being. Society carries GDP per capita, unemployment, and crime. Ecology carries environmental pollution, resource consumption, and species diversity. The positive score is GDP per capita alone. The negative score is the weighted sum of the other twelve. Entropy sets the weights inside each group and the analytic hierarchy sets the weights of the three groups, printed as 0.1283, 0.2764, and 0.5954 with a consistency ratio of 0.0053. Resource consumption is electricity use times the share of natural resources in generation, divided by the conversion rate. Environmental pollution is the Treanor ratio of zenith brightness to the natural night sky, with Italy's constants as the worked example and the city taken as a square ten kilometers across. Species diversity sums, per square kilometer, each species count times its impact factor. Checked on ten random areas, the negative score correlates 0.8002 with measured brightness.",
+      "computational_cost": "One entropy weighting per group and one hierarchy over three groups",
+      "purpose": "Quantify the harm and the benefit of light pollution at a site.",
+      "base_or_modification": "hybrid",
+      "page": 9,
+      "inputs": [
+        "x"
+      ],
+      "outputs": [
+        "Qneg"
+      ],
+      "handoff_outputs": [
+        "Qneg",
+        "Qpos",
+        "w"
+      ],
+      "objectives": [
+        "Separate the benefit of light from its harm."
+      ],
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Raw value of one second-level indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EC",
+          "normalized_name": "electricity",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Electricity consumption of the site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "resource_share",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Share of natural resources used for generation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "conversion",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Conversion rate of electricity generation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RC",
+          "normalized_name": "resource_consumption",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Resources implied by the electricity use",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Bz",
+          "normalized_name": "zenith_brightness",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Brightness at the zenith",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Bn",
+          "normalized_name": "natural_brightness",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Brightness of the natural night sky",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r",
+          "normalized_name": "distance",
+          "role": "parameter",
+          "unit": "km",
+          "definition": "Distance from the light source, fixed at 10",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EP",
+          "normalized_name": "environmental_pollution",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Ratio of zenith to natural brightness",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ns",
+          "normalized_name": "species_count",
+          "role": "input",
+          "unit": "count",
+          "definition": "Number of species of one kind",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f",
+          "normalized_name": "impact_factor",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Impact of light pollution on one kind of organism",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DS",
+          "normalized_name": "diversity_score",
+          "role": "intermediate",
+          "unit": "per km2",
+          "definition": "Biological impact per square kilometer",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Entropy of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Entropy weight of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "W",
+          "normalized_name": "group_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Hierarchy weight of one group",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Qpos",
+          "normalized_name": "positive_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Benefit of light, equal to GDP per capita",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Qneg",
+          "normalized_name": "negative_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted harm across the twelve indicators",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2301428-LPA-1",
+          "equation_label": "Resource consumption",
+          "equation_text": "Resource consumption is electricity use times the resource share, divided by the conversion rate.",
+          "source_expression": "Resource consumption is electricity use times the resource share, divided by the conversion rate.",
+          "normalized_latex": "RC=EC\\cdot a/b",
+          "purpose": "Turn electricity into the resources behind it.",
+          "variable_symbols": [
+            "RC",
+            "EC",
+            "a",
+            "b"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-LPA-2",
+          "equation_label": "Entropy weight",
+          "equation_text": "The weight of an indicator is one minus its entropy, divided by the sum of the same over the group.",
+          "source_expression": "The weight of an indicator is one minus its entropy, divided by the sum of the same over the group.",
+          "normalized_latex": "w_j=(1-e_j)/\\sum_k(1-e_k)",
+          "purpose": "Let the variation of the data set the weights.",
+          "variable_symbols": [
+            "w",
+            "e",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-LPA-3",
+          "equation_label": "Negative score",
+          "equation_text": "The harm is the hierarchy-weighted sum of the three group scores, each itself an entropy-weighted sum.",
+          "source_expression": "The harm is the hierarchy-weighted sum of the three group scores, each itself an entropy-weighted sum.",
+          "normalized_latex": "Q_{neg}=\\sum_g W_g\\sum_j w_{gj}x_{gj}",
+          "purpose": "Collapse twelve indicators into one harm.",
+          "variable_symbols": [
+            "Qneg",
+            "Qpos",
+            "W",
+            "w",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 14 print with the symbols replaced by boxes. The recorded forms follow the prose: resources from electricity, entropy weights, and the harm as a two-level weighted sum.",
+        "reason": "Section 5.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The scores use one cross-section, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The three group weights sum to one, and the consistency ratio must stay under 0.1."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Entropy weights come from the UK indicator data and the group weights from a judgment matrix with consistency ratio 0.0053.",
+        "parameters": [
+          "w",
+          "W",
+          "a",
+          "b"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize, weight, and score the harm and the benefit apart.",
+        "status": "implemented",
+        "steps": [
+          "Normalize cost and benefit indicators by their own formulas",
+          "Compute entropy weights inside each group",
+          "Set the three group weights by the hierarchy",
+          "Score the benefit as GDP per capita alone",
+          "Score the harm as the weighted sum and check it against brightness"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The computation is closed form."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "The weights are printed and the score correlates 0.8002 with brightness."
+        ],
+        "analysis": "Table 4 gives every second-level weight. The printed formulas lost their symbols."
+      },
+      "constraints": [
+        "The group weights are positive and sum to one.",
+        "The consistency ratio must be acceptable."
+      ],
+      "validation_refs": [
+        "Table 4, the indicator weights",
+        "Figure 8, the verification"
+      ],
+      "strengths": [
+        "The benefit is kept separate from the harm.",
+        "The score is checked against an outside measurement."
+      ],
+      "limitations": [
+        "The notation table prints symbols as boxes.",
+        "The Treanor constants are taken from Italy and applied to Britain."
+      ],
+      "missing_details": [
+        "The numerical resource share and conversion rate.",
+        "The impact factor used for each species."
+      ],
+      "assumptions": [
+        "Daytime light pollution is negligible.",
+        "Organisms are spread evenly, so a count per square kilometer is fair."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2301428-RISK",
+      "section": "Risk Assessment",
+      "family": "evaluation",
+      "summary": "A one-year risk factor built on the ALARP criterion. ALARP splits risk into three zones: unacceptable, where action is mandatory; widely acceptable, where the risk is ignored; and a middle band decided by a cost-risk curve. The risk factor is the standardized harm divided by the standardized benefit. Because only the environmental indicator can move within a year, and because that movement is assumed to drag GDP per capita with it, the ratio is corrected by one plus each rate of change. The environmental rate is taken as the density of a normal distribution whose expectation is set at 6 percent from the literature, while the GDP rate is treated as stable. The resulting factor is read against three bands: widely acceptable up to 0.35, reasonably acceptable to 0.9, and unacceptable beyond. Applied to Shropshire, Rutland, Elmbridge, and Westminster, the human scores barely differ, the dark sites score worse on social safety, and the ecological scores spread the most.",
+      "computational_cost": "One corrected ratio per site",
+      "purpose": "Judge whether a site's light pollution risk is tolerable.",
+      "base_or_modification": "modification",
+      "page": 14,
+      "inputs": [
+        "Qneg"
+      ],
+      "outputs": [
+        "Omega"
+      ],
+      "handoff_outputs": [
+        "Omega"
+      ],
+      "objectives": [
+        "Turn the harm and the benefit into a one-year risk."
+      ],
+      "variables": [
+        {
+          "symbol": "Qneg",
+          "normalized_name": "negative_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Standardized harm of light pollution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Qpos",
+          "normalized_name": "positive_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Standardized benefit of light pollution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "expected_change",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Expected environmental change, set at 6 percent",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sig",
+          "normalized_name": "change_spread",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Spread of the environmental change",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "g",
+          "normalized_name": "gdp_change",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Rate of change of GDP per capita",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Omega",
+          "normalized_name": "risk_factor",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "One-year risk, harm over benefit",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2301428-RISK-1",
+          "equation_label": "Risk factor",
+          "equation_text": "The risk is the harm times one plus its rate of change, divided by the benefit times one plus its own.",
+          "source_expression": "The risk is the harm times one plus its rate of change, divided by the benefit times one plus its own.",
+          "normalized_latex": "\\Omega=Q_{neg}(1+\\delta_E)/(Q_{pos}(1+g))",
+          "purpose": "Correct the ratio for one year of change.",
+          "variable_symbols": [
+            "Omega",
+            "Qneg",
+            "Qpos",
+            "g"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-RISK-2",
+          "equation_label": "Environmental change",
+          "equation_text": "The environmental rate of change is the density of a normal distribution with expectation 6 percent.",
+          "source_expression": "The environmental rate of change is the density of a normal distribution with expectation 6 percent.",
+          "normalized_latex": "\\delta_E=(1/\\sqrt{2\\pi}\\sigma)\\exp(-(x-\\mu)^2/(2\\sigma^2))",
+          "purpose": "Keep the change inside a stated distribution.",
+          "variable_symbols": [
+            "mu",
+            "sig"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 15 to 17 print as boxes. The recorded forms follow the prose: the ratio of harm to benefit, corrected by the two rates, with the environmental rate drawn from a normal density.",
+        "reason": "Section 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The scores start from the current quantification."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The bands meet at 0.35 and 0.9."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The horizon is fixed at one year. No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The expectation is taken as 6 percent from the literature. The variance is never given.",
+        "parameters": [
+          "mu",
+          "sig",
+          "g"
+        ]
+      },
+      "algorithm": {
+        "description": "Correct the ratio and read the zone.",
+        "status": "partial",
+        "steps": [
+          "Standardize the harm and the benefit",
+          "Draw the environmental change from the normal density",
+          "Correct both sides by one plus their rate",
+          "Divide",
+          "Read the zone from 0.35 and 0.9"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The horizon is fixed at one year."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Four sites receive a judgment."
+        ],
+        "analysis": "The zones are stated. The numerical risk factor of each site is only plotted."
+      },
+      "constraints": [
+        "The benefit must stay positive.",
+        "The environmental change is normally distributed."
+      ],
+      "validation_refs": [
+        "Figure 7, the ALARP zones",
+        "Figure 9, the four sites"
+      ],
+      "strengths": [
+        "The criterion names the action each zone demands.",
+        "The benefit stays in the denominator, so the light keeps its credit."
+      ],
+      "limitations": [
+        "The variance of the change is never given.",
+        "A normal density is used as a rate of change, which the paper later admits distorts sudden shocks."
+      ],
+      "missing_details": [
+        "The variance.",
+        "The numerical risk factor for each of the four sites."
+      ],
+      "assumptions": [
+        "Only the environmental indicator moves within one year.",
+        "GDP per capita moves with it."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2301428-STRAT",
+      "section": "Intervention Strategies",
+      "family": "decision",
+      "summary": "Three strategies, each written as a recurrence. The resource strategy imposes a lighting curfew: resource consumption falls geometrically at an annual regulation efficiency, while crime is assumed to grow geometrically and is then pulled back toward a target by a logistic under government regulation. The environment strategy spends extra resources to cut the aerosol optical depth to 0.15, at a stated cost per hundredth of depth, and takes from the literature a 3.2-fold drop in night-sky brightness at 1.3 kilometers, which lifts the biological score. The human strategy bans outdoor light below 540 nanometers and adopts a wide yellowish spectrum, taking the midpoint, 8.5 percent, of the reported 6 to 11 percent drop in road brightness, and lets the human health index grow geometrically at a rate read from the literature, 12.84 percent in the countryside and 9.65 percent in the city. Mental health is assumed unaffected by the curfew.",
+      "computational_cost": "Three recurrences evaluated over a stated number of years",
+      "purpose": "Project the indicators each strategy moves.",
+      "base_or_modification": "paper-specific",
+      "page": 17,
+      "inputs": [
+        "RC0"
+      ],
+      "outputs": [
+        "RC"
+      ],
+      "handoff_outputs": [
+        "RC",
+        "CR",
+        "H"
+      ],
+      "objectives": [
+        "Show the resource, crime, and health paths under each strategy."
+      ],
+      "variables": [
+        {
+          "symbol": "RC0",
+          "normalized_name": "initial_consumption",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Resource consumption before the curfew",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "regulation_efficiency",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Annual rate of reduction in resource consumption",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "year",
+          "role": "input",
+          "unit": "year",
+          "definition": "Year since the intervention",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "RC",
+          "normalized_name": "resource_consumption",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Resource consumption in a given year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CR0",
+          "normalized_name": "initial_crime",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Crime rate before the curfew",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kc",
+          "normalized_name": "crime_growth",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Annual growth of crime under dimmer streets",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CR",
+          "normalized_name": "crime_rate",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Crime rate in a given year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H0",
+          "normalized_name": "initial_health",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Human health index before the lamp change",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kh",
+          "normalized_name": "health_growth",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Annual growth of the health index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "health_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Human health index in a given year",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2301428-STRAT-1",
+          "equation_label": "Curfew saving",
+          "equation_text": "Resource consumption falls geometrically at the regulation efficiency.",
+          "source_expression": "Resource consumption falls geometrically at the regulation efficiency.",
+          "normalized_latex": "RC(t)=RC_0(1-\\eta)^t",
+          "purpose": "Model the curfew.",
+          "variable_symbols": [
+            "RC",
+            "RC0",
+            "eta",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-STRAT-2",
+          "equation_label": "Crime response",
+          "equation_text": "Crime grows geometrically while the streets are darker.",
+          "source_expression": "Crime grows geometrically while the streets are darker.",
+          "normalized_latex": "CR(t)=CR_0(1+k_c)^t",
+          "purpose": "Price the curfew.",
+          "variable_symbols": [
+            "CR",
+            "CR0",
+            "kc",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-STRAT-3",
+          "equation_label": "Health gain",
+          "equation_text": "The health index grows geometrically at the rate read from the literature.",
+          "source_expression": "The health index grows geometrically at the rate read from the literature.",
+          "normalized_latex": "H(t)=H_0(1+k_h)^t",
+          "purpose": "Model the lamp change.",
+          "variable_symbols": [
+            "H",
+            "H0",
+            "kh",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 19 to 26 print as boxes. The recorded forms follow the prose: geometric decline for resources, geometric growth for crime and health.",
+        "reason": "Section 6.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each recurrence starts from the site's current resource use, crime, or health."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The aerosol target is 0.15 and the wavelength ban is 540 nanometers."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The logistic crime reduction settles at its stated target."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The health growth rates, 12.84 and 9.65 percent, and the 8.5 percent brightness cut are taken from the literature. The regulation efficiency and the crime growth are never given.",
+        "parameters": [
+          "eta",
+          "kc",
+          "kh"
+        ]
+      },
+      "algorithm": {
+        "description": "Project each strategy and rescore.",
+        "status": "partial",
+        "steps": [
+          "Set the curfew efficiency and project resources and crime",
+          "Set the aerosol target and the extra resource cost",
+          "Set the spectrum and project the health index",
+          "Rescore the site under each strategy",
+          "Compare the three"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The horizon is the year used in the rescoring."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Both sites receive a score under each strategy."
+        ],
+        "analysis": "The scores are printed. Several rates are not."
+      },
+      "constraints": [
+        "The regulation efficiency lies between zero and one.",
+        "The crime target is positive."
+      ],
+      "validation_refs": [
+        "Figure 11, the Rutland scores",
+        "Figure 12, the Westminster scores"
+      ],
+      "strengths": [
+        "Each strategy names the indicator it moves and the side effect it causes.",
+        "The brightness cut is a stated compromise between two reported numbers."
+      ],
+      "limitations": [
+        "The regulation efficiency and the crime growth are never given.",
+        "Mental health is simply assumed to be unaffected."
+      ],
+      "missing_details": [
+        "The regulation efficiency.",
+        "The cost per hundredth of aerosol depth."
+      ],
+      "assumptions": [
+        "The curfew does not touch mental health.",
+        "The conversion between electricity and light stays fixed."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2301428-COUP",
+      "section": "System Coupling",
+      "family": "decision",
+      "summary": "The comparison that picks the strategy. The coupling of the three scores is the cube root of their product divided by the cube of their sum. The coordination index is the weighted sum of the three scores, and the coupling coordination is the square root of the product of the two. A ten-point scale runs from extreme disorder to quality coordination. Shropshire already sits at 8 and is left alone. Rutland, at 5, and Westminster, at 3, are rescored under all three strategies. Rutland's coordination rises to 7 under both the environment and the human strategy, and the human strategy is kept because it lifts the health score from 70.6022 to 78.1381, about ten percent. Westminster's coordination rises only under the curfew, from 3 to 5, and that strategy is kept: the social score moves from 95.8180 to 111.2475 and the ecological score from 25.7414 to 34.7695. The summary reports the city's overall score moving from 50.0080 to 59.6481.",
+      "computational_cost": "Six rescorings and six coordination indices",
+      "purpose": "Choose the strategy that lifts the coordination most at each site.",
+      "base_or_modification": "modification",
+      "page": 19,
+      "inputs": [
+        "Sh"
+      ],
+      "outputs": [
+        "D"
+      ],
+      "handoff_outputs": [
+        "D"
+      ],
+      "objectives": [
+        "Pick one strategy per site by the coordination it reaches."
+      ],
+      "variables": [
+        {
+          "symbol": "Sh",
+          "normalized_name": "human_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Human security score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ss",
+          "normalized_name": "social_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Social security score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Se",
+          "normalized_name": "ecology_score",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Ecological score",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "coupling",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Coupling of the three scores",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "coordination_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the three scores",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "coupling_coordination",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Square root of coupling times coordination",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2301428-COUP-1",
+          "equation_label": "Coupling",
+          "equation_text": "The coupling is the cube root of the product of the three scores, divided by their sum.",
+          "source_expression": "The coupling is the cube root of the product of the three scores, divided by their sum.",
+          "normalized_latex": "C=\\sqrt[3]{3S_h S_s S_e}/(S_h+S_s+S_e)",
+          "purpose": "Measure how evenly the three scores stand.",
+          "variable_symbols": [
+            "C",
+            "Sh",
+            "Ss",
+            "Se"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2301428-COUP-2",
+          "equation_label": "Coupling coordination",
+          "equation_text": "The coordination is the weighted sum of the three scores, and the final index is the square root of coupling times coordination.",
+          "source_expression": "The coordination is the weighted sum of the three scores, and the final index is the square root of coupling times coordination.",
+          "normalized_latex": "D=\\sqrt{CT}",
+          "purpose": "Combine balance and level.",
+          "variable_symbols": [
+            "D",
+            "C",
+            "T",
+            "Sh",
+            "Ss",
+            "Se"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 19,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 27 to 29 print as boxes. The recorded forms follow the prose: the geometric-style coupling and the square root of its product with the coordination index.",
+        "reason": "Section 6.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Rutland starts at coordination 5 and Westminster at 3."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The coordination scale runs from 1 to 10."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The comparison is a single rescoring per strategy."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The weights are reused from the assessment model. Nothing new is fitted.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Rescore, recompute the coordination, and keep the best.",
+        "status": "implemented",
+        "steps": [
+          "Drop the site whose coordination is already high",
+          "Rescore the other two under each strategy",
+          "Recompute the coupling coordination",
+          "Compare the three levels",
+          "Keep the strategy with the highest level at each site"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The comparison is a direct ranking."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Both sites receive a coordination level under each strategy."
+        ],
+        "analysis": "The levels and the component scores are printed."
+      },
+      "constraints": [
+        "All three scores must be positive for the coupling to be defined.",
+        "A site already well coordinated is not intervened on."
+      ],
+      "validation_refs": [
+        "Table 6, the coordination scale",
+        "Figure 12, the Westminster comparison"
+      ],
+      "strengths": [
+        "A site that is already fine is left alone.",
+        "The failure of a strategy is explained by the local conditions."
+      ],
+      "limitations": [
+        "The summary's overall scores, 50.0080 and 59.6481, are not derived in the body.",
+        "The coordination index and the coupling coordination are easy to confuse."
+      ],
+      "missing_details": [
+        "The weights used inside the coordination index.",
+        "The year at which the rescored values are taken."
+      ],
+      "assumptions": [
+        "Every region cooperates with the chosen strategy.",
+        "The highest coordination level is the best strategy."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2023-2301428-LPA-1",
+      "model_id": "MU-E-2023-2301428-LPA",
+      "page": 11,
+      "source_expression": "Resource consumption is electricity use times the resource share, divided by the conversion rate."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-LPA-2",
+      "model_id": "MU-E-2023-2301428-LPA",
+      "page": 13,
+      "source_expression": "The weight of an indicator is one minus its entropy, divided by the sum of the same over the group."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-LPA-3",
+      "model_id": "MU-E-2023-2301428-LPA",
+      "page": 13,
+      "source_expression": "The harm is the hierarchy-weighted sum of the three group scores, each itself an entropy-weighted sum."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-RISK-1",
+      "model_id": "MU-E-2023-2301428-RISK",
+      "page": 15,
+      "source_expression": "The risk is the harm times one plus its rate of change, divided by the benefit times one plus its own."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-RISK-2",
+      "model_id": "MU-E-2023-2301428-RISK",
+      "page": 15,
+      "source_expression": "The environmental rate of change is the density of a normal distribution with expectation 6 percent."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-STRAT-1",
+      "model_id": "MU-E-2023-2301428-STRAT",
+      "page": 17,
+      "source_expression": "Resource consumption falls geometrically at the regulation efficiency."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-STRAT-2",
+      "model_id": "MU-E-2023-2301428-STRAT",
+      "page": 18,
+      "source_expression": "Crime grows geometrically while the streets are darker."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-STRAT-3",
+      "model_id": "MU-E-2023-2301428-STRAT",
+      "page": 19,
+      "source_expression": "The health index grows geometrically at the rate read from the literature."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-COUP-1",
+      "model_id": "MU-E-2023-2301428-COUP",
+      "page": 19,
+      "source_expression": "The coupling is the cube root of the product of the three scores, divided by their sum."
+    },
+    {
+      "equation_id": "EQ-E-2023-2301428-COUP-2",
+      "model_id": "MU-E-2023-2301428-COUP",
+      "page": 19,
+      "source_expression": "The coordination is the weighted sum of the three scores, and the final index is the square root of coupling times coordination."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2023-2301428-LPA",
+      "to_model_id": "MU-E-2023-2301428-RISK",
+      "handoff": "The harm and the benefit become the numerator and the denominator of the risk."
+    },
+    {
+      "from_model_id": "MU-E-2023-2301428-LPA",
+      "to_model_id": "MU-E-2023-2301428-STRAT",
+      "handoff": "The resource, crime, and health indicators are the quantities the strategies move."
+    },
+    {
+      "from_model_id": "MU-E-2023-2301428-STRAT",
+      "to_model_id": "MU-E-2023-2301428-COUP",
+      "handoff": "The projected scores are what the coupling coordination compares."
+    }
+  ]
+}

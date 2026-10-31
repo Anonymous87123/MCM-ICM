@@ -1,0 +1,2180 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2014-29911-ac64b43b",
+  "problem_type": "A",
+  "year": "2014",
+  "source_sha256": "ac64b43b36d2ca84426db2a0cf6018960d8589419de2bd729336c7b55bacaf26",
+  "models": [
+    {
+      "model_id": "MU-A-2014-29911-001",
+      "page": 5,
+      "section": "3.1 Discrete Modeling for Right-Most Rule",
+      "family": "two-lane particle-hopping cellular automaton",
+      "purpose": "Represent keep-right-except-to-pass at vehicle scale and produce Q, safety, and energy proxies.",
+      "base_or_modification": "hybrid",
+      "summary": "A two-lane circular lattice combines Nagel-Schreckenberg-style particle hopping with asymmetric rightmost lane rules.",
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "vehicle position",
+          "role": "state",
+          "unit": "lattice cells",
+          "definition": "Position of a numbered vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "vehicle velocity",
+          "role": "state",
+          "unit": "cells/time-step",
+          "definition": "Current vehicle speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmax",
+          "normalized_name": "maximum velocity",
+          "role": "parameter",
+          "unit": "cells/time-step",
+          "definition": "Vehicle-specific speed upper bound.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DXpf",
+          "normalized_name": "present-lane forward gap",
+          "role": "state",
+          "unit": "cells",
+          "definition": "Forward empty gap in current lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DXob",
+          "normalized_name": "other-lane rear gap",
+          "role": "state",
+          "unit": "cells",
+          "definition": "Rear gap in the other lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane length",
+          "role": "parameter",
+          "unit": "cells",
+          "definition": "Length of the circular lane.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "simulation duration",
+          "role": "parameter",
+          "unit": "time-steps",
+          "definition": "Length of the simulated run.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "vehicle density",
+          "role": "input",
+          "unit": "vehicles/cell",
+          "definition": "Density scenario.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "vehicle count",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Total vehicles in two lanes.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pd",
+          "normalized_name": "deceleration probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Random deceleration probability.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Pc",
+          "normalized_name": "lane-change probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Conditional lane-change probability.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "output",
+          "unit": "vehicles/time-step",
+          "definition": "Count-based flow metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "safety proxy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Exponential headway-over-speed risk proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "energy proxy",
+          "role": "output",
+          "unit": "speed-squared per flow",
+          "definition": "Acceleration-based energy proxy.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "L",
+        "T",
+        "n",
+        "Pd",
+        "Pc",
+        "Vmax"
+      ],
+      "outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-001",
+          "page": 7,
+          "label": null,
+          "source_expression": "N=2nL",
+          "normalized_latex": "N=2nL",
+          "purpose": "Relate two-lane density, length, and vehicle count.",
+          "variable_symbols": [
+            "N",
+            "n",
+            "L"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-002",
+          "page": 7,
+          "label": "Table 2",
+          "source_expression": "if V(k)<Vmax then V(k)=V(k)+1",
+          "normalized_latex": "V' = V+1",
+          "purpose": "Accelerate below the maximum speed.",
+          "variable_symbols": [
+            "V",
+            "Vmax"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-003",
+          "page": 7,
+          "label": "Table 2",
+          "source_expression": "if ran f<Pd then V(k)=V(k)-1",
+          "normalized_latex": "V'=V-1",
+          "purpose": "Apply stochastic deceleration.",
+          "variable_symbols": [
+            "V",
+            "Pd"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-004",
+          "page": 8,
+          "label": "Table 3",
+          "source_expression": "safety and Rule #0/#1 lane-change conditions",
+          "normalized_latex": "\\Delta X_p^f>0,\\ \\Delta X_o^b>V_{max},\\ ranf<P_c",
+          "purpose": "Specify conditional lane-change permission.",
+          "variable_symbols": [
+            "DXpf",
+            "DXob",
+            "Vmax",
+            "Pc"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-005",
+          "page": 8,
+          "label": null,
+          "source_expression": "Q=Ntotal/T",
+          "normalized_latex": "Q=\\frac{N_{total}}{T}",
+          "purpose": "Define count-based traffic flow.",
+          "variable_symbols": [
+            "Q",
+            "N",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-006",
+          "page": 8,
+          "label": null,
+          "source_expression": "asafe=sum exp(-DXpf(n)/V(n))/(N*T)",
+          "normalized_latex": "\\alpha_{safe}=\\frac{\\sum_t\\sum_n\\exp(-\\Delta X_p^f(n)/V(n))}{NT}",
+          "purpose": "Define the headway-speed safety proxy.",
+          "variable_symbols": [
+            "asafe",
+            "DXpf",
+            "V",
+            "N",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-007",
+          "page": 9,
+          "label": "Step 8",
+          "source_expression": "V'(k)=V(k)+1",
+          "normalized_latex": "V'(k)=V(k)+1",
+          "purpose": "Begin speed update.",
+          "variable_symbols": [
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-008",
+          "page": 9,
+          "label": "Step 9",
+          "source_expression": "if DXpf(k)<V'(k), V'(k)=DXpf(k)-1",
+          "normalized_latex": "V'(k)=\\Delta X_p^f(k)-1",
+          "purpose": "Limit speed by front gap.",
+          "variable_symbols": [
+            "DXpf",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-009",
+          "page": 9,
+          "label": "Step 13",
+          "source_expression": "asafe=asafe+exp(-DXpf(k)/V'(k))",
+          "normalized_latex": "\\alpha_{safe}\\leftarrow\\alpha_{safe}+e^{-\\Delta X_p^f(k)/V'(k)}",
+          "purpose": "Accumulate the safety proxy.",
+          "variable_symbols": [
+            "asafe",
+            "DXpf",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-010",
+          "page": 9,
+          "label": "Step 11",
+          "source_expression": "X'(k)=X(k)+V'(k)",
+          "normalized_latex": "X'(k)=X(k)+V'(k)",
+          "purpose": "Advance position.",
+          "variable_symbols": [
+            "X",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-011",
+          "page": 9,
+          "label": "Step 14",
+          "source_expression": "if X'(k)>=L, X'(k)-=L and Q=Q+1",
+          "normalized_latex": "X'(k)\\leftarrow X'(k)-L,\\ Q\\leftarrow Q+1",
+          "purpose": "Apply circular boundary and flow count.",
+          "variable_symbols": [
+            "X",
+            "L",
+            "Q"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-012",
+          "page": 9,
+          "label": "Step 15",
+          "source_expression": "if V(k)<V'(k), E0+=V(k)+V'(k)",
+          "normalized_latex": "E_0\\leftarrow E_0+V(k)+V'(k)",
+          "purpose": "Accumulate acceleration-energy proxy.",
+          "variable_symbols": [
+            "E0",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-013",
+          "page": 9,
+          "label": "Step 17",
+          "source_expression": "E0=E0/Qprime; asafe=asafe/Q; Q=Q/T",
+          "normalized_latex": "E_0\\leftarrow E_0/Q',\\ \\alpha_{safe}\\leftarrow\\alpha_{safe}/Q,\\ Q\\leftarrow Q/T",
+          "purpose": "Normalize reported outputs.",
+          "variable_symbols": [
+            "E0",
+            "asafe",
+            "Q",
+            "T"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Quantify traffic rule performance."
+      ],
+      "constraints": [
+        "One vehicle per lattice cell.",
+        "Circular road preserves density."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Scenario values are stated; Appendix configuration can override code defaults.",
+        "parameters": [
+          "L",
+          "T",
+          "n",
+          "Pd",
+          "Pc",
+          "Vmax"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Pre-evaluate parameters.",
+          "Randomize two-lane initial state.",
+          "Apply safety and lane rules.",
+          "Update speed and position.",
+          "Accumulate and normalize metrics."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Straight road, no crashes, instantaneous lateral movement, compliant homogeneous vehicles, no entrances or exits."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The appendix makes the CA structurally inspectable, but missing run configuration and output mapping preclude exact figure regeneration."
+      },
+      "handoff_outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "validation_refs": [
+        "Figures 3-10",
+        "Table 5",
+        "Appendix C++"
+      ],
+      "computational_cost": "Per repetition it updates all vehicles for warm-up plus T recorded steps; the source runs 20 nonvisual repetitions.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Code/configuration and published parameters are not fully aligned."
+      ],
+      "missing_details": [
+        "coef.prn",
+        "random seed",
+        "plotting pipeline",
+        "physical unit calibration"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-002",
+      "page": 13,
+      "section": "Optimal Maximum Velocity Estimation",
+      "family": "weighted multi-objective speed-limit search",
+      "purpose": "Select maximum velocity under light, heavy, and mixed density regimes.",
+      "base_or_modification": "modification",
+      "summary": "The source scalarizes M1 flow, safety proxy, and energy proxy then scans candidate speed limits.",
+      "variables": [
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "input",
+          "unit": "vehicles/time-step",
+          "definition": "M1 flow output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "safety proxy",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "M1 safety output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "energy proxy",
+          "role": "input",
+          "unit": "speed-squared per flow",
+          "definition": "M1 energy output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "vehicle speed",
+          "role": "state",
+          "unit": "cells/time-step",
+          "definition": "Vehicle speed used by the displayed kinetic-energy proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi",
+          "normalized_name": "weighted objective",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Utility used for maximum-speed selection.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w1",
+          "normalized_name": "flow weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight assigned to flow.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w2",
+          "normalized_name": "energy weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight assigned to energy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w3",
+          "normalized_name": "safety weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight assigned to safety.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmax",
+          "normalized_name": "candidate speed limit",
+          "role": "input",
+          "unit": "cells/time-step",
+          "definition": "Searched maximum velocity.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Q",
+        "asafe",
+        "E0",
+        "w1",
+        "w2",
+        "w3",
+        "Vmax"
+      ],
+      "outputs": [
+        "phi",
+        "Vmax"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-014",
+          "page": 12,
+          "label": null,
+          "source_expression": "E0 proportional to sum of kinetic-energy increments divided by Q",
+          "normalized_latex": "E_0\\propto\\frac{\\sum_t\\sum_n\\frac12m[(V^t_n)^2-(V^{t-1}_n)^2]}{Q}",
+          "purpose": "Start the energy proxy from kinetic-energy increments.",
+          "variable_symbols": [
+            "E0",
+            "Q",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-015",
+          "page": 13,
+          "label": null,
+          "source_expression": "E0=sum(V(t)+V(t-1))/Q after coefficient is set to 1",
+          "normalized_latex": "E_0=\\frac{\\sum_t\\sum_n(V_n^t+V_n^{t-1})}{Q}",
+          "purpose": "Use the paper's simplified acceleration-energy proxy.",
+          "variable_symbols": [
+            "E0",
+            "Q",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-016",
+          "page": 13,
+          "label": null,
+          "source_expression": "phi=w1 Q/1.2+w2(1-E0/800)+w3 cube-root(1-(asafe/0.4)^3)",
+          "normalized_latex": "\\phi=\\omega_1Q/1.2+\\omega_2(1-E_0/800)+\\omega_3\\sqrt[3]{1-(\\alpha_{safe}/0.4)^3}",
+          "purpose": "Scalarize flow, energy, and safety for speed selection.",
+          "variable_symbols": [
+            "phi",
+            "w1",
+            "w2",
+            "w3",
+            "Q",
+            "E0",
+            "asafe"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-017",
+          "page": 14,
+          "label": null,
+          "source_expression": "w1+w2+w3=1",
+          "normalized_latex": "\\omega_1+\\omega_2+\\omega_3=1",
+          "purpose": "Constrain criterion weights.",
+          "variable_symbols": [
+            "w1",
+            "w2",
+            "w3"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Maximize the declared weighted objective."
+      ],
+      "constraints": [
+        "Weights sum to one.",
+        "Light and heavy scenarios are distinct."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Weights and reference scales are asserted by the paper.",
+        "parameters": [
+          "w1",
+          "w2",
+          "w3"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set weights and density regime.",
+          "Run M1 for candidate speed limits.",
+          "Evaluate phi.",
+          "Select plotted maximum."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Metrics are treated as separable and additively aggregable."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The optimum is a reproducible within-model scan only if the omitted experiment configuration is supplied."
+      },
+      "handoff_outputs": [
+        "Vmax"
+      ],
+      "validation_refs": [
+        "Figures 6-8",
+        "p16 tradeoff analysis"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "No raw table or preference sensitivity accompanies the selected maximum."
+      ],
+      "missing_details": [
+        "Candidate-speed output table",
+        "objective implementation in appendix",
+        "uncertainty around optimum"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-003",
+      "page": 17,
+      "section": "3.2.1 Continuum Model Establishment",
+      "family": "two-lane continuum traffic-flow PDE",
+      "purpose": "Represent density, velocity, relaxation, anticipation, and asymmetric lane exchange at macroscopic scale.",
+      "base_or_modification": "hybrid",
+      "summary": "A single-lane PDE is extended to two lanes with exchange-rate source terms and equilibrium speed closures.",
+      "variables": [
+        {
+          "symbol": "rho",
+          "normalized_name": "lane density",
+          "role": "state",
+          "unit": "vehicles/m",
+          "definition": "Traffic density field.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "average speed",
+          "role": "state",
+          "unit": "m/s",
+          "definition": "Lane speed field.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ue",
+          "normalized_name": "equilibrium speed",
+          "role": "intermediate",
+          "unit": "m/s",
+          "definition": "Density-dependent equilibrium speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ti",
+          "normalized_name": "relaxation time",
+          "role": "parameter",
+          "unit": "s",
+          "definition": "Lane-specific relaxation time.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c0",
+          "normalized_name": "anticipation speed",
+          "role": "parameter",
+          "unit": "m/s",
+          "definition": "Propagation-speed parameter.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sij",
+          "normalized_name": "lane-change rate",
+          "role": "intermediate",
+          "unit": "vehicles/(m s)",
+          "definition": "Rate from lane i to j as printed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r1",
+          "normalized_name": "incoming exchange coefficient",
+          "role": "parameter",
+          "unit": "m/s",
+          "definition": "Coefficient for lane-exchange term.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r2",
+          "normalized_name": "outgoing exchange coefficient",
+          "role": "parameter",
+          "unit": "m/s",
+          "definition": "Coefficient for lane-exchange term.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rhom",
+          "normalized_name": "jam density",
+          "role": "parameter",
+          "unit": "vehicles/m",
+          "definition": "Jam-density parameter.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rhobar",
+          "normalized_name": "average density",
+          "role": "intermediate",
+          "unit": "vehicles/m",
+          "definition": "Mean of two lane densities.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q",
+          "normalized_name": "lane flow",
+          "role": "output",
+          "unit": "vehicles/s",
+          "definition": "Density times speed flow.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "exchange scale",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Lane-exchange scale.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "asymmetry parameter",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Lane-exchange asymmetry.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "uf",
+          "normalized_name": "free-flow speed",
+          "role": "parameter",
+          "unit": "m/s",
+          "definition": "Free-flow speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "equilibrium shape parameter",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Equilibrium-speed curve coefficient.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rhoc",
+          "normalized_name": "critical density",
+          "role": "parameter",
+          "unit": "vehicles/m",
+          "definition": "Piecewise lane-2 threshold.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rho",
+        "u",
+        "Ti",
+        "c0",
+        "a",
+        "b",
+        "rhom",
+        "rhoc",
+        "uf",
+        "E"
+      ],
+      "outputs": [
+        "q",
+        "ue",
+        "Sij"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-018",
+          "page": 17,
+          "label": null,
+          "source_expression": "du/dt+d(rho u)/dx=0 as printed",
+          "normalized_latex": "\\frac{\\partial u}{\\partial t}+\\frac{\\partial(\\rho u)}{\\partial x}=0",
+          "purpose": "Retain the source's printed single-lane continuity relation.",
+          "variable_symbols": [
+            "u",
+            "rho"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-019",
+          "page": 17,
+          "label": null,
+          "source_expression": "du/dt+u du/dx=[ue(rho)-u]/T+c0 du/dx",
+          "normalized_latex": "\\frac{\\partial u}{\\partial t}+u\\frac{\\partial u}{\\partial x}=\\frac{u_e(\\rho)-u}{T_i}+c_0\\frac{\\partial u}{\\partial x}",
+          "purpose": "Describe single-lane speed dynamics.",
+          "variable_symbols": [
+            "u",
+            "ue",
+            "rho",
+            "Ti",
+            "c0"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-020",
+          "page": 18,
+          "label": null,
+          "source_expression": "drho_i/dt+d(rho_i u_i)/dx=Sji-Sij",
+          "normalized_latex": "\\frac{\\partial\\rho_i}{\\partial t}+\\frac{\\partial(\\rho_i u_i)}{\\partial x}=S_{ji}-S_{ij}",
+          "purpose": "Express two-lane mass balance with exchange.",
+          "variable_symbols": [
+            "rho",
+            "u",
+            "Sij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-021",
+          "page": 18,
+          "label": null,
+          "source_expression": "du_i/dt+u_i du_i/dx=[uei(rhoi)-ui]/Ti+c0i du_i/dx+r1 Sij-r2 Sji",
+          "normalized_latex": "\\frac{\\partial u_i}{\\partial t}+u_i\\frac{\\partial u_i}{\\partial x}=\\frac{u_{ei}(\\rho_i)-u_i}{T_i}+c_{0i}\\frac{\\partial u_i}{\\partial x}+r_1S_{ij}-r_2S_{ji}",
+          "purpose": "Extend speed dynamics to lane exchange.",
+          "variable_symbols": [
+            "u",
+            "ue",
+            "rho",
+            "Ti",
+            "c0",
+            "r1",
+            "r2",
+            "Sij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-022",
+          "page": 18,
+          "label": null,
+          "source_expression": "S12=a Qe1(rhobar) rho1 (1-rho2/rhom)",
+          "normalized_latex": "S_{12}=aQ_{e1}(\\bar\\rho)\\rho_1(1-\\rho_2/\\rho_m)",
+          "purpose": "Specify one directional lane-exchange rate.",
+          "variable_symbols": [
+            "Sij",
+            "a",
+            "q",
+            "rhobar",
+            "rho",
+            "rhom"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-023",
+          "page": 18,
+          "label": null,
+          "source_expression": "S21=a[1+b(Qe1-Qe2)] Qe2(rhobar) rho2 (1-rho1/rhom)",
+          "normalized_latex": "S_{21}=a[1+b(Q_{e1}(\\bar\\rho)-Q_{e2}(\\bar\\rho))]Q_{e2}(\\bar\\rho)\\rho_2(1-\\rho_1/\\rho_m)",
+          "purpose": "Specify asymmetric reciprocal lane exchange.",
+          "variable_symbols": [
+            "Sij",
+            "a",
+            "b",
+            "q",
+            "rhobar",
+            "rho",
+            "rhom"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-024",
+          "page": 18,
+          "label": null,
+          "source_expression": "Qe1=rho1 ue1(rho1); rhobar=(rho1+rho2)/2",
+          "normalized_latex": "Q_{e1}=\\rho_1u_{e1}(\\rho_1),\\quad\\bar\\rho=(\\rho_1+\\rho_2)/2",
+          "purpose": "Define equilibrium flow and average density.",
+          "variable_symbols": [
+            "q",
+            "rho",
+            "ue",
+            "rhobar"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-025",
+          "page": 19,
+          "label": null,
+          "source_expression": "steady lane-exchange equality",
+          "normalized_latex": "Q_{e1}(\\bar\\rho)\\rho_1(1-\\rho_2/\\rho_m)=[1+b(Q_{e1}(\\bar\\rho)-Q_{e2}(\\bar\\rho))]Q_{e2}(\\bar\\rho)\\rho_2(1-\\rho_1/\\rho_m)",
+          "purpose": "Set exchange rates equal at steady state.",
+          "variable_symbols": [
+            "q",
+            "rhobar",
+            "rho",
+            "rhom",
+            "b"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-026",
+          "page": 19,
+          "label": null,
+          "source_expression": "[uei(rhoi)-ui]/Ti+c0i dui/dx+r1 Sij-r2 Sji=0",
+          "normalized_latex": "\\frac{u_{ei}(\\rho_i)-u_i}{T_i}+c_{0i}\\frac{\\partial u_i}{\\partial x}+r_1S_{ij}-r_2S_{ji}=0",
+          "purpose": "Set lane speed dynamics to steady state.",
+          "variable_symbols": [
+            "ue",
+            "rho",
+            "u",
+            "Ti",
+            "c0",
+            "r1",
+            "r2",
+            "Sij"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-027",
+          "page": 19,
+          "label": null,
+          "source_expression": "ue1(rho)=uf(1-rho/rhom)/(1+E(rho/rhom)^4)",
+          "normalized_latex": "u_{e1}(\\rho)=\\frac{u_f(1-\\rho/\\rho_m)}{1+E(\\rho/\\rho_m)^4}",
+          "purpose": "Define lane-1 equilibrium speed.",
+          "variable_symbols": [
+            "ue",
+            "uf",
+            "rho",
+            "rhom",
+            "E"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-028",
+          "page": 19,
+          "label": null,
+          "source_expression": "piecewise ue2(rho) at rhoc",
+          "normalized_latex": "u_{e2}(\\rho)=\\begin{cases}\\frac{u_f(1-\\rho/\\rho_m)}{1+E(\\rho/\\rho_m)^4}(\\frac12+\\frac{\\rho}{2\\rho_c}),&\\rho<\\rho_c\\\\frac{u_f(1-\\rho/\\rho_m)}{1+E(\\rho/\\rho_m)^4},&\\rho\\ge\\rho_c\\end{cases}",
+          "purpose": "Define lane-2 equilibrium speed.",
+          "variable_symbols": [
+            "ue",
+            "uf",
+            "rho",
+            "rhom",
+            "E",
+            "rhoc"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-029",
+          "page": 19,
+          "label": null,
+          "source_expression": "qi=rhoi ui",
+          "normalized_latex": "q_i=\\rho_i u_i",
+          "purpose": "Convert density and speed to lane flow.",
+          "variable_symbols": [
+            "q",
+            "rho",
+            "u"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Recover lane and average flow-density structure."
+      ],
+      "constraints": [
+        "Two lanes with asymmetric role.",
+        "Steady state sets derivative terms to zero."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Most parameters are adopted from cited sources and given numerically without calibration.",
+        "parameters": [
+          "Ti",
+          "uf",
+          "a",
+          "b",
+          "c0",
+          "r1",
+          "r2",
+          "rhom",
+          "rhoc",
+          "E"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set the PDE fields and lane-exchange rates.",
+          "Solve steady equations for equilibrium speeds.",
+          "Compute q_i=rho_i u_i.",
+          "Plot flow against average density."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Continuum scale is appropriate; cited closures and parameters apply."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The steady-state curve is specified, while dynamic numerical reproduction is incomplete without boundary and discretization details."
+      },
+      "handoff_outputs": [
+        "q",
+        "rho",
+        "u"
+      ],
+      "validation_refs": [
+        "Figure 11",
+        "comparison in p22"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Printed single-lane continuity equation and exchange-index prose are internally ambiguous."
+      ],
+      "missing_details": [
+        "Boundary conditions",
+        "grid",
+        "time step",
+        "complete closure provenance"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-004",
+      "page": 20,
+      "section": "3.2.2 Study of Numerical Simulation",
+      "family": "PDE numerical perturbation dynamics",
+      "purpose": "Illustrate low-density dissipation and higher-density stop-and-go behavior.",
+      "base_or_modification": "modification",
+      "summary": "The source applies an externally cited numerical scheme to an initial density perturbation in the two-lane PDE.",
+      "variables": [
+        {
+          "symbol": "rho",
+          "normalized_name": "density field",
+          "role": "state",
+          "unit": "vehicles/m",
+          "definition": "PDE density field.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "road coordinate",
+          "role": "input",
+          "unit": "km",
+          "definition": "Spatial coordinate.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "PDE road length",
+          "role": "parameter",
+          "unit": "km",
+          "definition": "Numerical-domain length.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rhoh",
+          "normalized_name": "background density",
+          "role": "parameter",
+          "unit": "vehicles/m",
+          "definition": "Initial-condition constant not defined numerically.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Drhoh",
+          "normalized_name": "perturbation amplitude",
+          "role": "parameter",
+          "unit": "vehicles/m",
+          "definition": "Initial-condition amplitude not defined numerically.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rho",
+        "x",
+        "L",
+        "rhoh",
+        "Drhoh"
+      ],
+      "outputs": [
+        "rho"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-030",
+          "page": 20,
+          "label": null,
+          "source_expression": "rho(x,0)=rhoh+Drhoh[1/cosh^2((160/L)(x-L/16))-1/(4cosh^2((40/L)(x-11L/32)))]",
+          "normalized_latex": "\\rho(x,0)=\\rho_h+\\Delta\\rho_h[\\operatorname{sech}^2(\\frac{160}{L}(x-\\frac L{16}))-\\frac14\\operatorname{sech}^2(\\frac{40}{L}(x-\\frac{11L}{32}))]",
+          "purpose": "Set the printed perturbation for PDE dynamics.",
+          "variable_symbols": [
+            "rho",
+            "x",
+            "L",
+            "rhoh",
+            "Drhoh"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Visualize dynamic stability under density regimes."
+      ],
+      "constraints": [
+        "L=32.2 km is stated.",
+        "Initial perturbation is used on either lane."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The paper states L and cites a numerical scheme but leaves perturbation constants undefined.",
+        "parameters": [
+          "L",
+          "rhoh",
+          "Drhoh"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set initial density perturbation.",
+          "Use cited numerical scheme.",
+          "Plot fast and slow lane time-space evolution."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "The cited numerical scheme is applicable."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The dynamic figures cannot be independently rerun from the printed settings."
+      },
+      "handoff_outputs": [
+        "rho"
+      ],
+      "validation_refs": [
+        "Figures 12-14",
+        "p22 cross-model comparison"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Initial constants and numerical scheme are not fully specified in the paper."
+      ],
+      "missing_details": [
+        "rhoh",
+        "Drhoh",
+        "grid",
+        "time step",
+        "boundary conditions"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-005",
+      "page": 22,
+      "section": "4.1 Slow-Cars-To-Right Rule",
+      "family": "disconnected-lane counterfactual Monte Carlo",
+      "purpose": "Compare lane segregation with the baseline rule under common metrics.",
+      "base_or_modification": "modification",
+      "summary": "Fast and slow traffic are simulated in separate lanes and mixed in equal weights to retain the source's overall vehicle composition.",
+      "variables": [
+        {
+          "symbol": "Qf",
+          "normalized_name": "fast-lane flow",
+          "role": "intermediate",
+          "unit": "vehicles/time-step",
+          "definition": "Fast-lane simulation output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Qs",
+          "normalized_name": "slow-lane flow",
+          "role": "intermediate",
+          "unit": "vehicles/time-step",
+          "definition": "Slow-lane simulation output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "mixed flow",
+          "role": "output",
+          "unit": "vehicles/time-step",
+          "definition": "Equal-weighted SCTR flow.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Asf",
+          "normalized_name": "fast-lane safety proxy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Fast-lane proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ass",
+          "normalized_name": "slow-lane safety proxy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Slow-lane proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "mixed safety proxy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Equal-weighted SCTR proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0f",
+          "normalized_name": "fast-lane energy",
+          "role": "intermediate",
+          "unit": "proxy units",
+          "definition": "Fast-lane energy proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0s",
+          "normalized_name": "slow-lane energy",
+          "role": "intermediate",
+          "unit": "proxy units",
+          "definition": "Slow-lane energy proxy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "mixed energy",
+          "role": "output",
+          "unit": "proxy units",
+          "definition": "Equal-weighted energy proxy.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Qf",
+        "Qs",
+        "Asf",
+        "Ass",
+        "E0f",
+        "E0s"
+      ],
+      "outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-031",
+          "page": 23,
+          "label": null,
+          "source_expression": "Q=0.5Qf+0.5Qs",
+          "normalized_latex": "Q=0.5Q^f+0.5Q^s",
+          "purpose": "Mix separate SCTR lane flow simulations.",
+          "variable_symbols": [
+            "Q",
+            "Qf",
+            "Qs"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-032",
+          "page": 23,
+          "label": null,
+          "source_expression": "asafe=0.5 Asf+0.5 Ass",
+          "normalized_latex": "\\alpha_{safe}=0.5\\alpha_{safe}^f+0.5\\alpha_{safe}^s",
+          "purpose": "Mix SCTR safety proxies.",
+          "variable_symbols": [
+            "asafe",
+            "Asf",
+            "Ass"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-29911-033",
+          "page": 23,
+          "label": null,
+          "source_expression": "E0=0.5E0f+0.5E0s",
+          "normalized_latex": "E_0=0.5E_0^f+0.5E_0^s",
+          "purpose": "Mix SCTR energy proxies.",
+          "variable_symbols": [
+            "E0",
+            "E0f",
+            "E0s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Create a speed-segregated policy counterfactual."
+      ],
+      "constraints": [
+        "No lane changes.",
+        "Specified fast-car composition and 1:1 mixture."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Parameters are repeated from the CA scenario rather than fitted.",
+        "parameters": [
+          "L",
+          "T",
+          "n",
+          "Pd",
+          "Pc",
+          "Vmax"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Run fast-only lane.",
+          "Run mixed lane.",
+          "Combine output metrics at equal weights."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Separate lane runs can be combined linearly."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The mixing formula is visible, but complete simulation inputs are absent."
+      },
+      "handoff_outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "validation_refs": [
+        "Figures 15-17"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Exact lane assignment and repeat protocol are not fixed."
+      ],
+      "missing_details": [
+        "Scenario files",
+        "initial conditions",
+        "replicate statistics"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-006",
+      "page": 23,
+      "section": "4.2 Free Driving and Free Overtaking",
+      "family": "symmetric free-overtaking counterfactual",
+      "purpose": "Provide an unrestricted alternative to rightmost and speed-segregated rules.",
+      "base_or_modification": "modification",
+      "summary": "Two lanes are treated symmetrically and vehicles may overtake freely subject only to maximum speeds.",
+      "variables": [
+        {
+          "symbol": "Vmax",
+          "normalized_name": "vehicle maximum speed",
+          "role": "input",
+          "unit": "cells/time-step",
+          "definition": "Fast/slow vehicle limit.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "output",
+          "unit": "vehicles/time-step",
+          "definition": "Flow metric inherited from M1.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "safety proxy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Safety metric inherited from M1.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "energy proxy",
+          "role": "output",
+          "unit": "proxy units",
+          "definition": "Energy metric inherited from M1.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Vmax"
+      ],
+      "outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "This model is specified by a policy rule or conceptual mechanism rather than a displayed equation."
+      },
+      "objectives": [
+        "Provide a no-rightmost comparison baseline."
+      ],
+      "constraints": [
+        "Two symmetric lanes."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No fitted parameters are introduced.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Reuse the CA with free lane-change rules.",
+          "Record the three common metrics."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "The M1 metric definitions remain appropriate."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The rule is clear in prose but the executable mapping is not fully documented."
+      },
+      "handoff_outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "validation_refs": [
+        "Figures 15-17"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Rule-code encoding and repeated runs are not tied to the figures."
+      ],
+      "missing_details": [
+        "RULE encoding",
+        "scenario output"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-007",
+      "page": 24,
+      "section": "4.3 Comparison of Different Traffic Rules",
+      "family": "controlled response-curve policy comparison",
+      "purpose": "Compare baseline and counterfactual rules on aligned density-response metrics and derive a qualified recommendation.",
+      "base_or_modification": "paper-specific",
+      "summary": "The comparison layer reads three metric curves under common density conditions and separates model performance from practical feasibility.",
+      "variables": [
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "input",
+          "unit": "vehicles/time-step",
+          "definition": "Common comparison metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "safety proxy",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Common comparison metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "energy proxy",
+          "role": "input",
+          "unit": "proxy units",
+          "definition": "Common comparison metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "vehicle density",
+          "role": "input",
+          "unit": "vehicles/cell",
+          "definition": "Shared density axis.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "policy",
+          "normalized_name": "traffic rule",
+          "role": "output",
+          "unit": "categorical",
+          "definition": "Recommended rule or hybrid.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Q",
+        "asafe",
+        "E0",
+        "n"
+      ],
+      "outputs": [
+        "policy"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "not-applicable",
+        "reason": "This model is specified by a policy rule or conceptual mechanism rather than a displayed equation."
+      },
+      "objectives": [
+        "Select or combine traffic rules subject to model evidence and feasibility."
+      ],
+      "constraints": [
+        "Use the same metric bundle and density axis."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Policy selection uses existing scenario outputs.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Plot all rules on common axes.",
+          "Read light and heavy density regimes.",
+          "Rule out infeasible extreme.",
+          "Recommend a hybrid."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "The three CA formulations are comparable under stated parameter reuse."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The selection is a model-internal comparison rather than a field-validated policy evaluation."
+      },
+      "handoff_outputs": [
+        "policy"
+      ],
+      "validation_refs": [
+        "Figures 15-17",
+        "Summary and Suggestions"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "No uncertainty bands or common-seed comparison is reported."
+      ],
+      "missing_details": [
+        "replicate variance",
+        "implementation cost data"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-008",
+      "page": 26,
+      "section": "5.1 Median Optimization",
+      "family": "median-based centralized lane-allocation controller",
+      "purpose": "Use full traffic-state information to separate higher- and lower-speed vehicles dynamically.",
+      "base_or_modification": "modification",
+      "summary": "The median of current vehicle speeds drives preferred lane assignment; ties are randomized and blocked vehicles retain a return-to-preference rule.",
+      "variables": [
+        {
+          "symbol": "V",
+          "normalized_name": "current speed",
+          "role": "state",
+          "unit": "cells/time-step",
+          "definition": "Speed of vehicle k.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmedian",
+          "normalized_name": "median speed",
+          "role": "intermediate",
+          "unit": "cells/time-step",
+          "definition": "Current fleet speed median.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "vehicle index",
+          "role": "input",
+          "unit": "count",
+          "definition": "Indexed vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lane",
+          "normalized_name": "preferred lane",
+          "role": "output",
+          "unit": "categorical",
+          "definition": "Median-rule lane assignment.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "traffic flow",
+          "role": "output",
+          "unit": "vehicles/time-step",
+          "definition": "Equipped comparison metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "asafe",
+          "normalized_name": "safety proxy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Equipped comparison metric.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E0",
+          "normalized_name": "energy proxy",
+          "role": "output",
+          "unit": "proxy units",
+          "definition": "Equipped comparison metric.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "V",
+        "Vmedian",
+        "k"
+      ],
+      "outputs": [
+        "lane",
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-034",
+          "page": 27,
+          "label": "Figure 18",
+          "source_expression": "if V(k)=Vmedian, choose left/right with random probability 0.5",
+          "normalized_latex": "V(k)\\gtrless V_{median}\\Rightarrow lane\\ preference;\\ V(k)=V_{median}\\Rightarrow Bernoulli(0.5)",
+          "purpose": "Define median-based lane preference.",
+          "variable_symbols": [
+            "V",
+            "Vmedian",
+            "k",
+            "lane"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Increase flow and improve the source's safety and energy proxies while balancing lanes."
+      ],
+      "constraints": [
+        "System knows all vehicle speeds and locations.",
+        "Tie uses probability 0.5."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The median threshold is calculated from current state, not externally fitted.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Compute current fleet median.",
+          "Compare V(k) with median.",
+          "Assign preferred lane or randomize ties.",
+          "Run inherited CA and compare outputs."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Centralized observation and control are available."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The controller logic is explicit but experiment reproduction is incomplete."
+      },
+      "handoff_outputs": [
+        "Q",
+        "asafe",
+        "E0"
+      ],
+      "validation_refs": [
+        "Figure 18",
+        "Figures 19-21",
+        "Appendix median() branch"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "Exact RULE encoding, run configuration, and statistical uncertainty are absent."
+      ],
+      "missing_details": [
+        "controller configuration",
+        "communication assumptions",
+        "replicate statistics"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-29911-009",
+      "page": 29,
+      "section": "5.2 Possible Further Improvements / 6.3",
+      "family": "conceptual centralized online jam-release control",
+      "purpose": "Describe how centralized information could coordinate vehicles trapped without a local gap.",
+      "base_or_modification": "paper-specific",
+      "summary": "The source proposes coordinated acceleration and later stopping-distance refinement without a completed optimizer or numerical experiment.",
+      "variables": [
+        {
+          "symbol": "DXpf",
+          "normalized_name": "front gap",
+          "role": "state",
+          "unit": "cells",
+          "definition": "Local front gap.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d0",
+          "normalized_name": "stopping sight distance",
+          "role": "parameter",
+          "unit": "cells",
+          "definition": "Future stopping-distance threshold.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "vehicle speed",
+          "role": "state",
+          "unit": "cells/time-step",
+          "definition": "Vehicle speed.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lane",
+          "normalized_name": "coordinated lane state",
+          "role": "output",
+          "unit": "categorical",
+          "definition": "Conceptual centralized control state.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "DXpf",
+        "d0",
+        "V"
+      ],
+      "outputs": [
+        "lane"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-29911-035",
+          "page": 30,
+          "label": null,
+          "source_expression": "if DXpf>d0 compare V+1 with d0 instead of the gap",
+          "normalized_latex": "\\Delta X_p^f>d_0\\Rightarrow compare\\ V+1\\ \\text{with}\\ d_0",
+          "purpose": "State the future-work stopping-distance rule.",
+          "variable_symbols": [
+            "DXpf",
+            "d0",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations were visually checked."
+      },
+      "objectives": [
+        "Motivate future centralized coordination and physical-safety refinement."
+      ],
+      "constraints": [
+        "Central system controls all cars together."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial state or scenario is stated in the source."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Road, lane, or operating boundary is part of the model definition."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A steady-state or regime condition is discussed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "This is future work rather than a calibrated model.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Observe queue-level state.",
+          "Coordinate a future release policy.",
+          "Add stopping-distance state in later CA refinement."
+        ],
+        "software": [
+          "Monte Carlo procedure",
+          "MATLAB visualization",
+          "C++ appendix where applicable"
+        ],
+        "convergence_criteria": "No full numerical convergence, seed, and uncertainty protocol is reported unless explicitly noted."
+      },
+      "assumptions": [
+        "Communication and actuation can safely synchronize vehicles."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source provides a concept and rule fragment, not a validated controller."
+      },
+      "handoff_outputs": [
+        "lane"
+      ],
+      "validation_refs": [
+        "Figure 22",
+        "future research p30-31"
+      ],
+      "computational_cost": "Scenario computation cost is not fully reported.",
+      "strengths": [
+        "Source states a concrete model interface and observable output."
+      ],
+      "limitations": [
+        "No collision constraints, controller optimization, latency model, or results are supplied."
+      ],
+      "missing_details": [
+        "objective",
+        "constraints",
+        "algorithm",
+        "experiment"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2014-29911-001",
+      "to_model_id": "MU-A-2014-29911-002",
+      "handoff": "M1 outputs Q, asafe, and E0 become speed-limit objective inputs."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-001",
+      "to_model_id": "MU-A-2014-29911-003",
+      "handoff": "M1 density-flow pattern motivates a macro-scale corroboration target."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-003",
+      "to_model_id": "MU-A-2014-29911-004",
+      "handoff": "M3 PDE closure and parameters enter the dynamic perturbation study."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-001",
+      "to_model_id": "MU-A-2014-29911-005",
+      "handoff": "The CA state, metrics, and parameters are reused for slow-cars-to-right."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-001",
+      "to_model_id": "MU-A-2014-29911-006",
+      "handoff": "The CA state and metrics are reused for free overtaking."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-005",
+      "to_model_id": "MU-A-2014-29911-007",
+      "handoff": "SCTR response curves enter common policy comparison."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-006",
+      "to_model_id": "MU-A-2014-29911-007",
+      "handoff": "FDFO response curves enter common policy comparison."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-007",
+      "to_model_id": "MU-A-2014-29911-008",
+      "handoff": "The baseline policy comparison establishes the controlled improvement baseline."
+    },
+    {
+      "from_model_id": "MU-A-2014-29911-008",
+      "to_model_id": "MU-A-2014-29911-009",
+      "handoff": "Median-control limits motivate the conceptual centralized release extension."
+    }
+  ],
+  "review_status": "validated"
+}

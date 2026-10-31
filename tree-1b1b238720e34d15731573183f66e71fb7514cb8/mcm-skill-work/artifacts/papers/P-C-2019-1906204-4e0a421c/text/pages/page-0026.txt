@@ -1,0 +1,72 @@
+Team # 1906204                                                      Page 24 of 38
+
+
+        print("K too large")
+        return False
+    else:
+        # initial centers
+        old_centers = [list(pos[cities[i]]) for i in range(k)]
+        new_centers = []
+        # itartion until convergence
+        while True:
+            new_centers, cluster = renew_cluster(old_centers, pos, cities)
+            # print(new_centers)
+            break;
+            if (np.array(new_centers) == np.array(old_centers)).all():
+                break
+            else:
+                old_centers = new_centers
+
+        zone = {}
+        for key in cluster:
+            for city in cluster[key]:
+                zone[city] = key
+        return new_centers, cluster, zone
+
+def output(centers, cluster, zone, data):
+    # new_file = xlwt.Workbook(encoding = ’utf-8’)
+    # new_table = file.add_sheet(’data’)
+
+    table = []
+    for i in range(1,data.nrows):
+        YYYY = data.row_values(i)[1]
+        FIPS_Combined = data.row_values(i)[6]
+        substanceName = data.row_values(i)[7]
+        DrugReport = data.row_values(i)[8]
+        TotalDrugReport = data.row_values(i)[9]
+        label = zone[FIPS_Combined]
+        entry = [YYYY, label, substanceName, DrugReport, TotalDrugReport]
+        table.append(entry)
+
+    # def f(x, y):
+    #   if (np.array(x[:3]) == np.array(y[:3])).all():
+    #       return x[:3] + [x[3]+y[3]] + [x[4]+y[4]]
+    # reduce(lambda x, y: f , table)
+    return table
+
+
+if __name__ == ’__main__’:
+    data = xlrd.open_workbook(’excel_output_add.xls’).sheets()[0]
+
+    county = init(data)
+    centers, cluster, zone = k_means(100, county)
+    table = output(centers, cluster, zone, data)
+
+    #write data into excel
+    excel = xlwt.Workbook()
+    sheet1 = excel.add_sheet("Date based on Zone")
+    sheet2 = excel.add_sheet("ZoneCounty Correspondence Table")
+    sheet3 = excel.add_sheet("County Position")
+
+    sheet1.write(0, 0, "YYYY")
+    sheet1.write(0, 1, "Zone")
+    sheet1.write(0, 2, "substanceName")
+    sheet1.write(0, 3, "DrugReportZone")
+    sheet1.write(0, 4, "TotalDrugReportZone")
+    for row, entry in enumerate(table):
+        for col in range(len(entry)):
+            sheet1.write(row+1, col, entry[col])
+
+    sheet2.write(0, 0, "Zone")
+    sheet2.write(0, 1, "Latitude")
+    sheet2.write(0, 2, "Longitude")

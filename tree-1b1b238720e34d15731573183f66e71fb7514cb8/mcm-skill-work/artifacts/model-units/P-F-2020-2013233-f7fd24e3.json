@@ -1,0 +1,1023 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2020-2013233-f7fd24e3",
+  "problem_type": "F",
+  "year": "2020",
+  "source_sha256": "f7fd24e3d90c480dd6bd8cc3d06a6ec22f0b0f149fb49c8cec5ccb3036cfe442",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2020-2013233-RF",
+      "section": "3.1 Forecast of refugee numbers",
+      "family": "regression",
+      "summary": "Six island states are chosen as the most exposed: Kiribati, Nauru, the Bahamas, the Marshall Islands, Tuvalu and the Maldives. A table gives each one's population, share of land below five meters, terrain height and annual sea-level rise, all close to 4 mm a year. Regression on past sea level plus the landform and population data gives a first estimate of 200,000 to 300,000 displaced people by 2080, restated later as 300,000 to 400,000. Anyone living below five meters counts as displaced.",
+      "computational_cost": "not-stated",
+      "purpose": "Estimate how many people sea-level rise displaces by 2080.",
+      "base_or_modification": "base",
+      "page": 5,
+      "inputs": [
+        "h_c",
+        "p_c",
+        "v_c"
+      ],
+      "outputs": [
+        "N_2080"
+      ],
+      "handoff_outputs": [
+        "N_2080"
+      ],
+      "objectives": [
+        "Forecast the displaced population of six island states."
+      ],
+      "variables": [
+        {
+          "symbol": "h_c",
+          "normalized_name": "land_below_five",
+          "role": "input",
+          "unit": "percent",
+          "definition": "Share of country c's land lying below five meters",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_c",
+          "normalized_name": "population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Population of country c",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v_c",
+          "normalized_name": "annual_rise",
+          "role": "input",
+          "unit": "length-per-time",
+          "definition": "Yearly sea-level rise for country c, about 4 mm",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N_2080",
+          "normalized_name": "displaced_2080",
+          "role": "output",
+          "unit": "count",
+          "definition": "People displaced by 2080, given as a range",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013233-RF-1",
+          "equation_label": "Displacement threshold",
+          "equation_text": "A resident counts as displaced once the inhabited land lies below 5 m; N_2080 is the regression of p_c on h_c and accumulated rise v_c",
+          "source_expression": "A resident counts as displaced once the inhabited land lies below 5 m; N_2080 is the regression of p_c on h_c and accumulated rise v_c",
+          "normalized_latex": "N_{2080} = f(h_c, p_c, v_c)",
+          "purpose": "Linear regression. The five-meter line is the cutoff.",
+          "variable_symbols": [
+            "h_c",
+            "p_c",
+            "v_c",
+            "N_2080"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "No regression equation is printed. The inputs, the cutoff and the two output ranges are stated in prose.",
+        "reason": "Section 3.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Sea level of the past ten years. Rise near 4 mm a year."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Five meters is the line below which residents must move."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Forecast, no equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Linear regression on past sea level. No coefficients reported.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Regress sea level, apply the five-meter rule, sum the exposed population.",
+        "status": "partial",
+        "steps": [
+          "Assemble the six-country table",
+          "Regress the rise",
+          "Apply the cutoff",
+          "Sum"
+        ],
+        "software": [],
+        "convergence_criteria": "None stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Two ranges are printed: 200 to 300 thousand, then 300 to 400 thousand, both for 2080."
+        ],
+        "analysis": "The procedure is described but not specified enough to reproduce the number."
+      },
+      "constraints": [
+        "Only sea-level rise counts.",
+        "The six states stand for all exposed states."
+      ],
+      "validation_refs": [
+        "Table 2 six-country exposure data"
+      ],
+      "strengths": [
+        "The case list is justified by outside reports.",
+        "The cutoff is a single explicit rule."
+      ],
+      "limitations": [
+        "The same section gives two different ranges.",
+        "No regression coefficients."
+      ],
+      "missing_details": [
+        "The fitted equation.",
+        "Which range is the intended estimate."
+      ],
+      "assumptions": [
+        "Below five meters, residents must relocate.",
+        "The six countries represent the rest."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013233-CL",
+      "section": "3.2 Possible cultural loss due to transfer",
+      "family": "index-construction",
+      "summary": "Six factors measure cultural-loss risk: nationalist tendency, the refugees' location, fit of production and lifestyle, the carrier a culture needs, refugee cohesion, and the culture's economic return. Principal components keep the roots with high contribution and use them as weights, giving Z as the weighted combination. Three monotone relations are stated: deeper cultural dependence lowers risk, stronger exclusion of outsiders raises it, and a more complicated carrier raises it.",
+      "computational_cost": "not-stated",
+      "purpose": "Rank the drivers of cultural loss so policy has a target.",
+      "base_or_modification": "base",
+      "page": 6,
+      "inputs": [
+        "e_j"
+      ],
+      "outputs": [
+        "Z_c"
+      ],
+      "handoff_outputs": [
+        "Z_c"
+      ],
+      "objectives": [
+        "Combine six cultural-loss factors into one risk index."
+      ],
+      "variables": [
+        {
+          "symbol": "e_j",
+          "normalized_name": "loss_factor",
+          "role": "input",
+          "unit": "score",
+          "definition": "Factor j of cultural-loss risk, six in all",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_i",
+          "normalized_name": "component_root",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Characteristic root kept for its high contribution",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_i",
+          "normalized_name": "component_vector",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Characteristic vector paired with root i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z_c",
+          "normalized_name": "loss_risk_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Comprehensive cultural-loss risk",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013233-CL-1",
+          "equation_label": "Cultural loss index",
+          "equation_text": "Z_c = y_i * b_i * e_j, summed over the roots with high contribution",
+          "source_expression": "Z_c = y_i * b_i * e_j, summed over the roots with high contribution",
+          "normalized_latex": "Z = \\sum_i y_i b_i e_j",
+          "purpose": "Principal component index. Roots act as weights.",
+          "variable_symbols": [
+            "Z_c",
+            "y_i",
+            "b_i",
+            "e_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The index is printed as Z = y_i times b_i times e_j. No numerical roots are given.",
+        "reason": "Section 3.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Six factors scored per case in the printed table."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Static index."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Principal components; roots with high contribution kept. No variance threshold stated.",
+        "parameters": [
+          "y_i"
+        ]
+      },
+      "algorithm": {
+        "description": "Score the factors, extract the leading components, weight and sum.",
+        "status": "partial",
+        "steps": [
+          "Score six factors",
+          "Extract roots and vectors",
+          "Weight and sum"
+        ],
+        "software": [],
+        "convergence_criteria": "None stated."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "No index value is computed for any country."
+        ],
+        "analysis": "The direction of each factor is stated. The index itself is never evaluated."
+      },
+      "constraints": [
+        "Only the leading components enter.",
+        "Factor scores are taken as given."
+      ],
+      "validation_refs": [
+        "Table 3 six-factor scoring grid"
+      ],
+      "strengths": [
+        "Three signed relationships are stated in words, so the index has an interpretation."
+      ],
+      "limitations": [
+        "No contribution threshold and no computed value.",
+        "The factor table contains symbols rather than data."
+      ],
+      "missing_details": [
+        "The retained roots and their contribution.",
+        "Any country's index."
+      ],
+      "assumptions": [
+        "The six factors cover the risk.",
+        "The mechanism transfers to countries not in the sample."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013233-KM",
+      "section": "4.1 Refugee destination",
+      "family": "assignment",
+      "summary": "Fit between an origin and a destination has three parts: the destination's acceptance, the product of its education level and GDP per head; the refugees' adaptation, the share of earlier migrants who live stably; and natural factors, consumer-based carbon emissions divided by distance, so high emitters carry more duty. Weights 0.57, 0.34 and 0.08 come from a reciprocal comparison matrix. A worked case gives 2.0416. The scores weight a complete bipartite graph and the Kuhn-Munkres algorithm returns the best destination. Whole populations move together, and a destination may refuse once full.",
+      "computational_cost": "not-stated",
+      "purpose": "Assign each displaced population to its best receiving country.",
+      "base_or_modification": "hybrid",
+      "page": 8,
+      "inputs": [
+        "g_d",
+        "q_d",
+        "s_s",
+        "s_t",
+        "c_d",
+        "l_od"
+      ],
+      "outputs": [
+        "M_star"
+      ],
+      "handoff_outputs": [
+        "M_star"
+      ],
+      "objectives": [
+        "Maximize total fit between origins and destinations."
+      ],
+      "variables": [
+        {
+          "symbol": "g_d",
+          "normalized_name": "education_level",
+          "role": "input",
+          "unit": "score",
+          "definition": "Average education level of destination d, on a scale of 1 to 6",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "q_d",
+          "normalized_name": "gdp_per_head",
+          "role": "input",
+          "unit": "currency",
+          "definition": "GDP per person of destination d, in units of 10,000 dollars",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s_s",
+          "normalized_name": "stable_migrants",
+          "role": "input",
+          "unit": "count",
+          "definition": "Earlier migrants who live stably: no crime, a job, no second move",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s_t",
+          "normalized_name": "total_migrants",
+          "role": "input",
+          "unit": "count",
+          "definition": "All earlier migrants from the origin to that destination",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c_d",
+          "normalized_name": "consumption_emissions",
+          "role": "input",
+          "unit": "mass",
+          "definition": "Consumer-based carbon dioxide emissions of destination d",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "l_od",
+          "normalized_name": "distance",
+          "role": "input",
+          "unit": "length",
+          "definition": "Distance between origin and destination",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a_k",
+          "normalized_name": "factor_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of factor k: 0.57, 0.34, 0.08",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_od",
+          "normalized_name": "fit_score",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted fit between origin o and destination d",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M_star",
+          "normalized_name": "best_matching",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Optimal assignment of origins to destinations",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013233-KM-1",
+          "equation_label": "Fit score",
+          "equation_text": "r_od = a_k dot (g_d*q_d, s_s/s_t, c_d/l_od); with a = (0.57, 0.34, 0.08) the worked case gives 2.0416",
+          "source_expression": "r_od = a_k dot (g_d*q_d, s_s/s_t, c_d/l_od); with a = (0.57, 0.34, 0.08) the worked case gives 2.0416",
+          "normalized_latex": "r = a \\cdot (r_1, r_2, r_3)",
+          "purpose": "Acceptance is a product, adaptation a ratio, duty emissions over distance.",
+          "variable_symbols": [
+            "r_od",
+            "a_k",
+            "g_d",
+            "q_d",
+            "s_s",
+            "s_t",
+            "c_d",
+            "l_od"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The weighted product and the worked example are printed. The comparison matrix is printed. The optimal matching itself is not computed.",
+        "reason": "Section 4.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each origin scored against each destination on three factors."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Whole populations move as one group. A destination refuses once capacity is reached."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Combinatorial optimum, not an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Weights from the principal eigenvector of a reciprocal comparison matrix.",
+        "parameters": [
+          "a_k"
+        ]
+      },
+      "algorithm": {
+        "description": "Score every pair, build the weighted bipartite graph, run Kuhn-Munkres.",
+        "status": "implemented",
+        "steps": [
+          "Compute the three factors",
+          "Apply the weights",
+          "Build the graph",
+          "Solve the assignment"
+        ],
+        "software": [],
+        "convergence_criteria": "Maximum weight matching."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "One pair is evaluated at 2.0416. No full assignment is produced."
+        ],
+        "analysis": "The scoring rule is reproducible. The decision the model exists to make is never shown."
+      },
+      "constraints": [
+        "Refugees do not choose their destination.",
+        "Only the strongest driver of each factor is kept."
+      ],
+      "validation_refs": [
+        "Table 4 comparison matrix",
+        "Figure 1 bipartite graph"
+      ],
+      "strengths": [
+        "Consumer-based emissions are chosen over producer-based, with the trade reason given.",
+        "A numeric example follows the rule immediately."
+      ],
+      "limitations": [
+        "The comparison matrix is offered as reasonable, not derived from data.",
+        "No assignment is ever computed."
+      ],
+      "missing_details": [
+        "The capacity of each destination.",
+        "The resulting matching."
+      ],
+      "assumptions": [
+        "Higher education and income raise acceptance.",
+        "Distance is the dominant natural barrier."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013233-HR",
+      "section": "5.1 Analysis of human rights protection",
+      "family": "system-dynamics",
+      "summary": "Five indicators stand for human-rights protection: education, medical care, grain, pensions and housing per person. Principal components give fixed weights 0.269, 0.054, 0.257, 0.279 and 0.309. Arrival dilutes each indicator because the same total is split over more people. With no policy the index falls as arrivals grow. Policy adds grain and adds a term in employment and tax revenue, so the index recovers. Births and deaths then enter the denominator, and the late stage is claimed to pass the pre-arrival level.",
+      "computational_cost": "not-stated",
+      "purpose": "Track how protection per person falls on arrival and recovers under policy.",
+      "base_or_modification": "modification",
+      "page": 11,
+      "inputs": [
+        "z_k",
+        "P_0",
+        "P_t",
+        "m_b",
+        "m_d"
+      ],
+      "outputs": [
+        "C_t"
+      ],
+      "handoff_outputs": [
+        "C_t"
+      ],
+      "objectives": [
+        "Show the path of the protection index with and without policy."
+      ],
+      "variables": [
+        {
+          "symbol": "z_k",
+          "normalized_name": "per_capita_indicator",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Indicator k per person: education, medical care, grain, pensions, housing",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_0",
+          "normalized_name": "original_population",
+          "role": "input",
+          "unit": "count",
+          "definition": "Population of the receiving country before arrival",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P_t",
+          "normalized_name": "arrivals",
+          "role": "input",
+          "unit": "count",
+          "definition": "Displaced people present at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_k",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Fixed weight of indicator k: 0.269, 0.054, 0.257, 0.279, 0.309",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_b",
+          "normalized_name": "birth_rate",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Birth rate of the receiving country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m_d",
+          "normalized_name": "death_rate",
+          "role": "parameter",
+          "unit": "per-time",
+          "definition": "Death rate of the receiving country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "f_p",
+          "normalized_name": "policy_term",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Added term from refugee employment and tax revenue",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C_t",
+          "normalized_name": "protection_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Human-rights protection index at time t",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013233-HR-1",
+          "equation_label": "Protection index",
+          "equation_text": "C_t = 0.269*z_1 + 0.054*z_2 + 0.257*z_3 + 0.279*z_4 + 0.309*z_5",
+          "source_expression": "C_t = 0.269*z_1 + 0.054*z_2 + 0.257*z_3 + 0.279*z_4 + 0.309*z_5",
+          "normalized_latex": "C = \\sum_k w_k z_k",
+          "purpose": "Fixed linear combination from principal components.",
+          "variable_symbols": [
+            "C_t",
+            "w_k",
+            "z_k"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013233-HR-2",
+          "equation_label": "Dilution and policy",
+          "equation_text": "Per-person grain falls from Z/P_0 to Z/(P_0+P_t); policy adds output in the numerator and the term f_p; births and deaths scale the denominator",
+          "source_expression": "Per-person grain falls from Z/P_0 to Z/(P_0+P_t); policy adds output in the numerator and the term f_p; births and deaths scale the denominator",
+          "normalized_latex": "z' = Z / (P_0 + P_t)",
+          "purpose": "Arrival dilutes. Policy and demography modify numerator and denominator.",
+          "variable_symbols": [
+            "z_k",
+            "P_0",
+            "P_t",
+            "m_b",
+            "m_d",
+            "f_p"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The weighted index is printed twice with identical coefficients. The dilution, policy and demographic forms are printed. The system-dynamics simulation itself is only shown in figures.",
+        "reason": "Sections 5.1 and 6.2 and 7.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "No policy in the first run. Arrivals create no value until policy exists."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population growth comes only from arrivals in the first model, then from births and deaths."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The figures show paths but no solved steady state."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Weights from principal components, reported as fixed coefficients.",
+        "parameters": [
+          "w_k"
+        ]
+      },
+      "algorithm": {
+        "description": "Compute the index, dilute by arrivals, add the policy term, then add demography.",
+        "status": "partial",
+        "steps": [
+          "Weight the indicators",
+          "Dilute by arrivals",
+          "Add employment and tax",
+          "Scale by births and deaths"
+        ],
+        "software": [],
+        "convergence_criteria": "Judged by eye against the figures."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Three figures show decline, recovery, and a closer-to-reality path. No numeric index is printed."
+        ],
+        "analysis": "The direction of every change is determined. The level is not."
+      },
+      "constraints": [
+        "Weights stay fixed when policy is added.",
+        "Only these five indicators count."
+      ],
+      "validation_refs": [
+        "Figure 2 index without policy",
+        "Figure 3 index with policy",
+        "Figure 4 index with demography"
+      ],
+      "strengths": [
+        "The same formula is revised twice, each time for a stated reason.",
+        "Dilution is shown algebraically, not only asserted."
+      ],
+      "limitations": [
+        "The system-dynamics model has no written equations.",
+        "The claim of exceeding the pre-arrival level is not numbered."
+      ],
+      "missing_details": [
+        "The stocks and flows of the system-dynamics model.",
+        "Any numeric value of the index."
+      ],
+      "assumptions": [
+        "Arrivals hold the same legal status as locals.",
+        "No shock hits after arrival."
+      ]
+    },
+    {
+      "model_id": "MU-F-2020-2013233-CU",
+      "section": "5.2 Analysis of cultural protection",
+      "family": "system-dynamics",
+      "summary": "Culture is split into three kinds by the sign of its economic effect. Art and intangible heritage always pay, and the gain compounds at the cultural sector's growth rate, scaled by how far policy pushes it into the market. Religion and custom always cost, through riots whose chance depends on tolerance and whose scale shrinks with ethnic diversity. Food, clothing and daily life switch at a tolerance of one half: above it they pay, below it they cost. A place with many groups finds a new balance without policy; a place with one group shows net loss.",
+      "computational_cost": "not-stated",
+      "purpose": "Separate cultural effects into gain, loss and a switch, and time the balance point.",
+      "base_or_modification": "paper-specific",
+      "page": 13,
+      "inputs": [
+        "G_a",
+        "G_b",
+        "n_i",
+        "K_r",
+        "B_s"
+      ],
+      "outputs": [
+        "R_t",
+        "S_t",
+        "Y_t"
+      ],
+      "handoff_outputs": [
+        "Y_t"
+      ],
+      "objectives": [
+        "Quantify gain and loss by culture type and locate the balance."
+      ],
+      "variables": [
+        {
+          "symbol": "G_a",
+          "normalized_name": "origin_contribution",
+          "role": "input",
+          "unit": "currency",
+          "definition": "What the arriving culture contributed to its own economy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G_b",
+          "normalized_name": "host_contribution",
+          "role": "input",
+          "unit": "currency",
+          "definition": "What the host culture contributes to the host economy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n_i",
+          "normalized_name": "sector_growth",
+          "role": "input",
+          "unit": "per-time",
+          "definition": "Average GDP growth of host sector i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X_p",
+          "normalized_name": "marketization",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "How far policy pushes the arriving culture into the market, from 0.2 up to 1",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K_r",
+          "normalized_name": "riot_chance",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability of riots, set by policy tolerance and rising with time",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B_s",
+          "normalized_name": "standard_loss",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Loss rate of a riot before nationalism scales it",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d_n",
+          "normalized_name": "nationalism_factor",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Riot scale, falling as the number of ethnic groups rises",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b_t",
+          "normalized_name": "tolerance",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Policy tolerance, switching the third culture type at one half",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R_t",
+          "normalized_name": "culture_gain",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Gain from art and intangible heritage at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_t",
+          "normalized_name": "culture_loss",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Loss from religion and custom at time t",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_t",
+          "normalized_name": "swing_effect",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Net effect of lifestyle, positive or negative by tolerance",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2020-2013233-CU-1",
+          "equation_label": "Gain and loss",
+          "equation_text": "R_t = (G_a*X_p + G_b) * (1 + n_i)^t; S_t = K_r * B_s * d_n * G_b",
+          "source_expression": "R_t = (G_a*X_p + G_b) * (1 + n_i)^t; S_t = K_r * B_s * d_n * G_b",
+          "normalized_latex": "R = (G_a X + G_b)\\,(1+n)^{t}",
+          "purpose": "Gain compounds with the sector. Loss is riot chance times scaled damage.",
+          "variable_symbols": [
+            "R_t",
+            "S_t",
+            "G_a",
+            "G_b",
+            "X_p",
+            "n_i",
+            "K_r",
+            "B_s",
+            "d_n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2020-2013233-CU-2",
+          "equation_label": "Swing culture",
+          "equation_text": "Y_t equals the loss form when b_t is below one half and the gain form when b_t is above",
+          "source_expression": "Y_t equals the loss form when b_t is below one half and the gain form when b_t is above",
+          "normalized_latex": "Y = R \\text{ if } b>0.5,\\; S \\text{ otherwise}",
+          "purpose": "One parameter flips the sign of the third culture type.",
+          "variable_symbols": [
+            "Y_t",
+            "b_t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The gain formula is printed cleanly. The loss formula and the piecewise swing formula are partly garbled by line-break glyphs and are reconstructed from the prose definitions.",
+        "reason": "Section 5.2.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "At arrival, host gain and loss are equal and the gap is zero."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Marketization lies between 0.2 and 1. Tolerance lies between 0 and 1, with the switch at 0.5."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "A multi-ethnic host reaches a new balance; a single-ethnic host does not."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "All parameters are set by assumption. None is estimated.",
+        "parameters": [
+          "X_p",
+          "b_t"
+        ]
+      },
+      "algorithm": {
+        "description": "Classify the culture, apply the matching formula, simulate the no-policy path.",
+        "status": "partial",
+        "steps": [
+          "Classify by sign",
+          "Compute gain or loss",
+          "Apply the tolerance switch",
+          "Simulate"
+        ],
+        "software": [],
+        "convergence_criteria": "Balance of gain and loss."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "The no-policy result is stated qualitatively: balance for diverse hosts, net loss for single-group hosts. No date is given."
+        ],
+        "analysis": "The sign structure is clear. The model never answers its own question of when the balance arrives."
+      },
+      "constraints": [
+        "Conflict from religion and custom can be reduced but not removed.",
+        "Contact between the two cultures always happens."
+      ],
+      "validation_refs": [
+        "Section 5.3.3 no-policy simulation result"
+      ],
+      "strengths": [
+        "Each type is defined by the sign of its effect, so the classification does work.",
+        "The diverse and single-group hosts are allowed to differ."
+      ],
+      "limitations": [
+        "No parameter is estimated.",
+        "The promised date of balance is never produced.",
+        "The piecewise formula is not reliably readable."
+      ],
+      "missing_details": [
+        "The function linking tolerance to riot probability.",
+        "The time at which balance returns."
+      ],
+      "assumptions": [
+        "Art always pays and religion always costs.",
+        "No group stays isolated."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2020-2013233-RF-1",
+      "model_id": "MU-F-2020-2013233-RF",
+      "page": 5,
+      "source_expression": "A resident counts as displaced once the inhabited land lies below 5 m; N_2080 is the regression of p_c on h_c and accumulated rise v_c"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-CL-1",
+      "model_id": "MU-F-2020-2013233-CL",
+      "page": 6,
+      "source_expression": "Z_c = y_i * b_i * e_j, summed over the roots with high contribution"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-KM-1",
+      "model_id": "MU-F-2020-2013233-KM",
+      "page": 7,
+      "source_expression": "r_od = a_k dot (g_d*q_d, s_s/s_t, c_d/l_od); with a = (0.57, 0.34, 0.08) the worked case gives 2.0416"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-HR-1",
+      "model_id": "MU-F-2020-2013233-HR",
+      "page": 10,
+      "source_expression": "C_t = 0.269*z_1 + 0.054*z_2 + 0.257*z_3 + 0.279*z_4 + 0.309*z_5"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-HR-2",
+      "model_id": "MU-F-2020-2013233-HR",
+      "page": 16,
+      "source_expression": "Per-person grain falls from Z/P_0 to Z/(P_0+P_t); policy adds output in the numerator and the term f_p; births and deaths scale the denominator"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-CU-1",
+      "model_id": "MU-F-2020-2013233-CU",
+      "page": 12,
+      "source_expression": "R_t = (G_a*X_p + G_b) * (1 + n_i)^t; S_t = K_r * B_s * d_n * G_b"
+    },
+    {
+      "equation_id": "EQ-F-2020-2013233-CU-2",
+      "model_id": "MU-F-2020-2013233-CU",
+      "page": 13,
+      "source_expression": "Y_t equals the loss form when b_t is below one half and the gain form when b_t is above"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2020-2013233-RF",
+      "to_model_id": "MU-F-2020-2013233-KM",
+      "handoff": "The populations counted as displaced are the groups the assignment then places"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013233-CL",
+      "to_model_id": "MU-F-2020-2013233-CU",
+      "handoff": "The loss-risk factors motivate splitting culture by the sign of its effect"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013233-KM",
+      "to_model_id": "MU-F-2020-2013233-HR",
+      "handoff": "The chosen destination is the country whose per-person resources the arrivals then dilute"
+    },
+    {
+      "from_model_id": "MU-F-2020-2013233-CU",
+      "to_model_id": "MU-F-2020-2013233-HR",
+      "handoff": "The culture balance and the rights index are the two tests the policy is judged against"
+    }
+  ]
+}

@@ -1,0 +1,951 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2024-2401298-07d37078",
+  "problem_type": "C",
+  "year": "2024",
+  "source_sha256": "07d37078676373ea1c5ce3395e7eef718cbbd25138c8e62d0d2928bd9cd482e1",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q243-001",
+      "page": 6,
+      "section": "3 Performance metric",
+      "family": "server-adjusted performance score",
+      "purpose": "Score which player is performing better without letting the server decide it.",
+      "base_or_modification": "paper-specific",
+      "summary": "Serve win rates p1 and p2 are combined into M1, read as player 1 ahead when above one half. A point window and a time window both move. AUC averages the time-window score over window lengths so that neither a short nor a long window has to be chosen. The printed formula (2) is scrambled.",
+      "variables": [
+        {
+          "symbol": "D",
+          "normalized_name": "points difference",
+          "unit": "points",
+          "definition": "Player 1 points won minus player 2 points won.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p1",
+          "normalized_name": "serve win rate",
+          "unit": "1",
+          "definition": "Share of points player 1 wins on serve inside the window.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p2",
+          "normalized_name": "return win rate",
+          "unit": "1",
+          "definition": "Share of points player 2 wins on serve inside the window.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "M1",
+          "normalized_name": "performance",
+          "unit": "1",
+          "definition": "Probability player 1 wins a point regardless of the server. Above 0.5 means player 1 is ahead.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "omega",
+          "normalized_name": "point window",
+          "unit": "points",
+          "definition": "Fixed window length. The plotted curve uses 30.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "time window",
+          "unit": "seconds",
+          "definition": "Length of the time window. The example uses 600.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lamw",
+          "normalized_name": "window step",
+          "unit": "seconds",
+          "definition": "Step of the time window. The example uses 60.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "auc score",
+          "unit": "1",
+          "definition": "Average of the windowed score over window lengths.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p1",
+        "p2"
+      ],
+      "outputs": [
+        "D",
+        "M1",
+        "A"
+      ],
+      "handoff_outputs": [
+        "M1"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q243-001",
+          "page": 5,
+          "label": "(1)",
+          "source_expression": "points difference = p1_points_won - p2_points_won",
+          "normalized_latex": "D = p^{(1)}_{\\mathrm{won}} - p^{(2)}_{\\mathrm{won}}",
+          "purpose": "Running points difference. The server colors are drawn on the same figure.",
+          "variable_symbols": [
+            "D"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q243-002",
+          "page": 6,
+          "label": "(2)",
+          "source_expression": "M1 = p1/(1-p1) over p1/(1-p1) + (1-p2)/p2, set to 1/2 when the two rates match",
+          "normalized_latex": "M_1 = \\frac{p_1/(1-p_1)}{p_1/(1-p_1)+(1-p_2)/p_2}",
+          "purpose": "Server-adjusted performance. The printed formula is split across lines and not recoverable as set.",
+          "variable_symbols": [
+            "M1",
+            "p1",
+            "p2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "A(t) = 1/(Lmax-Lmin) integral_{Lmin}^{Lmax} M_L(t) dL",
+          "normalized_latex": "A(t)=\\frac{1}{L_{\\max}-L_{\\min}}\\int_{L_{\\min}}^{L_{\\max}} M_L(t)\\,dL",
+          "purpose": "AUC over window lengths. Discretized with dL = 1. The printed integral is legible.",
+          "variable_symbols": [
+            "A",
+            "L",
+            "M1"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (1), (2), and (3) are printed. Formula (2) is scrambled."
+      },
+      "objectives": [
+        "Identify who is performing better at a given time without using the server."
+      ],
+      "constraints": [
+        "M1 above 0.5 means player 1.",
+        "A Gaussian filter is rejected because it would alter formula (2)."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each window holds the points, or the seconds, ending at the current index."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is fitted. The point window is set to 30, the time window to 600 seconds, the step to 60.",
+        "parameters": [
+          "omega",
+          "lamw"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute serve win rates inside the window.",
+          "Combine them into M1.",
+          "Repeat over point index and over time.",
+          "Average M_L over window lengths."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The curve is read against the line at one half."
+      },
+      "assumptions": [
+        "Weather, crowd, and minor injuries do not shift the score."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Formula (2) is printed with its factors on separate lines, so the combination rule is a reconstruction."
+      },
+      "validation_refs": [
+        "Figure 3: Alcaraz against Jarry, red line at 0.5.",
+        "Figure 5: AUC against time."
+      ],
+      "computational_cost": "One pass over the points of a match for each window length.",
+      "strengths": [
+        "Averaging over window lengths avoids picking one length."
+      ],
+      "limitations": [
+        "The metric is descriptive. It does not test momentum."
+      ],
+      "missing_details": [
+        "The exact algebra of formula (2) is not recoverable from the text layer."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q243-002",
+      "page": 8,
+      "section": "4 Hypothesis tests",
+      "family": "hypothesis test",
+      "purpose": "Test whether points scored by a fixed server are independent draws.",
+      "base_or_modification": "base",
+      "summary": "Under H0 a fixed server makes points i.i.d. binomial. Ljung-Box on the first match gives p = 0.497 up to 10 lags. The runs test gives P = 0.691. Neither rejects at 0.05 for most matches. Instantaneous win rates rise by about one percent.",
+      "variables": [
+        {
+          "symbol": "p1",
+          "normalized_name": "serve win rate",
+          "unit": "1",
+          "definition": "Probability player 1 wins a point on their own serve.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p2",
+          "normalized_name": "return win rate",
+          "unit": "1",
+          "definition": "Probability player 1 wins a point on player 2's serve.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "ljung-box",
+          "unit": "1",
+          "definition": "Ljung-Box statistic, referred to chi-square with h minus m degrees of freedom.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "sample size",
+          "unit": "points",
+          "definition": "Length of one serve sequence.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "h",
+          "normalized_name": "lags",
+          "unit": "1",
+          "definition": "Maximum lag. The reported test uses 10.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "runs score",
+          "unit": "1",
+          "definition": "Runs-test Z score.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "runs",
+          "unit": "1",
+          "definition": "Observed number of runs.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n1",
+          "normalized_name": "win count",
+          "unit": "points",
+          "definition": "Count of one outcome in the sequence.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n2",
+          "normalized_name": "loss count",
+          "unit": "points",
+          "definition": "Count of the other outcome.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "p1",
+        "p2",
+        "n",
+        "R",
+        "n1",
+        "n2"
+      ],
+      "outputs": [
+        "Q",
+        "Z"
+      ],
+      "handoff_outputs": [
+        "Q",
+        "Z"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q243-004",
+          "page": 9,
+          "label": "(4)",
+          "source_expression": "Q = n(n+2) sum_{k=1}^{h} rhohat_k^2 / (n-k)",
+          "normalized_latex": "Q=n(n+2)\\sum_{k=1}^{h}\\hat\\rho_k^{2}/(n-k)",
+          "purpose": "Ljung-Box statistic. The sum is printed beside the formula. m = 0.",
+          "variable_symbols": [
+            "Q",
+            "n",
+            "h"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-005",
+          "page": 9,
+          "label": "(5)",
+          "source_expression": "Z = (R - E[R]) / sqrt(Var(R)), E[R] = 1 + 2 n1 n2 / (n1+n2)",
+          "normalized_latex": "Z=(R-\\mathbb{E}[R])/\\sqrt{\\mathrm{Var}(R)}",
+          "purpose": "Runs statistic. The variance formula is scrambled across the line.",
+          "variable_symbols": [
+            "Z",
+            "R",
+            "n1",
+            "n2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (4) and (5) are printed. The variance term is scrambled."
+      },
+      "objectives": [
+        "Decide whether the serve-conditional sequences reject independence."
+      ],
+      "constraints": [
+        "Significance level 0.05.",
+        "m = 0."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Sequences are split by who is serving."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated. The tests are computed per match.",
+        "parameters": [
+          "h"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Split each match by server.",
+          "Compute autocorrelations to lag 10.",
+          "Compute the runs statistic.",
+          "Compare both p-values with 0.05."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A p-value above 0.05 does not reject."
+      },
+      "assumptions": [
+        "Under H0 the points of a fixed server are i.i.d. binomial."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The runs variance is printed with its factors separated from the fraction."
+      },
+      "validation_refs": [
+        "First match: Ljung-Box p = 0.497, runs P = 0.691.",
+        "Table 2: serve 0.6874 against immediate 0.6978."
+      ],
+      "computational_cost": "Two tests per match.",
+      "strengths": [
+        "The paper reports the non-rejection instead of forcing a positive result."
+      ],
+      "limitations": [
+        "A failure to reject is not evidence that momentum is absent."
+      ],
+      "missing_details": [
+        "The runs variance is not recoverable as printed."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q243-003",
+      "page": 11,
+      "section": "5.1 Naive binomial model",
+      "family": "rank-strength binomial",
+      "purpose": "Predict the points a player should win from rank alone, so the remainder can be called momentum.",
+      "base_or_modification": "hybrid",
+      "summary": "Relative rank among the 32 Wimbledon players becomes an expected losing round, six minus log base two of rank. A logistic of the round gap plus a server bonus is the point probability. Newton on 31 matches gives lambda 0.0624 and s 0.1742. Momentum is the points won minus the points this model expects. The word likelyhood is printed.",
+      "variables": [
+        {
+          "symbol": "Rank1",
+          "normalized_name": "relative rank",
+          "unit": "1",
+          "definition": "Rank of player 1 among the 32 Wimbledon players, from 1 to 32.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Rank2",
+          "normalized_name": "relative rank",
+          "unit": "1",
+          "definition": "Rank of player 2 on the same list.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r1",
+          "normalized_name": "expected losing round",
+          "unit": "rounds",
+          "definition": "Six minus log base two of Rank1.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r2",
+          "normalized_name": "expected losing round",
+          "unit": "rounds",
+          "definition": "Six minus log base two of Rank2.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "rank slope",
+          "unit": "1",
+          "definition": "Fitted at 0.0624.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "s",
+          "normalized_name": "server bonus",
+          "unit": "1",
+          "definition": "Positive server advantage, fitted at 0.1742.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mu",
+          "normalized_name": "sum slope",
+          "unit": "1",
+          "definition": "Slope on the sum of rounds. Found small and dropped.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n1",
+          "normalized_name": "points won",
+          "unit": "points",
+          "definition": "Points player 1 won in the match.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n2",
+          "normalized_name": "points lost",
+          "unit": "points",
+          "definition": "Points player 2 won in the match.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Llike",
+          "normalized_name": "likelihood",
+          "unit": "1",
+          "definition": "Binomial likelihood of one match.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "points won",
+          "unit": "points",
+          "definition": "Points actually won.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Shat",
+          "normalized_name": "expected points",
+          "unit": "points",
+          "definition": "Points the binomial model expects.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "momentum",
+          "unit": "points",
+          "definition": "Residual, points won minus points expected.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Rank1",
+        "Rank2",
+        "n1",
+        "n2",
+        "S"
+      ],
+      "outputs": [
+        "E",
+        "Shat"
+      ],
+      "handoff_outputs": [
+        "E"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q243-006",
+          "page": 11,
+          "label": "(6)",
+          "source_expression": "r1 = 6 - log2(Rank1)",
+          "normalized_latex": "r_1 = 6 - \\log_2(\\mathrm{Rank}_1)",
+          "purpose": "Expected losing round. The printed line is scrambled around the definition.",
+          "variable_symbols": [
+            "r1",
+            "Rank1"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-007",
+          "page": 11,
+          "label": "(7)",
+          "source_expression": "f2 = exp(lam(r1-r2)) / (1 + exp(lam(r1-r2))) + s",
+          "normalized_latex": "f_2=\\frac{e^{\\lambda(r_1-r_2)}}{1+e^{\\lambda(r_1-r_2)}}+s",
+          "purpose": "Point probability. An alternative with mu on the sum of rounds is dropped.",
+          "variable_symbols": [
+            "r1",
+            "r2",
+            "lam",
+            "s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-008",
+          "page": 12,
+          "label": "(8)",
+          "source_expression": "L = C(n1+n2, n1) [f2]^{n1} [1-f2]^{n2}",
+          "normalized_latex": "L=\\binom{n_1+n_2}{n_1} f_2^{n_1}(1-f_2)^{n_2}",
+          "purpose": "Likelihood of one match. The printed formula splits the logistic across the line.",
+          "variable_symbols": [
+            "Llike",
+            "n1",
+            "n2",
+            "lam",
+            "s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-009",
+          "page": 12,
+          "label": "(9)",
+          "source_expression": "log L = log C + n1 log f2 + n2 log(1-f2)",
+          "normalized_latex": "\\log L = \\log\\binom{n_1+n_2}{n_1}+n_1\\log f_2+n_2\\log(1-f_2)",
+          "purpose": "Log-likelihood, taken to avoid underflow.",
+          "variable_symbols": [
+            "Llike",
+            "n1",
+            "n2"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-010",
+          "page": 12,
+          "label": "(10)",
+          "source_expression": "logL(lam, s) = sum over matches of log L",
+          "normalized_latex": "\\log\\mathcal{L}(\\lambda,s)=\\sum \\log L",
+          "purpose": "Sum of the log-likelihood over 31 matches. The summand is printed, the bounds are not.",
+          "variable_symbols": [
+            "Llike",
+            "lam",
+            "s"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q243-011",
+          "page": 12,
+          "label": "(11)",
+          "source_expression": "E := S - Shat",
+          "normalized_latex": "E := S - \\hat S",
+          "purpose": "Momentum as the residual. Obtained by reversing the memoryless statement.",
+          "variable_symbols": [
+            "E",
+            "S",
+            "Shat"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Formulas (6) through (11) are printed."
+      },
+      "objectives": [
+        "Remove the part of the score that rank and the server already explain."
+      ],
+      "constraints": [
+        "s is positive.",
+        "mu is dropped.",
+        "The probability is constant across a match."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Ranks are converted to a relative ranking from 1 to 32 before use."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Newton on the joint log-likelihood of 31 matches. Printed optimum lambda = 0.0624, s = 0.1742.",
+        "parameters": [
+          "lam",
+          "s"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Convert ranks to expected losing rounds.",
+          "Evaluate the logistic with a server bonus.",
+          "Sum the log-likelihood.",
+          "Iterate Newton to a maximum.",
+          "Subtract the prediction from the points won."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The printed optimum is lambda = 0.0624 and s = 0.1742."
+      },
+      "assumptions": [
+        "World ranking is a reliable indicator of potential.",
+        "Points are independent inside the naive model."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Both fitted values are printed. The second parameter mu is reported as too small to keep."
+      },
+      "validation_refs": [
+        "lambda = 0.0624, s = 0.1742 on 31 matches."
+      ],
+      "computational_cost": "Newton on a two-parameter smooth likelihood.",
+      "strengths": [
+        "The residual has a stated meaning: what rank and serve do not explain."
+      ],
+      "limitations": [
+        "The naive model assumes the independence the rest of the paper doubts."
+      ],
+      "missing_details": [
+        "Derivatives of the log-likelihood are mentioned and not printed."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q243-004",
+      "page": 13,
+      "section": "5.2 Dual-temporal Bayesian network",
+      "family": "dynamic bayesian network",
+      "purpose": "Predict the residual from short and long windows, with latent state carried between them.",
+      "base_or_modification": "paper-specific",
+      "summary": "Two stacked blocks. The long block aggregates points 40 to 10 back and predicts the next 10. The short block aggregates the last 10 and predicts the next 10. Latent variables are physiology, perception of control, and self-efficacy. Physiology is dropped after a random forest. EM trains six latent variables. A player-1 bias of about 53 against 47 is removed by reweighting, not by mirroring. Importance is the entropy reduction.",
+      "variables": [
+        {
+          "symbol": "E",
+          "normalized_name": "momentum",
+          "unit": "points",
+          "definition": "Residual handed over by the binomial model, the label.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "network parameters",
+          "unit": "1",
+          "definition": "Parameters updated in the M step.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "observations",
+          "unit": "mixed",
+          "definition": "Point-level inputs and the residual label.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "latent state",
+          "unit": "1",
+          "definition": "Six latent variables. Printed examples include self-efficacy.",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Qfn",
+          "normalized_name": "expected log-likelihood",
+          "unit": "1",
+          "definition": "The E-step objective.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PX",
+          "normalized_name": "prior weight",
+          "unit": "1",
+          "definition": "Prior of the observed features, used to reweight the E step.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gain",
+          "normalized_name": "information gain",
+          "unit": "bits",
+          "definition": "Entropy reduction when a variable is given. Larger means more important.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "E",
+        "X"
+      ],
+      "outputs": [
+        "gain",
+        "Z"
+      ],
+      "handoff_outputs": [
+        "gain"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q243-012",
+          "page": 17,
+          "label": "(12)",
+          "source_expression": "Q(theta | theta^(t)) = E_{Z|X,theta^(t)}[log L(theta; X, Z)]",
+          "normalized_latex": "Q(\\theta\\mid\\theta^{(t)})=\\mathbb{E}_{Z\\mid X,\\theta^{(t)}}[\\log L(\\theta;X,Z)]",
+          "purpose": "E step. Six latent variables.",
+          "variable_symbols": [
+            "Qfn",
+            "theta",
+            "X",
+            "Z"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q243-013",
+          "page": 18,
+          "label": "(13)",
+          "source_expression": "theta^(t+1) = argmax_theta Q(theta | theta^(t))",
+          "normalized_latex": "\\theta^{(t+1)}=\\arg\\max_\\theta Q(\\theta\\mid\\theta^{(t)})",
+          "purpose": "M step.",
+          "variable_symbols": [
+            "theta",
+            "Qfn"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q243-014",
+          "page": 18,
+          "label": "(14)",
+          "source_expression": "Q = E[ (1/P(X)) log L(theta; X, Z) ]",
+          "normalized_latex": "Q(\\theta\\mid\\theta^{(t)})=\\mathbb{E}[P(X)^{-1}\\log L(\\theta;X,Z)]",
+          "purpose": "Reweighted E step. The printed factor sits inside the expectation and is scrambled.",
+          "variable_symbols": [
+            "Qfn",
+            "PX",
+            "theta",
+            "X",
+            "Z"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The EM updates (12), (13), and (14) are printed."
+      },
+      "objectives": [
+        "Predict the next window's residual from the past only.",
+        "Rank factors by entropy reduction."
+      ],
+      "constraints": [
+        "Feature windows sit strictly before the label window.",
+        "Variables are discretized before training."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The long window is [t-40, t-10] predicting [t-10, t]. The short window is [t-10, t] predicting [t, t+10]."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "EM until convergence on 31 matches, with the E step reweighted by the reciprocal of the prior of X.",
+        "parameters": [
+          "theta",
+          "PX"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Aggregate the past and the future into separate windows.",
+          "Drop insignificant features with a random forest.",
+          "Discretize the residual, the errors, and the latent states.",
+          "Run EM.",
+          "Reweight the E step to remove the player-1 bias.",
+          "Rank variables by information gain."
+        ],
+        "software": [
+          "random forest",
+          "EM"
+        ],
+        "convergence_criteria": "Repeated until convergence. No tolerance is printed."
+      },
+      "assumptions": [
+        "Mental and physical state carry from the long block to the short block.",
+        "Players act independently."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "Latent states have no measurement. The first training produced a 53 to 47 prior in favor of player 1."
+      },
+      "validation_refs": [
+        "Figure 11: denoised residual, Alcaraz against Djokovic.",
+        "Figure 12: net points, aces, and the lead raise the residual; unforced errors lower it.",
+        "Ace rates 9.70 and 8.61; after a double fault, 10.61 and 9.59."
+      ],
+      "computational_cost": "EM on 31 matches. Mirroring the data was rejected because it doubles the cost.",
+      "strengths": [
+        "Past and future are separated, so the prediction does not see its own label."
+      ],
+      "limitations": [
+        "Latent states cannot be checked.",
+        "Aggregation loses the single point.",
+        "Opponents are assumed not to adapt."
+      ],
+      "missing_details": [
+        "The conditional probability tables are not printed. The EM tolerance is not printed."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q243-001",
+      "to_model_id": "MU-C-Q243-002",
+      "handoff": "The server-adjusted score shows the serve effect the tests then check."
+    },
+    {
+      "from_model_id": "MU-C-Q243-003",
+      "to_model_id": "MU-C-Q243-004",
+      "handoff": "The residual E is the label the network predicts."
+    }
+  ]
+}

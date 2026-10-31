@@ -1,0 +1,424 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2017-67316-f37f83c8",
+  "problem_type": "D",
+  "year": "2017",
+  "source_sha256": "f37f83c8b1ee84121ee7f9bc40e7014ec6f980bb6b4b9ac370557b42227904a8",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-D-Q285-QUEUE",
+      "page": 7,
+      "section": "Queueing Model",
+      "family": "queueing",
+      "purpose": "Specify the two phases of security screening as queues in series.",
+      "base_or_modification": "paper-specific",
+      "summary": "Phase 1 is an M/M/c queue with service rate 0.09465 per second, estimated after a two-officer t-test (1.375 against 2.145 at 5 percent) failed to reject equal means. Phase 2 is an M/E_k/c queue with k equal to 4 and service rate 0.0357. Because the phases are in series the arrival rate of the second equals the service rate of the first. Arrival rates are 0.077244 regular and 0.10882016 pre-check, both kept after chi-squared tests of 15.898 and 15.599 against 16.919.",
+      "variables": [
+        {
+          "symbol": "lamd",
+          "normalized_name": "document_arrival_rate",
+          "unit": "per second",
+          "definition": "arrival rate at the document check",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mud",
+          "normalized_name": "document_service_rate",
+          "unit": "per second",
+          "definition": "service rate of one document officer, 0.09465",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "mus",
+          "normalized_name": "scan_service_rate",
+          "unit": "per second",
+          "definition": "service rate of one scan lane, 0.0357",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "erlang_order",
+          "unit": "phases",
+          "definition": "Erlang type of the scan service, fixed at 4",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wait",
+          "normalized_name": "total_wait",
+          "unit": "second",
+          "definition": "expected total waiting time across both phases",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "lamd"
+      ],
+      "outputs": [
+        "wait"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q285-QUEUE-1",
+          "page": 7,
+          "source_expression": "lambda_s = mu_d",
+          "normalized_latex": "\\lambda_s=\\mu_d",
+          "purpose": "arrival rate of the second phase equals service rate of the first",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "lamd",
+            "mud",
+            "wait"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Specify the two phases of security screening as queues in series."
+      ],
+      "constraints": [
+        "service rate is the same for every officer"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "maximum likelihood for the exponential rate, moment fit for the Erlang order",
+        "parameters": [
+          "mud",
+          "mus",
+          "k"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "estimate each rate",
+          "link the phases by the series equality",
+          "simulate the Erlang phase"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "passengers always join the shortest queue"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "exponential fit kept at 15.898 against 16.919"
+      },
+      "handoff_outputs": [
+        "wait"
+      ],
+      "validation_refs": [
+        "chi-squared goodness of fit, 15.898 against 16.919"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "every parameter is estimated from the given sheet or from named public data"
+      ],
+      "limitations": [
+        "the printed expectation of the Erlang distribution says alpha, while the variance says alpha times beta squared, which is inconsistent with a mean of alpha beta"
+      ],
+      "missing_details": [
+        "the chi-squared classes for the pre-check fit are not tabulated"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q285-FLOW",
+      "page": 10,
+      "section": "Passenger Flow",
+      "family": "evaluation",
+      "purpose": "Build the hourly passenger flow by summing one normal distribution per flight.",
+      "base_or_modification": "paper-specific",
+      "summary": "Each flight at O'Hare on 18 January 2017 is given a normal arrival centered two hours before departure, with the three-sigma point half an hour before departure, and a capacity of 189 taken from the Boeing 737-800. Summing the densities gives a flow that peaks near 9:30. Recommending an earlier arrival cuts the mean wait from about 83 seconds at 90 minutes early to 26.0189 seconds at 120 minutes early.",
+      "variables": [
+        {
+          "symbol": "mu",
+          "normalized_name": "arrival_mean",
+          "unit": "minute",
+          "definition": "mean minutes before departure that passengers arrive",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "arrival_spread",
+          "unit": "minute",
+          "definition": "spread of arrival times for one flight",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "flow",
+          "normalized_name": "hourly_flow",
+          "unit": "passengers per hour",
+          "definition": "summed passenger flow across flights",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "mu"
+      ],
+      "outputs": [
+        "flow"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q285-FLOW-1",
+          "page": 10,
+          "source_expression": "arrival ~ N(departure - 120 min, sigma^2)",
+          "normalized_latex": "A \\sim \\mathcal{N}(t_d-120,\\sigma^2)",
+          "purpose": "one normal distribution per flight, centered two hours early",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "mu",
+            "sigma",
+            "flow"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Build the hourly passenger flow by summing one normal distribution per flight."
+      ],
+      "constraints": [
+        "every flight carries 189 passengers"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "center taken from the TSA recommendation, capacity from the aircraft type",
+        "parameters": [
+          "mu",
+          "sigma"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "place one normal per flight",
+          "sum the densities",
+          "read the hourly flow"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-applicable"
+      },
+      "assumptions": [
+        "almost everyone arrives at least half an hour early"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "the flow is plotted for one day but not checked against counted arrivals"
+      },
+      "handoff_outputs": [
+        "flow"
+      ],
+      "validation_refs": [
+        "chi-squared goodness of fit, 15.898 against 16.919"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "every parameter is estimated from the given sheet or from named public data"
+      ],
+      "limitations": [
+        "the capacity of 189 is the top of a stated range of 104 to 189, not a measured load"
+      ],
+      "missing_details": [
+        "the chi-squared classes for the pre-check fit are not tabulated"
+      ]
+    },
+    {
+      "model_id": "MU-D-Q285-PRIORITY",
+      "page": 15,
+      "section": "Virtual Queueing",
+      "family": "optimization",
+      "purpose": "Mix first in first served with departure priority through one factor.",
+      "base_or_modification": "paper-specific",
+      "summary": "Priority of a waiting passenger is alpha times departure time plus one minus alpha times arrival time. At 721 to 723 passengers per hour, missed flights over ten experiments average 281.2 under first in first served, 71.3 at alpha 0.5, and 9.4 under strict priority. Remaining-time variance falls from 6.8787 million to 5.1711 million to 3.9684 million, while the means stay near 6900.",
+      "variables": [
+        {
+          "symbol": "alpha",
+          "normalized_name": "acceptability",
+          "unit": "dimensionless",
+          "definition": "weight on departure time, between 0 and 1",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ta",
+          "normalized_name": "arrival_time",
+          "unit": "minute",
+          "definition": "time the passenger reached the checkpoint",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "td",
+          "normalized_name": "departure_time",
+          "unit": "minute",
+          "definition": "scheduled departure of the passenger",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "missed",
+          "normalized_name": "missed_flights",
+          "unit": "passengers",
+          "definition": "passengers who miss their flight under the discipline",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "alpha",
+        "ta",
+        "td"
+      ],
+      "outputs": [
+        "missed"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-Q285-PRIORITY-1",
+          "page": 15,
+          "source_expression": "t_p = alpha * t_d + (1 - alpha) * t_a",
+          "normalized_latex": "t_p=\\alpha t_d+(1-\\alpha)t_a",
+          "purpose": "priority as a convex mix of departure time and arrival time",
+          "source_type": "reconstructed",
+          "transcription_confidence": "medium",
+          "visual_checked": true,
+          "variable_symbols": [
+            "alpha",
+            "ta",
+            "td",
+            "missed"
+          ]
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "reconstructed from prose"
+      },
+      "objectives": [
+        "Mix first in first served with departure priority through one factor."
+      ],
+      "constraints": [
+        "alpha lies between 0 and 1"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": []
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": []
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "alpha is chosen, not estimated",
+        "parameters": [
+          "alpha"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "score each waiting passenger",
+          "sort the virtual queue",
+          "count missed flights"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "not-stated"
+      },
+      "assumptions": [
+        "a passenger's priority depends only on arrival time and departure time"
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "ten runs at each of three policies, means reported"
+      },
+      "handoff_outputs": [
+        "missed"
+      ],
+      "validation_refs": [
+        "chi-squared goodness of fit, 15.898 against 16.919"
+      ],
+      "computational_cost": "not-stated",
+      "strengths": [
+        "every parameter is estimated from the given sheet or from named public data"
+      ],
+      "limitations": [
+        "the two flow rates, 723 and 721 passengers per hour, are not reconciled"
+      ],
+      "missing_details": [
+        "the chi-squared classes for the pre-check fit are not tabulated"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-D-Q285-QUEUE",
+      "to_model_id": "MU-D-Q285-FLOW",
+      "handoff": "the service rates that the hourly flow is run through"
+    },
+    {
+      "from_model_id": "MU-D-Q285-FLOW",
+      "to_model_id": "MU-D-Q285-PRIORITY",
+      "handoff": "the passenger stream that the virtual queue reorders"
+    }
+  ]
+}

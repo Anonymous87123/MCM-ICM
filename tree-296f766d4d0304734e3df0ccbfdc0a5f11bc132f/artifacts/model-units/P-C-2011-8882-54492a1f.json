@@ -1,0 +1,2258 @@
+{
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-2011-8882-01",
+      "handoff": "Fleet counts and type allocation become annual electricity demand.",
+      "to_model_id": "MU-C-2011-8882-02"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-02",
+      "handoff": "Off-peak residual C(t) becomes the energy-mix demand constraint.",
+      "to_model_id": "MU-C-2011-8882-03"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-03",
+      "handoff": "Residual demand becomes average plants, stations, and infrastructure costs.",
+      "to_model_id": "MU-C-2011-8882-04"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-01",
+      "handoff": "Vehicle counts and type-specific consumption become CO2 and oil counterfactual inputs.",
+      "to_model_id": "MU-C-2011-8882-05"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-03",
+      "handoff": "Country generation mix supplies grid CO2 intensity.",
+      "to_model_id": "MU-C-2011-8882-05"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-04",
+      "handoff": "Jobs and monetary output feed the four-impact conclusion.",
+      "to_model_id": "MU-C-2011-8882-06"
+    },
+    {
+      "from_model_id": "MU-C-2011-8882-05",
+      "handoff": "CO2, oil, and country curves feed nitrogen/world synthesis and actor recommendations.",
+      "to_model_id": "MU-C-2011-8882-06"
+    }
+  ],
+  "models": [
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "fit logistic totals",
+          "set country ceilings",
+          "allocate vehicle types",
+          "impose oil-reliance target",
+          "optimize benefits"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "logistic fleet growth plus constrained CV/EV/HEV allocation",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-8882-001",
+          "label": "Source formula 1 / logistic fleet differential",
+          "normalized_latex": "\\frac{dx}{dt}=r x\\left(1-\\frac{x}{M}\\right),\\quad x(0)=x_0",
+          "page": 5,
+          "purpose": "model total vehicle growth under a ceiling",
+          "source_expression": "dx/dt=r*x*(1-x/M); x(0)=x0",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "M",
+            "dt",
+            "dx",
+            "r",
+            "x",
+            "x0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-002",
+          "label": "Source formula 2 / logistic fleet solution",
+          "normalized_latex": "x(t)=\\frac{M}{1+(M/x_0-1)e^{-rt}}",
+          "page": 5,
+          "purpose": "solve total vehicle quantity",
+          "source_expression": "x(t)=M/(1+(M/x0-1)*exp(-r*t))",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "M",
+            "exp",
+            "r",
+            "t",
+            "x",
+            "x0"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-003",
+          "label": "Source formula 3 / vehicle-mix allocation",
+          "normalized_latex": "\\begin{cases}z_{HEV}(t)\\frac89+z_{CV}(t)=[z_{HEV}(2010)\\frac89+z_{CV}(2010)]\\eta(t)\\\\z_{EV}(t)/z_{HEV}(t)=R(t)\\\\z_{CV}(t)+z_{EV}(t)+z_{HEV}(t)=x(t)\\end{cases}",
+          "page": 7,
+          "purpose": "allocate total fleet to CV, EV, and HEV",
+          "source_expression": "zHEV*8/9+zCV=[zHEV(2010)*8/9+zCV(2010)]*eta; zEV/zHEV=R; zCV+zEV+zHEV=x",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "R",
+            "eta",
+            "x",
+            "zCV",
+            "zEV",
+            "zHEV"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-004",
+          "label": "Source formula 4 / multi-benefit objective",
+          "normalized_latex": "\\max\\sum\\left[E(R,\\eta)+S(R,\\eta)+B(R,\\eta)+I(R,\\eta)\\right]",
+          "page": 7,
+          "purpose": "maximize environmental, social, business, and individual factors",
+          "source_expression": "max sum(E(R,eta)+S(R,eta)+B(R,eta)+I(R,eta))",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "B",
+            "E",
+            "I",
+            "R",
+            "S",
+            "eta",
+            "max",
+            "sum"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-005",
+          "label": "Source formula 5 / policy bounds",
+          "normalized_latex": "E(R,\\eta)\\le O,\\quad S(R,\\eta)\\ge H,\\quad B(R,\\eta)\\ge C,\\quad I(R,\\eta)\\ge\\Delta P",
+          "page": 7,
+          "purpose": "constrain the policy allocation",
+          "source_expression": "E<=O; S>=H; B>=C; I>=DeltaP",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "B",
+            "C",
+            "DeltaP",
+            "E",
+            "H",
+            "I",
+            "O",
+            "S"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "x(t)",
+        "z_CV(t)",
+        "z_EV(t)",
+        "z_HEV(t)",
+        "policy mix"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "x",
+        "M",
+        "r",
+        "x0",
+        "z_i",
+        "R",
+        "eta",
+        "E",
+        "S",
+        "B",
+        "I"
+      ],
+      "limitations": [
+        "Ceilings, shares, objective scales, signs, and the eta/R semantics are not independently identified."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-01",
+      "objectives": [
+        "project total vehicles, allocate types, and optimize multi-benefit shares"
+      ],
+      "outputs": [
+        "x(t)",
+        "z_CV(t)",
+        "z_EV(t)",
+        "z_HEV(t)",
+        "policy mix"
+      ],
+      "page": 5,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "x",
+          "M",
+          "r",
+          "x0",
+          "z_i",
+          "R",
+          "eta",
+          "E",
+          "S",
+          "B",
+          "I"
+        ],
+        "status": "partial"
+      },
+      "purpose": "project total vehicles, allocate types, and optimize multi-benefit shares",
+      "section": "Fleet growth and vehicle-mix model",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "logistic fleet growth plus constrained CV/EV/HEV allocation: project total vehicles, allocate types, and optimize multi-benefit shares",
+      "validation_refs": [
+        "physical page 5 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity B; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "b",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "B",
+          "unit": "business factor"
+        },
+        {
+          "definition": "Q169 source quantity C; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "C",
+          "unit": "residual electricity demand"
+        },
+        {
+          "definition": "Q169 source quantity DeltaP; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "deltap",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "DeltaP",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity E; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E",
+          "unit": "environment factor"
+        },
+        {
+          "definition": "Q169 source quantity H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "H",
+          "unit": "jobs"
+        },
+        {
+          "definition": "Q169 source quantity I; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "I",
+          "unit": "individual factor"
+        },
+        {
+          "definition": "Q169 source quantity M; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "m",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "M",
+          "unit": "vehicle ceiling"
+        },
+        {
+          "definition": "Q169 source quantity O; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "o",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "O",
+          "unit": "off-peak energy"
+        },
+        {
+          "definition": "Q169 source quantity R; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "R",
+          "unit": "EV/HEV ratio"
+        },
+        {
+          "definition": "Q169 source quantity S; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "s",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "S",
+          "unit": "social factor"
+        },
+        {
+          "definition": "Q169 source quantity dt; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "dt",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dt",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity dx; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "dx",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "dx",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity eta; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "eta",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "eta",
+          "unit": "oil-reliance coefficient"
+        },
+        {
+          "definition": "Q169 source quantity exp; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "exp",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "exp",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity max; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "max",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "max",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity policy mix; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "policy_mix",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "policy mix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity r; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r",
+          "unit": "per-year growth rate"
+        },
+        {
+          "definition": "Q169 source quantity sum; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity x; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x",
+          "unit": "vehicles"
+        },
+        {
+          "definition": "Q169 source quantity x(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "x(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity x0; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x0",
+          "unit": "initial vehicles"
+        },
+        {
+          "definition": "Q169 source quantity zCV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "zcv",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "zCV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity zEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "zev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "zEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity zHEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "zhev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "zHEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_CV(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_cv_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "z_CV(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_EV(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_ev_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "z_EV(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_HEV(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_hev_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "z_HEV(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z_i",
+          "unit": "vehicles of type i"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "multiply fleet counts by consumption",
+          "read the daily load curve",
+          "assign 27.3% extra energy",
+          "subtract off-peak supply",
+          "handoff residual"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "annual vehicle electricity demand with a daily off-peak subtraction",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-8882-006",
+          "label": "Source formula 6 / vehicle electricity demand",
+          "normalized_latex": "A(t)=\\sum_i C_i z_i(t)",
+          "page": 9,
+          "purpose": "compute electricity demand from fleet counts",
+          "source_expression": "A(t)=sum_i(C_i*z_i(t))",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "A",
+            "C_i",
+            "sum_i",
+            "t",
+            "z_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-007",
+          "label": "Source formula 7 / off-peak residual",
+          "normalized_latex": "C(t)=A(t)-O(t),\\quad O(t)=27.3\\%\\,G(t)",
+          "page": 10,
+          "purpose": "subtract off-peak charging from total demand",
+          "source_expression": "C(t)=A(t)-O(t); O(t)=0.273*G(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "A",
+            "C",
+            "G",
+            "O",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "A(t)",
+        "O(t)",
+        "C(t)",
+        "off-peak-supported vehicles"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "C_i",
+        "z_i(t)",
+        "A(t)",
+        "O(t)",
+        "G(t)"
+      ],
+      "limitations": [
+        "Annual and hourly bases, losses, negative residuals, and country/year invariance are unresolved."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-02",
+      "objectives": [
+        "turn fleet counts and travel assumptions into residual electricity demand"
+      ],
+      "outputs": [
+        "A(t)",
+        "O(t)",
+        "C(t)",
+        "off-peak-supported vehicles"
+      ],
+      "page": 9,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "C_i",
+          "z_i(t)",
+          "A(t)",
+          "O(t)",
+          "G(t)"
+        ],
+        "status": "partial"
+      },
+      "purpose": "turn fleet counts and travel assumptions into residual electricity demand",
+      "section": "Electricity demand and off-peak residual model",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "annual vehicle electricity demand with a daily off-peak subtraction: turn fleet counts and travel assumptions into residual electricity demand",
+      "validation_refs": [
+        "physical page 9 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity A; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "a",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "A",
+          "unit": "annual electricity demand"
+        },
+        {
+          "definition": "Q169 source quantity A(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "a_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "A(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity C; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "C",
+          "unit": "residual electricity demand"
+        },
+        {
+          "definition": "Q169 source quantity C(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "C(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity C_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "C_i",
+          "unit": "oil/electric consumption"
+        },
+        {
+          "definition": "Q169 source quantity G; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "G",
+          "unit": "annual generation"
+        },
+        {
+          "definition": "Q169 source quantity G(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "G(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity O; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "o",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "O",
+          "unit": "off-peak energy"
+        },
+        {
+          "definition": "Q169 source quantity O(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "o_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "O(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity off-peak-supported vehicles; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "off_peak_supported_vehicles",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "off-peak-supported vehicles",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity sum_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z_i",
+          "unit": "vehicles of type i"
+        },
+        {
+          "definition": "Q169 source quantity z_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z_i(t)",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "collect prices and caps",
+          "minimize energy cost",
+          "meet demand",
+          "cap sources",
+          "limit thermal power",
+          "compare country mixes"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "constrained generation-mix plan",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-8882-008",
+          "label": "Source formula 8 / energy-mix cost objective",
+          "normalized_latex": "\\min\\sum_i p_i(t)x_i(t)",
+          "page": 12,
+          "purpose": "minimize electricity generation cost",
+          "source_expression": "min sum_i p_i(t)*x_i(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "min",
+            "p_i",
+            "sum_i",
+            "t",
+            "x_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-009",
+          "label": "Source formula 9 / energy-mix constraints",
+          "normalized_latex": "\\sum_i x_i(t)\\ge C(t),\\quad x_i(t)\\le k_i(t),\\quad x_1(t)\\le10\\%\\sum_i x_i(t)",
+          "page": 12,
+          "purpose": "meet residual demand, capacity, and thermal share bounds",
+          "source_expression": "sum_i x_i>=C; x_i<=k_i; x_1<=0.10*sum_i x_i",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "C",
+            "k_i",
+            "sum_i",
+            "x_1",
+            "x_i"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "source mix",
+        "thermal share",
+        "cost"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "p_i(t)",
+        "x_i(t)",
+        "k_i(t)",
+        "C(t)"
+      ],
+      "limitations": [
+        "Prices, capacities, currencies, losses, reliability, and final constraint set are incomplete."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-03",
+      "objectives": [
+        "meet residual demand at low cost while bounding source capacities and thermal share"
+      ],
+      "outputs": [
+        "source mix",
+        "thermal share",
+        "cost"
+      ],
+      "page": 12,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "p_i(t)",
+          "x_i(t)",
+          "k_i(t)",
+          "C(t)"
+        ],
+        "status": "partial"
+      },
+      "purpose": "meet residual demand at low cost while bounding source capacities and thermal share",
+      "section": "Energy-source cost and capacity optimization",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "constrained generation-mix plan: meet residual demand at low cost while bounding source capacities and thermal share",
+      "validation_refs": [
+        "physical page 12 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity C; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "C",
+          "unit": "residual electricity demand"
+        },
+        {
+          "definition": "Q169 source quantity C(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "C(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity cost; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "cost",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "cost",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity k_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "k_i",
+          "unit": "generation cap"
+        },
+        {
+          "definition": "Q169 source quantity k_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "k_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "k_i(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity min; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "min",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "min",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity p_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "p_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "p_i",
+          "unit": "energy cost"
+        },
+        {
+          "definition": "Q169 source quantity p_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "p_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p_i(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity source mix; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "source_mix",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "source mix",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity sum_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity thermal share; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "thermal_share",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "thermal share",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity x_1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x_1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "x_1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity x_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "x_i",
+          "unit": "generation by type"
+        },
+        {
+          "definition": "Q169 source quantity x_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "x_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "x_i(t)",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "average plant output",
+          "count stations",
+          "count jobs",
+          "sum investment",
+          "convert benefits to money"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "infrastructure and economic accounting",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-8882-010",
+          "label": "Source formula 10 / average plant count",
+          "normalized_latex": "n_1(t)=\\frac{C(t)}{E_0}",
+          "page": 14,
+          "purpose": "convert residual energy to average plant count",
+          "source_expression": "n1(t)=C(t)/E0",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "C",
+            "E0",
+            "n1",
+            "t"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-014",
+          "label": "Source formula 14 / new-job count",
+          "normalized_latex": "H(t)=h_1n_1(t)+h_2n_2(t)+\\sum_i g_i z_i(t)",
+          "page": 20,
+          "purpose": "count power, charging, and vehicle-industry jobs",
+          "source_expression": "H(t)=h1*n1(t)+h2*n2(t)+sum_i g_i*z_i(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "H",
+            "g_i",
+            "h1",
+            "h2",
+            "n1",
+            "n2",
+            "sum_i",
+            "t",
+            "z_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-015",
+          "label": "Source formula 15 / charging-station count",
+          "normalized_latex": "n_2(t)=\\frac{z_{HEV}(t)/9+z_{EV}(t)}{n_0}",
+          "page": 21,
+          "purpose": "convert electric-mode vehicle demand to stations",
+          "source_expression": "n2(t)=(zHEV(t)/9+zEV(t))/n0",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "n0",
+            "n2",
+            "t",
+            "zEV",
+            "zHEV"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-016",
+          "label": "Source formula 16 / government investment",
+          "normalized_latex": "cap(t)=p_1n_1(t)+p_2n_2(t)+\\sum_i s_i z_i(t)",
+          "page": 22,
+          "purpose": "sum plant, charging, and subsidy expenditures",
+          "source_expression": "cap(t)=p1*n1(t)+p2*n2(t)+sum_i s_i*z_i(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "cap",
+            "n1",
+            "n2",
+            "p1",
+            "p2",
+            "s_i",
+            "sum_i",
+            "t",
+            "z_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-017",
+          "label": "Source formula 17 / economic output",
+          "normalized_latex": "Output(t)=wH(t)+\\sum_i\\Delta p_i z_i(t)",
+          "page": 23,
+          "purpose": "convert jobs and driving savings to money",
+          "source_expression": "Output(t)=w*H(t)+sum_i Delta*p_i*z_i(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "Delta",
+            "H",
+            "Output",
+            "p_i",
+            "sum_i",
+            "t",
+            "w",
+            "z_i"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "n1(t)",
+        "n2(t)",
+        "H(t)",
+        "cap(t)",
+        "Output(t)"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "C(t)",
+        "E0",
+        "n1(t)",
+        "n0",
+        "z_i(t)",
+        "h_i",
+        "g_i",
+        "p_i",
+        "s_i",
+        "w",
+        "Delta p_i"
+      ],
+      "limitations": [
+        "Estimated coefficients, currencies, labor displacement, time discounting, and output definitions are not reproducible."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-04",
+      "objectives": [
+        "convert residual energy to plants, vehicles to charging stations and jobs, and infrastructure to investment/output"
+      ],
+      "outputs": [
+        "n1(t)",
+        "n2(t)",
+        "H(t)",
+        "cap(t)",
+        "Output(t)"
+      ],
+      "page": 14,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "C(t)",
+          "E0",
+          "n1(t)",
+          "n0",
+          "z_i(t)",
+          "h_i",
+          "g_i",
+          "p_i",
+          "s_i",
+          "w",
+          "Delta p_i"
+        ],
+        "status": "partial"
+      },
+      "purpose": "convert residual energy to plants, vehicles to charging stations and jobs, and infrastructure to investment/output",
+      "section": "Average plant, jobs, stations, and investment model",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "infrastructure and economic accounting: convert residual energy to plants, vehicles to charging stations and jobs, and infrastructure to investment/output",
+      "validation_refs": [
+        "physical page 14 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity C; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "C",
+          "unit": "residual electricity demand"
+        },
+        {
+          "definition": "Q169 source quantity C(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "C(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Delta; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "delta",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Delta",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Delta p_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "delta_p_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "Delta p_i",
+          "unit": "annual driving saving"
+        },
+        {
+          "definition": "Q169 source quantity E0; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E0",
+          "unit": "average annual plant output"
+        },
+        {
+          "definition": "Q169 source quantity H; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "H",
+          "unit": "jobs"
+        },
+        {
+          "definition": "Q169 source quantity H(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "H(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Output; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "output",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Output",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Output(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "output_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Output(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity cap; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "cap",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "cap",
+          "unit": "government expenditure"
+        },
+        {
+          "definition": "Q169 source quantity cap(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "cap_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "cap(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity g_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "g_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "g_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity h1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "h1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity h2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "h2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity h_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "h_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "h_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity n0; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n0",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n0",
+          "unit": "vehicles per charging station"
+        },
+        {
+          "definition": "Q169 source quantity n1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "n1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity n1(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n1_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "n1(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity n2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "n2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity n2(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "n2_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "n2(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity p1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "p1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "p1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity p2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "p2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "p2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity p_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "p_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "p_i",
+          "unit": "energy cost"
+        },
+        {
+          "definition": "Q169 source quantity s_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "s_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "s_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity sum_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity w; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "w",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "w",
+          "unit": "salary per job"
+        },
+        {
+          "definition": "Q169 source quantity zEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "zev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "zEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity zHEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "zhev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "zHEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z_i",
+          "unit": "vehicles of type i"
+        },
+        {
+          "definition": "Q169 source quantity z_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z_i(t)",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "define CO2 intensity",
+          "compute vehicle emissions",
+          "retain transition increases",
+          "compare all-CV counterfactual",
+          "weight country savings"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "All numbered source equations assigned to this unit are retained in source order and visually checked.",
+        "status": "present"
+      },
+      "family": "grid-weighted CO2 and mixed-versus-pure-CV comparison",
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-2011-8882-011",
+          "label": "Source formula 11 / CO2 emissions block",
+          "normalized_latex": "\\begin{aligned}S&=S_{CV}+S_{EV}+S_{HEV}\\\\S_{CV}&=L_1v_1z_1,\\ S_{EV}=L_2v_2z_2,\\ S_{HEV}=L_3v_3z_3\\\\v_2&=I_2E_2,\\ v_3=\\frac{av'_3+bI_3E_3}{a+b}\\end{aligned}",
+          "page": 15,
+          "purpose": "compare direct and grid-weighted emissions",
+          "source_expression": "S=SCV+SEV+SHEV; SCV=L1*v1*z1; SEV=L2*v2*z2; SHEV=L3*v3*z3; v2=I2*E2; v3=(a*v3prime+b*I3*E3)/(a+b)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "E2",
+            "E3",
+            "I2",
+            "I3",
+            "L1",
+            "L2",
+            "L3",
+            "S",
+            "SCV",
+            "SEV",
+            "SHEV",
+            "a",
+            "b",
+            "v1",
+            "v2",
+            "v3",
+            "v3prime",
+            "z1",
+            "z2",
+            "z3"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-012",
+          "label": "Source formula 12 / country oil saving",
+          "normalized_latex": "Q(t)=C_{cv}\\sum_i z_i(t)-\\sum_i C_i z_i(t)",
+          "page": 18,
+          "purpose": "compare mixed-fleet oil use with an all-CV counterfactual",
+          "source_expression": "Q(t)=Ccv*sum_i z_i(t)-sum_i C_i*z_i(t)",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "C_i",
+            "Ccv",
+            "Q",
+            "sum_i",
+            "t",
+            "z_i"
+          ],
+          "visual_checked": true
+        },
+        {
+          "equation_id": "EQ-C-2011-8882-013",
+          "label": "Source formula 13 / world oil weighting",
+          "normalized_latex": "Total(t)=r_1Q_{China}+r_2Q_{USA}+r_3Q_{France}",
+          "page": 18,
+          "purpose": "weight country oil savings into a world proxy",
+          "source_expression": "Total(t)=r1*QChina+r2*QUSA+r3*QFrance",
+          "source_note": "Numbered source formula reconciled against bounded page and detail proxies; printed symbols, signs, units, and defects are retained rather than silently repaired.",
+          "source_type": "paper",
+          "transcription_confidence": "high",
+          "variable_symbols": [
+            "QChina",
+            "QFrance",
+            "QUSA",
+            "Total",
+            "r1",
+            "r2",
+            "r3",
+            "t"
+          ],
+          "visual_checked": true
+        }
+      ],
+      "handoff_outputs": [
+        "S(t)",
+        "Q(t)",
+        "Total(t)",
+        "CO2 curves"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "L_i",
+        "v_i",
+        "I_i",
+        "E_i",
+        "C_i",
+        "z_i(t)",
+        "r_i"
+      ],
+      "limitations": [
+        "The proxy is not lifecycle emissions; units, weights, transition causality, and world coverage are weak."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-05",
+      "objectives": [
+        "compare vehicle and upstream electricity emissions, then calculate country and world oil savings"
+      ],
+      "outputs": [
+        "S(t)",
+        "Q(t)",
+        "Total(t)",
+        "CO2 curves"
+      ],
+      "page": 15,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "L_i",
+          "v_i",
+          "I_i",
+          "E_i",
+          "C_i",
+          "z_i(t)",
+          "r_i"
+        ],
+        "status": "partial"
+      },
+      "purpose": "compare vehicle and upstream electricity emissions, then calculate country and world oil savings",
+      "section": "Environmental and fossil-fuel counterfactual model",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "grid-weighted CO2 and mixed-versus-pure-CV comparison: compare vehicle and upstream electricity emissions, then calculate country and world oil savings",
+      "validation_refs": [
+        "physical page 15 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity CO2 curves; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "co2_curves",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "CO2 curves",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity C_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "c_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "C_i",
+          "unit": "oil/electric consumption"
+        },
+        {
+          "definition": "Q169 source quantity Ccv; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "ccv",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Ccv",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity E2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "E2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity E3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "E3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity E_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "e_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "E_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity I2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "I2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity I3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "I3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity I_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "i_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "I_i",
+          "unit": "grid CO2 intensity"
+        },
+        {
+          "definition": "Q169 source quantity L1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "l1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "L1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity L2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "l2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "L2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity L3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "l3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "L3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity L_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "l_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "L_i",
+          "unit": "km traveled"
+        },
+        {
+          "definition": "Q169 source quantity Q; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "q",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Q",
+          "unit": "oil saved"
+        },
+        {
+          "definition": "Q169 source quantity Q(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "q_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Q(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity QChina; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "qchina",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "QChina",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity QFrance; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "qfrance",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "QFrance",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity QUSA; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "qusa",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "QUSA",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity S; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "s",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "S",
+          "unit": "social factor"
+        },
+        {
+          "definition": "Q169 source quantity S(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "s_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "S(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity SCV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "scv",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "SCV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity SEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "SEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity SHEV; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "shev",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "SHEV",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Total; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "total",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "Total",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity Total(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "total_t",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "Total(t)",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity a; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "a",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "a",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity b; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "b",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "b",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity r1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "r1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity r2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "r2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity r3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "r3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity r_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "r_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "r_i",
+          "unit": "world weight"
+        },
+        {
+          "definition": "Q169 source quantity sum_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "sum_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "sum_i",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity t; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "t",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "t",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity v1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "v1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "v1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity v2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "v2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "v2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity v3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "v3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "v3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity v3prime; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "v3prime",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "v3prime",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity v_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "v_i",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "v_i",
+          "unit": "gCO2/km"
+        },
+        {
+          "definition": "Q169 source quantity z1; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z1",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z1",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z2",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z3; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z3",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z3",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity z_i; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation",
+          "symbol": "z_i",
+          "unit": "vehicles of type i"
+        },
+        {
+          "definition": "Q169 source quantity z_i(t); preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "z_i_t",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "z_i(t)",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    },
+    {
+      "algorithm": {
+        "convergence_criteria": "No residual gate, solver tolerance, grid-stability test, forecast backtest, or decision robustness threshold is reported.",
+        "software": [
+          "The paper mentions simulation and Matlab-style calculations; no complete input package, version, solver, or run instructions are supplied."
+        ],
+        "status": "partial",
+        "steps": [
+          "derive nitrogen from combustion ratio",
+          "compare four impact curves",
+          "synthesize three country proxies",
+          "answer the motivating question",
+          "split recommendations by actor"
+        ]
+      },
+      "assumptions": [
+        "Use the source's 2005-2055 horizon, France/USA/China proxies, representative CV/EV/HEV modes, 10000 km annual travel, fixed vehicle performance, no conversion dissipation, and average plant output only as explicit paper premises.",
+        "Treat fitted coefficients, policy targets, off-peak share, prices, capacities, weights, job coefficients, health ratios, and recommendations as internal or cited inputs until independently validated."
+      ],
+      "base_or_modification": "paper-specific",
+      "computational_cost": "No runtime, memory, solver, fitting, data-acquisition, infrastructure, labor, health, or policy administration cost is reported.",
+      "conditions": {
+        "boundary": {
+          "details": [
+            "The chain links fleet counts, electricity, source mix, emissions, cost, jobs, investment, nitrogen, and three-country synthesis."
+          ],
+          "status": "present"
+        },
+        "equilibrium": {
+          "details": [
+            "No joint market-grid-environment-labor-health-policy equilibrium is solved."
+          ],
+          "status": "uncertain"
+        },
+        "initial": {
+          "details": [
+            "Source pages supply a base fleet, energy, or impact scenario, but no frozen machine-readable dataset."
+          ],
+          "status": "present"
+        },
+        "uncertainty": {
+          "details": [
+            "No joint fit, forecast, unit, price, grid, coefficient, weight, health, or policy uncertainty is propagated."
+          ],
+          "status": "omitted-by-paper"
+        }
+      },
+      "constraints": [
+        "Preserve vehicle type, country, year, energy unit, currency, time basis, ratio direction, scenario, and downstream consumer.",
+        "Do not promote internal projections, source rankings, cost ratios, jobs, health proxies, or world curves to causal or globally optimal facts."
+      ],
+      "equation_status": {
+        "reason": "This visual efficiency chain contains no numbered equation.",
+        "status": "not-applicable"
+      },
+      "family": "nitrogen proxy plus four-impact world comparison",
+      "governing_equations": [],
+      "handoff_outputs": [
+        "health proxy",
+        "world figures",
+        "government/individual/manufacturer advice"
+      ],
+      "identifiability_feasibility": {
+        "analysis": "Equations, plots, tables, and handoffs are visible, but signs, units, currencies, target scales, final constraints, and global representativeness are not jointly coherent.",
+        "status": "partial"
+      },
+      "inputs": [
+        "CO2",
+        "nitrogen/CO2 ratio",
+        "jobs",
+        "money",
+        "country weights"
+      ],
+      "limitations": [
+        "Nitrogen species, health causality, world representativeness, and assertive policy claims exceed the evidence."
+      ],
+      "missing_details": [
+        "Executable code, complete dataset, provenance freeze, uncertainty propagation, calibration report, held-out validation, and decision review rule are absent."
+      ],
+      "model_id": "MU-C-2011-8882-06",
+      "objectives": [
+        "compare nitrogen, jobs, money, and CO2 under mixed and pure-CV scenarios and assign actor recommendations"
+      ],
+      "outputs": [
+        "health proxy",
+        "world figures",
+        "government/individual/manufacturer advice"
+      ],
+      "page": 24,
+      "parameter_estimation": {
+        "method": "Historical fitting, direct substitution, policy targets, stylized off-peak share, estimated coefficients, and internal country weighting.",
+        "parameters": [
+          "CO2",
+          "nitrogen/CO2 ratio",
+          "jobs",
+          "money",
+          "country weights"
+        ],
+        "status": "partial"
+      },
+      "purpose": "compare nitrogen, jobs, money, and CO2 under mixed and pure-CV scenarios and assign actor recommendations",
+      "section": "Health proxy and conclusion synthesis",
+      "strengths": [
+        "The source makes inputs, components, equations, tables, figures, and downstream handoffs visible."
+      ],
+      "summary": "nitrogen proxy plus four-impact world comparison: compare nitrogen, jobs, money, and CO2 under mixed and pure-CV scenarios and assign actor recommendations",
+      "validation_refs": [
+        "physical page 24 source text",
+        "eight bounded JPEG proxies covering all 27 pages and formula/table details",
+        "all original 200-DPI page PNGs retained disk-only"
+      ],
+      "variables": [
+        {
+          "definition": "Q169 source quantity CO2; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "co2",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "CO2",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity country weights; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "country_weights",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "country weights",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity government/individual/manufacturer advice; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "government_individual_manufacturer_advice",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "government/individual/manufacturer advice",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity health proxy; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "health_proxy",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "health proxy",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity jobs; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "jobs",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "jobs",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity money; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "money",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "money",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity nitrogen/CO2 ratio; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "nitrogen_co2_ratio",
+          "role": "input",
+          "source_status": "explicit-defined",
+          "symbol": "nitrogen/CO2 ratio",
+          "unit": "unspecified or locally implied by source"
+        },
+        {
+          "definition": "Q169 source quantity world figures; preserve its local cost, emission, diffusion, resource, or decision meaning and downstream consumer.",
+          "normalized_name": "world_figures",
+          "role": "output",
+          "source_status": "explicit-defined",
+          "symbol": "world figures",
+          "unit": "unspecified or locally implied by source"
+        }
+      ]
+    }
+  ],
+  "paper_id": "P-C-2011-8882-54492a1f",
+  "problem_type": "C",
+  "review_status": "validated",
+  "schema_version": 2,
+  "source_sha256": "54492a1f4aeb5b33c405f7639f8101e3e15822ed78c209294cd544b7f4304e54",
+  "team_control_number": "8882",
+  "title": "[No title shown in source PDF] Electric-vehicle, energy-supply, and social-health impact assessment",
+  "year": "2011"
+}

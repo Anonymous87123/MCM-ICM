@@ -1,0 +1,256 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-D-2019-1922074-a699b77f",
+  "problem_type": "D",
+  "year": "2019",
+  "source_sha256": "a699b77fadb4cd75203a1b41e7205e09c47f1e8088bd0856b144524b11782824",
+  "models": [
+    {
+      "model_id": "MU-D-2019-1922074-AntRoute",
+      "page": 5,
+      "section": "3.2 The evacuation route",
+      "family": "ant-colony",
+      "purpose": "Choose an evacuation route per area by an ant colony rule whose probability flips once a passage gets too crowded",
+      "base_or_modification": "modification",
+      "summary": "The floor plan becomes a mesh G(N, R, tau_0): nodes are stairs, exhibition rooms and entrances, routes are stairs, corridors and passages, tau_0 is the initial pheromone. The textbook probability (1) sends ant k from i to j in proportion to tau^alpha eta^beta. The paper argues that positive feedback would pack the shortest passage, so it adds a threshold. The human-chain length (2) is L_d = (S_T d + (S_T - 1) e) / n_d. The threshold is the time t_1 for that chain to clear, and the pheromone at the threshold is n v t_1. Below the threshold the probability keeps the textbook form; above it the probability is one minus that form (3), so a crowded passage is avoided. The resulting routes are drawn as orange arrows on the floor plan.",
+      "variables": [
+        {"symbol": "p_ijk", "normalized_name": "selection_probability", "unit": "dimensionless", "definition": "Probability that ant k moves from node i to node j at time t", "role": "output", "source_status": "explicit-defined"},
+        {"symbol": "tau_ij", "normalized_name": "pheromone", "unit": "dimensionless", "definition": "Pheromone concentration on the edge from i to j at time t", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "eta_ij", "normalized_name": "heuristic", "unit": "dimensionless", "definition": "Expected heuristic value of the edge from i to j", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "alpha", "normalized_name": "pheromone_weight", "unit": "dimensionless", "definition": "Pheromone heuristic factor", "role": "parameter", "source_status": "explicit-defined"},
+        {"symbol": "beta", "normalized_name": "heuristic_weight", "unit": "dimensionless", "definition": "Expected heuristic factor", "role": "parameter", "source_status": "explicit-defined"},
+        {"symbol": "L_d", "normalized_name": "chain_length", "unit": "m", "definition": "Length of the human chain at a channel exit", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "S_T", "normalized_name": "arrivals_at_T", "unit": "people", "definition": "Number of people arriving at the channel exit at time T", "role": "input", "source_status": "explicit-defined"},
+        {"symbol": "n_d", "normalized_name": "channel_width", "unit": "people", "definition": "Maximum number of people allowed through the channel at once", "role": "parameter", "source_status": "explicit-defined"},
+        {"symbol": "t_1", "normalized_name": "threshold_time", "unit": "s", "definition": "Time for the human chain to clear the channel; used as the pheromone threshold", "role": "parameter", "source_status": "explicit-defined"}
+      ],
+      "inputs": ["S_T"],
+      "outputs": ["p_ijk"],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2019-1922074-01",
+          "page": 5,
+          "source_expression": "p^k_ij(t) = tau_ij(t)^alpha eta_ij(t)^beta / sum_{s in allowed_k} tau_is(t)^alpha eta_is(t)^beta, when j in allowed_k; else 0",
+          "normalized_latex": "p_{ij}^{k}(t)=\\begin{cases}\\frac{[\\tau_{ij}(t)]^{\\alpha}[\\eta_{ij}(t)]^{\\beta}}{\\sum_{s\\in allowed_k}[\\tau_{is}(t)]^{\\alpha}[\\eta_{is}(t)]^{\\beta}}&j\\in allowed_k\\\\0&\\text{otherwise}\\end{cases}",
+          "purpose": "Textbook ant selection probability",
+          "label": "(1)",
+          "variable_symbols": ["p_ijk", "tau_ij", "eta_ij", "alpha", "beta"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-02",
+          "page": 5,
+          "source_expression": "L_d = (S_T d + (S_T - 1) e) / n_d",
+          "normalized_latex": "L_d=\\frac{S_T d+(S_T-1)e}{n_d}",
+          "purpose": "Human-chain length at a channel exit",
+          "label": "(2)",
+          "variable_symbols": ["L_d", "S_T", "n_d"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-03",
+          "page": 6,
+          "source_expression": "p^k_ij(t) = the (1) ratio when tau_ij(t) <= n v t_1; 1 minus that ratio when tau_ij(t) > n v t_1; else 0",
+          "normalized_latex": "p_{ij}^{k}(t)=\\begin{cases}r_{ij}&\\tau_{ij}(t)\\le nvt_1\\\\1-r_{ij}&\\tau_{ij}(t)>nvt_1\\\\0&\\text{otherwise}\\end{cases}",
+          "purpose": "Selection probability that reverses once the passage exceeds the threshold",
+          "label": "(3)",
+          "variable_symbols": ["p_ijk", "tau_ij", "t_1"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {"status": "present", "reason": "The textbook probability, the chain length and the threshold probability are displayed."},
+      "objectives": ["An evacuation route from each area that avoids a passage once it is crowded"],
+      "constraints": ["Ants move only to nodes in allowed_k", "The threshold is n v t_1"],
+      "conditions": {
+        "initial": {"status": "present", "details": ["tau_0 is an environmental initial pheromone distribution"]},
+        "boundary": {"status": "not-applicable", "details": ["No spatial boundary condition"]},
+        "equilibrium": {"status": "omitted-by-paper", "details": ["The iteration count k = NC_max is named but no convergence test is given"]}
+      },
+      "parameter_estimation": {"method": "Parameters are said to be chosen appropriately; no values are printed", "parameters": ["alpha", "beta", "t_1"], "status": "omitted-by-paper"},
+      "algorithm": {
+        "status": "partial",
+        "steps": ["Build the mesh from the floor plan", "Iterate the selection probability", "Flip the probability above the threshold", "Draw the resulting routes"],
+        "software": ["not stated"],
+        "convergence_criteria": "Not stated; k runs to NC_max"
+      },
+      "assumptions": ["Each person carries one pheromone", "A free running speed of 1.5 m/s from survey data", "Visitors escape in order"],
+      "identifiability_feasibility": {"status": "not-demonstrated", "analysis": "alpha, beta and the threshold are never given numerical values, so the route in Figure 4 cannot be reproduced."},
+      "handoff_outputs": ["p_ijk"],
+      "validation_refs": ["Figure 4"],
+      "computational_cost": "Not stated",
+      "strengths": ["Gives a plain reason for leaving the textbook rule: a full passage is what people avoid"],
+      "limitations": ["The route map is shown but the parameters behind it are not", "The same symbol beta is later reused as a blockage switch"],
+      "missing_details": ["Values of alpha, beta, tau_0 and NC_max", "The node and edge counts of the mesh"]
+    },
+    {
+      "model_id": "MU-D-2019-1922074-TimeModel",
+      "page": 8,
+      "section": "3.3 The evacuation time",
+      "family": "queue-time",
+      "purpose": "Compute the clearance time as the minimum over stairs of the maximum last-person time, with a blockage delay",
+      "base_or_modification": "paper-specific",
+      "summary": "The human chain at stair i on floor j is L_ij = (S_ij d + (S_ij - 1) e) / n_f (4). The time down that stair is the sum of five pieces: walk to the stair, the stair itself, the chain at the exit, the walk to the door, and a blockage delay (5). Clearance is T = min { max t_i } (6). The delay (7) sums, over the floors that share the stair, the leftover chain length of the floor below divided by speed, and a switch beta is 1 when the delay is positive and 0 otherwise. Three floors reduce to two by treating the ground-floor flow as equivalent to a top-floor flow (9, 10), and the three basement exits merge into one because their channels have equal length. The reported clearance is T_min = max{T_3, T_5} + t_0 (16) with t_0 = 10 s, giving T_3 = 417.2 s and T_5 = 281.8 s at 10380 visitors.",
+      "variables": [
+        {"symbol": "L_ij", "normalized_name": "stair_chain_length", "unit": "m", "definition": "Human-chain length at stair i on floor j", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "S_ij", "normalized_name": "visitors_at_stair", "unit": "people", "definition": "Visitors at the entrance of stair i on floor j", "role": "input", "source_status": "explicit-defined"},
+        {"symbol": "n_f", "normalized_name": "stair_width", "unit": "people", "definition": "Visitors who fit in one row on the stair", "role": "parameter", "source_status": "explicit-defined"},
+        {"symbol": "t_i", "normalized_name": "stair_time", "unit": "s", "definition": "Time for the last visitor to clear stair i", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "t_d", "normalized_name": "blockage_delay", "unit": "s", "definition": "Extra time when an upper floor reaches a stair the lower floor has not left", "role": "intermediate", "source_status": "explicit-defined"},
+        {"symbol": "T", "normalized_name": "clearance_time", "unit": "s", "definition": "Minimum over stairs of the maximum last-person time", "role": "output", "source_status": "explicit-defined"},
+        {"symbol": "T_min", "normalized_name": "total_clearance", "unit": "s", "definition": "The worse of the three-floor and five-floor clearances plus the reaction time", "role": "output", "source_status": "explicit-defined"},
+        {"symbol": "t_0", "normalized_name": "reaction_time", "unit": "s", "definition": "Reaction time before movement starts, given as 10 s", "role": "parameter", "source_status": "explicit-defined"}
+      ],
+      "inputs": ["S_ij"],
+      "outputs": ["T", "T_min"],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2019-1922074-04",
+          "page": 8,
+          "source_expression": "L_ij = (S_ij d + (S_ij - 1) e) / n_f",
+          "normalized_latex": "L_{ij}=\\frac{S_{ij}d+(S_{ij}-1)e}{n_f}",
+          "purpose": "Chain length at one stair",
+          "label": "(4)",
+          "variable_symbols": ["L_ij", "S_ij", "n_f"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-05",
+          "page": 8,
+          "source_expression": "t_i = l_i/v + L_f/v + L_ij/v + l_j'/v + t_d",
+          "normalized_latex": "t_i=\\frac{l_i}{v}+\\frac{L_f}{v}+\\frac{L_{ij}}{v}+\\frac{l'_j}{v}+t_d",
+          "purpose": "Time to clear one stair as five additive pieces",
+          "label": "(5)",
+          "variable_symbols": ["t_i", "L_ij", "t_d"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-06",
+          "page": 8,
+          "source_expression": "T = min { max t_i }",
+          "normalized_latex": "T=\\min\\{\\max t_i\\}",
+          "purpose": "Clearance as the minimum of the longest stair time",
+          "label": "(6)",
+          "variable_symbols": ["T", "t_i"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-07",
+          "page": 8,
+          "source_expression": "t_d = sum_j ( L_ij' - [ (l_i + L_f + L_ij)/v * v - l_i' ] ) / v",
+          "normalized_latex": "t_d=\\sum_j\\frac{L'_{ij}-\\left[\\left(\\frac{l_i}{v}+\\frac{L_f}{v}+\\frac{L_{ij}}{v}\\right)v-l'_i\\right]}{v}",
+          "purpose": "Blockage delay from the leftover chain on the floor below",
+          "label": "(7)",
+          "variable_symbols": ["t_d", "L_ij"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-D-2019-1922074-08",
+          "page": 10,
+          "source_expression": "T_min = max{T_3, T_5} + t_0",
+          "normalized_latex": "T_{\\min}=\\max\\{T_3,T_5\\}+t_0",
+          "purpose": "Total clearance as the worse wing plus reaction time",
+          "label": "(16)",
+          "variable_symbols": ["T_min", "t_0"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {"status": "present", "reason": "Chain length, stair time, the min-max clearance, the delay and the total are displayed."},
+      "objectives": ["The shortest time at which the last visitor is out"],
+      "constraints": ["Only n_f people cross a stair at once", "The higher floor yields to the lower floor", "t_0 = 10 s"],
+      "conditions": {
+        "initial": {"status": "present", "details": ["10380 visitors at 11:30, three treasure rooms holding triple the ordinary count"]},
+        "boundary": {"status": "present", "details": ["Arts of Africa, Asia, Oceania and the Americas leaves only by the Portes Des Lions entrance"]},
+        "equilibrium": {"status": "not-applicable", "details": ["The model is a one-shot clearance, not a steady state"]}
+      },
+      "parameter_estimation": {"method": "d, e, n_f and v are fixed in the appendix code; the head count comes from an app queue time", "parameters": ["n_f", "t_0"], "status": "partial"},
+      "algorithm": {
+        "status": "implemented",
+        "steps": ["Split the crowd by floor weights", "Drain each stair at rate n_f v / (d + e)", "Pass the drained people to the stair they aim at", "Accumulate the time until every stair is empty"],
+        "software": ["Python", "xlwt"],
+        "convergence_criteria": "Loop ends when no stair has a positive clear time"
+      },
+      "assumptions": ["Every visitor runs at the same speed", "Chest-to-back distance is the same for everyone", "Visitors escape in order", "On a blocked stair the lower floor goes first"],
+      "identifiability_feasibility": {"status": "partial", "analysis": "The appendix code reproduces the drainage logic, but its crowd total is 8000 and 4000 rather than the stated 10380, and d and e never appear in the prose."},
+      "handoff_outputs": ["T_min"],
+      "validation_refs": ["Table 5", "Table 6"],
+      "computational_cost": "A short event loop over a few dozen stairs",
+      "strengths": ["Reduces the building to two wings and reports both times"],
+      "limitations": ["Equation (7) multiplies by v and divides by v, so the printed form is easy to misread", "The code totals do not match the prose total"],
+      "missing_details": ["The stair lengths l_i and L_f are not tabulated", "d and e are only in the code"]
+    },
+    {
+      "model_id": "MU-D-2019-1922074-ResponderPath",
+      "page": 11,
+      "section": "3.4 Emergency personnel",
+      "family": "time-varying-shortest-path",
+      "purpose": "Route responders to a room on a graph whose stair weights grow by the time that stair stays blocked",
+      "base_or_modification": "modification",
+      "summary": "The building is a graph G(N, R(t)) and the responders are a moving node. A stair's weight is the time to cross it at 2 m/s, plus the time until it is empty if visitors are still on it. The time of a route is T_i = sum_j t_ij + sum_j Delta t_ij (17), where t_ij is the aisle time and Delta t_ij is the stair time including congestion. For an emergency in room 101 on -1F and entry near stair B3, two routes are compared at four start times. Route A takes 130 s and route B 160 s when both are clear. At T = 90 both are blocked and B wins (180 s against 212 s); at T = 150 A wins (152 s against 160 s). The paper reads the switch off these cases and sets the threshold at T = 141.",
+      "variables": [
+        {"symbol": "T_i", "normalized_name": "route_time", "unit": "s", "definition": "Total time of route i", "role": "output", "source_status": "explicit-defined"},
+        {"symbol": "t_ij", "normalized_name": "aisle_time", "unit": "s", "definition": "Time spent on aisle j of the route, constant in time", "role": "input", "source_status": "explicit-defined"},
+        {"symbol": "Dt_ij", "normalized_name": "stair_time", "unit": "s", "definition": "Time on staircase j, including congestion, changing with time", "role": "intermediate", "source_status": "explicit-defined"}
+      ],
+      "inputs": ["t_ij"],
+      "outputs": ["T_i"],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-D-2019-1922074-09",
+          "page": 11,
+          "source_expression": "T_i = sum_j t_ij + sum_j Delta t_ij",
+          "normalized_latex": "T_i=\\sum_j t_{ij}+\\sum_j\\Delta t_{ij}",
+          "purpose": "Route time as fixed aisle time plus time-varying stair time",
+          "label": "(17)",
+          "variable_symbols": ["T_i", "t_ij", "Dt_ij"],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {"status": "present", "reason": "The route-time sum is displayed."},
+      "objectives": ["The route of least time for responders that does not use a stair the visitors are still on"],
+      "constraints": ["Responders move at 2 m/s", "A stair with visitors on it costs its remaining clear time"],
+      "conditions": {
+        "initial": {"status": "present", "details": ["Four start times are tested: 90, 120, 150 and 180 seconds after evacuation begins"]},
+        "boundary": {"status": "present", "details": ["Entry is a new door at the south of Sully near stair B3; the target is room 101 on -1F"]},
+        "equilibrium": {"status": "not-applicable", "details": ["No equilibrium"]}
+      },
+      "parameter_estimation": {"method": "Stair clear times are taken from the drainage computation in Table 2", "parameters": ["Dt_ij"], "status": "partial"},
+      "algorithm": {
+        "status": "implemented",
+        "steps": ["Read which stairs still hold visitors", "Add their remaining clear time to the edge weight", "Run a shortest path", "Recompute when the start time changes"],
+        "software": ["not stated"],
+        "convergence_criteria": "Shortest path on a small graph"
+      },
+      "assumptions": ["Responders are few enough not to block each other", "Crowding in channels is neglected because channels are wider than stairs", "Visitors keep the four main entrances"],
+      "identifiability_feasibility": {"status": "demonstrated", "analysis": "Both routes and all four start times are computed and the waiting times are printed."},
+      "handoff_outputs": ["T_i"],
+      "validation_refs": ["Table 2", "Table 3", "Table 4", "Figure 6", "Figure 7"],
+      "computational_cost": "A few shortest paths on a hand-built graph",
+      "strengths": ["Shows the best route changes with the arrival time and gives the crossing point"],
+      "limitations": ["The threshold 141 is read off four cases, not derived", "One box of the flow chart names the algorithm unintelligibly"],
+      "missing_details": ["Edge lengths behind the 130 s and 160 s", "How many responders"]
+    }
+  ],
+  "dependency_edges": [
+    {"from_model_id": "MU-D-2019-1922074-AntRoute", "to_model_id": "MU-D-2019-1922074-TimeModel", "handoff": "the chosen routes fix which stairs the visitors use"},
+    {"from_model_id": "MU-D-2019-1922074-TimeModel", "to_model_id": "MU-D-2019-1922074-ResponderPath", "handoff": "the stair clear times become the time-varying edge weights"}
+  ],
+  "review_status": "validated"
+}

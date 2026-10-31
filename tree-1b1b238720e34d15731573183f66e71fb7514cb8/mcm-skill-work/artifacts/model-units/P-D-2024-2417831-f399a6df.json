@@ -1,0 +1,1157 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-D-2024-2417831-f399a6df",
+ "problem_type": "D",
+ "year": "2024",
+ "source_sha256": "f399a6dfe6f4dca9dab3d357459ee442d039982f84696cde17ba202eaf3bd36d",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-D-2024-2417831-BENEFIT",
+   "page": 7,
+   "section": "2.2 Determination of the Benefit Function",
+   "family": "optimization",
+   "purpose": "Score a monthly water level by the five stakeholder interests it serves.",
+   "base_or_modification": "paper-specific",
+   "summary": "Five benefit terms are written and then combined. Coastal protection cost is a step function of the rise above the historical mean, scaled by shoreline length and population density. Hydropower revenue follows the change in head across three plants. Leisure satisfaction is the standard deviation of the monthly level. Shipping revenue is the flow divided by the square root of the head difference, normalized by the historical head. The ecological term is the ratio of the high-low range to its historical range. AHP weights the five, three of them negative, and the fitness is the absolute value of the weighted sum.",
+   "variables": [
+    {
+     "symbol": "S",
+     "normalized_name": "benefit score",
+     "unit": "1",
+     "definition": "the quantity each benefit function returns",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hi",
+     "normalized_name": "lake level",
+     "unit": "m",
+     "definition": "current water level of lake i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hi0",
+     "normalized_name": "historical mean level",
+     "unit": "m",
+     "definition": "historical average level of lake i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Li",
+     "normalized_name": "shoreline length",
+     "unit": "1",
+     "definition": "coefficient for the length of the shoreline",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Di",
+     "normalized_name": "residential density",
+     "unit": "1",
+     "definition": "coefficient for the population density along the shore",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qi",
+     "normalized_name": "plant output",
+     "unit": "1",
+     "definition": "generation of hydro-power plant i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hiup",
+     "normalized_name": "upstream level",
+     "unit": "m",
+     "definition": "level of the lake above a plant or a reach",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hidown",
+     "normalized_name": "downstream level",
+     "unit": "m",
+     "definition": "level of the lake below a plant or a reach",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hi0up",
+     "normalized_name": "historical upstream level",
+     "unit": "m",
+     "definition": "historical mean level above the plant",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hi0down",
+     "normalized_name": "historical downstream level",
+     "unit": "m",
+     "definition": "historical mean level below the plant",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "ki",
+     "normalized_name": "leisure weight",
+     "unit": "1",
+     "definition": "proportionality coefficient of the leisure term",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mu",
+     "normalized_name": "annual mean level",
+     "unit": "m",
+     "definition": "average water level through the year",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qflow",
+     "normalized_name": "river flow",
+     "unit": "m^3/s",
+     "definition": "flow in the connecting river",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "rho",
+     "normalized_name": "water density factor",
+     "unit": "1",
+     "definition": "coefficient in the river flow relation",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "hriver",
+     "normalized_name": "river depth",
+     "unit": "m",
+     "definition": "depth of the connecting river",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "w",
+     "normalized_name": "river width",
+     "unit": "m",
+     "definition": "width of the connecting river",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hup",
+     "normalized_name": "upstream level for flow",
+     "unit": "m",
+     "definition": "upstream level in the river flow relation",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hdown",
+     "normalized_name": "downstream level for flow",
+     "unit": "m",
+     "definition": "downstream level in the river flow relation",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qii",
+     "normalized_name": "inter-lake flow",
+     "unit": "m^3/s",
+     "definition": "flow between lake i and lake i+1",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ai",
+     "normalized_name": "lake impact factor",
+     "unit": "1",
+     "definition": "ecological weight, proportional to lake area",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "eps",
+     "normalized_name": "stakeholder weight",
+     "unit": "1",
+     "definition": "AHP weight of benefit term i, signed",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "hi",
+    "hi0",
+    "Qi",
+    "hiup",
+    "hidown",
+    "Qii"
+   ],
+   "outputs": [
+    "S"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2417831-01",
+     "page": 5,
+     "label": "(1)",
+     "source_expression": "y = epsilon(x) = 0 if x<0, 1 if x>=0",
+     "normalized_latex": "y=\\epsilon(x)=\\begin{cases}0&x<0\\\\1&x\\ge0\\end{cases}",
+     "purpose": "the step that switches the protection cost on",
+     "variable_symbols": [
+      "hi",
+      "hi0"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-02",
+     "page": 6,
+     "label": "(2)",
+     "source_expression": "S = sum_{i=1}^{5} (h_i-h_{i0})/h_{i0} * epsilon(h_i-h_{i0}) * L_i * D_i",
+     "normalized_latex": "S=\\sum_{i=1}^{5}\\frac{h_{i}-h_{i0}}{h_{i0}}\\epsilon(h_{i}-h_{i0})L_{i}D_{i}",
+     "purpose": "coastal protection cost",
+     "variable_symbols": [
+      "S",
+      "hi",
+      "hi0",
+      "Li",
+      "Di"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-03",
+     "page": 6,
+     "label": "(3)",
+     "source_expression": "S = sum_{i=1}^{3} Q_i * (h_{i,up}-h_{i,down})/(h_{i0,up}-h_{i0,down})",
+     "normalized_latex": "S=\\sum_{i=1}^{3}Q_{i}\\frac{h_{i\\cdot up}-h_{i\\cdot down}}{h_{i0\\cdot up}-h_{i0\\cdot down}}",
+     "purpose": "hydropower revenue from the change in head",
+     "variable_symbols": [
+      "S",
+      "Qi",
+      "hiup",
+      "hidown",
+      "hi0up",
+      "hi0down"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-04",
+     "page": 6,
+     "label": "(4)",
+     "source_expression": "S = sum_{i=1}^{5} (k_i * sqrt(sum_{j=1}^{12}(h_i-mu)^2 / 12))",
+     "normalized_latex": "S=\\sum_{i=1}^{5}\\left(k_{i}\\sqrt{\\frac{\\sum_{j=1}^{12}(h_{i}-\\mu)^{2}}{12}}\\right)",
+     "purpose": "leisure penalty from the spread of the monthly level",
+     "variable_symbols": [
+      "S",
+      "ki",
+      "hi",
+      "mu"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-05",
+     "page": 6,
+     "label": "(5)",
+     "source_expression": "Q = rho * h_river * w * sqrt(h_up - h_down)",
+     "normalized_latex": "Q=\\rho h_{river} w\\sqrt{h_{up}-h_{down}}",
+     "purpose": "river flow from the head difference",
+     "variable_symbols": [
+      "Qflow",
+      "rho",
+      "hriver",
+      "w",
+      "hup",
+      "hdown"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-06",
+     "page": 7,
+     "label": "(6)",
+     "source_expression": "S = sum_{i=1}^{5} Q_{i,i+1} * (1/sqrt(h_{i,up}-h_{i,down})) / (1/sqrt(h_{i0,up}-h_{i0,down}))",
+     "normalized_latex": "S=\\sum_{i=1}^{5}Q_{i,i+1}\\frac{1/\\sqrt{h_{i\\cdot up}-h_{i\\cdot down}}}{1/\\sqrt{h_{i0\\cdot up}-h_{i0\\cdot down}}}",
+     "purpose": "shipping revenue, normalized by the historical head",
+     "variable_symbols": [
+      "S",
+      "Qii",
+      "hiup",
+      "hidown",
+      "hi0up",
+      "hi0down"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-07",
+     "page": 7,
+     "label": "(7)",
+     "source_expression": "S = sum_{i=1}^{5} (max(h_i)-min(h_i))/(max(h_{i0})-min(h_{i0})) * A_i",
+     "normalized_latex": "S=\\sum_{i=1}^{5}\\frac{\\max(h_{i})-\\min(h_{i})}{\\max(h_{i0})-\\min(h_{i0})}A_{i}",
+     "purpose": "ecological cost from the widened seasonal range",
+     "variable_symbols": [
+      "S",
+      "hi",
+      "hi0",
+      "Ai"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-08",
+     "page": 7,
+     "label": "(8)",
+     "source_expression": "S = |sum_{i=1}^{5} epsilon_i * S_i|",
+     "normalized_latex": "S=\\left|\\sum_{i=1}^{5}\\epsilon_{i}S_{i}\\right|",
+     "purpose": "the fitness the genetic search selects on",
+     "variable_symbols": [
+      "S",
+      "eps"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "handoff_outputs": [
+    "S"
+   ],
+   "objectives": [
+    "minimize the coastal protection cost",
+    "maximize the hydropower revenue",
+    "minimize the leisure penalty",
+    "maximize the shipping revenue",
+    "minimize the ecological range penalty"
+   ],
+   "constraints": [
+    "the search starts from the historical mean level and stays near it"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the historical average level is the starting value"
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "no spatial boundary is stated"
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "the score is static"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "the five weights come from an analytic hierarchy process and are printed",
+    "parameters": [
+     "eps"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "encode a monthly level for each lake",
+     "score it with the weighted absolute benefit",
+     "evolve the population by inheritance, crossover and mutation"
+    ],
+    "software": [],
+    "convergence_criteria": "the search is said to converge on the global optimum, with no stopping rule given"
+   },
+   "assumptions": [
+    "the level of Lake Michigan equals the level of Lake Huron, so the flow between them is dropped",
+    "the best level lies near the historical average, because controlled changes are small against the depth"
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (1) to (8) were read from the page rasters"
+   },
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the weights are printed but the shoreline, density and leisure coefficients are not given values"
+   },
+   "validation_refs": [
+    "the monthly optima are plotted against the historical mean in figures 4 and 5"
+   ],
+   "computational_cost": "no population size or iteration count is stated",
+   "strengths": [
+    "five interests stay separate until the final weighted sum, so the trade-off is visible"
+   ],
+   "limitations": [
+    "the prose says the river level is inversely proportional to the head difference while equation (5) makes the flow grow with its square root",
+    "equation (6) divides by the historical term, so it rewards a larger head, which contradicts the inverse claim"
+   ],
+   "missing_details": [
+    "L_i, D_i and k_i have no values",
+    "the genetic search gives no population size and no stopping rule",
+    "rho is never defined"
+   ]
+  },
+  {
+   "model_id": "MU-D-2024-2417831-CHAIN",
+   "page": 11,
+   "section": "3.1 Hydrodynamic Model of the Lake Chain",
+   "family": "network",
+   "purpose": "Simulate how a change at one lake moves downstream through the chain.",
+   "base_or_modification": "modification",
+   "summary": "The lakes are a chain from Superior to the Atlantic. The level of each lake changes at the net inflow divided by its area. The flow between lakes is a Manning-Strickler relation rewritten on the head difference, the width and a friction term, and the Huron-Erie reach adds a time lag because Lake St. Clair is treated as a river. The inflow of a lake is the outflow of the lake above plus rain minus evaporation.",
+   "variables": [
+    {
+     "symbol": "dhi",
+     "normalized_name": "level rate",
+     "unit": "m/s",
+     "definition": "rate of change of the level of lake i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qin",
+     "normalized_name": "inflow",
+     "unit": "m^3/s",
+     "definition": "total inflow to lake i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qout",
+     "normalized_name": "outflow",
+     "unit": "m^3/s",
+     "definition": "outflow from lake i toward the next lake",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ai",
+     "normalized_name": "lake area",
+     "unit": "m^2",
+     "definition": "surface area of lake i",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qm",
+     "normalized_name": "channel flow",
+     "unit": "m^3/s",
+     "definition": "flow given by the Manning-Strickler relation",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Sm",
+     "normalized_name": "section area",
+     "unit": "m^2",
+     "definition": "cross-sectional area of the river",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Rm",
+     "normalized_name": "wetted length",
+     "unit": "m",
+     "definition": "wetted perimeter of the cross-section",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Em",
+     "normalized_name": "energy gradient",
+     "unit": "1",
+     "definition": "slope term of the Manning-Strickler relation",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "nm",
+     "normalized_name": "friction coefficient",
+     "unit": "1",
+     "definition": "Manning friction of the riverbed",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "N0",
+     "normalized_name": "leading coefficient",
+     "unit": "1",
+     "definition": "constant prefactor of the rewritten balance",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "Ncoef",
+     "normalized_name": "flow coefficient",
+     "unit": "1",
+     "definition": "constant prefactor of the outflow relation",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "wv",
+     "normalized_name": "channel width",
+     "unit": "m",
+     "definition": "width of the connecting river",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "gv",
+     "normalized_name": "gravity factor",
+     "unit": "1",
+     "definition": "factor converting head to the driving term",
+     "role": "parameter",
+     "source_status": "unspecified"
+    },
+    {
+     "symbol": "hv",
+     "normalized_name": "lake level",
+     "unit": "m",
+     "definition": "level of lake i in the chain",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "fij",
+     "normalized_name": "friction cost",
+     "unit": "1",
+     "definition": "flow friction between lake i and lake i+1",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "dij",
+     "normalized_name": "lake spacing",
+     "unit": "m",
+     "definition": "distance between lake i and lake i+1",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "tau",
+     "normalized_name": "lag",
+     "unit": "s",
+     "definition": "hysteresis of the Huron-Erie reach",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qrain",
+     "normalized_name": "rainfall inflow",
+     "unit": "m^3/s",
+     "definition": "precipitation arriving at lake i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qev",
+     "normalized_name": "evaporation loss",
+     "unit": "m^3/s",
+     "definition": "evaporation leaving lake i",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "Qin",
+    "Qrain",
+    "Qev",
+    "hv"
+   ],
+   "outputs": [
+    "dhi",
+    "Qout"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2417831-09",
+     "page": 9,
+     "label": "(9)",
+     "source_expression": "dh_i/dt = (Q_in(i) - Q_out(i))/A_i",
+     "normalized_latex": "\\frac{dh_{i}}{dt}=\\frac{Q_{in}(i)-Q_{out}(i)}{A_{i}}",
+     "purpose": "level change from the net inflow",
+     "variable_symbols": [
+      "dhi",
+      "Qin",
+      "Qout",
+      "Ai"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-10",
+     "page": 11,
+     "label": "(10)",
+     "source_expression": "Q = S * R^(2/3) * E^(1/2) / n",
+     "normalized_latex": "Q=\\frac{S R^{\\frac{2}{3}} E^{\\frac{1}{2}}}{n}",
+     "purpose": "the Manning-Strickler channel flow",
+     "variable_symbols": [
+      "Qm",
+      "Sm",
+      "Rm",
+      "Em",
+      "nm"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-11",
+     "page": 11,
+     "label": "(11)",
+     "source_expression": "S*R^(2/3)*E^(1/2) = N_0*w^2*w^(2/3)*(g(h_i-h_{i+1})-f_{i,i+1}*d_{i,i+1})^(1/2)",
+     "normalized_latex": "S R^{\\frac{2}{3}}E^{\\frac{1}{2}}=N_{0}w^{2}w^{\\frac{2}{3}}(g(h_{i}-h_{i+1})-f_{i,i+1}d_{i,i+1})^{\\frac{1}{2}}",
+     "purpose": "the channel relation rewritten on the head difference",
+     "variable_symbols": [
+      "Sm",
+      "Rm",
+      "Em",
+      "N0",
+      "wv",
+      "gv",
+      "hv",
+      "fij",
+      "dij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-12",
+     "page": 11,
+     "label": "(12)",
+     "source_expression": "Q_out(i) = N*w^(8/3)*(g(h_i-h_{i+1})-f*d)^(1/2)",
+     "normalized_latex": "Q_{out}(i)=N w^{\\frac{8}{3}}(g(h_{i}-h_{i+1})-f_{i,i+1}d_{i,i+1})^{\\frac{1}{2}}",
+     "purpose": "outflow of lake i",
+     "variable_symbols": [
+      "Qout",
+      "Ncoef",
+      "wv",
+      "gv",
+      "hv",
+      "fij",
+      "dij"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-13",
+     "page": 12,
+     "label": "(13)",
+     "source_expression": "Q_out(i) = N*((h_i(t-tau)-h_{i+1})-f*d)*w^(8/3)",
+     "normalized_latex": "Q_{out}(i)=N((h_{i}(t-\\tau)-h_{i+1})-f_{i,i+1}d_{i,i+1})w^{\\frac{8}{3}}",
+     "purpose": "the lagged outflow across Lake St. Clair",
+     "variable_symbols": [
+      "Qout",
+      "Ncoef",
+      "hv",
+      "tau",
+      "fij",
+      "dij",
+      "wv"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-14",
+     "page": 12,
+     "label": "(14)",
+     "source_expression": "Q_in(i) = Q_out(i-1) + Q_rain(i) - Q_ev(i)",
+     "normalized_latex": "Q_{in}(i)=Q_{out}(i-1)+Q_{rain}(i)-Q_{ev}(i)",
+     "purpose": "inflow of a lake from the lake above plus weather",
+     "variable_symbols": [
+      "Qin",
+      "Qout",
+      "Qrain",
+      "Qev"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "handoff_outputs": [
+    "dhi",
+    "Qout"
+   ],
+   "objectives": [
+    "reproduce the observed flows between the lakes"
+   ],
+   "constraints": [
+    "Lake St. Clair is treated as a river, not as a node of the chain"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the simulation starts from the current recorded levels"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "Lake Superior receives the external runoff and the chain ends at the Atlantic"
+     ]
+    },
+    "equilibrium": {
+     "status": "omitted-by-paper",
+     "details": [
+      "no steady state is derived"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "friction and lag are set by hand from the basin shapes and then adjusted until the flows match the records",
+    "parameters": [
+     "fij",
+     "tau",
+     "Ncoef"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compute the head difference between neighbouring lakes",
+     "convert it to an outflow with the rewritten channel relation",
+     "add rain and subtract evaporation to get the next inflow",
+     "update the level from the net inflow over the lake area"
+    ],
+    "software": [],
+    "convergence_criteria": "parameters are adjusted until inflows and outflows lie close to the recorded values"
+   },
+   "assumptions": [
+    "the flow between Lake Michigan and Lake Huron does not affect the model",
+    "lakes store far more water than rivers, so the Huron-Erie reach needs an explicit lag"
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (9) to (14) were read from the page rasters"
+   },
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "the friction and the lag are tuned by hand and no fit measure is reported"
+   },
+   "validation_refs": [
+    "the simulated levels are compared with the 2017 records in figure 13"
+   ],
+   "computational_cost": "no step size or run time is stated",
+   "strengths": [
+    "the chain keeps rain, evaporation and the connecting channels in one relation"
+   ],
+   "limitations": [
+    "equation (11) writes the width twice, as w^2 and as w^(2/3), so the width exponent is not the 8/3 that equation (12) uses",
+    "equation (13) drops the square root and the gravity factor that equation (12) carries, so the lagged reach is not the same relation delayed"
+   ],
+   "missing_details": [
+    "N_0, N and g are never given values",
+    "the snow-melt and the human consumption named in the prose never enter an equation",
+    "the lag tau is said to need manual adjustment and no value is reported"
+   ]
+  },
+  {
+   "model_id": "MU-D-2024-2417831-CONTROL",
+   "page": 15,
+   "section": "3.2 Control Algorithm Design",
+   "family": "control",
+   "purpose": "Hold the five lakes at their target levels using the two dams.",
+   "base_or_modification": "modification",
+   "summary": "The classical controller is a PID. The upstream dam normally runs proportional to the Lake Superior error and switches to proportional-integral once the accumulated error on Huron and Michigan passes a threshold. The downstream dam releases the minimum of its maximum and the estimated net inflow when an upstream lake passes a flood threshold, and otherwise runs proportional-integral. A prediction module rolls the chain forward 200 hours and retunes the two downstream gains by gradient descent on the summed squared level error.",
+   "variables": [
+    {
+     "symbol": "ut",
+     "normalized_name": "controller output",
+     "unit": "m^3/s",
+     "definition": "weighted sum of the three PID terms",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Kp",
+     "normalized_name": "proportional gain",
+     "unit": "1",
+     "definition": "weight on the current error",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "et",
+     "normalized_name": "level error",
+     "unit": "m",
+     "definition": "current error of the controlled level",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ki",
+     "normalized_name": "integral gain",
+     "unit": "1",
+     "definition": "weight on the accumulated error",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Kd",
+     "normalized_name": "derivative gain",
+     "unit": "1",
+     "definition": "weight on the rate of change of the error",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qt",
+     "normalized_name": "dam discharge",
+     "unit": "m^3/s",
+     "definition": "release commanded at the upstream dam",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Kp1",
+     "normalized_name": "upstream proportional gain",
+     "unit": "1",
+     "definition": "proportional gain of the compensating works",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "htarget",
+     "normalized_name": "target level",
+     "unit": "m",
+     "definition": "desired level of the controlled lake",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "hlake",
+     "normalized_name": "measured level",
+     "unit": "m",
+     "definition": "current level of the controlled lake",
+     "role": "state",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Alake",
+     "normalized_name": "lake area",
+     "unit": "m^2",
+     "definition": "area used to turn a level error into a volume",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ki1",
+     "normalized_name": "upstream integral gain",
+     "unit": "1",
+     "definition": "integral gain of the compensating works",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qout",
+     "normalized_name": "downstream release",
+     "unit": "m^3/s",
+     "definition": "release commanded at the Moses-Saunders dam",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qmax",
+     "normalized_name": "maximum release",
+     "unit": "m^3/s",
+     "definition": "largest release the dam can pass",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qinc",
+     "normalized_name": "incoming flow",
+     "unit": "m^3/s",
+     "definition": "inflow arriving from upstream",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qrain",
+     "normalized_name": "rainfall inflow",
+     "unit": "m^3/s",
+     "definition": "precipitation on the controlled lake",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Qev",
+     "normalized_name": "evaporation loss",
+     "unit": "m^3/s",
+     "definition": "evaporation from the controlled lake",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "cv",
+     "normalized_name": "parameter vector",
+     "unit": "1",
+     "definition": "the six controller parameters",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Jc",
+     "normalized_name": "objective",
+     "unit": "m^2",
+     "definition": "sum of squared level errors over the horizon",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Ev",
+     "normalized_name": "squared error",
+     "unit": "m^2",
+     "definition": "squared level error of one lake at one hour",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "htarget",
+    "hlake",
+    "Qinc",
+    "Qrain",
+    "Qev"
+   ],
+   "outputs": [
+    "Qt",
+    "Qout",
+    "Jc"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-D-2024-2417831-15",
+     "page": 13,
+     "label": "(15)",
+     "source_expression": "u(t) = K_p e(t) + K_i integral_0^t e(tau) d tau + K_d de/dt",
+     "normalized_latex": "u(t)=K_{p}e(t)+K_{i}\\int_{0}^{t}e(\\tau)d\\tau+K_{d}\\frac{de(t)}{dt}",
+     "purpose": "the classical three-term controller",
+     "variable_symbols": [
+      "ut",
+      "Kp",
+      "et",
+      "Ki",
+      "Kd"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-16",
+     "page": 14,
+     "label": "(16)",
+     "source_expression": "Q(t) = K_{p1}(h_target - h) A",
+     "normalized_latex": "Q(t)=K_{p1}(h_{target}-h)A",
+     "purpose": "proportional release at the upstream dam",
+     "variable_symbols": [
+      "Qt",
+      "Kp1",
+      "htarget",
+      "hlake",
+      "Alake"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-17",
+     "page": 14,
+     "label": "(17)",
+     "source_expression": "Q(t) = [K_{p1}(h_target - h) + K_{i1} integral t e(tau) d tau] A",
+     "normalized_latex": "Q(t)=\\left[K_{p1}(h_{target}-h)+K_{i1}\\int te(\\tau)d\\tau\\right]A",
+     "purpose": "proportional-integral release once the downstream error passes the threshold",
+     "variable_symbols": [
+      "Qt",
+      "Kp1",
+      "htarget",
+      "hlake",
+      "Ki1",
+      "et",
+      "Alake"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-18",
+     "page": 15,
+     "label": "(18)",
+     "source_expression": "Q_out = min{Q_max, Q_in + Q_rain - Q_ev}",
+     "normalized_latex": "Q_{out}=\\min\\{Q_{max},(Q_{in}+Q_{rain}-Q_{ev})\\}",
+     "purpose": "flood release capped by the estimated net inflow",
+     "variable_symbols": [
+      "Qout",
+      "Qmax",
+      "Qinc",
+      "Qrain",
+      "Qev"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-19",
+     "page": 15,
+     "label": "(19)",
+     "source_expression": "c = (K_{p1}, K_{i1}, I_0, h_control, K_{p2}, K_{i2})",
+     "normalized_latex": "c=(K_{p1},K_{i1},I_{0},h_{control},K_{p2},K_{i2})",
+     "purpose": "the six parameters the prediction module can retune",
+     "variable_symbols": [
+      "cv"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-D-2024-2417831-20",
+     "page": 15,
+     "label": "(20)",
+     "source_expression": "J(c) = sum_{i=1}^{4} sum_{t=0}^{200} E(i,t,c)",
+     "normalized_latex": "J(c)=\\sum_{i=1}^{4}\\sum_{t=0}^{200}E(i,t,c)",
+     "purpose": "the squared level error over four lakes and 200 hours",
+     "variable_symbols": [
+      "Jc",
+      "Ev",
+      "cv"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "handoff_outputs": [
+    "Qt",
+    "Qout"
+   ],
+   "objectives": [
+    "keep each lake at its monthly target level"
+   ],
+   "constraints": [
+    "only two dams can be moved",
+    "the flood release cannot exceed the dam maximum or the estimated net inflow"
+   ],
+   "conditions": {
+    "initial": {
+     "status": "present",
+     "details": [
+      "the simulation starts from the current levels, 0.5 to 1 metre from the targets"
+     ]
+    },
+    "boundary": {
+     "status": "present",
+     "details": [
+      "the upstream dam answers Lake Superior and the downstream dam answers Lake Ontario"
+     ]
+    },
+    "equilibrium": {
+     "status": "omitted-by-paper",
+     "details": [
+      "no steady release is derived"
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "partial",
+    "method": "gradient descent on the summed squared error over a 200 hour forecast, restricted to the two downstream gains",
+    "parameters": [
+     "cv"
+    ]
+   },
+   "algorithm": {
+    "status": "implemented",
+    "steps": [
+     "compare the measured level with the target",
+     "switch the upstream dam from proportional to proportional-integral when the accumulated downstream error passes the threshold",
+     "switch the downstream dam to flood release when an upstream lake passes its flood threshold",
+     "roll the chain forward 200 hours and retune the two downstream gains by gradient descent"
+    ],
+    "software": [],
+    "convergence_criteria": "gradient descent is stopped by hand because the full search is too slow"
+   },
+   "assumptions": [
+    "the derivative term is dropped because the lakes are far larger than the dams can move",
+    "a forecast of 200 hours is long enough to judge the gains"
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "equations (15) to (20) were read from the page rasters"
+   },
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "only two of the six parameters are actually optimized, and no gain value is reported"
+   },
+   "validation_refs": [
+    "figure 10 shows the dams bringing the levels toward the targets",
+    "figures 14 to 17 compare the chain with and without the controller under heavy rain and under ice"
+   ],
+   "computational_cost": "the full gradient search is described as time-consuming, which is why it was narrowed",
+   "strengths": [
+    "the mode switch lets two dams answer five lakes without a gain for each"
+   ],
+   "limitations": [
+    "equation (19) names K_{p2} and K_{i2}, but the proportional-integral law for the downstream dam is never written",
+    "the objective sums over four lakes while the chain has five"
+   ],
+   "missing_details": [
+    "no gain is given a number",
+    "the switch thresholds I_0 and h_control are never valued",
+    "the step size of the gradient descent is not stated"
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-D-2024-2417831-BENEFIT",
+   "to_model_id": "MU-D-2024-2417831-CONTROL",
+   "handoff": "the monthly level that scores best becomes the target the dams are told to hold"
+  },
+  {
+   "from_model_id": "MU-D-2024-2417831-CHAIN",
+   "to_model_id": "MU-D-2024-2417831-CONTROL",
+   "handoff": "the chain supplies the forecast the gains are tuned against"
+  }
+ ]
+}

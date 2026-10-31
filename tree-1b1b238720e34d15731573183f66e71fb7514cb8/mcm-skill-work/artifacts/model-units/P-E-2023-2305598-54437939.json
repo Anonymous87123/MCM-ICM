@@ -1,0 +1,910 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2023-2305598-54437939",
+  "problem_type": "E",
+  "year": "2023",
+  "source_sha256": "54437939aed0364cf45528e44ec0a3208330d130b6185394c66660b69290013b",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2023-2305598-LSN",
+      "section": "Light-Society-Nature Evaluation Model",
+      "family": "evaluation",
+      "summary": "A light pollution index for a small site, built from ten indicators grouped under light, society, and nature, and graded in four bands. The light group holds artificial light intensity in microcandelas per square meter, light density defined as that intensity divided by the site area, sky brightness in magnitudes per square arcsecond, and glare. The society group holds population, development measured by GDP, and publicity measured by Google Trends searches for light pollution. The nature group holds climate from atmospheric transparency and humidity, geography from altitude and sunshine duration, and biodiversity from green area and the count of wild species. Each group value is a weighted sum of its standardized indicators, and the index is the weighted sum of the three group values. A higher index means a cleaner night, by deliberate choice. Fuzzy clustering of the fifty-five sites cuts the index at 40, 60, and 80, giving heavy, moderate, minimal, and unpolluted.",
+      "computational_cost": "Three group scores and one weighted sum over fifty-five sites",
+      "purpose": "Grade any small site on its light pollution.",
+      "base_or_modification": "hybrid",
+      "page": 6,
+      "inputs": [
+        "I"
+      ],
+      "outputs": [
+        "LPI"
+      ],
+      "handoff_outputs": [
+        "LPI",
+        "w"
+      ],
+      "objectives": [
+        "Rank sites by how clean their night sky is."
+      ],
+      "variables": [
+        {
+          "symbol": "I",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Standardized value of one second-level indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "site_area",
+          "role": "input",
+          "unit": "km2",
+          "definition": "Area of the site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LI",
+          "normalized_name": "light_intensity",
+          "role": "intermediate",
+          "unit": "ucd m-2",
+          "definition": "Artificial light intensity",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LD",
+          "normalized_name": "light_density",
+          "role": "intermediate",
+          "unit": "per km2",
+          "definition": "Artificial light intensity per unit area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lv",
+          "normalized_name": "light_group",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined light factor",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sv",
+          "normalized_name": "society_group",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined society factor",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Nv",
+          "normalized_name": "nature_group",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Combined nature factor",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Combined weight of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LPI",
+          "normalized_name": "pollution_index",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Light pollution index, higher when cleaner",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2305598-LSN-1",
+          "equation_label": "Light density",
+          "equation_text": "Artificial light density is the artificial light intensity divided by the area of the site.",
+          "source_expression": "Artificial light density is the artificial light intensity divided by the area of the site.",
+          "normalized_latex": "LD=LI/A",
+          "purpose": "Turn two reported quantities into the missing one.",
+          "variable_symbols": [
+            "LD",
+            "LI",
+            "A"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2305598-LSN-2",
+          "equation_label": "Group scores",
+          "equation_text": "Each of the light, society, and nature scores is the weighted sum of its own standardized indicators.",
+          "source_expression": "Each of the light, society, and nature scores is the weighted sum of its own standardized indicators.",
+          "normalized_latex": "L_v=\\sum_j w_j I_j",
+          "purpose": "Collapse the ten indicators into three factors.",
+          "variable_symbols": [
+            "Lv",
+            "Sv",
+            "Nv",
+            "w",
+            "I"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2305598-LSN-3",
+          "equation_label": "Light pollution index",
+          "equation_text": "The index is the weighted sum of the light, society, and nature scores, and a larger value means a cleaner site.",
+          "source_expression": "The index is the weighted sum of the light, society, and nature scores, and a larger value means a cleaner site.",
+          "normalized_latex": "LPI=w_L L_v+w_S S_v+w_N N_v",
+          "purpose": "Collapse the three factors into one index.",
+          "variable_symbols": [
+            "LPI",
+            "Lv",
+            "Sv",
+            "Nv",
+            "w"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 9 and 17 and 18 print as bare numbers with the symbols stripped. The recorded forms follow the prose: density as intensity over area, and both the group scores and the index as weighted sums.",
+        "reason": "Sections 4.1 and 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The index uses one cross-section, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The bands meet at 40, 60, and 80, with heavy below 40 and unpolluted above 80."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "The weights are the mean of an analytic hierarchy weight, an entropy weight, and a coefficient-of-variation weight, computed on the fifty-five sites.",
+        "parameters": [
+          "w"
+        ]
+      },
+      "algorithm": {
+        "description": "Standardize, weight, score the three groups, and add.",
+        "status": "implemented",
+        "steps": [
+          "Standardize each indicator, reversing the negative ones",
+          "Compute the three weights and average them",
+          "Score light, society, and nature separately",
+          "Add the three scores into the index",
+          "Read the band from the cuts at 40, 60, and 80"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The computation is closed form."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Fifty-five sites are clustered and four named sites receive an index."
+        ],
+        "analysis": "The four indices are printed to two decimals. The printed formulas lost their symbols."
+      },
+      "constraints": [
+        "The three weights are positive and their mean is the final weight.",
+        "A higher index means less pollution."
+      ],
+      "validation_refs": [
+        "Table 2, the four bands",
+        "Figure 4, the combined weights"
+      ],
+      "strengths": [
+        "Three weighting methods are averaged instead of trusted singly.",
+        "The index direction is stated and justified."
+      ],
+      "limitations": [
+        "The notation table prints descriptions with the symbols missing.",
+        "The class boundaries are admitted to be unclear."
+      ],
+      "missing_details": [
+        "The numerical weight of each indicator.",
+        "The membership of each of the fifty-five sites."
+      ],
+      "assumptions": [
+        "A higher score should mean a better condition.",
+        "Factors with weak correlation can be dropped."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2305598-WT",
+      "section": "Combination Weighting",
+      "family": "evaluation",
+      "summary": "Three weights for each indicator, averaged. The hierarchy weight comes from judgment matrices on the three top factors and on each group of second-level indicators, followed by a consistency check; the matrices themselves are withheld for lack of space. The entropy weight starts from the 55 by 10 matrix, scales positive and negative indicators separately, turns each column into a probability, computes the entropy, calls one minus the entropy the information utility, and normalizes. The variation weight is the standard deviation of an indicator divided by its mean, then normalized across indicators. The final weight is the arithmetic mean of the three, chosen to blunt both the subjectivity of the hierarchy and the sensitivity of the data.",
+      "computational_cost": "Three weighting passes over a 55 by 10 matrix",
+      "purpose": "Set one defensible weight per indicator.",
+      "base_or_modification": "hybrid",
+      "page": 10,
+      "inputs": [
+        "X"
+      ],
+      "outputs": [
+        "w"
+      ],
+      "handoff_outputs": [
+        "w"
+      ],
+      "objectives": [
+        "Keep the data and the judgment from dominating each other."
+      ],
+      "variables": [
+        {
+          "symbol": "X",
+          "normalized_name": "raw_matrix",
+          "role": "input",
+          "unit": "mixed",
+          "definition": "Indicator values for the fifty-five sites",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "scaled_matrix",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Matrix after scaling and standardization",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "column_share",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Share of one site in one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e",
+          "normalized_name": "entropy",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Information entropy of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "utility",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "One minus the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cv",
+          "normalized_name": "variation",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Standard deviation divided by the mean",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wh",
+          "normalized_name": "hierarchy_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weight from the analytic hierarchy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "we",
+          "normalized_name": "entropy_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weight from the entropy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wv",
+          "normalized_name": "variation_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weight from the coefficient of variation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "combined_weight",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Mean of the three weights",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2305598-WT-1",
+          "equation_label": "Entropy",
+          "equation_text": "The entropy of an indicator is the negative sum of each site's share times the logarithm of that share.",
+          "source_expression": "The entropy of an indicator is the negative sum of each site's share times the logarithm of that share.",
+          "normalized_latex": "e_j=-\\sum_i p_{ij}\\ln p_{ij}",
+          "purpose": "Measure how evenly an indicator is spread.",
+          "variable_symbols": [
+            "e",
+            "p",
+            "Y",
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2305598-WT-2",
+          "equation_label": "Variation coefficient",
+          "equation_text": "The coefficient of variation is the standard deviation of an indicator divided by its mean.",
+          "source_expression": "The coefficient of variation is the standard deviation of an indicator divided by its mean.",
+          "normalized_latex": "cv_j=s_j/\\bar x_j",
+          "purpose": "Measure how widely an indicator swings.",
+          "variable_symbols": [
+            "cv",
+            "X"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2305598-WT-3",
+          "equation_label": "Combined weight",
+          "equation_text": "The final weight is the arithmetic mean of the hierarchy weight, the entropy weight, and the variation weight.",
+          "source_expression": "The final weight is the arithmetic mean of the hierarchy weight, the entropy weight, and the variation weight.",
+          "normalized_latex": "w=(w_h+w_e+w_v)/3",
+          "purpose": "Stop any one method from deciding alone.",
+          "variable_symbols": [
+            "w",
+            "wh",
+            "we",
+            "wv",
+            "d"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 10 to 16 print as bare numbers. The recorded forms follow the prose: entropy from the probability shares, variation as spread over mean, and the final weight as the mean of three.",
+        "reason": "Section 4.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The weights are computed once on the database."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Each set of weights is normalized before the three are averaged."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "All three weights are computed from the same fifty-five sites, and the hierarchy matrices are checked for consistency.",
+        "parameters": [
+          "wh",
+          "we",
+          "wv"
+        ]
+      },
+      "algorithm": {
+        "description": "Weight three ways and average.",
+        "status": "partial",
+        "steps": [
+          "Build the judgment matrices and check consistency",
+          "Scale the matrix, positive and negative indicators apart",
+          "Compute entropy weights from the information utility",
+          "Compute variation weights from spread over mean",
+          "Average the three"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The computation is closed form."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The combined weights are plotted."
+        ],
+        "analysis": "Figure 4 shows the weights, but no number is printed and the judgment matrices are withheld."
+      },
+      "constraints": [
+        "The hierarchy matrices must pass the consistency check.",
+        "Negative indicators are reversed before weighting."
+      ],
+      "validation_refs": [
+        "Figure 4, the combined weights",
+        "Figure 3, the hierarchy"
+      ],
+      "strengths": [
+        "Subjective and objective weights are forced to meet in the middle.",
+        "The direction of each indicator is handled explicitly."
+      ],
+      "limitations": [
+        "The judgment matrices are never shown.",
+        "Averaging three methods has no stated optimality."
+      ],
+      "missing_details": [
+        "The judgment matrices.",
+        "The numerical value of each weight."
+      ],
+      "assumptions": [
+        "The three methods err in different directions, so their mean is safer.",
+        "The fifty-five sites represent the range of conditions."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2305598-PIA",
+      "section": "Potential Impact Analysis",
+      "family": "decision",
+      "summary": "Three neural networks that say how a direct action moves the indicators it does not touch. Normality is tested first and only sky brightness passes, so Spearman correlation replaces Pearson, with the usual rank-difference formula on the fifty-five sites. Light intensity correlates positively with light density, glare, and sky brightness and negatively with biodiversity. Publicity correlates negatively with light intensity, sky brightness, and glare and positively with biodiversity. Biodiversity correlates positively with sky brightness and glare. Three networks are then fit in MATLAB's Neural Fitting app: light intensity against density, glare, sky brightness, and biodiversity; publicity against light intensity, sky brightness, glare, and biodiversity; biodiversity against sky brightness and glare. Each strategy is later applied as the same ten percent move in its own direct indicator, and the networks supply the indirect indicators, so the index can be recomputed. No network architecture, neuron count, or error is reported.",
+      "computational_cost": "Three correlation screens and three network fits on fifty-five sites",
+      "purpose": "Predict the indicators a strategy does not touch directly.",
+      "base_or_modification": "paper-specific",
+      "page": 17,
+      "inputs": [
+        "LI"
+      ],
+      "outputs": [
+        "SB"
+      ],
+      "handoff_outputs": [
+        "SB",
+        "G",
+        "BD"
+      ],
+      "objectives": [
+        "Trace each direct action through to the whole index."
+      ],
+      "variables": [
+        {
+          "symbol": "LI",
+          "normalized_name": "light_intensity",
+          "role": "input",
+          "unit": "ucd m-2",
+          "definition": "Artificial light intensity, the direct target of the first strategy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "sample_size",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of sites, equal to 55",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "di",
+          "normalized_name": "rank_gap",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Difference between the two ranks of one site",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "spearman",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Spearman correlation between two indicators",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "SB",
+          "normalized_name": "sky_brightness",
+          "role": "output",
+          "unit": "mag arcsec-2",
+          "definition": "Sky brightness predicted by the network",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "glare",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Glare predicted by the network",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "BD",
+          "normalized_name": "biodiversity",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Biodiversity predicted by the network",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2305598-PIA-1",
+          "equation_label": "Spearman correlation",
+          "equation_text": "The correlation is one minus six times the sum of squared rank gaps, divided by the sample size times its square minus one.",
+          "source_expression": "The correlation is one minus six times the sum of squared rank gaps, divided by the sample size times its square minus one.",
+          "normalized_latex": "\\rho=1-6\\sum d_i^2/(n(n^2-1))",
+          "purpose": "Measure association without assuming normality.",
+          "variable_symbols": [
+            "rho",
+            "di",
+            "n"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2023-2305598-PIA-2",
+          "equation_label": "Equal effort",
+          "equation_text": "Each strategy changes its own direct indicator by the same fraction, ten percent up or down.",
+          "source_expression": "Each strategy changes its own direct indicator by the same fraction, ten percent up or down.",
+          "normalized_latex": "x'=(1\\pm 0.10)x",
+          "purpose": "Keep the three strategies comparable.",
+          "variable_symbols": [
+            "LI",
+            "BD"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 19 prints as a bare number. The recorded correlation is the standard Spearman formula the prose names, with the sample size stated as 55.",
+        "reason": "Section 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each site starts from its measured indicators."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The tested moves are ten percent in either direction, and ninety percent of the original light is the worked example."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The networks map one state to another. No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The networks are fit in MATLAB, but no layer count, neuron count, or training error is given.",
+        "parameters": [
+          "rho"
+        ]
+      },
+      "algorithm": {
+        "description": "Screen by correlation, fit three networks, and rescore.",
+        "status": "partial",
+        "steps": [
+          "Test each indicator for normality",
+          "Compute Spearman correlations on the fifty-five sites",
+          "Keep the indicators with a strong correlation",
+          "Fit one network per direct indicator",
+          "Move the direct indicator by ten percent and read the rest"
+        ],
+        "software": [
+          "MATLAB Neural Fitting"
+        ],
+        "convergence_criteria": "The training criterion is not stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The three networks produce plotted trends."
+        ],
+        "analysis": "The curves are shown and described, but no fitted parameter is printed, so they cannot be rebuilt."
+      },
+      "constraints": [
+        "Only indicators with a strong correlation are kept.",
+        "The three strategies move their indicators by the same fraction."
+      ],
+      "validation_refs": [
+        "Figure 5, the three network trends",
+        "Equation 19, the correlation"
+      ],
+      "strengths": [
+        "The coefficient is chosen only after the normality test fails.",
+        "Direct and indirect effects are separated."
+      ],
+      "limitations": [
+        "The network structure is never described.",
+        "Biodiversity correlating positively with sky brightness is reported and not explained."
+      ],
+      "missing_details": [
+        "The correlation threshold used to keep an indicator.",
+        "The neuron counts and the training errors."
+      ],
+      "assumptions": [
+        "The correlations estimated on fifty-five sites hold inside one city.",
+        "A ten percent move is a fair common dose."
+      ]
+    },
+    {
+      "model_id": "MU-E-2023-2305598-BEST",
+      "section": "Strategy Comparison",
+      "family": "decision",
+      "summary": "The comparison that picks the strategy. Sedona, the rural and lightly polluted case, and New York, the urban and heavily polluted case, each receive all three strategies at the same ten percent dose. The networks supply the indirect indicators and the evaluation model recomputes the index. For Sedona the first strategy, cutting artificial light to ninety percent, lifts the index the most, while pushing the light to one hundred ten percent drops it fast. For New York the same strategy lifts the index fastest, yet the city stays inside the worst band, and publicity beats planting but only slightly. The first strategy wins in both places, and the reason given is that it acts at the source: light intensity is tied to density, glare, and sky brightness, which carry the largest weight in the index.",
+      "computational_cost": "Six rescorings, three strategies at two sites",
+      "purpose": "Choose one strategy for both a clean site and a dirty one.",
+      "base_or_modification": "modification",
+      "page": 20,
+      "inputs": [
+        "LPI"
+      ],
+      "outputs": [
+        "sstar"
+      ],
+      "handoff_outputs": [
+        "sstar"
+      ],
+      "objectives": [
+        "Find the strategy that lifts the index most at equal effort."
+      ],
+      "variables": [
+        {
+          "symbol": "LPI",
+          "normalized_name": "pollution_index",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Index before the strategy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "LPIn",
+          "normalized_name": "new_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Index after the strategy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dL",
+          "normalized_name": "index_gain",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Rise in the index under one strategy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sstar",
+          "normalized_name": "best_strategy",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Strategy with the largest gain",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2023-2305598-BEST-1",
+          "equation_label": "Best strategy",
+          "equation_text": "The chosen strategy is the one that raises the index the most when every strategy moves its own indicator by the same fraction.",
+          "source_expression": "The chosen strategy is the one that raises the index the most when every strategy moves its own indicator by the same fraction.",
+          "normalized_latex": "s^\\star=\\arg\\max_s \\Delta LPI_s",
+          "purpose": "Pick the largest gain at equal effort.",
+          "variable_symbols": [
+            "sstar",
+            "dL",
+            "LPI",
+            "LPIn"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 21,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "No comparison equation is printed. The recorded rule is the one the prose applies: the largest rise in the index at a common ten percent dose.",
+        "reason": "Section 6.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Sedona starts at 76.94 and New York at 35.55."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The dose is fixed at ten percent so the strategies differ only in target."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The comparison is a single rescoring, not a dynamic equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "Nothing is fitted at this stage. The indices are recomputed from the earlier models.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Rescore both sites under each strategy and compare.",
+        "status": "implemented",
+        "steps": [
+          "Fix the dose at ten percent",
+          "Predict the indirect indicators from the matching network",
+          "Recompute the index for each strategy",
+          "Compare the gains at both sites",
+          "Keep the strategy that wins at both"
+        ],
+        "software": [
+          "MATLAB Neural Fitting"
+        ],
+        "convergence_criteria": "The comparison is a direct ranking."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Both sites return a ranking of the three strategies."
+        ],
+        "analysis": "The ranking is stated in words. The recomputed index values are not printed."
+      },
+      "constraints": [
+        "The dose is the same for all three strategies.",
+        "A strategy is judged by the index, not by cost."
+      ],
+      "validation_refs": [
+        "Figure 6, the Sedona comparison",
+        "Figure 7, the New York comparison"
+      ],
+      "strengths": [
+        "The effort is equalized before the comparison.",
+        "A win that fails to change the grade is reported as such."
+      ],
+      "limitations": [
+        "No recomputed index is printed, only the ranking.",
+        "The strategies are never priced."
+      ],
+      "missing_details": [
+        "The index of each site after each strategy.",
+        "The cost of cutting the light, of the publicity, and of the planting."
+      ],
+      "assumptions": [
+        "A ten percent move costs the same however it is achieved.",
+        "Winning at two sites is enough to recommend the strategy generally."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2023-2305598-LSN-1",
+      "model_id": "MU-E-2023-2305598-LSN",
+      "page": 7,
+      "source_expression": "Artificial light density is the artificial light intensity divided by the area of the site."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-LSN-2",
+      "model_id": "MU-E-2023-2305598-LSN",
+      "page": 12,
+      "source_expression": "Each of the light, society, and nature scores is the weighted sum of its own standardized indicators."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-LSN-3",
+      "model_id": "MU-E-2023-2305598-LSN",
+      "page": 12,
+      "source_expression": "The index is the weighted sum of the light, society, and nature scores, and a larger value means a cleaner site."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-WT-1",
+      "model_id": "MU-E-2023-2305598-WT",
+      "page": 11,
+      "source_expression": "The entropy of an indicator is the negative sum of each site's share times the logarithm of that share."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-WT-2",
+      "model_id": "MU-E-2023-2305598-WT",
+      "page": 11,
+      "source_expression": "The coefficient of variation is the standard deviation of an indicator divided by its mean."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-WT-3",
+      "model_id": "MU-E-2023-2305598-WT",
+      "page": 11,
+      "source_expression": "The final weight is the arithmetic mean of the hierarchy weight, the entropy weight, and the variation weight."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-PIA-1",
+      "model_id": "MU-E-2023-2305598-PIA",
+      "page": 18,
+      "source_expression": "The correlation is one minus six times the sum of squared rank gaps, divided by the sample size times its square minus one."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-PIA-2",
+      "model_id": "MU-E-2023-2305598-PIA",
+      "page": 20,
+      "source_expression": "Each strategy changes its own direct indicator by the same fraction, ten percent up or down."
+    },
+    {
+      "equation_id": "EQ-E-2023-2305598-BEST-1",
+      "model_id": "MU-E-2023-2305598-BEST",
+      "page": 21,
+      "source_expression": "The chosen strategy is the one that raises the index the most when every strategy moves its own indicator by the same fraction."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2023-2305598-WT",
+      "to_model_id": "MU-E-2023-2305598-LSN",
+      "handoff": "The averaged weights enter the three group scores and the index."
+    },
+    {
+      "from_model_id": "MU-E-2023-2305598-LSN",
+      "to_model_id": "MU-E-2023-2305598-PIA",
+      "handoff": "The ten indicators and their correlations decide what each network predicts."
+    },
+    {
+      "from_model_id": "MU-E-2023-2305598-PIA",
+      "to_model_id": "MU-E-2023-2305598-BEST",
+      "handoff": "The networks supply the indirect indicators that the rescoring needs."
+    }
+  ]
+}

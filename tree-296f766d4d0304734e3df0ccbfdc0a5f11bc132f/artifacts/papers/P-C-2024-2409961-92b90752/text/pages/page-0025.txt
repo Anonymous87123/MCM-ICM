@@ -1,0 +1,47 @@
+Team # 2409961  Page 24 of 24
+
+          self.linear11 = nn.Linear(hidden_size + hidden_size, hidden_size)
+          self.dropout = nn.Dropout(0.2)
+          self.linear21 = nn.Linear(hidden_size, output_size)
+          self.linear12 = nn.Linear(hidden_size + hidden_size, hidden_size)
+          self.linear22 = nn.Linear(hidden_size, output_size)
+          self.sigmoid = nn.Tanh()
+          self.player_embedding = nn.Embedding(32, hidden_size)
+
+ ྘ def forward(self,_x, p1=None, p2=None,ig=False):
+          p1_emb = self.player_embedding(p1)
+  ଆ p2_emb = self.player_embedding(p2)
+          _x = self.linear0(_x)
+          _x = torch.cat([p1_emb , p2_emb, _x], dim=2)
+  ࿐ x, _ = self.gru(_x)
+          s, b, h = x.shape
+          x = x.reshape(s * b, h)
+  ඔ p1_emb = p1_emb.reshape(s * b, -1)
+          p2_emb = p2_emb.reshape(s * b, -1)
+  ğ ls x1 = self.linear11(torch.cat([x, p1_emb], dim=1))
+          x1 = self.sigmoid(x1)
+  e x1 = self.dropout(x1)
+  ‫ ݼ‬d x1 = self.linear21(x1)
+          x1 = x1.reshape(s, b, -1)
+  o x2 = self.linear12(torch.cat([x, p2_emb], dim=1))
+  ᇙ x2 = self.sigmoid(x2)
+  m x2 = self.dropout(x2)
+  ‫ ܄‬x2 = self.linear22(x2)
+  H x2 = x2.reshape(s, b, -1)
+  ྐ T return x1, x2
+class Net(nn.Module):
+
+ A def __init__(self, input_size,hid_dim = 128):
+          super(Net, self).__init__()
+  ັ M self.w6 = W6(input_size)
+          self.gru = GruRNN(6, hid_dim, 1, 1)
+
+ ğ def forward(self, x,p1,p2):
+          x = self.w6(x)
+  ‫ ݼ‬x = self.gru(x,p1,p2)
+  ྐ return x
+    ັ
+
+                          2  ܱᇿඔ࿐ଆ྘
+                             ࠆ౼۷‫؟‬ሧ࿟
+                MATHmodels

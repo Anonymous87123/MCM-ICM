@@ -1,0 +1,82 @@
+     Team # 15417                                                                                       Page 7 of 24
+
+
+     would have to travel per day to exit on time. This simple movement formula for boat k is: ∆Sk = d Y −S dk e,
+                                                                                                               k
+
+
+     where Sk is the site where boat k is currently resting, Y is the number of sites, and dk is the number of
+     days left in boat k’s trip. Of course, this formula must also be bounded by the maximum distance a boat
+     can travel in a day: ∆Sk ≤ b 8h(Y  +1)
+                                      225   c for motor boats and ∆Sk ≤ b 4h(Y
+                                                                            225
+                                                                               +1)
+                                                                                   c for oar boats, where h is the
+     maximum number of hours traveled per day.
+        We eventually found that our movement formula can be improved by adding a constant mC to keep the
+     boats moving faster: ∆Sk = d Y −Sdk e + mC . We will discuss how this constant can be selected to optimize
+                                         k
+
+
+     our model in our Results section.
+
+     Adding Boats to the River
+     Our algorithm assumes there is a ”waiting list” of people who would like to schedule a trip down the river.
+     Our method of adding new boats to the river is very simple; boats are added on a ”first-come, first-served”
+     basis, by means of a queue (for which we use Java’s LinkedList). The placement of these boats works the
+     same as in the movement algorithm - the algorithm attempts to place them in their preferred site, but if it is
+     unavailable, it checks upstream, iterating through each site one by one, until it finds an open site or reaches
+     the top of the river. The method ends when it reaches the top of the river without placing a boat, because
+     that means that there must not be an open site for the boat at the front of the queue. Our source code for
+     addBoats()is shown below:
+ 1   private void addBoats(int day)
+ 2   {
+ 3       boolean found = true;
+ 4       Boat nextBoat = null;
+ 5       while (!queue.isEmpty() && found) // Stop when a site is not found.
+ 6       {
+ 7           nextBoat = queue.poll();
+ 8
+ 9           // Skip boats that can’t get out by the end of the season.
+10           if (NUM_DAYS-day < nextBoat.getTotalDays()) continue;
+11
+12           int nextSite = nextBoat.getPreferredNextSite(numSites);
+13
+14           if (nextSite >= numSites)
+15           {
+16                // The boat is out of the river, add a point to our score
+17                // This shouldn’t ever happen with our parameters, but it’s here just in case they ever change.
+18                tripCount++;
+19                boatsOut.add(nextBoat);
+20           }
+21           else if (schedule[day][nextSite] == null)
+22           {
+23                // There is an open spot in the preferred site, move the boat there.
+24                nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+25                nextBoat.setCurrentSite(nextSite);
+26                schedule[day][nextSite] = nextBoat;
+27           }
+28           else
+29           {
+30                // There is a boat in the spot our boat would like to move to.
+31                found = false; // Keep track of whether we have found an alternate spot.
+32                for (int j = nextSite - 1; !found && j >= 0; j--)
+33                {
+34                    if (schedule[day][j] == null)
+35                    {
+36                        // If we find an alternate spot, the boat can move there.
+37                        nextBoat.setDaysLeft(nextBoat.getDaysLeft() - 1);
+38                        nextBoat.setCurrentSite(j);
+39                        schedule[day][j] = nextBoat;
+40                        found = true;
+41                    }
+42                }
+43                // When a spot is not found, the found variable will be left as false, and the loop terminates.
+44           }
+45       }
+46
+47       if (!found)
+48       {
+49           queue.push(nextBoat);
+50       }
+51   }

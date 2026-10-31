@@ -1,0 +1,1341 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-C-2025-2500759-cc793619",
+  "problem_type": "C",
+  "year": "2025",
+  "source_sha256": "cc793619b90b5e27d4bc5c7e7734fcb6034952bcb7234988fdc0e43f0ea89d5c",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-C-Q254-001",
+      "page": 7,
+      "section": "3.1.2 LSTM: Trends Based on Time",
+      "family": "dual-channel LSTM with a home-advantage coefficient and a preparation window",
+      "purpose": "Turn a country's medal history and host status into a trend the later forest can use.",
+      "base_or_modification": "base",
+      "summary": "The home advantage of a country is the gap between its host gold count and its average, divided by the average. A binary marks the host year, and a preparation flag covers the eight years, two cycles, before that year. The input at each step stacks the gold count, the total, the host flag, the preparation flag, and the coefficient. One channel reads the medal sequence and the other the host features, each over the last three Games, and a fully connected layer fuses them. The loss splits a medal squared error, weighted 0.7, from a host log loss, weighted 0.3. The search turns the hidden size and the patience, and a weighted absolute error picks among 32 by 6, 64 by 8, and 128 by 10, settling on a hidden size of 128 and a patience of 10.",
+      "variables": [
+        {
+          "symbol": "alphac",
+          "normalized_name": "home advantage",
+          "unit": "1",
+          "definition": "Country c's home advantage, the host gold gap over the average.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Goldhost",
+          "normalized_name": "host gold",
+          "unit": "count",
+          "definition": "The gold count of country c in a host year.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Goldavg",
+          "normalized_name": "average gold",
+          "unit": "count",
+          "definition": "The average gold count of country c.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Hostt",
+          "normalized_name": "host flag",
+          "unit": "1",
+          "definition": "One if the country hosts in year t, else zero.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Prept",
+          "normalized_name": "preparation flag",
+          "unit": "1",
+          "definition": "One in the eight years up to the host year, else zero.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thost",
+          "normalized_name": "host year",
+          "unit": "year",
+          "definition": "The year the country hosts.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Goldt",
+          "normalized_name": "gold count",
+          "unit": "count",
+          "definition": "The gold count at step t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Totalt",
+          "normalized_name": "total medals",
+          "unit": "count",
+          "definition": "The total medal count at step t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xt",
+          "normalized_name": "input vector",
+          "unit": "1",
+          "definition": "The five features stacked at step t.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hmedal",
+          "normalized_name": "medal channel",
+          "unit": "1",
+          "definition": "The hidden state of the medal channel.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "hhost",
+          "normalized_name": "host channel",
+          "unit": "1",
+          "definition": "The hidden state of the host channel.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhat",
+          "normalized_name": "fused prediction",
+          "unit": "count",
+          "definition": "The fused prediction from the two channels.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nsteps",
+          "normalized_name": "lookback",
+          "unit": "1",
+          "definition": "The number of past Games read, fixed at 3.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "joint loss",
+          "unit": "1",
+          "definition": "The weighted sum of the medal loss and the host loss.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam1",
+          "normalized_name": "medal weight",
+          "unit": "1",
+          "definition": "The weight on the medal loss, set to 0.7.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam2",
+          "normalized_name": "host weight",
+          "unit": "1",
+          "definition": "The weight on the host loss, set to 0.3.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lmedal",
+          "normalized_name": "medal loss",
+          "unit": "1",
+          "definition": "The mean squared error on gold and on total medals.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lhost",
+          "normalized_name": "host loss",
+          "unit": "1",
+          "definition": "The log loss on the host flag.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi",
+          "normalized_name": "host probability",
+          "unit": "1",
+          "definition": "The predicted host probability, and the printed constant 0.1.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "WMAE",
+          "normalized_name": "weighted error",
+          "unit": "count",
+          "definition": "The weighted mean absolute error used to compare configurations.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wc",
+          "normalized_name": "country weight",
+          "unit": "1",
+          "definition": "The weight of country c's medals.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yc",
+          "normalized_name": "true count",
+          "unit": "count",
+          "definition": "The true gold or total count of country c.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhatc",
+          "normalized_name": "predicted count",
+          "unit": "count",
+          "definition": "The predicted gold or total count of country c.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Goldhost",
+        "Goldavg",
+        "Hostt",
+        "Goldt",
+        "Totalt",
+        "wc",
+        "yc"
+      ],
+      "outputs": [
+        "alphac",
+        "yhat",
+        "L",
+        "WMAE"
+      ],
+      "handoff_outputs": [
+        "yhat",
+        "alphac"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q254-001",
+          "page": 7,
+          "label": "(1)",
+          "source_expression": "alpha_c = (Gold_c^host - Gold_c^avg) / Gold_c^avg",
+          "normalized_latex": "\\alpha_c=(\\mathrm{Gold}_c^{\\mathrm{host}}-\\mathrm{Gold}_c^{\\mathrm{avg}})/\\mathrm{Gold}_c^{\\mathrm{avg}}",
+          "purpose": "The home advantage as a gap over the country's own average.",
+          "variable_symbols": [
+            "alphac",
+            "Goldhost",
+            "Goldavg"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-002",
+          "page": 7,
+          "label": "(2)",
+          "source_expression": "Prep_t = 1 if t is in [t_host - 8, t_host], else 0",
+          "normalized_latex": "\\mathrm{Prep}_t=1\\ [t\\in[t_{\\mathrm{host}}-8,t_{\\mathrm{host}}]]",
+          "purpose": "The preparation window of two Olympic cycles.",
+          "variable_symbols": [
+            "Prept",
+            "thost"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-003",
+          "page": 7,
+          "label": "(3)",
+          "source_expression": "x_t = [Gold_t, Total_t, Host_t, Prep_t, alpha_c]",
+          "normalized_latex": "x_t=[\\mathrm{Gold}_t,\\mathrm{Total}_t,\\mathrm{Host}_t,\\mathrm{Prep}_t,\\alpha_c]",
+          "purpose": "The five features stacked at one step.",
+          "variable_symbols": [
+            "xt",
+            "Goldt",
+            "Totalt",
+            "Hostt",
+            "Prept",
+            "alphac"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-004",
+          "page": 7,
+          "label": "(4)",
+          "source_expression": "h_medal = LSTM(Gold, Total); h_host = LSTM(Host, Prep, alpha); yhat = FC(h_medal, h_host)",
+          "normalized_latex": "h^{\\mathrm{medal}}=\\mathrm{LSTM}(\\mathrm{Gold},\\mathrm{Total});\\ \\hat{y}=\\mathrm{FC}(h^{\\mathrm{medal}},h^{\\mathrm{host}})",
+          "purpose": "The two channels and their fusion. The lookback is the last three Games.",
+          "variable_symbols": [
+            "hmedal",
+            "hhost",
+            "yhat",
+            "Goldt",
+            "Totalt",
+            "Hostt",
+            "Prept",
+            "alphac"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-005",
+          "page": 7,
+          "label": "(5)",
+          "source_expression": "L = 0.7 L_medal + 0.3 L_host",
+          "normalized_latex": "\\mathcal{L}=\\lambda_1\\mathcal{L}_{\\mathrm{medal}}+\\lambda_2\\mathcal{L}_{\\mathrm{host}}",
+          "purpose": "The joint loss. The medal term is a squared error and the host term is a log loss.",
+          "variable_symbols": [
+            "L",
+            "lam1",
+            "lam2",
+            "Lmedal",
+            "Lhost"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-006",
+          "page": 8,
+          "label": "(6)",
+          "source_expression": "WMAE = sum w_c |y_c - yhat_c| / sum w_c",
+          "normalized_latex": "\\mathrm{WMAE}=\\sum_c w_c|y_c-\\hat{y}_c|/\\sum_c w_c",
+          "purpose": "The weighted absolute error used to choose the hidden size.",
+          "variable_symbols": [
+            "WMAE",
+            "wc",
+            "yc",
+            "yhatc"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Six formulas are printed. The host probability is also set to 0.1 in the same line as the loss weights."
+      },
+      "objectives": [
+        "Give the later model a medal trend and a host feature for each country."
+      ],
+      "constraints": [
+        "The lookback is the last three Games.",
+        "The preparation window is eight years."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The home coefficient is estimated by regression and normalized. The loss weights are set to 0.7 and 0.3. The hidden size and the patience are chosen by the weighted error, ending at 128 and 10.",
+        "parameters": [
+          "lam1",
+          "lam2",
+          "nsteps",
+          "thost"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Estimate and normalize the home coefficient.",
+          "Mark the host year and the eight-year preparation window.",
+          "Run the medal channel and the host channel over the last three Games and fuse them.",
+          "Compare hidden sizes by the weighted absolute error and keep 128 with patience 10."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The configuration with the lower weighted absolute error is kept."
+      },
+      "assumptions": [
+        "Athletes compete in peak condition.",
+        "Past performance and the host advantage carry forward."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The loss weights, the lookback, and the chosen hidden size are printed. The regression that produces the home coefficient is not shown."
+      },
+      "validation_refs": [
+        "Figure 3: the weighted error against the hidden size and the patience.",
+        "Figure 4: the three configurations compared, with 128 by 10 kept."
+      ],
+      "computational_cost": "A grid over three hidden sizes and two patience values, on one medal series per country.",
+      "strengths": [
+        "The host feature and the medal series are given separate channels before they are fused."
+      ],
+      "limitations": [
+        "The same line sets a host probability to 0.1, which is not the predicted probability."
+      ],
+      "missing_details": [
+        "The regression used for the home coefficient, and the optimizer."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q254-002",
+      "page": 9,
+      "section": "3.1.3 XGBoost-Bootstrap Modeling",
+      "family": "gradient-boosted trees with a thousand bootstrap intervals",
+      "purpose": "Predict 2028 gold and total medals, and put a 95 percent interval on each.",
+      "base_or_modification": "modification",
+      "summary": "The reduced components and the trend become the inputs of two boosted-tree models, one for gold and one for the total. The objective adds a loss to a penalty on the trees, and the printed line detaches the sums. A 10-fold grid chooses the depth, the rounds, the step, and the penalty. Gold keeps a gamma of 0.5 and the total a gamma of 0.25; the subsample stays at 0.5 and is never moved. The fitted model is run 1,000 times, and the 95 percent interval is read off those runs. The United States, as host, is projected up, and France, the previous host, down.",
+      "variables": [
+        {
+          "symbol": "pc",
+          "normalized_name": "components",
+          "unit": "1",
+          "definition": "The five principal components of the weighted medal counts.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "trend",
+          "normalized_name": "medal trend",
+          "unit": "count",
+          "definition": "The trend handed on by the recurrent model.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "home",
+          "normalized_name": "home feature",
+          "unit": "1",
+          "definition": "The home-advantage feature for 2028.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gold",
+          "normalized_name": "gold forecast",
+          "unit": "count",
+          "definition": "The predicted gold count for a country in 2028.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "total",
+          "normalized_name": "total forecast",
+          "unit": "count",
+          "definition": "The predicted total medal count for a country in 2028.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ci",
+          "normalized_name": "interval",
+          "unit": "count",
+          "definition": "The 95 percent interval from the thousand resamples.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lobj",
+          "normalized_name": "tree objective",
+          "unit": "1",
+          "definition": "The loss plus the penalty on the trees.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yi",
+          "normalized_name": "observed",
+          "unit": "count",
+          "definition": "The observed medal count in the objective.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhati",
+          "normalized_name": "fitted",
+          "unit": "count",
+          "definition": "The fitted medal count in the objective.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "fk",
+          "normalized_name": "base tree",
+          "unit": "1",
+          "definition": "The k-th tree in the ensemble.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nrounds",
+          "normalized_name": "rounds",
+          "unit": "1",
+          "definition": "The number of boosting rounds, set to 75.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "maxdepth",
+          "normalized_name": "depth",
+          "unit": "1",
+          "definition": "The maximum tree depth, set to 2.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "step size",
+          "unit": "1",
+          "definition": "The learning rate, set to 0.1.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "split penalty",
+          "unit": "1",
+          "definition": "The minimum loss reduction, 0.5 for gold and 0.25 for the total.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "subsample",
+          "normalized_name": "row fraction",
+          "unit": "1",
+          "definition": "The row sample, held at 0.5.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "pc",
+        "trend",
+        "home",
+        "yi"
+      ],
+      "outputs": [
+        "gold",
+        "total",
+        "ci"
+      ],
+      "handoff_outputs": [
+        "gold",
+        "ci"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q254-007",
+          "page": 9,
+          "label": "(7)",
+          "source_expression": "L(theta) = sum l(y_i, yhat_i) + sum Omega(f_k)",
+          "normalized_latex": "L(\\theta)=\\sum_i l(y_i,\\hat{y}_i)+\\sum_k \\Omega(f_k)",
+          "purpose": "The boosted-tree objective. The printed sums are detached from the terms.",
+          "variable_symbols": [
+            "Lobj",
+            "yi",
+            "yhati",
+            "fk"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The objective is printed as equation 7. The sums and the penalty are detached across the line."
+      },
+      "objectives": [
+        "Predict 2028 gold and total medals and attach a 95 percent interval."
+      ],
+      "constraints": [
+        "The subsample is held at 0.5.",
+        "Gold and the total are fit separately."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "A 10-fold grid on RMSE chooses the rounds, the depth, the step, and the penalty. The gold penalty is 0.5 and the total penalty is 0.25. The row fraction stays at 0.5.",
+        "parameters": [
+          "nrounds",
+          "maxdepth",
+          "eta",
+          "gamma",
+          "subsample"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Take the five components, the trend, and the home feature as inputs.",
+          "Tune each target by a 10-fold grid on the root mean squared error.",
+          "Refit the chosen model 1,000 times and read the 95 percent interval."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The grid keeps the setting with the smallest root mean squared error."
+      },
+      "assumptions": [
+        "The five components keep 76.4 percent of the weighted medal variation."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "The chosen settings and the thousand repetitions are printed, and the intervals are tabulated for the top twenty."
+      },
+      "validation_refs": [
+        "Table 2: the 2028 gold and total forecasts with intervals and arrows.",
+        "Figure 6: the top twenty gold and total forecasts."
+      ],
+      "computational_cost": "Two 10-fold grids and one thousand refits of each chosen model.",
+      "strengths": [
+        "The second model is described by the one penalty that changed."
+      ],
+      "limitations": [
+        "Australia's gold point of 19 sits outside the printed interval of 10.41 to 16.13."
+      ],
+      "missing_details": [
+        "The column alignment of Table 2, which the footer scrambles."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q254-003",
+      "page": 12,
+      "section": "3.2 Breaking the Zero",
+      "family": "left-sided signed-rank test on the bootstrap gold draws",
+      "purpose": "Decide which countries with no 2024 gold can clear one gold in 2028.",
+      "base_or_modification": "base",
+      "summary": "The test is preferred because it assumes no distribution, and because turning the gold count into a yes or no would drop the size. For a country whose point forecast is at least one, the bootstrap draws are shifted by one and ranked, and a left-sided signed rank asks whether the center lies below one. A P-value above 0.05 is read as a favorable chance, not as proof. Only San Marino, at 0.847, and Kuwait, at 0.684, clear that line. The printed name of the test is Wlicoxon, and the variance formula is broken across the symbols.",
+      "variables": [
+        {
+          "symbol": "dij",
+          "normalized_name": "bootstrap draw",
+          "unit": "count",
+          "definition": "The i-th bootstrap gold prediction for country j.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "thetaj",
+          "normalized_name": "center",
+          "unit": "count",
+          "definition": "The symmetric center of country j's bootstrap draws.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yhatj",
+          "normalized_name": "point forecast",
+          "unit": "count",
+          "definition": "The final gold prediction for country j. The test is run when it is at least 1.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "wj",
+          "normalized_name": "signed rank",
+          "unit": "1",
+          "definition": "The signed rank sum after the shift by one.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nj",
+          "normalized_name": "sample size",
+          "unit": "1",
+          "definition": "The number of nonzero shifted draws for country j.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "muj",
+          "normalized_name": "null mean",
+          "unit": "1",
+          "definition": "The null mean of the signed rank sum.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigj",
+          "normalized_name": "null scale",
+          "unit": "1",
+          "definition": "The null scale of the signed rank sum.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pval",
+          "normalized_name": "p-value",
+          "unit": "1",
+          "definition": "The tail probability read against 0.05.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "dij",
+        "yhatj",
+        "nj"
+      ],
+      "outputs": [
+        "pval"
+      ],
+      "handoff_outputs": [
+        "pval"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q254-008",
+          "page": 12,
+          "label": null,
+          "source_expression": "H0: theta_j = 1 against H1: theta_j < 1",
+          "normalized_latex": "H_0:\\theta_j=1,\\ H_1:\\theta_j<1",
+          "purpose": "The left-sided hypothesis once the point forecast is at least one.",
+          "variable_symbols": [
+            "thetaj"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-C-Q254-009",
+          "page": 12,
+          "label": null,
+          "source_expression": "w_j = sum u_ij R_ij",
+          "normalized_latex": "w_j^{+}=\\sum_i u_{ij} R_{ij}^{+}",
+          "purpose": "The signed rank sum. The indicator and the star on the shifted draw are garbled.",
+          "variable_symbols": [
+            "wj",
+            "nj"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-C-Q254-010",
+          "page": 12,
+          "label": null,
+          "source_expression": "P = Phi( (w_j - mu_j) / sigma_j )",
+          "normalized_latex": "P=\\Phi((w_j^{+}-\\mu_j)/\\sigma_j)",
+          "purpose": "The tail probability. The printed line sets the normal scale beside the statistic rather than under it.",
+          "variable_symbols": [
+            "pval",
+            "wj",
+            "muj",
+            "sigj"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "The hypothesis, the rank sum, and the tail probability are printed. The variance formula is not recoverable from the line."
+      },
+      "objectives": [
+        "Name the countries whose gold forecast can clear one, with a probability."
+      ],
+      "constraints": [
+        "Only countries whose point forecast is at least one are tested.",
+        "The t-test and the binary classifier are declined."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated. The threshold is 0.05 and the shift is 1.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Keep countries with no 2024 gold whose 2028 point forecast is at least one.",
+          "Shift the thousand draws by one and build the signed rank sum.",
+          "Read a tail above 0.05 as a favorable chance."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A tail probability above 0.05 keeps the country."
+      },
+      "assumptions": [
+        "The draws need no distributional form.",
+        "A binary gold indicator would bias the result."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Table 3 prints the rank sum, the tail, and the point for eight countries, and two of them clear 0.05."
+      },
+      "validation_refs": [
+        "Table 3: eight countries, with San Marino at 0.847 and Kuwait at 0.684.",
+        "Figure 7: the violin of the Kuwait draws, mostly between 1 and 2."
+      ],
+      "computational_cost": "One signed-rank test on the thousand draws of each of eight countries.",
+      "strengths": [
+        "The two refused methods are named before the test is used."
+      ],
+      "limitations": [
+        "The printed reading treats a larger tail as a higher chance of the breakthrough, which reverses the usual error."
+      ],
+      "missing_details": [
+        "The variance formula, which the line does not yield."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q254-004",
+      "page": 14,
+      "section": "3.3.1 Spearman: A Mathematical Analysis",
+      "family": "rank correlation of a sport's weight with the medal counts",
+      "purpose": "Drop the sports whose rank correlation with the medals is not distinguishable from none.",
+      "base_or_modification": "base",
+      "summary": "The rank correlation is preferred to the linear one because it needs no normal form and is less moved by outliers. The coefficient is the usual centered product of ranks, and the printed fraction is split across the line. A t statistic on n minus 2 is judged at 0.05. Wrestling, beach volleyball, handball, trampoline, and cycling fail and are set aside. Swimming, athletics, and shooting stay, and the new sports correlate more with the total than with the gold.",
+      "variables": [
+        {
+          "symbol": "xi",
+          "normalized_name": "sport weight",
+          "unit": "1",
+          "definition": "The weighted medal value of a sport.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "yi",
+          "normalized_name": "medal count",
+          "unit": "count",
+          "definition": "The gold or total medal count of a country.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "rank correlation",
+          "unit": "1",
+          "definition": "The Spearman correlation of the two ranks.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nobs",
+          "normalized_name": "pairs",
+          "unit": "1",
+          "definition": "The number of country pairs in the correlation.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tstat",
+          "normalized_name": "t statistic",
+          "unit": "1",
+          "definition": "The statistic referred to a t with n minus 2 degrees.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "xi",
+        "yi",
+        "nobs"
+      ],
+      "outputs": [
+        "rho"
+      ],
+      "handoff_outputs": [
+        "rho"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q254-011",
+          "page": 14,
+          "label": "(8)",
+          "source_expression": "rho = sum (R(x_i)-R(x))(R(y_i)-R(y)) / sqrt(sum (R(x_i)-R(x))^2 sum (R(y_i)-R(y))^2)",
+          "normalized_latex": "\\rho=\\sum_i (R(x_i)-\\bar{R}_x)(R(y_i)-\\bar{R}_y)/\\sqrt{\\sum_i(R(x_i)-\\bar{R}_x)^2\\sum_i(R(y_i)-\\bar{R}_y)^2}",
+          "purpose": "The rank correlation. The printed numerator and the two square roots are split across the line.",
+          "variable_symbols": [
+            "rho",
+            "xi",
+            "yi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equation 8 prints the rank correlation. The fraction is broken across the line, so the confidence stays low."
+      },
+      "objectives": [
+        "Keep the sports whose medal correlation is not zero at the 5 percent level."
+      ],
+      "constraints": [
+        "The test is at 0.05.",
+        "Pearson is declined because it needs a normal form."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated. The level is 0.05.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Rank the sport weights and the medal counts.",
+          "Test each correlation against zero at the 5 percent level.",
+          "Set aside the sports that fail."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A sport is kept when its correlation rejects zero at 0.05."
+      },
+      "assumptions": [
+        "A rank correlation needs no normal form."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The kept and dropped sports are named. The coefficients themselves are left on the heatmap."
+      },
+      "validation_refs": [
+        "Figure 8: the heatmap of sport against gold and against the total."
+      ],
+      "computational_cost": "One rank correlation per sport against gold and against the total.",
+      "strengths": [
+        "The rival coefficient is named, with the two limits that disqualify it."
+      ],
+      "limitations": [
+        "The new sports are given two correlations, 0.210 and 0.496, that the text does not attach to a named sport without ambiguity."
+      ],
+      "missing_details": [
+        "The numeric matrix behind Figure 8."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q254-005",
+      "page": 18,
+      "section": "4.1 DID Modeling",
+      "family": "difference-in-differences for a coaching change",
+      "purpose": "Estimate the extra medals that follow a coaching change, and test the parallel-trends claim.",
+      "base_or_modification": "base",
+      "summary": "Coaches move more than athletes, so a coaching change is treated as the intervention. The medal count is a baseline, a treatment gap, a common shift after 2020, and the extra shift for the treated, plus controls. The parallel-trends constraint is written into the same display, and the paper says the results may be biased if it fails. Ordinary least squares fits the coefficients. Five country-sport pairs have intervals that exclude zero and tails below 0.05: Japanese judo at 6.0, Italian athletics at 5.0, Australian swimming at 5.0, South Korean archery at 4.0, and Polish athletics at 4.0. Five further positive pairs fail. Japan is the worked parallel-trends case. The named coaches are Rennie Taylor, Lee Changhoon, and Adam Kszczot.",
+      "variables": [
+        {
+          "symbol": "Medals",
+          "normalized_name": "medal count",
+          "unit": "count",
+          "definition": "The medal count of country-sport i at time t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b0",
+          "normalized_name": "baseline",
+          "unit": "count",
+          "definition": "The control group's baseline medal count.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b1",
+          "normalized_name": "treatment gap",
+          "unit": "count",
+          "definition": "The gap between treatment and control.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b2",
+          "normalized_name": "common shift",
+          "unit": "count",
+          "definition": "The shift in medal counts from 2020 to 2024.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b3",
+          "normalized_name": "contribution",
+          "unit": "count",
+          "definition": "The extra medals attributed to the coaching change.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Treat",
+          "normalized_name": "treatment",
+          "unit": "1",
+          "definition": "One if the country-sport changed coach, else zero.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Post",
+          "normalized_name": "post period",
+          "unit": "1",
+          "definition": "One if the year is 2024, else zero.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gcoef",
+          "normalized_name": "control slope",
+          "unit": "1",
+          "definition": "The coefficient on the control variables.",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xit",
+          "normalized_name": "controls",
+          "unit": "1",
+          "definition": "The control variables for country-sport i at time t.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "error",
+          "unit": "count",
+          "definition": "The residual, assumed unrelated to the treatment and the period.",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Medals",
+        "Treat",
+        "Post",
+        "Xit"
+      ],
+      "outputs": [
+        "b3"
+      ],
+      "handoff_outputs": [
+        "b3"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-C-Q254-012",
+          "page": 18,
+          "label": "(9)",
+          "source_expression": "Medals_it = b0 + b1 Treat_i + b2 Post_t + b3 Treat_i Post_t + gamma X_it + eps_it",
+          "normalized_latex": "\\mathrm{Medals}_{it}=\\beta_0+\\beta_1\\mathrm{Treat}_i+\\beta_2\\mathrm{Post}_t+\\beta_3(\\mathrm{Treat}_i\\cdot\\mathrm{Post}_t)+\\gamma X_{it}+\\epsilon_{it}",
+          "purpose": "The coaching-change contrast. The same display also writes the parallel-trends constraint.",
+          "variable_symbols": [
+            "Medals",
+            "b0",
+            "b1",
+            "b2",
+            "b3",
+            "Treat",
+            "Post",
+            "gcoef",
+            "Xit",
+            "eps"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equation 9 prints the medal equation and the parallel-trends constraint together. The constraint is not given its own number."
+      },
+      "objectives": [
+        "Estimate the extra medals from a coaching change and name the sports that pass."
+      ],
+      "constraints": [
+        "The treated and the controls must share a trend before the change.",
+        "An interval that includes zero fails."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The pre-change medal trend is the baseline the parallel-trends test checks."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Ordinary least squares estimates the four coefficients and the control slope. The contribution is then judged by its tail and by whether the interval includes zero.",
+        "parameters": [
+          "b0",
+          "b1",
+          "b2",
+          "b3",
+          "gcoef"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Fit the medal equation by ordinary least squares.",
+          "Test the contribution coefficient and drop pairs whose interval includes zero.",
+          "Check the pre-change trend on Japan and name the coaches for the pairs that pass."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "A pair is kept when the interval excludes zero and the tail is below 0.05."
+      },
+      "assumptions": [
+        "The coaching effect is linear.",
+        "The treated and the controls trend together before the change."
+      ],
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "analysis": "Table 4 prints the contribution, the tail, and the interval for ten country-sport pairs."
+      },
+      "validation_refs": [
+        "Table 4: ten contributions, five of which exclude zero.",
+        "Figure 15: Japan's medal counts from 1996 to 2016, read as passing the parallel-trends test."
+      ],
+      "computational_cost": "One least-squares fit and one pre-trend plot.",
+      "strengths": [
+        "The assumption is stated with the threat: otherwise the results may be biased."
+      ],
+      "limitations": [
+        "The summary names three countries and the table's passing set names five."
+      ],
+      "missing_details": [
+        "The control variables inside X, and the standard errors apart from the intervals."
+      ]
+    },
+    {
+      "model_id": "MU-C-Q254-006",
+      "page": 14,
+      "section": "3.3.2 SHAP: Revealing Correlations and Importance",
+      "family": "additive feature attribution on the boosted trees",
+      "purpose": "Rank the sports by how much they move the medal forecast, and by which way.",
+      "base_or_modification": "paper-specific",
+      "summary": "The tool is introduced as a way to give each feature a contribution and a direction. No formula is printed. On the gold model the first component carries 0.8345 of the importance and the second 0.1055; on the total model the first carries 0.6242 and the fifth 0.3024. Loadings are then weighted by that importance and normalized. Shooting and gymnastics lead both rankings. Force plots for the United States and for France separate the traditional sports from the host effect, and France's host component is given as 2.89.",
+      "variables": [
+        {
+          "symbol": "feat",
+          "normalized_name": "component",
+          "unit": "1",
+          "definition": "A principal component passed to the attribution.",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "shap",
+          "normalized_name": "attribution",
+          "unit": "1",
+          "definition": "The contribution of a component to one forecast, with its sign.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "imp",
+          "normalized_name": "importance",
+          "unit": "1",
+          "definition": "The normalized importance of a sport after weighting by the component.",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "feat"
+      ],
+      "outputs": [
+        "shap",
+        "imp"
+      ],
+      "handoff_outputs": [
+        "imp"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The contribution and its sign are described. No attribution formula is printed."
+      },
+      "objectives": [
+        "Name the sports that move the forecast most, and the direction."
+      ],
+      "constraints": [
+        "The sign of a contribution is part of the result, not only the size."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "No initial state is stated."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is stated."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium condition is stated."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "No parameter is estimated. The importances are computed on the training set of the already tuned trees.",
+        "parameters": []
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute the contribution of each component on the training set.",
+          "Weight the sport loadings by the component importance and normalize.",
+          "Read one country's force plot for the direction."
+        ],
+        "software": [
+          "not stated"
+        ],
+        "convergence_criteria": "The component with the largest share of importance is reported first."
+      },
+      "assumptions": [
+        "A contribution has a direction as well as a size."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The leading shares are printed. The attribution formula is not."
+      },
+      "validation_refs": [
+        "Figure 9: the mixed importance plot of the five components.",
+        "Figure 10: the top fifteen sports.",
+        "Figures 12 and 13: the force plots for the United States and for France."
+      ],
+      "computational_cost": "One attribution pass on the training set of each target.",
+      "strengths": [
+        "The size and the sign are asked for together."
+      ],
+      "limitations": [
+        "France's force plot is discussed through a host contribution of 2.89 that is not in a table."
+      ],
+      "missing_details": [
+        "The attribution formula."
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-C-Q254-001",
+      "to_model_id": "MU-C-Q254-002",
+      "handoff": "The fused trend and the home coefficient become inputs of the boosted trees."
+    },
+    {
+      "from_model_id": "MU-C-Q254-002",
+      "to_model_id": "MU-C-Q254-003",
+      "handoff": "The thousand gold draws, for countries whose point forecast is at least one, enter the signed-rank test."
+    },
+    {
+      "from_model_id": "MU-C-Q254-002",
+      "to_model_id": "MU-C-Q254-006",
+      "handoff": "The tuned trees are the model whose feature contributions are read."
+    },
+    {
+      "from_model_id": "MU-C-Q254-004",
+      "to_model_id": "MU-C-Q254-006",
+      "handoff": "Sports whose rank correlation fails are set aside before the importance is read."
+    }
+  ]
+}

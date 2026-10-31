@@ -1,0 +1,918 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2024-2409949-da56f15f",
+  "problem_type": "F",
+  "year": "2024",
+  "source_sha256": "da56f15f2a9c5058b3ef5b2ac2b5dc248db5e3862274de43eab5a0185c90a88b",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2024-2409949-EWM",
+      "section": "Client Assessment Model (EWM + TOPSIS)",
+      "family": "index-construction",
+      "summary": "Three-level indicator system with EWM weights and TOPSIS normalization to score 7 international organizations for client fitness.",
+      "computational_cost": "not-stated",
+      "purpose": "Evaluate and rank IOs for project client selection based on organizational/communication/special influence.",
+      "base_or_modification": "modification",
+      "page": 11,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "S_io"
+      ],
+      "handoff_outputs": [
+        "S_io"
+      ],
+      "objectives": [
+        "Select highest-scoring IO as project client."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "various",
+          "definition": "Raw indicator value for IO i, indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_ij",
+          "normalized_name": "normalized_value",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Normalized indicator value",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p_ij",
+          "normalized_name": "proportion",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Proportion of indicator i in sample j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "e_j",
+          "normalized_name": "entropy_value",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Entropy value of indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w_j",
+          "normalized_name": "weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of indicator j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S_io",
+          "normalized_name": "capability_fitness_score",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Capability and fitness score 0-100",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2409949-EWM-1",
+          "equation_label": "Vector normalization",
+          "equation_text": "y_ij = x_ij / sqrt(sum(x_ij^2))",
+          "source_expression": "y_ij = x_ij / sqrt(sum(x_ij^2))",
+          "normalized_latex": "y_{ij} = \\frac{x_{ij}}{\\sqrt{\\sum x_{ij}^2}}",
+          "purpose": "Normalize indicators",
+          "variable_symbols": [
+            "x_ij",
+            "y_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-EWM-2",
+          "equation_label": "Proportion",
+          "equation_text": "p_ij = y_ij / sum(y_ij)",
+          "source_expression": "p_ij = y_ij / sum(y_ij)",
+          "normalized_latex": "p_{ij} = \\frac{y_{ij}}{\\sum_{i=1}^{n} y_{ij}}",
+          "purpose": "Calculate proportion of indicator",
+          "variable_symbols": [
+            "y_ij",
+            "p_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-EWM-3",
+          "equation_label": "Entropy value",
+          "equation_text": "e_j = -(1/ln(n)) * sum(p_ij * ln(p_ij))",
+          "source_expression": "e_j = -(1/ln(n)) * sum(p_ij * ln(p_ij))",
+          "normalized_latex": "e_j = -\\frac{1}{\\ln n} \\sum_{i=1}^{n} p_{ij} \\ln p_{ij}",
+          "purpose": "Calculate entropy of indicator",
+          "variable_symbols": [
+            "p_ij",
+            "e_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-EWM-4",
+          "equation_label": "Weight",
+          "equation_text": "w_j = (1 - e_j) / sum(1 - e_j)",
+          "source_expression": "w_j = (1 - e_j) / sum(1 - e_j)",
+          "normalized_latex": "w_j = \\frac{1 - e_j}{\\sum_{j=1}^{m}(1 - e_j)}",
+          "purpose": "Derive weight from entropy",
+          "variable_symbols": [
+            "e_j",
+            "w_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-EWM-5",
+          "equation_label": "Score",
+          "equation_text": "S_io = 100 * sum(w_primary * TOPSIS_score)",
+          "source_expression": "S_io = 100 * sum(w_primary * TOPSIS_score)",
+          "normalized_latex": "S_{IO} = 100 \\times \\sum w_{primary} \\times TOPSIS\\_score",
+          "purpose": "Compute final 0-100 score",
+          "variable_symbols": [
+            "w_j",
+            "S_io"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 11,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Index construction."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "EWM from collected IO data + TOPSIS normalization",
+        "parameters": [
+          "w_j",
+          "e_j"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize, compute entropy, derive weights, TOPSIS, score",
+        "status": "implemented",
+        "steps": [
+          "Normalize indicators",
+          "Compute proportions",
+          "Calculate entropy",
+          "Derive weights",
+          "TOPSIS normalization",
+          "Weighted score"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Deterministic."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "All parameters from data."
+        ],
+        "analysis": "Deterministic computation."
+      },
+      "constraints": [
+        "All indicators are benefit attributes."
+      ],
+      "validation_refs": [
+        "Figure 8 indicator weights",
+        "Appendix weights table"
+      ],
+      "strengths": [
+        "Three-level indicator hierarchy",
+        "Data-driven EWM weights"
+      ],
+      "limitations": [
+        "Only 7 IOs evaluated"
+      ],
+      "missing_details": [
+        "TOPSIS normalization details abbreviated"
+      ],
+      "assumptions": [
+        "All indicators are benefit attributes (bigger is better)"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2409949-GRA",
+      "section": "Grey Relational Analysis",
+      "family": "grey-system",
+      "summary": "GRA to rank species/products by correlation degree with total SEA wildlife trafficking volume.",
+      "computational_cost": "not-stated",
+      "purpose": "Identify most crucial species in SEA IWT to justify tiger-focused project.",
+      "base_or_modification": "base",
+      "page": 13,
+      "inputs": [
+        "x_ij"
+      ],
+      "outputs": [
+        "r_j"
+      ],
+      "handoff_outputs": [
+        "r_j"
+      ],
+      "objectives": [
+        "Rank species by grey relational degree with total trafficking."
+      ],
+      "variables": [
+        {
+          "symbol": "x_ij",
+          "normalized_name": "trafficking_value",
+          "role": "input",
+          "unit": "count",
+          "definition": "Annual trafficking data for species j in year i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y_i",
+          "normalized_name": "reference_sequence",
+          "role": "input",
+          "unit": "count",
+          "definition": "Total SEA trafficking by year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xi_ij",
+          "normalized_name": "correlation_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Grey correlation coefficient",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "resolution_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Resolution coefficient",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "r_j",
+          "normalized_name": "correlation_degree",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Grey relational degree for species j",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2409949-GRA-1",
+          "equation_label": "Dimensionless processing",
+          "equation_text": "x_ij_prime = x_ij / x_i1",
+          "source_expression": "x_ij_prime = x_ij / x_i1",
+          "normalized_latex": "x'_{ij} = \\frac{x_{ij}}{x_{i1}}",
+          "purpose": "Normalize trafficking data",
+          "variable_symbols": [
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-GRA-2",
+          "equation_label": "Correlation coefficient",
+          "equation_text": "xi_ij = (min_delta + rho*max_delta) / (delta_ij + rho*max_delta)",
+          "source_expression": "xi_ij = (min_delta + rho*max_delta) / (delta_ij + rho*max_delta)",
+          "normalized_latex": "\\xi_{ij} = \\frac{\\Delta_{min} + \\rho \\Delta_{max}}{\\Delta_{ij} + \\rho \\Delta_{max}}",
+          "purpose": "Compute grey correlation coefficient",
+          "variable_symbols": [
+            "xi_ij",
+            "rho",
+            "x_ij"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-GRA-3",
+          "equation_label": "Correlation degree",
+          "equation_text": "r_j = (1/n) * sum(xi_ij)",
+          "source_expression": "r_j = (1/n) * sum(xi_ij)",
+          "normalized_latex": "r_j = \\frac{1}{n} \\sum_{i=1}^{n} \\xi_{ij}",
+          "purpose": "Average correlation coefficient",
+          "variable_symbols": [
+            "xi_ij",
+            "r_j"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "UNODC SEA trafficking data."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Grey system analysis."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Grey system analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Standard GRA with resolution coefficient",
+        "parameters": [
+          "rho"
+        ]
+      },
+      "algorithm": {
+        "description": "Dimensionless processing, correlation coefficients, average to degree",
+        "status": "implemented",
+        "steps": [
+          "Normalize sequences",
+          "Compute delta matrix",
+          "Calculate correlation coefficients",
+          "Average to correlation degree"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Deterministic."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Deterministic computation."
+        ],
+        "analysis": "Standard GRA."
+      },
+      "constraints": [
+        "Data completeness required."
+      ],
+      "validation_refs": [
+        "Figure 10 correlation degree sequence"
+      ],
+      "strengths": [
+        "Handles uncertain/incomplete data well",
+        "Ranks species objectively"
+      ],
+      "limitations": [
+        "Resolution coefficient selection is subjective"
+      ],
+      "missing_details": [
+        "Exact resolution coefficient value not stated"
+      ],
+      "assumptions": [
+        "Annual trafficking data is representative"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2409949-OEUM",
+      "section": "Optimal Expected Utility Model",
+      "family": "game-theory",
+      "summary": "Expected utility maximization under uncertainty to prove cross-organization cooperation (higher detection rate) reduces ITT investment.",
+      "computational_cost": "not-stated",
+      "purpose": "Mathematically prove that raising detection rate via WWF-Interpol cooperation reduces illegal trade.",
+      "base_or_modification": "paper-specific",
+      "page": 15,
+      "inputs": [
+        "Z"
+      ],
+      "outputs": [
+        "y_star"
+      ],
+      "handoff_outputs": [
+        "y_star"
+      ],
+      "objectives": [
+        "Show dy*/d(alpha) < 0: higher detection rate reduces ITT capital allocation."
+      ],
+      "variables": [
+        {
+          "symbol": "Z",
+          "normalized_name": "total_capital",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Total investment capital of individual",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "X",
+          "normalized_name": "legal_investment",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Capital allocated to legal activities",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Y",
+          "normalized_name": "itt_investment",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Capital allocated to illegal tiger trade",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "detection_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability of detection and punishment",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "U_l",
+          "normalized_name": "legal_utility",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Utility function for legal activities",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "U_i",
+          "normalized_name": "itt_utility",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Utility function for ITT activities",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "penalty_cost",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Cost function for penalty if detected",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_star",
+          "normalized_name": "optimal_itt",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Optimal ITT investment level",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2409949-OEUM-1",
+          "equation_label": "Expected utility",
+          "equation_text": "EU = U_l(X) + (1-alpha)*U_i(Y) - alpha*C(Y)",
+          "source_expression": "EU = U_l(X) + (1-alpha)*U_i(Y) - alpha*C(Y)",
+          "normalized_latex": "EU = U_l(X) + (1-\\alpha)U_i(Y) - \\alpha C(Y)",
+          "purpose": "Expected utility with detection risk",
+          "variable_symbols": [
+            "Z",
+            "U_l",
+            "U_i",
+            "alpha",
+            "C"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-OEUM-2",
+          "equation_label": "Lagrange FOC",
+          "equation_text": "dU_l/dX = (1-alpha)*dU_i/dY - alpha*dC/dY",
+          "source_expression": "dU_l/dX = (1-alpha)*dU_i/dY - alpha*dC/dY",
+          "normalized_latex": "U_l'(X) = (1-\\alpha)U_i'(Y) - \\alpha C'(Y)",
+          "purpose": "First-order conditions from Lagrangian",
+          "variable_symbols": [
+            "U_l",
+            "U_i",
+            "alpha",
+            "C"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-OEUM-3",
+          "equation_label": "Detection rate effect",
+          "equation_text": "dy*/d(alpha) < 0",
+          "source_expression": "dy*/d(alpha) < 0",
+          "normalized_latex": "\\frac{dy^*}{d\\alpha} < 0",
+          "purpose": "Higher detection rate reduces ITT allocation",
+          "variable_symbols": [
+            "y_star",
+            "alpha"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Individual has total capital Z, X+Y=Z."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "X+Y=Z constraint, X>=0, Y>=0."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "FOC equilibrium from Lagrangian."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Theoretical model; paper gives no empirical parameter estimation",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Lagrangian optimization with FOC analysis",
+        "status": "implemented",
+        "steps": [
+          "Define utility and cost functions",
+          "Form Lagrangian",
+          "Compute FOCs",
+          "Analyze dy*/d(alpha) sign"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "Analytical solution."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Analytical proof via concavity assumptions."
+        ],
+        "analysis": "Sign analysis of derivative."
+      },
+      "constraints": [
+        "X + Y = Z",
+        "Utility functions increasing and concave",
+        "Penalty cost increasing and concave"
+      ],
+      "validation_refs": ["Analytical sign proof on pages 15-16: dy*/d(alpha) < 0"],
+      "strengths": [
+        "Rigorous mathematical proof of cooperation benefit",
+        "Clean economic intuition"
+      ],
+      "limitations": [
+        "Theoretical model without empirical calibration"
+      ],
+      "missing_details": [
+        "Specific functional forms not given"
+      ],
+      "assumptions": [
+        "Rational individuals maximize expected utility",
+        "Detection means total loss of ITT payoff plus penalty"
+      ]
+    },
+    {
+      "model_id": "MU-F-2024-2409949-RR",
+      "section": "Ridge Regression Model",
+      "family": "regression",
+      "summary": "Ridge regression with lambda=0.022 on 4 OVIs to predict illegal tiger trade, addressing multicollinearity from initial MLR (VIF>10).",
+      "computational_cost": "not-stated",
+      "purpose": "Measure correlation between project OVIs and illegal tiger trade volume, predict 5-year impact.",
+      "base_or_modification": "base",
+      "page": 17,
+      "inputs": [
+        "x_k"
+      ],
+      "outputs": [
+        "y_hat"
+      ],
+      "handoff_outputs": [
+        "y_hat"
+      ],
+      "objectives": [
+        "Predict illegal tiger trade numbers under project intervention."
+      ],
+      "variables": [
+        {
+          "symbol": "x_k",
+          "normalized_name": "explanatory_variable",
+          "role": "input",
+          "unit": "various",
+          "definition": "OVI explanatory variables (search volume, employment rate, protected areas, detection rate)",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y_hat",
+          "normalized_name": "predicted_itt",
+          "role": "output",
+          "unit": "count",
+          "definition": "Predicted number of tigers in IWT",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta_k",
+          "normalized_name": "ridge_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ridge regression coefficient for variable k",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lambda_r",
+          "normalized_name": "regularization_param",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ridge regularization parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2024-2409949-RR-1",
+          "equation_label": "Ridge regression",
+          "equation_text": "beta_ridge = (XtX + lambda*I)^-1 * XtY",
+          "source_expression": "beta_ridge = (XtX + lambda*I)^-1 * XtY",
+          "normalized_latex": "\\hat{\\beta}_{ridge} = (X^TX + \\lambda I)^{-1} X^T Y",
+          "purpose": "Ridge regression with L2 penalty",
+          "variable_symbols": [
+            "x_k",
+            "y_hat",
+            "beta_k",
+            "lambda_r"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2024-2409949-RR-2",
+          "equation_label": "Prediction equation",
+          "equation_text": "y_hat = 319.466 - 0.003*x1 - 4.417*x2 - 0.183*x3 - 0.488*x4",
+          "source_expression": "y_hat = 319.466 - 0.003*x1 - 4.417*x2 - 0.183*x3 - 0.488*x4",
+          "normalized_latex": "\\hat{y} = 319.466 - 0.003x_1 - 4.417x_2 - 0.183x_3 - 0.488x_4",
+          "purpose": "Fitted ridge regression equation",
+          "variable_symbols": [
+            "x_k",
+            "y_hat",
+            "beta_k"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "high",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations present.",
+        "reason": "Explicitly stated."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "7 years of annual data."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "Regression model."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "Regression model."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Ridge trace for lambda selection (0.022), then ridge regression",
+        "parameters": [
+          "lambda_r",
+          "beta_k"
+        ]
+      },
+      "algorithm": {
+        "description": "VIF check -> ridge trace -> select lambda -> ridge regression",
+        "status": "implemented",
+        "steps": [
+          "Initial MLR with VIF check",
+          "Identify multicollinearity (VIF>10)",
+          "Draw ridge trace",
+          "Select lambda=0.022",
+          "Compute ridge coefficients",
+          "Predict"
+        ],
+        "software": [
+          "Not specified"
+        ],
+        "convergence_criteria": "R2=0.991, F=54.485, P=0.018."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "R2=0.991, F=54.485."
+        ],
+        "analysis": "Strong predictive performance after regularization."
+      },
+      "constraints": [
+        "n=7 annual observations",
+        "lambda=0.022 from ridge trace"
+      ],
+      "validation_refs": [
+        "Table 7 ridge results",
+        "Figure 11 ridge trace",
+        "Figure 12 testing results"
+      ],
+      "strengths": [
+        "Addresses multicollinearity explicitly",
+        "High R2=0.991"
+      ],
+      "limitations": [
+        "Only 7 data points",
+        "Small sample relative to 4 variables"
+      ],
+      "missing_details": [
+        "Exact data years not fully specified"
+      ],
+      "assumptions": [
+        "Linear relationship between OVIs and tiger trade",
+        "OVI changes follow expected project improvements"
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2024-2409949-EWM-1",
+      "model_id": "MU-F-2024-2409949-EWM",
+      "page": 11,
+      "source_expression": "y_ij = x_ij / sqrt(sum(x_ij^2))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-EWM-2",
+      "model_id": "MU-F-2024-2409949-EWM",
+      "page": 11,
+      "source_expression": "p_ij = y_ij / sum(y_ij)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-EWM-3",
+      "model_id": "MU-F-2024-2409949-EWM",
+      "page": 11,
+      "source_expression": "e_j = -(1/ln(n)) * sum(p_ij * ln(p_ij))"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-EWM-4",
+      "model_id": "MU-F-2024-2409949-EWM",
+      "page": 11,
+      "source_expression": "w_j = (1 - e_j) / sum(1 - e_j)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-EWM-5",
+      "model_id": "MU-F-2024-2409949-EWM",
+      "page": 11,
+      "source_expression": "S_io = 100 * sum(w_primary * TOPSIS_score)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-GRA-1",
+      "model_id": "MU-F-2024-2409949-GRA",
+      "page": 13,
+      "source_expression": "x_ij_prime = x_ij / x_i1"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-GRA-2",
+      "model_id": "MU-F-2024-2409949-GRA",
+      "page": 13,
+      "source_expression": "xi_ij = (min_delta + rho*max_delta) / (delta_ij + rho*max_delta)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-GRA-3",
+      "model_id": "MU-F-2024-2409949-GRA",
+      "page": 13,
+      "source_expression": "r_j = (1/n) * sum(xi_ij)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-OEUM-1",
+      "model_id": "MU-F-2024-2409949-OEUM",
+      "page": 15,
+      "source_expression": "EU = U_l(X) + (1-alpha)*U_i(Y) - alpha*C(Y)"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-OEUM-2",
+      "model_id": "MU-F-2024-2409949-OEUM",
+      "page": 16,
+      "source_expression": "dU_l/dX = (1-alpha)*dU_i/dY - alpha*dC/dY"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-OEUM-3",
+      "model_id": "MU-F-2024-2409949-OEUM",
+      "page": 16,
+      "source_expression": "dy*/d(alpha) < 0"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-RR-1",
+      "model_id": "MU-F-2024-2409949-RR",
+      "page": 17,
+      "source_expression": "beta_ridge = (XtX + lambda*I)^-1 * XtY"
+    },
+    {
+      "equation_id": "EQ-F-2024-2409949-RR-2",
+      "model_id": "MU-F-2024-2409949-RR",
+      "page": 18,
+      "source_expression": "y_hat = 319.466 - 0.003*x1 - 4.417*x2 - 0.183*x3 - 0.488*x4"
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2024-2409949-EWM",
+      "to_model_id": "MU-F-2024-2409949-GRA",
+      "handoff": "Client selection (WWF) feeds into GRA justification for tiger focus"
+    },
+    {
+      "from_model_id": "MU-F-2024-2409949-OEUM",
+      "to_model_id": "MU-F-2024-2409949-RR",
+      "handoff": "Cooperation benefit (detection rate) feeds into regression as explanatory variable"
+    }
+  ]
+}

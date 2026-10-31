@@ -1,0 +1,41 @@
+Team#29911                                                                                                           Page 40 of 40
+
+
+}
+int main()
+{
+    srand(time(0));
+    FILE *fin = fopen("coef.prn", "r");
+    FILE *fout = fopen("log.csv", "a");
+    if (fin == NULL || fout == NULL) return -1;
+    int sum=0;
+    double den=0;
+    fgets((char *)buf, 10000, fin);
+    while(1){
+         if(fscanf(fin, "%d %d %lf %lf %lf %lf %d %d %d %d %s",
+                &L, &T, &den, &Pd, &Pc, &Pv, &Vmax0, &Vmax1, &VISUALIZE, &RULE, VPATH)!=11){
+                break;
+         }
+         fprintf(fout, "%d, %d, %lf, %lf, %lf, %lf, %d, %d, %d, ",
+                             L, T, den, Pd, Pc, Pv, Vmax0, Vmax1, RULE);
+         vector<double> q[2], AlphaS, EC;
+         int REP = VISUALIZE?2:20;
+         for(int i=0; i<REP; i++){
+                gen("lane0.csv", L, den, Vmax0, Vmax1, Pv);
+                gen("lane1.csv", L, den, Vmax0, Vmax1, Pv);
+                gao();
+                q[0].push_back(cnt[0]*1.0/T);
+                q[1].push_back(cnt[1]*1.0/T);
+                AlphaS.push_back(AlphaSafety);
+                ECost /= cnt[0]+cnt[1];
+                EC.push_back(ECost);
+                printf("%d/%d RULE=%d Den=%.3lf Q0=%.3lf Q1=%.3lf AS=%.3lf EC=%.3lf\n", i+1, REP, RULE, den,
+q[0].back(), q[1].back(), AlphaS.back(), EC.back());
+         }
+         pair<double, double> t0 = stat(q[0]), t1 = stat(q[1]), t2 = stat(AlphaS), t3 = stat(EC);
+         fprintf(fout, "%.5lf, %.5lf, %.5lf, %.5lf, %.5lf, %.5lf, %.5lf, %.5lf\n", t0.first, t0.second, t1.first, t1.second, t2.first,
+t2.second, t3.first, t3.second);
+    }
+    fclose(fout);
+    fclose(fin);
+}

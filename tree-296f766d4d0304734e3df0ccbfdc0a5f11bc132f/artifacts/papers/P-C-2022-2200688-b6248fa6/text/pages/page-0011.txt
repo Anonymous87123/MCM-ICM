@@ -1,0 +1,47 @@
+Team 2200688                                                                                    Page 11
+
+
+4.2.2    Decision-making method based on adaptive price forecasts for the next N days
+Previously, we used the X-Prophet model to make effective forecasts of future price changes based on
+previous data. We take the data for the next N days as the basis for the current decision. In our model,
+N is an adaptive parameter with an initial value set to 15. The meaning of N is that we need to look
+at the trend changes for the next N days when making decisions for the current day. If N is too small,
+too little future forecast data will be selected and the best time to buy and sell will not be found more
+accurately; if N is too large, too much future forecast data will be selected and the accuracy of the
+forecast data values further away from the current day will be lower, again affecting the accuracy of the
+decision. During the working of the model, N is automatically adjusted moderately according to the
+style of price movement it predicts. The ideal value of N is such that only one peak or trough occurs
+in the forecast data for the next N days.
+    The model analyzes and identifies the trends in the forecast data for the next N days, which are
+broadly classified into the following categories:
+
+    1. Monotonically increasing
+
+    2. Monotonically decreasing
+
+    3. Monotonic increasing curve first
+
+    4. Single-valley curves first decreasing
+
+    5. Multi-peak and multi-valley increasing
+
+    6. Multi-peak and multi-valley first decreasing
+
+    For case 3 and 4, there is only one peak or trough, which means that the 𝑁 value is ideal. At this
+point, only a decision needs to be made: for case 3, the model recommends a buy operation. If a
+buy has been made previously, the model’s recommendation will be ignored. For case 4, the model
+recommends a sell operation. The model’s recommendation is ignored if it has already sold previously.
+The absence of peaks or troughs in case 1 and 2 indicates that 𝑁 takes too small a value. The model
+will multiply N by a factor 𝛼 to increase it appropriately after making a buy and sell recommendation
+respectively, in our model 𝛼 = 1.1. Case 5 and 6 shows multiple peaks and valleys, indicating that the
+value of 𝑁 is taken too small. The model will be appropriately reduced for both N multiplied by a scale
+factor 𝛽 after making a buy and sell recommendation, respectively. In our model, 𝛽 = 0.9.
+
+
+5       Implementation
+5.1     Data Preprocessing and Testing
+Because of the special characteristics of time series (pattern correlation between adjacent series, data
+are continuously generated in the time dimension), their normalization methods are also different
+from those of non-time series. Usually, time series analysis is based on the discovery of anomalous
+patterns or outliers. The choice of normalization method should also facilitate the work of subsequent
+algorithms or models as much as possible.

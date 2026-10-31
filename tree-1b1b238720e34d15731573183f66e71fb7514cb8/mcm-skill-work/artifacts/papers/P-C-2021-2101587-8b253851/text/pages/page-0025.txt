@@ -1,0 +1,168 @@
+      Team # 2101587
+                                              微信公众号：数学模型                   Page 25 of 25
+
+
+         yellowjacket’]
+  6   report = []
+  7   vespa_mandarinia = []
+  8   report_data = pd.read_excel (’2021MCMProblemC_DataSet.xlsx’)
+  9   path_data = pd.read_excel (’2021MCM_ProblemC_ Images_by_GlobalID.xlsx’)
+ 10   label_data = pd.read_excel (’true_data2.xlsx’)
+ 11   fo = open (’data\\queue_eval_partition.txt’, ’w’)
+ 12   fo2 = open (’data\\queue_attrs_TZ.csv’, ’w’)
+ 13   for row_index, row in report_data.iterrows():
+ 14       cur_status = row[’Lab Status’]
+ 15       if cur_status == ’Unprocessed’ or cur_status == ’Unverified’:
+ 16           continue
+
+
+
+
+                                                                     型
+ 17       cur_date = row[’Submission Date’]
+ 18       if cur_date.month < 5 or cur_date.month > 8:
+ 19           continue
+ 20       cur_id = row[’GlobalID’]
+          if len (path_data[path_data[’GlobalID’] == cur_id]) == 0:
+
+
+
+
+                                                        模
+ 21
+ 22           continue
+ 23       jpg_str = path_data[path_data[’GlobalID’] == cur_id][’FileName’].values[0]
+ 24       jpg_str = jpg_str.replace (’ ’, ’_’)
+ 25       tmp = label_data[label_data[’pic_name’] == jpg_str][’name’]
+
+
+
+
+                                                       学
+ 26       if len (tmp.values) == 0:
+ 27           continue
+ 28       label = tmp.values[0]
+ 29       label_id = 0
+ 30       for i in range (0, len (insects)):
+
+
+
+
+                                                 数
+ 31           if label == insects[i]:
+ 32               label_id = i
+ 33               break
+ 34       lat = row[’Latitude’]
+ 35       longt = row[’Longitude’]  ：
+ 36       report.append ([cur_date, jpg_str, label_id, lat, longt])
+ 37       fo.write (jpg_str + ’\t1\n’)
+
+
+
+
+                                                           els
+ 38       fo2.write (jpg_str + ’\t’ + str (label_id) + ’\n’)
+ 39   fo.close()
+                                   号
+ 40   fo2.close()
+ 41   for i in range (0, len (report)):
+          if report[i][2] == 10:
+
+
+
+
+                                                         od
+ 42
+ 43           vespa_mandarinia.append (i)
+ 44
+                            众
+
+ 45 import math
+ 46 lati = [48.980994, 48.971949, 49.149394, 48.955587, 49.025831, 49.060215,
+                                                        m
+       48.777534, 48.993892, 48.927519, 48.984269, 48.979497, 48.983375, 48.984172,
+       48.98422]
+ 47 longti =
+                       公
+
+
+
+       [-122.688503,-122.700941,-123.943134,-122.661037,-122.810653,-122.641648,
+                                              H
+ 48 -122.418612,-122.702242,-122.745016,-122.574809,-122.581335,-122.582465,
+ 49 -122.57472,-122.574726]
+ 50 predicted_cur_nest = [48.99, -122.66]
+                                           AT
+
+ 51 predicted_new_nest = [48.89, -122.24]
+         信
+
+
+
+
+ 52 report_value = [[], [], []]
+ 53 for cur in range (0, len (report)):
+ 54     cur_list = report[cur]
+ 55     lat = cur_list[3]
+        微
+
+
+
+
+ 56     longt = cur_list[4]
+                                     M
+
+
+
+ 57     min_dis = 1e18
+ 58     for i in range (0, len (lati)):
+ 59          dis = geodesic ((lat, longt), (lati[i], longti[i])).km
+ 60          min_dis = min (min_dis, dis)
+                              ：
+
+
+
+
+ 61     if min_dis > 70:
+ 62          report_value[0].append ((possibility[cur], cur))
+ 63     elif min_dis > 20:
+ 64          dis1 = geodesic ((lat, longt), (predicted_new_nest[0],
+       predicted_new_nest[1])).km
+                       号
+
+
+
+
+ 65          px1 = math.pow (dis1, 2) / math.factorial (int (dis1)) * math.exp (-2)
+ 66          report_value[1].append ((possibility[cur] * 0.6 + px1 * 0.4, cur))
+ 67     else:
+ 68          dis1 = geodesic ((lat, longt), (predicted_new_nest[0],
+       predicted_new_nest[1])).km
+           信
+
+
+
+
+ 69          px1 = math.pow (dis1, 2) / math.factorial (int (dis1)) * math.exp (-2)
+ 70          dis2 = geodesic ((lat, longt), (predicted_cur_nest[0],
+       predicted_cur_nest[1])).km
+ 71          px2 = math.pow (dis2, 2) / math.factorial (int (dis2)) * math.exp (-2)
+          微
+
+
+
+
+ 72          report_value[2].append ((possibility[cur] * 0.5 + px1 * 0.2 + px2 * 0.3,
+        cur))
+ 73 for i in range (0, 3):
+ 74     report_value[i].sort (reverse = True)
+
+
+
+
+微信号：MATHmodels                                                                       2
+
+                                                                            MATHmodels
+                                                                                         关注数学模型
+
+                                                                                         获取更多资讯

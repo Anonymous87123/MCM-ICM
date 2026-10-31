@@ -1,0 +1,62 @@
+       Team # 77845                              Page 27 of 30
+精品数模资料，各类比赛优秀论文、学习教程、写作模板与经验技巧、matlab程序代码资料等，尽在淘宝店铺：闵大荒工科男的杂货铺！
+
+
+                 COSF(t+1)=cosAngleF; angle_F=acos(cosAngleF);
+                 AF(t)=angle_F; x(k+1)=x(k)+stepy_F/tan(angle_F);
+                 dist(k+1)=dist(k)+stepy_F/sin(angle_F);
+
+
+                 Srn(k+1)=Srn(1)-20*log10(dist(k+1))-20*log10(f)-32.45-alpha_D*(D_max-D_min)...
+                 /sin(angle)-alpha_D*(D_max-D_min)/sin(angle)*2*(NumLoop-1)+10*log10(Ploss)...
+                       *(NumLoop-1);
+                 k=k+1;
+                t=t+1;
+           end
+           [dimx,rdimy]=size(x);
+           dimy=(rdimy)/(2*NumLoop-1); for
+           j=1:dimy
+                 x(rdimy+j)=-x(rdimy-j+1)+2*x(rdimy);
+                 y(rdimy+j)=y(rdimy-j+1);
+           end
+           for j=rdimy+1:rdimy+dimy
+
+                 dist(k+1)=dist(k)+sqrt((x(j)-x(j-1))^2+(y(j)-y(j-1))^2); Srn(k+1)=Srn(1)-20*log10(dist(k+1))-20*log10(f)-32.45-alpha_D*(D_max-
+                 D_min)...
+                 /sin(angle)-alpha_D*(D_max-D_min)/sin(angle)*2*(NumLoop-1)+10*log10(Ploss)...
+                        *(NumLoop-1);
+                 if(y(k)>D_max && y(k+1)<=D_max)
+                        distD=dist(k+1);
+                 end
+                 if (y(k+1)<=D_max && y(k+1)>=D_min) Srn(k+1)=Srn(k+1)-
+                        alpha_D*(dist(k+1)-distD);
+                 end
+
+                 if(y(k+1)<=D_min) Srn(k+1)=Srn(k+1)-alpha_D*(D_max-D_min)/sin(angle);
+                 end
+                 k=k+1;
+           end
+           DISTofLoop(NumLoop+1)=dist(k);
+           XofLoop(NumLoop+1)=x(k);
+           SrnLoop(NumLoop+1)=Srn(k);
+           x(k+1)=x(k);
+           y(k+1)=y(k);
+           y(k+1)=0;
+           dist(k+1)=dist(k);
+            Srn(k)=Srn(k)+10*log10(Ploss);
+            Srn(k+1)=Srn(k);
+            k=k+1;
+            NumLoop=NumLoop+1;
+      end subplot(2,1,1)
+         colormap(’Hot’)
+         patch([x NaN],[y NaN],[Srn Srn(end)],’edgecolor’,’flat’,’facecolor’,’none’)
+      plot(x,y,’linewidth’,1.5); xlabel(’Propagation
+      distance(km)’) ylabel(’Altitude(km)’)
+
+
+      hold on
+      colorbar
+      subplot(2,1,2)
+         patch([x NaN],[Srn NaN],[Srn Srn(end)],’edgecolor’,’flat’,’facecolor’,’none’)
+      plot(x,Srn,’linewidth’,1.5);
+      xlabel(’Propagation distance(km)’)

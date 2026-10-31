@@ -1,0 +1,633 @@
+{
+ "schema_version": 2,
+ "paper_id": "P-C-2025-2513314-911e0476",
+ "problem_type": "C",
+ "year": "2025",
+ "source_sha256": "911e04762ff5e174dff191a877b0bd773b824cfa73723b4888a760b745aa292a",
+ "review_status": "validated",
+ "models": [
+  {
+   "model_id": "MU-C-Q266-001",
+   "page": 8,
+   "section": "5.2",
+   "family": "Dirichlet-Multinomial",
+   "purpose": "Allocate a fixed medal total across countries.",
+   "base_or_modification": "paper-specific",
+   "summary": "A Dirichlet-Multinomial likelihood with a country-specific log-rate and a Gamma concentration.",
+   "variables": [
+    {
+     "symbol": "T",
+     "normalized_name": "total medals",
+     "unit": "count",
+     "definition": "total medals",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_i",
+     "normalized_name": "medal count of country i",
+     "unit": "count",
+     "definition": "medal count of country i",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "N",
+     "normalized_name": "number of countries",
+     "unit": "count",
+     "definition": "number of countries",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta_i",
+     "normalized_name": "random coefficient vector",
+     "unit": "1",
+     "definition": "random coefficient vector",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "mu_beta",
+     "normalized_name": "global mean of coefficients",
+     "unit": "1",
+     "definition": "global mean of coefficients",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "Sigma_beta",
+     "normalized_name": "coefficient covariance",
+     "unit": "1",
+     "definition": "coefficient covariance",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "phi_i",
+     "normalized_name": "concentration",
+     "unit": "1",
+     "definition": "concentration",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_i",
+     "normalized_name": "covariate vector",
+     "unit": "1",
+     "definition": "covariate vector",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "theta_i",
+     "normalized_name": "latent rate",
+     "unit": "1",
+     "definition": "latent rate",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "T",
+    "N",
+    "x_i"
+   ],
+   "outputs": [
+    "M_i",
+    "theta_i"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q266-001",
+     "page": 8,
+     "label": "(1)",
+     "source_expression": "T = sum_{i=1}^{N} M_i",
+     "normalized_latex": "T=\\sum_{i=1}^{N} M_i",
+     "purpose": "The medal total is the sum of the country counts.",
+     "variable_symbols": [
+      "T",
+      "M_i",
+      "N"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-002",
+     "page": 8,
+     "label": "(2)",
+     "source_expression": "beta_i ~ N(mu_beta, Sigma_beta)",
+     "normalized_latex": "\\beta_i\\sim N(\\mu_\\beta,\\Sigma_\\beta)",
+     "purpose": "Each country draws its own coefficient vector.",
+     "variable_symbols": [
+      "beta_i",
+      "mu_beta",
+      "Sigma_beta"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-003",
+     "page": 8,
+     "label": "(3)",
+     "source_expression": "phi_i ~ Gamma(alpha_phi, beta_phi)",
+     "normalized_latex": "\\phi_i\\sim\\mathrm{Gamma}(\\alpha_\\phi,\\beta_\\phi)",
+     "purpose": "The concentration is Gamma. The hyperparameters are named only here.",
+     "variable_symbols": [
+      "phi_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-004",
+     "page": 8,
+     "label": "(5)",
+     "source_expression": "theta_i = phi_i exp(x_i^T beta_i)",
+     "normalized_latex": "\\theta_i=\\phi_i\\exp(x_i^{T}\\beta_i)",
+     "purpose": "The latent rate is the concentration times an exponential mean.",
+     "variable_symbols": [
+      "theta_i",
+      "phi_i",
+      "x_i",
+      "beta_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-005",
+     "page": 8,
+     "label": "(6)",
+     "source_expression": "(M_1,...,M_N) ~ Dirichlet-Multinomial(T; theta_1,...,theta_N)",
+     "normalized_latex": "(M_1,\\ldots,M_N)\\sim\\mathrm{DirichletMultinomial}(T;\\theta_1,\\ldots,\\theta_N)",
+     "purpose": "The counts are integer and sum to T.",
+     "variable_symbols": [
+      "M_i",
+      "T",
+      "theta_i"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displays are numbered on the page."
+   },
+   "objectives": [
+    "Predict integer medal counts that sum to a fixed total."
+   ],
+   "constraints": [
+    "The counts sum to T.",
+    "Each count is a nonnegative integer."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "MCMC posterior sampling",
+    "parameters": [
+     "beta_i",
+     "phi_i"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Draw posterior samples by MCMC.",
+     "Form 95 percent intervals from the 2.5 and 97.5 percentiles."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "Country heterogeneity: each country has its own beta_i.",
+    "The prior is weakly informative with Sigma_beta = tau^2 I and tau^2 = 1."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports posterior intervals and does not show a trace or an effective sample size."
+   },
+   "handoff_outputs": [
+    "M_i",
+    "theta_i"
+   ],
+   "validation_refs": [
+    "Table 2 reports MSE 6.98 and R2 0.85 for all medals."
+   ],
+   "computational_cost": "MCMC over N countries. No runtime is stated.",
+   "strengths": [
+    "The likelihood enforces the integer and sum constraints."
+   ],
+   "limitations": [
+    "No software and no convergence check are named."
+   ],
+   "missing_details": [
+    "The Gamma hyperparameters alpha_phi and beta_phi are never given values."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q266-002",
+   "page": 9,
+   "section": "5.2",
+   "family": "posterior predictive",
+   "purpose": "Draw a future medal table and an ice-breaking probability.",
+   "base_or_modification": "paper-specific",
+   "summary": "Each posterior draw gives a rate and a Dirichlet-Multinomial allocation of T_new.",
+   "variables": [
+    {
+     "symbol": "theta_i_s",
+     "normalized_name": "drawn latent rate",
+     "unit": "1",
+     "definition": "drawn latent rate",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "phi_i_s",
+     "normalized_name": "drawn concentration",
+     "unit": "1",
+     "definition": "drawn concentration",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "beta_i_s",
+     "normalized_name": "drawn coefficient",
+     "unit": "1",
+     "definition": "drawn coefficient",
+     "role": "parameter",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "x_i",
+     "normalized_name": "covariate vector",
+     "unit": "1",
+     "definition": "covariate vector",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "T_new",
+     "normalized_name": "future medal total",
+     "unit": "count",
+     "definition": "future medal total",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "M_i_new",
+     "normalized_name": "future medal count",
+     "unit": "count",
+     "definition": "future medal count",
+     "role": "output",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "S",
+     "normalized_name": "number of posterior draws",
+     "unit": "count",
+     "definition": "number of posterior draws",
+     "role": "input",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "x_i",
+    "T_new",
+    "S"
+   ],
+   "outputs": [
+    "M_i_new"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q266-006",
+     "page": 9,
+     "label": "(8)",
+     "source_expression": "theta_i^{(s)} = phi_i^{(s)} exp(x_i^T beta_i^{(s)})",
+     "normalized_latex": "\\theta_i^{(s)}=\\phi_i^{(s)}\\exp(x_i^{T}\\beta_i^{(s)})",
+     "purpose": "A draw rebuilds the rate.",
+     "variable_symbols": [
+      "theta_i_s",
+      "phi_i_s",
+      "x_i",
+      "beta_i_s"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-007",
+     "page": 9,
+     "label": "(9)",
+     "source_expression": "(M_{1,new}^{(s)},...,M_{N,new}^{(s)}) ~ Dirichlet-Multinomial(T_new; theta^{(s)})",
+     "normalized_latex": "(M_{1,\\mathrm{new}}^{(s)},\\ldots,M_{N,\\mathrm{new}}^{(s)})\\sim\\mathrm{DirichletMultinomial}(T_{\\mathrm{new}};\\theta^{(s)})",
+     "purpose": "A draw allocates the future total.",
+     "variable_symbols": [
+      "M_i_new",
+      "T_new"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-008",
+     "page": 9,
+     "label": "(10)",
+     "source_expression": "Pr(M_{i,new}>0) = (1/S) sum_s 1[M_{i,new}^{(s)}>0]",
+     "normalized_latex": "\\Pr(M_{i,\\mathrm{new}}>0)=\\frac{1}{S}\\sum_{s=1}^{S}\\mathbf{1}[M_{i,\\mathrm{new}}^{(s)}>0]",
+     "purpose": "The ice-breaking probability is the share of positive draws.",
+     "variable_symbols": [
+      "M_i_new",
+      "S"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displays are numbered on the page."
+   },
+   "objectives": [
+    "Estimate the probability that a country with no medals wins at least one."
+   ],
+   "constraints": [
+    "The future counts sum to T_new."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "MCMC posterior sampling",
+    "parameters": [
+     "beta_i",
+     "phi_i"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Draw posterior samples by MCMC.",
+     "Form 95 percent intervals from the 2.5 and 97.5 percentiles."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "The 2028 features equal the 2024 features except the host flag."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports posterior intervals and does not show a trace or an effective sample size."
+   },
+   "handoff_outputs": [
+    "M_i_new"
+   ],
+   "validation_refs": [
+    "Figure 4 and Table 3."
+   ],
+   "computational_cost": "MCMC over N countries. No runtime is stated.",
+   "strengths": [
+    "The interval comes from the same draws as the point."
+   ],
+   "limitations": [
+    "S is never given."
+   ],
+   "missing_details": [
+    "No sampler is named."
+   ]
+  },
+  {
+   "model_id": "MU-C-Q266-003",
+   "page": 14,
+   "section": "6.1",
+   "family": "coaching score",
+   "purpose": "Score a coach and sum the scores inside a country.",
+   "base_or_modification": "paper-specific",
+   "summary": "A coach scores 6G + 3S + B, and a country sums its coaches.",
+   "variables": [
+    {
+     "symbol": "A",
+     "normalized_name": "coaching ability",
+     "unit": "medal-weight",
+     "definition": "coaching ability",
+     "role": "intermediate",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "G",
+     "normalized_name": "gold medals under the coach",
+     "unit": "count",
+     "definition": "gold medals under the coach",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "S",
+     "normalized_name": "silver medals under the coach",
+     "unit": "count",
+     "definition": "silver medals under the coach",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "B",
+     "normalized_name": "bronze medals under the coach",
+     "unit": "count",
+     "definition": "bronze medals under the coach",
+     "role": "input",
+     "source_status": "explicit-defined"
+    },
+    {
+     "symbol": "X_9",
+     "normalized_name": "country coaching total",
+     "unit": "medal-weight",
+     "definition": "country coaching total",
+     "role": "output",
+     "source_status": "explicit-defined"
+    }
+   ],
+   "inputs": [
+    "G",
+    "S",
+    "B"
+   ],
+   "outputs": [
+    "A",
+    "X_9"
+   ],
+   "governing_equations": [
+    {
+     "equation_id": "EQ-C-Q266-009",
+     "page": 14,
+     "label": "(11)",
+     "source_expression": "A = 6G + 3S + B",
+     "normalized_latex": "A=6G+3S+B",
+     "purpose": "Gold weighs 6, silver 3, bronze 1.",
+     "variable_symbols": [
+      "A",
+      "G",
+      "S",
+      "B"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    },
+    {
+     "equation_id": "EQ-C-Q266-010",
+     "page": 14,
+     "label": "(12)",
+     "source_expression": "X_9 = sum_k A_k",
+     "normalized_latex": "X_9=\\sum_k A_k",
+     "purpose": "The country variable sums its coaches.",
+     "variable_symbols": [
+      "X_9",
+      "A"
+     ],
+     "source_type": "paper",
+     "visual_checked": true,
+     "transcription_confidence": "high"
+    }
+   ],
+   "equation_status": {
+    "status": "present",
+    "reason": "The displays are numbered on the page."
+   },
+   "objectives": [
+    "Quantify coaching strength so it can enter the regression."
+   ],
+   "constraints": [
+    "A coach must have reached at least bronze in two or more countries."
+   ],
+   "conditions": {
+    "initial": {
+     "status": "not-applicable",
+     "details": [
+      "No initial condition is stated."
+     ]
+    },
+    "boundary": {
+     "status": "not-applicable",
+     "details": [
+      "No boundary condition is stated."
+     ]
+    },
+    "equilibrium": {
+     "status": "not-applicable",
+     "details": [
+      "No equilibrium condition is stated."
+     ]
+    }
+   },
+   "parameter_estimation": {
+    "status": "implemented",
+    "method": "MCMC posterior sampling",
+    "parameters": [
+     "beta_i",
+     "phi_i"
+    ]
+   },
+   "algorithm": {
+    "status": "partial",
+    "steps": [
+     "Draw posterior samples by MCMC.",
+     "Form 95 percent intervals from the 2.5 and 97.5 percentiles."
+    ],
+    "software": [
+     "unspecified"
+    ],
+    "convergence_criteria": "No convergence criterion is stated."
+   },
+   "assumptions": [
+    "All renowned coaches do not contribute equally."
+   ],
+   "identifiability_feasibility": {
+    "status": "partial",
+    "analysis": "The paper reports posterior intervals and does not show a trace or an effective sample size."
+   },
+   "handoff_outputs": [
+    "A",
+    "X_9"
+   ],
+   "validation_refs": [
+    "Table 5 and Table 6."
+   ],
+   "computational_cost": "MCMC over N countries. No runtime is stated.",
+   "strengths": [
+    "The weights separate gold from bronze."
+   ],
+   "limitations": [
+    "The weights 6, 3, 1 are not derived."
+   ],
+   "missing_details": [
+    "The tenure window for G, S, B is not stated."
+   ]
+  }
+ ],
+ "dependency_edges": [
+  {
+   "from_model_id": "MU-C-Q266-001",
+   "to_model_id": "MU-C-Q266-002",
+   "handoff": "The posterior of beta_i and phi_i feeds the future draws."
+  },
+  {
+   "from_model_id": "MU-C-Q266-003",
+   "to_model_id": "MU-C-Q266-001",
+   "handoff": "X_9 enters the covariate vector of the medal model."
+  }
+ ]
+}

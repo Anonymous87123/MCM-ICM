@@ -1,0 +1,1074 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2024-2401102-4ea16839",
+  "problem_type": "E",
+  "year": "2024",
+  "source_sha256": "4ea1683979b2cc3a1a8f1282dd2a9074d704b906e1d440d4015df8e04c0f7705",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "section": "Property Insurance Posture Model",
+      "family": "decision",
+      "summary": "An underwriting rule that balances the demand an insurer can attract against the risk it takes on. Four kinds of extreme weather are kept from a longer official list: droughts, floods, tropical cyclones, and wildfires, with everything else folded into a residual class. For each region and each disaster the annual counts are differenced until the augmented Dickey-Fuller test calls them stationary, then forecast with an autoregressive integrated moving average. The worked example is tornadoes and hurricanes in New South Wales, 1975 to 2023, and bushfires there are reported as orders 3, 2, 1. Two ways of computing the expected loss are chosen by income per head: indemnity insurance, where the loss is people affected times loss per person, for the richer region, and index insurance, where a loss index times a standard payout, for the poorer one. The premium adds a loading taken from Lane's 2000 pricing of risk-transfer deals, a constant 0.55 times the frequency of loss to the power 0.495 times the conditional expected loss to the power 0.574, and that conditional loss is the expected loss divided by its frequency. Demand is a straight line in price with a negative slope, read as a Marshallian demand curve that shifts right when willingness rises. The insurer then chooses, for each area, whether to underwrite at all. Total demand sums the demand of the areas accepted, and an area's risk is a weighted sum of its disaster probabilities with weights adding to one. Sustainability is a small weight times demand minus the remaining weight times risk. On 744 Australian records since 1967 and 2021 Southeast Asian records since 1970, a weight of five millionths covers Queensland and Western Australia but not Victoria or New South Wales, and the Philippines and Thailand but not Indonesia or Vietnam. Premiums run from 119.20 dollars in the Philippines to 1295.62 in Victoria.",
+      "computational_cost": "One autoregressive fit per area and disaster, then a search over a binary underwriting plan",
+      "purpose": "Decide which areas an insurer should underwrite as extreme weather grows more severe.",
+      "base_or_modification": "modification",
+      "page": 6,
+      "inputs": [
+        "count",
+        "price"
+      ],
+      "outputs": [
+        "prem",
+        "S"
+      ],
+      "handoff_outputs": [
+        "ri"
+      ],
+      "objectives": [
+        "Maximize sustainability, a weighted demand minus a weighted risk."
+      ],
+      "variables": [
+        {
+          "symbol": "count",
+          "normalized_name": "event_count",
+          "role": "input",
+          "unit": "count",
+          "definition": "Annual number of events of one disaster type in one area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "y",
+          "normalized_name": "first_difference",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Series minus itself shifted back one step",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "z",
+          "normalized_name": "second_difference",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "First difference differenced once more",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Xt",
+          "normalized_name": "forecast_level",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Fitted level of the differenced series",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "arima_constant",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Constant term of the autoregressive forecast",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "phi",
+          "normalized_name": "autoregressive_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on a past observation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "theta",
+          "normalized_name": "moving_average_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on a past forecast error",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eps",
+          "normalized_name": "forecast_error",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Residual of the forecast",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "EL",
+          "normalized_name": "expected_loss",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Expected compensation on one area and disaster",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "PEL",
+          "normalized_name": "loss_frequency",
+          "role": "intermediate",
+          "unit": "per-year",
+          "definition": "Expected number of loss events a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CEL",
+          "normalized_name": "conditional_loss",
+          "role": "intermediate",
+          "unit": "currency",
+          "definition": "Expected loss divided by its frequency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "loss_index",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Index of loss severity used by index insurance",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "prem",
+          "normalized_name": "premium",
+          "role": "output",
+          "unit": "currency",
+          "definition": "Price charged for cover, from 119.20 to 1295.62 dollars",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "price",
+          "normalized_name": "quoted_price",
+          "role": "input",
+          "unit": "currency",
+          "definition": "Premium the demand curve is evaluated at",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "quantity_demanded",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Policies demanded at a given price",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "demand_slope",
+          "role": "parameter",
+          "unit": "per-currency",
+          "definition": "Slope of demand, required to be negative",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "b",
+          "normalized_name": "demand_intercept",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Demand at a zero price",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xi",
+          "normalized_name": "underwrite_decision",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "One if the area is underwritten, zero otherwise",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "di",
+          "normalized_name": "area_demand",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Demand for cover in one area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "total_demand",
+          "role": "intermediate",
+          "unit": "count",
+          "definition": "Demand summed over the areas accepted",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ri",
+          "normalized_name": "area_risk",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted disaster risk of one area",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pij",
+          "normalized_name": "disaster_probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability of disaster type j in area i",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "disaster_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of a disaster type, summing to one",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "total_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Risk summed over the areas accepted",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lam",
+          "normalized_name": "sustainability_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight on demand, set at five millionths",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "sustainability",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted demand minus weighted risk",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-1",
+          "equation_label": "Differencing",
+          "equation_text": "The first difference is y(i+1) = x(i+1) - x(i), and the second is z(i+2) = y(i+2) - y(i+1).",
+          "source_expression": "The first difference is y(i+1) = x(i+1) - x(i), and the second is z(i+2) = y(i+2) - y(i+1).",
+          "normalized_latex": "y_{i+1}=x_{i+1}-x_i,\\ z_{i+2}=y_{i+2}-y_{i+1}",
+          "purpose": "Remove the trend until the series is stationary.",
+          "variable_symbols": [
+            "y",
+            "z",
+            "count"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-2",
+          "equation_label": "Autoregressive forecast",
+          "equation_text": "Xt = c + phi*Xt-1 + ... - theta*eps(t-1) - ... + eps(t).",
+          "source_expression": "Xt = c + phi*Xt-1 + ... - theta*eps(t-1) - ... + eps(t).",
+          "normalized_latex": "X_t = c + \\sum_k \\phi_k X_{t-k} - \\sum_k \\theta_k \\varepsilon_{t-k} + \\varepsilon_t",
+          "purpose": "Forecast the stationary series from its own past.",
+          "variable_symbols": [
+            "Xt",
+            "c",
+            "phi",
+            "theta",
+            "eps"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-3",
+          "equation_label": "Expected loss",
+          "equation_text": "Indemnity loss sums people affected times average loss; index loss sums the loss index times a standard compensation.",
+          "source_expression": "Indemnity loss sums people affected times average loss; index loss sums the loss index times a standard compensation.",
+          "normalized_latex": "EL=\\sum \\bar n\\,\\bar\\ell,\\quad EL=\\sum \\gamma_j C",
+          "purpose": "Turn a forecast of events into a forecast of money.",
+          "variable_symbols": [
+            "EL",
+            "gamma",
+            "count"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-4",
+          "equation_label": "Premium with Lane loading",
+          "equation_text": "prem = EL + 0.55*PEL^0.495*CEL^0.574, with CEL = EL/PEL.",
+          "source_expression": "prem = EL + 0.55*PEL^0.495*CEL^0.574, with CEL = EL/PEL.",
+          "normalized_latex": "P = EL + 0.55\\,PEL^{0.495}CEL^{0.574},\\ CEL=EL/PEL",
+          "purpose": "Add the loading that prices the risk transfer.",
+          "variable_symbols": [
+            "prem",
+            "EL",
+            "PEL",
+            "CEL"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-5",
+          "equation_label": "Linear demand",
+          "equation_text": "Q = a*price + b, with a negative and b positive.",
+          "source_expression": "Q = a*price + b, with a negative and b positive.",
+          "normalized_latex": "Q = aP + b,\\ a<0,\\ b>0",
+          "purpose": "Let demand fall as the premium rises.",
+          "variable_symbols": [
+            "Q",
+            "a",
+            "b",
+            "price"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-PIPM-6",
+          "equation_label": "Demand, risk, and sustainability",
+          "equation_text": "D = sum xi*di, ri = sum pij*alpha_j with the alpha summing to one, and S = lam*D - (1-lam)*R.",
+          "source_expression": "D = sum xi*di, ri = sum pij*alpha_j with the alpha summing to one, and S = lam*D - (1-lam)*R.",
+          "normalized_latex": "D=\\sum x_i d_i,\\ r_i=\\sum_j p_{ij}\\alpha_j,\\ S=\\lambda D-(1-\\lambda)R",
+          "purpose": "Choose the areas that maximize sustainability.",
+          "variable_symbols": [
+            "D",
+            "xi",
+            "di",
+            "ri",
+            "pij",
+            "alpha",
+            "R",
+            "lam",
+            "S"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 1 to 17 print with the MATHmodels watermark breaking subscripts and exponents. The recorded forms follow the prose gloss beside each equation.",
+        "reason": "Sections 3.2 to 3.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The series start at the first recorded year, 1967 in Australia and 1970 in Southeast Asia."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "The forecast has no spatial boundary."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "The underwriting plan is the one that maximizes the weighted objective."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Autoregressive orders are chosen by the Akaike and Bayesian information criteria, and the fit is checked by R squared. The sustainability weight is searched over a stated range and fixed at five millionths.",
+        "parameters": [
+          "phi",
+          "theta",
+          "c",
+          "lam"
+        ]
+      },
+      "algorithm": {
+        "description": "Difference, forecast, price, then choose the areas to cover.",
+        "status": "implemented",
+        "steps": [
+          "Difference each series until the stationarity test passes",
+          "Fit an autoregressive model and keep the one with the best information criterion",
+          "Compute the expected loss by indemnity or by index",
+          "Add the Lane loading to get the premium and read off the demand",
+          "Search the underwriting plan that maximizes sustainability"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "Fits are kept when R squared stays above 0.6 and the information criteria stay below 300. No iterative tolerance is stated."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "Every area-disaster pair in the table returns an information criterion and an R squared."
+        ],
+        "analysis": "The forecasts are reproducible from the reported orders, but the demand slope and intercept are never estimated, so the demand column cannot be rebuilt."
+      },
+      "constraints": [
+        "The demand slope must be negative.",
+        "The disaster weights must sum to one.",
+        "The sustainability weight must lie between one millionth and twenty millionths."
+      ],
+      "validation_refs": [
+        "Table 1, the information criteria and R squared",
+        "Tables 2 and 3, the premiums and the decisions"
+      ],
+      "strengths": [
+        "Each area is priced from its own history rather than from a regional average.",
+        "The decision comes out as a list of areas to cover and areas to refuse."
+      ],
+      "limitations": [
+        "The demand curve is drawn but never fitted, so its slope is unknown.",
+        "The two regions use different disaster groupings, which makes their risks hard to compare."
+      ],
+      "missing_details": [
+        "The estimated slope and intercept of demand.",
+        "The disaster weights used to build each area's risk."
+      ],
+      "assumptions": [
+        "An insurer bears its risk alone.",
+        "Insurance is a normal good.",
+        "Existing development ignores extreme weather.",
+        "The published records are accurate."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2401102-IRPP",
+      "section": "Innovative Risk Prediction Property Development Method",
+      "family": "decision",
+      "summary": "A siting rule that reuses the posture model's risk. Developers are assumed to already score sites by their own system, which the paper renames the development willingness index and declines to reconstruct. Willingness is plotted vertically and the posture model's weighted risk horizontally, splitting the plane into four quadrants. Low risk with high willingness is built under the developer's own rules. Low willingness is abandoned whether the risk is high or low. The method concentrates on high risk with high willingness, and tries to move such a site into the low-risk quadrant by cutting the risk without touching the willingness. The cut depends on the disaster. Wildfire risk is divided by the distance from the site to the nearest fire source, rewarding moist ground far from forest. Wind and rain cannot be escaped by moving, so the storm risk is multiplied by the ratio of ordinary structural strength to the strengthened value, which covers drainage and backup power as well as the frame. Drought risk is multiplied by the soil's shrinkage under drying and divided by the efficiency of a water-saving system. The adjusted risks are then put back through the posture model's weighted sum to give a new total risk, and the site is kept only if that risk has fallen far enough. The paper concedes that the distance, the two strengths, the shrinkage, and the efficiency are never defined in numbers.",
+      "computational_cost": "Three rescalings of an existing risk and one weighted sum",
+      "purpose": "Decide where, how, and whether a developer should build on a risky site.",
+      "base_or_modification": "modification",
+      "page": 16,
+      "inputs": [
+        "ri"
+      ],
+      "outputs": [
+        "rnew"
+      ],
+      "handoff_outputs": [
+        "rnew"
+      ],
+      "objectives": [
+        "Move a high-risk, high-willingness site into the low-risk quadrant."
+      ],
+      "variables": [
+        {
+          "symbol": "ri",
+          "normalized_name": "area_risk",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weighted disaster risk taken from the posture model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "DWI",
+          "normalized_name": "willingness",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Developer's own score for a site's profit potential",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pb",
+          "normalized_name": "wildfire_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Original wildfire risk from the posture model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "fire_distance",
+          "role": "parameter",
+          "unit": "length",
+          "definition": "Distance from the site to the nearest fire source",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pbstar",
+          "normalized_name": "adjusted_wildfire_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Wildfire risk divided by that distance",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pc",
+          "normalized_name": "storm_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Original storm and cyclone risk",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Bs",
+          "normalized_name": "standard_strength",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Structural capacity before reinforcement",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Be",
+          "normalized_name": "enhanced_strength",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Structural capacity after reinforcement",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pcstar",
+          "normalized_name": "adjusted_storm_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Storm risk scaled by the ratio of strengths",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pd",
+          "normalized_name": "drought_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Original drought risk",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "shrink",
+          "normalized_name": "soil_shrinkage",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Sensitivity of the soil to drying",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "weff",
+          "normalized_name": "water_efficiency",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Efficiency of the water-saving system",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pdstar",
+          "normalized_name": "adjusted_drought_risk",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Drought risk scaled by shrinkage over efficiency",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rnew",
+          "normalized_name": "adjusted_total_risk",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Total risk recomputed from the adjusted components",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2401102-IRPP-1",
+          "equation_label": "Adjusted wildfire risk",
+          "equation_text": "pbstar = pb / d.",
+          "source_expression": "pbstar = pb / d.",
+          "normalized_latex": "p_b^{*} = p_b / d",
+          "purpose": "Reward a site far from the fire source.",
+          "variable_symbols": [
+            "pbstar",
+            "pb",
+            "d"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-IRPP-2",
+          "equation_label": "Adjusted storm risk",
+          "equation_text": "pcstar = pc * Bs / Be.",
+          "source_expression": "pcstar = pc * Bs / Be.",
+          "normalized_latex": "p_c^{*} = p_c \\times B_s / B_e",
+          "purpose": "Reward a building that has been strengthened.",
+          "variable_symbols": [
+            "pcstar",
+            "pc",
+            "Bs",
+            "Be"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-IRPP-3",
+          "equation_label": "Adjusted drought risk",
+          "equation_text": "pdstar = pd * shrink / weff.",
+          "source_expression": "pdstar = pd * shrink / weff.",
+          "normalized_latex": "p_d^{*} = p_d \\times s_{soil} / e_{water}",
+          "purpose": "Reward stable ground and efficient water use.",
+          "variable_symbols": [
+            "pdstar",
+            "pd",
+            "shrink",
+            "weff"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-IRPP-4",
+          "equation_label": "Recomputed total risk",
+          "equation_text": "rnew is the posture model's weighted sum with each risk replaced by its adjusted value.",
+          "source_expression": "rnew is the posture model's weighted sum with each risk replaced by its adjusted value.",
+          "normalized_latex": "r^{*} = \\sum_j \\alpha_j p_j^{*}",
+          "purpose": "Decide whether the site has reached the low-risk quadrant.",
+          "variable_symbols": [
+            "rnew",
+            "pbstar",
+            "pcstar",
+            "pdstar",
+            "ri"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 18 to 20 print with the numerator and the denominator on separate lines. The recorded forms follow the prose definitions.",
+        "reason": "Section 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The method rescales a risk; it has no initial state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The quadrant boundaries split willingness and risk into high and low."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The distance, the two strengths, the shrinkage, and the efficiency are named but never given values or a source.",
+        "parameters": [
+          "d",
+          "Bs",
+          "Be",
+          "shrink",
+          "weff"
+        ]
+      },
+      "algorithm": {
+        "description": "Place the site, adjust the risk that dominates it, and recompute.",
+        "status": "partial",
+        "steps": [
+          "Read the willingness from the developer's own system",
+          "Read the risk from the posture model and place the site in a quadrant",
+          "Adjust the dominant disaster risk by distance, strength, or water efficiency",
+          "Recompute the total risk and keep the site only if it falls to low risk"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "No numerical criterion is stated; the test is which quadrant the site lands in."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "No site is actually scored."
+        ],
+        "analysis": "The framework is stated in full but applied to no location, so its effect on a decision cannot be checked."
+      },
+      "constraints": [
+        "Only the high-risk, high-willingness quadrant is treated.",
+        "Willingness is held fixed while risk is reduced."
+      ],
+      "validation_refs": [
+        "Figure 11, the four quadrants"
+      ],
+      "strengths": [
+        "The remedy changes with the disaster instead of being one measure for all.",
+        "The decision reuses a risk the reader has already seen computed."
+      ],
+      "limitations": [
+        "None of the adjustment coefficients is defined numerically.",
+        "No site is carried through the method, so no result is shown."
+      ],
+      "missing_details": [
+        "Values for the distance, the strengths, the shrinkage, and the efficiency.",
+        "Any worked example."
+      ],
+      "assumptions": [
+        "Developers already score sites by profit and ignore weather.",
+        "Willingness survives the measures taken to cut risk."
+      ]
+    },
+    {
+      "model_id": "MU-E-2024-2401102-HLPM",
+      "section": "Historic Landmark Preservation Model",
+      "family": "decision",
+      "summary": "A preservation score for landmarks the insurer has refused to cover. Value is split into four dimensions and eight indicators: economy into tourism value and the share of the site still undeveloped; culture into the count of intangible heritage items and the count of indexed papers naming the landmark; history into age in years and the number of notable figures and events attached to it; community into the number of local educational activities and a community-spirit score judged by hand between zero and one. Weights come from the analytic hierarchy process, with the pairwise judgments borrowed from published studies rather than made by the authors. The four-by-four matrix of dimensions has a consistency index of 0.052 against a random index of 0.882, hence a ratio of 0.058, which passes; the two-by-two matrices pass with an index of zero. The resulting weights, in percent, are tourism 8.135, exploitation potential 4.067, heritage 39.434, local research 7.887, historical importance 21.206, age 7.069, educational activity 3.051, and community spirit 9.152. All eight indicators point the same way, so each is scaled by its own minimum and maximum onto the unit interval, and the landmark value is the weighted sum. The value is banded: 0.7 and above may justify relocation, 0.3 to 0.7 gets broad protection, below 0.3 gets routine care. The Temple of Literature in Hanoi, founded in 1070 with the academy added in 1076, scores 0.463 and so falls in the middle band, facing floods and cyclones. The recommended work is clearing the drainage, waterproofing, planting trees, and strengthening the structure. To show the effect, the three indicators that barely move are dropped and age is replaced by expected lifespan, and the protected and unprotected futures are compared against a base of one.",
+      "computational_cost": "One consistency check and one weighted sum of eight normalized indicators",
+      "purpose": "Decide how much protection an uninsured landmark deserves.",
+      "base_or_modification": "base",
+      "page": 19,
+      "inputs": [
+        "Ia"
+      ],
+      "outputs": [
+        "HLV"
+      ],
+      "handoff_outputs": [
+        "HLV"
+      ],
+      "objectives": [
+        "Spend more on the landmark with the higher value."
+      ],
+      "variables": [
+        {
+          "symbol": "Ia",
+          "normalized_name": "indicator_value",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Normalized score of one indicator, between zero and one",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmin",
+          "normalized_name": "indicator_minimum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Smallest observed value of an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "xmax",
+          "normalized_name": "indicator_maximum",
+          "role": "parameter",
+          "unit": "mixed",
+          "definition": "Largest observed value of an indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wa",
+          "normalized_name": "indicator_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of an indicator from the hierarchy",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Mi",
+          "normalized_name": "row_product",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Product of one row of the judgment matrix",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wbar",
+          "normalized_name": "principal_weight",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Normalized principal weight of one indicator",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "lmax",
+          "normalized_name": "max_eigenvalue",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Largest eigenvalue of the judgment matrix",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CI",
+          "normalized_name": "consistency_index",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Departure of the matrix from consistency, 0.052",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "matrix_order",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of indicators compared, four at the top level",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "HLV",
+          "normalized_name": "landmark_value",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weighted value of the landmark, 0.463 for the temple",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2024-2401102-HLPM-1",
+          "equation_label": "Consistency index",
+          "equation_text": "CI = (lmax - n) / (n - 1), and the ratio of CI to the random index must pass.",
+          "source_expression": "CI = (lmax - n) / (n - 1), and the ratio of CI to the random index must pass.",
+          "normalized_latex": "CI = (\\lambda_{max} - n)/(n-1)",
+          "purpose": "Check the borrowed judgments before trusting them.",
+          "variable_symbols": [
+            "CI",
+            "lmax",
+            "n",
+            "Mi",
+            "Wbar"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-HLPM-2",
+          "equation_label": "Min-max normalization",
+          "equation_text": "x' = (x - xmin) / (xmax - xmin).",
+          "source_expression": "x' = (x - xmin) / (xmax - xmin).",
+          "normalized_latex": "x' = (x-\\min x)/(\\max x - \\min x)",
+          "purpose": "Put indicators of different units on one scale.",
+          "variable_symbols": [
+            "Ia",
+            "xmin",
+            "xmax"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2024-2401102-HLPM-3",
+          "equation_label": "Landmark value",
+          "equation_text": "HLV = sum over indicators of Wa*Ia.",
+          "source_expression": "HLV = sum over indicators of Wa*Ia.",
+          "normalized_latex": "HLV = \\sum_a W_a I_a",
+          "purpose": "Collapse eight indicators into one value.",
+          "variable_symbols": [
+            "HLV",
+            "Wa",
+            "Ia"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 20,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 21 to 27 print with the product, the root, and the eigenvalue on split lines. The recorded forms follow the prose.",
+        "reason": "Sections 6.2 and 6.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The score has no time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The three preservation bands meet at 0.3 and at 0.7."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "implemented",
+        "method": "Weights are the normalized principal eigenvector of judgment matrices taken from published studies, accepted only after the consistency ratio passes.",
+        "parameters": [
+          "Wa",
+          "CI"
+        ]
+      },
+      "algorithm": {
+        "description": "Weight, normalize, sum, and band.",
+        "status": "implemented",
+        "steps": [
+          "Build the judgment matrices from published comparisons",
+          "Test consistency and keep the matrices that pass",
+          "Normalize each indicator by its own minimum and maximum",
+          "Sum weight times score and place the result in a band"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "A matrix is kept when its consistency ratio stays below the conventional tenth. The reported ratio is 0.058."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "The temple receives a value and a band."
+        ],
+        "analysis": "The value is reproducible from the weights, but the eight raw indicator readings for the temple are not reported, so the 0.463 cannot be recomputed."
+      },
+      "constraints": [
+        "Every indicator must be a benefit, since one normalization is used for all.",
+        "The consistency ratio must pass before the weights are used."
+      ],
+      "validation_refs": [
+        "Table 9, the weights",
+        "Figure 13, the protection effect"
+      ],
+      "strengths": [
+        "Every indicator is defined as a count someone could collect.",
+        "The score lands in a band that names the kind of measure required."
+      ],
+      "limitations": [
+        "The band says how hard to try but not which measure to choose.",
+        "The comparison of futures drops three of the eight indicators."
+      ],
+      "missing_details": [
+        "The raw indicator values for the Temple of Literature.",
+        "The cost of strengthening the aged structure."
+      ],
+      "assumptions": [
+        "A landmark's value is the sum of eight independent indicators.",
+        "Judgments published for other buildings transfer to this one."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-1",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 6,
+      "source_expression": "The first difference is y(i+1) = x(i+1) - x(i), and the second is z(i+2) = y(i+2) - y(i+1)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-2",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 6,
+      "source_expression": "Xt = c + phi*Xt-1 + ... - theta*eps(t-1) - ... + eps(t)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-3",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 7,
+      "source_expression": "Indemnity loss sums people affected times average loss; index loss sums the loss index times a standard compensation."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-4",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 8,
+      "source_expression": "prem = EL + 0.55*PEL^0.495*CEL^0.574, with CEL = EL/PEL."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-5",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 9,
+      "source_expression": "Q = a*price + b, with a negative and b positive."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-PIPM-6",
+      "model_id": "MU-E-2024-2401102-PIPM",
+      "page": 10,
+      "source_expression": "D = sum xi*di, ri = sum pij*alpha_j with the alpha summing to one, and S = lam*D - (1-lam)*R."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-IRPP-1",
+      "model_id": "MU-E-2024-2401102-IRPP",
+      "page": 16,
+      "source_expression": "pbstar = pb / d."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-IRPP-2",
+      "model_id": "MU-E-2024-2401102-IRPP",
+      "page": 16,
+      "source_expression": "pcstar = pc * Bs / Be."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-IRPP-3",
+      "model_id": "MU-E-2024-2401102-IRPP",
+      "page": 17,
+      "source_expression": "pdstar = pd * shrink / weff."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-IRPP-4",
+      "model_id": "MU-E-2024-2401102-IRPP",
+      "page": 17,
+      "source_expression": "rnew is the posture model's weighted sum with each risk replaced by its adjusted value."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-HLPM-1",
+      "model_id": "MU-E-2024-2401102-HLPM",
+      "page": 20,
+      "source_expression": "CI = (lmax - n) / (n - 1), and the ratio of CI to the random index must pass."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-HLPM-2",
+      "model_id": "MU-E-2024-2401102-HLPM",
+      "page": 20,
+      "source_expression": "x' = (x - xmin) / (xmax - xmin)."
+    },
+    {
+      "equation_id": "EQ-E-2024-2401102-HLPM-3",
+      "model_id": "MU-E-2024-2401102-HLPM",
+      "page": 20,
+      "source_expression": "HLV = sum over indicators of Wa*Ia."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2024-2401102-PIPM",
+      "to_model_id": "MU-E-2024-2401102-IRPP",
+      "handoff": "The weighted area risk becomes the horizontal axis and the input to the three adjustments."
+    },
+    {
+      "from_model_id": "MU-E-2024-2401102-PIPM",
+      "to_model_id": "MU-E-2024-2401102-HLPM",
+      "handoff": "The areas the insurer refuses are where the preservation model is applied."
+    }
+  ]
+}

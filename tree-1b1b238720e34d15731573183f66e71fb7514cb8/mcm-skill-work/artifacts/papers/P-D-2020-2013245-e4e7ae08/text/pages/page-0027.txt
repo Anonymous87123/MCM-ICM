@@ -1,0 +1,42 @@
+Team 2013245                                                     Page 26 of 28
+
+import pandas as pd
+import seaborn as sns #用于绘制热图的工具包
+from scipy.cluster import hierarchy #用于进行层次聚类，话层次聚类图的工具包
+from scipy import cluster
+import matplotlib.pyplot as plt
+from sklearn import decomposition as skldec #用于主成分分析降维的包
+
+plt.figure(figsize=(15, 6))
+df = pd.read_excel("xzz - test.xlsx",index_col=0)
+Z = hierarchy.linkage(df, method ='average',metric='euclidean')
+
+hierarchy.dendrogram(Z,labels = df.index)
+
+plt.show()
+
+label = cluster.hierarchy.cut_tree(Z,height=30)
+label = label.reshape(label.size)
+
+#根据两个最大的主成分进行绘图
+pca = skldec.PCA(n_components = 0.95) #选择方差 95%的占比
+pca.fit(df) #主城分析时每一行是一个输入数据
+result = pca.transform(df) #计算结果
+plt.figure() #新建一张图进行绘制
+plt.scatter(result[:, 0], result[:, 1], c=label, edgecolor='k') #绘制两个主成分组成坐标的散点图
+
+# for i in range(result[:,0].size):              #在每个点边上绘制数据名称
+# plt.text(result[i,0],result[i,1],df.index[i])
+
+x_label = 'PCA1(%s%%)' % round((pca.explained_variance_ratio_[0]*100.0),2) #x 轴标签字符串
+y_label = 'PCA2(%s%%)' % round((pca.explained_variance_ratio_[1]*100.0),2) #y 轴标签字符串
+
+# 字体设置: 字体名称 Times New Roman, 字体大小 34
+font_format = {'family':'Times New Roman', 'size':15}
+plt.xlabel(x_label, font_format) #绘制 x 轴标签
+plt.ylabel(y_label, font_format) #绘制 y 轴标签
+# 设置坐标轴 x 范围 0~3*pi, y 范围-1.2~1.2
+
+                                                                           2      ܱᇿඔ࿐ଆ྘
+                                                                                  ࠆ౼۷‫؟‬ሧ࿟
+                                                                 MATHmodels

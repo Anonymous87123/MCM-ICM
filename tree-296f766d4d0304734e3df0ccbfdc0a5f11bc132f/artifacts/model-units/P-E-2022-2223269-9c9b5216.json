@@ -1,0 +1,964 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-E-2022-2223269-9c9b5216",
+  "problem_type": "E",
+  "year": "2022",
+  "source_sha256": "9c9b52160c4e73a12ac6fa9674557eff085c46675b1db63a3490322336aabbfb",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-E-2022-2223269-SEQ",
+      "section": "Forest Carbon Sequestration Model",
+      "family": "evaluation",
+      "summary": "A carbon account for the living forest, then a stock predictor. Next year storage is this year plus growth, minus natural loss, minus the cut, from an initial store. The FAO series of stock, expansion, cut, and loss runs from 1990 to 2020. Storage is converted from volume by the IPCC defaults: understory 0.195, woodland 1.244, expansion 1.9, volume factor 0.5, carbon content 0.5, which the paper collapses to 1.158 times the volume. The printed substitution writes the woodland factor as 0.1.244. A forced regression has an R squared of 0.602 but variance inflation in the tens of thousands, so stepwise regression drops every driver but the lagged store, leaving next year equal to 0.999 times this year, with R squared 0.566 and F of 36.587. Stock itself is predicted by a back-propagation network on temperature, radiation, humidity, rain, age, and soil type, trained from nine stations, scaled into the unit interval, for 1000 passes toward an error of 0.000001 at a learning rate of 0.05. The fit correlates 0.95833 and the confirmation mean square error is 0.0508.",
+      "computational_cost": "One stepwise regression on the FAO series and one network of 1000 passes",
+      "purpose": "Project the carbon stored by the living forest.",
+      "base_or_modification": "hybrid",
+      "page": 5,
+      "inputs": [
+        "V"
+      ],
+      "outputs": [
+        "C"
+      ],
+      "handoff_outputs": [
+        "C"
+      ],
+      "objectives": [
+        "Carry the forest carbon store forward one year."
+      ],
+      "variables": [
+        {
+          "symbol": "V",
+          "normalized_name": "forest_volume",
+          "role": "input",
+          "unit": "100 million m3",
+          "definition": "Forest stock volume",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "carbon_storage",
+          "role": "output",
+          "unit": "100 million t",
+          "definition": "Carbon stored by the living forest",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "growth_carbon",
+          "role": "intermediate",
+          "unit": "100 million t",
+          "definition": "Carbon added by forest growth",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "loss_carbon",
+          "role": "intermediate",
+          "unit": "100 million t",
+          "definition": "Carbon lost aside from the cut",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "cut_carbon",
+          "role": "intermediate",
+          "unit": "100 million t",
+          "definition": "Carbon removed by deforestation",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CS",
+          "normalized_name": "sequestration",
+          "role": "intermediate",
+          "unit": "100 million t",
+          "definition": "Carbon sequestration converted from volume",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223269-SEQ-1",
+          "equation_label": "Carbon recurrence",
+          "equation_text": "Next year storage equals this year storage plus growth, minus loss, minus the cut.",
+          "source_expression": "Next year storage equals this year storage plus growth, minus loss, minus the cut.",
+          "normalized_latex": "C(t+1)=C(t)+G(t)-L(t)-D(t)",
+          "purpose": "Update the store by one year.",
+          "variable_symbols": [
+            "C",
+            "G",
+            "L",
+            "D"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 5,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223269-SEQ-2",
+          "equation_label": "Volume conversion",
+          "equation_text": "Sequestration is 1.158 times the stock volume, after the IPCC factors are multiplied through.",
+          "source_expression": "Sequestration is 1.158 times the stock volume, after the IPCC factors are multiplied through.",
+          "normalized_latex": "CS=1.158\\,V",
+          "purpose": "Turn a volume into a carbon mass.",
+          "variable_symbols": [
+            "CS",
+            "V"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223269-SEQ-3",
+          "equation_label": "Stepwise recurrence",
+          "equation_text": "After stepwise regression drops the collinear drivers, next year storage is 0.999 times this year.",
+          "source_expression": "After stepwise regression drops the collinear drivers, next year storage is 0.999 times this year.",
+          "normalized_latex": "C(t+1)=0.999\\,C(t)",
+          "purpose": "Keep the only coefficient that survived.",
+          "variable_symbols": [
+            "C"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 7,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 1 is readable as a three-term update. Equation 4 prints the woodland factor as 0.1.244 before the collapse to 1.158. Equation 6 is the 0.999 recurrence.",
+        "reason": "Sections 4.2.1 and 4.2.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The store starts at a given value in the initial year."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "No spatial boundary is set."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The recurrence is not solved for a steady state."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "EViews stepwise regression after a variance-inflation check, and a back-propagation network for the stock.",
+        "parameters": [
+          "C"
+        ]
+      },
+      "algorithm": {
+        "description": "Regress the FAO series, drop the collinear drivers, and train a network for the stock.",
+        "status": "partial",
+        "steps": [
+          "Convert volume to carbon with the IPCC factors",
+          "Reject the forced regression for collinearity",
+          "Keep the lagged store at 0.999",
+          "Scale six drivers into the unit interval and train for 1000 passes"
+        ],
+        "software": [
+          "EViews",
+          "MATLAB"
+        ],
+        "convergence_criteria": "Stop at 1000 passes or at an error of 0.000001."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The surviving model is significant, but it no longer contains the cut."
+        ],
+        "analysis": "Table 3 keeps a single coefficient. Figure 3 reports the network fit."
+      },
+      "constraints": [
+        "The network inputs lie in the unit interval."
+      ],
+      "validation_refs": [
+        "Table 3, the stepwise coefficient",
+        "Figure 3, the training fit of 0.95833"
+      ],
+      "strengths": [
+        "The collinearity is shown before the variables are dropped.",
+        "The network error is reported beside the correlation."
+      ],
+      "limitations": [
+        "The surviving recurrence cannot speak to harvesting.",
+        "Equation 4 prints 0.1.244."
+      ],
+      "missing_details": [
+        "Which of the original drivers the stepwise method deleted first.",
+        "The hidden-layer size of the network."
+      ],
+      "assumptions": [
+        "Human carbon schemes are negligible next to natural sequestration.",
+        "Extreme events are rare enough to ignore."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223269-HWP",
+      "section": "Forest-products Carbon Sequestration Model",
+      "family": "evaluation",
+      "summary": "Carbon held by wood products over their life, by three official methods. Storage is volume times density times the carbon rate. The stock-change approach counts products consumed inside the country, the production approach counts products of the growing country, and the atmospheric-flow approach counts the flow between the forest, the products, and the air. The three would agree if a country neither imported nor exported. On the global FAO series from 1990 to 2020 they differ, and no rule names a winner, so the paper takes the average. Product carbon is about one-fifth of living-forest carbon, and a product holds its carbon for nearly its whole life, which is the paper's reason to prefer some cutting over a ban.",
+      "computational_cost": "One average of three accounting methods over 1990 to 2020",
+      "purpose": "Put a carbon mass on the wood after it leaves the forest.",
+      "base_or_modification": "modification",
+      "page": 9,
+      "inputs": [
+        "C"
+      ],
+      "outputs": [
+        "Cp"
+      ],
+      "handoff_outputs": [
+        "Cp"
+      ],
+      "objectives": [
+        "Account for the carbon that harvesting moves into products."
+      ],
+      "variables": [
+        {
+          "symbol": "C",
+          "normalized_name": "living_carbon",
+          "role": "input",
+          "unit": "100 million t",
+          "definition": "Carbon stored by the living forest",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cp",
+          "normalized_name": "product_carbon",
+          "role": "output",
+          "unit": "100 million t",
+          "definition": "Carbon stored by wood products",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vp",
+          "normalized_name": "product_volume",
+          "role": "intermediate",
+          "unit": "m3",
+          "definition": "Volume of wood products",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "product_density",
+          "role": "parameter",
+          "unit": "t per m3",
+          "definition": "Density of the wood products",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "carbon_rate",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Carbon fraction of the product",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223269-HWP-1",
+          "equation_label": "Product carbon",
+          "equation_text": "Product carbon is the product volume times the density times the carbon rate.",
+          "source_expression": "Product carbon is the product volume times the density times the carbon rate.",
+          "normalized_latex": "C_p=V_p\\rho k",
+          "purpose": "Turn a product volume into carbon.",
+          "variable_symbols": [
+            "Cp",
+            "Vp",
+            "rho",
+            "k"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equation 9 prints with boxed symbols. The recorded product is volume times density times carbon rate, as the prose defines it.",
+        "reason": "Section 4.3."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The account is a stock over a life cycle, not a dynamic initial state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The three methods would agree only if there were no trade."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The reported series is the average of the stock-change, production, and atmospheric-flow estimates.",
+        "parameters": [
+          "rho",
+          "k"
+        ]
+      },
+      "algorithm": {
+        "description": "Compute three official accounts and average them.",
+        "status": "partial",
+        "steps": [
+          "Compute the stock-change, production, and atmospheric-flow stores",
+          "Note that trade makes them differ",
+          "Take the average as the result",
+          "Compare it with the living-forest store"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The average is closed form."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The three methods disagree and the paper says the trade data are incomplete."
+        ],
+        "analysis": "Figures 4 and 5 show the three series and the average."
+      },
+      "constraints": [
+        "Missing trade and landfill data are left out."
+      ],
+      "validation_refs": [
+        "Figure 4, the three methods",
+        "Figure 5, the average"
+      ],
+      "strengths": [
+        "The disagreement is explained by trade before the average is taken.",
+        "The ratio to the living forest is stated."
+      ],
+      "limitations": [
+        "No rule justifies the average beyond the absence of a rule.",
+        "Equation 9 prints with boxed symbols."
+      ],
+      "missing_details": [
+        "The density and the carbon rate used for each product.",
+        "The numerical one-fifth ratio table."
+      ],
+      "assumptions": [
+        "A product holds its carbon until it decays.",
+        "The country-level gaps do not overturn the global average."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223269-MOP",
+      "section": "Multi-objective Programming Model",
+      "family": "decision",
+      "summary": "A harvest plan over sub-compartments with four goals. A logged regression of service value keeps water, soil, and carbon, because their weights exceed 0.1, and drops nutrient accumulation, air purification, biodiversity, and recreation. Timber is added as the economic goal. Water regulation is ten times area times precipitation minus evaporation minus fast runoff, times a correction. Soil kept is area times the gap between the bare-land erosion and the forest erosion, times a correction. Each goal is scaled by its own minimum and maximum. The weights from the regression and the analytic hierarchy are 0.123 for carbon, 0.116 for water, 0.173 for soil, and 0.588 for timber. The cut is binary. A year cut cannot exceed that year growth, and it must stay within a band of the neighboring years. The slope caps a clear cut at 20, 10, or 5 hectares, land that already erodes is not cleared, and a stand must pass a minimum age and a minimum diameter. The timber weight is read as a reason to reject a ban.",
+      "computational_cost": "One weighted integer program over the sub-compartments",
+      "purpose": "Choose which stands to cut so that carbon, water, soil, and timber are balanced.",
+      "base_or_modification": "paper-specific",
+      "page": 12,
+      "inputs": [
+        "C"
+      ],
+      "outputs": [
+        "x"
+      ],
+      "handoff_outputs": [
+        "x"
+      ],
+      "objectives": [
+        "Maximize the weighted sum of carbon, water, soil, and timber."
+      ],
+      "variables": [
+        {
+          "symbol": "C",
+          "normalized_name": "carbon_storage",
+          "role": "input",
+          "unit": "t",
+          "definition": "Carbon store that the carbon goal draws on",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "harvest_indicator",
+          "role": "output",
+          "unit": "binary",
+          "definition": "One if the sub-compartment is cut in the year, else zero",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Wc",
+          "normalized_name": "water_regulation",
+          "role": "intermediate",
+          "unit": "m3 per year",
+          "definition": "Water the stand regulates",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Sc",
+          "normalized_name": "soil_kept",
+          "role": "intermediate",
+          "unit": "t per year",
+          "definition": "Soil the stand keeps from eroding",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Hv",
+          "normalized_name": "harvest_volume",
+          "role": "intermediate",
+          "unit": "m3",
+          "definition": "Clear-cut stock of one sub-compartment",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Z",
+          "normalized_name": "weighted_objective",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "Weighted sum of the four normalized goals",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "goal_weight",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Weight of one goal",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "stand_area",
+          "role": "parameter",
+          "unit": "ha",
+          "definition": "Area of the stand",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "precipitation",
+          "role": "parameter",
+          "unit": "mm per year",
+          "definition": "Precipitation outside the forest",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "evapotranspiration",
+          "role": "parameter",
+          "unit": "mm per year",
+          "definition": "Evapotranspiration of the stand",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "fast_runoff",
+          "role": "parameter",
+          "unit": "mm per year",
+          "definition": "Fast surface runoff",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "F",
+          "normalized_name": "correction",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Correction for the ecosystem service",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "growth_stock",
+          "role": "parameter",
+          "unit": "m3",
+          "definition": "Forest stock growth in the year",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223269-MOP-1",
+          "equation_label": "Water regulation",
+          "equation_text": "Water regulated is ten times the area times precipitation minus evaporation minus fast runoff, times the correction.",
+          "source_expression": "Water regulated is ten times the area times precipitation minus evaporation minus fast runoff, times the correction.",
+          "normalized_latex": "W_c=10\\,S(P-E-H)F",
+          "purpose": "Turn the water balance into a volume.",
+          "variable_symbols": [
+            "Wc",
+            "S",
+            "P",
+            "E",
+            "H",
+            "F"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 12,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223269-MOP-2",
+          "equation_label": "Weighted objective",
+          "equation_text": "The objective is the weighted sum of the normalized carbon, water, soil, and harvest goals.",
+          "source_expression": "The objective is the weighted sum of the normalized carbon, water, soil, and harvest goals.",
+          "normalized_latex": "Z=w_1 C'+w_2 W_c'+w_3 S_c'+w_4 H_v'",
+          "purpose": "Put the four goals on one scale.",
+          "variable_symbols": [
+            "Z",
+            "w",
+            "C",
+            "Wc",
+            "Sc",
+            "Hv"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223269-MOP-3",
+          "equation_label": "Cut under growth",
+          "equation_text": "The harvested stock in a year cannot exceed the growth of that year.",
+          "source_expression": "The harvested stock in a year cannot exceed the growth of that year.",
+          "normalized_latex": "\\sum_i x_i H_{v,i}\\le G",
+          "purpose": "Keep the cut inside the growth.",
+          "variable_symbols": [
+            "x",
+            "Hv",
+            "G"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 14,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 13, 19, and 21 print with boxed symbols. The recorded forms follow the prose: the water balance, the weighted sum, and the cut kept under the growth.",
+        "reason": "Sections 5.3 to 5.4."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "The program chooses a plan, not a time state."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The cut is binary, stays under the growth, respects the slope cap, and waits for age and diameter."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No equilibrium is computed."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Service weights come from a logged regression, and the four goal weights mix that regression with the analytic hierarchy.",
+        "parameters": [
+          "w"
+        ]
+      },
+      "algorithm": {
+        "description": "Normalize four goals, weight them, and enforce the cut limits.",
+        "status": "partial",
+        "steps": [
+          "Keep the services whose regression weight exceeds 0.1",
+          "Normalize each goal by its own range",
+          "Weight carbon, water, soil, and timber at 0.123, 0.116, 0.173, and 0.588",
+          "Enforce the binary cut, the growth cap, the slope cap, and the age and diameter limits"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The program is solved to a plan."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "The weights are printed and the constraint list is explicit."
+        ],
+        "analysis": "The case in section 6 solves the same program."
+      },
+      "constraints": [
+        "A clear cut is capped at 20, 10, or 5 hectares by slope.",
+        "Eroding land is not cleared.",
+        "Age and diameter must clear their minima."
+      ],
+      "validation_refs": [
+        "Table 6, the regression weights",
+        "Table 7, the slope rules"
+      ],
+      "strengths": [
+        "Each goal is defined before it is weighted.",
+        "The slope rule is a table, not a slogan."
+      ],
+      "limitations": [
+        "Timber at 0.588 dominates the ecological goals.",
+        "The regression table scrambles coefficients across rows."
+      ],
+      "missing_details": [
+        "The minimum cutting age and the minimum diameter.",
+        "The fluctuation band between adjacent years."
+      ],
+      "assumptions": [
+        "A plan that maximizes only carbon is not the best plan.",
+        "Sub-compartments are the management unit."
+      ]
+    },
+    {
+      "model_id": "MU-E-2022-2223269-CASE",
+      "section": "Jindong Forest Case",
+      "family": "evaluation",
+      "summary": "A century forecast and a five-stage plan for Jindong Forest in Yongzhou, Hunan: 635 square kilometers, 2.68 million cubic meters, mean slope 34 degrees, rain 1600 to 1900 millimeters, evaporation about 1225. The world model is kept for short forecasts and rebuilt here. Carbon density is stock per hectare times wood density times the biomass expansion times one plus the root ratio, times the carbon content. The forest keeps its share of the provincial area, planting finishes in 2050 and is spread evenly, and age classes step forward every five years. A logistic of age on stock fits with an R squared above 0.95. By 2120 the store is 450.003 teragrams at 102.55 megagrams per hectare, up from 240.727 in 2020. LINGO plans 425 sub-compartments in five stages of twenty years, with rain set at 1800 millimeters, bare-land erosion at 319.8, and yield at 0.65. The century cut is 9343.32 square meters and 2580341.86 cubic meters. The four increments are 289050.32 tonnes of carbon, 173476.02 of water, 9511.92 of soil, and 1677707.14 cubic meters of timber. If the best cycle is ten years longer than the present one, selective intensity stays under 40 percent and the wait is shortened until the best cycle is reached.",
+      "computational_cost": "One logistic projection to 2120 and one LINGO solve over 425 stands",
+      "purpose": "Say what Jindong holds in a century and which stands are cut.",
+      "base_or_modification": "modification",
+      "page": 16,
+      "inputs": [
+        "x"
+      ],
+      "outputs": [
+        "Ct"
+      ],
+      "handoff_outputs": [
+        "Ct"
+      ],
+      "objectives": [
+        "Project the carbon store of Jindong Forest to 2120."
+      ],
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "harvest_indicator",
+          "role": "input",
+          "unit": "binary",
+          "definition": "Harvest plan taken from the programming model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "stock_per_area",
+          "role": "state",
+          "unit": "m3 per hm2",
+          "definition": "Stock per hectare at a given age",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "stand_age",
+          "role": "parameter",
+          "unit": "year",
+          "definition": "Average age of the age class",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "u",
+          "normalized_name": "max_growth",
+          "role": "parameter",
+          "unit": "m3 per hm2",
+          "definition": "Maximum growth parameter of the logistic",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "initial_growth",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Initial-value parameter of the logistic",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "growth_rate",
+          "role": "parameter",
+          "unit": "per year",
+          "definition": "Maximum growth-rate parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "stand_area",
+          "role": "parameter",
+          "unit": "hm2",
+          "definition": "Area of the age class",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "dens",
+          "normalized_name": "wood_density",
+          "role": "parameter",
+          "unit": "t per m3",
+          "definition": "Basic wood density",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "BEF",
+          "normalized_name": "expansion",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ratio of aboveground biomass to trunk biomass",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "root_ratio",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Ratio of belowground to aboveground biomass",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "cc",
+          "normalized_name": "carbon_content",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Carbon content of the biomass",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Ct",
+          "normalized_name": "carbon_stock",
+          "role": "output",
+          "unit": "t",
+          "definition": "Carbon stock of the class",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-E-2022-2223269-CASE-1",
+          "equation_label": "Logistic stock",
+          "equation_text": "Stock per hectare is the maximum growth divided by one plus an initial term times an exponential decay in age.",
+          "source_expression": "Stock per hectare is the maximum growth divided by one plus an initial term times an exponential decay in age.",
+          "normalized_latex": "V=u/(1+v\\exp(-wt))",
+          "purpose": "Let the stock follow the age.",
+          "variable_symbols": [
+            "V",
+            "u",
+            "v",
+            "w",
+            "t"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 18,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-E-2022-2223269-CASE-2",
+          "equation_label": "Carbon density",
+          "equation_text": "Carbon stock is area times stock per hectare times wood density times the expansion times one plus the root ratio, times the carbon content.",
+          "source_expression": "Carbon stock is area times stock per hectare times wood density times the expansion times one plus the root ratio, times the carbon content.",
+          "normalized_latex": "C_t=A\\,V\\,\\delta\\,\\mathrm{BEF}\\,(1+R)\\,c_c",
+          "purpose": "Turn the stock into carbon.",
+          "variable_symbols": [
+            "Ct",
+            "A",
+            "V",
+            "dens",
+            "BEF",
+            "R",
+            "cc"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 17,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "Equations 33 and 37 print with boxed symbols. The recorded forms follow the prose: the logistic of age, and the accumulation-biomass conversion.",
+        "reason": "Section 6.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The ninth inventory is the base, and Jindong keeps its share of the provincial forest."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Afforestation is finished in 2050 and spread evenly across the years."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "The projection is read at 2120, not at an equilibrium."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The logistic is fit to the eighth and ninth national inventories, with R squared above 0.95.",
+        "parameters": [
+          "u",
+          "v",
+          "w"
+        ]
+      },
+      "algorithm": {
+        "description": "Step the age classes by five years, convert stock to carbon, and solve the plan in LINGO.",
+        "status": "partial",
+        "steps": [
+          "Split each age group into five-year classes",
+          "Advance the area one class every five years",
+          "Fit the logistic and convert to carbon",
+          "Solve five stages of twenty years over 425 stands"
+        ],
+        "software": [
+          "LINGO"
+        ],
+        "convergence_criteria": "The logistic is reported as a good fit, and LINGO returns a plan."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The carbon path is printed by decade, but the harvested area is implausibly small beside the harvested volume."
+        ],
+        "analysis": "Table 8 gives the carbon and Table 9 the cut."
+      },
+      "constraints": [
+        "Selective intensity stays under 40 percent of the standing volume during the transition.",
+        "The yield rate is 0.65."
+      ],
+      "validation_refs": [
+        "Table 8, the carbon path to 2120",
+        "Table 9, the five-stage harvest"
+      ],
+      "strengths": [
+        "The world model is admitted to fail on one forest over a century.",
+        "The quiet stages are explained by the age of the trees."
+      ],
+      "limitations": [
+        "The harvested area of 9343.32 square meters cannot support the harvested volume.",
+        "Table 9 scrambles the stage rows."
+      ],
+      "missing_details": [
+        "The fitted logistic parameters.",
+        "How far the present cycle actually sits from the best one."
+      ],
+      "assumptions": [
+        "The existing forest area stays, apart from the new planting.",
+        "The age classes inside one age group are equal in area."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-E-2022-2223269-SEQ-1",
+      "model_id": "MU-E-2022-2223269-SEQ",
+      "page": 5,
+      "source_expression": "Next year storage equals this year storage plus growth, minus loss, minus the cut."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-SEQ-2",
+      "model_id": "MU-E-2022-2223269-SEQ",
+      "page": 6,
+      "source_expression": "Sequestration is 1.158 times the stock volume, after the IPCC factors are multiplied through."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-SEQ-3",
+      "model_id": "MU-E-2022-2223269-SEQ",
+      "page": 7,
+      "source_expression": "After stepwise regression drops the collinear drivers, next year storage is 0.999 times this year."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-HWP-1",
+      "model_id": "MU-E-2022-2223269-HWP",
+      "page": 9,
+      "source_expression": "Product carbon is the product volume times the density times the carbon rate."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-MOP-1",
+      "model_id": "MU-E-2022-2223269-MOP",
+      "page": 12,
+      "source_expression": "Water regulated is ten times the area times precipitation minus evaporation minus fast runoff, times the correction."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-MOP-2",
+      "model_id": "MU-E-2022-2223269-MOP",
+      "page": 14,
+      "source_expression": "The objective is the weighted sum of the normalized carbon, water, soil, and harvest goals."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-MOP-3",
+      "model_id": "MU-E-2022-2223269-MOP",
+      "page": 14,
+      "source_expression": "The harvested stock in a year cannot exceed the growth of that year."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-CASE-1",
+      "model_id": "MU-E-2022-2223269-CASE",
+      "page": 18,
+      "source_expression": "Stock per hectare is the maximum growth divided by one plus an initial term times an exponential decay in age."
+    },
+    {
+      "equation_id": "EQ-E-2022-2223269-CASE-2",
+      "model_id": "MU-E-2022-2223269-CASE",
+      "page": 17,
+      "source_expression": "Carbon stock is area times stock per hectare times wood density times the expansion times one plus the root ratio, times the carbon content."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-E-2022-2223269-SEQ",
+      "to_model_id": "MU-E-2022-2223269-HWP",
+      "handoff": "The living-forest store is the benchmark the product store is compared with."
+    },
+    {
+      "from_model_id": "MU-E-2022-2223269-HWP",
+      "to_model_id": "MU-E-2022-2223269-MOP",
+      "handoff": "The product store is why timber is kept as a goal beside carbon, water, and soil."
+    },
+    {
+      "from_model_id": "MU-E-2022-2223269-SEQ",
+      "to_model_id": "MU-E-2022-2223269-MOP",
+      "handoff": "The forest carbon store is the carbon goal the harvest plan maximizes."
+    },
+    {
+      "from_model_id": "MU-E-2022-2223269-MOP",
+      "to_model_id": "MU-E-2022-2223269-CASE",
+      "handoff": "The harvest decision is what the Jindong century plan applies."
+    }
+  ]
+}

@@ -1,0 +1,1885 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2015-32150-b7715ba1",
+  "problem_type": "A",
+  "year": "2015",
+  "source_sha256": "b7715ba1fb8aec84a5e7cd4ce81aa75f2fdef6aaca98167d0f4e0279ed71d4be",
+  "models": [
+    {
+      "model_id": "MU-A-2015-32150-001",
+      "page": 8,
+      "section": "4.1.1. The SEIR Model",
+      "family": "compartmental ODE",
+      "purpose": "Baseline epidemic trajectory",
+      "base_or_modification": "base",
+      "summary": "Susceptible, exposed, infectious, and removed states provide the transparent starting model.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "susceptible",
+          "unit": "people",
+          "definition": "susceptible population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exposed",
+          "unit": "people",
+          "definition": "incubating population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "infectious",
+          "unit": "people",
+          "definition": "infectious population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "removed",
+          "unit": "people",
+          "definition": "recovered or deceased population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "people",
+          "definition": "total population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "transmission rate",
+          "unit": "1/day",
+          "definition": "effective transmission rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "rate leaving exposed",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gamma",
+          "normalized_name": "recovery/removal rate",
+          "unit": "1/day",
+          "definition": "rate leaving infectious",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N",
+        "beta",
+        "sigma",
+        "gamma"
+      ],
+      "outputs": [
+        "S",
+        "E",
+        "I",
+        "R"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-001",
+          "page": 8,
+          "label": null,
+          "source_expression": "dS/dt = -beta SI/N",
+          "normalized_latex": "\\frac{dS}{dt}=-\\beta SI/N",
+          "purpose": "susceptible depletion",
+          "variable_symbols": [
+            "S",
+            "beta",
+            "I",
+            "N"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-002",
+          "page": 8,
+          "label": null,
+          "source_expression": "dE/dt = beta SI/N - sigma E",
+          "normalized_latex": "\\frac{dE}{dt}=\\beta SI/N-\\sigma E",
+          "purpose": "exposure accumulation",
+          "variable_symbols": [
+            "E",
+            "beta",
+            "S",
+            "I",
+            "N",
+            "sigma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-003",
+          "page": 8,
+          "label": null,
+          "source_expression": "dI/dt = sigma E - gamma I",
+          "normalized_latex": "\\frac{dI}{dt}=\\sigma E-\\gamma I",
+          "purpose": "infectious progression",
+          "variable_symbols": [
+            "I",
+            "sigma",
+            "E",
+            "gamma"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-004",
+          "page": 8,
+          "label": null,
+          "source_expression": "dR/dt = gamma I",
+          "normalized_latex": "\\frac{dR}{dt}=\\gamma I",
+          "purpose": "removal",
+          "variable_symbols": [
+            "R",
+            "gamma",
+            "I"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "fit outbreak curves"
+      ],
+      "constraints": [
+        "nonnegative compartments",
+        "closed population"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Initialize S,E,I,R.",
+          "Integrate the four equations.",
+          "Fit parameters to country curves.",
+          "Compare calculated and reported cumulative cases."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "homogeneous mixing",
+        "no reinfection"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "S",
+        "E",
+        "I",
+        "R"
+      ],
+      "validation_refs": [
+        "Fig.2 and WHO curves"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Reported fit lacks residual metrics."
+      ],
+      "missing_details": [
+        "seeds and solver tolerances"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-002",
+      "page": 8,
+      "section": "4.1.1. The SEIR Model",
+      "family": "time-varying ODE parameter",
+      "purpose": "Represent intervention-induced transmission decay",
+      "base_or_modification": "modification",
+      "summary": "A piecewise or decaying transmission rate changes after intervention time tau.",
+      "variables": [
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "calendar time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "intervention start",
+          "unit": "day",
+          "definition": "time control begins",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta0",
+          "normalized_name": "baseline transmission",
+          "unit": "1/day",
+          "definition": "pre-control rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "beta",
+          "normalized_name": "controlled transmission",
+          "unit": "1/day",
+          "definition": "post-control rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "k",
+          "normalized_name": "decay constant",
+          "unit": "1/day",
+          "definition": "rate of transmission decay",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "t",
+        "tau",
+        "beta0",
+        "k"
+      ],
+      "outputs": [
+        "beta"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-005",
+          "page": 8,
+          "label": null,
+          "source_expression": "beta(t)=beta0 for t<tau; beta0 exp(-k(t-tau)) otherwise",
+          "normalized_latex": "\\beta(t)=\\begin{cases}\\beta_0,&t<\\tau\\\\\\beta_0e^{-k(t-\\tau)},&t\\ge\\tau\\end{cases}",
+          "purpose": "intervention response",
+          "variable_symbols": [
+            "beta",
+            "beta0",
+            "t",
+            "tau",
+            "k"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "encode intervention timing"
+      ],
+      "constraints": [
+        "nonnegative beta",
+        "single intervention switch"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set tau and beta0.",
+          "Apply decay after tau.",
+          "Propagate beta into the compartment equations."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "control changes transmission only"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "beta"
+      ],
+      "validation_refs": [
+        "parameter table and fit figures"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Timing and decay may be confounded."
+      ],
+      "missing_details": [
+        "joint parameter uncertainty"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-003",
+      "page": 11,
+      "section": "4.2.1. The SEIHCR (CT) Model",
+      "family": "compartmental ODE",
+      "purpose": "Add hospital, corpse, and contact-tracing mechanisms",
+      "base_or_modification": "modification",
+      "summary": "The ultimate model separates outside-hospital infectious cases, hospital cases, corpses, contact-traced exposed cases, and removals.",
+      "variables": [
+        {
+          "symbol": "S",
+          "normalized_name": "susceptible",
+          "unit": "people",
+          "definition": "susceptible population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exposed",
+          "unit": "people",
+          "definition": "exposed population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "infectious outside hospital",
+          "unit": "people",
+          "definition": "infectious community population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "infectious in hospital",
+          "unit": "people",
+          "definition": "hospitalized infectious population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "contaminated corpses",
+          "unit": "people",
+          "definition": "infectious corpse population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "removed",
+          "unit": "people",
+          "definition": "recovered/dead handled population",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "people",
+          "definition": "country population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "betaI",
+          "normalized_name": "community transmission",
+          "unit": "1/day",
+          "definition": "outside-hospital transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "betaH",
+          "normalized_name": "hospital transmission",
+          "unit": "1/day",
+          "definition": "inside-hospital transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "betaC",
+          "normalized_name": "corpse transmission",
+          "unit": "1/day",
+          "definition": "corpse transmission",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "sigma",
+          "normalized_name": "incubation rate",
+          "unit": "1/day",
+          "definition": "exposed-to-infectious rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "alpha",
+          "normalized_name": "identification rate",
+          "unit": "1/day",
+          "definition": "infectious identified/isolated fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "kappa",
+          "normalized_name": "contact-tracing intensity",
+          "unit": "1/day",
+          "definition": "contact-traced fraction",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gammaH",
+          "normalized_name": "hospital recovery rate",
+          "unit": "1/day",
+          "definition": "recovery inside hospital",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nuH",
+          "normalized_name": "hospital fatality rate",
+          "unit": "1/day",
+          "definition": "death inside hospital",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gammaI",
+          "normalized_name": "community recovery rate",
+          "unit": "1/day",
+          "definition": "recovery outside hospital",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nuI",
+          "normalized_name": "community fatality rate",
+          "unit": "1/day",
+          "definition": "death outside hospital",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "psi",
+          "normalized_name": "corpse handling rate",
+          "unit": "1/day",
+          "definition": "handled-corpse rate",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N",
+        "betaI",
+        "betaH",
+        "betaC",
+        "sigma",
+        "alpha",
+        "kappa",
+        "gammaH",
+        "nuH",
+        "gammaI",
+        "nuI",
+        "psi"
+      ],
+      "outputs": [
+        "S",
+        "E",
+        "I",
+        "H",
+        "C",
+        "R"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-006",
+          "page": 11,
+          "label": null,
+          "source_expression": "SEIHCR(CT) six-compartment differential system",
+          "normalized_latex": "\\dot{S},\\dot{E},\\dot{I},\\dot{H},\\dot{C},\\dot{R}=f(S,E,I,H,C,R;\\beta_I,\\beta_H,\\beta_C,\\sigma,\\alpha,\\kappa,\\gamma_H,\\nu_H,\\gamma_I,\\nu_I,\\psi)",
+          "purpose": "ultimate epidemic dynamics",
+          "variable_symbols": [
+            "S",
+            "E",
+            "I",
+            "H",
+            "C",
+            "R",
+            "betaI",
+            "betaH",
+            "betaC",
+            "sigma",
+            "alpha",
+            "kappa",
+            "gammaH",
+            "nuH",
+            "gammaI",
+            "nuI",
+            "psi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "fit cumulative cases",
+        "compare intervention scenarios"
+      ],
+      "constraints": [
+        "nonnegative compartments",
+        "population conservation"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Define six compartments.",
+          "Route community, hospital, corpse, and traced flows.",
+          "Integrate under country parameters.",
+          "Compare cumulative cases to WHO data."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "hospital and corpse pathways are explicit",
+        "contact tracing acts on exposed/infectious flows"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "S",
+        "E",
+        "I",
+        "H",
+        "C",
+        "R"
+      ],
+      "validation_refs": [
+        "Figs.3-6 and parameter table"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Many rates may not be independently identifiable."
+      ],
+      "missing_details": [
+        "full fitting objective and covariance"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-004",
+      "page": 12,
+      "section": "4.2.2. Choosing Parameters",
+      "family": "next-generation matrix",
+      "purpose": "Estimate reproduction number and parameter consistency",
+      "base_or_modification": "paper-specific",
+      "summary": "The source constructs F and V matrices and uses the spectral radius to compute R0.",
+      "variables": [
+        {
+          "symbol": "F",
+          "normalized_name": "new-infection matrix",
+          "unit": "matrix",
+          "definition": "new infection terms",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "V",
+          "normalized_name": "transition matrix",
+          "unit": "matrix",
+          "definition": "within-compartment transitions",
+          "role": "intermediate",
+          "source_status": "inferred-from-equation"
+        },
+        {
+          "symbol": "R0",
+          "normalized_name": "basic reproduction number",
+          "unit": "dimensionless",
+          "definition": "spectral radius of FV inverse",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rho",
+          "normalized_name": "spectral radius",
+          "unit": "dimensionless",
+          "definition": "dominant eigenvalue",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "F",
+        "V"
+      ],
+      "outputs": [
+        "R0",
+        "rho"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-007",
+          "page": 12,
+          "label": null,
+          "source_expression": "R0 = rho(F V^{-1})",
+          "normalized_latex": "R_0=\\rho(FV^{-1})",
+          "purpose": "basic reproduction threshold",
+          "variable_symbols": [
+            "R0",
+            "rho",
+            "F",
+            "V"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "compare pre-control and controlled regimes"
+      ],
+      "constraints": [
+        "next-generation decomposition",
+        "nonnegative dominant eigenvalue"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Construct F and V.",
+          "Compute FV^{-1}.",
+          "Take the spectral radius."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "Disease-free linearization is meaningful"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "R0",
+        "rho"
+      ],
+      "validation_refs": [
+        "parameter selection section"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Matrix construction is OCR-damaged and not fully reproducible."
+      ],
+      "missing_details": [
+        "eigenvalue uncertainty"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-005",
+      "page": 12,
+      "section": "4.2.2. Choosing Parameters",
+      "family": "cumulative integral",
+      "purpose": "Convert incidence into cumulative cases",
+      "base_or_modification": "paper-specific",
+      "summary": "Cumulative cases integrate the incidence or removal flow over time and support both validation and supply planning.",
+      "variables": [
+        {
+          "symbol": "CUM",
+          "normalized_name": "cumulative cases",
+          "unit": "people",
+          "definition": "integrated case total",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "calendar time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "I",
+          "normalized_name": "community infectious",
+          "unit": "people",
+          "definition": "infectious state",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "hospital infectious",
+          "unit": "people",
+          "definition": "hospital state",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "C",
+          "normalized_name": "corpse state",
+          "unit": "people",
+          "definition": "corpse state",
+          "role": "state",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "population",
+          "unit": "people",
+          "definition": "total population",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "I",
+        "H",
+        "C",
+        "t"
+      ],
+      "outputs": [
+        "CUM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-008",
+          "page": 12,
+          "label": null,
+          "source_expression": "CUM(t)=integral of incident cases",
+          "normalized_latex": "CUM(t)=\\int_0^t q(s)\\,ds",
+          "purpose": "cumulative case output",
+          "variable_symbols": [
+            "CUM",
+            "t",
+            "I",
+            "H",
+            "C"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "match WHO cumulative curves",
+        "feed medicine demand"
+      ],
+      "constraints": [
+        "nondecreasing cumulative cases"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute incidence from model flows.",
+          "Integrate over time.",
+          "Compare cumulative output with reported data."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "Incidence flow is defined by the compartment transitions"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "CUM"
+      ],
+      "validation_refs": [
+        "Figs.4-8"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "The exact incidence integrand is difficult to read from OCR."
+      ],
+      "missing_details": [
+        "discrete reporting aggregation"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-006",
+      "page": 17,
+      "section": "5.1. Total Quantity of the Medicine",
+      "family": "demand proxy",
+      "purpose": "Estimate daily unit-dose demand",
+      "base_or_modification": "paper-specific",
+      "summary": "Demand combines current cumulative patients and disease growth rate as a transparent proxy when actual dosage is unavailable.",
+      "variables": [
+        {
+          "symbol": "D",
+          "normalized_name": "daily unit dose",
+          "unit": "unit/day",
+          "definition": "medicine demand",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "CUMp",
+          "normalized_name": "current cumulative patients",
+          "unit": "people",
+          "definition": "current burden",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "nu",
+          "normalized_name": "growth rate",
+          "unit": "1/day",
+          "definition": "disease increase rate",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "calendar time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "CUMp",
+        "nu",
+        "t"
+      ],
+      "outputs": [
+        "D"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-009",
+          "page": 17,
+          "label": null,
+          "source_expression": "D = CUMp + nu CUMp",
+          "normalized_latex": "D=CUM_p(1+\\nu)",
+          "purpose": "daily demand proxy",
+          "variable_symbols": [
+            "D",
+            "CUMp",
+            "nu"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "size medicine supply"
+      ],
+      "constraints": [
+        "unit dose is a proxy",
+        "demand is nonnegative"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Read cumulative burden and growth.",
+          "Compute unit-dose demand.",
+          "Aggregate by city, country, and time window."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "current burden and growth jointly drive demand"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "D"
+      ],
+      "validation_refs": [
+        "Fig.7, Fig.8, Tables 3-4"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Actual patient dose is unavailable; unit dose is not pharmacological dosage."
+      ],
+      "missing_details": [
+        "seasonality and stock dynamics"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-007",
+      "page": 18,
+      "section": "5.2.1. Locations of Delivery",
+      "family": "weighted fuzzy c-means",
+      "purpose": "Choose delivery headquarters using geography and demand",
+      "base_or_modification": "modification",
+      "summary": "Weighted fuzzy clustering assigns cities to centers while weighting each city by medicine demand.",
+      "variables": [
+        {
+          "symbol": "xk",
+          "normalized_name": "city coordinate",
+          "unit": "coordinate pair",
+          "definition": "location of city k",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Dk",
+          "normalized_name": "city demand",
+          "unit": "unit",
+          "definition": "needed medicine for city k",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "uik",
+          "normalized_name": "membership",
+          "unit": "dimensionless",
+          "definition": "membership of city k in center i",
+          "role": "intermediate",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vi",
+          "normalized_name": "cluster center",
+          "unit": "coordinate pair",
+          "definition": "headquarters i",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "m",
+          "normalized_name": "fuzzifier",
+          "unit": "dimensionless",
+          "definition": "membership exponent",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "cluster count",
+          "unit": "count",
+          "definition": "number of headquarters",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Jm",
+          "normalized_name": "objective",
+          "unit": "weighted distance",
+          "definition": "clustering objective",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "epsilon",
+          "normalized_name": "tolerance",
+          "unit": "distance",
+          "definition": "membership convergence threshold",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "xk",
+        "Dk",
+        "m",
+        "c",
+        "epsilon"
+      ],
+      "outputs": [
+        "vi",
+        "uik",
+        "Jm"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-010",
+          "page": 18,
+          "label": null,
+          "source_expression": "Jm(U,v)=sum_i sum_k Dk uik^m ||yk-vi||^2",
+          "normalized_latex": "J_m(U,v)=\\sum_{i=1}^{c}\\sum_{k=1}^{N}D_k u_{ik}^m\\lVert x_k-v_i\\rVert^2",
+          "purpose": "weighted clustering objective",
+          "variable_symbols": [
+            "Jm",
+            "Dk",
+            "uik",
+            "m",
+            "xk",
+            "vi"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-011",
+          "page": 19,
+          "label": null,
+          "source_expression": "vi = weighted mean of city coordinates",
+          "normalized_latex": "v_i=\\frac{\\sum_k D_k u_{ik}^m x_k}{\\sum_k D_k u_{ik}^m}",
+          "purpose": "center update",
+          "variable_symbols": [
+            "vi",
+            "Dk",
+            "uik",
+            "m",
+            "xk"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-012",
+          "page": 19,
+          "label": null,
+          "source_expression": "membership update from weighted distances",
+          "normalized_latex": "u_{ik}=\\left[\\sum_j(\\lVert x_k-v_i\\rVert/\\lVert x_k-v_j\\rVert)^{2/(m-1)}\\right]^{-1}",
+          "purpose": "membership update",
+          "variable_symbols": [
+            "uik",
+            "xk",
+            "vi",
+            "m"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-013",
+          "page": 19,
+          "label": null,
+          "source_expression": "stop when norm(Unew-Uold)<epsilon",
+          "normalized_latex": "\\lVert U^{(r+1)}-U^{(r)}\\rVert<\\epsilon",
+          "purpose": "convergence test",
+          "variable_symbols": [
+            "epsilon",
+            "uik"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "minimize weighted geographic burden",
+        "select practical cluster count"
+      ],
+      "constraints": [
+        "memberships sum to one",
+        "centers lie in coordinate domain"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Choose c and m.",
+          "Initialize U.",
+          "Update centers and memberships.",
+          "Stop at epsilon.",
+          "Map centers to six headquarters."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "straight-line distance proxy",
+        "demand weight is reliable"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "vi",
+        "uik",
+        "Jm"
+      ],
+      "validation_refs": [
+        "Fig.9-10 and Table 2"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Scaling, initialization, and logistics constraints are incomplete."
+      ],
+      "missing_details": [
+        "distance metric sensitivity and capacity constraints"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-008",
+      "page": 23,
+      "section": "5.3. Speed of Manufacturing",
+      "family": "capacity threshold",
+      "purpose": "Relate manufacturing capacity to hospital fatality",
+      "base_or_modification": "paper-specific",
+      "summary": "The source compares manufacturing speed u with average daily demand and assigns a fatality consequence when supply is insufficient.",
+      "variables": [
+        {
+          "symbol": "u",
+          "normalized_name": "manufacturing speed",
+          "unit": "unit/day",
+          "definition": "available medicine per day",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "daily demand",
+          "unit": "unit/day",
+          "definition": "needed medicine per day",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "deltaH",
+          "normalized_name": "hospital fatality rate",
+          "unit": "dimensionless",
+          "definition": "fatality inside hospital",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "u",
+        "D"
+      ],
+      "outputs": [
+        "deltaH"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-014",
+          "page": 23,
+          "label": null,
+          "source_expression": "deltaH depends on u relative to D",
+          "normalized_latex": "\\delta_H=f(u/D)",
+          "purpose": "capacity-to-fatality relation",
+          "variable_symbols": [
+            "deltaH",
+            "u",
+            "D"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "compare capacity scenarios"
+      ],
+      "constraints": [
+        "u and D are comparable units",
+        "fatality bounded in [0,1]"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set daily demand.",
+          "Vary manufacturing speed.",
+          "Map shortage to fatality."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "medicine shortage changes hospital outcome"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "deltaH"
+      ],
+      "validation_refs": [
+        "Fig.11 and text threshold"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "The functional form and replenishment dynamics are not fully specified."
+      ],
+      "missing_details": [
+        "stockouts and lagged delivery"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-009",
+      "page": 23,
+      "section": "5.4. Medicine Efficacy",
+      "family": "parameter relationship",
+      "purpose": "Translate medicine efficacy into recovery rate",
+      "base_or_modification": "paper-specific",
+      "summary": "Medicine efficacy eta is linked to hospital recovery gammaH so that stronger medicine shortens cure time.",
+      "variables": [
+        {
+          "symbol": "eta",
+          "normalized_name": "medicine efficacy",
+          "unit": "dimensionless",
+          "definition": "efficacy level",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "gammaH",
+          "normalized_name": "hospital recovery rate",
+          "unit": "1/day",
+          "definition": "recovery parameter inside hospital",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "deltaH",
+          "normalized_name": "hospital fatality",
+          "unit": "dimensionless",
+          "definition": "fatality inside hospital",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "eta",
+        "deltaH"
+      ],
+      "outputs": [
+        "gammaH"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-015",
+          "page": 23,
+          "label": null,
+          "source_expression": "gammaH = f(eta,deltaH)",
+          "normalized_latex": "\\gamma_H=f(\\eta,\\delta_H)",
+          "purpose": "efficacy parameterization",
+          "variable_symbols": [
+            "gammaH",
+            "eta",
+            "deltaH"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "simulate efficacy scenarios"
+      ],
+      "constraints": [
+        "gammaH positive",
+        "efficacy does not change transmission directly"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Choose efficacy.",
+          "Update gammaH.",
+          "Recompute control and eradication outputs."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "medicine primarily changes recovery"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "gammaH"
+      ],
+      "validation_refs": [
+        "Fig.12-13 and text"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "The mapping is assumed rather than pharmacologically calibrated."
+      ],
+      "missing_details": [
+        "dose-response uncertainty"
+      ]
+    },
+    {
+      "model_id": "MU-A-2015-32150-010",
+      "page": 27,
+      "section": "7. Control and Eradication of Ebola",
+      "family": "derivative threshold and time-to-event",
+      "purpose": "Define control and eradication decision states",
+      "base_or_modification": "paper-specific",
+      "summary": "Control is defined by the slope and curvature of cumulative cases; eradication is identified when the cumulative curve becomes unchanged.",
+      "variables": [
+        {
+          "symbol": "CUM",
+          "normalized_name": "cumulative cases",
+          "unit": "people",
+          "definition": "cumulative total",
+          "role": "output",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "t",
+          "normalized_name": "time",
+          "unit": "day",
+          "definition": "calendar time",
+          "role": "input",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "tau",
+          "normalized_name": "intervention time",
+          "unit": "day",
+          "definition": "start of control",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "eta",
+          "normalized_name": "efficacy",
+          "unit": "dimensionless",
+          "definition": "medicine efficacy",
+          "role": "parameter",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Terad",
+          "normalized_name": "eradication day",
+          "unit": "day",
+          "definition": "first stable cumulative day",
+          "role": "output",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "CUM",
+        "t",
+        "tau",
+        "eta"
+      ],
+      "outputs": [
+        "Terad",
+        "CUM"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2015-32150-016",
+          "page": 27,
+          "label": null,
+          "source_expression": "control if d2CUM/dt2 <= 0 and dCUM/dt below threshold",
+          "normalized_latex": "\\frac{d^2 CUM}{dt^2}\\le 0,\\quad \\frac{d CUM}{dt}<\\varepsilon_c",
+          "purpose": "control criterion",
+          "variable_symbols": [
+            "CUM",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2015-32150-017",
+          "page": 29,
+          "label": null,
+          "source_expression": "eradication when CUM(t+1)=CUM(t)",
+          "normalized_latex": "CUM(t+1)=CUM(t)",
+          "purpose": "eradication criterion",
+          "variable_symbols": [
+            "CUM",
+            "t"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Equations are retained from the visually reviewed source."
+      },
+      "objectives": [
+        "identify control region",
+        "estimate eradication date"
+      ],
+      "constraints": [
+        "CUM is nondecreasing",
+        "threshold is declared before plotting"
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Initial populations and observed outbreak states are set by country/date."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Population and intervention boundaries follow the stated country model and time horizon."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium calibration is supplied beyond the reproduction-number analysis."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Literature values plus curve-fit adjustment against WHO cumulative-case series.",
+        "parameters": [
+          "transmission rates",
+          "incubation and recovery durations",
+          "fatality and intervention parameters"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Compute derivatives or finite differences.",
+          "Classify control region.",
+          "Search for a stable cumulative plateau.",
+          "Report intervention timing and efficacy scenarios."
+        ],
+        "software": [
+          "Numerical ODE solver or iterative clustering implementation (software package not named)."
+        ],
+        "convergence_criteria": "Stop when the stated numerical tolerance or membership change threshold is reached; otherwise mark reproducibility as incomplete."
+      },
+      "assumptions": [
+        "control is a derivative condition, eradication is a plateau"
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The paper fits multiple coupled rates and intervention effects, so independent identifiability is not established."
+      },
+      "handoff_outputs": [
+        "Terad",
+        "CUM"
+      ],
+      "validation_refs": [
+        "Fig.14-16 and Table 5"
+      ],
+      "computational_cost": "Low-to-moderate for ODE simulation; clustering cost grows with cities, clusters, and iterations.",
+      "strengths": [
+        "Adds mechanisms that map directly to intervention decisions.",
+        "Keeps the route from fitted curves to operational quantities visible."
+      ],
+      "limitations": [
+        "Threshold values depend on fitted parameters and reporting resolution."
+      ],
+      "missing_details": [
+        "joint uncertainty and policy validation"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2015-32150-001",
+      "to_model_id": "MU-A-2015-32150-002",
+      "handoff": "baseline compartments receive intervention-dependent transmission"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-002",
+      "to_model_id": "MU-A-2015-32150-003",
+      "handoff": "time-varying transmission initializes improved compartment model"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-003",
+      "to_model_id": "MU-A-2015-32150-004",
+      "handoff": "fitted compartments supply next-generation matrices"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-003",
+      "to_model_id": "MU-A-2015-32150-005",
+      "handoff": "compartment flows produce cumulative cases"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-005",
+      "to_model_id": "MU-A-2015-32150-006",
+      "handoff": "cumulative cases and growth become medicine demand"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-006",
+      "to_model_id": "MU-A-2015-32150-007",
+      "handoff": "city demand becomes clustering weight"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-006",
+      "to_model_id": "MU-A-2015-32150-008",
+      "handoff": "demand sets manufacturing threshold"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-008",
+      "to_model_id": "MU-A-2015-32150-009",
+      "handoff": "capacity scenario changes efficacy-linked hospital recovery"
+    },
+    {
+      "from_model_id": "MU-A-2015-32150-003",
+      "to_model_id": "MU-A-2015-32150-010",
+      "handoff": "intervention parameters feed control and eradication criteria"
+    }
+  ],
+  "review_status": "validated"
+}

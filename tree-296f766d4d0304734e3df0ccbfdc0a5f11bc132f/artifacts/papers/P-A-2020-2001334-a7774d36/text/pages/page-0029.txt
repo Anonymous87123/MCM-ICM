@@ -1,0 +1,70 @@
+Team # 2001334                                                       Page 25 of 27
+
+
+    pvy = zeros(size(y));
+    for t = 1:size(map,3)
+        [pxidx,pyidx] = transformPointsInverse(tform,px(:,:,t),py(:,:,t));
+        pxidx_ = pxidx;pyidx_ = pyidx;
+        for j = 1:2
+            % get gradT or NaN
+            pxdT = round(pxidx)-lonoi(1);
+            pydT = latoi(2)-round(pyidx);
+            valid = 1<=pxdT&pxdT<=size(pxdT,2)-1 & 1<=pydT&pydT<=size(pydT,1)-1;
+            idx = (t-1)*size(dT,1)*size(dT,2)+sub2ind(size(valid)-1,pydT(valid),pxdT(valid)
+            pdTdx = NaN(size(pxdT));
+            pdTdy = NaN(size(pydT));
+            pdTdx(valid) = dTdx(idx);
+            pdTdy(valid) = dTdy(idx);
+            % get T or NaN
+            pxT = round(pxidx+0.5)-lonoi(1);
+            pyT = latoi(2)-round(pyidx-0.5);
+            valid = 1<=pxT&pxT<=size(pxT,2) & 1<=pyT&pyT<=size(pyT,1);
+            idx = (t-1)*numel(valid)+sub2ind(size(valid),pyT(valid),pxT(valid));
+            pT = NaN(size(pxT));
+            pT(valid) = map(idx);
+            % calc speed
+            [pvx_,pvy_] = odefun(pT,pdTdx,pdTdy,logistic_b,vmax);
+            switch j
+                case 1
+                     pvx = pvx_;pvy = pvy_;
+                     [pxidx,pyidx] = transformPointsInverse(tform,px(:,:,t)+pvx_,py(:,:,t)+p
+                case 2
+                     invalid = isnan(pvx_) | isnan(pvy_);
+                     pvx(invalid) = 0;
+                     pvy(invalid) = 0;
+            end
+        end
+        % update position
+        if t ~= size(map,3)
+            px(:,:,t+1) = px(:,:,t)+pvx;
+            py(:,:,t+1) = py(:,:,t)+pvy;
+        end
+    end
+    rec{1,i} = px;
+    rec{2,i} = py;
+    if i-floor(i/10)*10 == 1
+        [pxidx,pyidx] = transformPointsInverse(tform,px(:,:,end),py(:,:,end));
+        cla();
+        hold(’on’);
+        sf = surf(lon,lat,zeros(size(landmask)),map(:,:,end),’FaceColor’,’interp’);
+        qv = quiver(pxidx,pyidx,pvx,pvy,’marker’,’.’,’AutoScaleFactor’,2);
+        qv.MarkerFaceColor = qv.Color;
+        title(num2str(i));
+        drawnow();
+    end
+end
+toc()
+function [vx,vy] = odefun(T,dTdx,dTdy,beta,v_max)
+    delta_u = zeros(size(T));
+    delta_u(T > 6) = -1;
+    delta_u(T < 2) = 1;
+    dT = sqrt(dTdx.^2+dTdy.^2);
+
+
+
+                                                                                2
+                                                                                    关注数学模型
+                                                                       MATHmodels
+
+
+                                                                                    获取更多资讯

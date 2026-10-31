@@ -1,0 +1,972 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-F-2016-44348-d3da2a69",
+  "problem_type": "F",
+  "year": "2016",
+  "source_sha256": "d3da2a6994b8fd33e4b96671a675bb41afaa8c59af8d00ca19e1661d0ce890bf",
+  "review_status": "validated",
+  "models": [
+    {
+      "model_id": "MU-F-2016-44348-CL",
+      "section": "Clustering the nodes into layers",
+      "family": "clustering",
+      "summary": "Thirteen origin countries are reduced to eleven nodes by merging three close pairs: Uganda with Kenya, Pakistan with Afghanistan, Lebanon with Jordan. Distance from each node to the route starts is averaged, and the averages are cut at three heights into an initial layer of three nodes, a propagation layer of four, and a terminal layer of four. Refugees move only from one layer to the next. The eastern borders route is dropped because it is far and hard to reach. The first simulation gives every onward node equal weight and fails: correlation 0.6543, probability 0.1586, above 0.05.",
+      "computational_cost": "not-stated",
+      "purpose": "Reduce the map to layers a refugee can cross one at a time.",
+      "base_or_modification": "paper-specific",
+      "page": 6,
+      "inputs": [
+        "d"
+      ],
+      "outputs": [
+        "H"
+      ],
+      "handoff_outputs": [
+        "H"
+      ],
+      "objectives": [
+        "Group origins by distance to Europe."
+      ],
+      "variables": [
+        {
+          "symbol": "d",
+          "normalized_name": "mean_distance",
+          "role": "input",
+          "unit": "kilometers",
+          "definition": "Average distance from a node to the route starts",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "route_distance",
+          "role": "input",
+          "unit": "kilometers",
+          "definition": "One measured route distance",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "H",
+          "normalized_name": "layer_height",
+          "role": "output",
+          "unit": "kilometers",
+          "definition": "The distances kept in one cluster",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "cut_height",
+          "role": "parameter",
+          "unit": "kilometers",
+          "definition": "The height that separates one layer from the next",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2016-44348-CL-1",
+          "equation_label": "Mean distance",
+          "equation_text": "d_i = (1/5) * sum of x_k over the five retained routes, for i from 1 to 11.",
+          "source_expression": "d_i = (1/5) * sum of x_k over the five retained routes, for i from 1 to 11.",
+          "normalized_latex": "d_i=\\frac{1}{5}\\sum_k x_k",
+          "purpose": "Average the route distances for one node.",
+          "variable_symbols": [
+            "d",
+            "x"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 6,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The average prints with the divisor detached from the sum. The three cluster lists are read from the prose.",
+        "reason": "Section 5.1."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "A static grouping."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Three layers. The eastern borders route is excluded."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No dynamics."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Cut heights are picked by eye from the distance list. No criterion is stated.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Average the distances, cut at three heights, simulate equal weights.",
+        "status": "partial",
+        "steps": [
+          "Average distances to the route starts",
+          "Cut into three clusters",
+          "Simulate equal weights",
+          "Reject the result"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "None. One pass."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "The equal-weight run gives R of 0.6543 and is rejected."
+        ],
+        "analysis": "The baseline is shown to fail."
+      },
+      "constraints": [
+        "Refugees move only toward Europe.",
+        "Movement is one layer at a time."
+      ],
+      "validation_refs": [
+        "Figure 6 initial result"
+      ],
+      "strengths": [
+        "The failed baseline is printed, not hidden.",
+        "The year of the data is defended."
+      ],
+      "limitations": [
+        "The cut heights have no rule.",
+        "South Sudan appears in two layers."
+      ],
+      "missing_details": [
+        "The clustering linkage and the distance metric."
+      ],
+      "assumptions": [
+        "Refugees always head for the nearer center."
+      ]
+    },
+    {
+      "model_id": "MU-F-2016-44348-GR",
+      "section": "Gravity weight between nodes",
+      "family": "gravity-model",
+      "summary": "The textbook gravity model gives interaction as the product of two populations over distance to a power. The paper takes the logarithm and replaces the populations with its own indexes: safety, transport convenience, repatriation, environmental acceptance and the number of entry points. Safety is one minus a danger term, where the danger is a land flag times a land mortality plus a sea flag times a sea mortality, divided by distance. Convenience counts the kinds of transport, one, two or three. The revised weights give a correlation of 0.9914 against the real route split, against 0.6543 for the equal-weight run. Safety-first weights of 0.7 and 0.3 put the ratios at 0.01, 0.07, 0.43, 0.48, 0.01, 0.00.",
+      "computational_cost": "MATLAB",
+      "purpose": "Replace equal weights with an attraction a refugee can compute.",
+      "base_or_modification": "modification",
+      "page": 9,
+      "inputs": [
+        "S"
+      ],
+      "outputs": [
+        "M"
+      ],
+      "handoff_outputs": [
+        "M"
+      ],
+      "objectives": [
+        "Weight each link by safety, convenience and acceptance."
+      ],
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "attraction",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Weight of the link from i to j",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "P",
+          "normalized_name": "population",
+          "role": "input",
+          "unit": "people",
+          "definition": "Population of a node in the textbook form",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "D",
+          "normalized_name": "distance",
+          "role": "input",
+          "unit": "kilometers",
+          "definition": "Distance between two nodes",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "a",
+          "normalized_name": "distance_power",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Exponent on distance, positive",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "K",
+          "normalized_name": "gravity_constant",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Additive constant after the logarithm",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "S",
+          "normalized_name": "safety_index",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "One minus the danger per unit distance",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "link_distance",
+          "role": "input",
+          "unit": "kilometers",
+          "definition": "Distance used in the safety index",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "c",
+          "normalized_name": "danger_coefficient",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Mortality, one value on land and one at sea",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "x",
+          "normalized_name": "route_flag",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "One if the route crosses that surface, else zero",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "B",
+          "normalized_name": "repatriation_ratio",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of refugees sent back",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2016-44348-GR-1",
+          "equation_label": "Gravity",
+          "equation_text": "M_ij = P_i*P_j / D_ij^a, with a positive.",
+          "source_expression": "M_ij = P_i*P_j / D_ij^a, with a positive.",
+          "normalized_latex": "M_{ij}=P_iP_j/D_{ij}^{a}",
+          "purpose": "State the textbook attraction.",
+          "variable_symbols": [
+            "M",
+            "P",
+            "D",
+            "a"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2016-44348-GR-2",
+          "equation_label": "Log form",
+          "equation_text": "ln M_ij = ln P_i + ln P_j - ln D_ij^a + K.",
+          "source_expression": "ln M_ij = ln P_i + ln P_j - ln D_ij^a + K.",
+          "normalized_latex": "\\ln M_{ij}=\\ln P_i+\\ln P_j-\\ln D_{ij}^{a}+K",
+          "purpose": "Linearize before substituting the indexes.",
+          "variable_symbols": [
+            "M",
+            "P",
+            "D",
+            "a",
+            "K"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 8,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2016-44348-GR-3",
+          "equation_label": "Safety",
+          "equation_text": "S_ij = 1 - (c_1*x_2 + c_2*x_1)/L_ij.",
+          "source_expression": "S_ij = 1 - (c_1*x_2 + c_2*x_1)/L_ij.",
+          "normalized_latex": "S_{ij}=1-(c_1x_2+c_2x_1)/L_{ij}",
+          "purpose": "Penalize sea and land crossings.",
+          "variable_symbols": [
+            "S",
+            "c",
+            "x",
+            "L"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 9,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2016-44348-GR-4",
+          "equation_label": "Combined weight",
+          "equation_text": "ln M_ij = ln S_ij + ln Conv_ij - ln B_t + K.",
+          "source_expression": "ln M_ij = ln S_ij + ln Conv_ij - ln B_t + K.",
+          "normalized_latex": "\\ln M_{ij}=\\ln S_{ij}+\\ln Conv_{ij}-\\ln B_{t}+K",
+          "purpose": "Fold safety, convenience and repatriation into one weight.",
+          "variable_symbols": [
+            "M",
+            "S",
+            "B",
+            "K"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 10,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The safety line prints with its terms scattered. The recorded form follows the prose definitions of the two flags.",
+        "reason": "Section 5.2."
+      },
+      "conditions": {
+        "initial": {
+          "status": "not-applicable",
+          "details": [
+            "A static weighting."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "Flags are zero or one. The distance power is positive."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "No dynamics in the weighting."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "Sea mortality is taken from the fatal-journeys counts. The danger coefficients and the constant are not fitted.",
+        "parameters": [
+          "c"
+        ]
+      },
+      "algorithm": {
+        "description": "Take the log, substitute the indexes, sweep the priority weights.",
+        "status": "partial",
+        "steps": [
+          "Compute safety from the two flags",
+          "Add convenience and repatriation",
+          "Sweep five priority pairs",
+          "Compare with the real split"
+        ],
+        "software": [
+          "MATLAB"
+        ],
+        "convergence_criteria": "Correlation against the observed route split."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Correlation rises from 0.6543 to 0.9914."
+        ],
+        "analysis": "The overlay of three lines is the evidence."
+      },
+      "constraints": [
+        "Refugees choose the nearest two routes once safety is met."
+      ],
+      "validation_refs": [
+        "Figure 14 results and comparison"
+      ],
+      "strengths": [
+        "The textbook form is quoted before it is changed.",
+        "The failed line is kept on the same chart."
+      ],
+      "limitations": [
+        "The constant and the danger coefficients are not estimated.",
+        "Convenience is a count of transport kinds, not a cost."
+      ],
+      "missing_details": [
+        "The value of the distance power and of the constant."
+      ],
+      "assumptions": [
+        "A sensible refugee compares destination with origin."
+      ]
+    },
+    {
+      "model_id": "MU-F-2016-44348-CA",
+      "section": "Cellular automaton of quarterly migration",
+      "family": "cellular-automaton",
+      "summary": "Movement happens once a quarter. Each quarter one over n of a node population leaves, split across the onward links by their weights. A node that still holds more than its limit after the departure closes and lets people out only. Government and non-government aid add or remove people, and the weight is rescaled by the ratio of the new population to the old one. With only the slow factors, the three destination shares are 0.00362, 0.537 and 0.427 against real shares 0.013, 0.545 and 0.422, and the correlation is reported as exactly one. Raising Greece capacity by 20 percent in fine weather moves the flow 15.9 percent. Cutting it 20 percent during war moves the flow only 6.18 percent, because other nodes fill the gap.",
+      "computational_cost": "C++ for the simulation, JavaScript for the map",
+      "purpose": "Let capacity and shocks move the weights from quarter to quarter.",
+      "base_or_modification": "paper-specific",
+      "page": 13,
+      "inputs": [
+        "w"
+      ],
+      "outputs": [
+        "N"
+      ],
+      "handoff_outputs": [
+        "N"
+      ],
+      "objectives": [
+        "Track the population at each node across quarters."
+      ],
+      "variables": [
+        {
+          "symbol": "N",
+          "normalized_name": "node_population",
+          "role": "state",
+          "unit": "people",
+          "definition": "Refugees at a node in one period",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "n",
+          "normalized_name": "periods_per_year",
+          "role": "parameter",
+          "unit": "count",
+          "definition": "Number of periods in a year",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "w",
+          "normalized_name": "link_weight",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Share of departures sent along one link",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "pi",
+          "normalized_name": "population_ratio",
+          "role": "intermediate",
+          "unit": "dimensionless",
+          "definition": "New population divided by old population",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "NL",
+          "normalized_name": "capacity_limit",
+          "role": "parameter",
+          "unit": "people",
+          "definition": "Population at which a node closes",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "aid_change",
+          "role": "input",
+          "unit": "people",
+          "definition": "People added or removed by government or non-government aid",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2016-44348-CA-1",
+          "equation_label": "Arrival",
+          "equation_text": "N_2(t1) = sum over i of (1/n)*N_i(t0)*w_i2 + (1/4)*N_2(t0).",
+          "source_expression": "N_2(t1) = sum over i of (1/n)*N_i(t0)*w_i2 + (1/4)*N_2(t0).",
+          "normalized_latex": "N_{2,t_1}=\\sum_i\\frac{1}{n}N_{i,t_0}w_{i2}+\\frac{1}{4}N_{2,t_0}",
+          "purpose": "Add weighted arrivals to the share that stays.",
+          "variable_symbols": [
+            "N",
+            "n",
+            "w"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2016-44348-CA-2",
+          "equation_label": "Rescaling",
+          "equation_text": "pi = N_2(t1)/N_2(t0), and the onward weights are multiplied by pi and renormalized.",
+          "source_expression": "pi = N_2(t1)/N_2(t0), and the onward weights are multiplied by pi and renormalized.",
+          "normalized_latex": "\\pi=N_{2,t_1}/N_{2,t_0}",
+          "purpose": "Let a larger population pull more people next quarter.",
+          "variable_symbols": [
+            "pi",
+            "N"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        },
+        {
+          "equation_id": "EQ-F-2016-44348-CA-3",
+          "equation_label": "Closure",
+          "equation_text": "If (n-1)/n times the population after arrivals exceeds the limit, the node closes.",
+          "source_expression": "If (n-1)/n times the population after arrivals exceeds the limit, the node closes.",
+          "normalized_latex": "\\frac{n-1}{n}N>N_L",
+          "purpose": "Shut a node that stays over its limit.",
+          "variable_symbols": [
+            "N",
+            "n",
+            "NL"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 13,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The arrival sum prints with its indices scattered across lines. The closure test is recorded from the prose condition.",
+        "reason": "Section 6."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Each node starts with its 2014 refugee count."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "A closed node allows departures only."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "No equilibrium is stated. The run covers one year of quarters."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "The period count and the closure limit are set without a fitting procedure.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Move a fraction each quarter, rescale the weights, close saturated nodes.",
+        "status": "partial",
+        "steps": [
+          "Move one over n of each node",
+          "Split departures by weight",
+          "Rescale weights by the population ratio",
+          "Close nodes over the limit"
+        ],
+        "software": [
+          "C++",
+          "JavaScript"
+        ],
+        "convergence_criteria": "Correlation against the three observed destination shares."
+      },
+      "identifiability_feasibility": {
+        "status": "demonstrated",
+        "details": [
+          "Reported correlation of 1.0000 against shares 0.013, 0.545, 0.422."
+        ],
+        "analysis": "The match is stated to the digit."
+      },
+      "constraints": [
+        "Movement is quarterly.",
+        "A refugee group moves to one node per period."
+      ],
+      "validation_refs": [
+        "Figure 18 non-paroxysmal simulation"
+      ],
+      "strengths": [
+        "Both scenarios are given a cause, not only a number.",
+        "The map is drawn from the same run."
+      ],
+      "limitations": [
+        "A correlation of exactly one on three points is not informative.",
+        "The aid range of plus or minus 0.2 is assumed."
+      ],
+      "missing_details": [
+        "The number of quarters and the closure limits per node."
+      ],
+      "assumptions": [
+        "One quarter is the period because the border agency reports quarterly."
+      ]
+    },
+    {
+      "model_id": "MU-F-2016-44348-SC",
+      "section": "Scalability to other countries",
+      "family": "gravity-model",
+      "summary": "Canada, America and China are added as nodes with links estimated from I-Map. The run sends a large flow from the Middle East into China and almost none westward: 7 people to Canada and 51 to America. The paper calls the result wrong. The straight-line distance hides the Himalayas, and the Atlantic raises the danger index until the weight is effectively zero. The same section scales the original crisis by ten and finds every route equally full, which the paper reads as the cause of detention and illegal crossing.",
+      "computational_cost": "not-stated",
+      "purpose": "See where the model stops agreeing with geography.",
+      "base_or_modification": "modification",
+      "page": 15,
+      "inputs": [
+        "M"
+      ],
+      "outputs": [
+        "Q"
+      ],
+      "handoff_outputs": [
+        "Q"
+      ],
+      "objectives": [
+        "Test the weights on countries outside the original map."
+      ],
+      "variables": [
+        {
+          "symbol": "M",
+          "normalized_name": "link_weight",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Weight inherited from the gravity model",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Q",
+          "normalized_name": "predicted_flow",
+          "role": "output",
+          "unit": "people",
+          "definition": "Refugees predicted to reach a new country",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "G",
+          "normalized_name": "barrier",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Extra danger from mountains or ocean, not in the distance",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2016-44348-SC-1",
+          "equation_label": "Extended weight",
+          "equation_text": "Q follows from the gravity weight with an added barrier term for mountains and ocean.",
+          "source_expression": "Q follows from the gravity weight with an added barrier term for mountains and ocean.",
+          "normalized_latex": "Q=Q(M,G)",
+          "purpose": "Show why the straight-line weight fails at long range.",
+          "variable_symbols": [
+            "Q",
+            "M",
+            "G"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 15,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "No new formula is printed. The recorded relation states the dependence the prose asserts.",
+        "reason": "Section 7."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The original nodes keep their populations."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "New nodes are Canada, America and China."
+          ]
+        },
+        "equilibrium": {
+          "status": "not-applicable",
+          "details": [
+            "One run only."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "omitted-by-paper",
+        "method": "Link values are estimated from I-Map with no procedure given.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Add the nodes, run the same weights, read the failure.",
+        "status": "partial",
+        "steps": [
+          "Add three countries",
+          "Estimate the new links",
+          "Run the model",
+          "Explain the miss"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "None. The result is rejected by inspection."
+      },
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "details": [
+          "The paper itself says the model cannot illustrate the flow."
+        ],
+        "analysis": "The test is a stated failure."
+      },
+      "constraints": [
+        "Distance remains a straight line."
+      ],
+      "validation_refs": [
+        "Figure 20 larger scale simulation"
+      ],
+      "strengths": [
+        "The failure is printed with its numbers.",
+        "The cause is named: mountains and ocean."
+      ],
+      "limitations": [
+        "No corrected distance is computed.",
+        "The tenfold run is described, not tabulated."
+      ],
+      "missing_details": [
+        "The I-Map values used for the new links."
+      ],
+      "assumptions": [
+        "A straight line stands for the route."
+      ]
+    },
+    {
+      "model_id": "MU-F-2016-44348-CW",
+      "section": "Cobweb model of capacity and stability",
+      "family": "cobweb-model",
+      "summary": "The pass rate of a node is plotted against the number it passes, for two capacities. The larger capacity keeps the flow steady. The smaller one makes the flow less stable from period to period. The paper draws the policy from the picture: enlarge capacity to match the current flow, announce an official route, and share refugees across countries so that some nodes are not full while others are empty. No parameters are fitted. The sensitivity statement belongs here: a 5 percent capacity change moves the result 2 percent, and beyond 10 percent the result moves more than 4.7 percent.",
+      "computational_cost": "not-stated",
+      "purpose": "Turn the capacity result into a stability rule.",
+      "base_or_modification": "base",
+      "page": 16,
+      "inputs": [
+        "C"
+      ],
+      "outputs": [
+        "U"
+      ],
+      "handoff_outputs": [
+        "U"
+      ],
+      "objectives": [
+        "Find the capacity that keeps the flow steady."
+      ],
+      "variables": [
+        {
+          "symbol": "C",
+          "normalized_name": "node_capacity",
+          "role": "input",
+          "unit": "people",
+          "definition": "The most a node passes in one period",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "R",
+          "normalized_name": "pass_rate",
+          "role": "state",
+          "unit": "dimensionless",
+          "definition": "Share of arrivals that pass through",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "U",
+          "normalized_name": "stability",
+          "role": "output",
+          "unit": "dimensionless",
+          "definition": "Whether the flow settles or swings",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-F-2016-44348-CW-1",
+          "equation_label": "Stability rule",
+          "equation_text": "The flow settles when capacity is the larger of the two tested values and swings when it is the smaller.",
+          "source_expression": "The flow settles when capacity is the larger of the two tested values and swings when it is the smaller.",
+          "normalized_latex": "U=U(C)",
+          "purpose": "Read stability off the cobweb.",
+          "variable_symbols": [
+            "U",
+            "C"
+          ],
+          "visual_checked": true,
+          "transcription_confidence": "medium",
+          "source_type": "paper",
+          "page": 16,
+          "equation_status": "present"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "note": "The cobweb is drawn, not written. The recorded rule states the comparison the two figures make.",
+        "reason": "Section 8."
+      },
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "Two capacities are compared, the larger called B and the smaller A."
+          ]
+        },
+        "boundary": {
+          "status": "not-applicable",
+          "details": [
+            "A schematic, not a solved system."
+          ]
+        },
+        "equilibrium": {
+          "status": "present",
+          "details": [
+            "Stability means the pass rate settles rather than spirals."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The figure is schematic. Nothing is estimated.",
+        "parameters": []
+      },
+      "algorithm": {
+        "description": "Draw the cobweb at two capacities and read which one settles.",
+        "status": "omitted-by-paper",
+        "steps": [
+          "Plot pass rate against pass population",
+          "Compare the two capacities"
+        ],
+        "software": [
+          "not-stated"
+        ],
+        "convergence_criteria": "The spiral closes."
+      },
+      "identifiability_feasibility": {
+        "status": "partial",
+        "details": [
+          "The sensitivity band of 5 percent and 10 percent is the only number."
+        ],
+        "analysis": "The policy rests on the picture."
+      },
+      "constraints": [
+        "Capacity is fixed within a period."
+      ],
+      "validation_refs": [
+        "Figure 21 cobweb model"
+      ],
+      "strengths": [
+        "The advice follows the figure directly.",
+        "The sensitivity band is numeric."
+      ],
+      "limitations": [
+        "No equation is given for the cobweb.",
+        "The two capacities are not measured."
+      ],
+      "missing_details": [
+        "The values of the two capacities and the pass rates."
+      ],
+      "assumptions": [
+        "A larger capacity always steadies the flow."
+      ]
+    }
+  ],
+  "equation_inventory": [
+    {
+      "equation_id": "EQ-F-2016-44348-CL-1",
+      "model_id": "MU-F-2016-44348-CL",
+      "page": 6,
+      "source_expression": "d_i = (1/5) * sum of x_k over the five retained routes, for i from 1 to 11."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-GR-1",
+      "model_id": "MU-F-2016-44348-GR",
+      "page": 8,
+      "source_expression": "M_ij = P_i*P_j / D_ij^a, with a positive."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-GR-2",
+      "model_id": "MU-F-2016-44348-GR",
+      "page": 8,
+      "source_expression": "ln M_ij = ln P_i + ln P_j - ln D_ij^a + K."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-GR-3",
+      "model_id": "MU-F-2016-44348-GR",
+      "page": 9,
+      "source_expression": "S_ij = 1 - (c_1*x_2 + c_2*x_1)/L_ij."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-GR-4",
+      "model_id": "MU-F-2016-44348-GR",
+      "page": 10,
+      "source_expression": "ln M_ij = ln S_ij + ln Conv_ij - ln B_t + K."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-CA-1",
+      "model_id": "MU-F-2016-44348-CA",
+      "page": 13,
+      "source_expression": "N_2(t1) = sum over i of (1/n)*N_i(t0)*w_i2 + (1/4)*N_2(t0)."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-CA-2",
+      "model_id": "MU-F-2016-44348-CA",
+      "page": 13,
+      "source_expression": "pi = N_2(t1)/N_2(t0), and the onward weights are multiplied by pi and renormalized."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-CA-3",
+      "model_id": "MU-F-2016-44348-CA",
+      "page": 13,
+      "source_expression": "If (n-1)/n times the population after arrivals exceeds the limit, the node closes."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-SC-1",
+      "model_id": "MU-F-2016-44348-SC",
+      "page": 15,
+      "source_expression": "Q follows from the gravity weight with an added barrier term for mountains and ocean."
+    },
+    {
+      "equation_id": "EQ-F-2016-44348-CW-1",
+      "model_id": "MU-F-2016-44348-CW",
+      "page": 16,
+      "source_expression": "The flow settles when capacity is the larger of the two tested values and swings when it is the smaller."
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-F-2016-44348-CL",
+      "to_model_id": "MU-F-2016-44348-GR",
+      "handoff": "The layers decide which pairs receive a weight"
+    },
+    {
+      "from_model_id": "MU-F-2016-44348-GR",
+      "to_model_id": "MU-F-2016-44348-CA",
+      "handoff": "The gravity weights split the quarterly departures"
+    },
+    {
+      "from_model_id": "MU-F-2016-44348-CA",
+      "to_model_id": "MU-F-2016-44348-SC",
+      "handoff": "The same weights are reapplied on the larger map"
+    },
+    {
+      "from_model_id": "MU-F-2016-44348-SC",
+      "to_model_id": "MU-F-2016-44348-CW",
+      "handoff": "The saturation seen at large scale motivates the stability rule"
+    }
+  ]
+}

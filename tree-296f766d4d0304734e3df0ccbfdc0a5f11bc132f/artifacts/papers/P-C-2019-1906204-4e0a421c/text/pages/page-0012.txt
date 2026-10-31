@@ -1,0 +1,82 @@
+Team # 1906204                                                                                                                              Page 10 of 38
+
+
+                                                                           104     Outlier Detection via One-Class SVM
+                                                                  16
+                                                                                                                    Observation
+                                                                                                                    Support Vector
+                                                                  14
+
+
+                                                                  12
+
+
+
+
+                                    Total Drug Report by County
+                                                                  10
+
+
+                                                                  8
+
+
+                                                                  6
+
+
+                                                                  4
+
+
+                                                                  2
+
+
+                                                                  0
+                                                                       0         500        1000        1500       2000              2500
+                                                                                           Opioid Drug Reports
+
+
+
+
+                                                                             Figure 8: SVM Discriminator
+
+
+3.4     Use SVR Regression to make Prediction
+
+To predict when and where will some specific drug reaching the drug identification threshold occur, we
+will combine the "Recommendation System" with Supporting Vector Regression(SVR).
+
+
+3.4.1    Algorithm Details
+
+Pseudocodes
+
+Algorithm 1 Recommendation System Combined with SVR Regression
+ 1: # 100×69×6 Info Matrix stores six years’ drug reports for each drug in each zone.
+ 2: features ← empty dictionary
+ 3: for Each zone zi do
+ 4:   simi_zones ← zi ’s all similar zones
+ 5:   for Each Drug dj do
+ 6:      feature ← empty set           # to store regression results
+ 7:      get SVR regression of its own as a feature, push to list feature
+ 8:      for Each Training Sample sk do
+ 9:        get SVR regression of its sample as a feature, push to list feature
+10:      end for
+11:      # weight ← empty set
+12:      for Each feature do
+13:        use feature to predict val and find difference between predicted value and real value
+14:        take 0.01+(dif1f erence)2 as weight of the current feature
+15:      end for
+16:      normalize weight
+17:      store features[zi ][dj ] ← [feature, weight]
+18:   end for
+19: end for
+
+
+
+Explanation
+
+      • We first create a 100×69×6 InfoMatrix to store six years’ drug reports for each drug in each zone. Then
+        for each zone, we find the 10 most similar zones, each of them will provide a sample. We use SVR to
+        fit each of the sample as one feature for the specific drug in the specific zone. After we obtained all
+        features(11 in total, 1 from itself, 10 from samples), we modify each feature by multiplying a hyper-
+        parameter – weight coefficient, in order to make the model more reasonable and stable to predict the
+        future.

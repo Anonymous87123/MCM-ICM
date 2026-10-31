@@ -1,0 +1,1373 @@
+{
+  "schema_version": 2,
+  "paper_id": "P-A-2014-31333-acc8bc3b",
+  "problem_type": "A",
+  "year": "2014",
+  "source_sha256": "acc8bc3b89bd90c459ff891b9c57f8b6f87ef32ce11e4bf2a971dd7a6c7fc34c",
+  "models": [
+    {
+      "model_id": "MU-A-2014-31333-001",
+      "page": 3,
+      "section": "2.2 The Nagel-Schreckenberg Model",
+      "family": "single-lane Nagel-Schreckenberg cellular automaton",
+      "purpose": "Provide the inherited discrete traffic baseline and its four ordered local updates.",
+      "base_or_modification": "base",
+      "summary": "One-dimensional occupancy, speed, gap-limited safety, stochastic braking, and position advance define the baseline traffic CA.",
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "cell position",
+          "role": "state",
+          "unit": "cells",
+          "definition": "Longitudinal location of a vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "vehicle velocity",
+          "role": "state",
+          "unit": "cells per time step",
+          "definition": "Vehicle speed state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmax",
+          "normalized_name": "maximum velocity",
+          "role": "parameter",
+          "unit": "cells per time step",
+          "definition": "Road speed limit.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "forward empty cells",
+          "role": "input",
+          "unit": "cells",
+          "definition": "Headway in front of a vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "randomization probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability gate for a stochastic update.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Vmax",
+        "d",
+        "p"
+      ],
+      "outputs": [
+        "x",
+        "v"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-31333-001",
+          "page": 3,
+          "label": "NaSch acceleration",
+          "source_expression": "v -> v+1",
+          "normalized_latex": "v \\leftarrow v+1",
+          "purpose": "Accelerate an eligible vehicle by one cell per step.",
+          "variable_symbols": [
+            "v",
+            "Vmax",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-002",
+          "page": 3,
+          "label": "NaSch safety",
+          "source_expression": "v -> min{d,v}",
+          "normalized_latex": "v \\leftarrow \\min\\{d,v\\}",
+          "purpose": "Limit velocity by forward headway.",
+          "variable_symbols": [
+            "v",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-003",
+          "page": 3,
+          "label": "NaSch randomization",
+          "source_expression": "v -> v-1 with probability p",
+          "normalized_latex": "v \\leftarrow v-1\\ \\text{with probability }p",
+          "purpose": "Randomly reduce speed for a moving vehicle.",
+          "variable_symbols": [
+            "v",
+            "p"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-004",
+          "page": 3,
+          "label": "NaSch driving",
+          "source_expression": "x -> x+v",
+          "normalized_latex": "x \\leftarrow x+v",
+          "purpose": "Advance the position after the velocity update.",
+          "variable_symbols": [
+            "x",
+            "v"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations and update statements were visually checked."
+      },
+      "objectives": [
+        "Update each vehicle state."
+      ],
+      "constraints": [
+        "One vehicle per cell.",
+        "Single lane."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "Vmax",
+          "d",
+          "p"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Apply acceleration.",
+          "Apply safety braking.",
+          "Apply randomization.",
+          "Advance position."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Parallel baseline operations.",
+        "Finite speed bound."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "v",
+        "x"
+      ],
+      "validation_refs": [
+        "p3 baseline explanation"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "The source itself says this single-lane model cannot answer the multi-lane question."
+      ],
+      "missing_details": [
+        "seed",
+        "horizon",
+        "calibration data"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-002",
+      "page": 4,
+      "section": "3.1 Simplifying Assumptions",
+      "family": "closed-region traffic representation",
+      "purpose": "Bound the CA's spatial, population, behavioral, weather, and collision transfer domain.",
+      "base_or_modification": "paper-specific",
+      "summary": "A short fixed-population freeway region with identical cars and proxy accident conditions is treated as representative enough for simulation comparison.",
+      "variables": [
+        {
+          "symbol": "N",
+          "normalized_name": "car count",
+          "role": "parameter",
+          "unit": "vehicles",
+          "definition": "Cars remain constant within a run.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane count",
+          "role": "parameter",
+          "unit": "lanes",
+          "definition": "Simulated freeway lanes.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "reaction",
+          "normalized_name": "driver reaction time",
+          "role": "parameter",
+          "unit": "time proxy",
+          "definition": "Random driver-specific response used in accident prevention.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "weather_proxy",
+          "normalized_name": "weather proxy",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Accident-rate probability stands in for weather.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "collision",
+          "normalized_name": "collision event",
+          "role": "output",
+          "unit": "events",
+          "definition": "Two-car same-lane accident under the source assumption.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "N",
+        "L",
+        "reaction",
+        "weather_proxy"
+      ],
+      "outputs": [
+        "collision"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The source describes a policy or design layer without a standalone displayed equation."
+      },
+      "objectives": [
+        "Make a tractable comparison domain explicit."
+      ],
+      "constraints": [
+        "No entries/exits.",
+        "Identical cars.",
+        "No simultaneous three-car or cross-lane collisions."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "uncertain",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "N",
+          "L",
+          "reaction",
+          "weather_proxy"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Fix region and population.",
+          "Set proxy behavior.",
+          "Apply collision simplification."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Closed population.",
+        "Proxy weather and reaction behavior."
+      ],
+      "identifiability_feasibility": {
+        "status": "uncertain",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "N",
+        "L",
+        "reaction",
+        "weather_proxy",
+        "collision"
+      ],
+      "validation_refs": [
+        "p4-p5 justifications"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "The assumptions deliberately exclude observed calibration and several traffic mechanisms."
+      ],
+      "missing_details": [
+        "empirical reaction data",
+        "entry-exit process",
+        "multi-car collision representation"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-003",
+      "page": 5,
+      "section": "3.2 The Model",
+      "family": "multilane accident-enabled cellular automaton",
+      "purpose": "Extend the baseline CA with lateral motion, cycling, accident counting, lane locking, and rule-specific return behavior.",
+      "base_or_modification": "modification",
+      "summary": "An n by 3 state matrix stores location, lane, and speed; a common eight-stage sequence produces policy-comparable flow and accident outputs.",
+      "variables": [
+        {
+          "symbol": "x",
+          "normalized_name": "cell position",
+          "role": "state",
+          "unit": "cells",
+          "definition": "Longitudinal location of a vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "v",
+          "normalized_name": "vehicle velocity",
+          "role": "state",
+          "unit": "cells per time step",
+          "definition": "Vehicle speed state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmax",
+          "normalized_name": "maximum velocity",
+          "role": "parameter",
+          "unit": "cells per time step",
+          "definition": "Road speed limit.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "d",
+          "normalized_name": "forward empty cells",
+          "role": "input",
+          "unit": "cells",
+          "definition": "Headway in front of a vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "randomization probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Probability gate for a stochastic update.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lane",
+          "normalized_name": "lane index",
+          "role": "state",
+          "unit": "lane index",
+          "definition": "Lateral lane state.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Throughput",
+          "normalized_name": "exit count",
+          "role": "output",
+          "unit": "vehicles",
+          "definition": "Count of vehicles crossing the region boundary.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Cell",
+          "normalized_name": "re-entry cell",
+          "role": "intermediate",
+          "unit": "cells",
+          "definition": "Cell used when cycling an exiting vehicle.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Accidents",
+          "normalized_name": "accident count",
+          "role": "output",
+          "unit": "events",
+          "definition": "Collision count accumulated during a run.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "vfreeze",
+          "normalized_name": "accident frozen speed",
+          "role": "intermediate",
+          "unit": "cells per time step",
+          "definition": "Negative speed marker used to retain accident-state cars.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Vmax",
+        "d",
+        "p",
+        "Lane"
+      ],
+      "outputs": [
+        "Throughput",
+        "Accidents",
+        "x",
+        "v",
+        "Lane"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-31333-005",
+          "page": 5,
+          "label": "adapted acceleration",
+          "source_expression": "v -> v+1",
+          "normalized_latex": "v \\leftarrow v+1",
+          "purpose": "Begin the shared adapted CA update sequence.",
+          "variable_symbols": [
+            "v",
+            "Vmax",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-006",
+          "page": 6,
+          "label": "lane changing",
+          "source_expression": "Lane -> Lane +/- 1",
+          "normalized_latex": "\\mathrm{Lane}\\leftarrow\\mathrm{Lane}\\pm1",
+          "purpose": "Move laterally when the current rule and adjacent occupancy permit.",
+          "variable_symbols": [
+            "Lane",
+            "v",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-007",
+          "page": 6,
+          "label": "adapted safety",
+          "source_expression": "v -> min{d,v}",
+          "normalized_latex": "v \\leftarrow \\min\\{d,v\\}",
+          "purpose": "Apply forward-gap speed restriction after lateral movement.",
+          "variable_symbols": [
+            "v",
+            "d"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-008",
+          "page": 6,
+          "label": "adapted randomization",
+          "source_expression": "v -> v-1 with probability p",
+          "normalized_latex": "v \\leftarrow v-1\\ \\text{with probability }p",
+          "purpose": "Printed symbolic randomization update; surrounding prose calls the speed change an increase.",
+          "variable_symbols": [
+            "v",
+            "p"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "low"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-009",
+          "page": 6,
+          "label": "adapted driving",
+          "source_expression": "x -> x+v",
+          "normalized_latex": "x \\leftarrow x+v",
+          "purpose": "Advance position after the stated update stages.",
+          "variable_symbols": [
+            "x",
+            "v"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-010",
+          "page": 6,
+          "label": "exit count",
+          "source_expression": "Throughput -> Throughput+1",
+          "normalized_latex": "\\mathrm{Throughput}\\leftarrow\\mathrm{Throughput}+1",
+          "purpose": "Count a vehicle leaving the 100-cell region.",
+          "variable_symbols": [
+            "Throughput",
+            "x"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-011",
+          "page": 6,
+          "label": "car cycling",
+          "source_expression": "Cell -> 1",
+          "normalized_latex": "\\mathrm{Cell}\\leftarrow1",
+          "purpose": "Return an exiting vehicle to the first available lane at cell one.",
+          "variable_symbols": [
+            "Cell",
+            "Lane"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-012",
+          "page": 6,
+          "label": "accident count",
+          "source_expression": "Accidents -> Accidents+1",
+          "normalized_latex": "\\mathrm{Accidents}\\leftarrow\\mathrm{Accidents}+1",
+          "purpose": "Record coincident same-lane, same-cell vehicle states.",
+          "variable_symbols": [
+            "Accidents",
+            "x",
+            "Lane"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-013",
+          "page": 6,
+          "label": "accident freeze",
+          "source_expression": "v -> -1 or -5",
+          "normalized_latex": "v\\leftarrow-1\\ \\text{or}\\ -5",
+          "purpose": "Freeze accident vehicles while the source's clearing proxy applies.",
+          "variable_symbols": [
+            "v",
+            "vfreeze"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-014",
+          "page": 6,
+          "label": "return lane",
+          "source_expression": "Lane -> Lane +/- 1",
+          "normalized_latex": "\\mathrm{Lane}\\leftarrow\\mathrm{Lane}\\pm1",
+          "purpose": "Move toward a designated right-hand or middle start lane when policy requires.",
+          "variable_symbols": [
+            "Lane"
+          ],
+          "source_type": "paper",
+          "visual_checked": true,
+          "transcription_confidence": "medium"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations and update statements were visually checked."
+      },
+      "objectives": [
+        "Simulate rule-specific traffic states and accidents."
+      ],
+      "constraints": [
+        "100-cell region.",
+        "Lane occupancy condition.",
+        "Finite accident clear-time proxy."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "Vmax",
+          "d",
+          "p",
+          "Lane"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Accelerate.",
+          "Apply lane-change rule.",
+          "Limit speed.",
+          "Randomize.",
+          "Drive.",
+          "Cycle exits.",
+          "Freeze accidents.",
+          "Return to policy lane if required."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Multiple vehicles may share a cell number only in different lanes.",
+        "Cars cycle after exit."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "Throughput",
+        "Accidents",
+        "Lane",
+        "v"
+      ],
+      "validation_refs": [
+        "p7 ten-run averages",
+        "p8-p11 rule charts"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "The printed randomization prose and symbolic decrement conflict.",
+        "Collision and lane-return semantics are incomplete."
+      ],
+      "missing_details": [
+        "random seeds",
+        "accident clearance duration",
+        "lane conflict priority",
+        "entry demand"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-004",
+      "page": 8,
+      "section": "4.2.1-4.2.4 Rule conventions",
+      "family": "controlled lane-policy alternatives",
+      "purpose": "Hold the CA platform fixed while varying lateral freedom, start-lane placement, and designated-lane return behavior.",
+      "base_or_modification": "paper-specific",
+      "summary": "Right Hand Rule, No Rules, No Lane Changes, and Middle Lane Rule vary only the stated lane-change and return policy layers over the shared CA.",
+      "variables": [
+        {
+          "symbol": "rule",
+          "normalized_name": "driving convention",
+          "role": "input",
+          "unit": "categorical",
+          "definition": "Right Hand Rule, No Rules, No Lane Changes, or Middle Lane Rule.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Lane",
+          "normalized_name": "lane index",
+          "role": "state",
+          "unit": "lane index",
+          "definition": "Vehicle lane state used by each convention.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "target_lane",
+          "normalized_name": "designated lane",
+          "role": "parameter",
+          "unit": "lane index",
+          "definition": "Return lane for policies that require it.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "can_change",
+          "normalized_name": "lane-change availability",
+          "role": "intermediate",
+          "unit": "boolean",
+          "definition": "Whether rule and occupancy permit a lateral transition.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "rule",
+        "target_lane"
+      ],
+      "outputs": [
+        "can_change",
+        "Lane"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The source describes a policy or design layer without a standalone displayed equation."
+      },
+      "objectives": [
+        "Compare policy conventions on common outcomes."
+      ],
+      "constraints": [
+        "Right Hand Rule only moves left to pass before returning right.",
+        "No Change skips lane changing.",
+        "Middle Lane applies only to odd lane counts."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "rule",
+          "target_lane"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Set policy and initial lane convention.",
+          "Reuse shared CA update stages.",
+          "Collect common outputs."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Rule labels and initial lane conditions are source-stated."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "Lane",
+        "can_change"
+      ],
+      "validation_refs": [
+        "p8-p11 aligned flow and accident charts"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "Different rules also change starting-lane conditions, so comparisons are not purely a single-policy perturbation."
+      ],
+      "missing_details": [
+        "exact conflict resolution",
+        "rule code",
+        "same-initial-state comparison"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-005",
+      "page": 7,
+      "section": "4.1 Parameters and Terminology",
+      "family": "factorial simulation and metric aggregation",
+      "purpose": "Generate comparable finite-run flow and accident summaries across policy, lanes, speed, accident probability, and car-count scenarios.",
+      "base_or_modification": "hybrid",
+      "summary": "Ten 250-step simulations per condition are aggregated into average flow rate and average accident count.",
+      "variables": [
+        {
+          "symbol": "R",
+          "normalized_name": "replication count",
+          "role": "parameter",
+          "unit": "runs",
+          "definition": "Ten simulations per rule-condition combination.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "T",
+          "normalized_name": "simulation horizon",
+          "role": "parameter",
+          "unit": "time steps",
+          "definition": "250 time steps per simulation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "E",
+          "normalized_name": "exiting vehicles",
+          "role": "input",
+          "unit": "vehicles",
+          "definition": "Exit count observed in a simulation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "A",
+          "normalized_name": "accident count",
+          "role": "input",
+          "unit": "events",
+          "definition": "Accidents observed in a simulation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Fbar",
+          "normalized_name": "average flow rate",
+          "role": "output",
+          "unit": "cars per time step",
+          "definition": "Average exits across repetitions divided by the fixed horizon.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Abar",
+          "normalized_name": "average accidents",
+          "role": "output",
+          "unit": "events per simulation",
+          "definition": "Mean accident count across ten simulations.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Vmax",
+          "normalized_name": "maximum velocity",
+          "role": "parameter",
+          "unit": "cells per time step",
+          "definition": "Fast or slow speed limit.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "random speed increase probability",
+          "role": "parameter",
+          "unit": "dimensionless",
+          "definition": "Computer, normal, or accident-prone condition.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "N",
+          "normalized_name": "car count",
+          "role": "parameter",
+          "unit": "vehicles",
+          "definition": "Light or heavy traffic count.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane count",
+          "role": "parameter",
+          "unit": "lanes",
+          "definition": "Two through six lanes, with middle-lane only for odd counts.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "R",
+        "T",
+        "Vmax",
+        "p",
+        "N",
+        "L",
+        "E",
+        "A"
+      ],
+      "outputs": [
+        "Fbar",
+        "Abar"
+      ],
+      "governing_equations": [
+        {
+          "equation_id": "EQ-A-2014-31333-015",
+          "page": 7,
+          "label": "average flow rate",
+          "source_expression": "Average Flow Rate = average exits across ten simulations / 250",
+          "normalized_latex": "\\bar F=\\frac{1}{R\\,T}\\sum_{r=1}^{R}E_r",
+          "purpose": "Reconstruct the prose-defined flow metric.",
+          "variable_symbols": [
+            "Fbar",
+            "R",
+            "T",
+            "E"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        },
+        {
+          "equation_id": "EQ-A-2014-31333-016",
+          "page": 7,
+          "label": "average accidents",
+          "source_expression": "Average Accidents = total accidents per simulation averaged across ten simulations",
+          "normalized_latex": "\\bar A=\\frac{1}{R}\\sum_{r=1}^{R}A_r",
+          "purpose": "Reconstruct the prose-defined accident metric.",
+          "variable_symbols": [
+            "Abar",
+            "R",
+            "A"
+          ],
+          "source_type": "reconstructed",
+          "visual_checked": true,
+          "transcription_confidence": "high"
+        }
+      ],
+      "equation_status": {
+        "status": "present",
+        "reason": "Displayed source equations and update statements were visually checked."
+      },
+      "objectives": [
+        "Estimate internal comparative flow and accident outcomes."
+      ],
+      "constraints": [
+        "R=10.",
+        "T=250.",
+        "Region length=100 cells.",
+        "Five lane counts.",
+        "Middle lane only for three and five lanes."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "R",
+          "T",
+          "Vmax",
+          "p",
+          "N",
+          "L",
+          "E",
+          "A"
+        ]
+      },
+      "algorithm": {
+        "status": "implemented",
+        "steps": [
+          "Set scenario labels and values.",
+          "Run ten simulations.",
+          "Count exits and accidents.",
+          "Aggregate by prose-defined metrics.",
+          "Plot policy charts."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Discrete scenario levels for speed, accident probability, density, and lanes."
+      ],
+      "identifiability_feasibility": {
+        "status": "partial",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "Fbar",
+        "Abar"
+      ],
+      "validation_refs": [
+        "p8-p11 chart pairs",
+        "p12 comparison narrative"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "No random seeds, confidence intervals, warm-up rule, factorial table, or external validation are published."
+      ],
+      "missing_details": [
+        "raw replicate outcomes",
+        "seed protocol",
+        "uncertainty estimates",
+        "scenario coverage table"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-006",
+      "page": 12,
+      "section": "4.3 Comparison of Rule Systems",
+      "family": "mechanism-linked policy comparison",
+      "purpose": "Translate aligned CA outputs into conditional statements about efficiency, safety, and model mechanisms.",
+      "base_or_modification": "paper-specific",
+      "summary": "The comparison narrates how lane freedom, return behavior, accident blocking, and lane count explain the internal flow and accident rankings.",
+      "variables": [
+        {
+          "symbol": "Fbar",
+          "normalized_name": "average flow rate",
+          "role": "input",
+          "unit": "cars per time step",
+          "definition": "Aggregated flow output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "Abar",
+          "normalized_name": "average accidents",
+          "role": "input",
+          "unit": "events per simulation",
+          "definition": "Aggregated accident output.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane count",
+          "role": "input",
+          "unit": "lanes",
+          "definition": "Scenario lane count.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "rule",
+          "normalized_name": "driving convention",
+          "role": "input",
+          "unit": "categorical",
+          "definition": "Compared policy.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "ranking",
+          "normalized_name": "conditional policy ranking",
+          "role": "output",
+          "unit": "ordered comparison",
+          "definition": "Within-model conclusion by metric and regime.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Fbar",
+        "Abar",
+        "L",
+        "rule"
+      ],
+      "outputs": [
+        "ranking"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The source describes a policy or design layer without a standalone displayed equation."
+      },
+      "objectives": [
+        "Explain conditional tradeoffs rather than claim a universal winner."
+      ],
+      "constraints": [
+        "Comparison uses the source's internal CA outputs.",
+        "Safety and flow are treated as separate outputs."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "not-applicable",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "Fbar",
+          "Abar",
+          "L",
+          "rule"
+        ]
+      },
+      "algorithm": {
+        "status": "not-applicable",
+        "steps": [
+          "Read aligned metrics.",
+          "Identify model mechanism.",
+          "State regime condition.",
+          "Return a bounded policy interpretation."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Policy ranking is scenario-bounded."
+      ],
+      "identifiability_feasibility": {
+        "status": "not-demonstrated",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "ranking"
+      ],
+      "validation_refs": [
+        "p12-p13 narrative comparison"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "External blog evidence is not an equivalent validation because it uses different track and accident assumptions."
+      ],
+      "missing_details": [
+        "external traffic and crash data",
+        "uncertainty intervals",
+        "consistent figure cross-references"
+      ]
+    },
+    {
+      "model_id": "MU-A-2014-31333-007",
+      "page": 15,
+      "section": "5.2-5.3 Symmetry and Sensitivity",
+      "family": "representation symmetry and implementation sensitivity",
+      "purpose": "Separate the left-driving index transformation from empirical validation and identify lane-count and accident-probability sensitivities.",
+      "base_or_modification": "paper-specific",
+      "summary": "Lane relabeling supports a representation-level left-driving mirror, while the authors report density-cap and accident-probability sensitivity that bound the result.",
+      "variables": [
+        {
+          "symbol": "Lane",
+          "normalized_name": "lane index",
+          "role": "state",
+          "unit": "lane index",
+          "definition": "Index reversed for the left-driving representation.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "L",
+          "normalized_name": "lane count",
+          "role": "input",
+          "unit": "lanes",
+          "definition": "Lane count whose increase changes feasible density.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "p",
+          "normalized_name": "accident probability",
+          "role": "input",
+          "unit": "dimensionless",
+          "definition": "Random speed-up probability.",
+          "source_status": "explicit-defined"
+        },
+        {
+          "symbol": "density",
+          "normalized_name": "effective density",
+          "role": "intermediate",
+          "unit": "cars per cell-lane",
+          "definition": "Density changes due to the stated matrix-generation cap.",
+          "source_status": "explicit-defined"
+        }
+      ],
+      "inputs": [
+        "Lane",
+        "L",
+        "p"
+      ],
+      "outputs": [
+        "density"
+      ],
+      "governing_equations": [],
+      "equation_status": {
+        "status": "omitted-by-paper",
+        "reason": "The source describes a policy or design layer without a standalone displayed equation."
+      },
+      "objectives": [
+        "Bound transfer and sensitivity claims."
+      ],
+      "constraints": [
+        "Integer lane representation permits relabeling."
+      ],
+      "conditions": {
+        "initial": {
+          "status": "present",
+          "details": [
+            "The paper states initial lane placement, car counts, and operating scenarios where applicable."
+          ]
+        },
+        "boundary": {
+          "status": "present",
+          "details": [
+            "The simulation uses a 100-cell region with car cycling and policy-specific lane constraints."
+          ]
+        },
+        "equilibrium": {
+          "status": "uncertain",
+          "details": [
+            "The source reports finite-horizon outcomes but does not establish equilibrium or steady-state proofs."
+          ]
+        }
+      },
+      "parameter_estimation": {
+        "status": "partial",
+        "method": "The source publishes scenario values and operational rules but not a calibrated external-data procedure.",
+        "parameters": [
+          "Lane",
+          "L",
+          "p"
+        ]
+      },
+      "algorithm": {
+        "status": "partial",
+        "steps": [
+          "Reverse lane indices for left-driving representation.",
+          "Audit density change with lanes.",
+          "Sweep accident probability with replication."
+        ],
+        "software": [
+          "MATLAB scripts"
+        ],
+        "convergence_criteria": "The source averages ten finite 250-step runs but gives no seed, warm-up, convergence, or Monte Carlo stopping protocol."
+      },
+      "assumptions": [
+        "Left-driving claim is an algorithmic symmetry statement, not independent validation."
+      ],
+      "identifiability_feasibility": {
+        "status": "uncertain",
+        "analysis": "The source gives a readable simulation mechanism, but real-world calibration, complete reproducibility, and policy implementation evidence are incomplete."
+      },
+      "handoff_outputs": [
+        "Lane",
+        "density"
+      ],
+      "validation_refs": [
+        "p15 sensitivity discussion"
+      ],
+      "computational_cost": "Computation scales with cars, lanes, time steps, repeated scenarios, and accident-state handling; hardware and full runtime are not reported.",
+      "strengths": [
+        "The source makes its policy variants, state transitions, experimental outputs, or limitations explicit enough for a bounded comparison."
+      ],
+      "limitations": [
+        "Only three probability values and a software-capped initial population undermine robust lane-count and probability conclusions."
+      ],
+      "missing_details": [
+        "independent left-driving scenario run",
+        "full density design",
+        "global sensitivity"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from_model_id": "MU-A-2014-31333-001",
+      "to_model_id": "MU-A-2014-31333-003",
+      "handoff": "NaSch position, velocity, gap, and stochastic update become the shared longitudinal base."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-002",
+      "to_model_id": "MU-A-2014-31333-003",
+      "handoff": "Closed-region, reaction, and collision assumptions bound the adapted CA."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-003",
+      "to_model_id": "MU-A-2014-31333-004",
+      "handoff": "Shared lateral state and update stages receive each policy's lane-control rule."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-003",
+      "to_model_id": "MU-A-2014-31333-005",
+      "handoff": "Exit and accident counters feed the replicated metric aggregation."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-004",
+      "to_model_id": "MU-A-2014-31333-005",
+      "handoff": "Policy label and initial-lane convention index each scenario combination."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-005",
+      "to_model_id": "MU-A-2014-31333-006",
+      "handoff": "Average flow and accident metrics become the ranked comparison inputs."
+    },
+    {
+      "from_model_id": "MU-A-2014-31333-006",
+      "to_model_id": "MU-A-2014-31333-007",
+      "handoff": "Conditional rule interpretation is bounded by representation and parameter sensitivity."
+    }
+  ],
+  "review_status": "validated"
+}
