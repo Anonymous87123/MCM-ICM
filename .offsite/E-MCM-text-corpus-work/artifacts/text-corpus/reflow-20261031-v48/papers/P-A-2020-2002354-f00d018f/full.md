@@ -1,0 +1,1042 @@
+# P-A-2020-2002354-f00d018f
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | front_matter | pages [1] -->
+Problem Chosen
+
+<!-- b000002 | furniture | pages [1] -->
+2020
+
+<!-- b000003 | furniture | pages [1] -->
+Team Control Number
+
+<!-- b000004 | front_matter | pages [1] -->
+MCM/ICM
+
+<!-- b000005 | title | pages [1] -->
+A
+
+<!-- b000006 | furniture | pages [1] -->
+2002354
+
+<!-- b000007 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000008 | title | pages [1] -->
+Fish Migration Prediction and Fishery Suggestions
+
+<!-- b000009 | title | pages [1] -->
+under Marine Environment Changes
+
+<!-- b000010 | heading | pages [1] -->
+Summary
+
+<!-- b000011 | prose | pages [1] -->
+The effect of global warming has caused more and more concern all over the world. In particular,  global warming is driving up temperatures in the seas around Scotland, threatening the survival of fish species, including Scotland herring and mackerel. Fish are likely to migrate to the north, where sea temperatures are lower, for better conditions.
+
+<!-- b000012 | prose | pages [1] -->
+We begin with the grey prediction model to predict the sea surface temperature in the next 50 years by combining the historical world greenhouse gas emissions, forest coverage and world population data.
+
+<!-- b000013 | prose | pages [1] -->
+Then, we construct the Marine environment index for both species of fish. We weight the sea surface temperature, the average sea surface salinity and sea depth on different areas of the ocean to get scores of the current environment for the two species. Each species of fish has a preferred range for the environment, which we call the comfort zone.
+
+<!-- b000014 | prose | pages [1] -->
+In the fish migration model, we calculate the environment index of the two fish species based on the predicted temperature data. The fish judge the current environment and choose whether to migrate to a more suitable environment. We find that over the next 50 years herring would gradually move to the northeast near Norway, and mackerel will slowly move to the northwest, near Iceland.
+
+<!-- b000015 | prose | pages [1] -->
+Therefore, we have considered Scottish fishers. Due to technical shortcomings of small fishing companies, if fishing vessels are too far from the continental shelf, they will face problems such as insufficient energy, low safety, and difficulty in keeping fish fresh. Therefore, we estimate the elapsed time until the fishermen are unable to catch these two types of fish in their fishing area based on how fast the temperature changes, with the best, worst, and most likely scenarios. We find that in the most probable case, the number of herring captures will be 0 in 2063, and the mackerel will decrease year by year. In the worst case, herring may not exist in the waters as early as 2044, while mackerel will have difficulty catching fish in 2068. Therefore, we believe that the amount of fish in the Scottish waters will be reduced in the future so that the profits of small fishing companies will be reduced or even lost. The problem can be severe, and small fishing companies must take steps to prevent worse situations.
+
+<!-- b000016 | prose | pages [1] -->
+To consider how small Scottish fishing companies change their operations, we get the cost of fishing vessels, the number of fishing vessels, the quantity of fish caught and the price of fish. Based on these data, we forecast the company's net profit and help these Company analysis and decision making. At the same time, we analyze if a part of the fishery is transferred to another country and territorial sea.
+
+<!-- b000017 | prose | pages [1] -->
+In terms of the highly-potential tough situation of small-scaled Scottish fishing companies, we propose a “two-step” developing strategy, including domestic and overseas corporate assets transformation.
+
+<!-- b000018 | prose | pages [1] -->
+Finally, we discuss the advantages and disadvantages of the model and make scientific-based and practical suggestions for companies.
+
+<!-- b000019 | furniture | pages [1] -->
+关注数学模型
+
+<!-- b000020 | furniture | pages [1] -->
+2
+
+<!-- b000021 | furniture | pages [1] -->
+MATHmodels
+
+<!-- b000022 | furniture | pages [1] -->
+获取更多资讯
+
+<!-- b000023 | heading | pages [2] -->
+Contents
+
+<!-- b000024 | contents | pages [2] -->
+1. Introduction...................................................................................................................................................2
+
+<!-- b000025 | contents | pages [2] -->
+1.1 Problem Background ………………………………………….…………………………………….2
+
+<!-- b000026 | contents | pages [2] -->
+1.2 Our Work………………………………………………………………………………………………...2
+
+<!-- b000027 | contents | pages [2] -->
+2. Assumptions…..............................................................................................................................................3
+
+<!-- b000028 | contents | pages [2] -->
+3. Notations………..….......................................................................................................................................3
+
+<!-- b000029 | contents | pages [2] -->
+4. Migration route of fish...........................................................................................................................4
+
+<!-- b000030 | contents | pages [2] -->
+4.1 Data processing……………………………………………….…………………………….………...4
+
+<!-- b000031 | contents | pages [2] -->
+4.1.1 Data Acquisition
+
+<!-- b000032 | contents | pages [2] -->
+4.1.2 Data Interception
+
+<!-- b000033 | contents | pages [2] -->
+4.2 Grey Model for TSS…………………………………………...……….………………..….………4
+
+<!-- b000034 | contents | pages [2] -->
+4.2.1 Correlation Analysis
+
+<!-- b000035 | contents | pages [2] -->
+4.2.2 Model Deduction
+
+<!-- b000036 | contents | pages [2] -->
+4.2.3 Analysis of the Result
+
+<!-- b000037 | contents | pages [2] -->
+4.2.4 Strength and Weakness
+
+<!-- b000038 | contents | pages [2] -->
+4.3 Route Model for fish…………………………………………………….…..………………..….8
+
+<!-- b000039 | contents | pages [2] -->
+4.3.1 Area of the fish
+
+<!-- b000040 | contents | pages [2] -->
+4.3.2 Factors affecting the living place of fish
+
+<!-- b000041 | contents | pages [2] -->
+4.3.3 Fish Trajectory Prediction
+
+<!-- b000042 | contents | pages [2] -->
+4.3.4 Sensitivity Test
+
+<!-- b000043 | contents | pages [2] -->
+4.3.5 Strength and Weakness
+
+<!-- b000044 | contents | pages [2] -->
+5. Fishing Time in three cases..............................................................................................................11
+
+<!-- b000045 | contents | pages [2] -->
+5.1 Fishing Area…………………………………………………………………………………………12
+
+<!-- b000046 | contents | pages [2] -->
+5.2 Elapsed Fishing Time…………………………………………………………...…..……………13
+
+<!-- b000047 | contents | pages [2] -->
+5.3 Sensitivity Test………………………………………..…………..…………………..……………13
+
+<!-- b000048 | contents | pages [2] -->
+5.4 Strength and Weakness……………………………..…………..…………………..……………14
+
+<!-- b000049 | contents | pages [2] -->
+6. Operations of Small Fishing Companies………….………..…………………..……………14
+
+<!-- b000050 | contents | pages [2] -->
+6.1 The Profit of Small Fishing Companies……….………..…………………..……………...14
+
+<!-- b000051 | contents | pages [2] -->
+6.2 Conclusion and Recommendations..........................................................................................15
+
+<!-- b000052 | contents | pages [2] -->
+7. Take Root at Home or Develop Further Abroad……....………..…………………..……17
+
+<!-- b000053 | contents | pages [2] -->
+8. Articles for Hook Line and Sinker……....………..………………………...……………..……17
+
+<!-- b000054 | contents | pages [2] -->
+9. References...................................................................................................................................................23
+
+<!-- b000055 | contents | pages [2] -->
+10.Appendix.....................................................................................................................................................23
+
+<!-- b000056 | contents | pages [2] -->
+关注数学模型
+
+<!-- b000057 | furniture | pages [2] -->
+2
+
+<!-- b000058 | furniture | pages [2] -->
+MATHmodels
+
+<!-- b000059 | furniture | pages [2] -->
+获取更多资讯
+
+<!-- b000060 | furniture | pages [3] -->
+Team  #  2002354                                                Page 2 of 24
+
+<!-- b000061 | heading | pages [3] -->
+I. Introduction
+
+<!-- b000062 | heading | pages [3] -->
+1.1 Problem Background
+
+<!-- b000063 | prose | pages [3] -->
+Global warming has a subtle effect on the world's ecological environment. To find the most suitable habitat, the living and reproductive habitats of living creatures will "migrate" slowly.
+
+<!-- b000064 | prose | pages [3] -->
+In the process of biological migration, those companies that use these organisms for profit will face livelihood problems. Scottish herring and mackerel are the main fishes in the UK and Scotland. Climate impacts may cause these fish to migrate north.
+
+<!-- b000065 | prose | pages [3] -->
+The change in the position of these two types of fish is undoubtedly a challenge for small fishing companies. Small fishing companies do not have sufficient technical support. When the school of fish is far from the continental shelf, if the fishing boat sails a long distance from the mainland, it will face problems such as danger, insufficient energy, and the inability of the fish to return to the shore.
+
+<!-- b000066 | heading | pages [3] -->
+1.2 Our Work
+
+<!-- b000067 | prose | pages [3] -->
+To find out how small fishing companies respond to climate warming and biological migration, we need to build fish migration models and determine the company's profit curve based on the number of fish. Then, make suggestions on profitability issues.
+
+<!-- b000068 | prose | pages [3] -->
+To solve these problems, our team will do the following: ⚫ State assumption and make notations. Ignoring some insignificant impacts, we will narrow the core of our approaches towards fish migration and company profitability. We then listed some symbols that are important to us to clarify our model and determine their definitions. ⚫ Establish a prediction model of ocean surface temperature in the next 50 years.
+
+<!-- b000069 | prose | pages [3] -->
+We apply Grey Theory, combined with greenhouse gas content, forest cover rate and global population, to make a precise prediction of the sea surface temperature (SST) in a given area for the next 50 years. The changing of ocean surface temperature has essential effects on fish migration. ⚫ Establish migration models of two fish species. By establishing a migration model for the two fish species, we can determine whether the two species will migrate within 50 years and to where they will migrate. ⚫ Establish a profit model for small fishing companies. By forecasting the future profit trends of small fishing companies, we can make recommendations on the operation and construction of these companies. ⚫ Discuss the advantages and disadvantages of our model and the conclusions
+
+<!-- b000070 | prose | pages [3] -->
+关注数学模型
+
+<!-- b000071 | furniture | pages [3] -->
+2
+
+<!-- b000072 | furniture | pages [3] -->
+MATHmodels
+
+<!-- b000073 | furniture | pages [3] -->
+获取更多资讯
+
+<!-- b000074 | furniture | pages [4] -->
+Team  #  2002354                                                Page 3 of 24
+
+<!-- b000075 | heading | pages [4] -->
+II. Assumptions
+
+<!-- b000076 | prose | pages [4] -->
+To simplify the given problems, we make the following assumptions for our models:
+
+<!-- b000077 | prose | pages [4] -->
+1. The problem of global warming has not noticeably improved in the next 50 years.
+
+<!-- b000078 | prose | pages [4] -->
+2. Ocean surface temperature is a significant factor affecting fish migration, and temperature changes are sufficient to cause species movement. The sea surface salt concentration and ocean depth of the study area will not change much.
+
+<!-- b000079 | prose | pages [4] -->
+3. The two fish species migrated in a cluster. There is a maximum upper limit for the migration distance of the fish center each year, and it is within two grids of the latitude and longitude grid.
+
+<!-- b000080 | prose | pages [4] -->
+4. Ignore the impact of changes in fish from other species on the profitability of small fishing companies.
+
+<!-- b000081 | prose | pages [4] -->
+5. The cost of fishing vessels will not fluctuate significantly in the future.
+
+<!-- b000082 | prose | pages [4] -->
+6. The risks posed by currents and winds in uncharted waters, the impact on fishing companies of issues such as fishing restrictions and tariffs in cross-border fishing agreements can be abstracted as the cross-border fishing resistance coefficients.
+
+<!-- b000083 | heading | pages [4] -->
+III. Notations
+
+<!-- b000084 | prose | pages [4] -->
+We list the symbols and notations used in this paper in Table 1.
+
+<!-- b000085 | caption | pages [4] -->
+Table 1 Notations
+
+<!-- b000086 | prose | pages [4] -->
+Symbols Definition Impact ratio of environmental factors and human factors  on Sea Surface Temperature C Test error ratio of gray prediction Environmental index of fish E  Weights that affect E SST Sea Surface Temperature Sea Surface Salinity SSS SD Sea Depth CZ Environmental comfort zone for fish TFC Total annual cost of fishing companies in Scotland TFP Average annual gross fishing income per fishing boat CoS Annual fishing cost per boat CFR EU vessels per year Q Annual catch of fish i i iP Average price of fish i NP Annual net profits of Scottish fishing companies n C Resistance coefficient for catching fish abroad in Norway res i C Resistance coefficient for catching fish abroad in Iceland res
+
+<!-- b000087 | prose | pages [4] -->
+关注数学模型
+
+<!-- b000088 | furniture | pages [4] -->
+2
+
+<!-- b000089 | furniture | pages [4] -->
+MATHmodels
+
+<!-- b000090 | furniture | pages [4] -->
+获取更多资讯
+
+<!-- b000091 | furniture | pages [5] -->
+Team  #  2002354                                                Page 4 of 24
+
+<!-- b000092 | heading | pages [5] -->
+IV. Migration route of fish
+
+<!-- b000093 | heading | pages [5] -->
+4.1 Data processing
+
+<!-- b000094 | heading | pages [5] -->
+4.1.1 Data Acquisition
+
+<!-- b000095 | prose | pages [5] -->
+We use global sea surface temperature data from 1870 to the present, published by the Met Office Hadley Center. In the data, the temperatures are stored as degrees C * 100. 100% of sea ice-covered grid boxes are flagged as - 1000, and land squares are set to - 32768. As shown in the figure below, the data are covering global data, latitude and longitude in integer for data storage.
+
+<!-- b000096 | prose | pages [5] -->
+Figure 1
+
+<!-- b000097 | heading | pages [5] -->
+4.1.2 Data Interception
+
+<!-- b000098 | prose | pages [5] -->
+To get a picture of Scotland, we locate in and around the UK. According to the size of the sea area and the range of fish swimming, we divide the area of 57N-65N and 20W-4E. We finally obtain the data of 150*9*25 in years.
+
+<!-- b000099 | heading | pages [5] -->
+4.2 Grey Model for TSS
+
+<!-- b000100 | prose | pages [5] -->
+In the following discussion, we find out that in 1970 the earth experienced a cold wave, with global temperatures plummeting. To mitigate the impact of the cold wave on SST predictions, we will use data from 1980 to 2019 to predict SST for the next 50 years. However, these 40 years of data are not enough to predict temperature trends for the next 50 years. Given the current situation, we design a grey prediction model to obtain more reliable data, thus successfully overcoming the shortage of data volume.
+
+<!-- b000101 | prose | pages [5] -->
+The advantage of using the grey prediction model is that we can get more reliable results in the absence of accessible data, which is entirely consistent with our current situation. The influence factors of global warming include environmental factors and human factors, which are related to the proportion of greenhouse gases, forest coverage and population[6], respectively. The change in these factors will affect the change in global temperature. Thus, if we capture and quantify the codependent coefficients between various indicators and global ocean temperatures, we can accurately predict
+
+<!-- b000102 | prose | pages [5, 6] -->
+关注数学模型 SST based on greenhouse gas share, forest cover and population data over the past few decades.
+
+<!-- b000103 | furniture | pages [5] -->
+2
+
+<!-- b000104 | furniture | pages [5] -->
+MATHmodels
+
+<!-- b000105 | furniture | pages [5] -->
+获取更多资讯
+
+<!-- b000106 | furniture | pages [6] -->
+Team  #  2002354                                                Page 5 of 24
+
+<!-- b000108 | heading | pages [6] -->
+4.2.1 Correlation Analysis
+
+<!-- b000109 | prose | pages [6] -->
+First, select a reference sequence as follows:
+
+<!-- b000110 | prose | pages [6] -->
+= = = x { x ( )| j j 1,2,... } n ( x (1), x (2),..., x n ( )) 0 0 0 0 0
+
+<!-- b000111 | prose | pages [6] -->
+In this case, the second sequence is expressed as
+
+<!-- b000112 | prose | pages [6] -->
+= = = = x { x ( )| j j 1,2,... } n ( (1), x x (2),..., x n ( )), i 1,..., m i i i i i
+
+<!-- b000113 | prose | pages [6] -->
+So, the correlation between ix and 0x is
+
+<!-- b000114 | prose | pages [6] -->
+n 1 =   r ( ) j i i n = j 1
+
+<!-- b000115 | prose | pages [6] -->
+where − +  − max max min min x t ( ) x t ( ) x t ( ) x t ( )  = s t 0 s s 0 s t ( ) k i − +  − max max x t ( ) x t ( ) x t ( ) x t ( ) 0 s s 0 s t
+
+<!-- b000116 | prose | pages [6] -->
+ix and ir to describe the degree of correlation between 0x ，that Therefore, we use ix on 0x . is, describe the effect of changes in The impact on global SST can be divided into environmental factors and human factors. The former is divided into greenhouse gas content and forest coverage rate, while the latter is mainly based on population. However, the impact of each factor on 0x , and SST is unequal. We define the change of SST over 20 years as sequence 1x , 2x defined the greenhouse gas content, forest coverage and population in order 3x respectively. We use PYTHON for calculation, and the results are shown in and the following Table 2.
+
+<!-- b000117 | caption | pages [6] -->
+Table 2 SST Correlation Analysis
+
+<!-- b000118 | prose | pages [6] -->
+Associate degree Factors Associate degree (1) Sub-factors (2) Total greenhouse Human 0.9784 0.9988 gas emissions Factors Forest area 0.9388 Environmental 0.6423 Population 0.9132 Factor
+
+<!-- b000119 | heading | pages [6] -->
+4.2.2 Model Deduction
+
+<!-- b000120 | prose | pages [6] -->
+According to the theory of grey system, although the physical appearance is complicated, it always has the overall function, so it must contain some internal law. The key is how to choose the right way to dig and use it. Gray system seeks its change rule through the arrangement of original data, which is a way to explore the realistic state of data, namely the production of grey sequence. All grey sequences can weaken
+
+<!-- b000121 | prose | pages [6, 7] -->
+关注数学模型 their randomness and show their regularity through some generation. GM(1,1) is a first- order differential equation model commonly used in grey models. In this paper, we use the enhanced GM(1,1) model with other influencing factors to predict STT.
+
+<!-- b000122 | furniture | pages [6] -->
+2
+
+<!-- b000123 | furniture | pages [6] -->
+MATHmodels
+
+<!-- b000124 | furniture | pages [6] -->
+获取更多资讯
+
+<!-- b000125 | furniture | pages [7] -->
+Team  #  2002354                                                Page 6 of 24
+
+<!-- b000127 | prose | pages [7] -->
+(0) X We define as the original data sequence of STT from 1980 to 2020:
+
+<!-- b000128 | prose | pages [7] -->
+(0) (0) (0) (0) (0) X ={ X , X , X ... X } 1 2 3 n
+
+<!-- b000129 | prose | pages [7] -->
+And then we get the whitened equation：
+
+<!-- b000130 | prose | pages [7] -->
+(1) dX + = (1) aX b dt
+
+<!-- b000131 | prose | pages [7] -->
+(1) (0) X X where, is the cumulative generating operation sequence of .
+
+<!-- b000132 | prose | pages [7] -->
+Then we use the least square method (OLS) to obtain parameters a and b as:
+
+<!-- b000133 | prose | pages [7] -->
+− = T 1 T ˆ a ( B B ) B Y
+
+<!-- b000134 | prose | pages [7] -->
+where
+
+<!-- b000135 | prose | pages [7] -->
+    − (1) (0) z 1 X 2 2     − (1) (0) z 1 X     =  3 3 B = Y    ...      ... ...         − (1) (0) z 1 X     n n
+
+<!-- b000136 | prose | pages [7] -->
+= (1) 1 (1) （） z 0.5( X +X ) − k K K 1
+
+<!-- b000137 | prose | pages [7] -->
+The respective time response sequence of the model is:
+
+<!-- b000138 | prose | pages [7] -->
+b b − + = − + (1) (0) ak ˆ x ( X (1) ) e = − k 1,2,3,..., n 1 k 1 a a (1) ˆkx + , and then we can subtract to get to 0ˆx . We can get to 1
+
+<!-- b000139 | prose | pages [7] -->
+= − 0 1 1 ˆ ˆ ˆ x x x − k k k 1
+
+<!-- b000140 | prose | pages [7] -->
+To test the model, we define the grey prediction sequence as:
+
+<!-- b000141 | prose | pages [7] -->
+ˆ ˆ ˆ ˆ ˆ (0) (0) (0) (0) (0) X ={ X , X , X ... X } 1 2 3 n
+
+<!-- b000142 | prose | pages [7] -->
+Residuals can be obtained:
+
+<!-- b000143 | prose | pages [7] -->
+= − = 0 0ˆ , e x x k 1,2,..., n k k k
+
+<!-- b000144 | prose | pages [7] -->
+0x and the variance 1S of the original sequence S of the residual e Calculate the variance 2
+
+<!-- b000145 | prose | pages [7] -->
+n n 1 1   = − = − 0 2 0 2 S ( x x ) S ( e e ) 1 k 2 k n n = = k 1 k 1
+
+<!-- b000146 | prose | pages [7] -->
+1S and S is calculated Finally, the test error ratio of 2
+
+<!-- b000147 | prose | pages [7, 8] -->
+关注数学模型 S = C 2 S 1
+
+<!-- b000148 | furniture | pages [7] -->
+2
+
+<!-- b000149 | furniture | pages [7] -->
+MATHmodels
+
+<!-- b000150 | furniture | pages [7] -->
+获取更多资讯
+
+<!-- b000151 | furniture | pages [8] -->
+Team  #  2002354                                                Page 7 of 24
+
+<!-- b000153 | heading | pages [8] -->
+4.2.3 Analysis of the Result
+
+<!-- b000154 | prose | pages [8] -->
+We use this model to predict the SST of 225 locations in the data and use 20 of them as validation.
+
+<!-- b000155 | prose | pages [8] -->
+Take one of the points as an example, the SST predicted results of 2045 and 2070 are shown in Figure 2.
+
+<!-- b000156 | prose | pages [8] -->
+Figure 2
+
+<!-- b000157 | prose | pages [8] -->
+1S and S in the verification set, taking Then we calculate the acceptance ratio of 2
+
+<!-- b000158 | prose | pages [8] -->
+one area as an example. (Table 3) Although the predicted data have a large deviation in the final years, the c-test error ratio is at a small level, and the model is acceptable for prediction.
+
+<!-- b000159 | prose | pages [8] -->
+We can predict SST in the next 50 years.
+
+<!-- b000160 | prose | pages [8] -->
+Table 3 Year Actual SST Predicted SST e 2005 3.4208 3.2255 0.1953 2006 3.4508 3.5152 -0.0644 2007 3.3708 3.71 -0.3392 2008 3.7075 4.0165 -0.309 2009 3.605 4.2045 -0.5995 2010 3.6308 4.2611 -0.6303 2011 3.3058 4.5685 -1.2627 2012 3.4433 4.8792 -1.4359
+
+<!-- b000161 | prose | pages [8, 9] -->
+关注数学模型 2013 3.435 4.8229 -1.3879 2014 4.46 5.24 -0.78 2015 3.645 5.6846 -2.0396 2016 4.0625 6.165 -2.1025 2017 3.9958 6.6548 -2.659 2018 3.7458 7.1687 -3.4229 2019 3.8316 7.727 -3.8954 C 0.55
+
+<!-- b000162 | furniture | pages [8] -->
+2
+
+<!-- b000163 | furniture | pages [8] -->
+MATHmodels
+
+<!-- b000164 | furniture | pages [8] -->
+获取更多资讯
+
+<!-- b000165 | furniture | pages [9] -->
+Team  #  2002354                                                Page 8 of 24
+
+<!-- b000167 | heading | pages [9] -->
+4.2.4 Strength and Weakness
+
+<!-- b000168 | prose | pages [9] -->
+⚫ Strength: The grey model does not require a large sample supply and combines other factors to predict future SST. The model also has higher accuracy.
+
+<!-- b000169 | prose | pages [9] -->
+⚫ Weakness: The model predicts a total of 50 years. The farther the prediction, the greater the time error.
+
+<!-- b000170 | heading | pages [9] -->
+4.3 Route Model for fish
+
+<!-- b000171 | heading | pages [9] -->
+4.3.1 Area of the fish
+
+<!-- b000172 | prose | pages [9] -->
+We have obtained data provided according to the grid classification system of ICES (the International Council for the Exploration of the Sea) rectangles.[5] The data contains the amount of fish of different species caught in the grid in the waters around the UK in the last five years.
+
+<!-- b000173 | prose | pages [9] -->
+Among them, figure S1 and S2 are the catches and geographical distribution of Herring and Mackerel in the last five years. We can roughly judge the range of the two types of fish as figure S3. (Figure 3)
+
+<!-- b000174 | prose | pages [9] -->
+(S1) Herring                  (S2)Mackerel （red means Quantity (tonnes) bigger than 1000, and green means lower）
+
+<!-- b000175 | prose | pages [9, 10] -->
+关注数学模型 (S3) Area of two species of fish Figure 3 Two pieces of water are the main living environments of herring and mackerel where the two fish caught the most in these five years. From the distribution map, we can see that mackerel is more adaptable to the surroundings than herring, and can live in a changing environment.
+
+<!-- b000176 | furniture | pages [9] -->
+2
+
+<!-- b000177 | furniture | pages [9] -->
+MATHmodels
+
+<!-- b000178 | furniture | pages [9] -->
+获取更多资讯
+
+<!-- b000179 | furniture | pages [10] -->
+Team  #  2002354                                                Page 9 of 24
+
+<!-- b000181 | heading | pages [10] -->
+4.3.2 Factors affecting the living place of fish
+
+<!-- b000182 | prose | pages [10] -->
+According to previous studies, the spatial distribution of fish is related to the ocean's SST, bathymetry, and average sea surface salinity (SSS) [1]. The sea depth data come from the global ocean sea depth map, and the SST data come from ICES data[5]。 In the above data set, we can obtain a combination of three environmental parameters for the two types of fish. We use the average of the period 1980-2018 to determine the average environmental combination of the geographical location. We combine the expert method to assign weights to the three factors affecting fish life. Finally, the ecological index can be expressed as:
+
+<!-- b000183 | prose | pages [10] -->
+=  +  +  E * SST * SSS * BM 1 2 3
+
+<!-- b000184 | prose | pages [10] -->
+i is the influence degree of this factor on the environmental index of fish Where preference. Then, we obtain the environmental assessment coefficients for both species:
+
+<!-- b000185 | prose | pages [10] -->
+Table 4    Species 1 3 2 Herring 0.69 0.21 0.10 Mackerel 0.56 0.25 0.19
+
+<!-- b000186 | heading | pages [10] -->
+4.3.3 Fish Trajectory Prediction
+
+<!-- b000187 | prose | pages [10, 11] -->
+关注数学模型 We assume that SST was the only factor affecting fish migration, SSS and sea depth remain unchanged for 50 years. Fish swim in a cluster. Therefore, we adopt the form of a grid to predict the movement of fish distribution.
+
+<!-- b000188 | furniture | pages [10] -->
+2
+
+<!-- b000189 | furniture | pages [10] -->
+MATHmodels
+
+<!-- b000190 | furniture | pages [10] -->
+获取更多资讯
+
+<!-- b000191 | furniture | pages [11] -->
+Team  #  2002354                                                Page 10 of 24
+
+<!-- b000193 | prose | pages [11] -->
+As the temperature changes over each year, the fish judge the self-centered (3*3) nine squares of water and choose the one that is most comfortable for the fish. In Figure 4, the species of fish in the figure prefer the environment with 6.75 environmental indexes. When the passage of time leads to changes in the environment, the environment it is in is no longer the most suitable one. It will make a judgment on the surrounding environment and choose the most suitable one. When the difference between the current environment and its own best environment is tiny (0.1), fish will not migrate even if there is a more suitable environment, which is called the Comfort Zone (CZ) of fish.
+
+<!-- b000194 | prose | pages [11] -->
+Figure 4 Based on the longest living environment of the two fish, combined with previous studies, we obtain the optimal living comfort zone of the two types of fish. (Table 5) We estimate the migration path based on the temperature changes in the next 50 years by taking the center of the most fished living area in the last five years as their center. (Figure 5) Table 5 Species Min index Max index Herring 4.35 5.51 Mackerel 4.06 6.60
+
+<!-- b000195 | prose | pages [11] -->
+Figure 5
+
+<!-- b000196 | prose | pages [11, 12] -->
+关注数学模型 As can be seen from the estimate in the figure, mackerel will gradually move to the northwest in the direction of Canada. In contrast, herring will slowly move to the northeast in the course of Norway and the arctic ocean. In the prediction process, we can observe that both species will linger around their current living environment for several years, with a significant migration trend starting from 2040.
+
+<!-- b000197 | furniture | pages [11] -->
+2
+
+<!-- b000198 | furniture | pages [11] -->
+MATHmodels
+
+<!-- b000199 | furniture | pages [11] -->
+获取更多资讯
+
+<!-- b000200 | furniture | pages [12] -->
+Team  #  2002354                                                Page 11 of 24
+
+<!-- b000202 | heading | pages [12] -->
+4.3.4 Sensitivity Test
+
+<!-- b000203 | prose | pages [12] -->
+The path of fish migration with temperature and the changing trend of the environmental index is related to the comfort zone of fish. At the same time, the environmental index is associated with the change of SST and the weight of SST, SSS  ,  ,  and CZ and BM. Therefore, we conducted a sensitivity analysis for 1 3 2 respectively and observed the distance from the point of the original path under the fluctuation range of 0.1%.
+
+<!-- b000204 | prose | pages [12] -->
+Table 6 Changes of Coefficient(+0.1%, - Changing Location of fish in 2070 0.1%) Herring 0.314 0.293  1 Mackerel 0.132 0.078 Herring 0.051 0.062  2 Mackerel 0.085 0.089 Herring 0.005 0.017  3 Mackerel 0.010 0.068 Herring 0.421 0.455 CZ Mackerel 0.398 0.328
+
+<!-- b000205 | prose | pages [12] -->
++ 2 2 ChangeofLatitude ChangeofLongitude Degree of position change:
+
+<!-- b000206 | prose | pages [12] -->
+Under the fluctuation range of 0.1%, the most likely migration position of fish predicted by the model in 2070 fluctuates within 0.5°, with no significant change in position. The model has passed the sensitivity test.
+
+<!-- b000207 | heading | pages [12] -->
+4.3.5 Strength and Weakness
+
+<!-- b000208 | prose | pages [12] -->
+⚫ Strength: In this fish migration model, the fish's preferences for SST, SSS, and BM are combined, and the future fish migration route can be obtained through yearly prediction. The model has better interpretability and scalability. ⚫ Weakness: The habit of the fish considered by the model is still not comprehensive enough. Due to insufficient data, we cannot make an evaluation function for more detailed fish preferences. Examples include reproductive activities of fish, feeding behaviors, and the presence of natural enemies.
+
+<!-- b000209 | heading | pages [12] -->
+V. Fishing Time in three cases
+
+<!-- b000210 | prose | pages [12] -->
+For the best-case and worst-case scenarios caused by differences in the rate of sea- surface temperature rise, we need to consider the range of temperature rise. Based on
+
+<!-- b000211 | prose | pages [12, 13] -->
+关注数学模型 the previous 50 years of projected temperature data, we find that in each year of the forecast process, the predicted temperature has a possible upper and lower bound. As you can see, the fast-growing blue dashed line indicates that the SST changes rapidly, causing the shoal to move rapidly northward, while the green dashed line indicates that under the best of circumstances the SST grows slowly and the shoal moves slowly northward or even does not move at all.
+
+<!-- b000212 | furniture | pages [12] -->
+2
+
+<!-- b000213 | furniture | pages [12] -->
+MATHmodels
+
+<!-- b000214 | furniture | pages [12] -->
+获取更多资讯
+
+<!-- b000215 | furniture | pages [13] -->
+Team  #  2002354                                                Page 12 of 24
+
+<!-- b000217 | prose | pages [13] -->
+Figure 6 In practice, a shoal of fish lives in an area, not a spot. Therefore, we take the optimal environment of fish habitat as the center, with less velocity following the normal distribution in the form of a circle. We assume that both species of fish migrate in a circle with a radius of 3 integer longitude and latitude points.
+
+<!-- b000218 | heading | pages [13] -->
+5.1 Fishing Area
+
+<!-- b000219 | prose | pages [13] -->
+According to Jansen T's (2012) [2] study, fishing boats can catch quantity of fish within 90 km of the edge of the continental shelf, while at 120 km there are few fishing boats. As the distance is too far away, the fishing boats have problems such as fish preservation, safety and the longest voyage distance. Therefore, it is set in this paper that the fishermen fish within 120km from the mainland. The fishing area around Scotland is shown in the figure below.
+
+<!-- b000220 | prose | pages [13] -->
+Figure 7
+
+<!-- b000221 | prose | pages [13, 14] -->
+关注数学模型 As mentioned above, we have the number of different kinds of fish that can be caught in different regions. We can approximately consider the number of fish in the center as the maximum number of fish that can be caught, and the number of fish around it is positively correlated with the total number of fish, which also decreases at the rate of normal distribution. As long as the shoal of fish is within the range of the fisherman's range, the total is the number of fish the fisherman can catch.
+
+<!-- b000222 | furniture | pages [13] -->
+2
+
+<!-- b000223 | furniture | pages [13] -->
+MATHmodels
+
+<!-- b000224 | furniture | pages [13] -->
+获取更多资讯
+
+<!-- b000225 | furniture | pages [14] -->
+Team  #  2002354                                                Page 13 of 24
+
+<!-- b000227 | heading | pages [14] -->
+5.2 Elapsed Fishing Time
+
+<!-- b000228 | prose | pages [14] -->
+According to the above model of fish migration with SST, we can quickly obtain the most likely migration route of fish. We think that the center of the fish cluster is moving along this migration route. The school of fish has a wide range of activities. Fishermen can still catch fish. According to the amount of fish, we record the time when small fishing companies cannot harvest because their current locations do not exist fish. We get the time as Table 7.
+
+<!-- b000229 | prose | pages [14] -->
+Table 7 Species Best case Most likely case Worst Case Herring 2020-? 2020-2063 2020-2044 Mackerel 2020-? 2020-? 2020-2068 (‘?’ means small fishing companies can still harvest before 2070) As can be seen from the table, in the best case, fishers can catch both kinds of fish in the activity area. In the most likely case of the model, Herring will not be found in 2063. In a worst-case scenario, herring and mackerel will be unavailable in the fishing area in 2044 and 2068, respectively.
+
+<!-- b000230 | prose | pages [14] -->
+It is evident that mackerel will live longer in Scottish waters due to his large area and high environmental adaptability. At the same time, herring may leave Scottish waters earlier and migrate to the north.
+
+<!-- b000231 | heading | pages [14] -->
+5.3 Sensitivity Test
+
+<!-- b000232 | prose | pages [14] -->
+In a fishing area, the factors like the migration path of the fish and the extent of the fishing area affect the time of capture. The fish migration model has passed the sensitivity test. Therefore, in this sensitivity test, with fluctuation of 0.1% in the radius of the fishing area of 120km, we observe the average change in the number of fish caught between 2020 and 2070 (take the most likely case for example).
+
+<!-- b000233 | prose | pages [14] -->
+Table 8 Changes of fishing radius Changing of the average quantity of fish caught Herring +0.254% Radius +0.1% Mackerel +0.415% Herring -0.199% Radius -0.1% Mackerel -0.364% In the sensitivity test, when the fishing radius was changed by 0.1%, neither of the changes in the caught fish was significant.The model has passed the sensitivity test.
+
+<!-- b000234 | prose | pages [14] -->
+关注数学模型
+
+<!-- b000235 | furniture | pages [14] -->
+2
+
+<!-- b000236 | furniture | pages [14] -->
+MATHmodels
+
+<!-- b000237 | furniture | pages [14] -->
+获取更多资讯
+
+<!-- b000238 | furniture | pages [15] -->
+Team  #  2002354                                                Page 14 of 24
+
+<!-- b000239 | heading | pages [15] -->
+5.4 Strength and Weakness
+
+<!-- b000240 | prose | pages [15] -->
+⚫ Strength: In this model, the elapsed time of fishing can be obtained by simulating the translation of the living area of the fish. The model also considers the distribution of fish in the cluster. The model fits reality.
+
+<!-- b000241 | heading | pages [15] -->
+⚫ Weakness: The model lacks consideration for the living areas of irregularly
+
+<!-- b000242 | prose | pages [15] -->
+shaped fish. In future work, we can judge the shape and distribution of the fish's living space according to the surrounding environment.
+
+<!-- b000243 | prose | pages [15] -->
+Ⅵ. Operations of Small Fishing Companies
+
+<!-- b000244 | heading | pages [15] -->
+6.1 The Profit of Small Fishing Companies
+
+<!-- b000245 | prose | pages [15] -->
+To see if small fishing companies should change their business practices, we need to know the trend of net profits for these companies when they go out to sea.
+
+<!-- b000246 | prose | pages [15] -->
+We obtained the total number of ships in the European Union, the annual fishing cost per ship from 2010 to 2015[3]. Through literature review, The number of vessels in Scotland is about 2.5% of the CFR [4] ，Assuming that the cost of the vessel does not change significantly in the future, the annual fishing cost per vessel in the future CoS is the average of 2010-2015: EUR 17,852. So, the total cost of fishing for Scottish fishing companies TFC:
+
+<!-- b000247 | prose | pages [15] -->
+=  TFC 0.025 CFR CoS We also got the price of mackerel and herring of ￡1,070 and ￡337 per thousand tons.[4] According to the sequence of fishermen's available catch quantity as mentioned above, the total annual yield TFP of Scottish fishing boats is:
+
+<!-- b000248 | prose | pages [15] -->
+=  = TFP Q P i , herring macherel , i i
+
+<!-- b000249 | prose | pages [15] -->
+Therefore，net profit is：
+
+<!-- b000250 | prose | pages [15] -->
+=  −  = NP Q P 0.025 CFR CoS i , herring macherel , i i
+
+<!-- b000251 | prose | pages [15] -->
+The value of these two fish is different, and the corresponding cost for each boat is also different. We weight the cost according to the proportion of the total value of fishing in Scotland.
+
+<!-- b000252 | prose | pages [15] -->
+In this regard, we have obtained the trend chart (Figure 8) of the net profit of fishing boats of the two types of fish in three circumstances.
+
+<!-- b000253 | prose | pages [15, 16] -->
+关注数学模型 Figure 8
+
+<!-- b000254 | furniture | pages [15] -->
+2
+
+<!-- b000255 | furniture | pages [15] -->
+MATHmodels
+
+<!-- b000256 | furniture | pages [15] -->
+获取更多资讯
+
+<!-- b000257 | furniture | pages [16] -->
+Team  #  2002354                                                Page 15 of 24
+
+<!-- b000259 | heading | pages [16] -->
+6.2 Conclusion and Recommendations
+
+<!-- b000260 | prose | pages [16] -->
+According to the results of the above model, before 2040, the annual profitability will increase to some extent because technology development will improve the fishing capability of boats. Nevertheless, the prospect will not be optimistic. After that year, the annual profitability will show tendency of decline, up till 2054, the annual net profit will drop significantly to zero at worst. In order to avoid the economic loss of Scottish small fishing companies, we firstly analyze the current situation of small fishing companies. Since the main fishing sites for mackerel and herring are on the western and northern coasts of Scotland, we focus on smaller fishing companies in those areas.
+
+<!-- b000261 | prose | pages [16] -->
+Fishing companies distributed in the western coast region, such as ports of Protree, Mallagig and Stormoway, are in the inverse direction of the fish migration direction. According to the modeling results above, the fishing company's economic benefits tend to drop consistently to struggle to make a living. Thus, the companies’ asset transformation is around the corner, while other methods just stalling for time. They should act decisively and take the overall migration policies to invest all available funds into assets transformation and restructuring. Based on the migration routes predicted by the first model for the two fish species, we select new locations for them. Small fishing companies whether concentrating on catching herring or mackerel should move to the Shetland Islands.
+
+<!-- b000262 | prose | pages [16] -->
+By contrast, fishing companies on the northern coast, such as those located in ports of Kinlochbervie, Orkney and Scrabster, will still have sufficient fish resources to catch in the ensuing 30 years. Simultaneously, taking into consideration the urgency of short- term migration plans of the western coast fishing companies, staying in the original region for a short period of time could give companies on the northern coast a monopoly on the region's fish stocks. Therefore, they should not move promptly, nonetheless, they will embark on transferring their assets gradually as well. They can transfer 20% of their assets every five years, and then all their transformation can be done and dusted in 25 years. During this time period, the range of fishing area will progressively expand, which will not only include the waters adjacent to the former Scottish ports, but also extending northward. This makes long-haul ships mission-critical. We suggest that fishing companies near the northern coast sell off 50% of their regular boats and inject more capital into long-endurance small boats. Such boats bear the capability of prolonging the freshness time limitation of fish without land support. The cost and
+
+<!-- b000263 | prose | pages [16, 17] -->
+关注数学模型 benefit of this kind of vessel are higher than that of ordinary fishing boat. For small companies, the economic burden of upgrading all fishing boats is too great. Therefore, long-endurance vessels only have to account for 50% of the total, and they work in pairs by collaboration. To be more specific, regular fishing boats are responsible for trawling for fish after arriving at a designated location, while long-endurance boats with electronic refrigerators are utilized for transportation of fish and fuel supplies, along with crews for shift. Thus, the main cost of long-endurance small boats is spent on fuel, rather than anchoring for fishing; Ordinary fishing boats can save on fuel costs. The division of labor brings high efficiency, which takes full advantages of the preservation function owning to small fishing boats. If the preservation time can be extended by twofold, the fishing distance will also be doubled, and the amount of fish catches will increase exponentially.
+
+<!-- b000264 | furniture | pages [16] -->
+2
+
+<!-- b000265 | furniture | pages [16] -->
+MATHmodels
+
+<!-- b000266 | furniture | pages [16] -->
+获取更多资讯
+
+<!-- b000267 | furniture | pages [17] -->
+Team  #  2002354                                                Page 16 of 24
+
+<!-- b000269 | prose | pages [17] -->
+After 2040, the two fish species completely deviate from the waters around Scottish ports and have been migrating northward consistently due to the effects of global warming. At this moment, fishing companies that had been off the northern coast of Scotland have all moved to the Shetland Islands. For all these fishing companies whether on the northern coast or the western one, the choice will again be rigorous and tough: to move further across borders, or to stay grounded and use large quantities of small, long-haul boats. We suggest that companies should consider their own balance sheets. If they have relatively abundant circulating funds, especially those fishing companies that moved assets before decades, they can start preparing for cross-border migration and fishing. Small fishing companies that concentrating on catching herring should move to Norway, while those on catching mackerel should move to Iceland .If the circulating funds are relatively tight, especially those fishing companies that have just completed the asset transformation, they should establish a firm foothold in the new area and further expand the proportion of the original long-endurance small fishing boats that being employed. Their goal is to completely replace primitive fishing boats, promote new energy generation technologies such as the solar energy, prolong the preservation time and expand the scope of the fishing area.
+
+<!-- b000270 | prose | pages [17] -->
+To sum up, we propose a “two-step” development strategy for Scottish small fishing companies: ⚫ Step 1: 2020-2040, fishing companies located near the western coast of Scotland should adopt a general migration strategy, with all their company assets moving to the vicinity of the predicted domestic migration regions of the two fish species, namely the Shetland Islands; Fishing companies located near the northern coast of Scotland should use 50 % long-endurance small boats to expand their catching range by keeping fish fresh through electronic refrigerators without land supplies.
+
+<!-- b000271 | prose | pages [17] -->
+Meanwhile, they can adopt a phased partial migration strategy that will transfer 20 % of their assets every five years to the Shetland Islands. ⚫ Step 2: 2040-2070, fishing companies located near the western coast of Scotland can ponder over whether to prepare for cross-border migration based on the situation of their balance sheets. If they decide to migrate abroad, they will go to Norway or Iceland. If they want to establish a foothold at home, they should increase the investment of small long-endurance boats with electric power to
+
+<!-- b000272 | prose | pages [17, 18] -->
+关注数学模型 expand their fishing scope in accordance with offshore fishing laws. Fishing companies located near the northern coast of Scotland have also completed their domestic step-1 migration and will be in the face of similar strategies as those near the western coast.
+
+<!-- b000273 | furniture | pages [17] -->
+2
+
+<!-- b000274 | furniture | pages [17] -->
+MATHmodels
+
+<!-- b000275 | furniture | pages [17] -->
+获取更多资讯
+
+<!-- b000276 | furniture | pages [18] -->
+Team  #  2002354                                                Page 17 of 24
+
+<!-- b000278 | prose | pages [18] -->
+Ⅶ. Take Root at Home or Develop Further Abroad When a portion of fishery assets transfers to another country's territorial waters, according to the cross-border fishing agreements, there are various limitations ranging from the amount of fish caught to the number of ships allowed to fishing. Additional costs such as tariffs will add new economic burdens as well. furthermore, currents and winds in uncharted waters will exacerbate risks and difficulties to sailing, and unexpected losses may increase the cost of fishing.
+
+<!-- b000279 | prose | pages [18] -->
+In order to systematically analyze the influence of small-scale fishing companies' overseas fishing on the company's development strategy proposed in the former part, we abstract diverse obstructions of cross-border fishing into the resistance coefficient 𝐶𝑟𝑒𝑠. From Scottish sea fisheries statistics published in 2019, we discover that Norway, the planned destination of the fishing companies focus on catching herring, is the largest cross-border fishing destination of Scotland. Thus, there already exist sound fishing regulations and cooperation agreements between the two. In contrast, Iceland, the destination of the fishing companies focus on catching mackerel, has no record of cross- border fishing cooperation with Scotland. After negotiation, tariffs and risks of sailing have more prominent impacts on fishing costs, so we set a higher resistance coefficient for it. Through relevant information searching of cross-border fishing expenses, the resistance coefficient values are designated as follows:
+
+<!-- b000280 | caption | pages [18] -->
+Table 9 The Resistance Coefficient for Catching Fish Abroad
+
+<!-- b000281 | prose | pages [18] -->
+The Resistance Coefficient Value 𝑛 1.2 𝐶𝑟𝑒𝑠 𝑖 1.5 𝐶𝑟𝑒𝑠 In the solution of the 3rd question, we calculated the net profits of small-scale Scottish fishing companies, based on the predicted number of fish within 120km of the Scottish coastline over the next 50 years. Then we plotted its developing trends over time. The first step of the “two-step” development strategy is domestic, transferring assets to the Shetland island. The second step is to make choices whether to stay at home and develop further, or move abroad to Iceland or Norway, depending on their balance sheets. Therefore, the additional costs of cross-border fishing should be taken into account when fishing companies make their second-step decision. Similarly, utilizing the net profit model proposed above, we also predict the annual fish quantity within reach near another coastline after the companies move to the South Shetland Islands. Moreover, we multiply the fishing cost respectively by the two resistance coefficient, calculate the net profit each year, and draw the trend chart of net profit developing chronologically. Likewise, we draw the time series graphs after transferring to Norway and Iceland. Taking into consideration the situation of the two species of fish separately: in terms of herring, compare Norway and South Shetland Islands' fishing net profits; In
+
+<!-- b000282 | prose | pages [18, 19] -->
+关注数学模型 terms of mackerel, compare Iceland and South Shetland Islands’ net profits, to analyze the economic prospects of developing cross-border fishing and staying at home, hence choose a more profitable strategy for companies. The graphs are as follows:
+
+<!-- b000283 | furniture | pages [18] -->
+2
+
+<!-- b000284 | furniture | pages [18] -->
+MATHmodels
+
+<!-- b000285 | furniture | pages [18] -->
+获取更多资讯
+
+<!-- b000286 | furniture | pages [19] -->
+Team  #  2002354                                                Page 18 of 24
+
+<!-- b000288 | caption | pages [19] -->
+Figure 9 The Net Profit of Mackerel Fishing in South Shetland Islands V.S. Iceland
+
+<!-- b000289 | caption | pages [19] -->
+Figure 10 The Net Profit of Herring Fishing in South Shetland Islands V.S. Norway
+
+<!-- b000290 | prose | pages [19] -->
+Targeting at mackerel, in 2040, the net profit of fishing that stay in South Shetland Islands is about 80 million pounds, which will continue to rise in the short term, reaching a peak of about 1.3 billion pounds. After that year, the total amount of offshore fishery resources will gradually decrease, which will spawn intensified competition and market saturation, and the net profit is inclined to decline. If the companies decide to transfer their assets abroad for cross-border fishing in the second step of the developing strategy, the initial net profit is only 0.5 billion, though, the growth trend will continue to mount up to more than 1.4 billion.
+
+<!-- b000291 | prose | pages [19] -->
+Targeting at herring, the situation is alike. The initial net profit of domestic fishing started at 8 million pounds and reached a maximum of approximately 13 million pounds, while overseas fishing could continue to climb up to 15 million pounds. The unit price of mackerel was notably higher than that of herring, so there was a relatively giant discrepancy between their total profits. From the perspective of the slope of foreign fishing profit growth, since Iceland's cross-border fishing resistance coefficient is larger than Norway's, its costs are higher so the slope of mackerel's foreign profit curve is lower than herring's, which is consistent with the hypothesis above. The graphs illustrate that, although in 2040, fishing companies that focus on catching these two fish species start with lower net income by developing abroad than at home, but the former slope of net profit growth is genuinely greater than the latter, which vividly display that due to the dramatical global temperature change and fish north-
+
+<!-- b000292 | prose | pages [19, 20] -->
+关注数学模型 headed migration trend are irreversible, north Scotland sea will hardly catch even one tonne of herring or mackerel. The development of cross-border fishing by small-scale fishing companies is the inevitable consequence concerning their economic performance. Despite infinite political and marine obstacles, compared with the serious issues of loss of fishery resources, only by going abroad can the fishery industry have the potential for further development. To demonstrate the robustness of this model’s conclusions, we performed a sensitivity analysis of the resistance coefficient, and the analysis results are as follows:
+
+<!-- b000293 | furniture | pages [19] -->
+2
+
+<!-- b000294 | furniture | pages [19] -->
+MATHmodels
+
+<!-- b000295 | furniture | pages [19] -->
+获取更多资讯
+
+<!-- b000296 | furniture | pages [20] -->
+Team  #  2002354                                                Page 19 of 24
+
+<!-- b000298 | caption | pages [20] -->
+Table 9 Changes of Net Profits Concerning the Fluctuation of Resistance Coefficient
+
+<!-- b000299 | prose | pages [20] -->
+Changes of Resistance Coefficient Changing Rates of Net Profits 𝑛+0.1% 0.296% 𝐶𝑟𝑒𝑠 𝑛-0.1% 0.298% 𝐶𝑟𝑒𝑠 𝑖 0.087% +0.1% 𝐶𝑟𝑒𝑠 𝑖 0.113% -0.1% 𝐶𝑟𝑒𝑠 The influence of the coefficient change of plus and minus 0.1% on the average annual fluctuation rates of small-scale fishing companies’ net profits are all less than 0.3%, which is within the acceptable range, indicating that the model established in this paper is reliable and robust.
+
+<!-- b000300 | prose | pages [20] -->
+Ⅷ. Articles for Hook Line and Sinker In recent years, with the popularization of mechanized operations and the development of fishing technology, Scottish fisheries has been thriving. According to Scottish sea fisheries statistics published in 2019, the harvesting quantities of fish and profit level have been increasing year by year. However, under the appearance of prosperity, the prospect of fishery development is shrouded in fog. You may not be clear about the serious situation: it’s estimated that there will be no herring off the coast of Scotland by 2063 according to normal trends. If anything, concerning the worst case, this horrible year will be brought forward to 2044! Similarly, the abundant mackerel species will be extinct near Scotland coast by 2068.
+
+<!-- b000301 | prose | pages [20] -->
+After taking a glance at this article, whether your mood is scared, snorted or dismissive, we are sorry to tell you that the fishing industry in Scotland's ports is facing an unprecedented crisis.
+
+<!-- b000302 | prose | pages [20] -->
+These two fish species are characteristics of aquatic products in Scotland and the main target of Scottish fishery. They are also an important component part of people's diet, even contribute to the import and export trade as well. Whereas the year of extinction above has factual basis. The Met Office Hadley Center has published global sea surface temperature data from 1870 up till now. If you make a diachronic exploration of the data in the waters around Scotland, you will find that the Scottish sea surface temperature is experiencing irreversible warming progress, and the trend is global. Also, it is well known that fish have specific temperature requirements for growth, spawning and other biological activities, thus the rising water temperature will definitely force the fish species to move north, which is only a matter of time. You
+
+<!-- b000303 | prose | pages [20, 21] -->
+关注数学模型 might count on a fluke that some year in the future the temperature may plumb. Unfortunately, the boot is on the other leg. The research team's mathematical modelling suggests that, taking into account environmental factors such as greenhouse gas levels and forest cover rate, as well as man-made factors such as population growth and industrial development, sea temperatures could rise by 2℃ till 2050, even under the best circumstances. The study further estimates the location of these two fish species near Scottish ports over the next 50 years, then calculates the trend of annual net profits for small-scaled Scottish fishing companies if no measures are taken. The results illustrate that by 2040, the fishing boom will be broken and net profits start to decline; before these species disappear, fishermen will fail to make ends meet by 2056.
+
+<!-- b000304 | furniture | pages [20] -->
+2
+
+<!-- b000305 | furniture | pages [20] -->
+MATHmodels
+
+<!-- b000306 | furniture | pages [20] -->
+获取更多资讯
+
+<!-- b000307 | furniture | pages [21] -->
+Team  #  2002354                                                Page 20 of 24
+
+<!-- b000309 | prose | pages [21] -->
+But don't worry! Take the appropriate strategy against different situations. In the following sections, we will teach you the recipe to earnings.
+
+<!-- b000310 | prose | pages [21] -->
+As mentioned above, you might wonder, where are the fish going? The sea is unpredictable with majestic weather, as well as infinite ocean currents and winds, predators and preys, so countless factors affect the migration trajectory of fish. After comprehensive consideration, rigorous researchers point the direction explicitly. Take the two representative fish species mentioned above as examples: Mackerel will head northwest through the Faroe Islands and go straight to Icelandic waters; Herring will head northeast, hover around the South Shetland Islands and drift towards Norway. Don’t rush to catch up, because fishing companies bear no similarity with ancient grassland nomads, with no capability of cosmopolitans .In order to obtain economic profits and maintain the company's healthy operation, we need to formulate the “two- step” developing strategy as follows: ⚫ Step 1, domestic transformation: 2020-2040, fishing companies located near the western coast of Scotland should adopt a general migration strategy to move all the company assets to the vicinity of the predicted domestic migration regions of the two fish species, namely South Shetland Islands; Fishing companies located near the northern coast of Scotland should use 50 % long-endurance small boats to expand their catching range by keeping fish fresh through electronic refrigerators without land supplies. These boats will cooperate with the traditional ones in pairs.
+
+<!-- b000311 | prose | pages [21] -->
+The traditional boats are responsible for catching fish while the long-endurance boats are obliged to transport fish, fuel and personnel. Meanwhile, they can adopt a phased partial migration strategy that will transfer 20 % of their assets every five years to South Shetland Islands.
+
+<!-- b000312 | prose | pages [21] -->
+The discrepancy among different locations of fishing companies forms its basis on economic concerns. Small-scale fishing companies will face shortage of circulating funds if transferring their whole assets immediately. Thus, if the situation is not urgent enough, the phased migration strategy will be more practical. Nonetheless, investment in state-of-the-art equipment like long-endurance boats is imperative for profitability. Don’t be tech resisters. Furthermore, if the irrevocable condition is extremely serious, companies should take decisive actions to move. Short-term costs ushers in long-term benefits. Furthermore, division of labor brings about high efficiency and more economical cost. ⚫ Step 2, overseas transformation: 2040-2070, all fishing companies will already
+
+<!-- b000313 | prose | pages [21, 22] -->
+关注数学模型 have finished assets transformation to South Shetland Islands, so they should ponder over whether to prepare for cross-border migration based on the situation of their balance sheets.
+
+<!-- b000314 | furniture | pages [21] -->
+2
+
+<!-- b000315 | furniture | pages [21] -->
+MATHmodels
+
+<!-- b000316 | furniture | pages [21] -->
+获取更多资讯
+
+<!-- b000317 | furniture | pages [22] -->
+Team  #  2002354                                                Page 21 of 24
+
+<!-- b000319 | prose | pages [22] -->
+Researchers also made predictions about the net profit developing curve of staying at home versus migrating abroad, which demonstrate that although restrictions of cross- border fishing agreements, tariffs and the uncertain risk of uncharted waters increase the cost of fishing, but given the inevitable trend of fish migration, companies that fish overseas will be more profitable in the long run than those take root at home. Fishing companies can chase mackerel and move to Iceland, or follow herring and move to Norway.
+
+<!-- b000320 | prose | pages [22] -->
+Likewise, the investment of small long-endurance boats with electric power should be increased to expand fishing scopes and remember to take full advantage of the economic benefits of labor division.
+
+<!-- b000321 | prose | pages [22] -->
+Time to design your customized transformation plans under the guidance of the “two- step” developing strategy!
+
+<!-- b000322 | heading | pages [22] -->
+VI. References
+
+<!-- b000323 | references | pages [22] -->
+[1] Lenoir S , Beaugrand G , éRIC LECUYER. Modelled spatial distribution of
+
+<!-- b000324 | references | pages [22] -->
+marine fish and projected modifications in the North Atlantic Ocean[J]. Global
+
+<!-- b000325 | references | pages [22] -->
+Change Biology, 2011, 17(1):115-129.
+
+<!-- b000326 | references | pages [22] -->
+[2] Jansen T, Campbell A, Kelly C, Hátún H, Payne MR. Migration and fisheries of
+
+<!-- b000327 | references | pages [22] -->
+north east Atlantic mackerel (Scomber scombrus) in autumn and winter. PLoS
+
+<!-- b000328 | references | pages [22] -->
+One. 2012;7(12):e51541. doi:10.1371/journal.pone.0051541
+
+<!-- b000329 | references | pages [22] -->
+[3] Fleet capacity reports 2018  url:
+
+<!-- b000330 | references | pages [22] -->
+https://ec.europa.eu/fisheries/cfp/fishing_rules/fishing_fleet_en
+
+<!-- b000331 | references | pages [22] -->
+[4] Scottish sea fisheries statistics 2018, 2019, ISBN: 9781839601712
+
+<!-- b000332 | references | pages [22] -->
+[5] The International Council for the Exploration of the Sea  url: http:// www.ices.dk
+
+<!-- b000333 | references | pages [22] -->
+[6] World Bank Open Data
+
+<!-- b000334 | references | pages [22] -->
+[7] Jansen T , Gislason H . Temperature affects the timing of spawning and migration
+
+<!-- b000335 | references | pages [22] -->
+of North Sea mackerel[J]. Continental Shelf Research, 2011, 31(1):64-72.
+
+<!-- b000336 | references | pages [22] -->
+[8] Comparative ecology of widely distributed pelagic fish species in the North
+
+<!-- b000337 | references | pages [22] -->
+Atlantic: Implications for modelling climate and fisheries impacts[J]. Progress in
+
+<!-- b000338 | references | pages [22] -->
+Oceanography, 2014, 129(dec.pt.b):219-243.
+
+<!-- b000339 | references | pages [22] -->
+[9] Loeng, Harald. (1989). The Influence of Temperature on Some Fish Population
+
+<!-- b000340 | references | pages [22] -->
+Parameters in the Barents Sea. Journal of Northwest Atlantic Fishery Science. 9.
+
+<!-- b000341 | references | pages [22] -->
+10.2960/J.v9.a9.
+
+<!-- b000342 | heading | pages [22] -->
+VII. Appendix
+
+<!-- b000343 | prose | pages [22, 23] -->
+关注数学模型 Figure Global temperature map
+
+<!-- b000344 | furniture | pages [22] -->
+2
+
+<!-- b000345 | furniture | pages [22] -->
+MATHmodels
+
+<!-- b000346 | furniture | pages [22] -->
+获取更多资讯
+
+<!-- b000347 | furniture | pages [23] -->
+Team  #  2002354                                                Page 22 of 24
+
+<!-- b000349 | prose | pages [23] -->
+Figure Districts and ports in Scotland
+
+<!-- b000350 | prose | pages [23, 24] -->
+关注数学模型 Figure Tonnage landed abroad by Scottish vessels by country of landing and species type in 2018 Tabel Part of SST chart year 0 1 2 3 4 5 … 1870/1/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/2/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/3/1 -10 -1.8 -1.8 -1.8 -1.8 -1.8 1870/4/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/5/1 -10 -1.8 -1.8 -1.8 -1.8 -1.8 1870/6/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/7/1 -1.8 -1.8 -1.46 -1.46 -1.36 -1.04 1870/8/1 -1.41 -1.05 -0.36 -0.46 -0.55 -0.11 1870/9/1 -1.26 -1.01 -0.46 -0.29 -0.42 -0.09 1870/10/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/11/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1870/12/1 -1.8 -1.8 -1.8 -1.8 -10 -1.8 1871/1/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1871/2/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1871/3/1 -10 -1.8 -1.8 -1.8 -1.8 -1.8 1871/4/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 1871/5/1 -10 -1.8 -1.8 -1.8 -1.8 -1.8 1871/6/1 -1.8 -1.8 -1.8 -1.8 -1.8 -1.8 Table Part of SST prediction chart year 0 1 2 3 4 … 2020 -0.31789 -1.24209 -1.10203 -1.13846 -1.19074 2021 -0.30403 -1.20688 -1.07269 -1.12918 -1.18668 2022 -0.30847 -1.13215 -1.04669 -1.11771 -1.17573 2023 -0.30289 -1.01968 -0.98745 -1.08263 -1.14543 2024 -0.31461 -0.97897 -0.96547 -1.14422 -1.20566 2025 -0.33912 -0.88039 -0.93678 -1.1501 -1.21061 2026 -0.33033 -0.8433 -0.98194 -1.16565 -1.20505
+
+<!-- b000351 | furniture | pages [23] -->
+2
+
+<!-- b000352 | furniture | pages [23] -->
+MATHmodels
+
+<!-- b000353 | furniture | pages [23] -->
+获取更多资讯
+
+<!-- b000354 | furniture | pages [24] -->
+Team  #  2002354                                                Page 23 of 24
+
+<!-- b000356 | prose | pages [24, 25] -->
+关注数学模型 2027 -0.32822 -0.86005 -0.96456 -1.17028 -1.20748 2028 -0.30843 -0.81588 -0.97378 -1.16083 -1.19392 2029 -0.2718 -0.80909 -0.92111 -1.14455 -1.17202 2030 -0.2216 -0.77873 -0.87029 -1.12799 -1.15009 2031 -0.18528 -0.70448 -0.83006 -1.10407 -1.12825 2032 -0.16579 -0.62795 -0.79062 -1.08436 -1.10989 2033 -0.16072 -0.6402 -0.78581 -1.07882 -1.08074 2034 -0.16562 -0.64915 -0.77156 -1.07844 -1.06117 2035 -0.14731 -0.7032 -0.78682 -1.06749 -1.09443 2036 -0.14689 -0.67999 -0.78064 -1.05568 -1.0732 2037 -0.17047 -0.65126 -0.76921 -1.05544 -1.07085 2038 -0.19841 -0.62074 -0.77439 -1.08763 -1.09513 2039 -0.19669 -0.62763 -0.81019 -1.08815 -1.13848 2040 -0.18683 -0.58493 -0.78547 -1.08408 -1.12948 2041 -0.16624 -0.53685 -0.76542 -1.08415 -1.13213 2042 -0.17243 -0.5545 -0.75782 -1.09101 -1.13269 2043 -0.12829 -0.49549 -0.70586 -1.07626 -1.11499 2044 -0.10798 -0.45033 -0.66667 -1.047 -1.0861 2045 -0.11452 -0.45026 -0.66708 -1.04681 -1.06835 2046 -0.12185 -0.43144 -0.66242 -1.05351 -1.07419 2047 -0.11418 -0.42239 -0.65346 -1.0491 -1.06917 2048 -0.10595 -0.41645 -0.64465 -1.04401 -1.06411 Table Predict Chart of CFR year CFR year CFR year CFR year CFR 1998 102564 2016 71063 2034 51187.68 2052 38313.77 1999 101196 2017 70074 2035 50306.4 2053 37752.71 2000 101355 2018 69081 2036 49401.71 2054 37207.18 2001 98595 2019 68416 2037 48521.54 2055 36671.61 2002 96242 2020 65608.12 2038 47689.01 2056 36145.22 2003 93113 2021 63950.83 2039 46910.59 2057 35629.35 2004 91000 2022 62752.67 2040 46193.66 2058 35120.12 2005 89218 2023 61677.59 2041 45573.28 2059 34615.33 2006 87020 2024 60672.42 2042 44897.49 2060 34114.94 2007 84667 2025 59655.88 2043 44189.89 2061 33620.51 2008 82328 2026 58665.91 2044 43479.05 2062 33135.33 2009 80554 2027 57731.46 2045 42776.65 2063 32667.13 2010 78584 2028 56825.41 2046 42088.76 2064 32214.32 2011 76676 2029 55918.66 2047 41414.85 2065 31773.86 2012 76010 2030 54989.32 2048 40755.41 2066 31343.73 2013 75040 2031 54059.25 2049 40113.82 2067 30922.67 2014 72996 2032 53108.94 2050 39492.9 2068 30509.94 2015 71979 2033 52124.2 2051 38893.43 2069 30104.79
+
+<!-- b000357 | furniture | pages [24] -->
+2
+
+<!-- b000358 | furniture | pages [24] -->
+MATHmodels
+
+<!-- b000359 | furniture | pages [24] -->
+获取更多资讯
+
+<!-- b000360 | furniture | pages [25] -->
+Team  #  2002354                                                Page 24 of 24
+
+<!-- b000362 | prose | pages [25] -->
+关注数学模型
+
+<!-- b000363 | furniture | pages [25] -->
+2
+
+<!-- b000364 | furniture | pages [25] -->
+MATHmodels
+
+<!-- b000365 | furniture | pages [25] -->
+获取更多资讯

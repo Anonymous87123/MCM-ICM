@@ -1,0 +1,447 @@
+Summary
+
+To measure the evolution and revolution of musicians’ community, our team introduces a model to quantify their identities across time based on the dynamic networks from interactions between musicians across time. The model contains three core parts: rescaled PageRank to measure inﬂuence, optimization of weighted cosine distance to measure similarity with time structure, and a comprehensive measure combing inﬂuence and similarity.
+
+To measure importance of nodes in network more accurately, we improve the traditional PageRank model by introducing a method of "rescaling". This is a method taking corresponding nodes’ relative positions among contemporaries into account which effectively solves the problem of time preference in the ordinary PageRank and allow us to compare inﬂuence of musicians vertically.
+
+Then, based on musical characteristics of their works across time, we design a weighted cosine distance as the measure of similarity. And in order to determine the weight vector, we optimize the error function of MSE with its labels from the structure of networks by Stochastic Gradient Descent. Except from similarity of musical identities from the same period, we also consider the potential lag effects of previous works in our model. This makes the similarity model precisely capture musicians within a same genre.
+
+In addition, we conbime the similarity into rescaled PageRank model in order to making use of more information than indegree. With this update, our model can better overcome the problem of time-bias. Also, by the comparison of results between two measures, we are able to take a glimpse at the relationship between inﬂuence and similarity. And by evolution of inﬂuence and musical characteristics, we can also trace how a genre change over time with different positions in the network. Some cases studies are presented to show how it works.
+
+Finally, we made some tests to check whether we can dig out more information from the graph structure by Graph Convolutional Network(GCN). Sensitivity analysis is also held to determine the width of average window in the process of rescaling. Strength and weakness of the model are also summarized for further imporving the measures.
+
+Appendix A: Information of Dynamic Networks
+
+23
+
+微信公众号：数学模型
+
+Appendix B: Namelist of "Benchmark" Artists in GCN
+
+23
+
+微信号：MATHmodels
+
+关注数学模型
+
+1 Introduction
+
+1.1 Background
+
+微信公众号：数学模型 Long been regarded as one of the most creative masterpieces of humankind, mu- sic plays an important role in every age with distinctly different genres and contents, while some masters’ works survived and inﬂuenced generations of musicians as well as listeners with their unique vitality.
+
+Great works have their own identities, but beauty is their common denominator. New musicians learn from their predecessors, which could render some similarities between works across different times. But how musicians inﬂuenced each other? Did they learn more from those great artists or those more similar to their interest? Can we identify those revolutionary artists and events? These questions require us to discover the community structure of musicians for more information.
+
+微信号：MATHmodels
+
+1.2 Restatement of the Problem
+
+1. How to portray the dynamic community structure of musicians?
+
+2. How to quantify the inﬂuence between different artists?
+
+3. How to measure the similarity of creators by the characteristics of their works? How
+
+to determine its relationship with inﬂuence?
+
+4. What is the basis for distinguishing between genres?
+
+5. With all the metrics above, how to trace the evolution and revolution of all the gen- res?
+
+2 Assumptions and Notations
+
+2.1 Assumptions
+
+To simplify the analysis of our problem, we make the following assumptions, each of which is properly justiﬁed.
+
+1. Assumed that for a connecting subgraph with less than 1% musicians compared to
+
+the maximum connecting subgraph, it can be ignored during analysis due to its tiny contribution to the whole community of musicians.
+
+2. Assumed that the interaction built up as soon as the follower got active.
+
+3. Assumed that songs released in 1920s are classiﬁed into 1930s.
+
+4. Assumed that songs released before the musicians active years make no difference
+
+to the artist’s overall music style.
+
+5. Assumed that one artist’s style can be represented by the average characteristics of
+
+关注数学模型 his/her works every decade.
+
+6. Assumed that the inﬂuence of past works on the present musicians decays geomet-
+
+rically.
+
+微信公众号：数学模型
+
+2.2 Notations
+
+The primary notations used in this paper are listed in Table 1.
+
+Symbol Deﬁnition
+
+nt Number of nodes in graph at period t mt Number of edges in graph at period t kt Average degree of graph at period t lt Average geodesic distance at period t d Diameter of graph N Set of nodes in the network 微信号：MATHmodels kin n,t, kout Indegree and outdegree of node n at period t n,t X Network data of the graph A Adjacency matrix of the graph Y Labels for musicians Sn Set of musician n’s works pn, Rn(p) PageRank Score and Rescaled PageRank score of musician n µn(p), σn(p) Mean and Standard Error of musician n in averaging window dis(n1, n2) Geodesic distance between n1 and n2 Sim(n1, n2) Similarity between n1 and n2 a Weight vector in determining similarity E Error term in training W(0), W(1) Weight matrices for hidden layers in GCN yL Set of node indices with labels in GCN γn Label for musician n from GCN
+
+3 Benchmark Models and Overall Analysis
+
+3.1 Framework of Musicians’ Social Network
+
+3.1.1 Static Network
+
+According to the data, it’s intuitively to build up a static social network by the existent interactions, which present many network identities that are common to other real social networks.Part of the network’s statistics are shown in Table 2.
+
+During the data processing, we found that two pairs of musicians never built up any other relationships, while other 5599 musicians are on a connecting subgraph. Based on Assumption 1, these 4 musicians, Chuckii Booker and Mark Morrison with The Neptunes and Kaytranada are abandoned in our following analysis.
+
+关注数学模型 n m k l
+
+Directed 5599 42768 7.639 1.333 微信公众号：数学模型 Undirected 5599 42729 7.632 3.724
+
+Note: n is the Number of Nodes, m is the Num- ber of Edges, k is the Average Degree, l is the Mean Geodesic Distance.
+
+Some very interesting phenomena can be observed. The difference between the number of edges is rather small, which shows that there is rather few two-way inﬂu- ence between musicians. At the same time, the average distance in directed graph is way shorter than that in undirected graph. The approaching-to-1 value represents that great stars often inﬂuenced others, while they weren’t inﬂuenced easily by his younger generations1. Contemporaries rarely inﬂuenced each other either.
+
+微信号：MATHmodels This also shows the property of "small-world"[1]. Except from the small average distance, diameter of the undirected graph is 13 which is also relatively small com- pared to the scale of network.
+
+This network can depict relationship between musicians in a way, though, it cares only about the relation of inﬂuence from the perspective of this decade, which is bound to aggrandize the importance of older generations. Also, it’s hard to observe the evo- lution of this community by a static network. All these reasons drive us to raise a dynamic network.
+
+3.1.2 Dynamic Network
+
+According to Assumption 3 as well as the characteristics of the data, all relation- ships built up at the beginning of each decade. Thus we can separate time between 1930-2010 into 9 periods. Remark 1930 as t0, the community can be regarded as a growing network with the continuous supplement of new musicians2. By the package of DyNext[3], such a network can be built up by Python. Figure 1 shows how the net- work evolved throuth t = 0, 1, 2. More information for each period is in the appendix.
+
+3.2 Measure of Inﬂuence: Time-Balanced Network Centrality
+
+3.2.1 Model of Rescaled PageRank
+
+For a social network, it’s natural to gauge the inﬂuence of nodes by methods includ- ing centrality, Pagerank etc. However, traditional PageRank will meet several prob- lems in this question: 1. it ignores the time structure of the network, which could pro- duce unrealistic features[4]; 2. the redistribution of PageRank is temporally strongly biased towards old nodes[5], which makes the PageRank scores of new nodes from 10s
+
+1All these phonomenon help explain the plausibility of Assumption 2, as there are very few young- sters affect older generations, it won’t make a big difference to the result.
+
+2This can be checked by the data presented in the appendix and the pattern presented in [1] and [2], where edges grow faster than nodes, and bigger the network, smaller the diameter and average
+
+关注数学模型 distance(In earlier period, most of musicians weren’t even on a same subgraph).
+
+微信公众号：数学模型 (a) t=0 (b) t=1 (c) t=2
+
+are all close to 0; 3. PageRank algorithm contains no more information than indegree of nodes[5], while in the adjacency matrix it simpliﬁes the inﬂuence from all inﬂuencers as the same( 1 kin), which doesn’t correspond to reality. For example, for a R&B singer like Terence Trent D’Arby who is inﬂuenced by Micheal Jackson and The Beatles at the same time, though, it’s hard to say they played an equal role in his process of growth. 微信号：MATHmodels Based on these ﬂaws, we raise a rescaled PageRank algorithm to capture the in- ﬂuence of music unbiasedly, which considers the relative position of corresponding musician among his/her contemporaries. By [6], it can be expressed in the following form: Rn(p) = pn −µn(p) (1) σn(p)
+
+Here, p is calculated by ordinary PageRank algorithm from [7]. µn(p) and σn(p) are computed over musicians from the same genre j ∈[i −∆p/2, i + ∆p/2] in order to taking its relative position into account, where ∆p represents the scale of musicians in averaging window. Here, we take ∆p = 25 which is smaller than it used in [6] due to the smaller amount of musicians. However, it will meet some problem in processing artists from 10s, as there were very few musicians entering this community in the last decade. So when comparing the outcomes, it’s better to stick to the results before 2000s.
+
+3.2.2 Example from Subnetwork of the 80s
+
+As we’ve mentioned above, this network can be regarded as a growing network. So every period with t < 8 is a subnetwork of the ultimate one. Take 1980s as an example, the detailed information is in appendix A where t = 5. It’s a fast changing decade with a great many musicians entered the community and the interactions between musicians expanded at a surprising speed. These make it a good age for us to check our inﬂuence model.
+
+Part of results from rescaled PageRank model are shown in Fig.2. From the dis- tribution of top 100 musicians, it’s clear that 80s is the time of pop music(like every decade) and black music(Jazz, R&B, Blues, Religious etc.). For other types of mu- sic, there appear lower proﬁles with great but less inﬂuential musicians including Kraftwerk(Electronic), Roy Acuff(Country) etc.
+
+At the same time, the generations of these musicians are also evenly distributed. Artists from 40s were most actively affecting young musicians, where new generations and older generations all have their inﬂuence on their recipients. There is still pos-
+
+sibility of overestimating old nodes, but the overall results support the property of关注数学模型 time-balancing in rescaled PageRank.
+
+微信公众号：数学模型 (a) Distribution of Genres (b) Distribution of Active Years
+
+微信号：MATHmodels
+
+3.3 Measure of Similarity
+
+To clarify the similarity between musicians by the charateristics of their works, it’s hard to process without genres as labels which disenables us to optimize the weight of different factors unless we simply regard they share same effects to different music genres. Therefore, to measure similarity, we need to ﬁgure out how music differs by all these identities ﬁrst.
+
+3.3.1 Determine Weight Vector from Structure of Networks
+
+Without extra information about labels, the structure of the dynamic networks ac- tually contains similarity. It’s natural to believe that musicians affected by similar mu- sicians and inﬂuenced similar musicians could have some common in their works.
+
+Thus, from the information from networks, we build an adjusted weighted cosine distance to measure the similarity between musician n1 and n2:
+
+Sim(n1, n2) = cos < axn1, axn2 > (2)
+
+During training, we optimize weight vector a by minizing MSE in (3):
+
+min E(a) = ∑ (ζ(n1, n2) −Sim(n1, n2))2 ∑ (3) n1∈N n2∈N,n2̸=n1
+
+Where the label of samples are deﬁned by (2): { cos( dis(n1,n2) 1 ≤dis(n1, n2) ≤5 π) 12 ζ(n1, n2) = (4) dis(n1, n2) > 5 0
+
+By the property of small-world, we consider the cosine similarity of nodes by its geodesic distance in the network. We don’t think for nodes whose distance above 5 still have similarities as it’s way bigger than the average distance even in the undirected network. So with geodesic distance below 6, we separate the space between [0, π 2 ] into 6 parts to get an "expected similarity". By minimizing the squared error between similarity and "expected similarity", we are able to ﬁgure out the optimized weight
+
+关注数学模型 vector by stochastic gradient descent[8].
+
+3.3.2 Time Structure of Similarity
+
+By Assumption 3 and 5, we are able to separate songs into different decades to analyze the transition of different elements. Based on data from "full_music_data.csv", 微信公众号：数学模型 we can express average characteristics of musician at period t by (5):
+
+xnt = ∑snt∈Snt snt (5) |Snt|
+
+, where snt represent the characteristics of his/her work in period t, and |Snt| is the amount of songs in the period(This process is headed on the basis of Assumption 4).
+
+By model presented in (2)-(5), weight vector at can be ﬁgured out through each period again by stochastic gradient descent, from which the core features of music from different decades can be compared vertically by its importance represented in weight vector.
+
+微信号：MATHmodels
+
+3.3.3 Test of Validity of Similarity Metric
+
+It’s an exhausting work to check similarity between all pairs of musicians. To sim- plify it, we randomly pick 500 musicians every time from the network when t = 8. Then we compute similarity between each pairs and by their genres, we separately calculate the average similarity with genre and between genre.
+
+By 10 rounds of iterations, it can be found from Fig.3 that almost in all samples, the average similarity within groups is all higher than that between groups for nearly 0.05. As the iterations have covered a great part of musicians, it substantiates that our metric of gauging similarity can distinguish between different genres of music.
+
+4 Relation between Inﬂuence and Similarity: Updated
+
+Rescaling PageRank Model
+
+To check the relationship between inﬂuence and similarity among musicians, it’s hard to compare directly. At the same time, methods like regression analysis are not available due to the dynamic structure. So we need to optimize our PageRank model
+
+关注数学模型 again with more information about similarity except from just rescaling it.
+
+4.1 Updated Rescaled PageRank Model
+
+First, we’d like to check ordinary PageRank adjacency matrix. For a node n1 in network, its corresponding element in initial matrix with node n2 that inﬂuences is 微信公众号：数学模型 1 represented by An1,n2 = n1,t. kout
+
+However, there is actually another assumption beneath in this network using inde- gree as the basis of inﬂuence: every musician is equally affected by all his inﬂuencers. And we don’t regard this true. So we use similarity to replace the degree. Here, we build a new adjacency matrix denoted by ¯A which goes like:
+
+Sim(n1, n2) ¯An1,n2 = (6) ∑n i=2 Sim(n1, ni)
+
+Here, adjacency matrix presented in (6) ﬁgures out the third problem discussed in ordinary PageRank. Also, as the similarity is time-varying in different decades, we’re able to consider the lag effects from inﬂuencers. Again, we can update this ¯A as: 微信号：MATHmodels t Simj(n1, n2) βt−j ¯Atn1,n2 = ∑ (7) ∑n i=2 Simj(n1, ni) j=0
+
+Where β is the discount factor of decades from Assumption 6. Here, the matrix contains more information about similarity as well the inﬂuence from time. And by rescaled PageRank algorithm above with the updated adjacency matrix, we can get inﬂuence that considers similarity.
+
+After processing, some of results are presented in 4 below. And by comparing it with results from 3.3.2, we can consider the effects from similarity and inﬂuence comprehensively.
+
+(a) Distribution of Genres (b) Distribution of Active Years
+
+4.2 Relation between Similarity and Inﬂuence
+
+4.2.1 Within Genres
+
+In the rescaling process, we’ve considered characteristics within the genre. The
+
+rescaled PageRank actually represents the relative position of musician in its genre in关注数学模型 a way. And by researching the distribution of the age of musicians can help ﬁnd their time-balancing effects within genres.
+
+From Fig.2b, where inﬂuence is represented by "the amount of juniors one inﬂu- ences", it can be observed that even under rescaled indicator, old musicians’ inﬂuence 微信公众号：数学模型 is tend to be bigger. This is natural – more experienced artists deserve higher status.
+
+While after considering similarity, it concerns more about prevalence now. It’s hard to learn from works decades ago though, fad of the moment will be more often imi- tated. So similarity actually measures the degree of impact as shown in Fig.4b. More musicians that deﬁned styles at his/her time are emphasized in the updated model so younger musicians appear more in Top 100. This shows our measure contains both sides of inﬂuence.
+
+4.2.2 Between Genres
+
+The impact between genres can be shown in importance of different genres. Com- 微信号：MATHmodels paring genres presented in Fig.2a and Fig.4a, tiny increase in share of Pop/Rock and black music can be observed in updated model. Both model fail to capture those miche genres. So, though we can distinguish genres by similarity in a way, it doesn’t deter- mine difference between genres.
+
+This shows the degree of mainstreaming of genre determines its inﬂuence. While similarity’s effect is less common. It may perform an essential role in creating though, listeners could prefer music that’s more mainstream and similar to mainstream music.
+
+4.3 A Case Study: Did Inﬂuencer Really Affect Followers?
+
+From observations presented in 4.2.1, it can be found that the similarity between musicians is not fully measured when only inﬂuence is considered in PageRank. In order to identify whether the musicians have actually inﬂuenced each other, we need to take a closer look at the similarities between different musicians.
+
+Take John Williams(Stage & Screen) and Lambert, Hendricks & Ross(Jazz) as ex- amples, who were both inﬂuenced by many musicians across periods as well as contin- uously affected newcomers. In Table 3, we presented their average change on musical characteristics from t = 1 to 3 compared to those when t = 1, and their average differ- ence from their inﬂuencers to check if there existed some kind of correlation.
+
+Char 1 2 3 4 5 6 7 8 9 10 11 12
+
+John -3.3 50.2 13.9 -4.5 -23.6 150 50 -15.9 -25 28.3 0.3 -2.9 John’s 2.3 -32 18.5 -6 20.3 50 72.5 3.6 -0.9 -14.4 0.4 27 Inﬂ-er Ross 24 22.5 95.6 -27.5 -23.6 -33 + -18.9 + 32.7 91 1.5 Ross’s 18 6.3 102 -5.6 -23.1 0 + -2.3 + 96.2 27 -3.8 Inﬂ-er
+
+Percent change of identities except from "Popularity" are presented above. "+"
+
+means that the element in the corresponding position is equal to or close to 0 in 40s. It关注数学模型 can be observed that between musicians and their inﬂuencers, musical characteristics tend to change in the same direction and scale, while for type of vocals, they don’t always change in unison.
+
+Besides, different genres emphasize different identities in mutually inﬂuencing. For 微信公众号：数学模型 example, bigger change had taken place in Valence and Tempo for Jazz compared to Stage & Screen music. This is also correlated to the evolution of music genres.
+
+However, this kind of relation may not always exist. Though as we shown in Fig.3, in samples the average similarity is between 0.6-0.7. However, if we calculate all simi- larity between all pairs of musicians with inﬂuence relation, the average is about 0.802. And the distribution from 5 shows there are some relations whose similarity are ex- tremely low. Thus, in general this pattern holds, but there may be deviations in indi- vidual samples.
+
+微信号：MATHmodels However, we can conclude from this case study, that inﬂuence really entered into force for followers especially on musical identities in most cases. And for different genres and periods, there existed totally different contagious characteristics. This asks us to analyze the overall muscial identities of genres across time.
+
+5 Evolution of Different Genres
+
+5.1 Basis for Differentiating Genres
+
+To separate different genres, there are at least 3 factors to be considered: its size, inﬂuence and musical identities.
+
+5.1.1 Size and Inﬂuence
+
+By the updated rescaled PageRank discussed above, dynamic rank of musicians can be ﬁgured out. Combining information from the same genre, its size and average inﬂuence can be used to determine whether it’s a mainstream or a niche genre.
+
+Some important features can be found in Fig.6: Blues music lost its proportion while at the same time it lost its inﬂuence. Pop/Rock gradually takes its dominating position. And during its process of expanding, its average inﬂuence rank increases. However, electronic music exploded from the end of 20th century with its inﬂuence
+
+关注数学模型 微信公众号：数学模型 dropped in a sudden due to its miche position and the newcomers diluted the average impact of it.
+
+微信号：MATHmodels So, comprehensively analyzing size and inﬂuence of a genre helps us determine the status of it from its scale and structure of musicians. But for creators, music character- istics are the core of distinguish.
+
+5.1.2 Musical identity: Measure of Relationship between Genres
+
+By different weight vector across different periods, we are able to calculate the aver- age cosine distance of one speciﬁc genre to represent whether the genre is more similar to others or is more common among genres by its average musical characteristics. The relationships can also be observed from the similarity path between two genres.
+
+By vertically comparison of this indicator across periods, we can observe whether the corresponding musical forms have become more homogeneous or more distinctive. For example, the result of Pop/Rock music is shown in Fig.7:
+
+It can be found that during the process of Pop/Rock music getting popular in 40- 60s, it also got more similar to other genres rapidly. Causality may also be reversed, its pravalence could render other genres learning from it, so its assimilation could also come from its inﬂuence. But one thing is for sure that, the higher it’s status, the more
+
+similar it is also to other genres. 关注数学模型 Combining Fig.6 and 7, we can trace how genres change over time with its size, inﬂuence and its overall characteristics of music.
+
+微信公众号：数学模型
+
+5.2 Identiﬁcation of Revolutions
+
+According to literatures [9] in terms of music history, we could ﬁnd two sources of revolution – the inner part and the outer part. For the inner part, new generations brought in new blood and spread inside the musician network. For the outer part, issues including social and political events, technology development, etc., emerged outside the network and resulted in exogenous inﬂuence.
+
+5.2.1 Revolutions from Outer Part
+
+Some of the exogenous shocks are so signiﬁcant that result in an overall change in music, which could be identiﬁed by the general trend from data_by_year.csv or the 微信号：MATHmodels weight vector we generated. We think the sharp change in overall music characteristics at a certain period could be a signal. And some main revolutions are listed below:
+
+1. Acousticness & Instrumentness: The importance of acousticness was greatly weak- ened in 60s with the rise of electronic music, when the Columbia - Princeton Elec- tronic Music Lab was established in 50s. While at the same time instrumentness decreased which shows vocal played a more important role as the popularity of synthesizer technology actually endowed vocal with the property of instruments.
+
+This observation is supported by the fact from Fig.8 that the average acousticness of electronic music is 0.233 while that of whole sample is 0.414. At the same time, genres that are not technologically sensitive(Classical, Vocal etc.) appeared more stable in the changing trend of acousticness.
+
+2. Energy & Valence: During more turbulent phases of the world, the valence of music
+
+dropped. This can be observed through World Wars(30s-50s) and periods around 2008 Financial Crisis(00s-10s). While at a relatively peaceful period, music tended to be more energetic. That’s probably why Rock music expanded rapidly through 50s-70s as shown in Fig.6.
+
+3. Duration: From the beginning of 21th century, the average duration of music dropped
+
+faster than ever. This could be rendered by the rise of platforms including TikTok
+
+关注数学模型 and so on which made people less patient for longer music.
+
+5.2.2 Revolutions from Inner Part
+
+Sometimes, musicians beneﬁt from their innate ingenuity or personal experience, thus contributes or even reshaped the music world. They, correspondingly, might be- 微信公众号：数学模型 come legends whose masterpieces inspire future generations. According to our model and the given data, we believe a revolutionary should meet up with the following three standards:
+
+1. He/She should be inﬂuential, having a high inﬂuence rank. Chances are a musician was claimed to be inﬂuential, but the followers actually don’t share many common features with him or her. The measure of inﬂuence take similarity into considera- tion, which indicates a more reliable impact. Musicians with higher inﬂuence rank include Muddy Waters, Billie Holiday, Lester Young, Elvis Presley, etc., which also correspond to our common sense.
+
+2. He/She should deﬁne a style, that is, determine the developing direction of his or her genre in some period. According to the data, we may take notice of the trend 微信号：MATHmodels of a musician whose moving pattern is similar to that of the whole genre, especially leading it. This criteria is critical, since pieces of music might be signiﬁcantly differ- ent from its original genre, while seldom musicians follow those attempts. We won’t consider them to be revolutionary.(The trend of genre would exclude the musician itself)
+
+3. He/She/They should be distinguishable, which means being different from his or
+
+her pioneers. However, this criterion is not feasible out of two reasons. Firstly, we have some inefﬁcient musical identities for us to measure, such as melody. Thus, similarity in the given features including danceability, energy, etc., doesn’t neces- sarily mean similarity between two whole pieces of music. Secondly, proportion of inﬂuential musicians become active at the beginning of 30s and they dont have any pioneers in this data.
+
+In consideration of his/her inﬂuence and the leading role of genres average trend, we mainly regard the top 5 musicians to be revolutionaries by characteristics shown in Fig.9, among them are Billie Holiday, Muddy Waters, Bob Dylan, The Beatles, and Little Richard.
+
+For example, Billie Holiday has a second highest inﬂuence among all the musicians, and we can recognize an explicit similarity between the trend of her and other musi- cians in vocal. E.g. valence, tempo, key. We assume that she is especially revolutionary in 1930-40s, according to the Fig.9a .
+
+(a) Billie Holiday (b) Muddy Waters (c) Bob Dylan
+
+关注数学模型 微信公众号：数学模型 (a) The Beatles (b) Little Richard
+
+5.3 A Case Study: Evolution of Blue Music
+
+Here we choose Blues for our case study based on the following reasons: (1)Its amount of musicians remains relatively stable which beneﬁts visualization; (2).A sig- niﬁcant number of inﬂuential musicians rose from it; (3)It has a deep cultural back- ground and is strong correlated with social campaigns.
+
+微信号：MATHmodels Based on what we’ve discussed in 5.1, ﬁrst we take a look at its inﬂuence present in Fig.11. Its overall popularity, average inﬂuence of top 5 musicians were increasing through 40s-90s, which shows the old generations were getting more and more inﬂuen- tial which can also been observed in Fig.12.3 However, the number of active musicians didn’t increase much, while at the same time the average inﬂuence of all and last 5 musicians even decreased a bit. These shows Blues gradually lost its vitality without inﬂuential newcomers where the bottom right corner of the network had always been rather sparse.
+
+3We don’t discuss periods after 2000 here as there are few new Blues musicians then.
+
+关注数学模型 微信公众号：数学模型 While for the genre’s musical identities, based on discussion in 5.2, it can be found in Fig.14 as we predicted, its energy increased with the rise of Jumps Blues from Louis Jordan after 30s. Which inﬂuenced rockers including Chuck Berry in a way later.
+
+At the same time, its acousticness and sharply decreased after 50s. It’s the age of Chicago Blues(B.B.King). In 60s, Paul Butterﬁeld and British Blues rose with less in- strumental elements in music, which rendered sharp drop of instrumentness in 60s.[10]
+
+However, the length of Blues music kept increasing. This is probably rendered 微信号：MATHmodels by the development of recording techniques that allowed more works to be recorded rather than only being performed live as it once was.
+
+From the case oF Blues above, we’ve shown how the music is changed with the external circumstances across time. Also, changes can be identiﬁed in the model by all means: social environment changed people’s aesthetic tastes, political factors inﬂu- enced the popularity of genres and the content of music, while technological improve- ments changed music in its propogation channels as well as its methods of creating. All these could be observed based on our inﬂuence and similarity indicators as well as the musicial characteristics of all genres.
+
+6 Test and Sensitivity Analysis
+
+6.1 Sensitivity Analysis on the Average Window of Rescaled PageR-
+
+ank
+
+As discussed above, due to the limitation of the amount of musicians, the average window is narrower in (1) that discussed in [6]. How to determine the value of ∆p is needed to be discussed. The best way to determine it is to research its effect to its property of "Time-Balanced". Therefore, we observe how the mean and standard
+
+关注数学模型 deviation of R30s(p) change under different ∆p shown in Fig.15.
+
+As presented in Fig.15a, with the increase of ∆p, the mean is converging to 0 and this process of rescaled actually turns into standardization, this will make R(p) lose its ability of horizontally compared with musicians from the same age. At the same time, standard deviation of R(p) increases. When ∆p approaches 0, R(p) →p, the process 微信公众号：数学模型 can’t reverse the overestimation of old nodes.
+
+So, a moderate value for ∆p is necessary. From the pattern of mean and standard deviation, we suppose that ∆p ∈[20, 35] may have a good time-balanced effect without weakening the ability of comparing horizontally.
+
+微信号：MATHmodels (a) Mean (b) Standard Deviation
+
+6.2 Evidence from GCN: Can We Find More Information from the
+
+Structure of Network?
+
+In training process of getting weight vectors above, we discovered information from distance between nodes in the networks. However, with twenty types of music genres, in (4) we actually implicitly assumed that there only exists 6 different types in the real distribution of musicians. So we need to check if the structure of network itself contains enough information for us to separate it into twenty types. However, ordinary unsupervised learning methods including K-Means++, PCA and spectral decomposi- tion meet a failure to work due to the multiple of types, limited music characteristics and the property of small-world, which are even hard for us to ﬁnd clustering centers by all rules[11].
+
+This drives us to raise a semi-supervised approach with model of neural networks which contains a little bit more information than our measure of similarity to check the idea. By the average PageRank score4 through their active years, twenty artists are picked out representing their genres. Among these musicians, there are The Beatles, T-Bones Walker, Roy Acuff etc. The full namelist is in the Table 5. With 20 labels, semi- supervised learning can be held based on analysis of graph structure to generate labels barely correlated with genres.
+
+Based on [12], consider a two-layer GCN presented in forward model (8) and cross
+
+4Though it’s not a better measure, it allows us to pick out musicians with great accumulative inﬂu- ence who are tend to affect more younger generations.
+
+关注数学模型 entropy error (9):
+
+Z = f (X, A) = so f tmax( ˆAReLU( ˆAXW(0))W(0)) (8)
+
+微信公众号：数学模型 E = ∑ l∈yL ∑ FYl f ln Zl f (9) f =1
+
+2. W(0) ∈RC×H is Where A is a symmetric adjacency matrix and ˆA = ˜D−1 2 ˜A ˜D−1 input-to-hidden weight matrix with H feature maps and W(1) ∈RH×F is hidden-to- output weight matrix. Some of principles are presented in Fig.16a. Again, by stochastic gradient descent, the weights matrices can be trained to ﬁnd the label.
+
+By TensorFlow[13] we can calculate the labels for nodes in a relatively low time complexity. Some of clustering results are shown in Fig.16b. It can be found that the model has a relatively good recognition of mainstream genres, while it still can identify the genres with few musicians. This is probably because that most musicians were eas- 微信号：MATHmodels ily affected by pop stars even he/she had a different style. This endows the model with great ability of identifying Pop/Rock. Therefore, though it’s hard to determine miche music style in both models, less sample labels actually help reducing the misspeciﬁ- cation from overestimating the role of Pop/Rock music, as the network itself doesn’t contain enough information of doing so. This also supports the reasonableness of (4).
+
+(a) Graph Convolutional Network(Source:[12]) (b) Results from GCN
+
+7 Strengths and Weaknesses
+
+7.1 Strengths
+
+• With a dynamic network, we consider a growing community of musicians which allows us to understand the evolution of musicians comprehensively.
+
+• We measure the similarity from maximising the information in their community interactions, musical identities of works as well as the temporal characteristics which can make a good distinct between different genres overall.
+
+• We modify the time-biased PageRank model and its measure of node importance was further optimised with a similarity metric that better represents the interplay
+
+关注数学模型 between musicians.
+
+• We conducted detailed case studies, tests as well as sensitivity analysis to fully ensure the reasonableness and validity of our model.
+
+微信公众号：数学模型
+
+7.2 Weaknesses
+
+• Due to the limitation of data about musicians and their works, we can only mea- sure similarity and inﬂuence every decade, which may weaken the accuracy of the model without capturing more delicate dynamic information.
+
+• Exogenous shock can be observed by outcomes presented by our model though, we don’t consider it in designing which could render bias in the ultimate rank of musicians across periods under different circumstances.
+
+8 Further Discussion
+
+微信号：MATHmodels In this project, we raised a measure of musicians’ inﬂuence by their importance in community and interactions between them. However, it should be noticed that based on the limitation of data, we had to make some assumptions that may not be too real- istic. They could reduce the credibility of our model. And provided with the following types of data, we can We can improve our model to better explore the patterns in the musician community:
+
+1. Data of Lyrics: Though we traced the revolution of genres by its overall charac-
+
+teristics, it’s hard to analyze its contents without lyrics especially for genres with relevance. Therefore, with data of lyrics, we can use methods including semantic analysis and sentiment analysis to show how ideas change in music, in order to bet- ter explore the relationship between musicians’ community inﬂuences and social inﬂuences.
+
+2. Data of Audio: In the project, we are provided with overall indicators about charac- teristics of musicians’ works. However, it is difﬁcult to discover the true similarities between the works through these quantitative indicators. If we could have audio information about these songs, algorithms including MFCC[14] and so on could be used to explore interactions between musicians better.
+
+Overall, however, this model closely matches the data provided, and we believe with more data, it is bound to play a greater role in the future of related analysis.
+
+关注数学模型
+
+Letter
+
+To: Integrative Collective Music Society 微信公众号：数学模型 From: Team 2101855 Date: February 8th, 2021 Subject: A better measure of music’s inﬂuence: updated rescaled PageRank
+
+In the memo, we want to introduce you an alternate measure of music’s inﬂuence: updated rescaled PageRank. In fact, the PageRank has been used in measuring the importance of nodes in a network for long. However, it encounters some problem in tracing the evolution of music. Thus, we make the following imporvements to it.
+
+Firstly, by taking corresponding nodes’ relative positions among contemporaries into account, we solve the problem of time-bias in growing networks including musi- cians’ community.
+
+Secondly, we design a measure of similarity based on musical identities of musi- 微信号：MATHmodels cians’ works combining the structure of networks. And this measure has proven useful in ﬁnding musicians from the same genre.
+
+Lastly, we replace the indegree in rescaled PageRank by similarity estimated above. This endows the model with more information from musical characteristics with a better effect of reversing time-bias.
+
+By the measure above and corresponding tests, we’ve substantiated the effective- ness of our measure. Case studies are also held to illustrate the relationship between inﬂuence and similarity as well as how to trace the evolution and revolution of these genres by our approaches.
+
+However, we admit that our method still have some ﬂaws more or less. The biggest problem among them is the limitation of data. Without data of new musicians, it’s hard to research into the network after 2000, which could also render bias in result from different periods.
+
+In addition, the overview indicators of musical characteristics make it hard to ﬁnd more information from songs themselves. For example, it we have data about lyrics, we can trace the evolution of songs’ contents which reﬂect the trend of thoughts by algorithms for semantic analysis and sentiment analysis. And more detailed audio information about music can help more precisely compare similarities between genres with algorithms including MFCC etc.
+
+After all, I believe that with our update, the rescaled PageRank algorithm is com- patible with the speciﬁcity of the musician community and captures the evolution of each genre effectively. We think it’s quite a useful tool for us to know about musi- cians as well the culture. So we wholeheartedly hope you consider our measure, and hopefully it will come in handy in real life applications.
+
+Thank you!
+
+关注数学模型
+
+Appendix A: Information of Dynamic Networks
+
+微信公众号：数学模型
+
+n m k t
+
+0 246 129 0.524 1 625 826 1.322 2 1304 3506 2.609 3 2562 10149 3.961 4 3584 16962 4.733 5 4645 25448 5.474 6 5479 36446 6.647 7 5593 41956 7.496
+
+Note: n is the Number of Nodes, m is the Number of Edges, k is the Average Degree. Note that diameter and mean geodesic distance can’t be calculated here as for early 微信号：MATHmodels times, the networks weren’t connected, which can also be seen in 1a.
+
+Appendix B: Namelist of "Benchmark" Artists in GCN
+
+Avant-Garde Blues Childrens Classical Terry Riley T-Bone Walker Alvin&The Chipmunks John Cage Comedy/Spoken Country Easy Listening Electronic Spike Jones Roy Acuff Bert Kaempfert Kraftwerk Folk International Jazz Latin Woody Guthrie Ravi Shankar Cab Calloway Lecuona Cuban Boys New Age Pop/Rock R&B Reggae Mike Oldﬁeld The Beatles Ray Charles Lord Invader Religious Stage&Screen Unknown Vocal Sister Rosetta Tharpe Harold Arlen The Bothy Band Billie Holiday
+
+关注数学模型
