@@ -1,0 +1,816 @@
+"""Hand census of P-E-2019-1902029-f44b44ca (Team 1902029, 28 pages, 25 measured regions).
+
+An ecosystem-service-valuation paper for problem E 2019. Twenty-five measured regions over sixteen
+pages resolve into TWENTY-THREE FIGURE ROWS and TWO TABLE ROWS, with nothing unaccounted and no
+refusals. Five of the twenty-three figure rows are tables printed under a figure number: Figure 2 is
+a fourteen-column value-coefficient grid, Figure 3 is the province table behind the ESV discussion,
+Figure 6 is a six-band classification strip, Figure 10 is a one-row land-type table and Figure 16 is
+the annual-importance table the prose calls "the importance level table".
+
+  p5  r1  Table 1     table-grid           notation list, two columns
+  p8  r1  Figure 1    flowchart-or-schematic   the four-step evaluation framework
+  p10 r1  Figure 2    table-as-figure      basic equivalents, two header bands, 14 value columns
+  p11 r1  Figure 3    table-as-figure      14 provinces x 9 columns, ESV = row sum
+  p12 r1  Figure 4    scatter              our ESV against the published ESV, 14 triangles
+  p13 r1  Figure 5    bar                  ESC per unit area, 14 labelled bars, no ordinate
+  p13 r2  Figure 6    table-as-figure      six-band service-capability classification strip
+  p13 r3  Figure 7    bar                  GDP bars with the ESC/GDP row tabulated underneath
+  p14 r1  Table 2     table-grid           one row of six land-use values
+  p15 r2  Figure 8    line                 rate of decline, three value types, 2011-2015
+  p15 r1  Figure 9    other                the ESV ratio radar map, six spokes
+  p16 r1  Figure 10   table-as-figure      Huangguoshu per-unit-area values, 2 rows x 8 columns
+  p18 r1  Figure 11   flowchart-or-schematic   cost-benefit sketch (a), equilibria A and B
+  p18 r2  Figure 12   flowchart-or-schematic   cost-benefit sketch (b), equilibrium A only
+  p20 r2  Figure 13   line                 area-change impact, Heilongjiang
+  p20 r1  Figure 14   line                 area-change impact, Jiangsu
+  p21 r1  Figure 15   line                 ecosystem value by month, fifteen series
+  p22 r1  Figure 16   line                 importance levels - captioned as a TABLE
+  p24 r1  Figure 17   table-as-figure      land-use table, Yangtze River Delta 2010-2015
+  p24 r2  Figure 18   table-as-figure      ESV table, same area and span
+  p25 r1  Figure 19   line                 changes of three values
+  p25 r2  Figure 20   bar                  coefficient of sensitivity
+  p25 r3  Figure 21   map-or-plan-view     dynamic land-use change, Huangguoshu 2009-2012
+  p26 r1  Figure 22   bar                  total ESV by land type
+  p26 r2  Figure 23   bar                  CS by land type
+
+REGION ORDER IS NOT READING ORDER. On p15 the Figure 9 radar sits in region 1 (right half) and the
+Figure 8 line chart in region 2 (left half), so the pair is recorded right-before-left, and the same
+happens on p20. Both swaps were settled from the crop, not from the region index.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+LANE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(LANE / "tools"))
+
+import schema  # noqa: E402
+
+PID = "P-E-2019-1902029-f44b44ca"
+PROXY = LANE / ".proxy"
+LAYOUT = json.loads((LANE / "layout" / f"{PID}.json").read_text(encoding="utf-8"))
+CTX = json.loads((PROXY / f"{PID}-ctx.json").read_text(encoding="utf-8"))
+
+REG: dict[tuple[int, int], list[float]] = {}
+KIND: dict[tuple[int, int], str] = {}
+for _pg in LAYOUT["pages"]:
+    for _i, _r in enumerate(sorted(_pg["regions"], key=lambda x: (x["bbox"][1], x["bbox"][0])), 1):
+        REG[(_pg["page"], _i)] = _r["bbox"]
+        KIND[(_pg["page"], _i)] = _r["kind"]
+
+CTXREG = {(r["page"], r["region"]): r for r in CTX["regions"]}
+
+for _key, _bbox in REG.items():
+    _ctx = CTXREG.get(_key)
+    if _ctx is None or max(abs(a - b) for a, b in zip(_ctx["bbox"], _bbox)) > 0.5:
+        raise SystemExit(f"region numbering disagrees with the context dump at {_key}")
+
+DOC_ORDER = 0
+LIG = "ﬁ"  # the paper sets "figure" and "benefit" with a real fi ligature
+
+
+def q(text: str, page: int) -> str:
+    """Refuse to record a quote that the text layer of that page does not print."""
+    if schema.norm(text) not in schema.page_text(PID, page):
+        raise KeyError((page, text[:70]))
+    return schema.norm(text)
+
+
+def place(page: int, reg: int, kind: str, path: list[str], order: int = 1) -> dict:
+    global DOC_ORDER
+    DOC_ORDER += 1
+    c = CTXREG[(page, reg)]
+    return {
+        "section_path": path,
+        "section_numbered": True,
+        "section_kind": kind,
+        "doc_order": DOC_ORDER,
+        "page_order": order,
+        "page_zone": c["page_zone"],
+        "area_frac": c["area_frac"],
+        "solo_page": c["solo_page"],
+    }
+
+
+def uncited() -> dict:
+    return {"first_page": None, "lead_pages": None, "style": [], "count": 0,
+            "lead_sentence": "", "trail_sentence": "", "lead_pattern": "none",
+            "read_sentences": 0, "gap_sentences": None}
+
+
+def cited(first_page: int, page: int, style: list[str], count: int, lead: str = "",
+          trail: str = "", pattern: str = "direct", read: int = 1) -> dict:
+    return {"first_page": first_page, "lead_pages": page - first_page, "style": list(style),
+            "count": count, "lead_sentence": q(lead, first_page) if lead else "",
+            "trail_sentence": q(trail, first_page) if trail else "", "lead_pattern": pattern,
+            "read_sentences": read, "gap_sentences": None}
+
+
+def caption(verbatim: str, kind: str = "Figure", position: str = "below",
+            variables: int = 0, numbering: str | None = None) -> dict:
+    return {"verbatim": schema.norm(verbatim),
+            "numbering": numbering or f"{kind} N:",
+            "words": len(schema.words(verbatim)), "sentences": 1, "units": False,
+            "variables": variables > 0, "variable_count": variables,
+            "conditions": False, "concludes": False, "voice": "none",
+            "position": position}
+
+
+def geometry(family: str, panels: int = 1, layout: str = "1", legend: str = "none",
+             colorbar: bool = False, labels: bool = False, numbers: bool = False,
+             shared: bool = False, three_d: str = "no") -> dict:
+    return {"family": family, "panel_count": panels, "panel_layout": layout,
+            "legend": legend, "colorbar": colorbar, "data_labels": labels,
+            "printed_numbers": numbers, "shared_axes": shared, "three_d": three_d}
+
+
+def head(page: int, prefix: str) -> str:
+    for h in CTX["headings"]:
+        if h["page"] == page and h["label"].startswith(prefix):
+            return h["label"]
+    raise SystemExit(f"no heading on p{page} starting {prefix!r}")
+
+
+def printed(page: int, text: str) -> str:
+    """A heading the layout pass failed to index, accepted only as a printed line."""
+    line = schema.norm(text)
+    if line not in schema.printed_lines(PID):
+        raise SystemExit(f"not a printed line of the paper: {line!r}")
+    if line not in schema.page_text(PID, page):
+        raise SystemExit(f"printed line is not on p{page}: {line!r}")
+    return line
+
+
+S_13 = [printed(5, "1.3 notation")]
+S_332 = [head(7, "3.3.2 Evaluation framework")]
+S_333 = [head(9, "3.3.3 Standard Equivalent")]
+S_351 = [head(10, "3.5.1 Calculation and results")]
+S_352 = [head(11, "3.5.2 Consistency test")]
+S_353 = [head(12, "3.5.3 Evaluation of ecological service value")]
+S_412 = [head(14, "4.1.2 Adjustment of the value")]
+S_413 = [head(14, "4.1.3 Calculating ESV")]
+S_422 = [head(16, "4.2.2 Adjustment of the value")]
+S_425 = [head(17, "4.2.5 Advices")]
+S_521 = [head(20, "5.2.1 Impact of area change")]
+S_61 = [head(21, "6.1 Seasonal change")]
+S_62 = [head(22, "6.2 Annual change")]
+S_8 = [head(24, "8 Appendix")]
+
+_KNOWN = {schema.norm(h["label"]) for h in CTX["headings"]}
+_KNOWN |= {schema.norm(h["title"]) for h in CTX["headings"] if h.get("title")}
+_KNOWN |= schema.printed_lines(PID)
+for _group in (S_13, S_332, S_333, S_351, S_352, S_353, S_412, S_413, S_422, S_425,
+               S_521, S_61, S_62, S_8):
+    for _label in _group:
+        if schema.norm(_label) not in _KNOWN:
+            raise SystemExit(f"section label is not an indexed heading: {_label!r}")
+
+ITEMS: list[dict] = []
+TABLES: list[dict] = []
+EXCLUDED: list[dict] = []
+
+
+def figure(page: int, reg: int, family: str, cap_block: dict, cap_src: str, mention: dict,
+           section: list[str], note: str, geo: dict | None = None, number: str = "",
+           section_kind: str = "other", confidence: str = "high", order: int = 1,
+           other_note: str = "") -> None:
+    ITEMS.append({
+        "page": page, "bbox": REG[(page, reg)], "kind": KIND[(page, reg)], "family": family,
+        "panel_count": (geo or {}).get("panel_count", 1),
+        "caption_source": cap_src, "caption_verbatim": cap_block["verbatim"],
+        "caption": cap_block, "geometry": geo or geometry(family),
+        "place": place(page, reg, section_kind, section, order),
+        "mention": mention, "note": note, "confidence": confidence,
+        "printed_number": number,
+        "other_note": other_note,
+    })
+
+
+def table(page: int, reg: int, section: list[str], note: str, spec: dict,
+          cap_block: dict | None = None, cap_src: str = "none", mention: dict | None = None,
+          section_kind: str = "other", order: int = 1) -> None:
+    block = cap_block or caption("", kind="Table")
+    TABLES.append({
+        "page": page, "bbox": REG[(page, reg)], "kind": KIND[(page, reg)],
+        "family": "table-grid", "caption_source": cap_src,
+        "caption_verbatim": block["verbatim"], "caption": block, "table": spec,
+        "place": place(page, reg, section_kind, section, order),
+        "mention": mention or uncited(), "note": note, "confidence": "high",
+    })
+
+
+CAPT1 = caption("Table 1: List of Notations", kind="Table", position="above")
+CAP1 = caption("Figure 1: Evaluation framework")
+CAP2 = caption("Figure 2: The basic equivalents of different ecosystem types and different value "
+               "categories")
+CAP3 = caption("Figure 3: the ESV of 14 provinces in China (Billion yuan)")
+CAP4 = caption("Figure 4: Scatter plot comparing the results of two calculations")
+CAP5 = caption("Figure 5: Ecological service capacity calculated by unit area")
+CAP6 = caption(f"Figure 6: Ecological service capability classi{LIG}cation")
+CAP7 = caption("Figure 7: Ecological service capacity calculated by unit GDP")
+CAPT2 = caption("Table 2: Ecosystem Service Value(yuan/hm2) of Land Use Type in Yangtze River Delta",
+                kind="Table", position="above")
+CAP8 = caption("Figure 8: Rate of Decline of Three Values")
+CAP9 = caption("Figure 9: The Ratio of ESV of Various E- cosystems")
+CAP10 = caption("Figure 10: Ecosystem services value unit area of different land types in "
+                "Huangguosh")
+CAP11 = caption(f"Figure 11: Cost-bene{LIG}t curve(a)")
+CAP12 = caption(f"Figure 12: Cost-bene{LIG}t curve(b)")
+CAP13 = caption("Figure 13: the impact of area change in Hei-")
+CAP14 = caption("Figure 14: the impact of area change in")
+CAP15 = caption("Figure 15: Ecosystem value change chart during the year")
+CAP16 = caption("Figure 16: The table of Different ecosystem importance levels")
+CAP17 = caption("Figure 17: Land Use Changes of Yangtze River Delta,2010-2015")
+CAP18 = caption("Figure 18: Changes of Ecosystem Service Value of Yangtze River Delta,2010-2015")
+CAP19 = caption("Figure 19: Changes of Three Values of Yangtze River Delta,2010-2015")
+CAP20 = caption(f"Figure 20: Coef{LIG}cient of Sensitivity of Yangtze River Delta,2010-2015")
+CAP21 = caption("Figure 21: The dynamic change of land use in Huangguoshu from 2009 to 2012")
+CAP22 = caption("Figure 22: The total ESV of different land types in Huangguoshu")
+CAP23 = caption("Figure 23: CS of ecosystem services value of different land types in Huangguoshu")
+
+BOOKTABS = {"rule_style": "booktabs", "zebra": False, "diagonal_header": False,
+            "units_in_header": False, "decimal_aligned": False, "orientation": "portrait",
+            "note_sentence": ""}
+BANDS = {"rule_style": "none", "zebra": False, "diagonal_header": False,
+         "units_in_header": False, "decimal_aligned": False, "orientation": "portrait",
+         "note_sentence": ""}
+
+# ============================================================ 1.3: the notation list
+table(5, 1, S_13,
+      "Two columns, Symbol | Deﬁnition, ten body rows from ESV and A_k down to I_ij, ruled booktabs - "
+      "a rule above the header, a rule under it and a rule at the foot, no verticals. THE SYMBOL COLUMN "
+      "MIXES TWO REGISTERS: ESV, CS, ESC and GDP are set in roman capitals while A_k, VC_k, E_ak and "
+      "I_ij are italic with subscripts, so the same column carries both word-abbreviations and algebra "
+      "and the reader cannot tell an operator from a token. Two of the ten rows wrap their definition "
+      "onto a second line (the CS row and the I_ij row), and the CS definition prints its parenthesis "
+      "unclosed-upon a space - 'Coefficient of Sensitivity(ESV sensitivity to VC)' - with no space "
+      "before the bracket. FIVE SYMBOLS USED IN THE BODY ARE NOT DEFINED HERE: the model writes ESC_i = "
+      "ESV_i/A_i, ESV_i, ESV_j, VC_ik and VC_jk, and only the unsubscripted stems appear; and 'I_ij' is "
+      "listed as 'The value of land type j in all land types in the year i' which is the importance "
+      "level of section 6, not the notation of section 1.3. Caption prints ABOVE. NO SENTENCE NAMES THE "
+      "TABLE: the body writes the bare heading '1.3 notation' and the grid follows.",
+      dict(rows=11, cols=2, header_rows=1, merged_cells=False, numeric_cols=0, text_cols=2,
+           width="full", continued=False, **BOOKTABS),
+      CAPT1, "text-layer", uncited(), section_kind="model")
+
+# ============================================================ 3.3.2: the evaluation framework
+figure(8, 1, "flowchart-or-schematic", CAP1, "text-layer",
+       cited(8, 8, [f"{LIG}gure 1"], 1, lead=f"framework as shown in {LIG}gure 1."),
+       S_332,
+       "A five-rank box diagram: Ecosystem (purple) into Support Service (grey), which feeds a horizontal "
+       "bus that reaches Supply Service, Adjustment Service and Cultural Service (dark green), which in "
+       "turn feed Direct Value, Indirect Value and Existing Value (mid green), which converge on Total "
+       "Value (pale green). Two double-headed blue arrows stand in for axes - 'Time & Space Scale' across "
+       "the top and 'Ecological service value assessment process' down the left - and there is no other "
+       "legend. THE DIAGRAM CONTRADICTS THE TEXT IT SERVES: section 3.3 says support services are 'the "
+       "backbone' and 'we recommend not evaluating support services to avoid double the value', but the "
+       "framework draws Support Service on the same rank as the three valued services and routes it "
+       "through the same bus into the value layer. THE ARROWS DO NOT RESOLVE: the bus under Support "
+       "Service splits three ways and drops into Adjustment Service from above while the two outer "
+       "services take their feed from the same bus at a different height, and the Supply Service arrow "
+       "crosses the Cultural Service arrow's drop - so the graph draws at least one crossing that no "
+       "rendering makes meaningful. The three value boxes touch their neighbours' strokes, the "
+       "Adjustment Service box overprints the line beneath it, and no box carries a step number although "
+       "the citing sentence says 'the main workﬂow involved consists of four steps'. Caption prints "
+       "BELOW and the numbered-list marker '1.' of the following paragraph is welded to its tail in the "
+       "text layer.",
+       geometry("flowchart-or-schematic", labels=True), "1", section_kind="model")
+
+# ============================================================ 3.3.3: the coefficient grid
+figure(10, 1, "table-as-figure", CAP2, "text-layer", uncited(), S_333,
+       "A value-coefficient grid printed and captioned as a figure: two header bands over FOURTEEN "
+       "numeric value columns (Cultivated land, Woodland, Grassland, Farmland, Wetland, Waters, "
+       "Unutilized land and the sub-types above them), with the left stub in three blocks - Provision "
+       "services (Food supply, Raw material supply, Water supply), Regulating services (Gas regulation, "
+       "Climate regulation, Hydrological regulation, Soil formation, Waste treatment) and Supporting "
+       "services (Soil conservation, Nutrient cycling, Biodiversity, Culture & education). Colour is "
+       "used as the only row separator: three greens by service block and orange for the two header "
+       "bands, with no rule anywhere and no legend. THE HEADER BANDS ARE UNREADABLE AT PRINT SIZE: the "
+       "top band's four merged labels sit at about 4 pt and the second band's twelve sub-type labels "
+       "overlap each other, so several columns cannot be attributed to a land type. THE GRID IS ALSO "
+       "SIGNED IN PLACES AND UNSIGNED EXPLANATION: raw material supply carries −0.94, −3.63 and −0.91 "
+       "and water supply −1.05, i.e. negative per-unit values in a grid the section presents as positive "
+       "coefficients, and no note says what a negative service value means. Values print at mixed "
+       "precision (1.36, 0.85, 0.1, 0.38, 0.01, 0) with bare 0 cells, and the '0' column repeats over "
+       "several land types. Caption prints BELOW. NO SENTENCE NAMES IT: the section moves straight from "
+       "the standard-equivalent text into the sensitivity formula.",
+       geometry("table-as-figure", labels=True, numbers=True), "2", section_kind="model")
+
+# ============================================================ 3.5.1: the province table
+figure(11, 1, "table-as-figure", CAP3, "text-layer", uncited(), S_351,
+       "Fourteen provinces by nine columns - Cultivated Land, Woodland, Grassland, Construction Land, "
+       "Waters, Unutilized land, ESV, Cultivated Land Contributi-on Rate - ruled booktabs, caption "
+       "'(Billion yuan)'. THE ARITHMETIC HOLDS TO THE LAST DIGIT: for every one of the fourteen rows the "
+       "six land-type cells sum to the printed ESV (Beijing 21.24 + 437.48 + 30.77 − 67.23 + 12.29 + 0.00 "
+       "= 434.55), and the contribution rate is the cultivated cell over that sum to two decimals "
+       "(Jiangsu 448.74/638.72 = 70.26 as printed). THE UNIT IN THE CAPTION CONTRADICTS THE PROSE: if the "
+       "cells are billions of yuan then Inner Mongolia's ESV of 36235.51 is 36 trillion yuan, while the "
+       "text says the three highest provinces 'measured by currency amount exceeds 100 billion yuan' - a "
+       "threshold every one of the fourteen rows passes - and Figure 4 plots the same quantity on an axis "
+       "marked '*10^8 Yuan', a third scale for the same numbers. THREE HEADER CELLS ARE HYPHENATED ACROSS "
+       "LINES ('Constructi-on Land', 'Contributi-on Rate'), two stub labels are abbreviations printed "
+       "nowhere else (IM, Jiln - the second a typo for Jilin), every header in the table carries a "
+       "trailing full stop, and the column of negative construction-land values (−67.23 through "
+       "−556.85) is never explained. Caption prints BELOW. NO SENTENCE NAMES THE TABLE: the text reads "
+       "the values by province without ever calling the grid a figure.",
+       geometry("table-as-figure", labels=True, numbers=True), "3", section_kind="result")
+
+# ============================================================ 3.5.2: the consistency scatter
+figure(12, 1, "scatter", CAP4, "text-layer",
+       cited(11, 12, [f"{LIG}gure 4"], 1, lead=f"get a scatter plot in {LIG}gure 4."),
+       S_352,
+       "Fourteen black triangles on a full box, our ESV on the abscissa against the published ESV on the "
+       "ordinate, both titled 'ESV calculated ... /(*10^8 Yuan)'. NO REFERENCE LINE: the claim the plate "
+       "exists to support - 'the trends of ESV levels calculated by the two methods are consistent' - is "
+       "read off the diagonal by eye, and no 45-degree line, no regression line, no R squared, no slope "
+       "and no n are printed anywhere on the plate or in the sentence. THE TWO FORTY-FIVE-DEGREE CASES "
+       "ARE NOT DISTINGUISHABLE: points sit slightly ABOVE the diagonal at the top (about 200000 against "
+       "195000) and slightly BELOW at the bottom, so the two methods do not agree in level and the plate "
+       "prints nothing that would say by how much. THE ORDINATE IS LABELLED AT THREE TICKS ONLY (50000, "
+       "150000, 250000) against six on the abscissa, and neither axis is titled with a quantity - both "
+       "titles repeat the software's '*10^8' multiplier string, a scale that matches neither Figure 3's "
+       "caption unit nor any conversion stated in the text. No gridlines and no point labels, so which "
+       "triangle is which province cannot be recovered from the plate although the prose names four "
+       "provinces by name. Caption prints BELOW.",
+       geometry("scatter", labels=True), "4", section_kind="result")
+
+# ============================================================ 3.5.3: the three capacity plates
+figure(13, 1, "bar", CAP5, "text-layer", uncited(), S_353,
+       "Fourteen bars of ESC per unit area, every value printed in a white label above its stem: 306.3, "
+       "321.84, 370.40, 323.62, 388.16, 364.59, 273.83, 307.11, 215.81, 194.09, 162.36, 93.95, 264.81, "
+       "59.58 against IM, HLJ, Sichuan, Jilin, Jiangxi, Hunan, Liaoning, Hubei, Hebei, Anhui, Henan, SD, "
+       "Beijing, Jiangsu. THE CHART HAS NO ORDINATE: there are no ticks, no numbers and no baseline on "
+       "the y axis - only a rotated title 'ESC (Unit area) (10^4 yuan/hm^2)' - so the only quantities on "
+       "the plate are the fourteen labels and the bar heights carry nothing the labels do not. THE BARS "
+       "THEMSELVES ARE INVISIBLE: they are drawn as thin white stems on a light blue field, so bar length "
+       "cannot be compared and the plate reads as a sorted list with decoration. THE ORDER IS NEITHER "
+       "SORTED NOR GEOGRAPHIC: it runs 306.3, 321.84, 370.40, 323.62 ... so the first three rise before "
+       "falling, and 264.81 (Beijing) is printed between 93.95 and 59.58. THE UNIT CONTRADICTS THE "
+       "PROSE BY A FACTOR OF A HUNDRED: section 3.5.3 says Jiangsu and Shandong are 'less than 1 million "
+       "yuan/km2' and that Jiangxi, Hunan and Sichuan are 'higher than 3.5 million yuan/km2', but the "
+       "ordinate is printed in 10^4 yuan per HECTARE, where Jiangsu's 59.58 is 0.6 million per hectare and "
+       "Sichuan's 370.40 is 3.7 million per hectare - the reading only reconciles if the printed 'hm^2' "
+       "is a slip for km^2. Three categories are unexpanded abbreviations (IM, HLJ, SD) that appear on no "
+       "other page. Caption prints BELOW. NO SENTENCE NAMES IT: the text under the heading 'By Area' "
+       "simply reads the numbers.",
+       geometry("bar", labels=True, numbers=True), "5", section_kind="result")
+
+figure(13, 2, "table-as-figure", CAP6, "text-layer", uncited(), S_353,
+       "A six-band classification strip, three columns - ESC (Unit area) | Grade | Province - with the "
+       "bands drawn as colour fills and no rule anywhere: <100 Weak Service Ability (Jiangsu, Shandong), "
+       "100-200 Relative Weak (Henan, Anhui), 200-300 Medium (Beijing, Hebei, Liaoning), 300-350 "
+       "Relative Strong (Inner Mongolia, Jilin, Heilongjiang, Hubei), >350 Strong (Jiangxi, Hunan, "
+       "Sichuan). IT AGREES WITH FIGURE 5 TO THE LAST PROVINCE: every one of the fourteen provinces is "
+       "filed in the band its Figure 5 value falls in, and none is missing or double-counted, which makes "
+       "this the one pair of plates in the section that check each other. WHAT IT OMITS IS THE UNIT: the "
+       "first column prints bare numbers (<100, 100-200, ... >350) with no scale anywhere on the strip, "
+       "and the reader has to carry Figure 5's ordinate title across to it. THE BANDS OVERLAP AT THEIR "
+       "BOUNDARIES: '100-200' and '200-300' both own 200, and '200-300' against '300-350' both own 300, "
+       "so three of the five thresholds are ambiguous and the two provinces nearest to one (Anhui 194.09, "
+       "Hubei 307.11) sit either side of a boundary that is defined twice. Colour is the only separator "
+       "and the six fills run from pink through yellow to dark green with no legend keying them. Caption "
+       "prints BELOW and the text layer welds the following body sentence to its tail ('... and is "
+       "conducive to ecological balance and sustainable development.'), so the recorded verbatim is the "
+       "caption line alone.",
+       geometry("table-as-figure", labels=True, numbers=True), "6", section_kind="result", order=2)
+
+figure(13, 3, "bar", CAP7, "text-layer", uncited(), S_353,
+       "Seventeen columns in one region: fourteen GDP bars with a grey plot field, horizontal gridlines "
+       "and a y axis ticked 0 to 90000 in ten thousands, and beneath them a two-row data table embedded "
+       "in the same crop - GDP (10^8 yuan) 18128, 15386, 32935, 14777, 18499, 31551, 22247, 32665, 32071, "
+       "24408, 40472, 68025, 25669, 77388 and ESC (Unit GDP) 2.00, 0.99, 0.55, 0.41, 0.35, 0.24, 0.18, "
+       "0.17, 0.13, 0.11, 0.07, 0.02, 0.02, 0.01, with a two-entry legend at the lower left keying the "
+       "two rows. THE BARS PLOT THE WRONG QUANTITY: the caption and the citing passage are about "
+       "'ecological service capacity calculated by unit GDP', but the bars are GDP, and the ESC column the "
+       "caption is about has no axis, no bar and no visual encoding at all - it exists only as type in the "
+       "table - so the ranking the plate shows (Jiangsu highest, IM lowest) is the INVERSE of the ranking "
+       "the text describes (IM 2.00 highest, Jiangsu 0.01 lowest). THE EMBEDDED LEGEND CANNOT "
+       "DISCRIMINATE: both swatches are the same blue, so the key distinguishes nothing. The y axis "
+       "belongs to the GDP row alone while the second row's units (a ratio per 10^8 yuan) appear only as "
+       "the row stub, and the three abbreviations IM, HLJ and SD are printed unexpanded as on Figure 5. "
+       "The eight-figure GDP value 77388 is drawn past the last gridline at 90000 without a label. "
+       "Caption prints BELOW.",
+       geometry("bar", labels=True, numbers=True), "7", section_kind="result", order=3)
+
+# ============================================================ 4.1.2: the land-use values
+table(14, 1, S_412,
+      "One data row across six land types - Woodland 37979.23, Grassland 12584.42, Farmland 12000.82, "
+      "Wetland 108001.3, Waters 79956.43, Unutilized land 734.44 yuan/hm2 - ruled booktabs, caption "
+      "above with the unit set in italic inside the caption rather than in a header. THE ROW HAS NO STUB: "
+      "there is no leftmost label saying whose values these are, so the single row is named only by the "
+      "caption's 'of Land Use Type in Yangtze River Delta' and holds six numbers with nothing to hang "
+      "them on - not a year, not a scenario, not a per-unit-area or per-total distinction. PRECISION IS "
+      "INCONSISTENT: five cells print two decimals and Wetland prints 108001.3, one decimal. The "
+      "land-type classes disagree with the three other land-type listings in the paper - the appendix "
+      "plates use Cultivated land, Garden plot, Swamp and tidal flats and Other land, and Figure 2 uses "
+      "fourteen sub-types - so the six values cannot be matched against the ESV plates they are supposed "
+      "to feed. Caption prints ABOVE; cited once by 'Value(yuan/hm2) of Land Use Type' context only, the "
+      "sentence 'the unit area value table of different land use types can be calculated' naming no "
+      "table.",
+      dict(rows=2, cols=6, header_rows=1, merged_cells=False, numeric_cols=6, text_cols=0,
+           width="full", continued=False, **BOOKTABS),
+      CAPT2, "text-layer", uncited(), section_kind="model")
+
+# ============================================================ 4.1.3: the decline pair
+figure(15, 2, "line", CAP8, "text-layer",
+       cited(15, 15, [f"{LIG}gure 8"], 1, lead=f"We can see from {LIG}gure 8"),
+       S_413,
+       "Three series over 2011 to 2015 titled 'Rate of Decline', ordinate ticked 0.00% to 0.90% in ten "
+       "hundredths, legend printed as one horizontal line BELOW the abscissa keying Direct Value (blue), "
+       "Indirect Value (red) and 'Enabling Value' (green). THE PAPER NAMES THE SAME QUANTITY THREE WAYS: "
+       "the legend says 'Enabling Value' where the body says 'existence value' and the framework diagram "
+       "says 'Existing Value'. THE AXIS IS A PERCENTAGE OF SOMETHING UNSTATED and tops out at 0.90% - a "
+       "rate of decline so small that the three values fall by less than one per cent in five years, "
+       "while the prose calls the reduction of indirect and existential value 'more serious' and 'at a "
+       "faster rate'. NO POINTS ARE MARKED AND NO VALUES PRINTED, so every reading is an eyeballed height: "
+       "the three series sit at roughly 0.33/0.70/0.77 in 2011 and 0.12/0.57/0.55 in 2015, which makes "
+       "the existential series the one that FALLS FASTEST in absolute points and the direct series the "
+       "one that falls fastest in relative terms - the plate does not settle which comparison the text "
+       "means. THE X AXIS HAS NO TITLE OF ITS OWN: the word 'Year' is stranded at the right end of the "
+       "legend row beneath the plot. No gridlines, no reference line at zero, no note on the base the "
+       "percentage is taken against. Caption prints BELOW and the crop shows the legend sitting between "
+       "the art and the caption.",
+       geometry("line", legend="below", labels=True), "8", section_kind="result")
+
+# ============================================================ 4.1.3: the ratio radar
+figure(15, 1, "other", CAP9, "text-layer",
+       cited(15, 15, [f"{LIG}gure 9"], 1, lead=f"radar map is drawn in {LIG}gure 9."),
+       S_413,
+       "A radar map: one blue polygon over six spokes - Woodland, Grassland, Waters, Farmland, "
+       "Construction Land, Unused Land - with five pale concentric rings and radial labels printed along "
+       "the top spoke reading 1.04, 1.02, 1, 0.96, 0.94, 0.92, 0.9, 0.88. THE RADIAL SCALE SKIPS A STEP: "
+       "the labels fall by 0.02 except between 1 and 0.96, where the step is 0.04, and 0.98 is absent - so "
+       "either a ring is missing or one label is misprinted, and the polygon's position against the rings "
+       "cannot be read by counting. THE REFERENCE VALUE IS NOT DRAWN: the quantity is the ratio of 2015 to "
+       "2010 ESV, so a ratio of 1 is the no-change case, but no ring at 1.00 is marked or named and the "
+       "reader has to find it among eight unlabelled numerals set on top of the Woodland spoke. THE "
+       "POLYGON ITSELF CARRIES NO INFORMATION BEYOND ITS SHAPE: all six vertices sit between roughly 0.93 "
+       "and 1.00, an eight-hundredths spread drawn across the whole radius, so the plot makes a nearly "
+       "circular ring look like a story - while the prose reads it as 'the ESV of the waters and woodland "
+       "ecosystems has the largest decline' and the plate has no vertex label, no value and no legend "
+       "entry to identify which vertex is which beyond the spoke name. The spoke labels mix title case "
+       "('Construction Land', 'Unused Land') with single-word lower-case names, and the paper calls the "
+       "same classes 'Unutilized land', 'Waters' and 'Existing Value' elsewhere. Caption prints BELOW and "
+       "wraps mid-word at 'E-/cosystems', so the recorded verbatim is the caption as the column breaks "
+       "it. NO OTHER PLATE IN THE PAPER IS A RADAR MAP, so this row records the only 'other' family in "
+       "the census.",
+       geometry("other", labels=True), "9", section_kind="result", order=2,
+       other_note="radar (spider) chart - a plot of one polygon over six category spokes, with no slot "
+                  "in the closed family vocabulary")
+
+# ============================================================ 4.2.2: the Huangguoshu values
+figure(16, 1, "table-as-figure", CAP10, "text-layer",
+       cited(16, 16, [f"{LIG}gure 10"], 1, lead=f"(see in {LIG}gure 10)"),
+       S_422,
+       "A one-row table captioned as a figure: seven land types across the header - Cultivated land "
+       "3613.65, Garden plot 7606.45, Woodland 11426.68, Grassland 3786.23, Waters 24040.47, Swamp and "
+       "tidal flats 32794.82, Other land 219.64 - with the row stub 'Ecological Value per Unit Area "
+       "( yuan/(hm^2·a) )'. Colour bands only, no rules, header band filled teal. THE TABLE IS "
+       "TRANSPOSED AGAINST TABLE 2 AND USES A DIFFERENT CLASS SET: Table 2 has six land types as columns "
+       "with values as one row, this one has seven as columns with one row as well, but the two class "
+       "lists share no name except Woodland, Grassland and Waters, so the Yangtze and Huangguoshu "
+       "valuations cannot be compared; the section's own Figure 21 uses a third set again. THE UNIT "
+       "STRING IS MALFORMED AND INCONSISTENT: 'yuan/(hm^2·a)' with doubled and spaced parentheses, "
+       "where Table 2 writes 'yuan/hm2' in its caption and Figure 5 writes '10^4 yuan/hm^2', and the "
+       "'·a' (per year) appears only here - the caption omits it and says only 'value unit area', "
+       "which is not grammatical. Precision is uniform at two decimals, the one table in the paper that "
+       "is. The header cell 'Swamp and tidal flats' wraps to two lines where its six neighbours do not. "
+       "Caption prints BELOW and a sliver of the preceding prose is inside the top edge of the region. "
+       "The citing sentence prints the figure reference inside a parenthesis at the end of a sentence - "
+       "'(see in ﬁgure 10)' - the only place the paper uses this form.",
+       geometry("table-as-figure", labels=True, numbers=True), "10", section_kind="model")
+
+# ============================================================ 4.2.5: the cost-benefit pair
+figure(18, 2, "flowchart-or-schematic", CAP11, "text-layer",
+       cited(18, 18, [f"{LIG}gure 11", f"{LIG}gure 12"], 2,
+             lead=f"As shows in {LIG}gure 11 and {LIG}gure 12:"),
+       S_425,
+       "A hand-drawn cost-benefit sketch: three straight lines - Total Benefit (grey), Total Cost "
+       "Including Ecological Costs (red) and Total Cost Without Ecological Costs (blue) - labelled by "
+       "floating text at their right ends with no legend box, two equilibria marked as yellow dots A and "
+       "B on the RED line where it meets Total Benefit, dotted verticals dropped to T1 and T2, and a "
+       "bracket on the lower left labelled 'Ecological Cost' over 'Construction Cost'. THE AXES ARE "
+       "UNQUANTIFIED: 'Total Cost/Benefi t' is printed horizontally at the top left instead of rotated, "
+       "'Time' at the bottom right, and there is not one tick, number, unit or year on either axis - the "
+       "plate prints no figure at all except the subscripts T1 and T2. THE BRACKET IS UNDIMENSIONED AND "
+       "UNALIGNED: it is meant to show the gap between the two cost lines, but its ends do not meet "
+       "either line and no value is given for the ecological cost, so the paper's central distinction "
+       "between with-and-without ecological cost is drawn as a pair of parallel strokes with a bracket "
+       "beside them. Both cost lines are drawn as straight parallels rising from the same origin with no "
+       "justification given, and the blue 'without ecological costs' line never crosses Total Benefit in "
+       "the frame, so only one of the two cases yields a break-even point on the plate even though the "
+       "text discusses point A for both. Caption prints BELOW and carries '(a)' while the art carries no "
+       "panel letter.",
+       geometry("flowchart-or-schematic", labels=True), "11", section_kind="model")
+
+figure(18, 1, "flowchart-or-schematic", CAP12, "text-layer",
+       cited(18, 18, [f"{LIG}gure 11", f"{LIG}gure 12"], 2,
+             lead=f"As shows in {LIG}gure 11 and {LIG}gure 12:"),
+       S_425,
+       "The (b) panel of the same sketch, same three floating labels, same undimensioned cost bracket, one "
+       "equilibrium A marked - this time on the BLUE line, at its crossing with Total Benefit - with a "
+       "dotted vertical to T1 and no B and no T2. THE TWO PANELS DO NOT READ AS A CONTROLLED CONTRAST: (a) "
+       "marks two equilibria on the red with-ecological-cost line and (b) marks one on the blue "
+       "without-ecological-cost line, so the letter A denotes a different case in each panel and the "
+       "reader cannot tell what changed between them - whether (b) is a different project, a different "
+       "period or a different cost assumption is stated nowhere on either plate and nowhere in the "
+       "sentences reading them. THE RED LINE IS DRAWN STEEPER HERE and starts above the origin, so its "
+       "crossing with Total Benefit falls outside the plotted region and is left unmarked: the panel that "
+       "is supposed to show the ecological-cost case is the one where that case's break-even cannot be "
+       "seen. Same unquantified axes as (a) - no tick, no number, no unit. Caption prints BELOW, carrying "
+       "'(b)' that the art does not print.",
+       geometry("flowchart-or-schematic", labels=True), "12", section_kind="model", order=2)
+
+# ============================================================ 5.2.1: the two area-change plots
+figure(20, 2, "line", CAP13, "text-layer", uncited(), S_521,
+       "Heilongjiang's four area-elasticity curves against the percentage change of land area: solid "
+       "blue 'GDP(ΔA1/A1)', dashed blue 'GDP(ΔA2/A2)', solid red 'ESV(ΔA1/A1)' and a fourth drawn as a "
+       "dashed red line labelled ... 'GDP(ΔA2/A2)', the same words as the second entry. THE LEGEND NAMES "
+       "THREE SERIES AND DRAWS FOUR: the fourth entry repeats a label already used and no "
+       "'ESV(ΔA2/A2)' entry exists, so one of the four curves is unlabelled and one is labelled twice, "
+       "and the colouring (red for the pair the paper calls ESV) contradicts the text of the legend. THE "
+       "AXIS OF THE WHOLE PLATE IS UNQUANTIFIED: the abscissa is titled 'ΔA/A' with ticks from -3% to 3% "
+       "in whole per cents, and the ordinate carries NO title, NO ticks and NO numbers at all, so 'the "
+       "impact of forest area change on ESV and GDP is moderate' is read off four unlabelled strokes. NO "
+       "ZERO RULE IS DRAWN even though all four curves are constructed to pass through ΔA = 0, which is "
+       "the one point the section reasons about. The A1/A2 subscripts are never defined on the plate or "
+       "in the caption - the surrounding prose defines A1 as forest land and A2 as residential "
+       "construction land only in the Jiangsu paragraph that follows. Caption prints BELOW and the "
+       "caption line itself is broken by the column - the recorded verbatim ends at 'in Hei-', with "
+       "'longjiang' carried onto the next line of the same caption.",
+       geometry("line", legend="below", labels=True), "13", section_kind="result")
+
+figure(20, 1, "line", CAP14, "text-layer", uncited(), S_521,
+       "Jiangsu's plot is drawn as TWO STACKED BANDS sharing one abscissa - a blue band of two GDP curves "
+       "over an orange/yellow band of two ESV curves - with a four-entry legend beneath keying "
+       "GDP(ΔA2/A2), GDP(ΔA3/A3), ESV(ΔA2/A2) and ESV(ΔA3/A3), abscissa ticks from -3.20% to 3.20% in "
+       "0.40% steps. TWO IN-PLOT ANNOTATIONS ARE THE ONLY NUMBERS ON THE PLATE and both check out "
+       "against the rest of the paper: '77388 (10^8 Yuan)' on the GDP curves is Jiangsu's GDP as printed "
+       "in Figure 7's table, and '639 (10^8 Yuan)' on the ESV curve is its ESV as printed in Figure 3 "
+       "(638.72), so the pair are the ΔA = 0 levels and the two figures agree with each other across "
+       "three pages. NEITHER BAND HAS A SCALE: no ordinate title, no tick and no number on either band, "
+       "so the shape of each curve is visible while its magnitude exists only at the two annotated "
+       "points, and the two bands are drawn at unrelated vertical scales inside one frame with nothing "
+       "saying so. THE TICK LABELS COLLIDE AT THE ORIGIN ('0.00%' and '0.40%' overprint), and the "
+       "0.40%-step grid is finer than the -3%/2%/3% grid of Figure 13, so the two provinces' plots are "
+       "not directly comparable although they are printed as a pair. Caption prints BELOW and is broken "
+       "by the column in the same way as Figure 13's, the recorded verbatim ending at 'in'.",
+       geometry("line", panels=2, layout="2x1", legend="below", labels=True), "14",
+       section_kind="result", order=2)
+
+# ============================================================ 6.1: the seasonal chart
+figure(21, 1, "line", CAP15, "text-layer",
+       cited(21, 21, [f"the {LIG}gure15"], 1, lead=f"are shown in the {LIG}gure15."),
+       S_61,
+       "Fifteen monthly series with point markers over months 1 to 12, ordinate 'ESV/10^12 Yuan' ticked "
+       "0.0 to 1.5 in halves, legend OUTSIDE at the right in one column of fifteen entries (Paddy Field, "
+       "Upland Field, Coniferous Forest, Coniferous & Broadleaf, Broadleaf Forest, Shrubwood, Grassland, "
+       "Shrub Grass, Meadow, Water System, Wetlands, Glacier, Construction Land, Desert, Bare Land). THE "
+       "LEGEND IS BIGGER THAN THE PLOT AND REPEATS THE PLATE: fifteen entries are listed to identify "
+       "fifteen curves, most of which lie on top of one another in the 0.0-to-0.2 band for months 1 to 3 "
+       "and 10 to 12, so the middle of the family cannot be separated by eye and the legend is the only "
+       "place the categories exist. THE CLAIM THE PLATE IS FOR IS NOT VISIBLE IN IT: the prose reads July "
+       "as 'the highest point' for every ecosystem, but the abscissa ticks only at 2, 4, 6, 8, 10 and 12, "
+       "so the July values fall between two labelled ticks and the peak cannot be located on the axis "
+       "without counting markers. THE EXPONENT IS TYPESET AS A CARET: 'ESV/10^12 Yuan' prints the power "
+       "as plain text rather than as a superscript, the third unit convention for the same quantity in "
+       "the paper. No gridlines, no data labels, no reference line, and the category list here again "
+       "differs from Figure 2's and Table 2's sets. Caption prints BELOW.",
+       geometry("line", panels=1, legend="outside-right", labels=True), "15", section_kind="result")
+
+# ============================================================ 6.2: the "table" that is a chart
+figure(22, 1, "line", CAP16, "text-layer", uncited(), S_62,
+       "THE CAPTION CALLS IT A TABLE AND THE ART IS A LINE CHART: 'Figure 16: The table of Different "
+       "ecosystem importance levels' sits under six marker-coded series on an ordinate titled "
+       "'IMPORTANCE' ticked 0 to 0.5 in 0.05 steps and an abscissa titled 'YEARS/YR' ticked 2004, 2008, "
+       "2012, 2016, 2020, 2024 and 2028, legend above the plot in two rows of three (Woodland, "
+       "Grassland, Arable land, Wetlands, Waters, Unutilized land). IT IS THE ONLY PLATE IN THE PAPER "
+       "WHOSE CAPTION DESCRIBES A DIFFERENT EXHIBIT FROM THE ONE DRAWN, and the section text reinforces "
+       "the error, saying the importance is 'calculated according to the following formula' and then "
+       "that the reader will 'obtain the importance level table'. THE ABSCISSA RUNS FOUR YEARS PAST THE "
+       "DATA: the sources are 2004, 2008, 2012 and 2016 and the grey prediction adds 2020 to 2028, but no "
+       "marker style, line style, shading or legend entry distinguishes a predicted point from an "
+       "observed one, so the forecast the section is about is not identifiable on the plate. Category "
+       "names drift again ('Arable land' here for the 'Cultivated land' of Figures 17 and 22), the "
+       "ordinate's top tick at 0.5 sits a fifth above the highest series, and no gridlines or data "
+       "labels are printed. Caption prints BELOW.",
+       geometry("line", panels=1, legend="above", labels=True), "16", section_kind="result")
+
+# ============================================================ 8: the appendix tables
+figure(24, 1, "table-as-figure", CAP17, "text-layer", uncited(), S_8,
+       "A printed table under a figure number - two header rows (Year | a merged 'Land Use Type' over the "
+       "six type columns), six year rows 2010 to 2015, then '2010-2015 Area Change' and '2010-2015 "
+       "Change Rate' - ruled booktabs with no verticals and no colour. NO UNIT IS PRINTED ANYWHERE: not "
+       "in the header, not in the caption, not in the change row, so whether the cells are km2, hm2 or "
+       "10^4 hectares cannot be recovered from the plate or from any page of the paper. THE LAST COLUMN'S "
+       "ARITHMETIC DOES NOT CLOSE: unused land runs 29.71 to 30.49, a change of 0.78, but the change row "
+       "prints 0.79, and 0.78/29.71 is 2.63% where the rate row prints 2.65%. THE CHANGE ROW DIFFERENCES "
+       "ENDPOINTS AND SO HIDES A REVERSAL: farmland falls from 676.74 to 673.91 and then rises to 674.33, "
+       "which the single -2.41 cell does not show. Every body cell carries a trailing full stop (599.29.), "
+       "the header 'Construction land' wraps to two lines where its five neighbours do not, and there is "
+       "no total row, so the six land types can never be checked against the delta's administrative area. "
+       "Caption prints BELOW, under the bottom rule.",
+       geometry("table-as-figure", labels=True, numbers=True), "17", section_kind="result")
+
+figure(24, 2, "table-as-figure", CAP18, "text-layer", uncited(), S_8,
+       "The companion table: Year | six land types | Total, six year rows 2010 to 2015, then the ESV "
+       "change and change-rate rows, booktabs with no verticals, caption below. CONSTRUCTION LAND CARRIES "
+       "A NEGATIVE SERVICE VALUE throughout (-860.68 falling to -920.00) with no note on the sign "
+       "convention, while its change rate prints as a positive +6.89% - a mixing of sign conventions "
+       "inside one row that the plate does not explain. THE TWO RATES THAT CAN BE RECOMPUTED FROM THE "
+       "CELLS DISAGREE WITH THE PLATE: unused land 2.16 to 2.22 is +2.78% where 2.65% is printed (the "
+       "2.65% being Figure 17's LAND-AREA rate), and the Total column does not tie to its own row sums at "
+       "2014 (5454.23 printed against 5454.21 summed) and 2015 (5426.55 against 5426.53). Precision drifts "
+       "inside the table - grassland's rate prints -6.8% here and -6.80% in Figure 17 - and the caption "
+       "carries 'Delta,2010-2015' in the text layer as a separate heading line above it. NO UNIT IS "
+       "STATED for the million-scale columns although Figure 19, four pages later, prints the same "
+       "quantity in 'Million Yuan'. Caption prints BELOW.",
+       geometry("table-as-figure", labels=True, numbers=True), "18", section_kind="result", order=2)
+
+figure(25, 1, "table-as-figure", CAP19, "text-layer", uncited(), S_8,
+       "Three value columns and a year stub - Direct Value, Indirect Value, Existing Value, each headed "
+       "'Million Yuan' on a second header line - over the years 2010 to 2015 and the change and "
+       "change-rate rows, ruled booktabs, caption below. THE FIRST ROW'S ARITHMETIC IS OFF BY A UNIT IN "
+       "THE LAST PLACE: direct value falls 390.026 to 383.314, a change of -6.712, printed -6.713, and "
+       "-6.712/390.026 is -1.721% against a printed -1.72%. The other two columns reconcile exactly "
+       "(-118.515 and -3.23%, -51.790 and -3.35%), so this is a single mis-keyed digit rather than a "
+       "modelling error. THE HEADER SPLITS ITS OWN UNIT ACROSS A STRAY SLASH ('Direct Value/' then "
+       "'Million Yuan'), and the change row carries no unit at all while the rate row carries only '%'. "
+       "Three columns at three decimals against the two decimals of every other table in the paper, and "
+       "the caption prints 'Delta,2010-2015' as a separate line above it in the text layer.",
+       geometry("table-as-figure", labels=True, numbers=True), "19", section_kind="result")
+
+figure(25, 2, "table-as-figure", CAP20, "text-layer", uncited(), S_8,
+       "Six coefficients of sensitivity by land type over 2010 to 2015, five decimals, under a merged "
+       "header 'Land Use Type (Coefficient of Sensitivity)' that repeats the caption. THEY DO NOT BEHAVE "
+       "LIKE A DECOMPOSITION: the six coefficients sum to 1.30799, 1.31640, 1.33617, 1.30958, 1.30316 and "
+       "1.33425 across the six years - never 1 - so either the metric is not the normalised elasticity the "
+       "caption names or the entries are wrong, and no definition of CS accompanies the grid. MOST OF THE "
+       "GRID IS REPEATED VERBATIM: woodland prints 0.40621 in four of the six years and 0.43462 in the "
+       "other two, waters prints 0.59867 in four, farmland 0.14506 in three - a seven-row annual "
+       "elasticity table in which more than half the cells are copies of a neighbour, which no "
+       "computation over changing annual ESV would produce. Category spellings drift from the neighbouring "
+       "tables ('Unused land' here against 'Unused Land' in Figure 22; 'Unused land' also wraps onto two "
+       "lines). Caption prints BELOW.",
+       geometry("table-as-figure", labels=True, numbers=True), "20", section_kind="result", order=2)
+
+figure(25, 3, "table-as-figure", CAP21, "text-layer", uncited(), S_8,
+       "Eight land types in a three-column grid - land type | 'Amount of Change' | 'Land Use Dynamics' - "
+       "ruled booktabs. THE TWO QUANTITIES ARE DEFINED NOWHERE: the change column carries no unit (hm2? "
+       "km2? hectares?) and the dynamics column carries no per-cent sign although it is plainly a rate, "
+       "and the base areas that would make the rate checkable are not printed, so no cell of the second "
+       "column can be verified from the plate. The change column does sum exactly to 0.00, so the "
+       "area flows balance across the eight classes, and swamp and tidal flats are the one class at 0.00 "
+       "in both columns. Construction land is the only positive change of size (+33.88, 4.69) against "
+       "cultivated land +32.81 and losses in grassland (-43.86), woodland (-21.54) and garden plot "
+       "(-2.99), which is the paper's story in one grid. The caption omits the 2009-to-2012 span the "
+       "table covers, prints 'Swamp and Tidal Flats' wrapped across two lines, and the crop truncates the "
+       "caption at both ends.",
+       geometry("table-as-figure", labels=True, numbers=True), "21", section_kind="result", order=3)
+
+figure(26, 1, "table-as-figure", CAP22, "text-layer", uncited(), S_8,
+       "Seven land types by four years - 'Ecological Service Value' merged over 2009, 2010, 2011, 2012 - "
+       "plus an 'Ecological Cost of the Project' column and a Total row, booktabs, caption below. THE "
+       "2009 COLUMN DOES NOT TIE TO ITS OWN TOTAL: the seven ESV cells sum to 9888.22 against a printed "
+       "Total of 9843.22, a shortfall of exactly 45.00, while 2010, 2011 and 2012 reconcile to within a "
+       "hundredth; and the cost column sums to 31.99 against a printed 32.03, the gap being exactly the "
+       "Other Land entry, so Other Land is left out of its own total. THE HEADLINE NUMBER IN THE PROSE "
+       "DOES NOT COME FROM THIS TABLE: section 4.2.3 says the project 'caused the total value of its "
+       "ecological service value to drop by 323,300 yuan in four years', and the table's total row falls "
+       "from 9843.22 to 9811.19, a drop of 32.03 in whatever unit the cells carry, which is 320,300 yuan "
+       "if the unit is 10^4 - a unit the table never prints. The largest class is woodland at 68.4% of "
+       "the 2009 total, which is what the prose's 'nearly 70%' refers to, and the ranking cultivated, "
+       "waters, garden behind it also holds. Waters jumps from 502.76 to 502.78 to 467.37 and back to "
+       "502.33 in four consecutive years, a swing of 35 that no land-use change in Figure 21 accounts "
+       "for. Caption prints BELOW.",
+       geometry("table-as-figure", labels=True, numbers=True), "22", section_kind="result")
+
+figure(26, 2, "table-as-figure", CAP23, "text-layer", uncited(), S_8,
+       "The coefficient of sensitivity by land type for the same four years, four decimals, under a "
+       "merged 'Coefficient of Sensitivity (CS)' header, booktabs, caption below. THE SEVEN COEFFICIENTS "
+       "DO NOT CLOSE: they sum to 0.9971, 0.9970, 0.9970 and 0.9978 in 2009 to 2012, just short of unity "
+       "in every year, which is the behaviour of a share decomposition with a term dropped. THEY ALSO DO "
+       "NOT REPRODUCE FROM FIGURE 22'S OWN NUMBERS: cultivated land's 2009 share is 1268.91/9843.22 = "
+       "0.1289 against a printed 0.1285, and its 2011 share is 1282.53/9789.07 = 0.1310 against a printed "
+       "0.1306, so the two Huangguoshu tables disagree at the third decimal although both are printed to "
+       "four. THE SAME SYMBOL MEANS A DIFFERENT THING IN THE OTHER APPENDIX TABLE: the Yangtze delta "
+       "coefficients of Figure 20 sum to about 1.31, these sum to about 0.997, so 'CS' is defined one way "
+       "for one project and another way for the other while the caption uses the bare initials. Other "
+       "Land prints 0.0029 to four decimals in all four years while its ESV moves at the second decimal, "
+       "a flat line no annual recomputation would produce. No unit, no definition, no total row. Caption "
+       "prints BELOW, clipped at both ends in the crop.",
+       geometry("table-as-figure", labels=True, numbers=True), "23", section_kind="result", order=2)
+
+RULES = [
+    "Measure first, then read the pixels: twenty-five measured regions over sixteen of twenty-eight "
+    "pages resolve into twenty-three figure rows and two table rows, with no refusal and nothing "
+    "unaccounted [place.doc_order].",
+    "A caption can promise a table and be printed over a chart: Figure 16 is captioned 'The table of "
+    "Different ecosystem importance levels' and is a six-series line chart [caption.verbatim].",
+    "A figure number can sit over a printed table: eleven of the twenty-three figure rows are tables - "
+    "Figures 2, 3, 6, 10, 17, 18, 19, 20, 21, 22 and 23 - and the paper's own prose calls the last of "
+    "them 'the importance level table' while numbering it a figure [geometry.family].",
+    "The appendix is a plate block: Figures 17 to 23 sit on three pages with no sentence of prose "
+    "anywhere near them, so the last seven rows of the census are named by nothing [mention.count].",
+    "Region order is not reading order: on p15 the Figure 9 radar occupies region 1 and the Figure 8 "
+    "line chart region 2, and on p20 the Figure 13 and Figure 14 plots are likewise exchanged, both "
+    "settled from the crop and not from the region index [place.page_order].",
+    "One quantity is printed in four unit systems: 'Billion yuan' in Figure 3's caption, '*10^8 Yuan' on "
+    "Figure 4's axes, '10^4 yuan/hm^2' on Figure 5's ordinate, 'yuan/km2' in the prose that reads it, and "
+    "'Million Yuan' and 'ESV/10^12 Yuan' later still [caption.verbatim].",
+    "A chart can plot the quantity its caption is not about: Figure 7's bars are GDP while the caption "
+    "names the ecological service capacity per unit GDP, which exists only as an unplotted row in the "
+    "table beneath the bars, so the plate's ranking is the inverse of the text's [geometry.legend].",
+    "A legend can name three series and draw four: Figure 13 keys GDP(ΔA1/A1), GDP(ΔA2/A2) and "
+    "ESV(ΔA1/A1) and then prints GDP(ΔA2/A2) a second time over the fourth curve [geometry.legend].",
+    "Axes can be drawn with no scale at all: Figures 11 and 12 carry no tick, no number and no unit on "
+    "either axis, and Figures 13 and 14 carry none on the ordinate [geometry.family].",
+    "A table can fail its own arithmetic: Figure 17 prints a 0.79 change where 30.49 against 29.71 gives "
+    "0.78, Figure 18's unused-land rate is 2.78% computed against a printed 2.65%, Figure 19's first "
+    "change is -6.713 where the endpoints give -6.712, Figure 22's 2009 column sums to 9888.22 against a "
+    "printed 9843.22 and its cost column to 31.99 against 32.03, and Figures 20 and 23 print sensitivity "
+    "grids that sum to 1.31 and 0.997 respectively [geometry.printed_numbers].",
+    "Three value types are named four ways: 'Existing Value' in the framework diagram, 'existential "
+    "value' in the prose, 'Enabling Value' in Figure 8's legend and 'Indirect Value' for the middle "
+    "class throughout [caption.verbatim].",
+]
+
+NOTE = """\
+Paper 180, Team 1902029: an ecological-service-value assessment for problem E 2019. A valuation model
+built on standard equivalents, two worked projects (the Yangtze River Delta and the Huangguoshu Scenic
+Area), a multi-objective land-use programme, and two time-scale studies (seasonal and annual).
+Twenty-eight pages, twenty-five measured regions over sixteen of them, resolving into TWENTY-THREE
+FIGURE ROWS and TWO TABLE ROWS, with no refusal and nothing unaccounted.
+
+THE CENSUS IS MOSTLY TABLES. Eleven of the twenty-three figure rows are printed grids carrying a
+figure number - Figure 2 (a fourteen-column value-coefficient grid with two header bands), Figure 3
+(fourteen provinces by nine columns), Figure 6 (a six-band classification strip with no rules, only
+colour fills), Figure 10 (one row of seven Huangguoshu values), and the whole appendix block Figures 17
+to 23 (land use, ESV, three values, sensitivity for the delta, land-use dynamics, ESV and sensitivity
+for Huangguoshu). Two more grids are numbered as tables: Table 1 (the notation list) and Table 2 (six
+land-use values in a single unlabelled row). So the paper prints nine exhibit grids against fourteen
+drawn plates, and its own prose calls Figure 16 a table while the plate under that caption is a chart.
+
+THE ARITHMETIC IS WHERE THE PAPER IS STRONGEST AND WHERE IT FAILS. Figure 3 is exact: all fourteen
+rows' six land-type cells sum to the printed ESV and the cultivated-contribution column is the
+cultivated cell over that sum. Figure 6 files all fourteen provinces into the band their Figure 5 value
+falls in, with none missing or doubled. Figure 14's two in-plot annotations are Jiangsu's GDP and ESV as
+printed in Figures 7 and 3, so the same numbers agree across three pages. Against that: Figure 17 prints
+a 0.79 change where the endpoints give 0.78, Figure 18's unused-land rate is computed from Figure 17's
+land-area change rather than from its own ESV cells, Figure 19's direct-value change is off by a unit in
+the last decimal, Figure 22's 2009 column sums to 9888.22 against a printed total of 9843.22 (a 45.00
+shortfall) and its ecological-cost column to 31.99 against 32.03 (the gap being the Other Land entry),
+and the two sensitivity grids do not close - 1.31 for the delta, 0.997 for Huangguoshu - while both are
+called CS.
+
+UNITS ARE THE PAPER'S WORST HABIT. One quantity appears as "Billion yuan" (Figure 3's caption), "*10^8
+Yuan" (Figure 4's axes), "10^4 yuan/hm^2" (Figure 5's ordinate), "yuan/km2" (the prose that reads Figure
+5, which only reconciles if the printed hm^2 is a slip for km^2), "Million Yuan" (Figure 19) and
+"ESV/10^12 Yuan" (Figure 15, with the exponent set as a caret). Figure 7's caption names a quantity per
+unit GDP and its bars plot GDP. Figures 17 and 18 print no unit at all.
+
+THE DRAWN PLATES. Figure 1 is a five-rank framework whose Support Service box is routed into the value
+layer although the text deliberately excludes it. Figure 4 is a fourteen-point scatter with no identity
+or regression line and an ordinate labelled at three ticks against the abscissa's six. Figures 5 and 7
+are bar charts without usable ordinates - Figure 5's bars are thin white stems on a light field with no
+ticks at all, Figure 7's legend keys two rows with the same blue swatch. Figure 8 is a three-series
+decline chart topping out at 0.90% with its x-axis title stranded in the legend row, and Figure 9 is the
+paper's only radar map, a near-regular hexagon over an eight-step radial scale that skips 0.98 and marks
+no ring at 1.00. Figures 11 and 12 are hand-drawn cost-benefit sketches with no tick, no number and no
+unit on either axis; (a) marks two equilibria A and B and (b) marks one, and the same letter A denotes a
+different line in the two panels. Figures 13 and 14 are area-elasticity plots with no ordinate scale,
+Figure 13's legend naming three series and drawing four. Figure 15 is fifteen monthly series whose
+legend is larger than the plot. Figure 16 is the chart captioned as a table. Figure 21, though it sits in
+the appendix beside the project's land-use discussion, is another printed table - eight land types with
+a change column and a dynamics column, neither of which carries a unit.
+
+ONLY TWO OF THE TWENTY-FIVE REGIONS ARE LIVE TEXT. The layout pass reports Table 1 (p5) and Table 2
+(p14) as three-path vectors and EVERY OTHER REGION AS A SINGLE-PATH RASTER, so twenty-three exhibits -
+the framework diagram, every chart, and all seven appendix tables - were pasted into the document as
+images: the typesetting of those grids is not the paper's own, their fonts and decimal points are not
+the body's, and none of their numerals can be selected or re-set. That is also why a paper about land
+use prints no map: the GIS output the appendix refers to was never reproduced as a plate, only
+tabulated.
+
+Families: table-as-figure 11, line 5 (Figures 8, 13, 14, 15, 16), flowchart-or-schematic 3 (Figures 1,
+11, 12), bar 2 (Figures 5, 7), scatter 1 (Figure 4), other 1 (Figure 9, the radar map), table-grid 2.
+"""
+
+payload = {
+    "paper": PID,
+    "layout_sha256": LAYOUT["layout_sha256"],
+    "items": ITEMS,
+    "tables": TABLES,
+    "excluded_regions": EXCLUDED,
+    "rules": RULES,
+    "note": NOTE,
+}
+
+out = PROXY / "pc180-payload.json"
+out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+print("items", len(ITEMS), "tables", len(TABLES), "excluded", len(EXCLUDED))
+print("regions accounted", len(ITEMS) + len(TABLES) + len(EXCLUDED))
+

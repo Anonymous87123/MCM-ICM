@@ -899,6 +899,7 @@ block until the text flow says otherwise - here the body line continues the sent
 above the rule. Record the pair as one refusal plus one fragment-of-other, never as two
 `not-an-exhibit` rows that a later aggregation would read as two separate objects.
 
+
 ## Two captions can share one printed baseline, and then x is the only key
 
 Found in #312. Pages 8 and 9 print two panels side by side and set the two captions on the
@@ -982,4 +983,3 @@ Found in #312. Table 8's units row renders its "/" and its em dash as eight sepa
 Consequence: "the region holds a raster, therefore it is a figure" is false at the region
 level. Family has to be decided from ink and structure - rules, cells, header band - and the
 raster count used only as corroboration, never as the classifier.
-
