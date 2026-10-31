@@ -1,0 +1,1618 @@
+# P-F-2020-2013233-f7fd24e3
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | furniture | pages [1] -->
+Team#2013223
+
+<!-- b000002 | furniture | pages [1] -->
+2020
+
+<!-- b000003 | prose | pages [1] -->
+Problem Chosen
+
+<!-- b000004 | title | pages [1] -->
+F
+
+<!-- b000005 | furniture | pages [1] -->
+Team Control Number
+
+<!-- b000006 | furniture | pages [1] -->
+2013233
+
+<!-- b000007 | prose | pages [1] -->
+MCM/ICM
+
+<!-- b000008 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000009 | prose | pages [1] -->
+A recent UN ruling has made environmental refugees a matter of great concern. Among them, the issue of climate refugee resettlement due to climate change has also entered the public eye. In order to better understand and effectively deal with this problem, we decomposed the problems to be solved and established corresponding models in turn.
+
+<!-- b000010 | prose | pages [1] -->
+In clarifying the research objects, we simplified the definition of climate refugees in the model and only predicted the number of climate refugees due to sea level rise. The subsequent models are based on this premise.
+
+<!-- b000011 | prose | pages [1] -->
+First, we built a regression function based on the landforms and population distributions of the six selected countries, combined with current sea level change data, and linear regression.Through the application of the model, it is estimated that by 2080, there will be about 200,000 to 300,000 climate refugees. Secondly, the six factors affecting cultural loss were selected, and the influencing mechanism of different factors was clarified through principal component analysis, which provided a direction for supranational organizations to formulate policies to mitigate the risk of cultural loss in their countries of origin.
+
+<!-- b000012 | prose | pages [1] -->
+Then, in order to find the best destination for refugee flows, we extended the complete bipartite graph by analogy analytic hierarchy process (AHP). The use of easy-to-detect indicators to determine the four general factors of acceptance of the target country, climate refugees, natural factors, and environmental responsibility of the target country, which means the establishment of a fitness evaluation system. As for the optimal flow direction, we use the KM algorithm to achieve the optimal matching between climate refugees and receiving countries based on the complete bipartite graph with matching degree.
+
+<!-- b000013 | prose | pages [1] -->
+Third, we have considered the dynamics of the protection of climate refugees' human rights and the impact of their cultural exchange and dissemination. We use the five factors of per capita education level, per capita medical level, per capita food production, per capita pension expenditure, and per capita housing area to reflect the human rights protection status of climate refugees, and we use PCA to combine these indicators into new indicators, namely, human rights protection Degree indicator.In the early stages of the migration of climate refugees, this article considers the knock-on effects of the number of climate refugees on the human rights protection capabilities of refugee-receiving countries. Undoubtedly, the influx of population has diluted the per capita share of resources, which has reduced the human rights protection capacity of refugee-receiving countries. But from a long-term perspective, the future potential contribution of climate refugees will have an impact on human rights protection capabilities, and its operating mechanism is important for problem solving.Due to the nature of culture, communication and dissemination often require time to support it. We assume that in the early stages of the migration of climate refugees, the receiving countries of climate refugees themselves have different types of culture in equilibrium. Due to the migration of climate refugees, the exchange and spread of the two cultures will have an effect. Here, we define culture as three types: income-type, loss-type, and swing-type. Different culture types have different gains or losses due to communication and spread.We quantify the gains or losses from the exchange and spread of the three cultures, and simulate how they reach equilibrium. The System Dynamics Model (SDM) clearly shows the dynamic changes of the system. Any parameter change will have different effects on the results, whether it is the protection of human rights or the balance of cultural gains and losses.
+
+<!-- b000014 | prose | pages [1] -->
+Fourth, based on the above-mentioned system dynamics model, we clarify the impact mechanism of policy-related parameters on the model. We set the goals of the proposed policy and extend the policy forward. The implementation of these policies to protect the human rights and culture of climate refugees will change some parameters, and the model results suggest the potential impact of the policies. At the same time, in order to further optimize the model, we added new parameters based on the analysis results to improve the accuracy of the model.
+
+<!-- b000015 | prose | pages [1] -->
+Finally, based on the results of all the above models, we shed light on the importance of implementing the proposed policy.
+
+<!-- b000016 | furniture | pages [1] -->
+关注数学模型
+
+<!-- b000017 | furniture | pages [1] -->
+2
+
+<!-- b000018 | furniture | pages [1] -->
+MATHmodels
+
+<!-- b000019 | furniture | pages [1] -->
+获取更多资讯
+
+<!-- b000020 | furniture | pages [2] -->
+1 / 21
+
+<!-- b000021 | furniture | pages [2] -->
+Team#2013233
+
+<!-- b000022 | prose | pages [2] -->
+Content
+
+<!-- b000023 | prose | pages [2] -->
+1 Introduction...........................................................................................................................................................................2 1.1 Background.................................................................................................................................................................2 1.2 Statement of the problem..........................................................................................................................................2 2 General Assumptions and Justifications ............................................................................................................................. 3 2.1 Assumptions............................................................................................................................................................... 3 2.2 Variable Description...................................................................................................................................................4 3 Task 1..................................................................................................................................................................................... 5 3.1 Forecast of refugee numbers.....................................................................................................................................5 3.2 Possible cultural loss due to transfer....................................................................................................................... 5 4 Task 2..................................................................................................................................................................................... 6 4.1 Refugee destination....................................................................................................................................................6 5 Task 3..................................................................................................................................................................................... 8 5.1 Analysis of human rights protection.........................................................................................................................8 5.2 Analysis of cultural protection................................................................................................................................11 6 Task 4................................................................................................................................................................................... 13 6.1 Policy report............................................................................................................................................................. 13 6.2 Policy impact............................................................................................................................................................ 15 7 Task 5................................................................................................................................................................................... 17 7.1 Model optimization..................................................................................................................................................17 7.2 Policy importance.................................................................................................................................................... 18 8 Conclusion............................................................................................................................................................................18 8.1 Strength.....................................................................................................................................................................18 8.2 Weakness..................................................................................................................................................................19 8.3 Future........................................................................................................................................................................19 Work cited...............................................................................................................................................................................20
+
+<!-- b000024 | furniture | pages [2] -->
+关注数学模型
+
+<!-- b000025 | furniture | pages [2] -->
+2
+
+<!-- b000026 | furniture | pages [2] -->
+MATHmodels
+
+<!-- b000027 | furniture | pages [2] -->
+获取更多资讯
+
+<!-- b000028 | furniture | pages [3] -->
+Team#2013233
+
+<!-- b000029 | heading | pages [3] -->
+1 Introduction
+
+<!-- b000030 | heading | pages [3] -->
+1.1 Background
+
+<!-- b000031 | furniture | pages [3] -->
+2 / 21
+
+<!-- b000032 | prose | pages [3] -->
+Immigration is a phenomenon of population migration around the world that has never ceased since the birth of human society. The population distribution on the earth is the result of people's continuous migration in space and time. Along with changes in global climate patterns, ocean surface temperatures have continued to rise, global ocean storms have continued to increase in duration and intensity, and sea levels have continued to rise.Several island nations such as the Maldives, Tuvalu, Kiribati and Marshall Islands In danger of disappearing completely.
+
+<!-- b000033 | prose | pages [3] -->
+The actual or potential large number of climate migrants caused by climate change and its adverse effects have become a serious challenge facing human society in the 21st century. Humanitarian crises, refugee flows, regional conflicts, and other issues caused by climate migration are receiving increasing attention and attention from governments and the international community. The issue of human rights and cultural loss is particularly important. According to the prediction made by the United Nations Intergovernmental Panel on Climate Change (IPCC), there will be 150 million environmental refugees on the planet by 2050. Although a few island countries are easily accepted by migrant receiving countries, the serious consequences of climate change It is still impossible to predict how to coordinate and plan immigration on a large scale, and to protect the human rights of climate refugees and the unique culture of the country as issues to be resolved.
+
+<!-- b000034 | prose | pages [3] -->
+Displacement caused by environmental factors will also trigger a variety of incidental problems or aggravate the original socio-economic contradictions and problems. Because of its unprecedented severity, complexity, and urgency, climate change is recognized by scholars from all walks of life as one of the most challenging issues currently facing, and has received great attention from countries around the world. The issue of climate refugees due to climate change has also entered the public eye. Climate refugees, on the one hand, provide labor-receiving countries with the labor force needed for economic development, and on the other hand, they have extremely negative effects on the political, social, and cultural identity of the refugee-delivering countries.
+
+<!-- b000035 | prose | pages [3] -->
+In fact, this is not a problem in a completely new field of research, and many politicians and scholars have discussed this topic on different important occasions. Despite the growing threat of large-scale refugee flows and displacement, international cooperation to address this crisis is still at a relatively low level. Therefore, this problem may have a more serious impact in the future. Under the current circumstances, it will be difficult for humankind to meet this challenge without the extensive cooperation of States or international organizations.
+
+<!-- b000036 | heading | pages [3] -->
+1.2 Statement of the problem
+
+<!-- b000037 | prose | pages [3] -->
+The International Climate Migration Foundation (ICM-F) hired us to develop a model to advise the United Nations on climate refugee resettlement and its cultural heritage protection, and simulate the potential impact and importance of the policy. First, we must give a clear definition of climate refugees for model studies.
+
+<!-- b000038 | prose | pages [3] -->
+The recent ruling by the United Nations that governments cannot return people to countries where their lives might be threatened by climate changeis a potential gamechanger — not just for climate refugees, but also for global climate action. At the same time, the ruling elaborates further to say: “Given the risk of an entire country becoming submerged under water is such anextreme risk, the conditions of life in such a country may become incompatible with the right to life with dignity before the may become incompatible with the right to life with dignity before the risk is realised. Based on the above explanations and the requirements of the problem, we have reduced the scope of climate refugees studied in the model and defined that the rise in sea level due to the
+
+<!-- b000039 | furniture | pages [3] -->
+关注数学模型
+
+<!-- b000040 | furniture | pages [3] -->
+2
+
+<!-- b000041 | furniture | pages [3] -->
+MATHmodels
+
+<!-- b000042 | furniture | pages [3] -->
+获取更多资讯
+
+<!-- b000043 | furniture | pages [4] -->
+Team#2013233
+
+<!-- b000044 | furniture | pages [4] -->
+3 / 21
+
+<!-- b000045 | prose | pages [4] -->
+greenhouse effect has continuously eroded its living space, making it a collective effort to escape from the threat. Sexual migration refugees. Residents of coastal small island states such as Tuvalu, Maldives, and Kisbass will all become climate refugees in the future.
+
+<!-- b000046 | prose | pages [4] -->
+In order to solve the problems of refugee resettlement and cultural heritage protection caused by climate change, we have decided to take the following measures:
+
+<!-- b000047 | prose | pages [4] -->
+Task 1: Through the establishment of a model, select six countries at risk to predict the number and development trend of climate refugees due to sea level rise in the future. At the same time, the model we establish should determine the mechanism by which selected factors affect the risk of cultural heritage loss to climate refugees.
+
+<!-- b000048 | prose | pages [4] -->
+Task 2: Our model is used to determine the optimal flow of climate refugees. We establish an index system consisting of subtypes to measure the degree of fit, and build a bipartite graph model between climate refugees and receiving countries based on the fit. Use the model to optimally match the two to determine the optimal flow of climate refugees.
+
+<!-- b000049 | prose | pages [4] -->
+Task 3: Use our model to assess the human rights protection capabilities of climate refugee receiving countries and the impact of two cultural exchanges and disseminations to see how migration will impact their human rights and the net benefits of cultural exchanges and dissemination. Over time, what will change between the two. If we define a corresponding return-loss equilibrium point, the model should predict when this critical point can be reached.
+
+<!-- b000050 | prose | pages [4] -->
+Task 4: Formulate corresponding policies based on the results of Task 3. Make our model show how state-driven interventions will affect changes in human rights protection capacity and net gains to illustrate the potential impact of policy interventions.
+
+<!-- b000051 | prose | pages [4] -->
+Task 5: Determine the dynamic effects that the model ignores and modify our model accordingly. Based on the results of the above models, the importance of policy implementation is explained.
+
+<!-- b000052 | heading | pages [4] -->
+2 General Assumptions and Justifications .
+
+<!-- b000053 | heading | pages [4] -->
+2.1 Assumptions
+
+<!-- b000054 | prose | pages [4] -->
+As discussed above, we make several assumptions in our model.
+
+<!-- b000055 | prose | pages [4] -->
+1. When the sea level of a country is below 5 meters, the residents of that country will be considered as climate refugees and need to be relocated.
+
+<!-- b000056 | prose | pages [4] -->
+2. Assuming that the selected countries are representative, the identified cultural loss impact mechanism can be applied to other countries.
+
+<!-- b000057 | prose | pages [4] -->
+3. Climate refugee migration must be carried out in groups, that is, the population of the country of origin moves completely into the same receiving country. However, the receiving country can accommodate multiple groups.
+
+<!-- b000058 | prose | pages [4] -->
+4. Refugees do not choose which countries they are settled in, they are told this by the UNHCR
+
+<!-- b000059 | prose | pages [4] -->
+and other organizing groups.​
+
+<!-- b000060 | prose | pages [4] -->
+5. Refugee-receiving countries must accept refugees allocated by international organizations, but the capacity is limited, and they can be refused when the capacity is reached.
+
+<!-- b000061 | prose | pages [4] -->
+6. After the climate refugees moved in, there were no unexpected terrorist incidents or disasters in the receiving country.
+
+<!-- b000062 | prose | pages [4] -->
+7. After the climate refugees move in, they will have the same legal status as the original inhabitants of the receiving country.
+
+<!-- b000063 | furniture | pages [4] -->
+关注数学模型
+
+<!-- b000064 | furniture | pages [4] -->
+2
+
+<!-- b000065 | furniture | pages [4] -->
+MATHmodels
+
+<!-- b000066 | furniture | pages [4] -->
+获取更多资讯
+
+<!-- b000067 | furniture | pages [5] -->
+Team#2013233
+
+<!-- b000068 | furniture | pages [5] -->
+4 / 21
+
+<!-- b000069 | prose | pages [5] -->
+8. There is no isolation between ethnic groups, and the exchange and spread of two cultures will definitely occur.
+
+<!-- b000070 | prose | pages [5] -->
+9. The policies of international organizations are compulsory, and the corresponding refugee receiving countries must perfectly implement the policy recommendations provided by the international organizations.
+
+<!-- b000071 | heading | pages [5] -->
+2.2 Variable Description
+
+<!-- b000072 | prose | pages [5] -->
+We start the analysis by giving a list of parameters involved in the model as shown in Table1.
+
+<!-- b000073 | prose | pages [5] -->
+Parameter Description Factors Affecting the Risk of Cultural Loss eij Acceptance between climate refugees and receiving countries r Acceptance of receiving countries to immigrants r1 Adaptation of climate refugees to receiving countries r2 r3 Natural factors of migration Total number of people who have moved to the receiving country in the past S Number of climate refugees living in peace S1 Climate refugees' education per capita z1
+
+<!-- b000074 | prose | pages [5] -->
+Per capita medical level of climate refugees moving into countries z2
+
+<!-- b000075 | prose | pages [5] -->
+Per Capita Food Production by Climate Refugees z3 Per capita pension expenditure for climate refugees moving into countries z4 Per capita housing area of climate refugees relocating z5 z6 Employment of Climate Refugees National Tax Revenue for Climate Refugee Migration Countries z7 Year (t0 ,t = 0 represents the initial situation) t Refugee-receiving country original population P P(t) Climate Refugee Immigrants Early，human rights protection capabilities of receiving countries in t phase C1（t） Late，human rights protection capabilities of receiving countries in t phase C2（t） Country of origin of climate refugees A Receiving country of climate refugees B R Cultural Benefits of Country B Impact of policies on profitable culture(0.2X<1) X GDPB GDP of country B
+
+<!-- b000076 | prose | pages [5] -->
+Country G Industry i GDP Output Value（X= A or B；1=Culture Industry； GDPGi
+
+<!-- b000077 | prose | pages [5] -->
+2=Tourism industry；3=Catering；4=Clothing industry） Average growth rate of GDP of country B's i industry ni S z d BS SS K Loss of country B Number of nations in country B Scale of the riot in country B Standard loss rate Actual loss rate Likelihood of riots in country B Policy tolerance for neutral culture（0<b<1） b m1 m2 Birth rate of country B Mortality of country B Table 1：List of Parameters and Notations
+
+<!-- b000078 | furniture | pages [5] -->
+关注数学模型
+
+<!-- b000079 | furniture | pages [5] -->
+2
+
+<!-- b000080 | furniture | pages [5] -->
+MATHmodels
+
+<!-- b000081 | furniture | pages [5] -->
+获取更多资讯
+
+<!-- b000082 | furniture | pages [6] -->
+Team#2013233
+
+<!-- b000083 | heading | pages [6] -->
+3 Task 1
+
+<!-- b000084 | heading | pages [6] -->
+3.1 Forecast of refugee numbers
+
+<!-- b000085 | furniture | pages [6] -->
+5 / 21
+
+<!-- b000086 | prose | pages [6] -->
+By analyzing the sea level data of the past ten years, and combining the specific terrain data of each country, the method of regression analysis was used to predict which countries will face a crisis due to sea level rise in the next few years. We mainly analyze the island states of Kiribati, Nauru, Marshall Islands, Bahamas, Maldives, and Tuvalu. Because according to related reports, these countries are the countries most likely to face an environmental crisis caused by sea levels in the coming decades. By consulting the relevant sea level data of these countries and the landforms and population distribution of these countries, we have preliminary predicted that by 2080, there will be about 200,000 to 300,000 environmental refugees.
+
+<!-- b000087 | prose | pages [6] -->
+In terms of the possibility of cultural loss, we mainly considered various indicators. In the end, we decided to use the nationalist tendency of the receiving country, the geographic location of the refugees, the fit of production and lifestyle, the carriers required by culture, the cohesion of refugees, The economic benefits of culture are measured as an important indicator of the risk of cultural loss. We use principal component analysis to determine the range of cultural risk indicators we have selected.
+
+<!-- b000088 | prose | pages [6] -->
+By predicting the number of future EDPs and the risk of cultural loss due to transfer, we can realize that climate change has had a great negative impact. In order to better resettle EDPs, we use a graph theory method to
+
+<!-- b000089 | prose | pages [6] -->
+Data:
+
+<!-- b000090 | prose | pages [6] -->
+evaluate the number of EDPs. Possible orientation modeling.
+
+<!-- b000091 | prose | pages [6] -->
+Population
+
+<!-- b000092 | prose | pages [6] -->
+Terrain
+
+<!-- b000093 | prose | pages [6] -->
+Country
+
+<!-- b000094 | prose | pages [6] -->
+Proportion of land
+
+<!-- b000095 | prose | pages [6] -->
+(10,000
+
+<!-- b000096 | prose | pages [6] -->
+Annual sea level
+
+<!-- b000097 | prose | pages [6] -->
+Whether the population lives
+
+<!-- b000098 | heading | pages [6] -->
+strength (m)
+
+<!-- b000099 | prose | pages [6] -->
+Name
+
+<!-- b000100 | prose | pages [6] -->
+area below 5 meters
+
+<!-- b000101 | prose | pages [6] -->
+people)
+
+<!-- b000102 | prose | pages [6] -->
+Kiribati 12.2 54.56% 1 Nauru 1.3 6.65% 31.1 Bahamas 41 51.94% 5.5 Marshall
+
+<!-- b000103 | prose | pages [6] -->
+5.3 43.82% 1.4 Islands
+
+<!-- b000104 | prose | pages [6] -->
+Tuvalu 1 32.65% 2.5 Maldives 44 45.51% 1.2
+
+<!-- b000105 | prose | pages [6] -->
+growth (mm)
+
+<!-- b000106 | prose | pages [6] -->
+below 5m above sea level
+
+<!-- b000107 | prose | pages [6] -->
+4.1 T 4.2 T 4.1 T
+
+<!-- b000108 | prose | pages [6] -->
+4.1 T
+
+<!-- b000109 | prose | pages [6] -->
+4.3 T 4.1 T Table 2
+
+<!-- b000110 | prose | pages [6] -->
+We conducted a regression analysis of the sea level data collected in previous years and found that the sea level of these island countries rose at a rate of about 4 mm per year. Referring to relevant literature and combining relevant map data, we find that by the end of the 21st century, many territories of these countries will no longer be habitable, and they must have residents move out of the area for migration. It is expected that there will be about 300,000 to 400,000 refugees due to rising sea levels.
+
+<!-- b000111 | heading | pages [6] -->
+3.2 Possible cultural loss due to transfer
+
+<!-- b000112 | prose | pages [6] -->
+In terms of the risk of cultural loss, after considering the characteristics of culture and some examples of the European refugee crisis, we consider the following factors to measure the cultural loss risk of immigrants: nationalist tendencies, the geographical location of refugees, the fit of production and lifestyle, and Needed carriers, refugee cohesion, cultural economic benefits.
+
+<!-- b000113 | furniture | pages [6] -->
+关注数学模型
+
+<!-- b000114 | furniture | pages [6] -->
+2
+
+<!-- b000115 | furniture | pages [6] -->
+MATHmodels
+
+<!-- b000116 | furniture | pages [6] -->
+获取更多资讯
+
+<!-- b000117 | furniture | pages [7] -->
+Team#2013233
+
+<!-- b000118 | prose | pages [7] -->
+Nationalist
+
+<!-- b000119 | prose | pages [7] -->
+Geographical
+
+<!-- b000120 | prose | pages [7] -->
+Production and
+
+<!-- b000121 | prose | pages [7] -->
+tendency
+
+<!-- b000122 | prose | pages [7] -->
+location of refugees
+
+<!-- b000123 | prose | pages [7] -->
+lifestyle fit
+
+<!-- b000124 | prose | pages [7] -->
+e1
+
+<!-- b000125 | prose | pages [7] -->
+e2
+
+<!-- b000126 | prose | pages [7] -->
+e3
+
+<!-- b000127 | prose | pages [7] -->
+A e11 e21 e31 B e12 e22 e32 C e13 e23 e33 D e14 e24 e34 E e15 e25 e35 F e16 e26 e36
+
+<!-- b000128 | furniture | pages [7] -->
+6 / 21
+
+<!-- b000129 | prose | pages [7] -->
+The carrier
+
+<!-- b000130 | prose | pages [7] -->
+Economic benefits
+
+<!-- b000131 | prose | pages [7] -->
+Refugee cohesion
+
+<!-- b000132 | prose | pages [7] -->
+required by culture
+
+<!-- b000133 | prose | pages [7] -->
+of culture
+
+<!-- b000134 | prose | pages [7] -->
+e5
+
+<!-- b000135 | prose | pages [7] -->
+e4
+
+<!-- b000136 | prose | pages [7] -->
+e6 e41 e51 e61 e42 e52 e62 e43 e53 e63 e44 e54 e64 e45 e55 e65 e46 e56 e66 Table 3
+
+<!-- b000137 | prose | pages [7] -->
+The principal component analysis method provides us with a simple and comprehensive evaluation method. Through the principal component analysis method, we can select the most important characteristic roots and use the characteristic roots as weights to construct a comprehensive evaluation model of principal components. From the above data, it is not difficult to obtain several feature roots yi with high contribution rates and their corresponding feature vectors bi. To obtain a comprehensive evaluation index for the risk of cultural loss:
+
+<!-- b000138 | prose | pages [7] -->
+Z y  b e    i i i j
+
+<!-- b000139 | prose | pages [7] -->
+The most basic characteristics of each self-risk: First, the deeper the refugees' dependence on culture, the lower the risk of loss. There is also the degree of exclusion of the receiving country from the foreign population. The more intense the exclusion of the foreign population, the higher the risk. Then there is the right carrier for the culture itself. The more complicated the carrier, the higher the risk.
+
+<!-- b000140 | heading | pages [7] -->
+4 Task 2
+
+<!-- b000141 | heading | pages [7] -->
+4.1 Refugee destination
+
+<!-- b000142 | prose | pages [7] -->
+In order to properly arrange the climate refugees who have lost their homes, we use the graph theory theory and analog analytic hierarchy process (AHP) to model the optimal flow of climate refugees. We first calculated the degree of matching between refugee countries and countries that might accept them. Then decided to use the KM algorithm to calculate the best match for refugees to the country. In this model, we use r to indicate the degree of matching between refugees and receiving countries. More specifically, it is an evaluation index for whether refugees can be integrated into receiving countries. We categorized the risks that affect the degree of matching for accurate modeling. After consulting relevant literature, we decided to divide r into three main influencing factors: the acceptance of foreign migrants in r1 receiving countries (including but not limited to the economic development level and national education level of receiving countries), and r2 refugees receiving countries The degree of adaptation (including but not limited to language, production and lifestyle), natural factors of r3 migration (including but not limited to distance, climate difference), different receiving countries have different degrees of matching refugees in different countries.
+
+<!-- b000143 | prose | pages [7] -->
+T ( ) r a r   1 ( , , ) r  r r r 1 2 3
+
+<!-- b000144 | prose | pages [7] -->
+Where a is the weight vector. Obviously, sub-risks are affected by many factors, but in order to simplify the model, we only consider the most important ones for each.
+
+<!-- b000145 | prose | pages [7] -->
+First, referring to previous surveys of the willingness of many European media to accept refugees, we believe that the higher the education level of the people in the receiving country and the more developed the economy,
+
+<!-- b000146 | furniture | pages [7] -->
+关注数学模型
+
+<!-- b000147 | furniture | pages [7] -->
+2
+
+<!-- b000148 | furniture | pages [7] -->
+MATHmodels
+
+<!-- b000149 | furniture | pages [7] -->
+获取更多资讯
+
+<!-- b000150 | furniture | pages [8] -->
+Team#2013233
+
+<!-- b000151 | furniture | pages [8] -->
+7 / 21
+
+<!-- b000152 | prose | pages [8] -->
+the higher their acceptance of foreign immigrants. So r1 should be equal to the education level of the people times the level of economic development. We divide the education level into 1 to 6 levels and calculate the average education level of the people. It can reflect the average education level of a country, and then use the per capita GDP to measure the economic development level of a country. For example: if the education level of a country's nationals is 2.8, and the per capita GDP is 1 (US $ 10,000), then its acceptance of immigrants is 2.8.
+
+<!-- b000153 | prose | pages [8] -->
+Secondly, in terms of refugee adaptation to the country, we believe that the degree of language similarity between refugees and receiving countries, differences in production and lifestyle, and ethnic differences will affect their adaptation. As these data are difficult to quantify directly, we consider using the situation of those who have migrated into the recipient country from the country of origin of the refugee. That is to say, the immigrants who have moved into country B are S people, and the people who can live in stability (no crime, have a stable job, and have not moved out again) are S1, then the adaptation degree of Country A to the residents of Country B is S1 / S.
+
+<!-- b000154 | prose | pages [8] -->
+Influencing factors in the migration process also need to be considered. This includes distance, distance, and policy. By comparing the refugee crisis in Europe, we realize that distance is the main natural factor affecting migration, so we mainly use distance to measure the impact of natural factors. The longer the distance, the more difficult it is.
+
+<!-- b000155 | prose | pages [8] -->
+At the same time, we also referred to the Paris Agreement, and believed that some large carbon-emitting countries should assume more responsibility for accepting refugees. It is considered that some developed countries now pass carbon dioxide emissions to developing countries through trade, so we consider using the consumption-based carbon dioxide emissions to measure the obligation of a country to receive refugees. In this way, we can use the ratio of carbon dioxide emissions at the consumer end to the distance between countries as an indicator of the influencing factors in the migration process.
+
+<!-- b000156 | prose | pages [8] -->
+Finally, we need to determine the weight of different factors. The analogy is that in the analytic hierarchy process, the weights of different standards on the target are estimated according to the importance comparison between different standards. The comparison result is stored in a reciprocal matrix, and the feature vector is calculated.
+
+<!-- b000157 | prose | pages [8] -->
+Similarly, we try to determine the weight of different sub-risks to the total risk through likelihood comparison. For example, if the probability of r11 is greater than r12, then the first row and second column of elements (1,2) will range from 1 to 9 indicating the degree of probability. The following matrix represents a reasonable likelihood:
+
+<!-- b000158 | prose | pages [8] -->
+r1 r1 1 r2 1/3 r3 1/4 r2 r3 3 4 1 2 1/2 1
+
+<!-- b000159 | prose | pages [8] -->
+Table 4
+
+<!-- b000160 | prose | pages [8] -->
+The weights thus obtained are: a =(0.57,0.34,0.08).
+
+<!-- b000161 | prose | pages [8] -->
+Let's use an example to illustrate our model: for example, the refugees from country A want to migrate to country B, then the local acceptance is 3.1, the refugee's fitness is 0.8, and the factor in the migration process is 0.0327. Then the matching degree from country A to country B should be:
+
+<!-- b000162 | prose | pages [8] -->
+T ( ) ( .0 57 .0, 34 .0, 08 r a r    1 T ) ) ( .0,8.0,1.3 0327 ) .2 0416  
+
+<!-- b000163 | prose | pages [8] -->
+In this way, the fit between each refugee and the potential recipient country is modeled by us. In this way we can build a complete bipartite graph from the refugee country to the receiving country. Use the degree of agreement between the two countries as the weight of the corresponding side.
+
+<!-- b000164 | prose | pages [8] -->
+We can also use an association matrix to represent this bipartite graph:
+
+<!-- b000165 | furniture | pages [8] -->
+关注数学模型
+
+<!-- b000166 | furniture | pages [8] -->
+2
+
+<!-- b000167 | furniture | pages [8] -->
+MATHmodels
+
+<!-- b000168 | furniture | pages [8] -->
+获取更多资讯
+
+<!-- b000169 | furniture | pages [9] -->
+Team#2013233
+
+<!-- b000170 | furniture | pages [9] -->
+8 / 21
+
+<!-- b000171 | prose | pages [9] -->
+Figure 1
+
+<!-- b000172 | prose | pages [9] -->
+Here, each point on the left indicates a refugee country, and each point on the right indicates a receiving country. The path of representation between them indicates the degree of matching between the country and the receiving country.
+
+<!-- b000173 | prose | pages [9] -->
+Then we can use the KM algorithm to continuously recurse to solve the optimal matching of the weights of this bipartite graph. This optimal matching corresponds to the best destination of the refugees.
+
+<!-- b000174 | heading | pages [9] -->
+5 Task 3
+
+<!-- b000175 | heading | pages [9] -->
+5.1 Analysis of human rights protection
+
+<!-- b000176 | heading | pages [9] -->
+5.1.1 Theoretical elaboration
+
+<!-- b000177 | prose | pages [9] -->
+The concept of human rights refers to "the basic rights that human beings, as human beings, should enjoy". The main content is that each human being should be treated in a human rights-compliant manner. It is a general, direct right that excludes special factors such as class, nationality, clan, nationality, and gender.(参考资料）
+
+<!-- b000178 | prose | pages [9] -->
+In our model, we provide for the following five basic indicators to reflect the human rights protection capabilities of receiving countries:
+
+<!-- b000179 | prose | pages [9] -->
+Education level per capita: The right to education is the right to education enjoyed by citizens and guaranteed by the state. It is a basic right granted by the Constitution and a prerequisite and basis for citizens to enjoy other cultural education. It means that citizens have the right to receive cultural education from the country and to receive material help for education. The right to education is a basic human right. Although refugees are not
+
+<!-- b000180 | furniture | pages [9] -->
+关注数学模型
+
+<!-- b000181 | furniture | pages [9] -->
+2
+
+<!-- b000182 | furniture | pages [9] -->
+MATHmodels
+
+<!-- b000183 | furniture | pages [9] -->
+获取更多资讯
+
+<!-- b000184 | furniture | pages [10] -->
+Team#2013233
+
+<!-- b000185 | furniture | pages [10] -->
+9 / 21
+
+<!-- b000186 | prose | pages [10] -->
+really citizens of the receiving countries, they still have the right to education. This is also the refugee's need to adapt to the life of the new country.
+
+<!-- b000187 | prose | pages [10] -->
+Per capita medical level: Medical expenditure is the final consumption of medical products and services. It includes the expenditure of public resources on medical products such as treatment, rehabilitation and long-term care, as well as pharmaceuticals. It also includes public health and prevention programs and administrative management. Of expenditure. Refugees who come to the new country will inevitably have physical and psychological diseases, such as soil and water discomfort, psychological trauma, etc. In order to protect the refugees' right to life, increased medical expenditure is necessary.
+
+<!-- b000188 | prose | pages [10] -->
+Per Capita Grain Output: Grain production is a major grain and represents the country's grain supply capacity. No one can leave the food and it will be difficult to survive without it. Ensuring the necessary food supply is also a form of protecting refugees' right to life.
+
+<!-- b000189 | prose | pages [10] -->
+Per capita pension expenditures: Pension expenditures refer to all cash expenditures (including one-time payments) for pensions and survivors' pensions. This indicator represents the welfare of the country. Some elderly or disabled refugees cannot work in the refugee-receiving country and need the state's financial expenditure to protect their lives.
+
+<!-- b000190 | prose | pages [10] -->
+Level of per capita housing area: Per capita residential area refers to the residential building area owned by each person. Refugee survival in the receiving country first requires housing.
+
+<!-- b000191 | heading | pages [10] -->
+5.1.2 Model building
+
+<!-- b000192 | prose | pages [10] -->
+The principal component analysis (PCA) is used to combine five indicators into a new indicator to measure the degree of protection of refugees' human rights in refugee countries:
+
+<!-- b000193 | prose | pages [10] -->
+(1) Per capita education level z1
+
+<!-- b000194 | prose | pages [10] -->
+(2) Per capita medical level z2
+
+<!-- b000195 | prose | pages [10] -->
+(3) Per capita grain output z3
+
+<!-- b000196 | prose | pages [10] -->
+(4) Per capita pension expenditure z4
+
+<!-- b000197 | prose | pages [10] -->
+(5) Per capita housing area level z5
+
+<!-- b000198 | prose | pages [10] -->
+PCA is mathematically defined as an orthogonal linear transformation that transforms the data to a new coordinate system(C1,C2,C3 … … ) such that the greatest variance by some projection of the data comes to lie on the first coordinate, the second greatest variance on the second coordinate, and Ci, Cj should be uncorrelated. So we had theprincipal below:
+
+<!-- b000199 | prose | pages [10] -->
+C X
+
+<!-- b000200 | prose | pages [10] -->
+
+
+<!-- b000201 | prose | pages [10] -->
+
+
+<!-- b000202 | prose | pages [10] -->
+
+
+<!-- b000203 | prose | pages [10] -->
+
+
+<!-- b000204 | prose | pages [10] -->
+
+
+<!-- b000205 | prose | pages [10] -->
+1 11 1
+
+<!-- b000206 | prose | pages [10] -->
+
+
+<!-- b000207 | prose | pages [10] -->
+C X
+
+<!-- b000208 | prose | pages [10] -->
+
+
+<!-- b000209 | prose | pages [10] -->
+
+
+<!-- b000210 | prose | pages [10] -->
+
+
+<!-- b000211 | prose | pages [10] -->
+
+
+<!-- b000212 | prose | pages [10] -->
+
+
+<!-- b000213 | prose | pages [10] -->
+2 21 1
+
+<!-- b000214 | prose | pages [10] -->
+
+
+<!-- b000215 | prose | pages [10] -->
+ 
+
+<!-- b000216 | prose | pages [10] -->
+C X
+
+<!-- b000217 | prose | pages [10] -->
+
+
+<!-- b000218 | prose | pages [10] -->
+
+
+<!-- b000219 | prose | pages [10] -->
+
+
+<!-- b000220 | prose | pages [10] -->
+
+
+<!-- b000221 | prose | pages [10] -->
+
+
+<!-- b000222 | prose | pages [10] -->
+p 1 1
+
+<!-- b000223 | prose | pages [10] -->
+p
+
+<!-- b000224 | prose | pages [10] -->
+var( ) var(
+
+<!-- b000225 | prose | pages [10] -->
+Y
+
+<!-- b000226 | prose | pages [10] -->
+
+
+<!-- b000227 | prose | pages [10] -->
+i
+
+<!-- b000228 | prose | pages [10] -->
+ (1) 1   i i
+
+<!-- b000229 | prose | pages [10] -->
+(2)Ci,Cj should be uncorrelated ( ) i  j .
+
+<!-- b000230 | prose | pages [10] -->
+X X
+
+<!-- b000231 | prose | pages [10] -->
+ 
+
+<!-- b000232 | prose | pages [10] -->
+
+
+<!-- b000233 | prose | pages [10] -->
+
+
+<!-- b000234 | prose | pages [10] -->
+12 12 2 1 p p
+
+<!-- b000235 | prose | pages [10] -->
+X X
+
+<!-- b000236 | prose | pages [10] -->
+ 
+
+<!-- b000237 | prose | pages [10] -->
+
+
+<!-- b000238 | prose | pages [10] -->
+
+
+<!-- b000239 | prose | pages [10] -->
+22 22 2 2 p p
+
+<!-- b000240 | prose | pages [10] -->
+ 
+
+<!-- b000241 | prose | pages [10] -->
+X X
+
+<!-- b000242 | prose | pages [10] -->
+ 
+
+<!-- b000243 | prose | pages [10] -->
+
+
+<!-- b000244 | prose | pages [10] -->
+
+
+<!-- b000245 | prose | pages [10] -->
+2 2 2 p p
+
+<!-- b000246 | prose | pages [10] -->
+p p p
+
+<!-- b000247 | prose | pages [10] -->
+' ' ) '
+
+<!-- b000248 | prose | pages [10] -->
+X
+
+<!-- b000249 | prose | pages [10] -->
+ 
+
+<!-- b000250 | prose | pages [10] -->
+
+
+<!-- b000251 | prose | pages [10] -->
+
+
+<!-- b000252 | prose | pages [10] -->
+
+
+<!-- b000253 | prose | pages [10] -->
+
+
+<!-- b000254 | prose | pages [10] -->
+i i i i
+
+<!-- b000255 | prose | pages [10] -->
+(3) C1 has the greatest variance in linear conversion of X1,X2,X3,... ...,Xp.
+
+<!-- b000256 | furniture | pages [10] -->
+关注数学模型
+
+<!-- b000257 | furniture | pages [10] -->
+2
+
+<!-- b000258 | furniture | pages [10] -->
+MATHmodels
+
+<!-- b000259 | furniture | pages [10] -->
+获取更多资讯
+
+<!-- b000260 | furniture | pages [11] -->
+Team#2013233
+
+<!-- b000261 | furniture | pages [11] -->
+10 / 21
+
+<!-- b000262 | prose | pages [11] -->
+In this case, we use a five-column data matrix X=(X1,X2,X3,X4,X5) to represent five features:Per capita education level, per capita medical level, per capita food production, per capita pension expenditure, per capita housing area.Then, a new coordinate system is obtained through the principal component analysis (PCA). We define C as the human rights protection index. The index formula is as follows:
+
+<!-- b000263 | prose | pages [11] -->
+0.257z C = 0.269z (0) + 0.054z (0) + 1 2 (0) + 0.279z (0) + 0.309z ( 0 ) 3 4 5
+
+<!-- b000264 | prose | pages [11] -->
+When climate refugees migrate to receiving countries, the original resources that refugees migrate into will be diluted. Below we take the per capita food production as an example for analysis:
+
+<!-- b000265 | prose | pages [11] -->
+3z  Z3 （1） P
+
+<!-- b000266 | prose | pages [11] -->
+Among them, z3 is the per capita food output before climate refugees moved in, Z3 is the total food output before refugees moved in, and P is the original population of the receiving country before climate refugees moved in.
+
+<!-- b000267 | prose | pages [11] -->
+When climate refugees moved into the receiving country, the above formula changed to:
+
+<!-- b000268 | prose | pages [11] -->
+ z 
+
+<!-- b000269 | prose | pages [11] -->
+3
+
+<!-- b000270 | prose | pages [11] -->
+
+
+<!-- b000271 | prose | pages [11] -->
+Z (2)
+
+<!-- b000272 | prose | pages [11] -->
+3
+
+<!-- b000273 | prose | pages [11] -->
+( )
+
+<!-- b000274 | prose | pages [11] -->
+P P t
+
+<!-- b000275 | prose | pages [11] -->
+
+
+<!-- b000276 | prose | pages [11] -->
+is the per capita food output after the migration of climate refugees, and P(t) is the number of Among them, 3z refugees. It can be seen that when climate refugees move into the receiving country, the calculation of per capita food production changes from formula (1) to formula (2), that is, the denominator becomes larger, the per capita food production becomes smaller, and the resources of the refugee migrating country are diluted.
+
+<!-- b000277 | prose | pages [11] -->
+A country's resources are limited. The diversion of its own resources due to the immigration of refugees will inevitably cause dissatisfaction among the local people and lead to social unrest. Considering the protection of the human rights of climate refugees, we need to formulate relevant policies to achieve a balanced allocation of resources between nationals and refugees.
+
+<!-- b000278 | heading | pages [11] -->
+5.1.3 Model analysis
+
+<!-- b000279 | prose | pages [11] -->
+Based on the system dynamics model, we further simulated the dynamic changes of human
+
+<!-- b000280 | heading | pages [11] -->
+rights protection indicators. The following assumptions are used in the simulation:
+
+<!-- b000281 | prose | pages [11] -->
+(1) No policy at this time.
+
+<!-- b000282 | prose | pages [11] -->
+(2) Due to the lack of policies, refugees have failed to create value by integrating into local society.
+
+<!-- b000283 | prose | pages [11] -->
+(3) Changes in relevant per capita resource indicators should take into account both the number of refugees and the impact of resource conditions.
+
+<!-- b000284 | prose | pages [11] -->
+(4) The increase in the population of receiving countries is only affected by migrant climate refugees.
+
+<!-- b000285 | prose | pages [11] -->
+In fact, by simulation we get Figure 2. We find that over time, as the number of climate refugees will continue to increase, no policy or a small policy intervention index will lead to a decline in per capita resources, which will negatively affect refugees and the country. This implies the need for policy intervention.
+
+<!-- b000286 | furniture | pages [11] -->
+关注数学模型
+
+<!-- b000287 | furniture | pages [11] -->
+2
+
+<!-- b000288 | furniture | pages [11] -->
+MATHmodels
+
+<!-- b000289 | furniture | pages [11] -->
+获取更多资讯
+
+<!-- b000290 | furniture | pages [12] -->
+Team#2013233
+
+<!-- b000291 | furniture | pages [12] -->
+11 / 21
+
+<!-- b000292 | prose | pages [12] -->
+Figure 2
+
+<!-- b000293 | heading | pages [12] -->
+5.2 Analysis of cultural protection
+
+<!-- b000294 | prose | pages [12] -->
+5.2.1Theoretical elaboration
+
+<!-- b000295 | prose | pages [12] -->
+How can policies be formulated to protect foreign cultures? From our model, we found that the answer to the question differed according to the nature of a certain type of culture. Because the role of culture is affected by time, we assume that the culture carried by country A will not have any impact on the culture of country B in the early stage of migration, that is, the income and loss of country B are in an equilibrium state at the initial stage, and the difference between the two is zero.
+
+<!-- b000296 | prose | pages [12] -->
+We reviewed the literature on cultural definitions. The famous anthropologist Tylor, Edward defines culture in his book "Primitive Culture":Culture or Civilization, taken in its wide ethnographic sense, is that complex whole which includes knowledge, belief, art, morals, law, custom, and any other capabilities and habits acquired by man as a member of society.In order to make the problem clearer, we have given more specific types of culture in our model based on the different nature of the culture and divided the culture into three categories. First, a country's artistic and intangible cultural heritage is defined as a profitable culture. Income-based culture can be transmitted by people, and its impact is always positive, which means that after the EDPs migrate, the artistic and intangible cultural heritage they carry will bring benefits to the host country.
+
+<!-- b000297 | prose | pages [12] -->
+Second, the religion and customs of a country are considered to be loss-making cultures. Due to the particularity of religious beliefs and customs, it does not have the same universality as art and intangible cultural heritage. To make matters worse, different ethnic groups often have different religious beliefs and customs. Differences often lead to conflicts. The expansion of conflicts may lead to riots. More serious situations are wars. Both will affect the economy of a country.
+
+<!-- b000298 | prose | pages [12] -->
+The "crusade" in history is a typical example. Looking at the modern world, religion and the intensification of disputes in the Middle East cannot be separated. For example, the Iran-Iraq war that broke out from 1980 to 1988. Even if there are historical factors such as politics and economy, the impact of religious issues on the war cannot be ignored . It should be noted that, due to the characteristics of the loss-based culture, contradictions are inevitable, and we can only minimize the negative impacts as much as possible.
+
+<!-- b000299 | prose | pages [12] -->
+Third, the lifestyle of a country is defined as a neutral culture. Life style is often understood as clothing, food, shelter, and transportation. These four aspects all hide unique cultures. These cultures often affect the economy in an indirect way, and the impact of these cultures will change depending on the environment. Take food culture and clothing culture as an example. If a country's food culture and clothing culture are spread, it will undoubtedly promote the development of the catering industry or the clothing industry. At this time, the cultural style is the
+
+<!-- b000300 | furniture | pages [12] -->
+关注数学模型
+
+<!-- b000301 | furniture | pages [12] -->
+2
+
+<!-- b000302 | furniture | pages [12] -->
+MATHmodels
+
+<!-- b000303 | furniture | pages [12] -->
+获取更多资讯
+
+<!-- b000304 | furniture | pages [13] -->
+Team#2013233
+
+<!-- b000305 | furniture | pages [13] -->
+12 / 21
+
+<!-- b000306 | prose | pages [13] -->
+same as the revenue-based culture. However, if this cultural feature is not only not recognized, but also discriminated against, it will lead to its transformation into a loss-oriented culture, cause conflicts, and gradually have a negative impact on the economy. Below we will quantify the economic impact of three different types of culture in terms of gains and losses.
+
+<!-- b000307 | heading | pages [13] -->
+5.2.2 Model building
+
+<!-- b000308 | prose | pages [13] -->
+First, we measure the gains from the culture of Country A in terms of both art and intangible cultural heritage. When residents of Country A become EDPs due to rising sea levels, they will move to Country B. As they migrate, their artistic and intangible cultural heritage will contribute to the economy of Country B over time. Obviously, different cultural protection policies will lead to different benefits for the two. Taking art as an example, now we can naturally define the benefits it generates:
+
+<!-- b000309 | prose | pages [13] -->
+R = (GDP
+
+<!-- b000310 | furniture | pages [13] -->
+
+
+<!-- b000311 | prose | pages [13] -->
+X  A1 t + + GDP ) (1 + n )  B1 1
+
+<!-- b000312 | prose | pages [13] -->
+Here, GDPA1 represents the contribution of the art of Country A to its economy, and GDPB1 represents the contribution of the art of Country B to its economy. At the same time, we introduced X as the policy impact degree to measure the degree to which the policy promoted the cultural marketization of Country A. n1 is the average growth rate of the GDP of the cultural industry of country B.
+
+<!-- b000313 | prose | pages [13] -->
+Second, we measure the potential loss caused by the culture of country A in the territory of country B from the perspective of religious beliefs and customs. Based on the previous discussion, we can understand that differences caused by the contradiction between religious beliefs and customs will hinder economic development. As with the revenue-generating culture, the tolerance of policies for religious beliefs and customs will undoubtedly have an impact on riots. A more inclusive policy is conducive to the peaceful coexistence of different ethnic groups, which will reduce the possibility of riots and minimize the negative impact of a loss- based culture on the economy. Here, we have considered the role of nationalism in it. Due to the diversity of national cultures in multi-ethnic countries, the religious beliefs of the people will also tend to diversify. This makes the multi-national nations more culturally inclusive and will undoubtedly reduce riot The scale of the outbreak or riot. Therefore, we believe that the losses caused by this type of culture can be:
+
+<!-- b000314 | prose | pages [13] -->
+S = K SS 
+
+<!-- b000315 | prose | pages [13] -->
+(t ) K  f
+
+<!-- b000316 | prose | pages [13] -->
+GDP  B
+
+<!-- b000317 | prose | pages [13] -->
+. Obviously, the policy's tolerance determines its value. SS is the actual K is the possibility of riots,
+
+<!-- b000318 | prose | pages [13] -->
+loss rate, which is defined as:
+
+<!-- b000319 | prose | pages [13] -->
+SS =
+
+<!-- b000320 | furniture | pages [13] -->
+
+
+<!-- b000321 | furniture | pages [13] -->
+
+
+<!-- b000322 | prose | pages [13] -->
+BS d 
+
+<!-- b000323 | prose | pages [13] -->
+Among them, BS is the standard loss rate, and d is the influence of nationalism on the riots.
+
+<!-- b000324 | prose | pages [13] -->
+d is a subtraction function with respect to w:
+
+<!-- b000325 | prose | pages [13] -->
+d  3) ( ( f f w
+
+<!-- b000326 | prose | pages [13] -->
+Finally, let's look at the lifestyle as a neutral culture. Under different policy tolerances, residents of country B will adopt different attitudes towards the lifestyle of EDPs emigrated to country A. Different attitudes will actually lead to a change in their cultural nature. Country B with a high cultural tolerance is bound to help commercialize the food and clothing culture of country A and create value, but if the cultural tolerance of country B is low, the food and clothing culture of country B will eventually be excluded. May cause riots. For the sake of simplicity, we believe that the impact of a neutral culture on the economy is a combination of gain and loss, that is：
+
+<!-- b000327 | prose | pages [13] -->
+
+
+<!-- b000328 | prose | pages [13] -->
+t
+
+<!-- b000329 | prose | pages [13] -->
+( ) 1( ) (
+
+<!-- b000330 | prose | pages [13] -->
+GDP GDP n
+
+<!-- b000331 | prose | pages [13] -->
+   
+
+<!-- b000332 | prose | pages [13] -->
+3 3 3
+
+<!-- b000333 | prose | pages [13] -->
+A B
+
+<!-- b000334 | prose | pages [13] -->
+Y
+
+<!-- b000335 | prose | pages [13] -->
+
+
+<!-- b000336 | prose | pages [13] -->
+
+
+<!-- b000337 | prose | pages [13] -->
+( 2.0 ) ,
+
+<!-- b000338 | prose | pages [13] -->
+S K SS GDP b
+
+<!-- b000339 | prose | pages [13] -->
+    
+
+<!-- b000340 | prose | pages [13] -->
+
+
+<!-- b000341 | prose | pages [13] -->
+B
+
+<!-- b000342 | prose | pages [13] -->
+t
+
+<!-- b000343 | prose | pages [13] -->
+) 1( ) , 5.0
+
+<!-- b000344 | prose | pages [13] -->
+GDP X GDP n b
+
+<!-- b000345 | prose | pages [13] -->
+    
+
+<!-- b000346 | prose | pages [13] -->
+3 3 3
+
+<!-- b000347 | prose | pages [13] -->
+A B
+
+<!-- b000348 | prose | pages [13] -->
+5.0
+
+<!-- b000349 | furniture | pages [13] -->
+关注数学模型
+
+<!-- b000350 | furniture | pages [13] -->
+2
+
+<!-- b000351 | furniture | pages [13] -->
+MATHmodels
+
+<!-- b000352 | furniture | pages [13] -->
+获取更多资讯
+
+<!-- b000353 | furniture | pages [14] -->
+Team#2013233
+
+<!-- b000354 | furniture | pages [14] -->
+13 / 21
+
+<!-- b000355 | prose | pages [14] -->
+Here, b, as a policy tolerance, plays an important role in determining the final attributes of a neutral culture.
+
+<!-- b000356 | heading | pages [14] -->
+5.3.3 Model analysis
+
+<!-- b000357 | prose | pages [14] -->
+It is not difficult to find that in the early stage of refugee migration, the gains and losses of country B are in equilibrium, but over time, the culture of country B will continue to have effects, and these effects include both positive and negative. Similar to the ability to protect human rights, we simulated the model's policyless state, and the results show that the multi-ethnic state will reach a new equilibrium, but the single-ethnic state will show more losses than benefits, which suggests that we need to formulate policies to combat climate Refugee culture is protected to guide them to play a greater positive role.
+
+<!-- b000358 | heading | pages [14] -->
+6 Task 4
+
+<!-- b000359 | heading | pages [14] -->
+6.1 Policy report
+
+<!-- b000360 | prose | pages [14] -->
+On the basis of the previous model, we have proposed relevant policies for the United Nations to ensure that refugee-receiving countries can maximize the protection of refugees' human rights and culture, both through financial assistance and by formulating international law to implement policies. The primary criteria for evaluating the effectiveness of policies are the gains and losses of human rights protection indexes and refugee culture in receiving countries. Regarding the predictability of the policy in the future, we find that the effect of policy implementation over time affects the protection of EDPs. We mainly use the parameter changes contained in the model to analyze the working mechanism of the proposed policies.
+
+<!-- b000361 | heading | pages [14] -->
+6.1.1 Police on human rights protection
+
+<!-- b000362 | prose | pages [14] -->
+a. Recognition of refugee status
+
+<!-- b000363 | prose | pages [14] -->
+Human rights include the right to racial equality, and refugees should not be discriminated against because of differences in race, religion, nationality, etc.
+
+<!-- b000364 | prose | pages [14] -->
+b. Adopt a suitable refugee resettlement method
+
+<!-- b000365 | prose | pages [14] -->
+(1) Agricultural resettlement: Relying on land, it engages in the primary industries of agriculture, forestry, animal husbandry, and fishery, mainly developing land resettlement and adjusting land resettlement. The advantage of this method is that the resettlement risk is small, land is used for security, basic livelihoods are maintained, and there are fewer worries. This approach is suitable for most refugees from countries with less advanced social development;
+
+<!-- b000366 | prose | pages [14] -->
+(2) Non-agricultural resettlement: Reliance on other means of production other than land for resettlement. After resettlement, refugees no longer occupy agricultural land and are mainly engaged in the secondary and tertiary industries. The advantage of this method is that the conflict between people and land is reduced, which is beneficial to the transfer of refugees to secondary, tertiary industries and towns. This method is more suitable for economically developed or areas with a certain scale in the development of the secondary and tertiary industries, and the refugees can independently solve the problem of production and life.
+
+<!-- b000367 | prose | pages [14] -->
+c. Strengthen infrastructure construction and ensure the allocation of basic living resources
+
+<!-- b000368 | prose | pages [14] -->
+The implementation of assistance operations requires priority protection of refugees' medical, living, and dietary needs. As resources dilute, scarcity of food, shelter and medical services is threatening the health and safety of refugees. At the same time, subsidies to refugees are another way to improve their living conditions. Therefore, for countries where refugees have moved in, increasing financial expenditures on food, housing, and public health services is of great significance to protecting human rights.
+
+<!-- b000369 | prose | pages [14] -->
+d. Attaching importance to the integration of refugees and local society
+
+<!-- b000370 | furniture | pages [14] -->
+关注数学模型
+
+<!-- b000371 | furniture | pages [14] -->
+2
+
+<!-- b000372 | furniture | pages [14] -->
+MATHmodels
+
+<!-- b000373 | furniture | pages [14] -->
+获取更多资讯
+
+<!-- b000374 | furniture | pages [15] -->
+Team#2013233
+
+<!-- b000375 | furniture | pages [15] -->
+14 / 21
+
+<!-- b000376 | prose | pages [15] -->
+From the perspective of refugee immigration, integration is a long-term process in which the government takes measures to promote the acceptance of all immigrants who legally reside in the country. This requires the joint efforts of the government, society and refugees. The government should encourage social organizations or businesses Provide assistance to address refugee work and social integration issues in receiving countries.
+
+<!-- b000377 | prose | pages [15] -->
+(1) Establish related institutions to provide assistance in legal materials, job search, capacity building, psychological counseling, cultural activities, communication methods, and residence, and increase investment in educational resources;
+
+<!-- b000378 | prose | pages [15] -->
+(2) In addition, refugees can also encourage refugees to participate in citizen life through voluntary activities, and coordinate the supply and demand balance of jobs through flexible, fast and high-quality management.
+
+<!-- b000379 | prose | pages [15] -->
+From the perspective of refugees, integration means being familiar with or even mastering the language, culture and national conditions of the host country, and respecting and observing the laws and policies of the host country. Generally speaking, refugees, due to asylum needs and convenience of living and working, will work hard to adapt to the environment of the receiving country, and subjectively hope and are willing to actively integrate into the receiving country.
+
+<!-- b000380 | prose | pages [15] -->
+Mastery of local influence on refugees' access to vocational training and employment in receiving countries, and good education and job opportunities are the key to successful integration.
+
+<!-- b000381 | prose | pages [15] -->
+e. Increase investment in refugee education
+
+<!-- b000382 | prose | pages [15] -->
+How to guide refugees to understand and accept as many mainstream values, systems and cultural traditions of their country as possible while respecting and guaranteeing their own culture and characteristics, while taking measures to prevent refugees from being marginalized by the local society has become its treatment. A big problem when it comes to refugees. In this regard, refugee relocation requires efforts to:
+
+<!-- b000383 | prose | pages [15] -->
+(1) Enhancing the education of refugees includes improving the conditions of teachers, helping refugees to be accepted into schools, fully considering the environment in which refugees grow up, providing unique and personalized care in teaching centers, setting up telephone hotlines and webpages to solve refugee and education related issues, Assisting refugees with accreditation;
+
+<!-- b000384 | prose | pages [15] -->
+(2) In refugee education, combine language training with the spread of national values;
+
+<!-- b000385 | prose | pages [15] -->
+(3) Do a good job of communicating with refugee parents, and obtain the active cooperation of refugee parents, encourage them to actively send their children to local kindergartens, so that children can learn and use local languages from an early age;
+
+<!-- b000386 | prose | pages [15] -->
+f. Promote and encourage refugees to participate in employment
+
+<!-- b000387 | prose | pages [15] -->
+In terms of employment, it is necessary to provide assistance actions such as a labor-management dialogue platform, job information, and safety vocational training within the scope permitted by laws and policies, reduce refugee wage deductions, reduce employers' refusal to sign labor contracts and detain documents, etc. Live and work in peace. In addition, refugee immigration countries can provide more short-term labor quotas to address the sudden increase in employment tensions caused by refugee immigration.
+
+<!-- b000388 | prose | pages [15] -->
+g. Provide targeted policy support to refugees
+
+<!-- b000389 | prose | pages [15] -->
+In order to improve the effectiveness of refugee governance and the protection of human rights of refugees, the government should provide diverse policy support to different types of refugee groups. For example, families are provided as a unit to provide them with a guarantee of basic living; most of the young people who do not have family burdens are arranged in areas with better industrial development rather than refuge centers.
+
+<!-- b000390 | heading | pages [15] -->
+6.1.2 Policy on cultural protection
+
+<!-- b000391 | prose | pages [15] -->
+a. When resettling refugees, try to resettle in groups.
+
+<!-- b000392 | prose | pages [15] -->
+Dealing with the cultural conflicts and conflicts between refugees and local residents is also one of the difficulties that the receiving countries must face. Efforts should be made to enable both cultures to be activated and developed, instead of conflicting with each other, or even causing one party to die out. Promote the mutual
+
+<!-- b000393 | furniture | pages [15] -->
+关注数学模型
+
+<!-- b000394 | furniture | pages [15] -->
+2
+
+<!-- b000395 | furniture | pages [15] -->
+MATHmodels
+
+<!-- b000396 | furniture | pages [15] -->
+获取更多资讯
+
+<!-- b000397 | furniture | pages [16] -->
+Team#2013233
+
+<!-- b000398 | furniture | pages [16] -->
+15 / 21
+
+<!-- b000399 | prose | pages [16] -->
+growth of refugee culture and the culture of refugee receiving countries, minimize conflicts between them, and promote harmony between refugees and residents of receiving countries It's not a simple thing. As far as possible in the refugee resettlement process, resettlement in groups is ensured, because settlement communities can form cultural cohesion than scattered communities.
+
+<!-- b000400 | prose | pages [16] -->
+b. Increase protection for cultural heritage
+
+<!-- b000401 | prose | pages [16] -->
+Culture inherits its skills and culture through the activities of "people". The mobility and variability of people are both special and difficult in the process of inheritance and protection. The real subject of cultural protection and inheritance are those who come from social life and directly grasp the essence of culture, and are not other auxiliary organizations or departments. Cultural inheritors, especially those of intangible cultural heritage, are generally older and frail, and require policy support such as pension subsidies and appropriate funding.
+
+<!-- b000402 | prose | pages [16] -->
+c. Enhance refugees' identity with their own culture
+
+<!-- b000403 | prose | pages [16] -->
+The culture of the receiving country is equivalent to the strong culture, and the culture of the refugee ’s country of origin is equivalent to the weak culture. It is necessary to improve the cultural awareness and self-confidence of the vulnerable subjects, so as to give full play to cultural advantages and increase their influence. Only in this way can the culture be better protected. You can do the following:
+
+<!-- b000404 | prose | pages [16] -->
+(1) Adopting scientific and standardized protection methods for intangible cultural heritage, such as video recording, sound recording, text recording, etc., to carry out early "record protection".
+
+<!-- b000405 | prose | pages [16] -->
+(2) Record the oral history of immigrants and cultivate their cultural awareness and pride.
+
+<!-- b000406 | prose | pages [16] -->
+d. Market-oriented protection of profitable culture
+
+<!-- b000407 | prose | pages [16] -->
+For income-oriented cultural protection, the receiving country can take measures of cultural "marketization" and "cultural reproduction" to protect it. Productive protection of culture is a kind of positive protection that produces economic benefits. The development of a profitable culture can not only enhance cultural pride, but also contribute to the receiving country, such as creating employment opportunities, and improve the harmony between refugees and the native residents of the receiving country. You can do the following:
+
+<!-- b000408 | prose | pages [16] -->
+(1) Include the refugees' unique cultural expressions, such as music, dance, painting, arts and other arts, as protection objects, and encourage integration into the market and develop cultural industries.
+
+<!-- b000409 | prose | pages [16] -->
+(2) Establish "productive protection bases" for intangible culture, intangible cultural museums, etc. Museums are one of the best carriers for inheriting and protecting culture, and they often spread culture through pictures, videos, and text. Museums will undoubtedly promote the development of tourism.
+
+<!-- b000410 | prose | pages [16] -->
+e. Minimize the loss of loss-based culture
+
+<!-- b000411 | prose | pages [16] -->
+Different ethnic groups often have different religious beliefs and customs. Differences often lead to conflicts. The expansion of conflicts may lead to riots. More serious situations are wars. Both will affect the economy of a country. Contradictions in this area are unavoidable, and what is to be done is to ensure that losses are minimized.
+
+<!-- b000412 | prose | pages [16] -->
+f. Guide the development of swing culture to profitable culture
+
+<!-- b000413 | prose | pages [16] -->
+Recipient countries should fully respect this type of culture and should not force refugees to obey assimilation. Generate income for the economy by transforming it into a profitable culture, such as developing the food and clothing industry.
+
+<!-- b000414 | heading | pages [16] -->
+6.2 Policy impact
+
+<!-- b000415 | prose | pages [16] -->
+Based on the theory of system dynamics, we take the human rights protection index model as an example to simulate the potential impact of human rights protection policies. The specific steps are as follows:
+
+<!-- b000416 | prose | pages [16] -->
+The implementation of relevant policies will have an impact on per capita resource indicators. Taking grain output Z3 as an example, the policy indicates that national organizations will provide assistance to recipient
+
+<!-- b000417 | furniture | pages [16] -->
+关注数学模型
+
+<!-- b000418 | furniture | pages [16] -->
+2
+
+<!-- b000419 | furniture | pages [16] -->
+MATHmodels
+
+<!-- b000420 | furniture | pages [16] -->
+获取更多资讯
+
+<!-- b000421 | furniture | pages [17] -->
+Team#2013233
+
+<!-- b000422 | furniture | pages [17] -->
+16 / 21
+
+<!-- b000423 | prose | pages [17] -->
+countries where food resources are in a tight situation. Whether it is material assistance or technical support, this will make per capita food Yield increases. At this time,
+
+<!-- b000424 | prose | pages [17] -->
+
+
+<!-- b000425 | prose | pages [17] -->
+z
+
+<!-- b000426 | prose | pages [17] -->
+
+
+<!-- b000427 | prose | pages [17] -->
+3
+
+<!-- b000428 | prose | pages [17] -->
+
+
+<!-- b000429 | prose | pages [17] -->
+
+
+<!-- b000430 | prose | pages [17] -->
+Z Z Z
+
+<!-- b000431 | prose | pages [17] -->
+
+
+<!-- b000432 | prose | pages [17] -->
+3 3 3
+
+<!-- b000433 | prose | pages [17] -->
+( )
+
+<!-- b000434 | prose | pages [17] -->
+P P P t
+
+<!-- b000435 | prose | pages [17] -->
+
+
+<!-- b000436 | prose | pages [17] -->
+ is the per capita food possession after the implementation of the policy, and Among them, 3z grain output due to the introduction of the policy.
+
+<!-- b000437 | prose | pages [17] -->
+Z is the increased 3
+
+<!-- b000438 | prose | pages [17] -->
+In addition to the changes in the original per capita resource indicators, due to the introduction of policies at this time, most climate refugees who flooded into the receiving countries were able to create value through employment and have a positive impact on tax increases. We still stipulate that the linear combination of the original five indicators affecting the human rights protection index remains the same, but due to the positive effects mentioned above, we have added positive functions. The positive function is measured by the level of refugee employment and the country's tax revenue. At the same time, the total resources will change due to the role of policies.
+
+<!-- b000439 | prose | pages [17] -->
+Therefore, the formula of the human rights protection index at this time is:
+
+<!-- b000440 | prose | pages [17] -->
+C t = 0.269z (t) + 0.054z (t) + 0.257z （ ） 1 1 2 (t) + 0.279z (t) + 0.309z ( ) ( , ) t  f z z 3 3 4 5 6 7
+
+<!-- b000441 | prose | pages [17] -->
+Among them, z6 and z7 are the number of employees in the receiving country and the tax revenue of the country.
+
+<!-- b000442 | prose | pages [17] -->
+We simulated the protection of human rights according to the new dynamic model, and the results are shown in
+
+<!-- b000443 | caption | pages [17] -->
+Figure 3.
+
+<!-- b000444 | prose | pages [17] -->
+Figure 3
+
+<!-- b000445 | heading | pages [17] -->
+6.2.1 Potential economic impact
+
+<!-- b000446 | prose | pages [17] -->
+(1) With the implementation of the policy, the United Nations will assist the receiving country's resource input, such as increasing the number of doctors and building new housing, etc. This will make all people pick up and further improve the human rights protection capacity of the receiving country.
+
+<!-- b000447 | prose | pages [17] -->
+(2) The policy requires increased investment in refugee education and encourages refugees to participate in employment. With the popularization of refugee education and vocational training, refugees can gradually integrate into refugee receiving countries and obtain job opportunities, which can create value for receiving countries; In addition, the policy encourages the "marketization" of income-oriented culture and the transformation of "swing-oriented" culture into a income-oriented culture, which means that not only multiple industries will develop rapidly, but more employment opportunities will be created. Both Both will drive
+
+<!-- b000448 | furniture | pages [17] -->
+关注数学模型
+
+<!-- b000449 | furniture | pages [17] -->
+2
+
+<!-- b000450 | furniture | pages [17] -->
+MATHmodels
+
+<!-- b000451 | furniture | pages [17] -->
+获取更多资讯
+
+<!-- b000452 | furniture | pages [18] -->
+Team#2013233
+
+<!-- b000453 | furniture | pages [18] -->
+17 / 21
+
+<!-- b000454 | prose | pages [18] -->
+economic growth. The task at this time is the middle stage after the refugees move in. The newly created value and the economic loss of the country's increased investment in resources can offset each other, so that the losses in the refugee receiving countries are reduced.
+
+<!-- b000455 | prose | pages [18] -->
+(3) With the development of time and the implementation of policies, refugees can basically integrate into the local society and live in harmony with local residents without conflict, which is beneficial to the economy. At this time, the refugees can move into the refugee receiving country at a later stage. Refugees can create wealth on their own and pay taxes to increase the country's fiscal revenue. The country can recover to the level of economic development before receiving the refugees, even better than before.
+
+<!-- b000456 | prose | pages [18] -->
+(4) Because the conflict between the religions and customs of the peoples of the two countries is unavoidable, our high tolerance policy is conducive to peaceful coexistence among different ethnic groups, which will reduce the possibility of riots and make loss-oriented culture The negative effects of the economy are minimized.
+
+<!-- b000457 | heading | pages [18] -->
+6.2.2 Potential cultural impact
+
+<!-- b000458 | prose | pages [18] -->
+(1) When we provide policies with a high degree of tolerance and an open attitude towards the culture of refugees, the cultural consciousness and cultural self-confidence of vulnerable groups will be enhanced, and the culture of refugees and the culture of refugee-receiving countries will be strengthened.
+
+<!-- b000459 | prose | pages [18] -->
+(2) In the marketization process of profitable culture, art and intangible cultural heritage will be promoted and understood by more people, so that culture can be better protected and inherited. In addition, the two cultures complement each other and diversify and merge to create greater cultural wealth.
+
+<!-- b000460 | prose | pages [18] -->
+(3) The policy recognizes the human rights of refugees and the legitimacy of their religious beliefs and customs, which reflects the protection of refugee culture to a certain extent. The proposed policy will enable refugees and residents of receiving countries to respect each other on issues such as religion, reduce the possibility of riots, and promote the normal development of religion and the continuation of customs.
+
+<!-- b000461 | heading | pages [18] -->
+7 Task 5
+
+<!-- b000462 | heading | pages [18] -->
+7.1 Model optimization
+
+<!-- b000463 | prose | pages [18] -->
+Through the analysis of the model results, we find that the dynamic changes in the human rights protection capacity after the impact of policy implementation are different from our assumptions. Considering that a country's population growth is affected by birth rates and mortality rates, it is not constant, which will largely affect the state of per capita resources. To optimize the model, we introduced birth rates and mortality.
+
+<!-- b000464 | prose | pages [18] -->
+At this time, taking the per capita food output as an example, the formula becomes:
+
+<!-- b000465 | prose | pages [18] -->
+'''
+
+<!-- b000466 | prose | pages [18] -->
+z
+
+<!-- b000467 | prose | pages [18] -->
+
+
+<!-- b000468 | prose | pages [18] -->
+
+
+<!-- b000469 | prose | pages [18] -->
+3 P
+
+<!-- b000470 | prose | pages [18] -->
+
+
+<!-- b000471 | prose | pages [18] -->
+Z Z Z
+
+<!-- b000472 | prose | pages [18] -->
+
+
+<!-- b000473 | prose | pages [18] -->
+3 3 3
+
+<!-- b000474 | prose | pages [18] -->
+
+
+<!-- b000475 | prose | pages [18] -->
+m m
+
+<!-- b000476 | prose | pages [18] -->
+
+
+<!-- b000477 | prose | pages [18] -->
+( )
+
+<!-- b000478 | prose | pages [18] -->
+P t
+
+<!-- b000479 | prose | pages [18] -->
+ 
+
+<!-- b000480 | prose | pages [18] -->
+1 2
+
+<!-- b000481 | prose | pages [18] -->
+Accordingly, we define the new human rights protection index as:
+
+<!-- b000482 | prose | pages [18] -->
+C t = 0.269z (t) + 0.054z (t) + 0.257z (t) + （ ） 2 1 2 3 0.279z (t) + 0.309z ( ) m - m ( , ) t f z z   （ ） 4 5 1 2 6 7
+
+<!-- b000483 | prose | pages [18] -->
+Simulating it, we get Figure 4. Obviously, the above results are more in line with the actual situation.
+
+<!-- b000484 | furniture | pages [18] -->
+关注数学模型
+
+<!-- b000485 | furniture | pages [18] -->
+2
+
+<!-- b000486 | furniture | pages [18] -->
+MATHmodels
+
+<!-- b000487 | furniture | pages [18] -->
+获取更多资讯
+
+<!-- b000488 | furniture | pages [19] -->
+Team#2013233
+
+<!-- b000489 | furniture | pages [19] -->
+18 / 21
+
+<!-- b000490 | prose | pages [19] -->
+Figure 4
+
+<!-- b000491 | heading | pages [19] -->
+7.2 Policy importance
+
+<!-- b000492 | prose | pages [19] -->
+Through the decomposition of the problem, we have made many suggestions above, which are important. Our model calculates that around 2080, there will be around 200,000 to 300,000 people who will be homeless due to rising sea levels. Based on the limitations of our method and data, the actual number of refugees is larger than this forecast. In 2014, Iceland's total population was 326,600. Imagine that if these refugees abandoned their homeland and suddenly emigrated to other countries, contradictions and conflicts would inevitably exist. More importantly, immigration may also mean a loss of human rights and cultural assimilation, and addressing the issue is important to the United Nations, because no one wants the European refugee crisis to repeat itself. According to our model, policy interventions are effective, and losses are minimal. Although policy is ideal, it at least indicates the future direction. It is worth noting that the quantification of certain cultural connotations by models is difficult, but this does not mean that they are not important. The simulation of the model is a kind of practice, but it is too idealistic, and policy practice in the real sense is already on the way, and all stakeholders cannot ignore it.
+
+<!-- b000493 | heading | pages [19] -->
+8 Conclusion
+
+<!-- b000494 | heading | pages [19] -->
+8.1 Strength
+
+<!-- b000495 | prose | pages [19] -->
+(1) In the refugee optimal flow model, consider the environmental responsibility of the receiving country. More importantly, we measure based on consumer-side carbon emission indicators to avoid unfair distribution caused by trade-off emissions.
+
+<!-- b000496 | prose | pages [19] -->
+(2) Dividing culture into three types: income culture, loss culture and swing culture, which simplifies the problem of cultural protection that is difficult to quantify.
+
+<!-- b000497 | prose | pages [19] -->
+(3) Taking into consideration the perspective of nationalism.
+
+<!-- b000498 | prose | pages [19] -->
+(4) Consider the long-term impact caused by the policy, in order to improve the accuracy of the model, incorporate new influencing factors and further optimize the dynamic results.
+
+<!-- b000499 | furniture | pages [19] -->
+关注数学模型
+
+<!-- b000500 | furniture | pages [19] -->
+2
+
+<!-- b000501 | furniture | pages [19] -->
+MATHmodels
+
+<!-- b000502 | furniture | pages [19] -->
+获取更多资讯
+
+<!-- b000503 | furniture | pages [20] -->
+Team#2013233
+
+<!-- b000504 | heading | pages [20] -->
+8.2 Weakness
+
+<!-- b000505 | furniture | pages [20] -->
+19 / 21
+
+<!-- b000506 | prose | pages [20] -->
+(1) Only 6 representative countries have been selected to reduce the scope of prediction.
+
+<!-- b000507 | prose | pages [20] -->
+(2) The establishment of the index system is measured by representative influence factors, and there may be deviations.
+
+<!-- b000508 | prose | pages [20] -->
+(3) In addition to the above parameters, the role of other NGOs will also affect the protection of human rights and culture in our model.
+
+<!-- b000509 | prose | pages [20] -->
+(4) Due to the difficulty of quantification, we ignore the impact of non-marketization of cultural existence.
+
+<!-- b000510 | prose | pages [20] -->
+Lack of dynamic analysis from a nationalist perspective.
+
+<!-- b000511 | heading | pages [20] -->
+8.3 Future
+
+<!-- b000512 | prose | pages [20] -->
+(1) When predicting future refugee numbers, more indicators should be considered, such as the rate of temperature rise, the rate of disappearance of organisms such as "coral reefs" and "marine fishes", because coral reefs can protect the land.
+
+<!-- b000513 | prose | pages [20] -->
+(2) The definition of disappearance of land and emergence of climate refugees must be clarified again: Is the hurricane and tsunami brought by the rise of sea level that make residents unable to survive and have to flee? Or is the land completely sunk to survive? Or is it because of the salinity of the land that the crops cannot grow and the people have no food? This requires a better assumption, so that the next step of modeling can be further optimized.
+
+<!-- b000514 | prose | pages [20] -->
+(3) When researching cultural protection and cultural assimilation issues in the future, it is necessary to consider that the refugees will be assimilated into the local culture in the migrating area, and models need to be established to simulate the process of cultural assimilation in order to better formulate cultural protection policies.
+
+<!-- b000515 | prose | pages [20] -->
+(4) The rise of nationalist forces will have an important impact on the migration of climate refugees, and it is necessary to analyze them dynamically in the future.
+
+<!-- b000516 | furniture | pages [20] -->
+关注数学模型
+
+<!-- b000517 | furniture | pages [20] -->
+2
+
+<!-- b000518 | furniture | pages [20] -->
+MATHmodels
+
+<!-- b000519 | furniture | pages [20] -->
+获取更多资讯
+
+<!-- b000520 | furniture | pages [21] -->
+Team#2013233
+
+<!-- b000521 | prose | pages [21] -->
+Work cited
+
+<!-- b000522 | prose | pages [21] -->
+[1]Norman Myers, "Environmental Refugees in No.11(December, 1993), p.758.
+
+<!-- b000523 | furniture | pages [21] -->
+20 / 21
+
+<!-- b000524 | prose | pages [21] -->
+a a Globally Warmed World", BioScience, Vol.
+
+<!-- b000525 | prose | pages [21] -->
+43,
+
+<!-- b000526 | prose | pages [21] -->
+[2]Su, Y. (2020, January 29). UN ruling on climate refugees could be gamechanger for climate action. Retrieved from https://www.climatechangenews.com/2020/01/29/un-ruling-climate-refugees-gamechanger-climate-action/.
+
+<!-- b000527 | prose | pages [21] -->
+[3]Steven J. Davis, Ken Caldeira，2010，Consumption-based accounting of CO2 emissions: Proceedings of the National Academy of Sciences Mar, 107 (12) 5687-5692.
+
+<!-- b000528 | prose | pages [21] -->
+[4]Claesson, S., 2011, The Value and Valuation of Maritime Cultural Heritage: International Journal of Cultural Property, v. 18, p. 61-80.
+
+<!-- b000529 | prose | pages [21] -->
+[5]Tabucanon, G. M. P., 2014, Social and Cultural Protection for Environmentally Displaced Populations: Banaban Minority Rights in Fiji: International Journal on Minority and Group Rights, v. 21, p. 25-47.
+
+<!-- b000530 | prose | pages [21] -->
+[6] Chang Chang, 2012, Study on "Environmental Refugees" in Tuvalu, Central China Normal University, p 47.
+
+<!-- b000531 | prose | pages [21] -->
+[7] Liang Gaoyang, 2019, Research on Risk Management and Simulation of Cultural Industry Projects Based on System Dynamics——Taking Hebei Cultural Industry Project as an Example: Management Observation, p. 59- 61.
+
+<!-- b000532 | prose | pages [21] -->
+[8] Han Ruonan. Overview of the concept of human rights and international human rights [J]. Law Expo, 2019 (17): 104-105.
+
+<!-- b000533 | prose | pages [21] -->
+[9]Primitive Culture: Research into the Development of Mythology, Philosophy, Religion, Art, and Custum. London: John Murray. Volume 1, page 1.
+
+<!-- b000534 | prose | pages [21] -->
+[10] By Zhao Zhaohui. Resettled migrants in Wangxiang and their cultural thoughts. Zhejiang: Zhejiang University Press, 2017.12
+
+<!-- b000535 | furniture | pages [21] -->
+关注数学模型
+
+<!-- b000536 | furniture | pages [21] -->
+2
+
+<!-- b000537 | furniture | pages [21] -->
+MATHmodels
+
+<!-- b000538 | furniture | pages [21] -->
+获取更多资讯

@@ -1,0 +1,1324 @@
+# P-F-2017-72283-776dd1c3
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | prose | pages [1] -->
+Print This Page Close This Window
+
+<!-- b000002 | furniture | pages [1] -->
+Team Control Number
+
+<!-- b000003 | title | pages [1] -->
+72283
+
+<!-- b000004 | prose | pages [1] -->
+For office use only
+
+<!-- b000005 | prose | pages [1] -->
+T1 ________________
+
+<!-- b000006 | prose | pages [1] -->
+T2 ________________
+
+<!-- b000007 | prose | pages [1] -->
+T3 ________________
+
+<!-- b000008 | prose | pages [1] -->
+For office use only
+
+<!-- b000009 | prose | pages [1] -->
+F1 ________________
+
+<!-- b000010 | prose | pages [1] -->
+F2 ________________
+
+<!-- b000011 | prose | pages [1] -->
+F3 ________________
+
+<!-- b000012 | prose | pages [1] -->
+Problem Chosen
+
+<!-- b000013 | prose | pages [1] -->
+T4 ________________
+
+<!-- b000014 | prose | pages [1] -->
+F4 ________________
+
+<!-- b000015 | title | pages [1] -->
+F
+
+<!-- b000016 | title | pages [1] -->
+F
+
+<!-- b000017 | prose | pages [1] -->
+2017 MCM/ICM
+
+<!-- b000018 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000019 | prose | pages [1] -->
+(Your team's summary should be included as the first page of your electronic submission.)
+
+<!-- b000020 | prose | pages [1] -->
+Type a summary of your results on this page. Do not include the name of your school, advisor, or team members on this page. Our team has been tasked with the job of creating a set of quantitatively supported models to assess the various attributes and outcomes of Population Zero’s colony on Mars. First, we defined the important metrics and evaluation criteria for each of three priority factors: income, education, and equality. Breaking income down into economic efficiency and economic equality, we decided upon GDP, the Gini coefficient, and the minimum salary in society as major metrics. Education was evaluated in terms of student-teacher ratio and the contribution of education toward the economy in the form of GDP. Finally, equality was considered from gender and cultural perspectives, leading us to use a metric called dissimilarity.
+
+<!-- b000021 | prose | pages [1] -->
+Asked to analyze the demographics and factors of Population Zero critical toward the structure and goals of the colony on Mars, we determined through dimensional analysis relating farmer productivity on Mars to basic human consumption needs that about 25% of Population Zero would be farmers. We proceeded to find through various methods the breakdown of other occupations in society. In addition, a quasi-Markov chain model allowed us to identify the optimal initial distribution of ages, and via logic, we divided the population equally into males and females.
+
+<!-- b000022 | prose | pages [1] -->
+Next, we applied the metrics identified earlier as critical toward income, education, and equality by developing a model for each of these priority areas. We found the relationship between education and GDP and discovered the optimal amount of education for a highly skilled, self-reliant community. We determined that with an economy mostly run by the government with salary tiers for government workers, we could achieve an economy with a minuscule amount of income inequality (Gini = 0.0336) and a GDP among the top 25% of national GDPs on Earth (GDP per capita around $28800, which was consistent with the value predicted by the education model). Our dissimilarity-based simulations revealed the tradeoff between income equality and social equality, and we found a reasonable length of parental leave for child care for the colony.
+
+<!-- b000023 | prose | pages [1] -->
+Subsequently, we integrated our three models into one model to assess the satisfaction of different subgroups in society as a function of our major priority areas. Developing and then applying data-based weights on each of our critical parameters such as GDP and dissimilarity, we found our values for critical parameters to be strong values. By analyzing the tradeoff between social equality and income equality, our model found that a small amount of income inequality would be preferable to a more impactful level of social inequality.
+
+<!-- b000024 | prose | pages [1] -->
+We then proceeded to apply our model in the context of additional migration to the colony from Earth. Realizing that migration could take place in several ways, we analyzed three very different migration methods/policies in terms of their effects on both age distribution and economic impact in order to see which ones would be relatively sustainable. Carrying forward our finding that gradual migration was the optimal form of introduction of a new population into the original colony, we developed an estimate for the maximum rate of migration into the colony on Mars. LIFE should strongly consider our quantitatively supported suggestions in order to carry out a successful migration to the Red Planet.
+
+<!-- b000025 | heading | pages [2] -->
+A Brave New World: A Quantitative Model of A
+
+<!-- b000026 | prose | pages [2] -->
+Self-Suﬃcient Martian Society
+
+<!-- b000027 | prose | pages [2] -->
+Team 72283
+
+<!-- b000028 | prose | pages [2] -->
+January 24, 2017
+
+<!-- b000029 | prose | pages [2] -->
+1 Deﬁning the Colony
+
+<!-- b000030 | prose | pages [2] -->
+1.1 Restatement of the Problem
+
+<!-- b000031 | prose | pages [2] -->
+For Task 1, we were asked to do the following:
+
+<!-- b000032 | prose | pages [2] -->
+1. Develop evaluation criteria for each of three priority factors for a Martian colony:
+
+<!-- b000033 | prose | pages [2] -->
+(a) Income, or the existence of an appropriate distribution of wealth that allows all
+
+<!-- b000034 | prose | pages [2] -->
+people to a↵ord their fundamental necessities
+
+<!-- b000035 | prose | pages [2] -->
+(b) Education, the quality of training and preparation of citizens for the relevant neces-
+
+<!-- b000036 | prose | pages [2] -->
+sities and diﬃculties of living on a Martian colony in the 22nd century
+
+<!-- b000037 | prose | pages [2] -->
+(c) Equality, or the establishment of equitable and fair living and labor conditions for
+
+<!-- b000038 | prose | pages [2] -->
+citizens of all genders, races, needs, and other backgrounds and characteristics
+
+<!-- b000039 | prose | pages [2] -->
+2. Infer what aspects of Population Zero would most directly impact the results across these three factors Deﬁne quantitative metrics that can be used to evaluate whether the colony is meeting the challenges posed by the three priority factors
+
+<!-- b000040 | prose | pages [2] -->
+1.2 Developing the Criteria and Metrics
+
+<!-- b000041 | prose | pages [2] -->
+To evaluate results across the three priority factors, relevant parameters and inputs to the factors must be deﬁned.
+
+<!-- b000042 | prose | pages [2] -->
+We can view income as a two-sided factor: it can be condensed into the two critical factors of most economic debates and discussionseﬃciency and equality. Eﬃciency, or the gross output of the economy, can be assessed in terms of the communitys gross domestic product (GDP) and other aspects such as amount of research and agricultural output. The overall success of the colonys economy can be evidenced by such outcomes as population growth due to crop surpluses, major technological spino↵s o↵research e↵orts, growth in GDP- related factors such as private investment and consumption, and successful privatization of originally public industries.
+
+<!-- b000043 | prose | pages [2] -->
+Equality refers to the level of egalitarianism reﬂected by the distribution of wealth across society.
+
+<!-- b000044 | prose | pages [2] -->
+The ability of as many people in society to provide for their own basic needs is important in assessing the income equality within the colony. Relevant metrics for equality include the Gini coeﬃcient and the minimum wage. A diminishing wage gap would be a strong indication of income equality.
+
+<!-- b000045 | prose | pages [2] -->
+Education can be broken down into three areas. Most importantly, the e↵ectiveness of formal education programs on the colony is critical. In addition to metrics of the strength of a school, such as teacher-to-student ratio, the actual contributions of students to the economy
+
+<!-- b000046 | prose | pages [2] -->
+1
+
+<!-- b000047 | furniture | pages [3] -->
+Team # 72283
+
+<!-- b000048 | furniture | pages [3] -->
+Page 2 of 24
+
+<!-- b000049 | prose | pages [3] -->
+down the road are key indicators of the quality of education. In that way, the income and education factors are extremely intertwined. In addition, an appropriate volume of research is necessary, especially considering that the long-term development of the colony as well as of human understanding of physics, chemistry, astrobiology, and other ﬁelds and the prospects for future space colonization e↵orts are dependent upon scientiﬁc research. Finally, the presence of a multicultural, open-minded environment within the community is of understated signiﬁcance. As most behavioral and classical economic models will suggest, as discrimination by race, gender, religion, and other personal factors disappear from society, eﬃciency will rise.
+
+<!-- b000050 | prose | pages [3] -->
+Equality can be viewed in terms of two major categories: gender equality and racial, re- ligious, and cultural equality (RRCE). Gender equality is reﬂected by equal representation, treatment, and encouragement of men and women in school and in various occupations and ﬁelds. The proportion of men and women in di↵erent positions and ﬁelds and the a↵ordability and the a↵ordability and/or availability of childcare and maternity and paternity leave are important metrics for evaluating gender equality. RRCE is determined by the equality of rep- resentation, treatment, and encouragement of people of di↵erent backgrounds in school and in various occupations and ﬁelds. The proportions of people of di↵erent backgrounds in various positions and ﬁelds is an important metric for assessing RRCE. In order to more realistically model the ﬂows and variations in these proportions, we can use a metric known as dissimilar- ity, which estimates the levels of segregation between two distinct types of people when they are grouped into various categories. In this case, we use the dissimilarity metric to estimate segregation levels between two races in the job industry.
+
+<!-- b000051 | prose | pages [3] -->
+2 Selecting Population Zero
+
+<!-- b000052 | prose | pages [3] -->
+2.1 Restatement of the Problem
+
+<!-- b000053 | prose | pages [3] -->
+For Task 2, we were asked to do the following:
+
+<!-- b000054 | prose | pages [3] -->
+1. Identify a census dataset from which actionable insights about individuals of a population can be derived
+
+<!-- b000055 | prose | pages [3] -->
+2. Plan a sample Population Zero, considering such factors as the following in order to form a successful and happy community:
+
+<!-- b000056 | prose | pages [3] -->
+(a) Personal characteristics–age, gender, ethnicity, race
+
+<!-- b000057 | prose | pages [3] -->
+(b) Education, skills, occupation
+
+<!-- b000058 | prose | pages [3] -->
+(c) Relationship/marital and family status
+
+<!-- b000059 | prose | pages [3] -->
+2.2
+
+<!-- b000060 | heading | pages [3] -->
+Assumptions and Justiﬁcations
+
+<!-- b000061 | prose | pages [3] -->
+1. Our colony is located millions of miles from the next human settlement. As a result of this enormous distance, Population Zero will be assumed to not engage in much trade with other societies. It needs to be self-suﬃcient and sustainable–the colony should have the potential to survive without any direct interaction with Earth.
+
+<!-- b000062 | prose | pages [3] -->
+2. Land is not a particularly limiting factorconsidering the relatively small size of our pop- ulation and the vastness of the planet, land will not be a concern for Population Zero.
+
+<!-- b000063 | prose | pages [3] -->
+3. Inhabitants of Planet Zero have been vetted to ensure proper health and physical con- dition for successful transition to and life on Mars. These individuals are capable of thriving on a 2000 kcal/day diet, on average.
+
+<!-- b000064 | furniture | pages [4] -->
+Team # 72283
+
+<!-- b000065 | furniture | pages [4] -->
+Page 3 of 24
+
+<!-- b000066 | prose | pages [4] -->
+4. The average farm size is 4.9 acres, based on the average farm size in north Africa and west Asia (Pungali 3330). This region was chosen as the basis of average farm size because of its many similarities to the surface and environment of Mars: limited natural resources, arid environment, and sparse population. In addition, the fact that this colony, the ﬁrst of its kind, has to deal with unprecedented agricultural and resource challenges helps to explain why farmers are not expanding too far on the planet.
+
+<!-- b000067 | prose | pages [4] -->
+5. In the absence of fertility and mortality rate data on the surface of another planet, we will use relevant American nationwide data, applying it for current and future generations of colonists. We assume that at best case, people will have similar life expectancies on Mars as on Earth, though it is reasonable that conditions on Mars would shorten the average lifespan of a person.
+
+<!-- b000068 | prose | pages [4] -->
+6. Colonists continue to live in family units and have monogamous reproductive relation- ships.
+
+<!-- b000069 | prose | pages [4] -->
+7. Given the fact that our society is built largely with the help of augmentation units, we will assume that there is not a major human construction industry. This is supported by the plethora of research avenues looking into the use of artiﬁcial intelligence and augmentation intelligence in construction and development of infrastructure (Grayson, Messier, Brachmann).
+
+<!-- b000070 | prose | pages [4] -->
+8. We use Earth years and 2016 dollars.
+
+<!-- b000071 | prose | pages [4] -->
+9. The colony is small enough that transportation costs are negligible - people can generally get around by foot.
+
+<!-- b000072 | prose | pages [4] -->
+10. In reality, the International Coalition on Mars would likely desire a global array of colonists for the new colony, especially if this venture was backed by many di↵erent countries and agencies. Given, however, that our census data pertains to the U.S. alone and that authentic census data across several countries is diﬃcult to obtain, we will assume that all 10,000 of our colonists are American.
+
+<!-- b000073 | prose | pages [4] -->
+2.3 Planning the community
+
+<!-- b000074 | prose | pages [4] -->
+Our model ﬁrst requires an understanding of the age distribution. We aim to create a society that experiences population growth and expansion to ensure the survival and success of hu- manity on Mars. Simultaneously, learning from examples such as China and the U.S.A., where curtailed birth rates over the past several decades are placing the weight of the increasing el- derly population on a decreasing population of working-age adults (S.C.), and Bangladesh and Nigeria (Bish), where recent explosions of population are causing overcrowding and sanitation issues, we wish to build a population with stable proportions of the various age groups over time.
+
+<!-- b000075 | prose | pages [4] -->
+Using American fertility and mortality data from the last decade, we established fertility and mortality rates for individuals of all ages (National Center for Health Statistics, U.S. Death Rates). For simplicity, we assume that no person will exceed the age of 100, which is a reasonable assumption due to the fact that individuals over 100 are a negligible proportion of the population.
+
+<!-- b000076 | prose | pages [4] -->
+We used the mortality data to develop a survival-rate for each age, where the survival-rate, s, of age an x is the value such that sx people are age x + 1 the next year.
+
+<!-- b000077 | prose | pages [4] -->
+We then created a quasi-Markov chain model to study the e↵ects of various age distributions for Population Zero on the survival and scalability of humans on Mars. We used di↵erent numbers of people of each of 100 ages (age of 1 through age of 100) as the original distribution of Population Zero. One transition of the chain, which corresponded to one year of change,
+
+<!-- b000078 | furniture | pages [5] -->
+Team # 72283
+
+<!-- b000079 | furniture | pages [5] -->
+Page 4 of 24
+
+<!-- b000080 | prose | pages [5] -->
+was represented by multiplying the current distribution by the transition matrix. We used transition probabilities of qi, i + 1 to indicate the probability that a person survived and grew one year older. We also applied our fertility and mortality data, using the transition term qi, 1 to indicate the probability that a person gave birth to a baby in the transition from one step to the next. qi, j was equal to 0 in cases where j 6= 1 and j 6= i + 1.
+
+<!-- b000081 | prose | pages [5] -->
+We noticed that the initial birthing rate was not high enough to account for the mortality rate, eventually leading our colony into population decline. We wanted to maintain the same proportions of births across di↵erent ages of women, so we decided to scale the birthing rates by a constant value. After testing multiple values, we selected a birthing parameter of 1.08, which allowed for a period of steady growth until the population reached a stable point of approximately 18,100. In order to achieve this slightly elevated birthing rate, compared to the U.S. birthing rates, we may have to enact government policies to encourage births, as the introduction of new colony members is essential for developing a new civilization on Mars. In Part 3, we adopt fair and just parental leave policies to incentivize individuals to bear children, and we anticipate that these generous policies would allow for us to obtain a birth rate of approximately 1.08.
+
+<!-- b000082 | prose | pages [5] -->
+Once we have set the birthing parameter at 1.08, we tested a large amount of sample population distributions to identify an ideal distribution Population Zero. We ﬁrst decided that we would not need to bring older adults to Mars because we would want to bring individuals that would be able to provide the maximum utility to the new civilization. Thus, we tested various models, all with relatively uniform numbers of people across ages of no more than 50.
+
+<!-- b000083 | prose | pages [5] -->
+An interesting source argued that children should not be brought as a part of an initial migration (Redd). We investigated this argument and under our Markov-chain simulations, we saw that this was not a viable option. Below, we can see the distribution of ages over time under the model where Population Zero consists of 2000 individuals evenly distributed between ages 11 and 20 inclusive, 3000 individuals evenly distributed between ages 21 and 30 inclusive, 3000 individuals evenly distributed between ages 31 and 40 inclusive, and 2000 individuals evenly distributed between ages 41 and 50 inclusive.
+
+<!-- b000084 | prose | pages [5] -->
+We see in the ﬁgure below that around 40 years after the start of the civilization, there is a very large percentage of retired individuals compared to the number of working adults. This is concerning for obvious reasons: retired individuals require food and increased medical attention while not contributing back to the overall communitys production or industry.
+
+<!-- b000085 | prose | pages [5] -->
+For these reasons, we see that excluding a large young population can have adverse e↵ects in the long- term, so we rule out distributions that do not bring enough children to Mars. After comparing various other population distributions, we found that the best distribution for Population Zero included 4000 people uniformly distributed across the ages from 1 and 20 and 6000 people uniformly distributed across the ages from 21 to 40. We found that this distribution allowed for both the growth of the colonys population and the maintenance of stable proportions of individuals in general age brackets.
+
+<!-- b000086 | prose | pages [5] -->
+Additionally, we found the optimal division of gender within our community to be an even 50-50 split of males and females across all age brackets, as that allowed us to model with the highest fertility rates (every male needs exactly 1 exclusive female for reproduction under the terms of monogamy). Genetic variation and diversity are also very valuable traits for Population Zero. Aiming for a diversity of allele distributions and phenotypes in the colony, we must be careful to prevent the possibility of mass inbreeding. For that end, we should aim for an even distribution of the di↵erent major ethnic and racial groups. Additionally, we should strive to promote multiculturalism, creating an open-minded community that accepts and celebrates interracial interaction and marriage. Furthermore, we should attempt to draw Population Zero from a variety of di↵erent regions and family groups to avoid the possibility of unaware inbreeding in generations down the road. A possible metric that could survey and serve as a proxy for genetic variation based on ethnic and racial background
+
+<!-- b000087 | furniture | pages [6] -->
+Team # 72283
+
+<!-- b000088 | furniture | pages [6] -->
+Page 5 of 24
+
+<!-- b000089 | caption | pages [6] -->
+Figure 1: Simulation of Ages over Time With an Initial Population Not Containing Children
+
+<!-- b000090 | caption | pages [6] -->
+Figure 2: Simulation of Optimal Population Distribution over Time With an Initial Population
+
+<!-- b000091 | prose | pages [6] -->
+would be the following scoring system:
+
+<!-- b000092 | prose | pages [6] -->
+Y
+
+<!-- b000093 | prose | pages [6] -->
+w = 1/(
+
+<!-- b000094 | prose | pages [6] -->
+pj)
+
+<!-- b000095 | prose | pages [6] -->
+j=1,n
+
+<!-- b000096 | prose | pages [6] -->
+where n is the number of di↵erent races in society and pj is the proportion of Population Zero that belongs to race j. If all inhabitants belong to the same race, then w = 1, an indication of very low genetic variation along racial lines. If, on the other extreme, all inhabitants are of 10000, which demonstrates a relatively large amount of genetic 1 di↵erent races, then w = 10−4 variation along racial lines. Though somewhat crude, this metric would provide valuable insight into the amount of variation in the community along major racial and ethnic lines.
+
+<!-- b000097 | prose | pages [6] -->
+We begin to assign roles to adults with the most obvious of insights: we must select 10,000 individuals to function as a community that at the very least survives the environment and conditions of Mars. There are 6,000 adults of working age (older than 20), so they will be distributed across the various roles necessary in our society. Humans need food to survive, so the most critical role in society harkens back to the backbone of our ﬁrst communities:
+
+<!-- b000098 | furniture | pages [7] -->
+Team # 72283
+
+<!-- b000099 | furniture | pages [7] -->
+Page 6 of 24
+
+<!-- b000100 | prose | pages [7] -->
+agriculture. Developing a stable and sustainable agricultural system is essential to our colonys self-suﬃciency and growth. In order to develop an estimate for how many farmers our colony will need, consider that the average Americans diet of 2.7 kcal/day is met by approximately 1.111974 acres of farm produce per year (Bradford). As a result, the average acre of farmland provides 886.869 kcal/yr.
+
+<!-- b000101 | prose | pages [7] -->
+We can compute the number of farmers needed for our colony through the following dimen- sional analysis.
+
+<!-- b000102 | prose | pages [7] -->
+⇥z ⇥1 farmer ⇥1
+
+<!-- b000103 | prose | pages [7] -->
+1 dayEarth ⇥1 person ⇥10000 ppl ⇥y ⇥cropsEarth 2000 kcal ⇥1
+
+<!-- b000104 | prose | pages [7] -->
+0.6 ⇥cropsMars
+
+<!-- b000105 | prose | pages [7] -->
+1 kcal
+
+<!-- b000106 | prose | pages [7] -->
+cropsEarth
+
+<!-- b000107 | prose | pages [7] -->
+cropsEarth
+
+<!-- b000108 | prose | pages [7] -->
+where y is the inverse of the number of kilocalories per acre of crops on Earth, and z is the 1 inverse of the number of acres of crops one farmer could tend to per day. The 0.6 factor comes from the fact that on Mars, distance to the Sun and relatively limited lighting lead crop growth to be 0.6 times as fast as on Earth (Starr). Thus, the amount of work required to cultivate 1 acre of crops on Earth corresponds to that amount required to tend to 0.6 acre of crops on Mars.
+
+<!-- b000109 | prose | pages [7] -->
+In order to get a reasonable value for y, we can consider the kcal yield of one acre of sweet potatoes, which are often regarded as a highly eﬃcient and sustainable option for a major crop on Mars. An acre of noramlly raised sweet potatoes is estimated to yield 2832.8038688 kcal/acre (Renoe, Agriculture and Consumer Protection). y is therefore the reciprocal of that value. For our value for avg crops per farmer per day, we chose a value of 4.9 based on the mean farm size in north Africa and west Asia (Pungali 3330). We chose this region as our basis because of its many similarities to the surface and environment of Mars: limited natural 1 resources, arid environment, and sparse population. Hence, z is 4.9. Using these parameter values and assuming that a farmer works 8 hours per day on average, we end up with a value of 2401.41 farmers. Alas, there is a ﬂy in the ointment! Taking into account the paternity and maternity leave options presented in Part IIIs equality model–6 months of leave between the mom and dad after a baby is born–and the fact that there are about 231 births per year across the community, corresponding to about 1.925% of all farmer time per year spent on leave, the number of farmers in the society must increase so that the average number of farmers working at any time is equal to 2401.41. As a result, the real number of farmers in society is 2448.54.
+
+<!-- b000110 | prose | pages [7] -->
+We then move to the next most critical group of individuals for a new colony in an un- precedented and potentially hazardous living environment: medical and public health workers. Based on data from the given PUMS dataset (U.S. Census Bureau.), about 10.5% of jobs in the U.S. have some connection to public health, medicine, or medical research. Mirroring this value is not suﬃcient, however. We must account for the fact that one is more likely to become ill in a foreign environment, especially in settings that one is previously unexposed to. On Mars, even if possibilities for new infectious diseases are limited, the isolation and unique challenges of Population Zero certainly create a need for medical professionals and people in the public health and medical research communities. In the absence of data relating to the rate of disease incidence on Mars, we will have to use such data for travelers on Earth. Travelers on Earth are about 2.18 times more likely to become ill than people in their native surroundings (Daily Mail Online, ”Travel Abroad In-Depth Report.”). Weighting the percentage of people involved in the health industry on Mars by that value:
+
+<!-- b000111 | prose | pages [7] -->
+0.104927604244 ⇥2.18016315161 ⇥10000 = 2287.59
+
+<!-- b000112 | prose | pages [7] -->
+Thus, about 2287.59 people should be employed in the health industry. At this point, we are left with 1263.86 individuals for whom we need to establish roles.
+
+<!-- b000113 | prose | pages [7] -->
+Moving to another important area of need, scientiﬁc research, we need to estimate the amount of interest in
+
+<!-- b000114 | furniture | pages [8] -->
+Team # 72283
+
+<!-- b000115 | furniture | pages [8] -->
+Page 7 of 24
+
+<!-- b000116 | prose | pages [8] -->
+scientiﬁc–physical, chemical, astrobiological, cosmological, and colonization-related–research that happens in Mars-like conditions. For this purpose, we can use the volume of interest and usage of the Mars Desert Research Station in Utah, which simulates the environment and conditions of Mars. Over the course of its existence, more than 1000 people have visited and lived in the station (”About MDRS”). E↵orts should be made to convince as many of these scientists to settle in Mars in order to expand current knowledge and awareness of Mars’ atmosphere and environment, further e↵orts to colonize and adapt to Mars, and continue to pursue e↵ective methods for space colonization in the future. Ideally, the ICM would be able to convince an optimal number of these 1000 scientists, engineers, and researchers to join the colony. Let us presume that ICM planned to bring along 60% of these scientists (600) and leave the rest at Earth to correspond with this team and perform remote studies and analysis.
+
+<!-- b000117 | prose | pages [8] -->
+Based on the number of students we have (originally, all 4000 people between the ages of 1 and 20 are considered students, although that number is smaller in the long-run view of the education model in task 3) and one estimate of the ideal student-teacher ratio as 19:1 (”Faculty Teaching Load.”), we can compute the optimal number of teachers to be 210.53. Using U.S. police department data pertaining to the average civilian to police oﬃcer ratio for departments serving various population sizes, we created a ﬁt that allowed us to estimate the optimal civilian to police oﬃcer ratio for a population of 10,000 to be 2.09 oﬃcers per 1000 civilians (Reaves). Scaling this up to a population of 10,000, we would need 20.91 law enforcement oﬃcers.
+
+<!-- b000118 | prose | pages [8] -->
+The remaining 432.425 individuals would be split up between two other valuable roles in our society: sanitation and commerce. Basing our number of sanitation workers o↵the 0.00108076 sanitation workers per capita in New York City (”NYC Department of Sanitation.”), we obtain a value of 10.8076 sanitation workers in our society. The remaining 421.617 individuals in the workforce will be in commerce, retail, and other occupations based on the trading of non- agricultural commodities.
+
+<!-- b000119 | prose | pages [8] -->
+Research, education, and law enforcement will almost certainly be government mediated, as the planning of such an isolated and self-suﬃcient community will have to have some level of centralization to it. Public health, medicine, and sanitation e↵orts will also likely be gov- ernment regulated. Among the more privatized industries will be commerce/retail and the all-important farming. Since these two industries represent goods rather than services, they will grow more easily as private industries than the aforementioned service industries. Though there could be a level of government regulation in the agriculture industry in order to make sure that there is enough food, privatization allows for food surpluses to arise more naturally due to consumer demand and producer proﬁt motive. Moreover, the relatively large size of these industries, particularly farming, ensures that the market will remain close to perfectly competitive and that stable market forces of supply and demand, as opposed to monopolistic motives, will dictate the course of these industries.
+
+<!-- b000120 | prose | pages [8] -->
+2.4
+
+<!-- b000121 | heading | pages [8] -->
+Validation of the Model
+
+<!-- b000122 | prose | pages [8] -->
+For an optimal breakdown of gender in our community, we must acknowledge the repercussions of having too many people of one gender. The scalability of a population is inherently tied to its reproductive potential, which is highest when the number of biologically healthy and reproductively potent males equals the number of healthy and potent females; essentially, a 50-50 split of males and females is optimal. This becomes clearer assuming monogamyeach individual has one other mate in this case, and only in a community composed of an equal number of males and females is the number of reproductive relationships and possibilities optimized. The breakdown should ideally also include an equal number of males and females in each generation or age bracket; having 5,000 males under 30 and 5,000 females over 30 would likely not be optimal in terms of facilitating mutual interest in monogamous reproduction.
+
+<!-- b000123 | furniture | pages [9] -->
+Team # 72283
+
+<!-- b000124 | furniture | pages [9] -->
+Page 8 of 24
+
+<!-- b000125 | prose | pages [9] -->
+Moreover, from a cultural standpoint, an even distribution of males and females across all age groups is likely desirable; an excess of males, for example, harkens back to the shantytowns of the wild West and the imposing patriarchal and social hierarchies of many European settlements in the New World.
+
+<!-- b000126 | prose | pages [9] -->
+Monogamous relationships and family settings are important because they provide moral and emotional support at home. These types of relationships are also optimal for reproduction that diminishes the chances of inbreeding or too little genetic variation. Families in particular provide themselves with moral and emotional support, are more likely to interact with each other, and are naturally better at engaging in the community. Whats more, if children inhabit our settlement, families are absolutely necessary to serve as the basic support networks of society.
+
+<!-- b000127 | prose | pages [9] -->
+The number of farmers in this society may seem high, as the profession represents about 40.81% of the workforce. However, prioritizing the various needs in society, one can easily understand why food and nutritional security is of the greatest import. In order to survive on such a remote and desolate planet from which the nearest capability for sustainable agricultural growth lies on Earth at least 33 million miles away (Redd), humans need a sustainable food source. Considering that water is scarce and that the soil and atmosphere of Mars are not, by themselves, suitable for long-term agricultural growth, a large-scale farming community is necessary for the populations survival, let alone its long-term scalability.
+
+<!-- b000128 | prose | pages [9] -->
+Similarly, the number of public health and medical sector employees may appear high, since about 38.13% of all jobs in our community belong in that sector. However, right after agriculture in terms of importance to the communitys survival and sustainability are health and social well-being. In a foreign environment with no empirical awareness of the biological and psychological challenges of life on the Red Planet, public health and medicine must be prioritized in order to ensure the ability of the community to persist and grow over time. Apart from farming, medicine, and public health, all jobs in this community are expendable. Even research, a critical secondary goal of a community on Mars, comes after the primary objective of sustainable survival and growth. Meanwhile, the amount of manpower in industries like sanitation and construction may appear low, but considering the rapid pace of incorporation of augmentation units and A.I. into these industries, by 2100, most of these jobs should be automated.
+
+<!-- b000129 | prose | pages [9] -->
+3 Factors of a Successful Society
+
+<!-- b000130 | prose | pages [9] -->
+3.1 Restatement of the Problem
+
+<!-- b000131 | prose | pages [9] -->
+3.2
+
+<!-- b000132 | heading | pages [9] -->
+Assumptions
+
+<!-- b000133 | prose | pages [9] -->
+1. Family size is standardized across occupations. For example, the number of children in farmer families is the same proportion of the working farmer population as the number of children in society as a proportion of the total population.
+
+<!-- b000134 | prose | pages [9] -->
+2. Gender is standardized across occupations. For instance, using the optimal 50-50 split between males and females in society, for every male researcher, there is one female re- searcher. In addition to being an optimal outcome in terms gender equality and workplace balance, this split is likely also achievable for most professions by the year 2100.
+
+<!-- b000135 | prose | pages [9] -->
+3. In the context of the income model, for each child that a married couple has, each spouse takes care of 1
+
+<!-- b000136 | prose | pages [9] -->
+2 children ﬁnancially. This is fairly representative of real-world family care, as each parent is expected to contribute equally to taking care of children.
+
+<!-- b000137 | furniture | pages [10] -->
+Team # 72283
+
+<!-- b000138 | prose | pages [10] -->
+3.3
+
+<!-- b000139 | heading | pages [10] -->
+Developing the Models
+
+<!-- b000140 | prose | pages [10] -->
+3.3.1 Education
+
+<!-- b000141 | furniture | pages [10] -->
+Page 9 of 24
+
+<!-- b000142 | prose | pages [10] -->
+In this section, we create a model for the colony’s productivity as a function of number of years of schooling as well as a model for an individual’s utility to society as a function of their educational history. In addition, we will look at the equilibrium population of the colony in order to determine the average years of schooling children in the colony should receive in order for the colony to be self-suﬃcient. Two of the key elements of a successful society on Mars are self-suﬃciency and happiness. By reducing unemployment among individuals between 18 and 24, overall happiness, one of the key metrics we’ve identiﬁed in this society, increases. Using EU-28 census data from 2013, we’ve established a negative correlation between unemployment among young people and happiness (”Quality of Life”).
+
+<!-- b000143 | prose | pages [10] -->
+Happiness
+
+<!-- b000144 | prose | pages [10] -->
+7.8
+
+<!-- b000145 | prose | pages [10] -->
+7.7
+
+<!-- b000146 | prose | pages [10] -->
+7.6
+
+<!-- b000147 | prose | pages [10] -->
+7.5
+
+<!-- b000148 | prose | pages [10] -->
+7.4
+
+<!-- b000149 | prose | pages [10] -->
+7.3
+
+<!-- b000150 | prose | pages [10] -->
+7.2
+
+<!-- b000151 | prose | pages [10] -->
+10 20 30 Unemployment Rate 40 40
+
+<!-- b000152 | prose | pages [10] -->
+Since we want to minimize unemployment, young individuals should either be in the work- Since there is an established optimal ratio in the society for skilled to force or in school. unskilled labor, this negative correlation means that education should be a primary emphasis for young people if they do not want to join the workforce or there are no available jobs.
+
+<!-- b000153 | prose | pages [10] -->
+Now we will model the value of an education based o↵of the relationship between Average Number of Years in School and GDP per capita. Using data from Barro-Lee’s study on average years in education by country and from the World Bank to get GDP per capita we’ve established two possible ﬁts for the relationship between education and GDP per capita (Barro, ”GDP Per Capita”).
+
+<!-- b000154 | prose | pages [10] -->
+GDP per Capita
+
+<!-- b000155 | prose | pages [10] -->
+80000
+
+<!-- b000156 | prose | pages [10] -->
+60000
+
+<!-- b000157 | prose | pages [10] -->
+40000
+
+<!-- b000158 | prose | pages [10] -->
+20000
+
+<!-- b000159 | prose | pages [10] -->
+2 4 6 8 10 Years of Education 12
+
+<!-- b000160 | prose | pages [10] -->
+Using a linear model ﬁt we get an R-Squared of 0.27. We also get an R-squared of 0.27 using a quadratic ﬁt. In addition, when using the Akaike information criterion (AIC) we get 2710 for both ﬁts. Therefore, we will use both ﬁts to establish a range of possible GDP’s per capita for a given education level within the colonyNow that we have models to predict GDP per capita for a given education level, we should enact an education policy which maximizes happiness and overall utility to society. In most countries, child labor laws require that agricultural workers
+
+<!-- b000161 | furniture | pages [11] -->
+Team # 72283
+
+<!-- b000162 | furniture | pages [11] -->
+Page 10 of 24
+
+<!-- b000163 | prose | pages [11] -->
+must be at least 14 years old. Therefore, all students should be educated at least 9 years in general education. In an equilibrium population for the colony of 18161 individuals, 60% will be in the workforce. Using our previous population analysis, we see that approximately 11264 individuals will be between the ages of 16 and 65 and eligible to work. Since only 10800 of these individuals need jobs, approximately 464 students will be funneled in higher education after general education is over. In addition, each year, there is a demand of 120 skilled jobs due to existing workers retiring or dying. Therefore, on average, students in university spend 3.87 years in university before entering the workforce. Taking the average of students who only do general education and those who enter higher learning, the average student spends 11.02 years in the society’s education system.
+
+<!-- b000164 | prose | pages [11] -->
+Therefore, the educational system of 9 years of general education and approximately 3.87 years in university for skilled laborers allows for a society with minimal unemployment and enough skilled laborers graduating from university each year to maintain self-suﬃciency in labor and education.
+
+<!-- b000165 | prose | pages [11] -->
+As Education relates to the other parameter of Income, this model’s conservative linear projection predicts that in a workforce with 6000 workers, we expect a GDP of 289.613 million dollars for the society.
+
+<!-- b000166 | prose | pages [11] -->
+3.3.2 Income
+
+<!-- b000167 | prose | pages [11] -->
+As a result of its largely federally run economy, much tax revenue would have to be generated to pay for public sector workers wages and government programs. This could come from an income tax on all members of society.
+
+<!-- b000168 | prose | pages [11] -->
+In order to maximize the income e↵ect, a balance between eﬃciency and equality must be established in the economy. Incentives should not be blurred to the point of signiﬁcantly harming the GDP, but at the same time, a fair distribution of wealth must be in place so that all people can a↵ord the basic necessities of life.
+
+<!-- b000169 | prose | pages [11] -->
+These necessities primarily include food and clothing, since housing will be provided by augmentation units such as large-scale 3D printers (Messier,Brachmann). Whereas GDP will be the metric used to evaluate the economy’ s eﬃciency, we will use the Gini coeﬃcient as a proxy for income equality–and, therefore, for the ability of all to a↵ord fundamental necessities. We calculate GDP as follows:
+
+<!-- b000170 | prose | pages [11] -->
+GDP = C + I + G + NX
+
+<!-- b000171 | prose | pages [11] -->
+where C = Gross private consumption expenditures, I = Gross private investment, G = Gov- ernment spending, and NX = Net exports. Because Population Zero is self-suﬃcient and unable to sustainably trade on a large scale with populations on Earth, NX = 0.
+
+<!-- b000172 | prose | pages [11] -->
+Government salaries will be standardized in the form of the following tiers for di↵erent jobs:
+
+<!-- b000173 | prose | pages [11] -->
+A. Research
+
+<!-- b000174 | prose | pages [11] -->
+B. Public Health, Education
+
+<!-- b000175 | prose | pages [11] -->
+C. Sanitation, Law Enforcement
+
+<!-- b000176 | prose | pages [11] -->
+Suppose we awarded people in tier A with a salary of a, people in tier B with a salary of b, and people in tier C with a salary of c, where a ≥b ≥c. In addition, let us suppose that individuals in private industries (i.e. commerce/retail and farming) have an average salary of c, since their wage ranges on Earth are most similar to the salaries of the types of public sector jobs in tier C.
+
+<!-- b000177 | prose | pages [11] -->
+There are 2400 farmers in our community, and together, they have to provide at least 2,000,000 kcal per day to the community.
+
+<!-- b000178 | prose | pages [11] -->
+The government will regulate the average farm
+
+<!-- b000179 | furniture | pages [12] -->
+Team # 72283
+
+<!-- b000180 | furniture | pages [12] -->
+Page 11 of 24
+
+<!-- b000181 | prose | pages [12] -->
+size to be at least 4.9 acres (to ensure that there is enough food for the population at the minimum of 2000 kcal/day/person). Most private consumption of goods will come in the arena of agriculture.
+
+<!-- b000182 | prose | pages [12] -->
+Under the assumption that family size is standardized across all professions (6000 adults, 4000 kids), the average farmer will have approximately 4 3 children along with his/her spouse (spouses will have their own occupations and sources of income). Since the spouse is also working, the farmer will essentially have to provide for himself/herself and 2
+
+<!-- b000183 | prose | pages [12] -->
+essentially provides for himself/herself and 2 3 children (spouse
+
+<!-- b000184 | prose | pages [12] -->
+3 children).
+
+<!-- b000185 | prose | pages [12] -->
+Suppose that people in tier A are willing to purchase (2000 + a
+
+<!-- b000186 | prose | pages [12] -->
+a ⇤700) kcal/day/person on average at the equilibrium price p USD/kcal. Let us assume that people in tier B are willing to purchase (2000 + b
+
+<!-- b000187 | prose | pages [12] -->
+a ⇤700) kcal/day/person on average and that people in tier C are willing to purchase (2000 + c
+
+<!-- b000188 | prose | pages [12] -->
+a ⇤700) kcal/day/person on average. Assuming that price discrimination is not an option, one fee in this competitive market will be established by market forces. Again, under the assumption that family size is standardized, a person in each tier will provide for himself/herself and 2
+
+<!-- b000189 | prose | pages [12] -->
+3 kids.
+
+<!-- b000190 | prose | pages [12] -->
+Total demand (kcal/day) = (# in A) (1 + 2
+
+<!-- b000191 | prose | pages [12] -->
+(# in B) (1 + 2
+
+<!-- b000192 | prose | pages [12] -->
+b
+
+<!-- b000193 | prose | pages [12] -->
+a a ⇤700) kcal/day/person) + 3 kids) ((2000 +
+
+<!-- b000194 | prose | pages [12] -->
+a ⇤700) kcal/day/person) + (# in C & commerce/retail & 3 kids) ((2000 + farmers) (1 + 2
+
+<!-- b000195 | prose | pages [12] -->
+3 kids) ((2000 + c a ⇤700) kcal/day/person)
+
+<!-- b000196 | prose | pages [12] -->
+3)(2700) + (#health & teachers) ( 5
+
+<!-- b000197 | prose | pages [12] -->
+Thus: Total demand = (#research) (5
+
+<!-- b000198 | prose | pages [12] -->
+3)(2000 + b a ⇤700) + (#sanitlawenfor & commerce/retail & farmers) ( 5
+
+<!-- b000199 | prose | pages [12] -->
+3)(2000 + c a ⇤700)
+
+<!-- b000200 | prose | pages [12] -->
+Varying the values for a, b, and c, we can come up with interesting simulations that give us a glimpse into both the GDP and the Gini coeﬃcient.
+
+<!-- b000201 | prose | pages [12] -->
+Trying a variety of possibilities, we found that the optimal combination of salaries was modeled o↵of U.S. data on current average private sector salaries for the types of workers in each tier. We set government worker salaries in tiers A, B, and C to be 65% of their average private sector salaries in their U.S., which were $76,961, $62,610,$38,862 (Lunney). Ultimately, the public sector salaries for tiers A, B, and C were $50,024.7, $40,696.5, $25,260.3, respectively. Farmers and commerce/retail workers earned $38,862, meanwhile.
+
+<!-- b000202 | prose | pages [12] -->
+Looking at GDP, in terms of private investment, no forms of ﬁxed investment on capital would exist since the government is regulating all services. In addition, since the core mission of inhabitants of this colony is to survive rather than generate personal wealth, investment in goods such as agricultural surpluses and clothing would not be a signiﬁcant venture in the Thus, private investment is negligible at the start of the colony. ﬁrst years of the colony. Government spending comes in the form of wages and a variety of intuitive forms of publicly funded programs: RD, education, and public sector wages. The U.S. spends $1442.51 per capita on RD; translating that over to our population of 10,000 ppl, the costs there amount to $14.4251 million (”List of Countries”). The U.S. also spends $11,700 per student on education (”Education Expenditures”), so for our education model’s prediction of 2800 students, the costs there amount to $37.44 million. Based on our values for salaries, public sector wages come out to $179.666 million.
+
+<!-- b000203 | prose | pages [12] -->
+Private consumption includes the amount spent on food and the amount spent on healthcare (government funding of healthcare is a transfer payment to private citizens, so healthcare costs come under private conumption). The global average for healthcare per capita spending is $3800 (”Health Resources”). These two avenues of spending come out to $109.066 million. Since GDP is the sum of government spending and private spending, this yields us a GDP of $288.732 million. Clear support for the accuracy of this value is the fact that the education
+
+<!-- b000204 | furniture | pages [13] -->
+Team # 72283
+
+<!-- b000205 | furniture | pages [13] -->
+Page 12 of 24
+
+<!-- b000206 | prose | pages [13] -->
+model predicts an extremely close value of $289.613 million for our society of 10,000.
+
+<!-- b000207 | prose | pages [13] -->
+We can next turn to the Gini coeﬃcient value; based on our wages for our various public and private sector jobs, we computed a Gini coeﬃcient value of 0.0335591.
+
+<!-- b000208 | prose | pages [13] -->
+This value is very small compared to those of countries on Earth; the lowest Gini value among contemporary countries with suﬃcient data is 0.237 (”Country Comparison”). However, our society’s low Gini coeﬃcient makes sense in the context of the small size of our population and workforce, the fact that wages are standardized within tiers, and the knowledge that most industries are government controlled–the tax rate, equal to government spending over total income, comes out to 73.64%, indicating a highly publicly controlled economy. This combination of high GDP (our per capita GDP of $28,873.2 ranks in the 76th percentile of contemporary nations’ GDP) and extremely low inequality is indicative of a very successful settlement venture based on income and economic standards.
+
+<!-- b000209 | prose | pages [13] -->
+1.0
+
+<!-- b000210 | prose | pages [13] -->
+0.8
+
+<!-- b000211 | prose | pages [13] -->
+0.6
+
+<!-- b000212 | prose | pages [13] -->
+0.4
+
+<!-- b000213 | prose | pages [13] -->
+0.2
+
+<!-- b000214 | prose | pages [13] -->
+0.2 0.4 0.6 0.8 1.0
+
+<!-- b000215 | prose | pages [13] -->
+The lower curve above represents our income distribution, not far o↵from the ideal (com- plete equality) shown by the upper curve. The area between the two is used to calculate the Gini value.
+
+<!-- b000216 | prose | pages [13] -->
+3.3.3 Equality
+
+<!-- b000217 | prose | pages [13] -->
+We simplify the issue of equality into the following three categories: income equality, gender equality, and racial equality. There are deﬁnitely and religious equality. We note that religious equality and homosexual equality can be modeled in a similar way to racial equality, as we can simplify these issues down to an aﬃnity towards similar people. Thus, we will focus our e↵orts on modeling racial equality, and this model is ﬂexible enough to understand religious and sexuality as well. As we already discussed income inequality in the section above, we will focus on racial and gender equality in this section.
+
+<!-- b000218 | prose | pages [13] -->
+3.3.4 Racial Equality
+
+<!-- b000219 | prose | pages [13] -->
+Racial inequalities are systemic issues that are diﬃcult to tackle. Such inequalities may arise due to homophily in human social networks, the studied phenomenon that individuals are more likely to forge social connections with those that are most similar to themselves (Smith et. al.).
+
+<!-- b000220 | prose | pages [13] -->
+We simplify the population down to ﬁve major races: Black, Caucasian, Asian, Hispanic, and Middle Eastern. Then we simulated a population of individuals as they entered careers, possibly switch careers, and retire over time. To model the changes in the job distributions over time, we approximated that about 5% of the workforce would take on a ﬁrst job, switch careers, or retire during one year. This accounts for the new graduates joining the workforce and the 67-year-olds retiring each year, as well as a small amount of people allowed to change jobs, which would be discouraged due to training costs.
+
+<!-- b000221 | furniture | pages [14] -->
+Team # 72283
+
+<!-- b000222 | furniture | pages [14] -->
+Page 13 of 24
+
+<!-- b000223 | prose | pages [14] -->
+To simulate these changes, we used a Markov-chain model where each individual is assigned a race and an initial job. At each time step, this individual has a 5% chance of leaving the workforce.
+
+<!-- b000224 | prose | pages [14] -->
+Now, for each of these individuals that will change jobs every year, they will be inﬂuenced by a homophily factor that makes jobs with a higher percentage of people in their respective racial category. We chose a homophily factor of 1.2, which is lower than a extreme factors seen in the data (Smith et. al.). For example there is a 0.387 chance that blacks and whites will become friends by chance, but only a .098 reported value in today’s society (Smith et. al.). We estimate that homophily will signiﬁcantly decrease on Mars, as individuals new Martian identity will serve to unify the population, thereby reducing racial bias. Furthermore, a small population will likely force individuals to marry individuals of other races, which will eventually serve to blur racial lines.
+
+<!-- b000225 | prose | pages [14] -->
+Using this value for homophily, we weight the individuals decision to choose one of the other two jobs using the ratio of his or her race to the other races in those jobs, scaling the higher job ratio by our homophily factor.
+
+<!-- b000226 | prose | pages [14] -->
+We choose a traditional metric to measure segregation levels between races in di↵erent jobs. Dissimilarity is a measure that simulates how many individuals would have to change jobs in order to have a perfectly equal and unsegregated society. Dissimilarity is measured between 0 and 1, where a dissimilarity value of 0 indicates perfect equality and a dissimilarity value of 1 indicates total segregation. We calculate the dissimilarity, D, of races A and B as
+
+<!-- b000227 | prose | pages [14] -->
+####
+
+<!-- b000228 | prose | pages [14] -->
+X
+
+<!-- b000229 | prose | pages [14] -->
+1 2
+
+<!-- b000230 | prose | pages [14] -->
+j2J
+
+<!-- b000231 | prose | pages [14] -->
+####
+
+<!-- b000232 | prose | pages [14] -->
+aj aj
+
+<!-- b000233 | prose | pages [14] -->
+a −bj
+
+<!-- b000234 | prose | pages [14] -->
+b
+
+<!-- b000235 | prose | pages [14] -->
+where J is the set of distinct jobs, a and b are the sizes of the populations of races A and B, respectively, and aj and bj are the number of individuals in job j that belong to races A and B, respectively.
+
+<!-- b000236 | prose | pages [14] -->
+Now we wish to identify causes of increased dissimilarity. When all three tiers of income are equal, we see this income model is less than ideal. Looking at Figure 3, we see that dissimilarity increases over time, as individuals choosing jobs are inﬂuenced not by salaries, but by interests and personal network connections only.
+
+<!-- b000237 | caption | pages [14] -->
+Figure 3: Simulation of Dissimilarity Over Time for Equal Income Model
+
+<!-- b000238 | prose | pages [14] -->
+Our sources show that a way to prevent these negative changes to the colonys equality is to have signiﬁcant variations in salaries. These price di↵erences incentivize individuals to seek the highest level job they are qualiﬁed for, hopefully overriding the individuals tendencies to seek others most similar to themselves.
+
+<!-- b000239 | furniture | pages [15] -->
+Team # 72283
+
+<!-- b000240 | furniture | pages [15] -->
+Page 14 of 24
+
+<!-- b000241 | prose | pages [15] -->
+Thus, we use the salary model from Part 3 that was also successful. These salaries were: [50024.7, 40696.5, 38000]
+
+<!-- b000242 | prose | pages [15] -->
+We then adjust the simulation so that each individual is inﬂuenced to enter a career by two factors: the homophily factor from before and also the salary of each job. We see that when people are incentivized to earn a higher salary, they are more likely to choose a higher-paying career, even if they have fewer contacts in that particular ﬁeld.
+
+<!-- b000243 | caption | pages [15] -->
+Figure 4: Simulation of Dissimilarity Over Time for Stratiﬁed Income Model
+
+<!-- b000244 | prose | pages [15] -->
+However, looking at the results of the simulation, we see that this solution does not result in complete equality, as those who have more contacts in the highest paying ﬁelds have an easier time entering that ﬁeld, creating a barrier for individuals or. However, the dissimilarity rates are considerably improved in this scenario, so we adopt this model of income stratiﬁcation.
+
+<!-- b000245 | prose | pages [15] -->
+3.3.5 Gender Equality
+
+<!-- b000246 | prose | pages [15] -->
+To combat gender inequalities, our primary goal is to allow for women of working age to give birth to children without leaving the workforce entirely. Proposals often advocate for a longer paid maternity leave, and optional paid paternity leaves in order to reduce the economic disadvantages of having a child. These policies are especially important, as we scaled the U.S. birth rate by a small parameter of 1.08 in order to maintain a period of steady growth during the initial stages of our colony. In order to promote these birth rates, we propose a considerable paid leave of 6 months. Because we wish to emphasize both males and females as important caretakers of children, we allow both the father and the mother to take leave, provided that their combined leave duration does not exceed 6 months. As mentioned in Part 2, having almost 50 extra farmers accounts for the time taken o↵by farmers due to parental leave and allows our society to still have enough food to be sustained.
+
+<!-- b000247 | prose | pages [15] -->
+This is a component of the model that will require repeated evaluation. Ideally, the ability to distribute child care leave evenly between both parents would be suﬃcient to combat gender inequalities in the workforce. However, persistent bias and stereotypes that men should work more than women may arise on Mars as well. In order to combat such potential obstacles to gender equality, frequent evaluation will be necessary by looking at the changes in dissimiliarity between men and women. We notice in the simulations of Section 3.3.4 that signiﬁcant changes to the dissimilarities arose simply due to each persons’ natural tendencies to interact better with those whom they have much in common. Due to these factors, and the common association of women with childcare, we see that we will need to monitor dissimilarity and may need to enact government policies that require fathers to be more involved in child care, for example.
+
+<!-- b000248 | furniture | pages [16] -->
+Team # 72283
+
+<!-- b000249 | furniture | pages [16] -->
+Page 15 of 24
+
+<!-- b000250 | prose | pages [16] -->
+4
+
+<!-- b000251 | heading | pages [16] -->
+Forming a Global Model
+
+<!-- b000252 | prose | pages [16] -->
+4.1 Restatement of the Problem
+
+<!-- b000253 | prose | pages [16] -->
+Task 4 asks us to do the following:
+
+<!-- b000254 | prose | pages [16] -->
+1. Create a single model from our individual models from task 3.
+
+<!-- b000255 | prose | pages [16] -->
+2. Consider the main priorities in the lives of major portions and demographics of Population Zero.
+
+<!-- b000256 | prose | pages [16] -->
+3. Explore the impact of our model on these di↵erent subgroups based on their major priorities.
+
+<!-- b000257 | prose | pages [16] -->
+4. Adjust the model if necessary to optimize the priorities of di↵erent subgroups without signiﬁcantly downgrading global outcomes.
+
+<!-- b000258 | prose | pages [16] -->
+4.2
+
+<!-- b000259 | heading | pages [16] -->
+Assumptions and Justiﬁcations
+
+<!-- b000260 | prose | pages [16] -->
+4.3
+
+<!-- b000261 | heading | pages [16] -->
+Developing the Model
+
+<!-- b000262 | prose | pages [16] -->
+Our three models–for income, education, and equality–are highly interdependent and interre- lated. Strong education levels are correlated with greater economic eﬃciency, and there are various relationships between equality and both education and income. In order to merge our three models into one, we need to ﬁrst consider what these three together can tell us. The task asks us to assess optimal outcomes for society and various subgroups. One way to do so is to create a happiness index based on the major priority areas in society.
+
+<!-- b000263 | prose | pages [16] -->
+We established four basic areas of priority critical to determining the happiness of an individual in the context of society. They are education, economic eﬃciency, economic equality, and social equality. In order to quantitatively measure the extent of achievement in or fulﬁlment of each of these priority areas, we based our proxies on appropriate metrics. For education, we used years of education. For economic equality, we used the Gini coeﬃcient. For economic eﬃciency, we used the GDP, and for social equality, we used the dissimilarity metric. In order to standardize each of these metrics to the same 0-to-1 scale, we set the education fulﬁllment variable equal to Nyears/44.
+
+<!-- b000264 | prose | pages [16] -->
+We chose 44 based o↵Mincer’s famous model (Stearns) that predicted a positive marginal beneﬁt of education for up to 44 years. We then computed the eﬃciency fulﬁllment proxy by ﬁnding where on the distribution of national GDP per capitas on Earth our colony’s GDP per capita would lie. In formal terms:
+
+<!-- b000265 | prose | pages [16] -->
+GDPproxy = CDF[dist, GDPPopZero]
+
+<!-- b000266 | prose | pages [16] -->
+Next, we evaluated the economic equality proxy by the following, since we wished 1 to be an indication of optimal equality and 0 to be an indication of perfect inequality:
+
+<!-- b000267 | prose | pages [16] -->
+eeproxy = 1 −gini
+
+<!-- b000268 | prose | pages [16] -->
+Finally, we calculated the social equality proxy by using the harmonic mean H of the various dissimilarity values D1 through D5, since any sort of inequality in the system should skew the distribution more in its direction to reﬂect a negative social outcome (one right doesn’t correct a wrong!):
+
+<!-- b000269 | prose | pages [16] -->
+seproxy = H(1 −D1, 1 −D2, 1 −D3, 1 −D4, 1 −D5)
+
+<!-- b000270 | furniture | pages [17] -->
+Team # 72283
+
+<!-- b000271 | furniture | pages [17] -->
+Page 16 of 24
+
+<!-- b000272 | prose | pages [17] -->
+Now that we have established these four priority areas as the backbone of the universal model, we need to form a way to compute happiness index from these four. Realizing that the impor- tance of each of these priorities varies across the di↵erent subgroups, we assign weights to each of these to evaluate how much importance each one holds in the eye of the average individual of each subgroup. Using these weights and the standardized priority metrics, we can deﬁne the happiness index as follows:
+
+<!-- b000273 | prose | pages [17] -->
+H = (wedu ⇥Nyears) + (wgdp ⇥GDPproxy) + (wee ⇥eeproxy) + (wse ⇥seproxy)
+
+<!-- b000274 | prose | pages [17] -->
+with the sum of the weights being equal to 1. For the priority metric values, we used our education’s model optimal education length of 11.02 years, our calculated GDP percentile of 0.76754, our Gini coeﬃcient of 0.0335591, and an H value of 0.9287899. This provides us with a lens with which to view the total utility or satisfaction one develops from the various aspects of life in the community. In addition, by comparing the sets of weights of one subgroup to those of the next, one can understand how di↵erent groups prioritize the di↵erent aspects– education, economic eﬃciency, economic equality, social equality–of society. In order to come up with reasonable and empirically supported values for these weights, however, we have to make inferences from data.
+
+<!-- b000275 | prose | pages [17] -->
+The Pew Values Survey allows us to collect estimates and proxies for people’ s concern about the four major priority areas we deﬁned (Gewurz). Based on the tier system of our economy, we look at the responses to these question from the top 10% of income earners to reﬂect the sentiments of our society’s top 10% of income earners, scientiﬁc researchers. The next 40% of income earners’ responses reﬂects the sentiments of our society’s next 40% of earners, public health professionals and teachers, and the bottom half of income earners’ responses reﬂects the sentiments of our society’s bottom half of earners, farmers, commerce, law enforcement, and sanitation.
+
+<!-- b000276 | prose | pages [17] -->
+To estimate the relative value of the four priority categories on the three income levels, we looked at individuals response to the following questions:
+
+<!-- b000277 | heading | pages [17] -->
+1. Education: In making your decision about who to vote for this fall, will the issue of
+
+<!-- b000278 | prose | pages [17] -->
+Education be very important, somewhat important, not too important, or not at all important?
+
+<!-- b000279 | heading | pages [17] -->
+2. Economic Eﬃciency: Do you agree completely, agree mostly, disagree mostly, or dis-
+
+<!-- b000280 | prose | pages [17] -->
+agree completely with the statement, The strength of this country today is mostly based on the success of American business?
+
+<!-- b000281 | heading | pages [17] -->
+3. Economic Equality: Do you agree completely, agree mostly, disagree mostly, or disagree
+
+<!-- b000282 | prose | pages [17] -->
+completely with the statement, The government should guarantee every citizen enough to eat and a place to sleep?
+
+<!-- b000283 | heading | pages [17] -->
+4. Social Equality: Do you agree completely, agree mostly, disagree mostly, or disagree
+
+<!-- b000284 | prose | pages [17] -->
+completely with the statement, Our society should do what is necessary to make sure that everyone has an equal opportunity to succeed?
+
+<!-- b000285 | prose | pages [17] -->
+For these ﬁrst question, we weight the responses as follows in Table 1. Then we use the responses to compute an importance metric for each priority for all three income categories. Then, we normalized the importance values so that the sum of the impor- tance values of all priorities is 1, so that we could compare the priorities of individuals across di↵erent economic levels. We obtained the following results, which are summarized in Table 2. Once we computed the weights of the di↵erent major income groups in our society, we were able to infer their various preferences. Public health employees and teachers, for example, in
+
+<!-- b000286 | furniture | pages [18] -->
+Team # 72283
+
+<!-- b000287 | furniture | pages [18] -->
+Page 17 of 24
+
+<!-- b000288 | caption | pages [18] -->
+Table 1: Weightings of Reponses
+
+<!-- b000289 | prose | pages [18] -->
+Response Weight Very important, Agree completely 3 Somewhat important, Agree mostly 2 Not too important, Disagree mostly 1 Not at all important, Disagree completely 0
+
+<!-- b000290 | caption | pages [18] -->
+Table 2: Weighting of Priorities for U.S. Individuals of Distinct Income Levels
+
+<!-- b000291 | prose | pages [18] -->
+Economic Income Education Economic Social Happiness Eﬃciency Category Top 10% of Incomes 0.32088 Middle Tier of Incomes 0.32116 Bottom 48% of Incomes 0.31239 Equality Equality Index 0.21762 0.18632 0.27517 0.68305 0.22734 0.17901 0.27248 0.68102 0.20817 0.19937 0.28008 0.69083
+
+<!-- b000292 | prose | pages [18] -->
+tier B were more concerned with education and economic eﬃciency, while farmers, law enforce- ment, sanitation, and commercial vendors in less lucrative positions were more concerned with economic and social equality.
+
+<!-- b000293 | prose | pages [18] -->
+These results appear to make intuitive sense. The fact that higher-income workers, who are typically more likely to be highly skilled, educated, and specialized, are more concerned with education and the gross amount of money in the market makes sense, since they would be more likely to beneﬁt from such increased eﬃciency. Meanwhile, unskilled and poorer workers tend to be more concerned with social issues and equality as well as income equality, since they would be most likely to beneﬁt from progress in these areas of society.
+
+<!-- b000294 | prose | pages [18] -->
+We continued to divide the population into various demographics, to check that the priorities of other social groups were accounted for. We divided the population into men vs. women, as well as working adults vs. retired peoples using the same procedures as above. We obtained the following results summarized in Table 4.
+
+<!-- b000295 | caption | pages [18] -->
+Table 3: Weighting of Priorities for U.S. Individuals Based on Gender and Age
+
+<!-- b000296 | prose | pages [18] -->
+Economic Social Education Economic Social Happiness Eﬃciency Category Men 0.16150 0.27839 Women 0.17490 0.24966 Working Adults 0.16013 0.26150 Retired Adults 0.19257 0.26768 Equality Equality Index 0.21994 0.34017 0.78263 0.24356 0.33189 0.77907 0.24140 0.33697 0.78709 0.20735 0.33240 0.76281
+
+<!-- b000297 | prose | pages [18] -->
+These data also reveal interesting trends. For example, the women surveyed tended to prioritize income equality at a higher rate than their male counterparts. This is not surprising due to the fact that women have historically been paid at a lesser rate than men in the same positions, and thus, women may believe that income equality is an issue of greater importance. For the same reasons, it makes sense women may value education at a slightly higher percentage than men do. The working adults surveyed reported a lesser interest in education than retired adults, which may be attributed to the common opinion that higher level education is not often directly applied to jobs. However, retired individuals seem to value their education more, possibly due to a higher appreciation of its impacts.
+
+<!-- b000298 | prose | pages [18] -->
+It is also worth noting that working
+
+<!-- b000299 | furniture | pages [19] -->
+Team # 72283
+
+<!-- b000300 | furniture | pages [19] -->
+Page 18 of 24
+
+<!-- b000301 | prose | pages [19] -->
+adults value income equality at a higher rate than retired people, which makes intuitive sense, as they are currently receiving salaries and are thus likely more aware of income inequality in the population.
+
+<!-- b000302 | prose | pages [19] -->
+We attempted to check the e↵ect of altering parameter values slightly on the happiness For example, we tried to estimate the tradeo↵between social equality and income index. equality: by standardizing wages to the same value and thereby bringing the Gini coeﬃcient to 0, we experienced greater segregation in the workforce, since the tendencies for workers to select jobs with people of their own races was not o↵set by any salary discrepancies. The harmonic mean here dropped to 0.8894. The happiness index subsequently dropped when compared to the original happiness index values. The results of this tradeo↵analysis are shown in Table 4 below.
+
+<!-- b000303 | caption | pages [19] -->
+Table 4: Happiness Index Values Before/After EE/SE Tradeo↵
+
+<!-- b000304 | prose | pages [19] -->
+Original Social Category After EE/SE Tradeo↵ 0.683048 Top 10% of Incomes 0.678462 0.681015 Middle Tier of Incomes 0.676289 0.690827 Bottom 48% of Incomes 0.686485 0.782632 Men 0.776614 0.779065 Women 0.774166 0.78709 Working Adults 0.781918 0.762808 Retired Adults 0.756674
+
+<!-- b000305 | prose | pages [19] -->
+Clearly, the original values were preferable, as demonstrated by the greater happiness index values. Consequently, we decided to keep the original values.
+
+<!-- b000306 | prose | pages [19] -->
+4.4
+
+<!-- b000307 | heading | pages [19] -->
+Validation of the model
+
+<!-- b000308 | prose | pages [19] -->
+Building a model centered on unspeciﬁed weights forces us to use real-world data in order to provide reasonable values. Consequently, rather than creating artiﬁcial or contrived values for weights or for individuals prioritization of di↵erent aspects of outcomes in society, we use empirical analysis of various subgroups based on income or demographics to hypothesize intel- ligently and thoroughly. Moreover, although we use the same priority areas for each subgroup instead of creating di↵erent concerns for the di↵erent groups, this aspect of our model is more of a strength than a weakness since it allows us to directly analyze in a quantitative way based on weights the di↵erences in various subgroups prioritization patterns. Additionally, intuitive conclusions follow from the results of our model: it makes sense why women, for instance, value income equality and education so much as well as why lower-income workers care more about economic and social equality than their more highly skilled counterparts. Furthermore, along with intuition, based on the results of the weightage model, we can infer more speciﬁc categories that certain subgroups would be especially concerned with. For example, we can reason that women would particularly prioritize closing the gender wage gap and that farmers, who receive less education and undergo less specialization than more highly skilled workers, are not as deeply concerned with education as botanical researchers or physicians may be.
+
+<!-- b000309 | prose | pages [19] -->
+Accounting for Additional Migrations 5
+
+<!-- b000310 | prose | pages [19] -->
+In order to test the resilience of our model to additional migrations, we have planned several di↵erent scenarios and performed population and economic analyses of the Martian society
+
+<!-- b000311 | furniture | pages [20] -->
+Team # 72283
+
+<!-- b000312 | furniture | pages [20] -->
+Page 19 of 24
+
+<!-- b000313 | prose | pages [20] -->
+post migration.
+
+<!-- b000314 | prose | pages [20] -->
+5.1 Scenario 1: A One-time Migration
+
+<!-- b000315 | prose | pages [20] -->
+The ﬁrst scenario is a one-time migration of 10,000 individuals much like the initial settlers on the colony. In this scenario, we make several assumptions such as the existence of infrastructure and jobs for migrants once they join the colony. In addition, it is assumed that government can initially support all new migrants economically because they will be working immediately. Using population analysis, it is shown that an equilibrium population to which 10,000 migrants of the same demographics as the initial settlers will reach a new equilibrium and not collapse.
+
+<!-- b000316 | prose | pages [20] -->
+Population
+
+<!-- b000317 | prose | pages [20] -->
+36000
+
+<!-- b000318 | prose | pages [20] -->
+34000
+
+<!-- b000319 | prose | pages [20] -->
+32000
+
+<!-- b000320 | prose | pages [20] -->
+30000
+
+<!-- b000321 | prose | pages [20] -->
+28000
+
+<!-- b000322 | prose | pages [20] -->
+26000
+
+<!-- b000323 | prose | pages [20] -->
+24000
+
+<!-- b000324 | prose | pages [20] -->
+Years 0 20 40 60 80 100
+
+<!-- b000325 | prose | pages [20] -->
+5.2 Scenario 2: A Separate City
+
+<!-- b000326 | prose | pages [20] -->
+Now, if we add 10,000 people to a separate city, we can make some assumptions in order to e↵ectively model the two separate populations. Since our model works for a 10,000 individual population we can assume a similar model for the second city (which we will call Society 2) has some beneﬁts during its development compared to Society 1. For instance, we can assume that the average educational level will be higher than Society 1 at a similar population and consequently according to the positive relationship between education and GDP per capita Society 2 will be more prosperous than the original Martian society at corresponding stages of development. Let us presume that 10 years have passed for Society 1. The average annual GDP growth rate over the last ten years is about 3.5% (Data World Bank). Based on that, over the next ten years, the economy should grow 41.06%. Given this substantial growth on Earth, the new colonists will be more advanced as a result of progress in education, technology, and other areas that inﬂuence GDP. As a result, their society will have a higher GDP than the ﬁrst society. As a result of higher education, GDP, and specialization, Society 2 will likely exhibit a com- parative advantage in some industries, goods, or services. As a result, trade patterns will likely develop between the two communities, allowing both to beneﬁt through simple free market economics. Thus, having a separate city that develops trading patterns but that falls under its own jurisdiction and independent government theoretically can only have positive results. Unlike Scenario 1, there are no negative pressures on Society 1 because Society 2 follows the same model of self-suﬃciency. Therefore, the model for both societies are incredibly robust to additional cities.
+
+<!-- b000327 | furniture | pages [21] -->
+Team # 72283
+
+<!-- b000328 | furniture | pages [21] -->
+Page 20 of 24
+
+<!-- b000329 | prose | pages [21] -->
+5.3 Scenario 3: Gradual Migration
+
+<!-- b000330 | prose | pages [21] -->
+Our third scenario involves the gradual migration of individuals from Earth over 100 years. In this scenario, our simulations showed that the population quickly adjusts to gradual inﬂux of people as shown in the following ﬁgure. It takes approximately 30 years for the population to reach a maximum due to the migration of adults and after that the population lowers until it reaches an equilibrium.
+
+<!-- b000331 | prose | pages [21] -->
+As a result, the optimal gradual migration pattern would allow the population to reach equilibrium, about 50 years after the addition of the migrant population, before the next wave of migrants. Alternatively, the next wave of migrants could likely enter society after 30 years, when the population was starting to lower to its equilibrium value.
+
+<!-- b000332 | prose | pages [21] -->
+Population 35000
+
+<!-- b000333 | prose | pages [21] -->
+30000
+
+<!-- b000334 | prose | pages [21] -->
+25000
+
+<!-- b000335 | prose | pages [21] -->
+20000
+
+<!-- b000336 | prose | pages [21] -->
+15000
+
+<!-- b000337 | prose | pages [21] -->
+10000
+
+<!-- b000338 | prose | pages [21] -->
+5000
+
+<!-- b000339 | prose | pages [21] -->
+0 Years since influx 0 50 100 150 200 250 300
+
+<!-- b000340 | prose | pages [21] -->
+This graph shows that our model is robust towards gradual migrations of individuals from Earth over the course of 100 years.
+
+<!-- b000341 | prose | pages [21] -->
+6 Evacuating Planet Earth
+
+<!-- b000342 | prose | pages [21] -->
+In this scenario we attempt to maximize the number of people from Earth who can be saved while keeping the parameters deﬁned previously in the problem in mind. There are several limiting factors which limit the number of migrants from Earth. Looking ﬁrst at government spending, we calculate that the current goverment spending can support up to 8304 migrants from Earth given no warning and no time to change the current rates of government spending. This number comes from the calculation of the minimum amount government must spend per capita on a migrant (7745.5) from our earlier economic model. This means a population of 10, 000 could support another 80% of its weight given a sudden migration from Earth from an economic government perspective. Another factor to consider would be the increased tax in order to support migrants. The taxation rate of 73% indicates that in order to support an additional 80% of the population government would need to subsidize many other aspects of citizen’s lives such as the goods they consume in order for individuals to be able to a↵ord goods with such a high taxation rate. In addition, another limiting factor is food consumption. Currently, farmers work 8 hour workdays. If the population grows by 83%, then they must work 14.6 hour days if it is assumed that they have enough land to grow an increased number of crops. Overall, unexpected migration places a huge burden on the existing society and many parame- ters such as the lack of unemployment would no longer work. As with any large scale migration, unemployment would go up as the number of jobs could not grow like population does.
+
+<!-- b000343 | furniture | pages [22] -->
+Team # 72283
+
+<!-- b000344 | furniture | pages [22] -->
+Page 21 of 24
+
+<!-- b000345 | prose | pages [22] -->
+7
+
+<!-- b000346 | heading | pages [22] -->
+Policy Recommendation
+
+<!-- b000347 | prose | pages [22] -->
+Dear Director,
+
+<!-- b000348 | prose | pages [22] -->
+Upon the request of the International Coalition of Mars, our team has devised an empirically and quantitatively supported model that makes allows us to make various policy recommen- dations centered on the expected income, education, and equality aspects of Population Zero’s settlement.
+
+<!-- b000349 | prose | pages [22] -->
+First, we recommend a balance between student-age and working-age colonists in the initial group of colonists. Speciﬁcally, we believe a 40-60 breakdown of children/students and working- age adults, respectively, in family units will maximize the potential for growth and economic development in the community because it includes enough working-age adults to support the large student population ﬁnancially, in terms of food, and in terms of family-based moral and emotional support.
+
+<!-- b000350 | prose | pages [22] -->
+Also, though some may envision that a society highly focused on breeding and population expansion represents humanity’s best chance for survival and growth on another planet, our group disagrees with that notion. Family support is critical for wellbeing and survival on the remote Red Planet, and an explosion of young people in our population is not at all sustainable in the long run. Steady and stable population expansion has been shown by our growth models to create a successful and sustainable society, in terms of age and occupation distribution, in the long run.
+
+<!-- b000351 | prose | pages [22] -->
+In addition, we suggest that Population Zero set a cuto↵age of 40 for eligibility; one must be at most 40 years old in order to be eligible to come to Mars. We make this recommendation based on the idea that we wish for every colonist to be able to contribute for as long as possible. In the ﬁrst generation of settlers in particular, we wish to establish the roots for long-term sustainability and growth, and we can only ensure that if every person is able to contribute for a long enough period of time to support the generation going through education. Moreover, we believe that an even gender split (50-50 between males and females) and as diverse a population racially and genetically would be optimal for healthy levels of genetic variation and reproduction as well as issues such as social and income equality.
+
+<!-- b000352 | prose | pages [22] -->
+Having a society dominated by any one racial or gender group would not be a good idea in terms of either the long-term sustainability of the population or the degree of egalitarianism in society.
+
+<!-- b000353 | prose | pages [22] -->
+We also recommend that LIFE plan for Population Zero to be composed of 25% farmers and 23% public health and medical sector professionals. Though these values may seem appalling at ﬁrst glance, we wish to advise the agency to consider that food and health are the cornerstones of any hope for long-term sustainability and success of the colony. Considering that agriculture and health on Mars are not tested in long-term scenarios, the colony will certainly need an emphasis on these two areas.
+
+<!-- b000354 | prose | pages [22] -->
+Next, looking at issues of governance and economy, we recommend that the colony on Mars establish a system in which the government regulates most industries. In particular, we recommend that the government handle the operations of all service-based industries, with goods-based industries in private hands. We are convinced that such a breakdown is optimal, as the relatively small size of the society allows the government to control important industries like research and health without encountering the problems of most large-scale communist societies. Additionally, we urge the government on Mars to set salaries for public-sector workers to be increasing as the level of skill necessary for a job goes up. While minor income discrepancies will ensue–public-sector salaries modeled o↵average Americans wages for related job areas yields a tiny Gini value of 0.0336–we predict that creating complete income equality is a poor idea, for our model reveals that doing so not only decreases motivation to become educated and highly skilled but also increases the amount of self-selecting segregation in workforce industries on various demographic levels such as race. The state of the tradeo↵between income equality and social equality is clearly in favor of allowing a little economic inequality in order to ensure
+
+<!-- b000355 | furniture | pages [23] -->
+Team # 72283
+
+<!-- b000356 | furniture | pages [23] -->
+Page 22 of 24
+
+<!-- b000357 | prose | pages [23] -->
+greater social equality.
+
+<!-- b000358 | prose | pages [23] -->
+To expand on the point of optimizing social equality within Population Zero, we assert that providing each new mother and father with a combined parental paid leave period of 6 months is one direct avenue toward greater gender equality. Our hope is that this policy will not only allow for more equality between males and females in society but also encourage a higher birth rate among couples. Our models predict that an 8% growth in birth rate is critical toward maintaining steady growth at the start of the colony. By making provisions for couples having children, we aim to ensure the steady growth of the colony.
+
+<!-- b000359 | prose | pages [23] -->
+Our education model predicts that the optimal number of years of education on average is 11 years. This value is among the highest for years of mandatory education in countries on Earth; however, given that about half of our society is highly skilled and educated (teachers, medical and public health professionals, researchers), this value makes sense. We are advocating for 9 years of general education for all, since living in such a technologically and scientiﬁcally advanced and oriented society demands adequate levels of proﬁciency with various concepts critical to the mission on Mars. On top of the 9 years of general education, students training to go into highly skilled jobs should go through about 4 years of specialized education to prepare them for their roles in society.
+
+<!-- b000360 | prose | pages [23] -->
+In terms of the e↵ects of future migrations on this colony, our model is robust for any sort of planned migration due to its scalability. We accept one-time migrations upwards of 10, 000 people as well as the construction of sister cities or gradual intakse of adults from Earth. Overall, our models showed that populations with these migrations reached equilibrium states over time and never collapsed.
+
+<!-- b000361 | prose | pages [23] -->
+Finally, our policy recommends attempting to maximize the number of people who can be saved in the case of an imminent comet collision with Earth. While we estimate that we can save 8300 individuals, that is an upper bound and in that case government would likely have to cut some of the parameters that are outlined previously in this society. Overall though, our model allows for us to add a signiﬁcant number of migrants from Earth proportionately to the society’s current population.
+
+<!-- b000362 | prose | pages [23] -->
+We believe that our policy recommendations are valid and empirically sound and that they are especially strong in the context of an unprecedented mission. We hope that you ﬁnd them so as well. It has been a pleasure to help LIFE in planning this incredible expedition in the history of mankind. Please feel free to reach out to us if you have any questions or concerns.
+
+<!-- b000363 | prose | pages [23] -->
+Sincerely, Team 72283
+
+<!-- b000364 | furniture | pages [24] -->
+Team # 72283
+
+<!-- b000365 | furniture | pages [24] -->
+Page 23 of 24
+
+<!-- b000366 | heading | pages [24] -->
+References
+
+<!-- b000367 | references | pages [24] -->
+[1] ”About MDRS.” Mars Desert Research Station. Mars Society, n.d. Web. 23 Jan. 2017.
+
+<!-- b000368 | references | pages [24] -->
+[2] Agriculture and Consumer Protection. ”Roots, Tubers, Plantains and Bananas in Human
+
+<!-- b000369 | references | pages [24] -->
+Nutrition.” Roots, Tubers, Plantains and Bananas in Human Nutrition - Nutritive Value.
+
+<!-- b000370 | references | pages [24] -->
+Food and Agriculture Organization of the United Nations, n.d. Web. 23 Jan. 2017.
+
+<!-- b000371 | references | pages [24] -->
+[3] Barro, Robert and Jong-Wha Lee, 2013, ”A New Data Set of Educational Attainment in
+
+<!-- b000372 | references | pages [24] -->
+the World, 1950-2010.” Journal of Development Economics, vol 104, pp.184-198.
+
+<!-- b000373 | references | pages [24] -->
+[4] Bish, Joseph J. ”Population Growth in Africa: Grasping the Scale of the Challenge.” The
+
+<!-- b000374 | references | pages [24] -->
+Guardian. Guardian News and Media, 11 Jan. 2016. Web. 23 Jan. 2017.
+
+<!-- b000375 | references | pages [24] -->
+[5] Brachmann, Steve. ”NASA Is Seeking Answers for Growing Plants, Constructing Buildings
+
+<!-- b000376 | references | pages [24] -->
+on Mars.” IPWatchdog. IPWatchdog, Inc., 04 Nov. 2015. Web. 23 Jan. 2017.
+
+<!-- b000377 | references | pages [24] -->
+[6] Bradford, Jason. ”One Acre Feeds a Person.” Farmland LP. Vital Farmland Holdings, 13
+
+<!-- b000378 | references | pages [24] -->
+Jan. 2012. Web. 23 Jan. 2017.
+
+<!-- b000379 | references | pages [24] -->
+[7] ”Country Comparison - Distribution of Family Income.” Central Intelligence Agency. Cen-
+
+<!-- b000380 | references | pages [24] -->
+tral Intelligence Agency, n.d. Web. 23 Jan. 2017.
+
+<!-- b000381 | references | pages [24] -->
+[8] Daily Mail Reporter. ”Pull the Other One: Women Call in Sick More Often, but Men Are
+
+<!-- b000382 | references | pages [24] -->
+More Likely to Skip Work as Soon as They Start Feeling Ill.” Daily Mail Online. Associated
+
+<!-- b000383 | references | pages [24] -->
+Newspapers, 25 May 2011. Web. 23 Jan. 2017.
+
+<!-- b000384 | references | pages [24] -->
+[9] ”Education Expenditures by Country.” The Condition of Education. National Cewnter for
+
+<!-- b000385 | references | pages [24] -->
+Education Statistics, May 2016. Web. 23 Jan. 2017.
+
+<!-- b000386 | references | pages [24] -->
+[10] ”Faculty Teaching Load.” Grambling State University - Academics. Grambling State Uni-
+
+<!-- b000387 | references | pages [24] -->
+versity, n.d. Web. 23 Jan. 2017.
+
+<!-- b000388 | references | pages [24] -->
+[11] ”GDP per Capita (current US$).” Data World Bank. Data World Bank, n.d. Web. 23 Jan.
+
+<!-- b000389 | references | pages [24] -->
+2017.
+
+<!-- b000390 | references | pages [24] -->
+[12] Gewurz, Danielle. ”April 2012 Values Survey.” Pew Research Center for the People and
+
+<!-- b000391 | references | pages [24] -->
+the Press. N.p., 15 Apr. 2012. Web. 23 Jan. 2017.
+
+<!-- b000392 | references | pages [24] -->
+[13] Grayson, Wayne. ”AI, Robotics Expected to Claim Nearly 500,000 Construction Jobs by
+
+<!-- b000393 | references | pages [24] -->
+2020.” Equipment World. Randall Reilly, 25 Jan. 2016. Web. 23 Jan. 2017.
+
+<!-- b000394 | references | pages [24] -->
+[14] ”Health Resources - Health Spending - OECD Data.” OECD Data. OECD, 2015. Web.
+
+<!-- b000395 | references | pages [24] -->
+23 Jan. 2017.
+
+<!-- b000396 | references | pages [24] -->
+[15] Leij, Marco Juri Van Der, and Sebastian I. Buhai. ”A Social Network Analysis of Occupa-
+
+<!-- b000397 | references | pages [24] -->
+tional Segregation.” SSRN Electronic Journal (n.d.): n. pag. Sebastian Buhai. Oct. 2014.
+
+<!-- b000398 | references | pages [24] -->
+Web. 23 Jan. 2017.
+
+<!-- b000399 | references | pages [24] -->
+[16] ”List of Countries by Research and Development Spending.” Wikipedia. Wikimedia Foun-
+
+<!-- b000400 | references | pages [24] -->
+dation, n.d. Web. 23 Jan. 2017.
+
+<!-- b000401 | references | pages [24] -->
+[17] Lunney, Kellie. ”Public-Private Sector Pay Gap Remains at 35 Percent.” Government
+
+<!-- b000402 | references | pages [24] -->
+Executive. National Journal Group, n.d. Web. 23 Jan. 2017.
+
+<!-- b000403 | furniture | pages [25] -->
+Team # 72283
+
+<!-- b000404 | furniture | pages [25] -->
+Page 24 of 24
+
+<!-- b000405 | references | pages [25] -->
+[18] Messier, Doug. ”PISCES Embarks on Lunar Concrete Development Project.” Parabolic
+
+<!-- b000406 | references | pages [25] -->
+Arc. Parabolic Arc, 31 May 2014. Web. 23 Jan. 2017.
+
+<!-- b000407 | references | pages [25] -->
+[19] National Center for Disease Statistics. Birth Rates 2015. 29 Sep. 2015. Raw data. National
+
+<!-- b000408 | references | pages [25] -->
+Vitals Statistics System, Atlanta, GA.
+
+<!-- b000409 | references | pages [25] -->
+[20] National Center for Disease Statistics. Death Rates by 10-Year Age Groups: United States
+
+<!-- b000410 | references | pages [25] -->
+and Each State, 1999-2007. 10 Feb. 2012. Raw data. National Vitals Statistics System,
+
+<!-- b000411 | references | pages [25] -->
+Atlanta, GA.
+
+<!-- b000412 | references | pages [25] -->
+[21] ”New York City Department of Sanitation.” Wikipedia. Wikimedia Foundation, n.d. Web.
+
+<!-- b000413 | references | pages [25] -->
+23 Jan. 2017.
+
+<!-- b000414 | references | pages [25] -->
+[22] Pingali, Prabhu L., and Robert E. Evenson. ”Farm Rights.” Handbook of Agricultural
+
+<!-- b000415 | references | pages [25] -->
+Economics. Amsterdam: Elsevier, 2010. N. pag. Print.
+
+<!-- b000416 | references | pages [25] -->
+[23] ”Quality of Life Indicators - Education.” Eurostat: Statistics Explained. N.p., n.d. Web.
+
+<!-- b000417 | references | pages [25] -->
+23 Jan. 2017.
+
+<!-- b000418 | references | pages [25] -->
+[24] Reaves, Brian A. ”Local Police Departments, 2013: Personnel, Policies, And Practices.”
+
+<!-- b000419 | references | pages [25] -->
+Bureau of Justice Statistics. Bureau of Justice Statistics (BJS), 14 May 2015. Web. 23 Jan.
+
+<!-- b000420 | references | pages [25] -->
+2017.
+
+<!-- b000421 | references | pages [25] -->
+[25] Redd, Nola Taylor. ”How Long Does It Take to Get to Mars?” Space.com. Purch, 13 Feb.
+
+<!-- b000422 | references | pages [25] -->
+2014. Web. 23 Jan. 2017.
+
+<!-- b000423 | references | pages [25] -->
+[26] Renoe, Je↵. ”Get Up and Grow: Part One in a Series on Farming in Extreme Environ-
+
+<!-- b000424 | references | pages [25] -->
+ments.” Dickson. Dickson, 27 Oct. 2016. Web. 23 Jan. 2017.
+
+<!-- b000425 | references | pages [25] -->
+[27] S. C. ”One Billion Workers.” The Economist. The Economist Newspaper, 23 Jan. 2012.
+
+<!-- b000426 | references | pages [25] -->
+Web. 23 Jan. 2017.
+
+<!-- b000427 | references | pages [25] -->
+[28] Smith, Je↵rey A., Miller McPherson, and Lynn Smith-Lovin. ”Social Distance in the
+
+<!-- b000428 | references | pages [25] -->
+United States: Sex, Race, Religion, Age, and Education Homophily among Conﬁdants,
+
+<!-- b000429 | references | pages [25] -->
+1985 to 2004.” DigitalCommons@University of Nebraska - Lincoln. University of Nebraska,
+
+<!-- b000430 | references | pages [25] -->
+24 Apr. 2014. Web.
+
+<!-- b000431 | references | pages [25] -->
+[29] Starr, Michelle. ”Leaf on Mars: Can NASA Grow a Garden on the Red Planet?” CNET.
+
+<!-- b000432 | references | pages [25] -->
+CNET, 26 Oct. 2015. Web. 23 Jan. 2017.
+
+<!-- b000433 | references | pages [25] -->
+[30] Stearns, Jenna. ”Estimating Marginal Returns to Education.” Encyclopedia of Quality of
+
+<!-- b000434 | references | pages [25] -->
+Life and Well-Being Research (2014): 1631. University of California - Santa Barbara. Web.
+
+<!-- b000435 | references | pages [25] -->
+23 Jan. 2017.
+
+<!-- b000436 | references | pages [25] -->
+[31] ”Travel Abroad In-Depth Report.” New York Times. New York Times, n.d. Web. 23 Jan.
+
+<!-- b000437 | references | pages [25] -->
+2017.
+
+<!-- b000438 | references | pages [25] -->
+[32] U.S. Census Bureau. American Community Survey 2015. 20 Oct. 2016. Raw data. Amer-
+
+<!-- b000439 | references | pages [25] -->
+ican Community Survey Oﬃce, n.p.
+
+<!-- b000440 | references | pages [25] -->
+[33] U.S. Death Rates by Age Group. 2004. Raw data. Data360, n.p.
