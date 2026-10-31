@@ -15,3 +15,12 @@ Restore into a NEW directory (allow enough free disk):
 The tool creates F-MCM/ and E-MCM-text-corpus-work/ beneath that destination. It never overwrites existing files. NTFS compression/hardlink relationships are not restored.
 
 The backup is public at the user's explicit request. Obsolete copies, caches/private runtime and interrupted archives are excluded. This is storage preservation, NOT proof that all source sections are correct or AI-read.
+
+## Exact-byte checkout
+
+On Windows, use a short destination and enable long paths. Example:
+
+`git -c core.autocrlf=false -c core.longpaths=true clone https://github.com/Anonymous87123/MCM-ICM.git X:/mcm-backup`
+
+The generated root `.gitattributes` disables newline conversion for this frozen backup. It is backup metadata, not a modification of the original F: files.
+
