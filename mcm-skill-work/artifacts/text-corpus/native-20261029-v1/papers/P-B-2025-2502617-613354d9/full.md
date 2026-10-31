@@ -1,0 +1,24898 @@
+# P-B-2025-2502617-613354d9
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | furniture | pages [3] -->
+Team # 2502617
+
+<!-- b000002 | furniture | pages [3] -->
+Page 3 of 25
+
+<!-- b000003 | prose | pages [3] -->
+1
+
+<!-- b000004 | heading | pages [3] -->
+Introduction
+
+<!-- b000005 | prose | pages [3] -->
+微信公众号：数学模型
+
+<!-- b000006 | prose | pages [3] -->
+1.1 Problem Background
+
+<!-- b000007 | prose | pages [3] -->
+In recent years, tourism has played an increasingly significant role in driving local economic growth, generating substantial revenue and gradually becoming a pillar industry for both local and global economies[1]. However, with the continuous rise in tourist numbers, issues such as environmental degradation, increased infrastructure costs, and declining resident satisfaction have emerged, posing serious threats to the sustainable development of local tourism. This phenomenon is particularly evident in Juneau, Alaska.
+
+<!-- b000008 | prose | pages [3] -->
+Juneau is renowned for its unique and breathtaking natural landscapes, which include expansive
+
+<!-- b000009 | prose | pages [3] -->
+微信号：MATHmodels
+
+<!-- b000010 | prose | pages [3] -->
+national parks, majestic glaciers, and a 6,640-mile coastline. These attractions draw hundreds of thousands to over a million tourists annually, with the majority arriving via luxury cruise ships. In 2023, the tourism sector brought 1.6 million cruise passengers to Juneau, generating $375 million in economic revenue[2] , alongside nearly 4,000 cruise-related jobs and $18 million in tax revenue[3]. However, the influx of tourists has resulted in traffic congestion, overcrowded tourist sites, and rising hidden costs, such as increased infrastructure costs and the need for environmental remediation. Additionally, the noise from passenger helicopters has significantly disrupted the daily lives of local residents. More concerning is the impact of the surge in tourist numbers on the environment, including rising temperatures that have led to the retreat of the iconic Mendenhall Glacier. The pristine air, clean water, and natural beauty that once defined Juneau’s allure are now being threatened by the ongoing influx of tourists.
+
+<!-- b000011 | caption | pages [3] -->
+Figure 1: Overview of Tourism Industry in Juneau, Alaska
+
+<!-- b000012 | prose | pages [3] -->
+To mitigate the negative impacts of unsustainable tourism growth, the Juneau government has implemented measures such as raising taxes and limiting visitor numbers to regulate tourist flow.
+
+<!-- b000013 | prose | pages [3] -->
+m
+
+<!-- b000014 | prose | pages [3] -->
+m
+
+<!-- b000015 | prose | pages [3] -->
+m
+
+<!-- b000016 | prose | pages [3] -->
+m
+
+<!-- b000017 | prose | pages [3] -->
+m
+
+<!-- b000018 | prose | pages [3] -->
+m
+
+<!-- b000019 | prose | pages [3] -->
+m
+
+<!-- b000020 | prose | pages [3] -->
+m
+
+<!-- b000021 | prose | pages [3] -->
+m
+
+<!-- b000022 | prose | pages [3] -->
+m
+
+<!-- b000023 | prose | pages [3] -->
+m
+
+<!-- b000024 | prose | pages [3] -->
+m
+
+<!-- b000025 | prose | pages [3] -->
+m
+
+<!-- b000026 | prose | pages [3] -->
+m
+
+<!-- b000027 | prose | pages [3] -->
+m
+
+<!-- b000028 | prose | pages [3] -->
+m
+
+<!-- b000029 | prose | pages [3] -->
+m
+
+<!-- b000030 | prose | pages [3] -->
+m
+
+<!-- b000031 | prose | pages [3] -->
+m
+
+<!-- b000032 | prose | pages [3] -->
+m
+
+<!-- b000033 | prose | pages [3] -->
+m
+
+<!-- b000034 | prose | pages [3] -->
+m
+
+<!-- b000035 | prose | pages [3] -->
+m
+
+<!-- b000036 | prose | pages [3] -->
+m
+
+<!-- b000037 | prose | pages [3] -->
+m
+
+<!-- b000038 | prose | pages [3] -->
+m
+
+<!-- b000039 | prose | pages [3] -->
+m
+
+<!-- b000040 | prose | pages [3] -->
+m
+
+<!-- b000041 | prose | pages [3] -->
+m
+
+<!-- b000042 | prose | pages [3] -->
+m
+
+<!-- b000043 | prose | pages [3] -->
+m
+
+<!-- b000044 | prose | pages [3] -->
+m
+
+<!-- b000045 | prose | pages [3] -->
+m
+
+<!-- b000046 | prose | pages [3] -->
+m
+
+<!-- b000047 | prose | pages [3] -->
+m
+
+<!-- b000048 | prose | pages [3] -->
+m
+
+<!-- b000049 | prose | pages [3] -->
+m
+
+<!-- b000050 | prose | pages [3] -->
+m
+
+<!-- b000051 | prose | pages [3] -->
+m
+
+<!-- b000052 | prose | pages [3] -->
+m
+
+<!-- b000053 | prose | pages [3] -->
+m
+
+<!-- b000054 | prose | pages [3] -->
+m
+
+<!-- b000055 | prose | pages [3] -->
+m
+
+<!-- b000056 | prose | pages [3] -->
+m
+
+<!-- b000057 | prose | pages [3] -->
+m
+
+<!-- b000058 | prose | pages [3] -->
+m
+
+<!-- b000059 | prose | pages [3] -->
+m
+
+<!-- b000060 | prose | pages [3] -->
+m
+
+<!-- b000061 | prose | pages [3] -->
+m
+
+<!-- b000062 | prose | pages [3] -->
+m
+
+<!-- b000063 | prose | pages [3] -->
+m
+
+<!-- b000064 | prose | pages [3] -->
+m
+
+<!-- b000065 | prose | pages [3] -->
+m
+
+<!-- b000066 | prose | pages [3] -->
+m
+
+<!-- b000067 | prose | pages [3] -->
+m
+
+<!-- b000068 | prose | pages [3] -->
+m
+
+<!-- b000069 | prose | pages [3] -->
+m
+
+<!-- b000070 | prose | pages [3] -->
+m
+
+<!-- b000071 | prose | pages [3] -->
+m
+
+<!-- b000072 | prose | pages [3] -->
+m
+
+<!-- b000073 | prose | pages [3] -->
+m
+
+<!-- b000074 | prose | pages [3] -->
+m
+
+<!-- b000075 | prose | pages [3] -->
+m
+
+<!-- b000076 | prose | pages [3] -->
+m
+
+<!-- b000077 | prose | pages [3] -->
+m
+
+<!-- b000078 | prose | pages [3] -->
+m
+
+<!-- b000079 | prose | pages [3] -->
+m
+
+<!-- b000080 | prose | pages [3] -->
+m
+
+<!-- b000081 | prose | pages [3] -->
+m
+
+<!-- b000082 | prose | pages [3] -->
+m
+
+<!-- b000083 | prose | pages [3] -->
+m
+
+<!-- b000084 | prose | pages [3] -->
+m
+
+<!-- b000085 | prose | pages [3] -->
+m
+
+<!-- b000086 | prose | pages [3] -->
+m
+
+<!-- b000087 | prose | pages [3] -->
+m
+
+<!-- b000088 | prose | pages [3] -->
+m
+
+<!-- b000089 | prose | pages [3] -->
+m
+
+<!-- b000090 | prose | pages [3] -->
+m
+
+<!-- b000091 | prose | pages [3] -->
+m
+
+<!-- b000092 | prose | pages [3] -->
+m
+
+<!-- b000093 | prose | pages [3] -->
+m
+
+<!-- b000094 | prose | pages [3] -->
+m
+
+<!-- b000095 | prose | pages [3] -->
+m
+
+<!-- b000096 | prose | pages [3] -->
+m
+
+<!-- b000097 | prose | pages [3] -->
+m
+
+<!-- b000098 | prose | pages [3] -->
+m
+
+<!-- b000099 | prose | pages [3] -->
+m
+
+<!-- b000100 | prose | pages [3] -->
+m
+
+<!-- b000101 | prose | pages [3] -->
+m
+
+<!-- b000102 | prose | pages [3] -->
+m
+
+<!-- b000103 | prose | pages [3] -->
+m
+
+<!-- b000104 | prose | pages [3] -->
+m
+
+<!-- b000105 | prose | pages [3] -->
+m
+
+<!-- b000106 | prose | pages [3] -->
+m
+
+<!-- b000107 | prose | pages [3] -->
+m
+
+<!-- b000108 | prose | pages [3] -->
+m
+
+<!-- b000109 | prose | pages [3] -->
+m
+
+<!-- b000110 | prose | pages [3] -->
+m
+
+<!-- b000111 | prose | pages [3] -->
+m
+
+<!-- b000112 | prose | pages [3] -->
+m
+
+<!-- b000113 | prose | pages [3] -->
+m
+
+<!-- b000114 | prose | pages [3] -->
+m
+
+<!-- b000115 | prose | pages [3] -->
+m
+
+<!-- b000116 | prose | pages [3] -->
+m
+
+<!-- b000117 | prose | pages [3] -->
+m
+
+<!-- b000118 | prose | pages [3] -->
+m
+
+<!-- b000119 | prose | pages [3] -->
+m
+
+<!-- b000120 | prose | pages [3] -->
+m
+
+<!-- b000121 | prose | pages [3] -->
+m
+
+<!-- b000122 | prose | pages [3] -->
+m
+
+<!-- b000123 | prose | pages [3] -->
+m
+
+<!-- b000124 | prose | pages [3] -->
+m
+
+<!-- b000125 | prose | pages [3] -->
+m
+
+<!-- b000126 | prose | pages [3] -->
+m
+
+<!-- b000127 | prose | pages [3] -->
+m
+
+<!-- b000128 | prose | pages [3] -->
+m
+
+<!-- b000129 | prose | pages [3] -->
+m
+
+<!-- b000130 | prose | pages [3] -->
+m
+
+<!-- b000131 | prose | pages [3] -->
+m
+
+<!-- b000132 | prose | pages [3] -->
+m
+
+<!-- b000133 | prose | pages [3] -->
+m
+
+<!-- b000134 | prose | pages [3] -->
+m
+
+<!-- b000135 | prose | pages [3] -->
+m
+
+<!-- b000136 | prose | pages [3] -->
+m
+
+<!-- b000137 | prose | pages [3] -->
+m
+
+<!-- b000138 | prose | pages [3] -->
+m
+
+<!-- b000139 | prose | pages [3] -->
+m
+
+<!-- b000140 | prose | pages [3] -->
+m
+
+<!-- b000141 | prose | pages [3] -->
+m
+
+<!-- b000142 | prose | pages [3] -->
+m
+
+<!-- b000143 | prose | pages [3] -->
+m
+
+<!-- b000144 | prose | pages [3] -->
+m
+
+<!-- b000145 | prose | pages [3] -->
+m
+
+<!-- b000146 | prose | pages [3] -->
+m
+
+<!-- b000147 | prose | pages [3] -->
+m
+
+<!-- b000148 | prose | pages [3] -->
+m
+
+<!-- b000149 | prose | pages [3] -->
+m
+
+<!-- b000150 | prose | pages [3] -->
+m
+
+<!-- b000151 | prose | pages [3] -->
+m
+
+<!-- b000152 | prose | pages [3] -->
+m
+
+<!-- b000153 | prose | pages [3] -->
+m
+
+<!-- b000154 | prose | pages [3] -->
+m
+
+<!-- b000155 | prose | pages [3] -->
+m
+
+<!-- b000156 | prose | pages [3] -->
+m
+
+<!-- b000157 | prose | pages [3] -->
+m
+
+<!-- b000158 | prose | pages [3] -->
+m
+
+<!-- b000159 | prose | pages [3] -->
+m
+
+<!-- b000160 | prose | pages [3] -->
+m
+
+<!-- b000161 | prose | pages [3] -->
+m
+
+<!-- b000162 | prose | pages [3] -->
+m
+
+<!-- b000163 | prose | pages [3] -->
+m
+
+<!-- b000164 | prose | pages [3] -->
+m
+
+<!-- b000165 | prose | pages [3] -->
+m
+
+<!-- b000166 | prose | pages [3] -->
+m
+
+<!-- b000167 | prose | pages [3] -->
+m
+
+<!-- b000168 | prose | pages [3] -->
+m
+
+<!-- b000169 | prose | pages [3] -->
+m
+
+<!-- b000170 | prose | pages [3] -->
+m
+
+<!-- b000171 | prose | pages [3] -->
+m
+
+<!-- b000172 | prose | pages [3] -->
+m
+
+<!-- b000173 | prose | pages [3] -->
+m
+
+<!-- b000174 | prose | pages [3] -->
+m
+
+<!-- b000175 | prose | pages [3] -->
+m
+
+<!-- b000176 | prose | pages [3] -->
+m
+
+<!-- b000177 | prose | pages [3] -->
+m
+
+<!-- b000178 | prose | pages [3] -->
+m
+
+<!-- b000179 | prose | pages [3] -->
+m
+
+<!-- b000180 | prose | pages [3] -->
+m
+
+<!-- b000181 | prose | pages [3] -->
+m
+
+<!-- b000182 | prose | pages [3] -->
+m
+
+<!-- b000183 | prose | pages [3] -->
+m
+
+<!-- b000184 | prose | pages [3] -->
+m
+
+<!-- b000185 | prose | pages [3] -->
+m
+
+<!-- b000186 | prose | pages [3] -->
+m
+
+<!-- b000187 | prose | pages [3] -->
+m
+
+<!-- b000188 | prose | pages [3] -->
+m
+
+<!-- b000189 | prose | pages [3] -->
+m
+
+<!-- b000190 | prose | pages [3] -->
+m
+
+<!-- b000191 | prose | pages [3] -->
+m
+
+<!-- b000192 | prose | pages [3] -->
+m
+
+<!-- b000193 | prose | pages [3] -->
+m
+
+<!-- b000194 | prose | pages [3] -->
+m
+
+<!-- b000195 | prose | pages [3] -->
+m
+
+<!-- b000196 | prose | pages [3] -->
+m
+
+<!-- b000197 | prose | pages [3] -->
+m
+
+<!-- b000198 | prose | pages [3] -->
+m
+
+<!-- b000199 | prose | pages [3] -->
+m
+
+<!-- b000200 | prose | pages [3] -->
+m
+
+<!-- b000201 | prose | pages [3] -->
+m
+
+<!-- b000202 | prose | pages [3] -->
+m
+
+<!-- b000203 | prose | pages [3] -->
+m
+
+<!-- b000204 | prose | pages [3] -->
+m
+
+<!-- b000205 | prose | pages [3] -->
+m
+
+<!-- b000206 | prose | pages [3] -->
+m
+
+<!-- b000207 | prose | pages [3] -->
+m
+
+<!-- b000208 | prose | pages [3] -->
+m
+
+<!-- b000209 | prose | pages [3] -->
+m
+
+<!-- b000210 | prose | pages [3] -->
+m
+
+<!-- b000211 | prose | pages [3] -->
+m
+
+<!-- b000212 | prose | pages [3] -->
+m
+
+<!-- b000213 | prose | pages [3] -->
+m
+
+<!-- b000214 | prose | pages [3] -->
+m
+
+<!-- b000215 | prose | pages [3] -->
+m
+
+<!-- b000216 | prose | pages [3] -->
+m
+
+<!-- b000217 | prose | pages [3] -->
+m
+
+<!-- b000218 | prose | pages [3] -->
+m
+
+<!-- b000219 | prose | pages [3] -->
+m
+
+<!-- b000220 | prose | pages [3] -->
+m
+
+<!-- b000221 | prose | pages [3] -->
+m
+
+<!-- b000222 | prose | pages [3] -->
+m
+
+<!-- b000223 | prose | pages [3] -->
+m
+
+<!-- b000224 | prose | pages [3] -->
+m
+
+<!-- b000225 | prose | pages [3] -->
+m
+
+<!-- b000226 | prose | pages [3] -->
+m
+
+<!-- b000227 | prose | pages [3] -->
+m
+
+<!-- b000228 | prose | pages [3] -->
+m
+
+<!-- b000229 | prose | pages [3] -->
+m
+
+<!-- b000230 | prose | pages [3] -->
+m
+
+<!-- b000231 | prose | pages [3] -->
+m
+
+<!-- b000232 | prose | pages [3] -->
+m
+
+<!-- b000233 | prose | pages [3] -->
+m
+
+<!-- b000234 | prose | pages [3] -->
+m
+
+<!-- b000235 | prose | pages [3] -->
+m
+
+<!-- b000236 | prose | pages [3] -->
+m
+
+<!-- b000237 | prose | pages [3] -->
+m
+
+<!-- b000238 | prose | pages [3] -->
+m
+
+<!-- b000239 | prose | pages [3] -->
+m
+
+<!-- b000240 | prose | pages [3] -->
+m
+
+<!-- b000241 | prose | pages [3] -->
+m
+
+<!-- b000242 | prose | pages [3] -->
+m
+
+<!-- b000243 | prose | pages [3] -->
+m
+
+<!-- b000244 | prose | pages [3] -->
+m
+
+<!-- b000245 | prose | pages [3] -->
+m
+
+<!-- b000246 | prose | pages [3] -->
+m
+
+<!-- b000247 | prose | pages [3] -->
+m
+
+<!-- b000248 | prose | pages [3] -->
+m
+
+<!-- b000249 | prose | pages [3] -->
+m
+
+<!-- b000250 | prose | pages [3] -->
+m
+
+<!-- b000251 | prose | pages [3] -->
+m
+
+<!-- b000252 | prose | pages [3] -->
+m
+
+<!-- b000253 | prose | pages [3] -->
+m
+
+<!-- b000254 | prose | pages [3] -->
+m
+
+<!-- b000255 | prose | pages [3] -->
+m
+
+<!-- b000256 | prose | pages [3] -->
+m
+
+<!-- b000257 | prose | pages [3] -->
+m
+
+<!-- b000258 | prose | pages [3] -->
+m
+
+<!-- b000259 | prose | pages [3] -->
+m
+
+<!-- b000260 | prose | pages [3] -->
+m
+
+<!-- b000261 | prose | pages [3] -->
+m
+
+<!-- b000262 | prose | pages [3] -->
+m
+
+<!-- b000263 | prose | pages [3] -->
+m
+
+<!-- b000264 | prose | pages [3] -->
+m
+
+<!-- b000265 | prose | pages [3] -->
+m
+
+<!-- b000266 | prose | pages [3] -->
+m
+
+<!-- b000267 | prose | pages [3] -->
+m
+
+<!-- b000268 | prose | pages [3] -->
+m
+
+<!-- b000269 | prose | pages [3] -->
+m
+
+<!-- b000270 | prose | pages [3] -->
+m
+
+<!-- b000271 | prose | pages [3] -->
+m
+
+<!-- b000272 | prose | pages [3] -->
+m
+
+<!-- b000273 | prose | pages [3] -->
+m
+
+<!-- b000274 | prose | pages [3] -->
+m
+
+<!-- b000275 | prose | pages [3] -->
+m
+
+<!-- b000276 | prose | pages [3] -->
+m
+
+<!-- b000277 | prose | pages [3] -->
+m
+
+<!-- b000278 | prose | pages [3] -->
+m
+
+<!-- b000279 | prose | pages [3] -->
+m
+
+<!-- b000280 | prose | pages [3] -->
+m
+
+<!-- b000281 | prose | pages [3] -->
+m
+
+<!-- b000282 | prose | pages [3] -->
+m
+
+<!-- b000283 | prose | pages [3] -->
+m
+
+<!-- b000284 | prose | pages [3] -->
+m
+
+<!-- b000285 | prose | pages [3] -->
+m
+
+<!-- b000286 | prose | pages [3] -->
+m
+
+<!-- b000287 | prose | pages [3] -->
+m
+
+<!-- b000288 | prose | pages [3] -->
+m
+
+<!-- b000289 | prose | pages [3] -->
+m
+
+<!-- b000290 | prose | pages [3] -->
+m
+
+<!-- b000291 | prose | pages [3] -->
+m
+
+<!-- b000292 | prose | pages [3] -->
+m
+
+<!-- b000293 | prose | pages [3] -->
+m
+
+<!-- b000294 | prose | pages [3] -->
+m
+
+<!-- b000295 | prose | pages [3] -->
+m
+
+<!-- b000296 | prose | pages [3] -->
+m
+
+<!-- b000297 | furniture | pages [3] -->
+m
+
+<!-- b000298 | furniture | pages [3] -->
+m
+
+<!-- b000299 | furniture | pages [3] -->
+m
+
+<!-- b000300 | furniture | pages [3] -->
+m
+
+<!-- b000301 | furniture | pages [3] -->
+m
+
+<!-- b000302 | furniture | pages [3] -->
+m
+
+<!-- b000303 | furniture | pages [3] -->
+m
+
+<!-- b000304 | furniture | pages [3] -->
+m
+
+<!-- b000305 | furniture | pages [3] -->
+m
+
+<!-- b000306 | furniture | pages [3] -->
+m
+
+<!-- b000307 | furniture | pages [3] -->
+m
+
+<!-- b000308 | furniture | pages [3] -->
+m
+
+<!-- b000309 | furniture | pages [3] -->
+m
+
+<!-- b000310 | furniture | pages [3] -->
+m
+
+<!-- b000311 | furniture | pages [3] -->
+m
+
+<!-- b000312 | furniture | pages [3] -->
+m
+
+<!-- b000313 | furniture | pages [3] -->
+m
+
+<!-- b000314 | furniture | pages [3] -->
+m
+
+<!-- b000315 | furniture | pages [3] -->
+m
+
+<!-- b000316 | furniture | pages [3] -->
+m
+
+<!-- b000317 | furniture | pages [3] -->
+m
+
+<!-- b000318 | furniture | pages [3] -->
+m
+
+<!-- b000319 | furniture | pages [3] -->
+m
+
+<!-- b000320 | furniture | pages [3] -->
+m
+
+<!-- b000321 | furniture | pages [3] -->
+m
+
+<!-- b000322 | furniture | pages [3] -->
+m
+
+<!-- b000323 | furniture | pages [3] -->
+m
+
+<!-- b000324 | furniture | pages [3] -->
+m
+
+<!-- b000325 | furniture | pages [3] -->
+m
+
+<!-- b000326 | furniture | pages [3] -->
+m
+
+<!-- b000327 | furniture | pages [3] -->
+m
+
+<!-- b000328 | furniture | pages [3] -->
+m
+
+<!-- b000329 | furniture | pages [3] -->
+m
+
+<!-- b000330 | furniture | pages [3] -->
+m
+
+<!-- b000331 | furniture | pages [3] -->
+m
+
+<!-- b000332 | furniture | pages [3] -->
+m
+
+<!-- b000333 | furniture | pages [3] -->
+m
+
+<!-- b000334 | furniture | pages [3] -->
+m
+
+<!-- b000335 | furniture | pages [3] -->
+m
+
+<!-- b000336 | furniture | pages [3] -->
+m
+
+<!-- b000337 | furniture | pages [3] -->
+m
+
+<!-- b000338 | furniture | pages [3] -->
+m
+
+<!-- b000339 | furniture | pages [3] -->
+m
+
+<!-- b000340 | furniture | pages [3] -->
+m
+
+<!-- b000341 | furniture | pages [3] -->
+m
+
+<!-- b000342 | furniture | pages [3] -->
+m
+
+<!-- b000343 | furniture | pages [3] -->
+m
+
+<!-- b000344 | furniture | pages [3] -->
+m
+
+<!-- b000345 | furniture | pages [3] -->
+m
+
+<!-- b000346 | furniture | pages [3] -->
+m
+
+<!-- b000347 | furniture | pages [3] -->
+m
+
+<!-- b000348 | furniture | pages [3] -->
+m
+
+<!-- b000349 | furniture | pages [3] -->
+m
+
+<!-- b000350 | furniture | pages [3] -->
+m
+
+<!-- b000351 | furniture | pages [3] -->
+m
+
+<!-- b000352 | furniture | pages [3] -->
+m
+
+<!-- b000353 | furniture | pages [3] -->
+m
+
+<!-- b000354 | furniture | pages [3] -->
+m
+
+<!-- b000355 | furniture | pages [3] -->
+m
+
+<!-- b000356 | furniture | pages [3] -->
+m
+
+<!-- b000357 | furniture | pages [3] -->
+m
+
+<!-- b000358 | furniture | pages [3] -->
+m
+
+<!-- b000359 | furniture | pages [3] -->
+m
+
+<!-- b000360 | furniture | pages [3] -->
+m
+
+<!-- b000361 | furniture | pages [3] -->
+m
+
+<!-- b000362 | furniture | pages [3] -->
+m
+
+<!-- b000363 | furniture | pages [3] -->
+m
+
+<!-- b000364 | furniture | pages [3] -->
+m
+
+<!-- b000365 | furniture | pages [3] -->
+m
+
+<!-- b000366 | furniture | pages [3] -->
+m
+
+<!-- b000367 | furniture | pages [3] -->
+m
+
+<!-- b000368 | furniture | pages [3] -->
+m
+
+<!-- b000369 | furniture | pages [3] -->
+m
+
+<!-- b000370 | furniture | pages [3] -->
+m
+
+<!-- b000371 | furniture | pages [3] -->
+m
+
+<!-- b000372 | furniture | pages [3] -->
+m
+
+<!-- b000373 | furniture | pages [3] -->
+m
+
+<!-- b000374 | furniture | pages [3] -->
+m
+
+<!-- b000375 | furniture | pages [3] -->
+m
+
+<!-- b000376 | furniture | pages [3] -->
+m
+
+<!-- b000377 | furniture | pages [3] -->
+m
+
+<!-- b000378 | furniture | pages [3] -->
+m
+
+<!-- b000379 | furniture | pages [3] -->
+m
+
+<!-- b000380 | furniture | pages [3] -->
+m
+
+<!-- b000381 | furniture | pages [3] -->
+m
+
+<!-- b000382 | furniture | pages [3] -->
+m
+
+<!-- b000383 | furniture | pages [3] -->
+m
+
+<!-- b000384 | furniture | pages [3] -->
+m
+
+<!-- b000385 | furniture | pages [3] -->
+m
+
+<!-- b000386 | furniture | pages [3] -->
+m
+
+<!-- b000387 | furniture | pages [3] -->
+m
+
+<!-- b000388 | furniture | pages [3] -->
+m
+
+<!-- b000389 | furniture | pages [3] -->
+m
+
+<!-- b000390 | furniture | pages [3] -->
+m
+
+<!-- b000391 | furniture | pages [3] -->
+m
+
+<!-- b000392 | furniture | pages [3] -->
+m
+
+<!-- b000393 | furniture | pages [3] -->
+m
+
+<!-- b000394 | furniture | pages [3] -->
+m
+
+<!-- b000395 | furniture | pages [3] -->
+m
+
+<!-- b000396 | furniture | pages [3] -->
+m
+
+<!-- b000397 | furniture | pages [3] -->
+m
+
+<!-- b000398 | furniture | pages [3] -->
+m
+
+<!-- b000399 | furniture | pages [3] -->
+m
+
+<!-- b000400 | furniture | pages [3] -->
+m
+
+<!-- b000401 | furniture | pages [3] -->
+m
+
+<!-- b000402 | furniture | pages [3] -->
+m
+
+<!-- b000403 | furniture | pages [3] -->
+m
+
+<!-- b000404 | furniture | pages [3] -->
+m
+
+<!-- b000405 | furniture | pages [3] -->
+m
+
+<!-- b000406 | furniture | pages [3] -->
+m
+
+<!-- b000407 | furniture | pages [3] -->
+m
+
+<!-- b000408 | furniture | pages [3] -->
+m
+
+<!-- b000409 | furniture | pages [3] -->
+m
+
+<!-- b000410 | furniture | pages [3] -->
+m
+
+<!-- b000411 | furniture | pages [3] -->
+m
+
+<!-- b000412 | furniture | pages [3] -->
+m
+
+<!-- b000413 | furniture | pages [3] -->
+m
+
+<!-- b000414 | furniture | pages [3] -->
+m
+
+<!-- b000415 | furniture | pages [3] -->
+m
+
+<!-- b000416 | furniture | pages [3] -->
+m
+
+<!-- b000417 | furniture | pages [3] -->
+m
+
+<!-- b000418 | furniture | pages [3] -->
+m
+
+<!-- b000419 | furniture | pages [3] -->
+m
+
+<!-- b000420 | furniture | pages [3] -->
+m
+
+<!-- b000421 | furniture | pages [3] -->
+m
+
+<!-- b000422 | furniture | pages [3] -->
+m
+
+<!-- b000423 | furniture | pages [3] -->
+m
+
+<!-- b000424 | furniture | pages [3] -->
+m
+
+<!-- b000425 | furniture | pages [3] -->
+m
+
+<!-- b000426 | furniture | pages [3] -->
+m
+
+<!-- b000427 | furniture | pages [3] -->
+m
+
+<!-- b000428 | furniture | pages [3] -->
+m
+
+<!-- b000429 | furniture | pages [3] -->
+m
+
+<!-- b000430 | furniture | pages [3] -->
+m
+
+<!-- b000431 | furniture | pages [3] -->
+m
+
+<!-- b000432 | furniture | pages [3] -->
+m
+
+<!-- b000433 | furniture | pages [3] -->
+m
+
+<!-- b000434 | furniture | pages [3] -->
+m
+
+<!-- b000435 | furniture | pages [3] -->
+m
+
+<!-- b000436 | furniture | pages [3] -->
+m
+
+<!-- b000437 | furniture | pages [3] -->
+m
+
+<!-- b000438 | furniture | pages [3] -->
+m
+
+<!-- b000439 | furniture | pages [3] -->
+m
+
+<!-- b000440 | furniture | pages [3] -->
+m
+
+<!-- b000441 | furniture | pages [3] -->
+m
+
+<!-- b000442 | furniture | pages [3] -->
+m
+
+<!-- b000443 | furniture | pages [3] -->
+m
+
+<!-- b000444 | furniture | pages [3] -->
+m
+
+<!-- b000445 | furniture | pages [3] -->
+m
+
+<!-- b000446 | furniture | pages [3] -->
+m
+
+<!-- b000447 | furniture | pages [3] -->
+m
+
+<!-- b000448 | furniture | pages [3] -->
+m
+
+<!-- b000449 | furniture | pages [3] -->
+m
+
+<!-- b000450 | furniture | pages [3] -->
+m
+
+<!-- b000451 | furniture | pages [3] -->
+m
+
+<!-- b000452 | furniture | pages [3] -->
+m
+
+<!-- b000453 | furniture | pages [3] -->
+m
+
+<!-- b000454 | furniture | pages [3] -->
+m
+
+<!-- b000455 | furniture | pages [3] -->
+m
+
+<!-- b000456 | furniture | pages [3] -->
+m
+
+<!-- b000457 | furniture | pages [3] -->
+m
+
+<!-- b000458 | furniture | pages [3] -->
+m
+
+<!-- b000459 | furniture | pages [3] -->
+m
+
+<!-- b000460 | furniture | pages [3] -->
+m
+
+<!-- b000461 | furniture | pages [3] -->
+m
+
+<!-- b000462 | furniture | pages [3] -->
+m
+
+<!-- b000463 | furniture | pages [3] -->
+m
+
+<!-- b000464 | furniture | pages [3] -->
+m
+
+<!-- b000465 | furniture | pages [3] -->
+m
+
+<!-- b000466 | furniture | pages [3] -->
+m
+
+<!-- b000467 | furniture | pages [3] -->
+m
+
+<!-- b000468 | furniture | pages [3] -->
+m
+
+<!-- b000469 | furniture | pages [3] -->
+m
+
+<!-- b000470 | furniture | pages [3] -->
+m
+
+<!-- b000471 | furniture | pages [3] -->
+m
+
+<!-- b000472 | furniture | pages [3] -->
+m
+
+<!-- b000473 | furniture | pages [3] -->
+m
+
+<!-- b000474 | furniture | pages [3] -->
+m
+
+<!-- b000475 | furniture | pages [3] -->
+m
+
+<!-- b000476 | furniture | pages [3] -->
+m
+
+<!-- b000477 | furniture | pages [3] -->
+m
+
+<!-- b000478 | furniture | pages [3] -->
+m
+
+<!-- b000479 | furniture | pages [3] -->
+m
+
+<!-- b000480 | furniture | pages [3] -->
+m
+
+<!-- b000481 | furniture | pages [3] -->
+m
+
+<!-- b000482 | furniture | pages [3] -->
+m
+
+<!-- b000483 | furniture | pages [3] -->
+m
+
+<!-- b000484 | furniture | pages [3] -->
+m
+
+<!-- b000485 | furniture | pages [3] -->
+m
+
+<!-- b000486 | furniture | pages [3] -->
+m
+
+<!-- b000487 | furniture | pages [3] -->
+m
+
+<!-- b000488 | furniture | pages [3] -->
+m
+
+<!-- b000489 | furniture | pages [3] -->
+m
+
+<!-- b000490 | furniture | pages [3] -->
+m
+
+<!-- b000491 | furniture | pages [3] -->
+m
+
+<!-- b000492 | furniture | pages [3] -->
+m
+
+<!-- b000493 | furniture | pages [3] -->
+m
+
+<!-- b000494 | furniture | pages [3] -->
+m
+
+<!-- b000495 | furniture | pages [3] -->
+m
+
+<!-- b000496 | furniture | pages [3] -->
+m
+
+<!-- b000497 | furniture | pages [3] -->
+m
+
+<!-- b000498 | furniture | pages [3] -->
+m
+
+<!-- b000499 | furniture | pages [3] -->
+m
+
+<!-- b000500 | furniture | pages [3] -->
+m
+
+<!-- b000501 | furniture | pages [3] -->
+m
+
+<!-- b000502 | furniture | pages [3] -->
+m
+
+<!-- b000503 | furniture | pages [3] -->
+m
+
+<!-- b000504 | furniture | pages [3] -->
+m
+
+<!-- b000505 | furniture | pages [3] -->
+m
+
+<!-- b000506 | furniture | pages [3] -->
+m
+
+<!-- b000507 | furniture | pages [3] -->
+m
+
+<!-- b000508 | furniture | pages [3] -->
+m
+
+<!-- b000509 | furniture | pages [3] -->
+m
+
+<!-- b000510 | furniture | pages [3] -->
+m
+
+<!-- b000511 | furniture | pages [3] -->
+m
+
+<!-- b000512 | furniture | pages [3] -->
+m
+
+<!-- b000513 | furniture | pages [3] -->
+m
+
+<!-- b000514 | furniture | pages [3] -->
+m
+
+<!-- b000515 | furniture | pages [3] -->
+m
+
+<!-- b000516 | furniture | pages [3] -->
+m
+
+<!-- b000517 | furniture | pages [3] -->
+m
+
+<!-- b000518 | furniture | pages [3] -->
+m
+
+<!-- b000519 | furniture | pages [3] -->
+m
+
+<!-- b000520 | furniture | pages [3] -->
+m
+
+<!-- b000521 | furniture | pages [3] -->
+m
+
+<!-- b000522 | furniture | pages [3] -->
+m
+
+<!-- b000523 | furniture | pages [3] -->
+m
+
+<!-- b000524 | furniture | pages [3] -->
+m
+
+<!-- b000525 | furniture | pages [3] -->
+m
+
+<!-- b000526 | furniture | pages [3] -->
+m
+
+<!-- b000527 | furniture | pages [3] -->
+m
+
+<!-- b000528 | furniture | pages [3] -->
+m
+
+<!-- b000529 | furniture | pages [3] -->
+m
+
+<!-- b000530 | furniture | pages [3] -->
+m
+
+<!-- b000531 | furniture | pages [3] -->
+m
+
+<!-- b000532 | furniture | pages [3] -->
+m
+
+<!-- b000533 | furniture | pages [3] -->
+m
+
+<!-- b000534 | furniture | pages [3] -->
+m
+
+<!-- b000535 | furniture | pages [3] -->
+m
+
+<!-- b000536 | furniture | pages [3] -->
+m
+
+<!-- b000537 | furniture | pages [3] -->
+m
+
+<!-- b000538 | furniture | pages [3] -->
+m
+
+<!-- b000539 | furniture | pages [3] -->
+m
+
+<!-- b000540 | furniture | pages [3] -->
+m
+
+<!-- b000541 | furniture | pages [3] -->
+m
+
+<!-- b000542 | furniture | pages [3] -->
+m
+
+<!-- b000543 | furniture | pages [3] -->
+m
+
+<!-- b000544 | furniture | pages [3] -->
+m
+
+<!-- b000545 | furniture | pages [3] -->
+m
+
+<!-- b000546 | furniture | pages [3] -->
+m
+
+<!-- b000547 | furniture | pages [3] -->
+m
+
+<!-- b000548 | furniture | pages [3] -->
+m
+
+<!-- b000549 | furniture | pages [3] -->
+m
+
+<!-- b000550 | furniture | pages [3] -->
+m
+
+<!-- b000551 | furniture | pages [3] -->
+m
+
+<!-- b000552 | furniture | pages [3] -->
+m
+
+<!-- b000553 | furniture | pages [3] -->
+m
+
+<!-- b000554 | furniture | pages [3] -->
+m
+
+<!-- b000555 | furniture | pages [3] -->
+m
+
+<!-- b000556 | furniture | pages [3] -->
+m
+
+<!-- b000557 | furniture | pages [3] -->
+m
+
+<!-- b000558 | furniture | pages [3] -->
+m
+
+<!-- b000559 | furniture | pages [3] -->
+m
+
+<!-- b000560 | furniture | pages [3] -->
+m
+
+<!-- b000561 | furniture | pages [3] -->
+m
+
+<!-- b000562 | furniture | pages [3] -->
+m
+
+<!-- b000563 | furniture | pages [3] -->
+m
+
+<!-- b000564 | furniture | pages [3] -->
+m
+
+<!-- b000565 | furniture | pages [3] -->
+m
+
+<!-- b000566 | furniture | pages [3] -->
+m
+
+<!-- b000567 | furniture | pages [3] -->
+m
+
+<!-- b000568 | furniture | pages [3] -->
+m
+
+<!-- b000569 | furniture | pages [3] -->
+m
+
+<!-- b000570 | furniture | pages [3] -->
+m
+
+<!-- b000571 | furniture | pages [3] -->
+m
+
+<!-- b000572 | furniture | pages [3] -->
+m
+
+<!-- b000573 | furniture | pages [3] -->
+m
+
+<!-- b000574 | furniture | pages [3] -->
+m
+
+<!-- b000575 | furniture | pages [3] -->
+m
+
+<!-- b000576 | furniture | pages [3] -->
+m
+
+<!-- b000577 | furniture | pages [3] -->
+m
+
+<!-- b000578 | furniture | pages [3] -->
+m
+
+<!-- b000579 | furniture | pages [3] -->
+m
+
+<!-- b000580 | furniture | pages [3] -->
+m
+
+<!-- b000581 | furniture | pages [3] -->
+m
+
+<!-- b000582 | furniture | pages [3] -->
+m
+
+<!-- b000583 | furniture | pages [3] -->
+m
+
+<!-- b000584 | furniture | pages [3] -->
+m
+
+<!-- b000585 | furniture | pages [3] -->
+m
+
+<!-- b000586 | furniture | pages [3] -->
+m
+
+<!-- b000587 | furniture | pages [3] -->
+m
+
+<!-- b000588 | furniture | pages [3] -->
+m
+
+<!-- b000589 | furniture | pages [3] -->
+m
+
+<!-- b000590 | furniture | pages [3] -->
+m
+
+<!-- b000591 | furniture | pages [3] -->
+m
+
+<!-- b000592 | furniture | pages [3] -->
+m
+
+<!-- b000593 | furniture | pages [3] -->
+m
+
+<!-- b000594 | furniture | pages [3] -->
+m
+
+<!-- b000595 | furniture | pages [3] -->
+m
+
+<!-- b000596 | furniture | pages [3] -->
+m
+
+<!-- b000597 | furniture | pages [3] -->
+m
+
+<!-- b000598 | furniture | pages [3] -->
+m
+
+<!-- b000599 | furniture | pages [3] -->
+m
+
+<!-- b000600 | furniture | pages [3] -->
+m
+
+<!-- b000601 | furniture | pages [3] -->
+m
+
+<!-- b000602 | furniture | pages [3] -->
+m
+
+<!-- b000603 | furniture | pages [3] -->
+m
+
+<!-- b000604 | furniture | pages [3] -->
+m
+
+<!-- b000605 | furniture | pages [3] -->
+m
+
+<!-- b000606 | furniture | pages [3] -->
+m
+
+<!-- b000607 | furniture | pages [3] -->
+m
+
+<!-- b000608 | furniture | pages [3] -->
+m
+
+<!-- b000609 | furniture | pages [3] -->
+m
+
+<!-- b000610 | furniture | pages [3] -->
+m
+
+<!-- b000611 | furniture | pages [3] -->
+m
+
+<!-- b000612 | furniture | pages [3] -->
+m
+
+<!-- b000613 | furniture | pages [3] -->
+m
+
+<!-- b000614 | furniture | pages [3] -->
+m
+
+<!-- b000615 | furniture | pages [3] -->
+m
+
+<!-- b000616 | furniture | pages [3] -->
+m
+
+<!-- b000617 | furniture | pages [3] -->
+m
+
+<!-- b000618 | furniture | pages [3] -->
+m
+
+<!-- b000619 | furniture | pages [3] -->
+m
+
+<!-- b000620 | furniture | pages [3] -->
+m
+
+<!-- b000621 | furniture | pages [3] -->
+m
+
+<!-- b000622 | furniture | pages [3] -->
+m
+
+<!-- b000623 | furniture | pages [3] -->
+m
+
+<!-- b000624 | furniture | pages [3] -->
+m
+
+<!-- b000625 | furniture | pages [3] -->
+m
+
+<!-- b000626 | furniture | pages [3] -->
+m
+
+<!-- b000627 | furniture | pages [3] -->
+m
+
+<!-- b000628 | furniture | pages [3] -->
+m
+
+<!-- b000629 | furniture | pages [3] -->
+m
+
+<!-- b000630 | furniture | pages [3] -->
+m
+
+<!-- b000631 | furniture | pages [3] -->
+m
+
+<!-- b000632 | furniture | pages [3] -->
+m
+
+<!-- b000633 | furniture | pages [3] -->
+m
+
+<!-- b000634 | furniture | pages [3] -->
+m
+
+<!-- b000635 | furniture | pages [3] -->
+m
+
+<!-- b000636 | furniture | pages [3] -->
+m
+
+<!-- b000637 | furniture | pages [3] -->
+m
+
+<!-- b000638 | furniture | pages [3] -->
+m
+
+<!-- b000639 | furniture | pages [3] -->
+m
+
+<!-- b000640 | furniture | pages [3] -->
+m
+
+<!-- b000641 | furniture | pages [3] -->
+m
+
+<!-- b000642 | furniture | pages [3] -->
+m
+
+<!-- b000643 | furniture | pages [3] -->
+m
+
+<!-- b000644 | furniture | pages [3] -->
+m
+
+<!-- b000645 | furniture | pages [3] -->
+m
+
+<!-- b000646 | furniture | pages [3] -->
+m
+
+<!-- b000647 | furniture | pages [3] -->
+m
+
+<!-- b000648 | furniture | pages [3] -->
+m
+
+<!-- b000649 | furniture | pages [3] -->
+m
+
+<!-- b000650 | furniture | pages [3] -->
+m
+
+<!-- b000651 | furniture | pages [3] -->
+m
+
+<!-- b000652 | furniture | pages [3] -->
+m
+
+<!-- b000653 | furniture | pages [3] -->
+m
+
+<!-- b000654 | furniture | pages [3] -->
+m
+
+<!-- b000655 | furniture | pages [3] -->
+m
+
+<!-- b000656 | furniture | pages [3] -->
+m
+
+<!-- b000657 | furniture | pages [3] -->
+m
+
+<!-- b000658 | furniture | pages [3] -->
+m
+
+<!-- b000659 | furniture | pages [3] -->
+m
+
+<!-- b000660 | furniture | pages [3] -->
+m
+
+<!-- b000661 | furniture | pages [3] -->
+m
+
+<!-- b000662 | furniture | pages [3] -->
+m
+
+<!-- b000663 | furniture | pages [3] -->
+m
+
+<!-- b000664 | furniture | pages [3] -->
+m
+
+<!-- b000665 | furniture | pages [3] -->
+m
+
+<!-- b000666 | furniture | pages [3] -->
+m
+
+<!-- b000667 | furniture | pages [3] -->
+m
+
+<!-- b000668 | furniture | pages [3] -->
+m
+
+<!-- b000669 | furniture | pages [3] -->
+m
+
+<!-- b000670 | furniture | pages [3] -->
+m
+
+<!-- b000671 | furniture | pages [3] -->
+m
+
+<!-- b000672 | furniture | pages [3] -->
+m
+
+<!-- b000673 | furniture | pages [3] -->
+m
+
+<!-- b000674 | furniture | pages [3] -->
+m
+
+<!-- b000675 | furniture | pages [3] -->
+m
+
+<!-- b000676 | furniture | pages [3] -->
+m
+
+<!-- b000677 | furniture | pages [3] -->
+m
+
+<!-- b000678 | furniture | pages [3] -->
+m
+
+<!-- b000679 | furniture | pages [3] -->
+m
+
+<!-- b000680 | furniture | pages [3] -->
+m
+
+<!-- b000681 | furniture | pages [3] -->
+m
+
+<!-- b000682 | furniture | pages [3] -->
+m
+
+<!-- b000683 | furniture | pages [3] -->
+m
+
+<!-- b000684 | furniture | pages [3] -->
+m
+
+<!-- b000685 | furniture | pages [3] -->
+m
+
+<!-- b000686 | furniture | pages [3] -->
+m
+
+<!-- b000687 | furniture | pages [3] -->
+m
+
+<!-- b000688 | furniture | pages [3] -->
+m
+
+<!-- b000689 | furniture | pages [3] -->
+m
+
+<!-- b000690 | furniture | pages [3] -->
+m
+
+<!-- b000691 | furniture | pages [3] -->
+m
+
+<!-- b000692 | furniture | pages [3] -->
+m
+
+<!-- b000693 | furniture | pages [3] -->
+m
+
+<!-- b000694 | furniture | pages [3] -->
+m
+
+<!-- b000695 | furniture | pages [3] -->
+m
+
+<!-- b000696 | furniture | pages [3] -->
+m
+
+<!-- b000697 | furniture | pages [3] -->
+m
+
+<!-- b000698 | furniture | pages [3] -->
+m
+
+<!-- b000699 | furniture | pages [3] -->
+m
+
+<!-- b000700 | furniture | pages [4] -->
+Team # 2502617
+
+<!-- b000701 | furniture | pages [4] -->
+Page 4 of 25
+
+<!-- b000702 | prose | pages [4] -->
+Additionally, it has intensified efforts to promote alternative attractions, such as wildlife viewing, in areas beyond the Mendenhall Glacier. Moving forward, the Juneau government should consider adopting more effective strategies to balance the social and economic benefits of tourism while developing comprehensive management plans. These plans should aim to advance the tourism sector while protecting the natural environment as much as possible, ensuring the long-term sustainability of tourism. This challenge not only affects the long-term sustainability of Juneau’s tourism industry but also represents a common issue faced by tourist cities worldwide.
+
+<!-- b000703 | prose | pages [4] -->
+1.2 Restatement of the Problem
+
+<!-- b000704 | prose | pages [4] -->
+Based on the current situation in Juneau and the information outlined in the problem statement, it is essential to develop a comprehensive sustainable tourism management plan to maximize economic, social, and environmental benefits. Specifically, the plan must address the following three issues:
+
+<!-- b000705 | prose | pages [4] -->
+Problem 1: Develop a sustainable tourism management model tailored to the specific context of Juneau, considering all factors that may infvluence the long-term sustainable tourism industry. These factors include: environmental carrying capacity, both visible and hidden management costs, and local resident satisfaction.
+
+<!-- b000706 | prose | pages [4] -->
+Problem 2: Extend the model to other cities negatively affected by tourism and demonstrate its applicability in these cities. Analyze the impact of urban differences on the selection of key man- agement measures, promote attractions with fewer tourists, and promote sustainable development of local tourism industry.
+
+<!-- b000707 | prose | pages [4] -->
+Problem 3: Based on the model developed in Problem 1, submit a one page memo to the Juneau Tourism Commission, using actual data to illustrate the necessity of developing sustainable tourism and providing feasible tourism management optimization paths and measures for Juneau.
+
+<!-- b000708 | prose | pages [4] -->
+1.3 Literature Review
+
+<!-- b000709 | prose | pages [4] -->
+The development of tourism has contributed to the growth, but at the same time it has also had some impact on the natural environment[4]. Sustainable tourism has become an important topic of academic research[5]. The main indicators of the relevant discussions focus on the environmental, economic and social aspects[6]. In the existing studies, some scholars analyze the environmental benefits of tourism development[7], while Saayam[8] believe that sustainable tourism contributes to long-term social-economic stability, and Whitford et al.[9] discuss the role of sustainable tourism in product development for local residents. In addition, in the analysis of social benefits, scholars have analyzed the role of sustainable tourism in improving the quality of life of the residents[10], and improving the happiness of the residents’ life[11].
+
+<!-- b000710 | prose | pages [4] -->
+In addition, some scholars try the integrated management model of sustainable tourism. Stoica et al.[12] use the methods of benchmarking and SWOT analysis to construct a tourism manage- ment decision model, and Sripateep et al.[13] comprehensively consider the maximization of the interests of tourism stakeholders on the basis of the multi-objective planning model. However, the models that introduce Pareto optimization method into sustainable tourism management model and comprehensively consider the economic, social and environmental tripartite benefits are still few, and more scholars use Pareto optimization method to analyze the maximization of the interests of
+
+<!-- b000711 | prose | pages [4] -->
+关注数学模型
+
+<!-- b000712 | furniture | pages [4] -->
+2
+
+<!-- b000713 | furniture | pages [4] -->
+MATHmodels
+
+<!-- b000714 | furniture | pages [4] -->
+获取更多资讯
+
+<!-- b000715 | furniture | pages [5] -->
+Team # 2502617
+
+<!-- b000716 | furniture | pages [5] -->
+Page 5 of 25
+
+<!-- b000717 | prose | pages [5] -->
+some classes of stakeholders. For example, Ko,YD [14]derived the economic-environmental effect of sustainable tourism development in Seoul through Pareto optimization model, and Wang,XP et al.[15]analyzed the effect of tourism intermediate product price on the Pareto effectiveness of supply chain.In this analysis, we introduce the Pareto optimization method into the multi-objective model, which is innovative and reasonable.
+
+<!-- b000718 | prose | pages [5] -->
+1.4 Our Work
+
+<!-- b000719 | prose | pages [5] -->
+微信公众号：数学模型
+
+<!-- b000720 | prose | pages [5] -->
+微信号：MATHmodels
+
+<!-- b000721 | caption | pages [5] -->
+Figure 2: Our Work
+
+<!-- b000722 | prose | pages [5] -->
+2
+
+<!-- b000723 | heading | pages [5] -->
+Assumptions and Justifications
+
+<!-- b000724 | prose | pages [5] -->
+Assumption1: Demandandexpenditureexhibitincreasingmarginalutility, whilerevenue(including hidden costs) follows decreasing marginal returns.
+
+<!-- b000725 | heading | pages [5] -->
+Justification: This aligns with classical economic models characterizing resource-constrained
+
+<!-- b000726 | prose | pages [5] -->
+benefit-cost curves. Demand and expenditure can be modeled as strictly convex functions with tunable parameters, whereas revenue is fitted via concave functions to reflect diminishing returns.
+
+<!-- b000727 | prose | pages [5] -->
+Assumption 2: Hidden costs (e.g., infrastructure strain, carbon footprint) are monetize in USD.
+
+<!-- b000728 | prose | pages [5] -->
+Justification: This provides dimensional consistency for quantitative analysis. Environmental economics employs shadow pricing for such conversions—for instance, carbon trading market rates or public facility maintenance costs can quantify ecological impacts. Empirical carbon pricing frameworks (e.g., Carbon Border Adjustment Mechanism) validate this assumption’s practicality.
+
+<!-- b000729 | prose | pages [5] -->
+Assumption 3: Tourist spending or policy changes instantaneously affect visitor numbers.
+
+<!-- b000730 | prose | pages [5] -->
+Justification: This assumes a full-information market, simplifying tourism’s inherent time-lag dynamics. While idealistic, it enables static Pareto-optimal equilibrium modeling. Deviations from
+
+<!-- b000731 | furniture | pages [6] -->
+Team # 2502617
+
+<!-- b000732 | furniture | pages [6] -->
+Page 6 of 25
+
+<!-- b000733 | prose | pages [6] -->
+reality are addressable via elasticity coefficients (e.g., price elasticity of demand)
+
+<!-- b000734 | heading | pages [6] -->
+Assumption 4: Parameters are spatiotemporally localized, ignoring external competition, in-
+
+<!-- b000735 | prose | pages [6] -->
+frastructure decay, or seasonal fluctuations.
+
+<!-- b000736 | prose | pages [6] -->
+Justification: Focusing on Juneau’s internal resource allocation efficiency, this supports short- term partial equilibrium analysis. Such simplification suits rapid policy pilot evaluations while acknowledging scope limitations.
+
+<!-- b000737 | prose | pages [6] -->
+3
+
+<!-- b000738 | heading | pages [6] -->
+Notations
+
+<!-- b000739 | caption | pages [6] -->
+Table 1: Variations and Parameters
+
+<!-- b000740 | prose | pages [6] -->
+Description Symbols Unit
+
+<!-- b000741 | prose | pages [6] -->
+Number of Tourists Nt Millions Number of Residents in Juneau Nr Millions Indexes of Decay Elasticity ki(i = 0, 1, 2) -
+
+<!-- b000742 | heading | pages [6] -->
+Economic Notations
+
+<!-- b000743 | prose | pages [6] -->
+Economic benefits E USD Consumption Generated by Tourists Ct USD Economic Revenues of Government CGi USD Economic Cost of Government CGc USD Economic Revenues of Residents CRi USD Infrastructure Costs Ci USD Fixed Expenditure Costs Cfix USD Basic Consumption per Tourist A0 USD Tax Rate t %
+
+<!-- b000744 | heading | pages [6] -->
+Social Notations
+
+<!-- b000745 | prose | pages [6] -->
+Social benefits S USD
+
+<!-- b000746 | prose | pages [6] -->
+Virtual Economic Value Equivalent Cadd USD Generated by Unit of Social Satisfaction
+
+<!-- b000747 | prose | pages [6] -->
+Incremental Cost of Residents’ Living CRc USD Hidden benefits from Social Satisfaction A1 USD Social Satisfaction s - Pressure on the Lives of Local Residents Pl - Congestion Pressure due to Increased Tourist Flow Pf -
+
+<!-- b000748 | heading | pages [6] -->
+Environmental Notations
+
+<!-- b000749 | prose | pages [6] -->
+Environmental benefits Env USD Government Expenditure on Environmental Governance Cenv USD Hidden Costs Arising Caused by Carbon Emissions CCO2 USD Virtual Costs Corresponding to a Unit of CO2 Emissions CperC USD Total CO2 Emissions ECO2 ton Average Carbon Emissions by Each Tourist γ ton Proportion of Tax to Improve the Environment A2 -
+
+<!-- b000750 | prose | pages [6] -->
+关注数学模型
+
+<!-- b000751 | furniture | pages [6] -->
+2
+
+<!-- b000752 | furniture | pages [6] -->
+MATHmodels
+
+<!-- b000753 | furniture | pages [6] -->
+获取更多资讯
+
+<!-- b000754 | furniture | pages [7] -->
+Team # 2502617
+
+<!-- b000755 | furniture | pages [7] -->
+Page 7 of 25
+
+<!-- b000756 | caption | pages [7] -->
+Table 2: Value of Partial Parameters
+
+<!-- b000757 | prose | pages [7] -->
+Symbols Symbols V alue Notes
+
+<!-- b000758 | prose | pages [7] -->
+0.032 from Government Nr
+
+<!-- b000759 | prose | pages [7] -->
+5 from Government t 0.0068 Estimate k0
+
+<!-- b000760 | prose | pages [7] -->
+0.3574 Estimate k1 1.6000 Estimate k2
+
+<!-- b000761 | prose | pages [7] -->
+V alue Notes
+
+<!-- b000762 | prose | pages [7] -->
+from Statistic[16] 0.081 γ
+
+<!-- b000763 | prose | pages [7] -->
+3000 from Government A0 Estimate from Article[17] 5 A1
+
+<!-- b000764 | prose | pages [7] -->
+0.03 from Government A2
+
+<!-- b000765 | prose | pages [7] -->
+微信公众号：数学模型
+
+<!-- b000766 | prose | pages [7] -->
+微信号：MATHmodels
+
+<!-- b000767 | caption | pages [7] -->
+Figure 3: Chart of Current Income and Expenditure
+
+<!-- b000768 | prose | pages [7] -->
+The symbols in Table 1 not mentioned in Table 2 and Figure 3 are all intermediate or decision variations used in model calculation.
+
+<!-- b000769 | heading | pages [7] -->
+Multi-Objective Optimization Model
+
+<!-- b000770 | prose | pages [7] -->
+4
+
+<!-- b000771 | heading | pages [7] -->
+Sub-model I: Cost-benefit Analysis Considering Marginal Effects
+
+<!-- b000772 | prose | pages [7] -->
+4.1
+
+<!-- b000773 | prose | pages [7] -->
+Economic benefits is the first core objective of local tourism development. An increase in the number of tourists not only promotes local economic growth and increases municipal revenues, but also provides more employment opportunities for local residents, thus raising their incomes. In addition, economic efficiency is a key factor in sustainable tourism management strategies. When the economic benefits are too low or the costs do not match the benefits, the local government may seek new economic growth points or even give up the continued development of tourism. Therefore, maximizing economic benefits should be the first objective function in the planning model.
+
+<!-- b000774 | prose | pages [7] -->
+Maximization of economic benefits can be expressed as follows:
+
+<!-- b000775 | prose | pages [7] -->
+(1) max E = CGi −CGc
+
+<!-- b000776 | prose | pages [7] -->
+where CGi represents the visible economic revenues of the local government from the growth in the number of tourists, and CGc is the increase of the local government in the cost of infrastructure operation and maintenance and other public services due to the excessive number of tourists.
+
+<!-- b000777 | prose | pages [7] -->
+m
+
+<!-- b000778 | prose | pages [7] -->
+m
+
+<!-- b000779 | prose | pages [7] -->
+m
+
+<!-- b000780 | prose | pages [7] -->
+m
+
+<!-- b000781 | prose | pages [7] -->
+m
+
+<!-- b000782 | prose | pages [7] -->
+m
+
+<!-- b000783 | prose | pages [7] -->
+m
+
+<!-- b000784 | prose | pages [7] -->
+m
+
+<!-- b000785 | prose | pages [7] -->
+m
+
+<!-- b000786 | prose | pages [7] -->
+m
+
+<!-- b000787 | prose | pages [7] -->
+m
+
+<!-- b000788 | prose | pages [7] -->
+m
+
+<!-- b000789 | prose | pages [7] -->
+m
+
+<!-- b000790 | prose | pages [7] -->
+m
+
+<!-- b000791 | prose | pages [7] -->
+m
+
+<!-- b000792 | prose | pages [7] -->
+m
+
+<!-- b000793 | prose | pages [7] -->
+m
+
+<!-- b000794 | prose | pages [7] -->
+m
+
+<!-- b000795 | prose | pages [7] -->
+m
+
+<!-- b000796 | prose | pages [7] -->
+m
+
+<!-- b000797 | prose | pages [7] -->
+m
+
+<!-- b000798 | prose | pages [7] -->
+m
+
+<!-- b000799 | prose | pages [7] -->
+m
+
+<!-- b000800 | prose | pages [7] -->
+m
+
+<!-- b000801 | prose | pages [7] -->
+m
+
+<!-- b000802 | prose | pages [7] -->
+m
+
+<!-- b000803 | prose | pages [7] -->
+m
+
+<!-- b000804 | prose | pages [7] -->
+m
+
+<!-- b000805 | prose | pages [7] -->
+m
+
+<!-- b000806 | prose | pages [7] -->
+m
+
+<!-- b000807 | prose | pages [7] -->
+m
+
+<!-- b000808 | prose | pages [7] -->
+m
+
+<!-- b000809 | prose | pages [7] -->
+m
+
+<!-- b000810 | prose | pages [7] -->
+m
+
+<!-- b000811 | prose | pages [7] -->
+m
+
+<!-- b000812 | prose | pages [7] -->
+m
+
+<!-- b000813 | prose | pages [7] -->
+m
+
+<!-- b000814 | prose | pages [7] -->
+m
+
+<!-- b000815 | prose | pages [7] -->
+m
+
+<!-- b000816 | prose | pages [7] -->
+m
+
+<!-- b000817 | prose | pages [7] -->
+m
+
+<!-- b000818 | prose | pages [7] -->
+m
+
+<!-- b000819 | prose | pages [7] -->
+m
+
+<!-- b000820 | prose | pages [7] -->
+m
+
+<!-- b000821 | prose | pages [7] -->
+m
+
+<!-- b000822 | prose | pages [7] -->
+m
+
+<!-- b000823 | prose | pages [7] -->
+m
+
+<!-- b000824 | prose | pages [7] -->
+m
+
+<!-- b000825 | prose | pages [7] -->
+m
+
+<!-- b000826 | prose | pages [7] -->
+m
+
+<!-- b000827 | prose | pages [7] -->
+m
+
+<!-- b000828 | prose | pages [7] -->
+m
+
+<!-- b000829 | prose | pages [7] -->
+m
+
+<!-- b000830 | prose | pages [7] -->
+m
+
+<!-- b000831 | prose | pages [7] -->
+m
+
+<!-- b000832 | prose | pages [7] -->
+m
+
+<!-- b000833 | prose | pages [7] -->
+m
+
+<!-- b000834 | prose | pages [7] -->
+m
+
+<!-- b000835 | prose | pages [7] -->
+m
+
+<!-- b000836 | prose | pages [7] -->
+m
+
+<!-- b000837 | prose | pages [7] -->
+m
+
+<!-- b000838 | prose | pages [7] -->
+m
+
+<!-- b000839 | prose | pages [7] -->
+m
+
+<!-- b000840 | prose | pages [7] -->
+m
+
+<!-- b000841 | prose | pages [7] -->
+m
+
+<!-- b000842 | prose | pages [7] -->
+m
+
+<!-- b000843 | prose | pages [7] -->
+m
+
+<!-- b000844 | prose | pages [7] -->
+m
+
+<!-- b000845 | prose | pages [7] -->
+m
+
+<!-- b000846 | prose | pages [7] -->
+m
+
+<!-- b000847 | prose | pages [7] -->
+m
+
+<!-- b000848 | prose | pages [7] -->
+m
+
+<!-- b000849 | prose | pages [7] -->
+m
+
+<!-- b000850 | prose | pages [7] -->
+m
+
+<!-- b000851 | prose | pages [7] -->
+m
+
+<!-- b000852 | prose | pages [7] -->
+m
+
+<!-- b000853 | prose | pages [7] -->
+m
+
+<!-- b000854 | prose | pages [7] -->
+m
+
+<!-- b000855 | prose | pages [7] -->
+m
+
+<!-- b000856 | prose | pages [7] -->
+m
+
+<!-- b000857 | prose | pages [7] -->
+m
+
+<!-- b000858 | prose | pages [7] -->
+m
+
+<!-- b000859 | prose | pages [7] -->
+m
+
+<!-- b000860 | prose | pages [7] -->
+m
+
+<!-- b000861 | prose | pages [7] -->
+m
+
+<!-- b000862 | prose | pages [7] -->
+m
+
+<!-- b000863 | prose | pages [7] -->
+m
+
+<!-- b000864 | prose | pages [7] -->
+m
+
+<!-- b000865 | prose | pages [7] -->
+m
+
+<!-- b000866 | prose | pages [7] -->
+m
+
+<!-- b000867 | prose | pages [7] -->
+m
+
+<!-- b000868 | prose | pages [7] -->
+m
+
+<!-- b000869 | prose | pages [7] -->
+m
+
+<!-- b000870 | prose | pages [7] -->
+m
+
+<!-- b000871 | prose | pages [7] -->
+m
+
+<!-- b000872 | prose | pages [7] -->
+m
+
+<!-- b000873 | prose | pages [7] -->
+m
+
+<!-- b000874 | prose | pages [7] -->
+m
+
+<!-- b000875 | prose | pages [7] -->
+m
+
+<!-- b000876 | prose | pages [7] -->
+m
+
+<!-- b000877 | prose | pages [7] -->
+m
+
+<!-- b000878 | prose | pages [7] -->
+m
+
+<!-- b000879 | prose | pages [7] -->
+m
+
+<!-- b000880 | prose | pages [7] -->
+m
+
+<!-- b000881 | prose | pages [7] -->
+m
+
+<!-- b000882 | prose | pages [7] -->
+m
+
+<!-- b000883 | prose | pages [7] -->
+m
+
+<!-- b000884 | prose | pages [7] -->
+m
+
+<!-- b000885 | prose | pages [7] -->
+m
+
+<!-- b000886 | prose | pages [7] -->
+m
+
+<!-- b000887 | prose | pages [7] -->
+m
+
+<!-- b000888 | prose | pages [7] -->
+m
+
+<!-- b000889 | prose | pages [7] -->
+m
+
+<!-- b000890 | prose | pages [7] -->
+m
+
+<!-- b000891 | prose | pages [7] -->
+m
+
+<!-- b000892 | prose | pages [7] -->
+m
+
+<!-- b000893 | prose | pages [7] -->
+m
+
+<!-- b000894 | prose | pages [7] -->
+m
+
+<!-- b000895 | prose | pages [7] -->
+m
+
+<!-- b000896 | prose | pages [7] -->
+m
+
+<!-- b000897 | prose | pages [7] -->
+m
+
+<!-- b000898 | prose | pages [7] -->
+m
+
+<!-- b000899 | prose | pages [7] -->
+m
+
+<!-- b000900 | prose | pages [7] -->
+m
+
+<!-- b000901 | prose | pages [7] -->
+m
+
+<!-- b000902 | prose | pages [7] -->
+m
+
+<!-- b000903 | prose | pages [7] -->
+m
+
+<!-- b000904 | prose | pages [7] -->
+m
+
+<!-- b000905 | prose | pages [7] -->
+m
+
+<!-- b000906 | prose | pages [7] -->
+m
+
+<!-- b000907 | prose | pages [7] -->
+m
+
+<!-- b000908 | prose | pages [7] -->
+m
+
+<!-- b000909 | prose | pages [7] -->
+m
+
+<!-- b000910 | prose | pages [7] -->
+m
+
+<!-- b000911 | prose | pages [7] -->
+m
+
+<!-- b000912 | prose | pages [7] -->
+m
+
+<!-- b000913 | prose | pages [7] -->
+m
+
+<!-- b000914 | prose | pages [7] -->
+m
+
+<!-- b000915 | prose | pages [7] -->
+m
+
+<!-- b000916 | prose | pages [7] -->
+m
+
+<!-- b000917 | prose | pages [7] -->
+m
+
+<!-- b000918 | prose | pages [7] -->
+m
+
+<!-- b000919 | prose | pages [7] -->
+m
+
+<!-- b000920 | prose | pages [7] -->
+m
+
+<!-- b000921 | prose | pages [7] -->
+m
+
+<!-- b000922 | prose | pages [7] -->
+m
+
+<!-- b000923 | prose | pages [7] -->
+m
+
+<!-- b000924 | prose | pages [7] -->
+m
+
+<!-- b000925 | prose | pages [7] -->
+m
+
+<!-- b000926 | prose | pages [7] -->
+m
+
+<!-- b000927 | prose | pages [7] -->
+m
+
+<!-- b000928 | prose | pages [7] -->
+m
+
+<!-- b000929 | prose | pages [7] -->
+m
+
+<!-- b000930 | prose | pages [7] -->
+m
+
+<!-- b000931 | prose | pages [7] -->
+m
+
+<!-- b000932 | prose | pages [7] -->
+m
+
+<!-- b000933 | prose | pages [7] -->
+m
+
+<!-- b000934 | prose | pages [7] -->
+m
+
+<!-- b000935 | prose | pages [7] -->
+m
+
+<!-- b000936 | prose | pages [7] -->
+m
+
+<!-- b000937 | prose | pages [7] -->
+m
+
+<!-- b000938 | prose | pages [7] -->
+m
+
+<!-- b000939 | prose | pages [7] -->
+m
+
+<!-- b000940 | prose | pages [7] -->
+m
+
+<!-- b000941 | prose | pages [7] -->
+m
+
+<!-- b000942 | prose | pages [7] -->
+m
+
+<!-- b000943 | prose | pages [7] -->
+m
+
+<!-- b000944 | prose | pages [7] -->
+m
+
+<!-- b000945 | prose | pages [7] -->
+m
+
+<!-- b000946 | prose | pages [7] -->
+m
+
+<!-- b000947 | prose | pages [7] -->
+m
+
+<!-- b000948 | prose | pages [7] -->
+m
+
+<!-- b000949 | prose | pages [7] -->
+m
+
+<!-- b000950 | prose | pages [7] -->
+m
+
+<!-- b000951 | prose | pages [7] -->
+m
+
+<!-- b000952 | prose | pages [7] -->
+m
+
+<!-- b000953 | prose | pages [7] -->
+m
+
+<!-- b000954 | prose | pages [7] -->
+m
+
+<!-- b000955 | prose | pages [7] -->
+m
+
+<!-- b000956 | prose | pages [7] -->
+m
+
+<!-- b000957 | prose | pages [7] -->
+m
+
+<!-- b000958 | prose | pages [7] -->
+m
+
+<!-- b000959 | prose | pages [7] -->
+m
+
+<!-- b000960 | prose | pages [7] -->
+m
+
+<!-- b000961 | prose | pages [7] -->
+m
+
+<!-- b000962 | prose | pages [7] -->
+m
+
+<!-- b000963 | prose | pages [7] -->
+m
+
+<!-- b000964 | prose | pages [7] -->
+m
+
+<!-- b000965 | prose | pages [7] -->
+m
+
+<!-- b000966 | prose | pages [7] -->
+m
+
+<!-- b000967 | prose | pages [7] -->
+m
+
+<!-- b000968 | prose | pages [7] -->
+m
+
+<!-- b000969 | prose | pages [7] -->
+m
+
+<!-- b000970 | prose | pages [7] -->
+m
+
+<!-- b000971 | prose | pages [7] -->
+m
+
+<!-- b000972 | prose | pages [7] -->
+m
+
+<!-- b000973 | prose | pages [7] -->
+m
+
+<!-- b000974 | prose | pages [7] -->
+m
+
+<!-- b000975 | prose | pages [7] -->
+m
+
+<!-- b000976 | prose | pages [7] -->
+m
+
+<!-- b000977 | prose | pages [7] -->
+m
+
+<!-- b000978 | prose | pages [7] -->
+m
+
+<!-- b000979 | prose | pages [7] -->
+m
+
+<!-- b000980 | prose | pages [7] -->
+m
+
+<!-- b000981 | prose | pages [7] -->
+m
+
+<!-- b000982 | prose | pages [7] -->
+m
+
+<!-- b000983 | prose | pages [7] -->
+m
+
+<!-- b000984 | prose | pages [7] -->
+m
+
+<!-- b000985 | prose | pages [7] -->
+m
+
+<!-- b000986 | prose | pages [7] -->
+m
+
+<!-- b000987 | prose | pages [7] -->
+m
+
+<!-- b000988 | prose | pages [7] -->
+m
+
+<!-- b000989 | prose | pages [7] -->
+m
+
+<!-- b000990 | prose | pages [7] -->
+m
+
+<!-- b000991 | prose | pages [7] -->
+m
+
+<!-- b000992 | prose | pages [7] -->
+m
+
+<!-- b000993 | prose | pages [7] -->
+m
+
+<!-- b000994 | prose | pages [7] -->
+m
+
+<!-- b000995 | prose | pages [7] -->
+m
+
+<!-- b000996 | prose | pages [7] -->
+m
+
+<!-- b000997 | prose | pages [7] -->
+m
+
+<!-- b000998 | prose | pages [7] -->
+m
+
+<!-- b000999 | prose | pages [7] -->
+m
+
+<!-- b001000 | prose | pages [7] -->
+m
+
+<!-- b001001 | prose | pages [7] -->
+m
+
+<!-- b001002 | prose | pages [7] -->
+m
+
+<!-- b001003 | prose | pages [7] -->
+m
+
+<!-- b001004 | prose | pages [7] -->
+m
+
+<!-- b001005 | prose | pages [7] -->
+m
+
+<!-- b001006 | prose | pages [7] -->
+m
+
+<!-- b001007 | prose | pages [7] -->
+m
+
+<!-- b001008 | prose | pages [7] -->
+m
+
+<!-- b001009 | prose | pages [7] -->
+m
+
+<!-- b001010 | prose | pages [7] -->
+m
+
+<!-- b001011 | prose | pages [7] -->
+m
+
+<!-- b001012 | prose | pages [7] -->
+m
+
+<!-- b001013 | prose | pages [7] -->
+m
+
+<!-- b001014 | prose | pages [7] -->
+m
+
+<!-- b001015 | prose | pages [7] -->
+m
+
+<!-- b001016 | prose | pages [7] -->
+m
+
+<!-- b001017 | prose | pages [7] -->
+m
+
+<!-- b001018 | prose | pages [7] -->
+m
+
+<!-- b001019 | prose | pages [7] -->
+m
+
+<!-- b001020 | prose | pages [7] -->
+m
+
+<!-- b001021 | prose | pages [7] -->
+m
+
+<!-- b001022 | prose | pages [7] -->
+m
+
+<!-- b001023 | prose | pages [7] -->
+m
+
+<!-- b001024 | prose | pages [7] -->
+m
+
+<!-- b001025 | prose | pages [7] -->
+m
+
+<!-- b001026 | prose | pages [7] -->
+m
+
+<!-- b001027 | prose | pages [7] -->
+m
+
+<!-- b001028 | prose | pages [7] -->
+m
+
+<!-- b001029 | prose | pages [7] -->
+m
+
+<!-- b001030 | prose | pages [7] -->
+m
+
+<!-- b001031 | prose | pages [7] -->
+m
+
+<!-- b001032 | prose | pages [7] -->
+m
+
+<!-- b001033 | prose | pages [7] -->
+m
+
+<!-- b001034 | prose | pages [7] -->
+m
+
+<!-- b001035 | prose | pages [7] -->
+m
+
+<!-- b001036 | prose | pages [7] -->
+m
+
+<!-- b001037 | prose | pages [7] -->
+m
+
+<!-- b001038 | prose | pages [7] -->
+m
+
+<!-- b001039 | prose | pages [7] -->
+m
+
+<!-- b001040 | prose | pages [7] -->
+m
+
+<!-- b001041 | prose | pages [7] -->
+m
+
+<!-- b001042 | prose | pages [7] -->
+m
+
+<!-- b001043 | prose | pages [7] -->
+m
+
+<!-- b001044 | prose | pages [7] -->
+m
+
+<!-- b001045 | prose | pages [7] -->
+m
+
+<!-- b001046 | prose | pages [7] -->
+m
+
+<!-- b001047 | prose | pages [7] -->
+m
+
+<!-- b001048 | prose | pages [7] -->
+m
+
+<!-- b001049 | prose | pages [7] -->
+m
+
+<!-- b001050 | prose | pages [7] -->
+m
+
+<!-- b001051 | prose | pages [7] -->
+m
+
+<!-- b001052 | prose | pages [7] -->
+m
+
+<!-- b001053 | prose | pages [7] -->
+m
+
+<!-- b001054 | prose | pages [7] -->
+m
+
+<!-- b001055 | prose | pages [7] -->
+m
+
+<!-- b001056 | prose | pages [7] -->
+m
+
+<!-- b001057 | prose | pages [7] -->
+m
+
+<!-- b001058 | prose | pages [7] -->
+m
+
+<!-- b001059 | prose | pages [7] -->
+m
+
+<!-- b001060 | prose | pages [7] -->
+m
+
+<!-- b001061 | furniture | pages [7] -->
+m
+
+<!-- b001062 | furniture | pages [7] -->
+m
+
+<!-- b001063 | furniture | pages [7] -->
+m
+
+<!-- b001064 | furniture | pages [7] -->
+m
+
+<!-- b001065 | furniture | pages [7] -->
+m
+
+<!-- b001066 | furniture | pages [7] -->
+m
+
+<!-- b001067 | furniture | pages [7] -->
+m
+
+<!-- b001068 | furniture | pages [7] -->
+m
+
+<!-- b001069 | furniture | pages [7] -->
+m
+
+<!-- b001070 | furniture | pages [7] -->
+m
+
+<!-- b001071 | furniture | pages [7] -->
+m
+
+<!-- b001072 | furniture | pages [7] -->
+m
+
+<!-- b001073 | furniture | pages [7] -->
+m
+
+<!-- b001074 | furniture | pages [7] -->
+m
+
+<!-- b001075 | furniture | pages [7] -->
+m
+
+<!-- b001076 | furniture | pages [7] -->
+m
+
+<!-- b001077 | furniture | pages [7] -->
+m
+
+<!-- b001078 | furniture | pages [7] -->
+m
+
+<!-- b001079 | furniture | pages [7] -->
+m
+
+<!-- b001080 | furniture | pages [7] -->
+m
+
+<!-- b001081 | furniture | pages [7] -->
+m
+
+<!-- b001082 | furniture | pages [7] -->
+m
+
+<!-- b001083 | furniture | pages [7] -->
+m
+
+<!-- b001084 | furniture | pages [7] -->
+m
+
+<!-- b001085 | furniture | pages [7] -->
+m
+
+<!-- b001086 | furniture | pages [7] -->
+m
+
+<!-- b001087 | furniture | pages [7] -->
+m
+
+<!-- b001088 | furniture | pages [7] -->
+m
+
+<!-- b001089 | furniture | pages [7] -->
+m
+
+<!-- b001090 | furniture | pages [7] -->
+m
+
+<!-- b001091 | furniture | pages [7] -->
+m
+
+<!-- b001092 | furniture | pages [7] -->
+m
+
+<!-- b001093 | furniture | pages [7] -->
+m
+
+<!-- b001094 | furniture | pages [7] -->
+m
+
+<!-- b001095 | furniture | pages [7] -->
+m
+
+<!-- b001096 | furniture | pages [7] -->
+m
+
+<!-- b001097 | furniture | pages [7] -->
+m
+
+<!-- b001098 | furniture | pages [7] -->
+m
+
+<!-- b001099 | furniture | pages [7] -->
+m
+
+<!-- b001100 | furniture | pages [7] -->
+m
+
+<!-- b001101 | furniture | pages [7] -->
+m
+
+<!-- b001102 | furniture | pages [7] -->
+m
+
+<!-- b001103 | furniture | pages [7] -->
+m
+
+<!-- b001104 | furniture | pages [7] -->
+m
+
+<!-- b001105 | furniture | pages [7] -->
+m
+
+<!-- b001106 | furniture | pages [7] -->
+m
+
+<!-- b001107 | furniture | pages [7] -->
+m
+
+<!-- b001108 | furniture | pages [7] -->
+m
+
+<!-- b001109 | furniture | pages [7] -->
+m
+
+<!-- b001110 | furniture | pages [7] -->
+m
+
+<!-- b001111 | furniture | pages [7] -->
+m
+
+<!-- b001112 | furniture | pages [7] -->
+m
+
+<!-- b001113 | furniture | pages [7] -->
+m
+
+<!-- b001114 | furniture | pages [7] -->
+m
+
+<!-- b001115 | furniture | pages [7] -->
+m
+
+<!-- b001116 | furniture | pages [7] -->
+m
+
+<!-- b001117 | furniture | pages [7] -->
+m
+
+<!-- b001118 | furniture | pages [7] -->
+m
+
+<!-- b001119 | furniture | pages [7] -->
+m
+
+<!-- b001120 | furniture | pages [7] -->
+m
+
+<!-- b001121 | furniture | pages [7] -->
+m
+
+<!-- b001122 | furniture | pages [7] -->
+m
+
+<!-- b001123 | furniture | pages [7] -->
+m
+
+<!-- b001124 | furniture | pages [7] -->
+m
+
+<!-- b001125 | furniture | pages [7] -->
+m
+
+<!-- b001126 | furniture | pages [7] -->
+m
+
+<!-- b001127 | furniture | pages [7] -->
+m
+
+<!-- b001128 | furniture | pages [7] -->
+m
+
+<!-- b001129 | furniture | pages [7] -->
+m
+
+<!-- b001130 | furniture | pages [7] -->
+m
+
+<!-- b001131 | furniture | pages [7] -->
+m
+
+<!-- b001132 | furniture | pages [7] -->
+m
+
+<!-- b001133 | furniture | pages [7] -->
+m
+
+<!-- b001134 | furniture | pages [7] -->
+m
+
+<!-- b001135 | furniture | pages [7] -->
+m
+
+<!-- b001136 | furniture | pages [7] -->
+m
+
+<!-- b001137 | furniture | pages [7] -->
+m
+
+<!-- b001138 | furniture | pages [7] -->
+m
+
+<!-- b001139 | furniture | pages [7] -->
+m
+
+<!-- b001140 | furniture | pages [7] -->
+m
+
+<!-- b001141 | furniture | pages [7] -->
+m
+
+<!-- b001142 | furniture | pages [7] -->
+m
+
+<!-- b001143 | furniture | pages [7] -->
+m
+
+<!-- b001144 | furniture | pages [7] -->
+m
+
+<!-- b001145 | furniture | pages [7] -->
+m
+
+<!-- b001146 | furniture | pages [7] -->
+m
+
+<!-- b001147 | furniture | pages [7] -->
+m
+
+<!-- b001148 | furniture | pages [7] -->
+m
+
+<!-- b001149 | furniture | pages [7] -->
+m
+
+<!-- b001150 | furniture | pages [7] -->
+m
+
+<!-- b001151 | furniture | pages [7] -->
+m
+
+<!-- b001152 | furniture | pages [7] -->
+m
+
+<!-- b001153 | furniture | pages [7] -->
+m
+
+<!-- b001154 | furniture | pages [7] -->
+m
+
+<!-- b001155 | furniture | pages [7] -->
+m
+
+<!-- b001156 | furniture | pages [7] -->
+m
+
+<!-- b001157 | furniture | pages [7] -->
+m
+
+<!-- b001158 | furniture | pages [7] -->
+m
+
+<!-- b001159 | furniture | pages [7] -->
+m
+
+<!-- b001160 | furniture | pages [7] -->
+m
+
+<!-- b001161 | furniture | pages [7] -->
+m
+
+<!-- b001162 | furniture | pages [7] -->
+m
+
+<!-- b001163 | furniture | pages [7] -->
+m
+
+<!-- b001164 | furniture | pages [7] -->
+m
+
+<!-- b001165 | furniture | pages [7] -->
+m
+
+<!-- b001166 | furniture | pages [7] -->
+m
+
+<!-- b001167 | furniture | pages [7] -->
+m
+
+<!-- b001168 | furniture | pages [7] -->
+m
+
+<!-- b001169 | furniture | pages [7] -->
+m
+
+<!-- b001170 | furniture | pages [7] -->
+m
+
+<!-- b001171 | furniture | pages [7] -->
+m
+
+<!-- b001172 | furniture | pages [7] -->
+m
+
+<!-- b001173 | furniture | pages [7] -->
+m
+
+<!-- b001174 | furniture | pages [7] -->
+m
+
+<!-- b001175 | furniture | pages [7] -->
+m
+
+<!-- b001176 | furniture | pages [7] -->
+m
+
+<!-- b001177 | furniture | pages [7] -->
+m
+
+<!-- b001178 | furniture | pages [7] -->
+m
+
+<!-- b001179 | furniture | pages [7] -->
+m
+
+<!-- b001180 | furniture | pages [7] -->
+m
+
+<!-- b001181 | furniture | pages [7] -->
+m
+
+<!-- b001182 | furniture | pages [7] -->
+m
+
+<!-- b001183 | furniture | pages [7] -->
+m
+
+<!-- b001184 | furniture | pages [7] -->
+m
+
+<!-- b001185 | furniture | pages [7] -->
+m
+
+<!-- b001186 | furniture | pages [7] -->
+m
+
+<!-- b001187 | furniture | pages [7] -->
+m
+
+<!-- b001188 | furniture | pages [7] -->
+m
+
+<!-- b001189 | furniture | pages [7] -->
+m
+
+<!-- b001190 | furniture | pages [7] -->
+m
+
+<!-- b001191 | furniture | pages [7] -->
+m
+
+<!-- b001192 | furniture | pages [7] -->
+m
+
+<!-- b001193 | furniture | pages [7] -->
+m
+
+<!-- b001194 | furniture | pages [7] -->
+m
+
+<!-- b001195 | furniture | pages [7] -->
+m
+
+<!-- b001196 | furniture | pages [7] -->
+m
+
+<!-- b001197 | furniture | pages [7] -->
+m
+
+<!-- b001198 | furniture | pages [7] -->
+m
+
+<!-- b001199 | furniture | pages [7] -->
+m
+
+<!-- b001200 | furniture | pages [7] -->
+m
+
+<!-- b001201 | furniture | pages [7] -->
+m
+
+<!-- b001202 | furniture | pages [7] -->
+m
+
+<!-- b001203 | furniture | pages [7] -->
+m
+
+<!-- b001204 | furniture | pages [7] -->
+m
+
+<!-- b001205 | furniture | pages [7] -->
+m
+
+<!-- b001206 | furniture | pages [7] -->
+m
+
+<!-- b001207 | furniture | pages [7] -->
+m
+
+<!-- b001208 | furniture | pages [7] -->
+m
+
+<!-- b001209 | furniture | pages [7] -->
+m
+
+<!-- b001210 | furniture | pages [7] -->
+m
+
+<!-- b001211 | furniture | pages [7] -->
+m
+
+<!-- b001212 | furniture | pages [7] -->
+m
+
+<!-- b001213 | furniture | pages [7] -->
+m
+
+<!-- b001214 | furniture | pages [7] -->
+m
+
+<!-- b001215 | furniture | pages [7] -->
+m
+
+<!-- b001216 | furniture | pages [7] -->
+m
+
+<!-- b001217 | furniture | pages [7] -->
+m
+
+<!-- b001218 | furniture | pages [7] -->
+m
+
+<!-- b001219 | furniture | pages [7] -->
+m
+
+<!-- b001220 | furniture | pages [7] -->
+m
+
+<!-- b001221 | furniture | pages [7] -->
+m
+
+<!-- b001222 | furniture | pages [7] -->
+m
+
+<!-- b001223 | furniture | pages [7] -->
+m
+
+<!-- b001224 | furniture | pages [7] -->
+m
+
+<!-- b001225 | furniture | pages [7] -->
+m
+
+<!-- b001226 | furniture | pages [7] -->
+m
+
+<!-- b001227 | furniture | pages [7] -->
+m
+
+<!-- b001228 | furniture | pages [7] -->
+m
+
+<!-- b001229 | furniture | pages [7] -->
+m
+
+<!-- b001230 | furniture | pages [7] -->
+m
+
+<!-- b001231 | furniture | pages [7] -->
+m
+
+<!-- b001232 | furniture | pages [7] -->
+m
+
+<!-- b001233 | furniture | pages [7] -->
+m
+
+<!-- b001234 | furniture | pages [7] -->
+m
+
+<!-- b001235 | furniture | pages [7] -->
+m
+
+<!-- b001236 | furniture | pages [7] -->
+m
+
+<!-- b001237 | furniture | pages [7] -->
+m
+
+<!-- b001238 | furniture | pages [7] -->
+m
+
+<!-- b001239 | furniture | pages [7] -->
+m
+
+<!-- b001240 | furniture | pages [7] -->
+m
+
+<!-- b001241 | furniture | pages [7] -->
+m
+
+<!-- b001242 | furniture | pages [7] -->
+m
+
+<!-- b001243 | furniture | pages [7] -->
+m
+
+<!-- b001244 | furniture | pages [7] -->
+m
+
+<!-- b001245 | furniture | pages [7] -->
+m
+
+<!-- b001246 | furniture | pages [7] -->
+m
+
+<!-- b001247 | furniture | pages [7] -->
+m
+
+<!-- b001248 | furniture | pages [7] -->
+m
+
+<!-- b001249 | furniture | pages [7] -->
+m
+
+<!-- b001250 | furniture | pages [7] -->
+m
+
+<!-- b001251 | furniture | pages [7] -->
+m
+
+<!-- b001252 | furniture | pages [7] -->
+m
+
+<!-- b001253 | furniture | pages [7] -->
+m
+
+<!-- b001254 | furniture | pages [7] -->
+m
+
+<!-- b001255 | furniture | pages [7] -->
+m
+
+<!-- b001256 | furniture | pages [7] -->
+m
+
+<!-- b001257 | furniture | pages [7] -->
+m
+
+<!-- b001258 | furniture | pages [7] -->
+m
+
+<!-- b001259 | furniture | pages [7] -->
+m
+
+<!-- b001260 | furniture | pages [7] -->
+m
+
+<!-- b001261 | furniture | pages [7] -->
+m
+
+<!-- b001262 | furniture | pages [7] -->
+m
+
+<!-- b001263 | furniture | pages [7] -->
+m
+
+<!-- b001264 | furniture | pages [7] -->
+m
+
+<!-- b001265 | furniture | pages [7] -->
+m
+
+<!-- b001266 | furniture | pages [7] -->
+m
+
+<!-- b001267 | furniture | pages [7] -->
+m
+
+<!-- b001268 | furniture | pages [7] -->
+m
+
+<!-- b001269 | furniture | pages [7] -->
+m
+
+<!-- b001270 | furniture | pages [7] -->
+m
+
+<!-- b001271 | furniture | pages [7] -->
+m
+
+<!-- b001272 | furniture | pages [7] -->
+m
+
+<!-- b001273 | furniture | pages [7] -->
+m
+
+<!-- b001274 | furniture | pages [7] -->
+m
+
+<!-- b001275 | furniture | pages [7] -->
+m
+
+<!-- b001276 | furniture | pages [7] -->
+m
+
+<!-- b001277 | furniture | pages [7] -->
+m
+
+<!-- b001278 | furniture | pages [7] -->
+m
+
+<!-- b001279 | furniture | pages [7] -->
+m
+
+<!-- b001280 | furniture | pages [7] -->
+m
+
+<!-- b001281 | furniture | pages [7] -->
+m
+
+<!-- b001282 | furniture | pages [7] -->
+m
+
+<!-- b001283 | furniture | pages [7] -->
+m
+
+<!-- b001284 | furniture | pages [7] -->
+m
+
+<!-- b001285 | furniture | pages [7] -->
+m
+
+<!-- b001286 | furniture | pages [7] -->
+m
+
+<!-- b001287 | furniture | pages [7] -->
+m
+
+<!-- b001288 | furniture | pages [7] -->
+m
+
+<!-- b001289 | furniture | pages [7] -->
+m
+
+<!-- b001290 | furniture | pages [7] -->
+m
+
+<!-- b001291 | furniture | pages [7] -->
+m
+
+<!-- b001292 | furniture | pages [7] -->
+m
+
+<!-- b001293 | furniture | pages [7] -->
+m
+
+<!-- b001294 | furniture | pages [7] -->
+m
+
+<!-- b001295 | furniture | pages [7] -->
+m
+
+<!-- b001296 | furniture | pages [7] -->
+m
+
+<!-- b001297 | furniture | pages [7] -->
+m
+
+<!-- b001298 | furniture | pages [7] -->
+m
+
+<!-- b001299 | furniture | pages [7] -->
+m
+
+<!-- b001300 | furniture | pages [7] -->
+m
+
+<!-- b001301 | furniture | pages [7] -->
+m
+
+<!-- b001302 | furniture | pages [7] -->
+m
+
+<!-- b001303 | furniture | pages [7] -->
+m
+
+<!-- b001304 | furniture | pages [7] -->
+m
+
+<!-- b001305 | furniture | pages [7] -->
+m
+
+<!-- b001306 | furniture | pages [7] -->
+m
+
+<!-- b001307 | furniture | pages [7] -->
+m
+
+<!-- b001308 | furniture | pages [7] -->
+m
+
+<!-- b001309 | furniture | pages [7] -->
+m
+
+<!-- b001310 | furniture | pages [7] -->
+m
+
+<!-- b001311 | furniture | pages [7] -->
+m
+
+<!-- b001312 | furniture | pages [7] -->
+m
+
+<!-- b001313 | furniture | pages [7] -->
+m
+
+<!-- b001314 | furniture | pages [7] -->
+m
+
+<!-- b001315 | furniture | pages [7] -->
+m
+
+<!-- b001316 | furniture | pages [7] -->
+m
+
+<!-- b001317 | furniture | pages [7] -->
+m
+
+<!-- b001318 | furniture | pages [7] -->
+m
+
+<!-- b001319 | furniture | pages [7] -->
+m
+
+<!-- b001320 | furniture | pages [7] -->
+m
+
+<!-- b001321 | furniture | pages [7] -->
+m
+
+<!-- b001322 | furniture | pages [7] -->
+m
+
+<!-- b001323 | furniture | pages [7] -->
+m
+
+<!-- b001324 | furniture | pages [7] -->
+m
+
+<!-- b001325 | furniture | pages [7] -->
+m
+
+<!-- b001326 | furniture | pages [7] -->
+m
+
+<!-- b001327 | furniture | pages [7] -->
+m
+
+<!-- b001328 | furniture | pages [7] -->
+m
+
+<!-- b001329 | furniture | pages [7] -->
+m
+
+<!-- b001330 | furniture | pages [7] -->
+m
+
+<!-- b001331 | furniture | pages [7] -->
+m
+
+<!-- b001332 | furniture | pages [7] -->
+m
+
+<!-- b001333 | furniture | pages [7] -->
+m
+
+<!-- b001334 | furniture | pages [7] -->
+m
+
+<!-- b001335 | furniture | pages [7] -->
+m
+
+<!-- b001336 | furniture | pages [7] -->
+m
+
+<!-- b001337 | furniture | pages [7] -->
+m
+
+<!-- b001338 | furniture | pages [7] -->
+m
+
+<!-- b001339 | furniture | pages [7] -->
+m
+
+<!-- b001340 | furniture | pages [7] -->
+m
+
+<!-- b001341 | furniture | pages [7] -->
+m
+
+<!-- b001342 | furniture | pages [7] -->
+m
+
+<!-- b001343 | furniture | pages [7] -->
+m
+
+<!-- b001344 | furniture | pages [7] -->
+m
+
+<!-- b001345 | furniture | pages [7] -->
+m
+
+<!-- b001346 | furniture | pages [7] -->
+m
+
+<!-- b001347 | furniture | pages [7] -->
+m
+
+<!-- b001348 | furniture | pages [7] -->
+m
+
+<!-- b001349 | furniture | pages [7] -->
+m
+
+<!-- b001350 | furniture | pages [7] -->
+m
+
+<!-- b001351 | furniture | pages [7] -->
+m
+
+<!-- b001352 | furniture | pages [7] -->
+m
+
+<!-- b001353 | furniture | pages [7] -->
+m
+
+<!-- b001354 | furniture | pages [7] -->
+m
+
+<!-- b001355 | furniture | pages [7] -->
+m
+
+<!-- b001356 | furniture | pages [7] -->
+m
+
+<!-- b001357 | furniture | pages [7] -->
+m
+
+<!-- b001358 | furniture | pages [7] -->
+m
+
+<!-- b001359 | furniture | pages [7] -->
+m
+
+<!-- b001360 | furniture | pages [7] -->
+m
+
+<!-- b001361 | furniture | pages [7] -->
+m
+
+<!-- b001362 | furniture | pages [7] -->
+m
+
+<!-- b001363 | furniture | pages [7] -->
+m
+
+<!-- b001364 | furniture | pages [7] -->
+m
+
+<!-- b001365 | furniture | pages [7] -->
+m
+
+<!-- b001366 | furniture | pages [7] -->
+m
+
+<!-- b001367 | furniture | pages [7] -->
+m
+
+<!-- b001368 | furniture | pages [7] -->
+m
+
+<!-- b001369 | furniture | pages [7] -->
+m
+
+<!-- b001370 | furniture | pages [7] -->
+m
+
+<!-- b001371 | furniture | pages [7] -->
+m
+
+<!-- b001372 | furniture | pages [7] -->
+m
+
+<!-- b001373 | furniture | pages [7] -->
+m
+
+<!-- b001374 | furniture | pages [7] -->
+m
+
+<!-- b001375 | furniture | pages [7] -->
+m
+
+<!-- b001376 | furniture | pages [7] -->
+m
+
+<!-- b001377 | furniture | pages [7] -->
+m
+
+<!-- b001378 | furniture | pages [7] -->
+m
+
+<!-- b001379 | furniture | pages [7] -->
+m
+
+<!-- b001380 | furniture | pages [7] -->
+m
+
+<!-- b001381 | furniture | pages [7] -->
+m
+
+<!-- b001382 | furniture | pages [7] -->
+m
+
+<!-- b001383 | furniture | pages [7] -->
+m
+
+<!-- b001384 | furniture | pages [7] -->
+m
+
+<!-- b001385 | furniture | pages [7] -->
+m
+
+<!-- b001386 | furniture | pages [7] -->
+m
+
+<!-- b001387 | furniture | pages [7] -->
+m
+
+<!-- b001388 | furniture | pages [7] -->
+m
+
+<!-- b001389 | furniture | pages [7] -->
+m
+
+<!-- b001390 | furniture | pages [7] -->
+m
+
+<!-- b001391 | furniture | pages [7] -->
+m
+
+<!-- b001392 | furniture | pages [7] -->
+m
+
+<!-- b001393 | furniture | pages [7] -->
+m
+
+<!-- b001394 | furniture | pages [7] -->
+m
+
+<!-- b001395 | furniture | pages [7] -->
+m
+
+<!-- b001396 | furniture | pages [7] -->
+m
+
+<!-- b001397 | furniture | pages [7] -->
+m
+
+<!-- b001398 | furniture | pages [7] -->
+m
+
+<!-- b001399 | furniture | pages [7] -->
+m
+
+<!-- b001400 | furniture | pages [7] -->
+m
+
+<!-- b001401 | furniture | pages [7] -->
+m
+
+<!-- b001402 | furniture | pages [7] -->
+m
+
+<!-- b001403 | furniture | pages [7] -->
+m
+
+<!-- b001404 | furniture | pages [7] -->
+m
+
+<!-- b001405 | furniture | pages [7] -->
+m
+
+<!-- b001406 | furniture | pages [7] -->
+m
+
+<!-- b001407 | furniture | pages [7] -->
+m
+
+<!-- b001408 | furniture | pages [7] -->
+m
+
+<!-- b001409 | furniture | pages [7] -->
+m
+
+<!-- b001410 | furniture | pages [7] -->
+m
+
+<!-- b001411 | furniture | pages [7] -->
+m
+
+<!-- b001412 | furniture | pages [7] -->
+m
+
+<!-- b001413 | furniture | pages [7] -->
+m
+
+<!-- b001414 | furniture | pages [7] -->
+m
+
+<!-- b001415 | furniture | pages [7] -->
+m
+
+<!-- b001416 | furniture | pages [7] -->
+m
+
+<!-- b001417 | furniture | pages [7] -->
+m
+
+<!-- b001418 | furniture | pages [7] -->
+m
+
+<!-- b001419 | furniture | pages [7] -->
+m
+
+<!-- b001420 | furniture | pages [7] -->
+m
+
+<!-- b001421 | furniture | pages [7] -->
+m
+
+<!-- b001422 | furniture | pages [7] -->
+m
+
+<!-- b001423 | furniture | pages [7] -->
+m
+
+<!-- b001424 | furniture | pages [7] -->
+m
+
+<!-- b001425 | furniture | pages [7] -->
+m
+
+<!-- b001426 | furniture | pages [7] -->
+m
+
+<!-- b001427 | furniture | pages [7] -->
+m
+
+<!-- b001428 | furniture | pages [7] -->
+m
+
+<!-- b001429 | furniture | pages [7] -->
+m
+
+<!-- b001430 | furniture | pages [7] -->
+m
+
+<!-- b001431 | furniture | pages [7] -->
+m
+
+<!-- b001432 | furniture | pages [7] -->
+m
+
+<!-- b001433 | furniture | pages [7] -->
+m
+
+<!-- b001434 | furniture | pages [7] -->
+m
+
+<!-- b001435 | furniture | pages [7] -->
+m
+
+<!-- b001436 | furniture | pages [7] -->
+m
+
+<!-- b001437 | furniture | pages [7] -->
+m
+
+<!-- b001438 | furniture | pages [7] -->
+m
+
+<!-- b001439 | furniture | pages [7] -->
+m
+
+<!-- b001440 | furniture | pages [7] -->
+m
+
+<!-- b001441 | furniture | pages [7] -->
+m
+
+<!-- b001442 | furniture | pages [7] -->
+m
+
+<!-- b001443 | furniture | pages [7] -->
+m
+
+<!-- b001444 | furniture | pages [7] -->
+m
+
+<!-- b001445 | furniture | pages [7] -->
+m
+
+<!-- b001446 | furniture | pages [7] -->
+m
+
+<!-- b001447 | furniture | pages [7] -->
+m
+
+<!-- b001448 | furniture | pages [7] -->
+m
+
+<!-- b001449 | furniture | pages [7] -->
+m
+
+<!-- b001450 | furniture | pages [7] -->
+m
+
+<!-- b001451 | furniture | pages [7] -->
+m
+
+<!-- b001452 | furniture | pages [7] -->
+m
+
+<!-- b001453 | furniture | pages [7] -->
+m
+
+<!-- b001454 | furniture | pages [7] -->
+m
+
+<!-- b001455 | furniture | pages [7] -->
+m
+
+<!-- b001456 | furniture | pages [7] -->
+m
+
+<!-- b001457 | furniture | pages [7] -->
+m
+
+<!-- b001458 | furniture | pages [7] -->
+m
+
+<!-- b001459 | furniture | pages [7] -->
+m
+
+<!-- b001460 | furniture | pages [7] -->
+m
+
+<!-- b001461 | furniture | pages [7] -->
+m
+
+<!-- b001462 | furniture | pages [7] -->
+m
+
+<!-- b001463 | furniture | pages [7] -->
+m
+
+<!-- b001464 | furniture | pages [8] -->
+Team # 2502617
+
+<!-- b001465 | prose | pages [8] -->
+4.1.1 Analysis of Economic benefits
+
+<!-- b001466 | furniture | pages [8] -->
+Page 8 of 25
+
+<!-- b001467 | prose | pages [8] -->
+The direct consumption generated by tourists is most significantly influenced by the number of tourists, so it can be regarded as a linear function of the number of tourists (i.e., assuming that the expected spending per tourist remains constant over the course of a year). Therefore, the formula for calculating the direct consumption Ct generated by tourists is given by
+
+<!-- b001468 | prose | pages [8] -->
+m
+
+<!-- b001469 | prose | pages [8] -->
+m
+
+<!-- b001470 | prose | pages [8] -->
+m
+
+<!-- b001471 | prose | pages [8] -->
+m
+
+<!-- b001472 | prose | pages [8] -->
+m
+
+<!-- b001473 | prose | pages [8] -->
+m
+
+<!-- b001474 | prose | pages [8] -->
+m
+
+<!-- b001475 | prose | pages [8] -->
+m
+
+<!-- b001476 | prose | pages [8] -->
+m
+
+<!-- b001477 | prose | pages [8] -->
+m
+
+<!-- b001478 | prose | pages [8] -->
+m
+
+<!-- b001479 | prose | pages [8] -->
+m
+
+<!-- b001480 | prose | pages [8] -->
+m
+
+<!-- b001481 | prose | pages [8] -->
+m
+
+<!-- b001482 | prose | pages [8] -->
+m
+
+<!-- b001483 | prose | pages [8] -->
+m
+
+<!-- b001484 | prose | pages [8] -->
+m
+
+<!-- b001485 | prose | pages [8] -->
+m
+
+<!-- b001486 | prose | pages [8] -->
+m
+
+<!-- b001487 | prose | pages [8] -->
+m
+
+<!-- b001488 | prose | pages [8] -->
+m
+
+<!-- b001489 | prose | pages [8] -->
+m
+
+<!-- b001490 | prose | pages [8] -->
+(2) Ct = α × Nt
+
+<!-- b001491 | prose | pages [8] -->
+m
+
+<!-- b001492 | prose | pages [8] -->
+m
+
+<!-- b001493 | prose | pages [8] -->
+m
+
+<!-- b001494 | prose | pages [8] -->
+m
+
+<!-- b001495 | prose | pages [8] -->
+m
+
+<!-- b001496 | prose | pages [8] -->
+m
+
+<!-- b001497 | prose | pages [8] -->
+m
+
+<!-- b001498 | prose | pages [8] -->
+m
+
+<!-- b001499 | prose | pages [8] -->
+m
+
+<!-- b001500 | prose | pages [8] -->
+m
+
+<!-- b001501 | prose | pages [8] -->
+m
+
+<!-- b001502 | prose | pages [8] -->
+m
+
+<!-- b001503 | prose | pages [8] -->
+m
+
+<!-- b001504 | prose | pages [8] -->
+m
+
+<!-- b001505 | prose | pages [8] -->
+m
+
+<!-- b001506 | prose | pages [8] -->
+m
+
+<!-- b001507 | prose | pages [8] -->
+m
+
+<!-- b001508 | prose | pages [8] -->
+m
+
+<!-- b001509 | prose | pages [8] -->
+m
+
+<!-- b001510 | prose | pages [8] -->
+m
+
+<!-- b001511 | prose | pages [8] -->
+m
+
+<!-- b001512 | prose | pages [8] -->
+m
+
+<!-- b001513 | prose | pages [8] -->
+m
+
+<!-- b001514 | prose | pages [8] -->
+m
+
+<!-- b001515 | prose | pages [8] -->
+m
+
+<!-- b001516 | prose | pages [8] -->
+m
+
+<!-- b001517 | prose | pages [8] -->
+m
+
+<!-- b001518 | prose | pages [8] -->
+m
+
+<!-- b001519 | prose | pages [8] -->
+m
+
+<!-- b001520 | prose | pages [8] -->
+m
+
+<!-- b001521 | prose | pages [8] -->
+m
+
+<!-- b001522 | prose | pages [8] -->
+m
+
+<!-- b001523 | prose | pages [8] -->
+m
+
+<!-- b001524 | prose | pages [8] -->
+m
+
+<!-- b001525 | prose | pages [8] -->
+m
+
+<!-- b001526 | prose | pages [8] -->
+m
+
+<!-- b001527 | prose | pages [8] -->
+m
+
+<!-- b001528 | prose | pages [8] -->
+m
+
+<!-- b001529 | prose | pages [8] -->
+m
+
+<!-- b001530 | prose | pages [8] -->
+m
+
+<!-- b001531 | prose | pages [8] -->
+m
+
+<!-- b001532 | prose | pages [8] -->
+m
+
+<!-- b001533 | prose | pages [8] -->
+m
+
+<!-- b001534 | prose | pages [8] -->
+m
+
+<!-- b001535 | prose | pages [8] -->
+m
+
+<!-- b001536 | prose | pages [8] -->
+m
+
+<!-- b001537 | prose | pages [8] -->
+m
+
+<!-- b001538 | prose | pages [8] -->
+m
+
+<!-- b001539 | prose | pages [8] -->
+m
+
+<!-- b001540 | prose | pages [8] -->
+m
+
+<!-- b001541 | prose | pages [8] -->
+m
+
+<!-- b001542 | prose | pages [8] -->
+m
+
+<!-- b001543 | prose | pages [8] -->
+m
+
+<!-- b001544 | prose | pages [8] -->
+m
+
+<!-- b001545 | prose | pages [8] -->
+m
+
+<!-- b001546 | prose | pages [8] -->
+m
+
+<!-- b001547 | prose | pages [8] -->
+m
+
+<!-- b001548 | prose | pages [8] -->
+m
+
+<!-- b001549 | prose | pages [8] -->
+m
+
+<!-- b001550 | prose | pages [8] -->
+m
+
+<!-- b001551 | prose | pages [8] -->
+m
+
+<!-- b001552 | prose | pages [8] -->
+m
+
+<!-- b001553 | prose | pages [8] -->
+m
+
+<!-- b001554 | prose | pages [8] -->
+m
+
+<!-- b001555 | prose | pages [8] -->
+m
+
+<!-- b001556 | prose | pages [8] -->
+m
+
+<!-- b001557 | prose | pages [8] -->
+m
+
+<!-- b001558 | prose | pages [8] -->
+m
+
+<!-- b001559 | prose | pages [8] -->
+m
+
+<!-- b001560 | prose | pages [8] -->
+m
+
+<!-- b001561 | prose | pages [8] -->
+m
+
+<!-- b001562 | prose | pages [8] -->
+m
+
+<!-- b001563 | prose | pages [8] -->
+m
+
+<!-- b001564 | prose | pages [8] -->
+m
+
+<!-- b001565 | prose | pages [8] -->
+m
+
+<!-- b001566 | prose | pages [8] -->
+m
+
+<!-- b001567 | prose | pages [8] -->
+m
+
+<!-- b001568 | prose | pages [8] -->
+m
+
+<!-- b001569 | prose | pages [8] -->
+m
+
+<!-- b001570 | prose | pages [8] -->
+m
+
+<!-- b001571 | prose | pages [8] -->
+m
+
+<!-- b001572 | prose | pages [8] -->
+m
+
+<!-- b001573 | prose | pages [8] -->
+m
+
+<!-- b001574 | prose | pages [8] -->
+m
+
+<!-- b001575 | prose | pages [8] -->
+m
+
+<!-- b001576 | prose | pages [8] -->
+m
+
+<!-- b001577 | prose | pages [8] -->
+m
+
+<!-- b001578 | prose | pages [8] -->
+m
+
+<!-- b001579 | prose | pages [8] -->
+m
+
+<!-- b001580 | prose | pages [8] -->
+m
+
+<!-- b001581 | prose | pages [8] -->
+m
+
+<!-- b001582 | prose | pages [8] -->
+m
+
+<!-- b001583 | prose | pages [8] -->
+m
+
+<!-- b001584 | prose | pages [8] -->
+m
+
+<!-- b001585 | prose | pages [8] -->
+m
+
+<!-- b001586 | prose | pages [8] -->
+m
+
+<!-- b001587 | prose | pages [8] -->
+m
+
+<!-- b001588 | prose | pages [8] -->
+m
+
+<!-- b001589 | prose | pages [8] -->
+m
+
+<!-- b001590 | prose | pages [8] -->
+m
+
+<!-- b001591 | prose | pages [8] -->
+m
+
+<!-- b001592 | prose | pages [8] -->
+m
+
+<!-- b001593 | prose | pages [8] -->
+m
+
+<!-- b001594 | prose | pages [8] -->
+m
+
+<!-- b001595 | prose | pages [8] -->
+m
+
+<!-- b001596 | prose | pages [8] -->
+m
+
+<!-- b001597 | prose | pages [8] -->
+m
+
+<!-- b001598 | prose | pages [8] -->
+m
+
+<!-- b001599 | prose | pages [8] -->
+m
+
+<!-- b001600 | prose | pages [8] -->
+m
+
+<!-- b001601 | prose | pages [8] -->
+m
+
+<!-- b001602 | prose | pages [8] -->
+m
+
+<!-- b001603 | prose | pages [8] -->
+m
+
+<!-- b001604 | prose | pages [8] -->
+m
+
+<!-- b001605 | prose | pages [8] -->
+m
+
+<!-- b001606 | prose | pages [8] -->
+m
+
+<!-- b001607 | prose | pages [8] -->
+m
+
+<!-- b001608 | prose | pages [8] -->
+m
+
+<!-- b001609 | prose | pages [8] -->
+m
+
+<!-- b001610 | prose | pages [8] -->
+m
+
+<!-- b001611 | prose | pages [8] -->
+m
+
+<!-- b001612 | prose | pages [8] -->
+m
+
+<!-- b001613 | prose | pages [8] -->
+m
+
+<!-- b001614 | prose | pages [8] -->
+m
+
+<!-- b001615 | prose | pages [8] -->
+m
+
+<!-- b001616 | prose | pages [8] -->
+m
+
+<!-- b001617 | prose | pages [8] -->
+m
+
+<!-- b001618 | prose | pages [8] -->
+m
+
+<!-- b001619 | prose | pages [8] -->
+m
+
+<!-- b001620 | prose | pages [8] -->
+m
+
+<!-- b001621 | prose | pages [8] -->
+m
+
+<!-- b001622 | prose | pages [8] -->
+m
+
+<!-- b001623 | prose | pages [8] -->
+m
+
+<!-- b001624 | prose | pages [8] -->
+m
+
+<!-- b001625 | prose | pages [8] -->
+m
+
+<!-- b001626 | prose | pages [8] -->
+m
+
+<!-- b001627 | prose | pages [8] -->
+m
+
+<!-- b001628 | prose | pages [8] -->
+m
+
+<!-- b001629 | prose | pages [8] -->
+m
+
+<!-- b001630 | prose | pages [8] -->
+m
+
+<!-- b001631 | prose | pages [8] -->
+m
+
+<!-- b001632 | prose | pages [8] -->
+m
+
+<!-- b001633 | prose | pages [8] -->
+m
+
+<!-- b001634 | prose | pages [8] -->
+m
+
+<!-- b001635 | prose | pages [8] -->
+m
+
+<!-- b001636 | prose | pages [8] -->
+m
+
+<!-- b001637 | prose | pages [8] -->
+m
+
+<!-- b001638 | prose | pages [8] -->
+m
+
+<!-- b001639 | prose | pages [8] -->
+m
+
+<!-- b001640 | prose | pages [8] -->
+m
+
+<!-- b001641 | prose | pages [8] -->
+m
+
+<!-- b001642 | prose | pages [8] -->
+m
+
+<!-- b001643 | prose | pages [8] -->
+m
+
+<!-- b001644 | prose | pages [8] -->
+m
+
+<!-- b001645 | prose | pages [8] -->
+m
+
+<!-- b001646 | prose | pages [8] -->
+m
+
+<!-- b001647 | prose | pages [8] -->
+m
+
+<!-- b001648 | prose | pages [8] -->
+m
+
+<!-- b001649 | prose | pages [8] -->
+m
+
+<!-- b001650 | prose | pages [8] -->
+m
+
+<!-- b001651 | prose | pages [8] -->
+m
+
+<!-- b001652 | prose | pages [8] -->
+m
+
+<!-- b001653 | prose | pages [8] -->
+m
+
+<!-- b001654 | prose | pages [8] -->
+m
+
+<!-- b001655 | prose | pages [8] -->
+m
+
+<!-- b001656 | prose | pages [8] -->
+m
+
+<!-- b001657 | prose | pages [8] -->
+m
+
+<!-- b001658 | prose | pages [8] -->
+m
+
+<!-- b001659 | prose | pages [8] -->
+m
+
+<!-- b001660 | prose | pages [8] -->
+m
+
+<!-- b001661 | prose | pages [8] -->
+m
+
+<!-- b001662 | prose | pages [8] -->
+m
+
+<!-- b001663 | prose | pages [8] -->
+m
+
+<!-- b001664 | prose | pages [8] -->
+m
+
+<!-- b001665 | prose | pages [8] -->
+m
+
+<!-- b001666 | prose | pages [8] -->
+m
+
+<!-- b001667 | prose | pages [8] -->
+m
+
+<!-- b001668 | prose | pages [8] -->
+m
+
+<!-- b001669 | prose | pages [8] -->
+m
+
+<!-- b001670 | prose | pages [8] -->
+m
+
+<!-- b001671 | prose | pages [8] -->
+m
+
+<!-- b001672 | prose | pages [8] -->
+m
+
+<!-- b001673 | prose | pages [8] -->
+m
+
+<!-- b001674 | prose | pages [8] -->
+m
+
+<!-- b001675 | prose | pages [8] -->
+m
+
+<!-- b001676 | prose | pages [8] -->
+m
+
+<!-- b001677 | prose | pages [8] -->
+m
+
+<!-- b001678 | prose | pages [8] -->
+m
+
+<!-- b001679 | prose | pages [8] -->
+m
+
+<!-- b001680 | prose | pages [8] -->
+m
+
+<!-- b001681 | prose | pages [8] -->
+m
+
+<!-- b001682 | prose | pages [8] -->
+m
+
+<!-- b001683 | prose | pages [8] -->
+m
+
+<!-- b001684 | prose | pages [8] -->
+m
+
+<!-- b001685 | prose | pages [8] -->
+m
+
+<!-- b001686 | prose | pages [8] -->
+m
+
+<!-- b001687 | prose | pages [8] -->
+m
+
+<!-- b001688 | prose | pages [8] -->
+m
+
+<!-- b001689 | prose | pages [8] -->
+m
+
+<!-- b001690 | prose | pages [8] -->
+m
+
+<!-- b001691 | prose | pages [8] -->
+m
+
+<!-- b001692 | prose | pages [8] -->
+m
+
+<!-- b001693 | prose | pages [8] -->
+m
+
+<!-- b001694 | prose | pages [8] -->
+m
+
+<!-- b001695 | prose | pages [8] -->
+m
+
+<!-- b001696 | prose | pages [8] -->
+m
+
+<!-- b001697 | prose | pages [8] -->
+m
+
+<!-- b001698 | prose | pages [8] -->
+m
+
+<!-- b001699 | prose | pages [8] -->
+m
+
+<!-- b001700 | prose | pages [8] -->
+m
+
+<!-- b001701 | prose | pages [8] -->
+m
+
+<!-- b001702 | prose | pages [8] -->
+m
+
+<!-- b001703 | prose | pages [8] -->
+m
+
+<!-- b001704 | prose | pages [8] -->
+m
+
+<!-- b001705 | prose | pages [8] -->
+m
+
+<!-- b001706 | prose | pages [8] -->
+m
+
+<!-- b001707 | prose | pages [8] -->
+m
+
+<!-- b001708 | prose | pages [8] -->
+m
+
+<!-- b001709 | prose | pages [8] -->
+m
+
+<!-- b001710 | prose | pages [8] -->
+m
+
+<!-- b001711 | prose | pages [8] -->
+m
+
+<!-- b001712 | prose | pages [8] -->
+m
+
+<!-- b001713 | prose | pages [8] -->
+m
+
+<!-- b001714 | prose | pages [8] -->
+m
+
+<!-- b001715 | prose | pages [8] -->
+m
+
+<!-- b001716 | prose | pages [8] -->
+m
+
+<!-- b001717 | prose | pages [8] -->
+m
+
+<!-- b001718 | prose | pages [8] -->
+m
+
+<!-- b001719 | prose | pages [8] -->
+m
+
+<!-- b001720 | prose | pages [8] -->
+m
+
+<!-- b001721 | prose | pages [8] -->
+m
+
+<!-- b001722 | prose | pages [8] -->
+m
+
+<!-- b001723 | prose | pages [8] -->
+m
+
+<!-- b001724 | prose | pages [8] -->
+m
+
+<!-- b001725 | prose | pages [8] -->
+m
+
+<!-- b001726 | prose | pages [8] -->
+m
+
+<!-- b001727 | prose | pages [8] -->
+m
+
+<!-- b001728 | prose | pages [8] -->
+m
+
+<!-- b001729 | prose | pages [8] -->
+m
+
+<!-- b001730 | prose | pages [8] -->
+m
+
+<!-- b001731 | prose | pages [8] -->
+where α represents the average economic benefits per tourist, Nt represents the number of tourists,
+
+<!-- b001732 | prose | pages [8] -->
+m
+
+<!-- b001733 | prose | pages [8] -->
+m
+
+<!-- b001734 | prose | pages [8] -->
+m
+
+<!-- b001735 | prose | pages [8] -->
+m
+
+<!-- b001736 | prose | pages [8] -->
+m
+
+<!-- b001737 | prose | pages [8] -->
+m
+
+<!-- b001738 | prose | pages [8] -->
+m
+
+<!-- b001739 | prose | pages [8] -->
+m
+
+<!-- b001740 | prose | pages [8] -->
+m
+
+<!-- b001741 | prose | pages [8] -->
+m
+
+<!-- b001742 | prose | pages [8] -->
+m
+
+<!-- b001743 | prose | pages [8] -->
+m
+
+<!-- b001744 | prose | pages [8] -->
+m
+
+<!-- b001745 | prose | pages [8] -->
+m
+
+<!-- b001746 | prose | pages [8] -->
+m
+
+<!-- b001747 | prose | pages [8] -->
+m
+
+<!-- b001748 | prose | pages [8] -->
+m
+
+<!-- b001749 | prose | pages [8] -->
+m
+
+<!-- b001750 | prose | pages [8] -->
+m
+
+<!-- b001751 | prose | pages [8] -->
+m
+
+<!-- b001752 | prose | pages [8] -->
+m
+
+<!-- b001753 | prose | pages [8] -->
+m
+
+<!-- b001754 | prose | pages [8] -->
+m
+
+<!-- b001755 | prose | pages [8] -->
+m
+
+<!-- b001756 | prose | pages [8] -->
+m
+
+<!-- b001757 | prose | pages [8] -->
+m
+
+<!-- b001758 | prose | pages [8] -->
+m
+
+<!-- b001759 | prose | pages [8] -->
+m
+
+<!-- b001760 | prose | pages [8] -->
+m
+
+<!-- b001761 | prose | pages [8] -->
+m
+
+<!-- b001762 | prose | pages [8] -->
+m
+
+<!-- b001763 | prose | pages [8] -->
+m
+
+<!-- b001764 | prose | pages [8] -->
+m
+
+<!-- b001765 | prose | pages [8] -->
+m
+
+<!-- b001766 | prose | pages [8] -->
+m
+
+<!-- b001767 | prose | pages [8] -->
+m
+
+<!-- b001768 | prose | pages [8] -->
+m
+
+<!-- b001769 | prose | pages [8] -->
+m
+
+<!-- b001770 | prose | pages [8] -->
+m
+
+<!-- b001771 | prose | pages [8] -->
+m
+
+<!-- b001772 | prose | pages [8] -->
+m
+
+<!-- b001773 | prose | pages [8] -->
+m
+
+<!-- b001774 | prose | pages [8] -->
+m
+
+<!-- b001775 | prose | pages [8] -->
+m
+
+<!-- b001776 | prose | pages [8] -->
+m
+
+<!-- b001777 | prose | pages [8] -->
+m
+
+<!-- b001778 | prose | pages [8] -->
+m
+
+<!-- b001779 | prose | pages [8] -->
+m
+
+<!-- b001780 | prose | pages [8] -->
+m
+
+<!-- b001781 | prose | pages [8] -->
+m
+
+<!-- b001782 | prose | pages [8] -->
+m
+
+<!-- b001783 | prose | pages [8] -->
+m
+
+<!-- b001784 | prose | pages [8] -->
+m
+
+<!-- b001785 | prose | pages [8] -->
+m
+
+<!-- b001786 | prose | pages [8] -->
+m
+
+<!-- b001787 | prose | pages [8] -->
+m
+
+<!-- b001788 | prose | pages [8] -->
+m
+
+<!-- b001789 | prose | pages [8] -->
+m
+
+<!-- b001790 | prose | pages [8] -->
+m
+
+<!-- b001791 | prose | pages [8] -->
+m
+
+<!-- b001792 | prose | pages [8] -->
+m
+
+<!-- b001793 | prose | pages [8] -->
+m
+
+<!-- b001794 | prose | pages [8] -->
+m
+
+<!-- b001795 | prose | pages [8] -->
+m
+
+<!-- b001796 | prose | pages [8] -->
+m
+
+<!-- b001797 | prose | pages [8] -->
+m
+
+<!-- b001798 | prose | pages [8] -->
+m
+
+<!-- b001799 | prose | pages [8] -->
+m
+
+<!-- b001800 | prose | pages [8] -->
+m
+
+<!-- b001801 | prose | pages [8] -->
+m
+
+<!-- b001802 | prose | pages [8] -->
+m
+
+<!-- b001803 | prose | pages [8] -->
+m
+
+<!-- b001804 | prose | pages [8] -->
+m
+
+<!-- b001805 | prose | pages [8] -->
+m
+
+<!-- b001806 | prose | pages [8] -->
+m
+
+<!-- b001807 | prose | pages [8] -->
+m
+
+<!-- b001808 | prose | pages [8] -->
+m
+
+<!-- b001809 | prose | pages [8] -->
+m
+
+<!-- b001810 | prose | pages [8] -->
+m
+
+<!-- b001811 | prose | pages [8] -->
+m
+
+<!-- b001812 | prose | pages [8] -->
+m
+
+<!-- b001813 | prose | pages [8] -->
+m
+
+<!-- b001814 | prose | pages [8] -->
+m
+
+<!-- b001815 | prose | pages [8] -->
+m
+
+<!-- b001816 | prose | pages [8] -->
+m
+
+<!-- b001817 | prose | pages [8] -->
+m
+
+<!-- b001818 | prose | pages [8] -->
+m
+
+<!-- b001819 | prose | pages [8] -->
+m
+
+<!-- b001820 | prose | pages [8] -->
+m
+
+<!-- b001821 | prose | pages [8] -->
+m
+
+<!-- b001822 | prose | pages [8] -->
+m
+
+<!-- b001823 | prose | pages [8] -->
+m
+
+<!-- b001824 | prose | pages [8] -->
+m
+
+<!-- b001825 | prose | pages [8] -->
+m
+
+<!-- b001826 | prose | pages [8] -->
+m
+
+<!-- b001827 | prose | pages [8] -->
+m
+
+<!-- b001828 | prose | pages [8] -->
+m
+
+<!-- b001829 | prose | pages [8] -->
+m
+
+<!-- b001830 | prose | pages [8] -->
+m
+
+<!-- b001831 | prose | pages [8] -->
+m
+
+<!-- b001832 | prose | pages [8] -->
+m
+
+<!-- b001833 | prose | pages [8] -->
+m
+
+<!-- b001834 | prose | pages [8] -->
+m
+
+<!-- b001835 | prose | pages [8] -->
+m
+
+<!-- b001836 | prose | pages [8] -->
+m
+
+<!-- b001837 | prose | pages [8] -->
+m
+
+<!-- b001838 | prose | pages [8] -->
+m
+
+<!-- b001839 | prose | pages [8] -->
+m
+
+<!-- b001840 | prose | pages [8] -->
+m
+
+<!-- b001841 | prose | pages [8] -->
+m
+
+<!-- b001842 | prose | pages [8] -->
+m
+
+<!-- b001843 | prose | pages [8] -->
+m
+
+<!-- b001844 | prose | pages [8] -->
+m
+
+<!-- b001845 | prose | pages [8] -->
+m
+
+<!-- b001846 | prose | pages [8] -->
+m
+
+<!-- b001847 | prose | pages [8] -->
+m
+
+<!-- b001848 | prose | pages [8] -->
+m
+
+<!-- b001849 | prose | pages [8] -->
+m
+
+<!-- b001850 | prose | pages [8] -->
+m
+
+<!-- b001851 | prose | pages [8] -->
+m
+
+<!-- b001852 | prose | pages [8] -->
+m
+
+<!-- b001853 | prose | pages [8] -->
+m
+
+<!-- b001854 | prose | pages [8] -->
+m
+
+<!-- b001855 | prose | pages [8] -->
+m
+
+<!-- b001856 | prose | pages [8] -->
+m
+
+<!-- b001857 | prose | pages [8] -->
+m
+
+<!-- b001858 | prose | pages [8] -->
+m
+
+<!-- b001859 | prose | pages [8] -->
+m
+
+<!-- b001860 | prose | pages [8] -->
+m
+
+<!-- b001861 | prose | pages [8] -->
+m
+
+<!-- b001862 | prose | pages [8] -->
+m
+
+<!-- b001863 | prose | pages [8] -->
+m
+
+<!-- b001864 | prose | pages [8] -->
+m
+
+<!-- b001865 | prose | pages [8] -->
+m
+
+<!-- b001866 | prose | pages [8] -->
+m
+
+<!-- b001867 | prose | pages [8] -->
+m
+
+<!-- b001868 | prose | pages [8] -->
+m
+
+<!-- b001869 | prose | pages [8] -->
+m
+
+<!-- b001870 | prose | pages [8] -->
+m
+
+<!-- b001871 | prose | pages [8] -->
+m
+
+<!-- b001872 | prose | pages [8] -->
+m
+
+<!-- b001873 | prose | pages [8] -->
+m
+
+<!-- b001874 | prose | pages [8] -->
+m
+
+<!-- b001875 | prose | pages [8] -->
+m
+
+<!-- b001876 | prose | pages [8] -->
+and as the number of tourists increases, the benefits arising from consumption generated by tourists
+
+<!-- b001877 | prose | pages [8] -->
+m
+
+<!-- b001878 | prose | pages [8] -->
+m
+
+<!-- b001879 | prose | pages [8] -->
+m
+
+<!-- b001880 | prose | pages [8] -->
+m
+
+<!-- b001881 | prose | pages [8] -->
+m
+
+<!-- b001882 | prose | pages [8] -->
+m
+
+<!-- b001883 | prose | pages [8] -->
+m
+
+<!-- b001884 | prose | pages [8] -->
+m
+
+<!-- b001885 | prose | pages [8] -->
+m
+
+<!-- b001886 | prose | pages [8] -->
+m
+
+<!-- b001887 | prose | pages [8] -->
+m
+
+<!-- b001888 | prose | pages [8] -->
+m
+
+<!-- b001889 | prose | pages [8] -->
+m
+
+<!-- b001890 | prose | pages [8] -->
+m
+
+<!-- b001891 | prose | pages [8] -->
+m
+
+<!-- b001892 | prose | pages [8] -->
+m
+
+<!-- b001893 | prose | pages [8] -->
+m
+
+<!-- b001894 | prose | pages [8] -->
+m
+
+<!-- b001895 | prose | pages [8] -->
+m
+
+<!-- b001896 | prose | pages [8] -->
+m
+
+<!-- b001897 | prose | pages [8] -->
+m
+
+<!-- b001898 | prose | pages [8] -->
+m
+
+<!-- b001899 | prose | pages [8] -->
+m
+
+<!-- b001900 | prose | pages [8] -->
+m
+
+<!-- b001901 | prose | pages [8] -->
+m
+
+<!-- b001902 | prose | pages [8] -->
+m
+
+<!-- b001903 | prose | pages [8] -->
+m
+
+<!-- b001904 | prose | pages [8] -->
+m
+
+<!-- b001905 | prose | pages [8] -->
+m
+
+<!-- b001906 | prose | pages [8] -->
+m
+
+<!-- b001907 | prose | pages [8] -->
+m
+
+<!-- b001908 | prose | pages [8] -->
+m
+
+<!-- b001909 | prose | pages [8] -->
+m
+
+<!-- b001910 | prose | pages [8] -->
+m
+
+<!-- b001911 | prose | pages [8] -->
+m
+
+<!-- b001912 | prose | pages [8] -->
+m
+
+<!-- b001913 | prose | pages [8] -->
+m
+
+<!-- b001914 | prose | pages [8] -->
+m
+
+<!-- b001915 | prose | pages [8] -->
+m
+
+<!-- b001916 | prose | pages [8] -->
+m
+
+<!-- b001917 | prose | pages [8] -->
+m
+
+<!-- b001918 | prose | pages [8] -->
+m
+
+<!-- b001919 | prose | pages [8] -->
+m
+
+<!-- b001920 | prose | pages [8] -->
+m
+
+<!-- b001921 | prose | pages [8] -->
+m
+
+<!-- b001922 | prose | pages [8] -->
+m
+
+<!-- b001923 | prose | pages [8] -->
+m
+
+<!-- b001924 | prose | pages [8] -->
+m
+
+<!-- b001925 | prose | pages [8] -->
+m
+
+<!-- b001926 | prose | pages [8] -->
+m
+
+<!-- b001927 | prose | pages [8] -->
+m
+
+<!-- b001928 | prose | pages [8] -->
+m
+
+<!-- b001929 | prose | pages [8] -->
+m
+
+<!-- b001930 | prose | pages [8] -->
+m
+
+<!-- b001931 | prose | pages [8] -->
+m
+
+<!-- b001932 | prose | pages [8] -->
+m
+
+<!-- b001933 | prose | pages [8] -->
+m
+
+<!-- b001934 | prose | pages [8] -->
+m
+
+<!-- b001935 | prose | pages [8] -->
+m
+
+<!-- b001936 | prose | pages [8] -->
+m
+
+<!-- b001937 | prose | pages [8] -->
+m
+
+<!-- b001938 | prose | pages [8] -->
+m
+
+<!-- b001939 | prose | pages [8] -->
+m
+
+<!-- b001940 | prose | pages [8] -->
+m
+
+<!-- b001941 | prose | pages [8] -->
+m
+
+<!-- b001942 | prose | pages [8] -->
+m
+
+<!-- b001943 | prose | pages [8] -->
+m
+
+<!-- b001944 | prose | pages [8] -->
+m
+
+<!-- b001945 | prose | pages [8] -->
+m
+
+<!-- b001946 | prose | pages [8] -->
+m
+
+<!-- b001947 | prose | pages [8] -->
+m
+
+<!-- b001948 | prose | pages [8] -->
+m
+
+<!-- b001949 | prose | pages [8] -->
+m
+
+<!-- b001950 | prose | pages [8] -->
+m
+
+<!-- b001951 | prose | pages [8] -->
+m
+
+<!-- b001952 | prose | pages [8] -->
+m
+
+<!-- b001953 | prose | pages [8] -->
+m
+
+<!-- b001954 | prose | pages [8] -->
+m
+
+<!-- b001955 | prose | pages [8] -->
+m
+
+<!-- b001956 | prose | pages [8] -->
+m
+
+<!-- b001957 | prose | pages [8] -->
+m
+
+<!-- b001958 | prose | pages [8] -->
+m
+
+<!-- b001959 | prose | pages [8] -->
+m
+
+<!-- b001960 | prose | pages [8] -->
+m
+
+<!-- b001961 | prose | pages [8] -->
+m
+
+<!-- b001962 | prose | pages [8] -->
+m
+
+<!-- b001963 | prose | pages [8] -->
+m
+
+<!-- b001964 | prose | pages [8] -->
+m
+
+<!-- b001965 | prose | pages [8] -->
+m
+
+<!-- b001966 | prose | pages [8] -->
+m
+
+<!-- b001967 | prose | pages [8] -->
+m
+
+<!-- b001968 | prose | pages [8] -->
+m
+
+<!-- b001969 | prose | pages [8] -->
+m
+
+<!-- b001970 | prose | pages [8] -->
+m
+
+<!-- b001971 | prose | pages [8] -->
+m
+
+<!-- b001972 | prose | pages [8] -->
+m
+
+<!-- b001973 | prose | pages [8] -->
+m
+
+<!-- b001974 | prose | pages [8] -->
+m
+
+<!-- b001975 | prose | pages [8] -->
+m
+
+<!-- b001976 | prose | pages [8] -->
+m
+
+<!-- b001977 | prose | pages [8] -->
+m
+
+<!-- b001978 | prose | pages [8] -->
+m
+
+<!-- b001979 | prose | pages [8] -->
+m
+
+<!-- b001980 | prose | pages [8] -->
+m
+
+<!-- b001981 | prose | pages [8] -->
+m
+
+<!-- b001982 | prose | pages [8] -->
+m
+
+<!-- b001983 | prose | pages [8] -->
+m
+
+<!-- b001984 | prose | pages [8] -->
+m
+
+<!-- b001985 | prose | pages [8] -->
+m
+
+<!-- b001986 | prose | pages [8] -->
+m
+
+<!-- b001987 | prose | pages [8] -->
+m
+
+<!-- b001988 | prose | pages [8] -->
+m
+
+<!-- b001989 | prose | pages [8] -->
+m
+
+<!-- b001990 | prose | pages [8] -->
+m
+
+<!-- b001991 | prose | pages [8] -->
+m
+
+<!-- b001992 | prose | pages [8] -->
+m
+
+<!-- b001993 | prose | pages [8] -->
+m
+
+<!-- b001994 | prose | pages [8] -->
+m
+
+<!-- b001995 | prose | pages [8] -->
+m
+
+<!-- b001996 | prose | pages [8] -->
+m
+
+<!-- b001997 | prose | pages [8] -->
+m
+
+<!-- b001998 | prose | pages [8] -->
+m
+
+<!-- b001999 | prose | pages [8] -->
+m
+
+<!-- b002000 | prose | pages [8] -->
+m
+
+<!-- b002001 | prose | pages [8] -->
+m
+
+<!-- b002002 | prose | pages [8] -->
+m
+
+<!-- b002003 | prose | pages [8] -->
+m
+
+<!-- b002004 | prose | pages [8] -->
+m
+
+<!-- b002005 | prose | pages [8] -->
+m
+
+<!-- b002006 | prose | pages [8] -->
+m
+
+<!-- b002007 | prose | pages [8] -->
+m
+
+<!-- b002008 | prose | pages [8] -->
+m
+
+<!-- b002009 | prose | pages [8] -->
+m
+
+<!-- b002010 | prose | pages [8] -->
+m
+
+<!-- b002011 | prose | pages [8] -->
+m
+
+<!-- b002012 | prose | pages [8] -->
+exhibits diminishing marginal returns, meaning that α1 will decrease as Nt increases. The formula
+
+<!-- b002013 | prose | pages [8] -->
+m
+
+<!-- b002014 | prose | pages [8] -->
+m
+
+<!-- b002015 | prose | pages [8] -->
+m
+
+<!-- b002016 | prose | pages [8] -->
+m
+
+<!-- b002017 | prose | pages [8] -->
+m
+
+<!-- b002018 | prose | pages [8] -->
+m
+
+<!-- b002019 | prose | pages [8] -->
+m
+
+<!-- b002020 | prose | pages [8] -->
+m
+
+<!-- b002021 | prose | pages [8] -->
+m
+
+<!-- b002022 | prose | pages [8] -->
+m
+
+<!-- b002023 | prose | pages [8] -->
+m
+
+<!-- b002024 | prose | pages [8] -->
+m
+
+<!-- b002025 | prose | pages [8] -->
+m
+
+<!-- b002026 | prose | pages [8] -->
+m
+
+<!-- b002027 | prose | pages [8] -->
+m
+
+<!-- b002028 | prose | pages [8] -->
+m
+
+<!-- b002029 | prose | pages [8] -->
+m
+
+<!-- b002030 | prose | pages [8] -->
+m
+
+<!-- b002031 | prose | pages [8] -->
+m
+
+<!-- b002032 | prose | pages [8] -->
+m
+
+<!-- b002033 | prose | pages [8] -->
+m
+
+<!-- b002034 | prose | pages [8] -->
+m
+
+<!-- b002035 | prose | pages [8] -->
+m
+
+<!-- b002036 | prose | pages [8] -->
+m
+
+<!-- b002037 | prose | pages [8] -->
+m
+
+<!-- b002038 | prose | pages [8] -->
+m
+
+<!-- b002039 | prose | pages [8] -->
+m
+
+<!-- b002040 | prose | pages [8] -->
+m
+
+<!-- b002041 | prose | pages [8] -->
+m
+
+<!-- b002042 | prose | pages [8] -->
+m
+
+<!-- b002043 | prose | pages [8] -->
+m
+
+<!-- b002044 | prose | pages [8] -->
+m
+
+<!-- b002045 | prose | pages [8] -->
+m
+
+<!-- b002046 | prose | pages [8] -->
+m
+
+<!-- b002047 | prose | pages [8] -->
+m
+
+<!-- b002048 | prose | pages [8] -->
+m
+
+<!-- b002049 | prose | pages [8] -->
+m
+
+<!-- b002050 | prose | pages [8] -->
+m
+
+<!-- b002051 | prose | pages [8] -->
+m
+
+<!-- b002052 | prose | pages [8] -->
+m
+
+<!-- b002053 | prose | pages [8] -->
+m
+
+<!-- b002054 | prose | pages [8] -->
+m
+
+<!-- b002055 | prose | pages [8] -->
+m
+
+<!-- b002056 | prose | pages [8] -->
+m
+
+<!-- b002057 | prose | pages [8] -->
+m
+
+<!-- b002058 | prose | pages [8] -->
+m
+
+<!-- b002059 | prose | pages [8] -->
+m
+
+<!-- b002060 | prose | pages [8] -->
+m
+
+<!-- b002061 | prose | pages [8] -->
+m
+
+<!-- b002062 | prose | pages [8] -->
+m
+
+<!-- b002063 | prose | pages [8] -->
+m
+
+<!-- b002064 | prose | pages [8] -->
+m
+
+<!-- b002065 | prose | pages [8] -->
+m
+
+<!-- b002066 | prose | pages [8] -->
+m
+
+<!-- b002067 | prose | pages [8] -->
+m
+
+<!-- b002068 | prose | pages [8] -->
+m
+
+<!-- b002069 | prose | pages [8] -->
+m
+
+<!-- b002070 | prose | pages [8] -->
+m
+
+<!-- b002071 | prose | pages [8] -->
+m
+
+<!-- b002072 | prose | pages [8] -->
+m
+
+<!-- b002073 | prose | pages [8] -->
+m
+
+<!-- b002074 | prose | pages [8] -->
+m
+
+<!-- b002075 | prose | pages [8] -->
+m
+
+<!-- b002076 | prose | pages [8] -->
+m
+
+<!-- b002077 | prose | pages [8] -->
+m
+
+<!-- b002078 | prose | pages [8] -->
+m
+
+<!-- b002079 | prose | pages [8] -->
+m
+
+<!-- b002080 | prose | pages [8] -->
+m
+
+<!-- b002081 | prose | pages [8] -->
+m
+
+<!-- b002082 | prose | pages [8] -->
+m
+
+<!-- b002083 | prose | pages [8] -->
+m
+
+<!-- b002084 | prose | pages [8] -->
+m
+
+<!-- b002085 | prose | pages [8] -->
+m
+
+<!-- b002086 | prose | pages [8] -->
+m
+
+<!-- b002087 | prose | pages [8] -->
+m
+
+<!-- b002088 | prose | pages [8] -->
+m
+
+<!-- b002089 | prose | pages [8] -->
+m
+
+<!-- b002090 | prose | pages [8] -->
+m
+
+<!-- b002091 | prose | pages [8] -->
+m
+
+<!-- b002092 | prose | pages [8] -->
+m
+
+<!-- b002093 | prose | pages [8] -->
+m
+
+<!-- b002094 | prose | pages [8] -->
+m
+
+<!-- b002095 | prose | pages [8] -->
+m
+
+<!-- b002096 | prose | pages [8] -->
+m
+
+<!-- b002097 | prose | pages [8] -->
+m
+
+<!-- b002098 | prose | pages [8] -->
+m
+
+<!-- b002099 | prose | pages [8] -->
+m
+
+<!-- b002100 | prose | pages [8] -->
+m
+
+<!-- b002101 | prose | pages [8] -->
+m
+
+<!-- b002102 | prose | pages [8] -->
+m
+
+<!-- b002103 | prose | pages [8] -->
+m
+
+<!-- b002104 | prose | pages [8] -->
+m
+
+<!-- b002105 | prose | pages [8] -->
+m
+
+<!-- b002106 | prose | pages [8] -->
+m
+
+<!-- b002107 | prose | pages [8] -->
+m
+
+<!-- b002108 | prose | pages [8] -->
+m
+
+<!-- b002109 | prose | pages [8] -->
+m
+
+<!-- b002110 | prose | pages [8] -->
+m
+
+<!-- b002111 | prose | pages [8] -->
+m
+
+<!-- b002112 | prose | pages [8] -->
+m
+
+<!-- b002113 | prose | pages [8] -->
+m
+
+<!-- b002114 | prose | pages [8] -->
+m
+
+<!-- b002115 | prose | pages [8] -->
+m
+
+<!-- b002116 | prose | pages [8] -->
+m
+
+<!-- b002117 | prose | pages [8] -->
+m
+
+<!-- b002118 | prose | pages [8] -->
+m
+
+<!-- b002119 | prose | pages [8] -->
+m
+
+<!-- b002120 | prose | pages [8] -->
+m
+
+<!-- b002121 | prose | pages [8] -->
+m
+
+<!-- b002122 | prose | pages [8] -->
+m
+
+<!-- b002123 | prose | pages [8] -->
+m
+
+<!-- b002124 | prose | pages [8] -->
+m
+
+<!-- b002125 | prose | pages [8] -->
+m
+
+<!-- b002126 | prose | pages [8] -->
+m
+
+<!-- b002127 | prose | pages [8] -->
+m
+
+<!-- b002128 | prose | pages [8] -->
+m
+
+<!-- b002129 | prose | pages [8] -->
+m
+
+<!-- b002130 | prose | pages [8] -->
+m
+
+<!-- b002131 | prose | pages [8] -->
+m
+
+<!-- b002132 | prose | pages [8] -->
+m
+
+<!-- b002133 | prose | pages [8] -->
+m
+
+<!-- b002134 | prose | pages [8] -->
+m
+
+<!-- b002135 | prose | pages [8] -->
+m
+
+<!-- b002136 | prose | pages [8] -->
+m
+
+<!-- b002137 | prose | pages [8] -->
+m
+
+<!-- b002138 | prose | pages [8] -->
+m
+
+<!-- b002139 | prose | pages [8] -->
+m
+
+<!-- b002140 | prose | pages [8] -->
+m
+
+<!-- b002141 | prose | pages [8] -->
+m
+
+<!-- b002142 | prose | pages [8] -->
+m
+
+<!-- b002143 | prose | pages [8] -->
+m
+
+<!-- b002144 | prose | pages [8] -->
+m
+
+<!-- b002145 | prose | pages [8] -->
+m
+
+<!-- b002146 | prose | pages [8] -->
+m
+
+<!-- b002147 | prose | pages [8] -->
+m
+
+<!-- b002148 | prose | pages [8] -->
+m
+
+<!-- b002149 | prose | pages [8] -->
+m
+
+<!-- b002150 | prose | pages [8] -->
+m
+
+<!-- b002151 | prose | pages [8] -->
+m
+
+<!-- b002152 | prose | pages [8] -->
+m
+
+<!-- b002153 | prose | pages [8] -->
+m
+
+<!-- b002154 | prose | pages [8] -->
+m
+
+<!-- b002155 | prose | pages [8] -->
+m
+
+<!-- b002156 | prose | pages [8] -->
+m
+
+<!-- b002157 | prose | pages [8] -->
+m
+
+<!-- b002158 | prose | pages [8] -->
+m
+
+<!-- b002159 | prose | pages [8] -->
+for calculating α is as follows:
+
+<!-- b002160 | prose | pages [8] -->
+α = A0 (3) (1 + ek0A0Nt(t−tbasic))(1 + ek0(A0−A0max))
+
+<!-- b002161 | prose | pages [8] -->
+where A0 represents the basic per capita consumption, k0 represents the rate at which per capita consumption tends to saturate as the number of tourists increases, and t represents tax rate. The formula also reflects the tolerance of tourists to the increase of tax and average cost, and the attenuation will be further increased when the tax or average cost is greater than the threshold. By default, we consider t = tbasic, A0max = 1.5A0
+
+<!-- b002162 | prose | pages [8] -->
+A portion of the consumption generated by tourists during their trip is used to pay fees such as VAT on goods and hotel taxes levied by municipalities, while the other portion is used to purchase tourism-related goods and services provided by local residents. Therefore, we can get the following formula:
+
+<!-- b002163 | prose | pages [8] -->
+(4) Ct = CGi + CRi
+
+<!-- b002164 | prose | pages [8] -->
+where CGi represents the portion of tourist spending that goes to municipal revenues, and CRi represents the revenues of tourist spending that accrue to residents engaged in the tourism industry. Government benefits and residents’ benefits can be expressed as follows:
+
+<!-- b002165 | prose | pages [8] -->
+(
+
+<!-- b002166 | prose | pages [8] -->
+CGi = αNtt (5) CRi = αNt(1 −t)
+
+<!-- b002167 | prose | pages [8] -->
+4.1.2 Analysis of Economic Costs
+
+<!-- b002168 | prose | pages [8] -->
+The components of economic costs are more complex than economic revenues. On the one hand, the government of Juneau needs to invest a certain amount of fixed expenditures on public services every year, such as household garbage removal and sewage disposal, etc. On the other hand, the surge in the number of tourists has led to accelerated destruction of the infrastructure in Juneau, and the government has to invest more revenues in the construction and maintenance of the infrastructure. At the same time, the cruise ship traffic brings a large amount of carbon emissions, the government of Juneau needs to solve these challenges.
+
+<!-- b002169 | prose | pages [8] -->
+It is important to note that the economic costs are not strictly linear with the number of tourists. When the number of tourists is high, the rate of infrastructure damage may be faster, showing an
+
+<!-- b002170 | prose | pages [8] -->
+关注数学模型
+
+<!-- b002171 | furniture | pages [8] -->
+2
+
+<!-- b002172 | furniture | pages [8] -->
+MATHmodels
+
+<!-- b002173 | furniture | pages [8] -->
+获取更多资讯
+
+<!-- b002174 | furniture | pages [9] -->
+Team # 2502617
+
+<!-- b002175 | furniture | pages [9] -->
+Page 9 of 25
+
+<!-- b002176 | prose | pages [9] -->
+increasing trend of marginal costs at the level of government management costs. Therefore, in the economic cost analysis we fully consider the actual situation of increasing marginal cost and
+
+<!-- b002177 | prose | pages [9] -->
+微信公众号：数学模型
+
+<!-- b002178 | prose | pages [9] -->
+construct an economic cost analysis model.
+
+<!-- b002179 | prose | pages [9] -->
+(6)
+
+<!-- b002180 | prose | pages [9] -->
+CGc = CiN 2
+
+<!-- b002181 | prose | pages [9] -->
+t + Cfix
+
+<!-- b002182 | prose | pages [9] -->
+where Ci represents the cost required for the operation and management of the infrastructure and Cfix is the fixed cost to be incurred by the government.
+
+<!-- b002183 | prose | pages [9] -->
+The additional tax revenues of the Government and a portion of municipal revenues are invested in public services, and a higher level of public services improves the satisfaction of local residents and tourists, thus contributing to the development of sustainable tourism.
+
+<!-- b002184 | prose | pages [9] -->
+微信号：MATHmodels
+
+<!-- b002185 | prose | pages [9] -->
+4.1.3 Overall Economic Performance
+
+<!-- b002186 | prose | pages [9] -->
+As mentioned earlier, total economic efficiency E can be summarized as a composite variable reflecting the overall returns to economic activity. Considering the two key economic principles of diminishing marginal benefits and increasing marginal costs, it can be hypothesized that the government should have two break-even points. The break-even point is the point at which economic benefits equal economic costs, i.e. CGi = CGc, at which the government has neither a profit nor a loss.
+
+<!-- b002187 | prose | pages [9] -->
+The break-even point provides upper and lower thresholds for the number of tourists. As the number of tourists increases, the marginal benefit gradually decreases while the marginal cost gradually increases, resulting in the economic benefit turning negative after the breakeven point is exceeded.
+
+<!-- b002188 | caption | pages [9] -->
+Figure 4: Economic benefits - Schematic Cost-benefit Analysis
+
+<!-- b002189 | prose | pages [9] -->
+When the number of tourists exceeds this threshold, the marginal benefits from additional tourists are not sufficient to cover the increased costs, which in turn leads to a decline in economic benefits. The break-even point therefore provides the government with a range of acceptable tourist numbers beyond which measures need to be taken to avoid negative economic benefits.
+
+<!-- b002190 | furniture | pages [10] -->
+Team # 2502617
+
+<!-- b002191 | furniture | pages [10] -->
+Page 10 of 25
+
+<!-- b002192 | heading | pages [10] -->
+Sub-model II: Social Welfare Optimization Model
+
+<!-- b002193 | prose | pages [10] -->
+4.2
+
+<!-- b002194 | prose | pages [10] -->
+The social benefits is the second key objective that we analyze in our models. When the number of tourists is too high, local residents feel more pressure to live due to the increase in the cost of living, and at the same time, when the number of tourists far exceeds the number of local residents, the regional congestion rises and the social satisfaction of the residents decreases. On the contrary, when the number of tourists is too low, residents mainly engaged in the tourism service industry may feel an increase in life pressure due to a decrease in income.
+
+<!-- b002195 | prose | pages [10] -->
+Combining life stress and crowding, we can obtain the formula for the indicator measure of social satisfaction. Further, combining the historical data of Juneau, we analyze the virtual economic value equivalent that can be generated by a unit of social satisfaction, and calculate the economic benefits of social satisfaction metrics based on this. Ultimately, we can get the result of maximizing social benefits as follows
+
+<!-- b002196 | prose | pages [10] -->
+(7) max S = s × Cadd
+
+<!-- b002197 | prose | pages [10] -->
+where s represents overall social satisfaction and Cadd represents the hidden economic value equivalent that can be generated by a unit of life satisfaction.
+
+<!-- b002198 | prose | pages [10] -->
+Estimation of Social Satisfaction Indicator 4.2.1
+
+<!-- b002199 | prose | pages [10] -->
+In our model, residents’ social satisfaction is mainly determined by two mutually constraining factors: pressure on living and pressure on congestion. An increase in the number of tourists will both increase residents’ income and lead to an increase in residents’ cost of living. When the increase in residents’ cost of living exceeds the increment in income, residents’ life satisfaction will decrease. Since Juneau has fewer residents, it can be assumed that there is a significant linear relationship between congestion pressure and the number of tourists.
+
+<!-- b002200 | prose | pages [10] -->
+Pl = CRi
+
+<!-- b002201 | prose | pages [10] -->
+   
+
+<!-- b002202 | prose | pages [10] -->
+CRc
+
+<!-- b002203 | prose | pages [10] -->
+(8)
+
+<!-- b002204 | prose | pages [10] -->
+Pf = Nr
+
+<!-- b002205 | prose | pages [10] -->
+  
+
+<!-- b002206 | prose | pages [10] -->
+Nt
+
+<!-- b002207 | prose | pages [10] -->
+where CRc represents the incremental cost of living to residents due to an increase in the number of tourists, which is considered as a constant since CRi reflects a decrease; and Nr is the number of residents in Juneau. Thus, the dimensionless indicator of social satisfaction s can be denoted as
+
+<!-- b002208 | prose | pages [10] -->
+(9) s = Pl × Pf
+
+<!-- b002209 | prose | pages [10] -->
+Monetized Conversion of Social Satisfaction 4.2.2
+
+<!-- b002210 | prose | pages [10] -->
+We use the virtual economic benefits generated by unit social satisfaction as an equivalent quantitative indicator to comprehensively analyze social satisfaction. Through the monetization transformation of social satisfaction, the quantitative outline of the sub-model can be further ensured to be unified, thus ensuring the model has better usability and comparability.
+
+<!-- b002211 | prose | pages [10] -->
+Specifically, the monetized conversion of social satisfaction indicators includes two steps. (1) the hidden economic benefit equivalent generated by the unit of social satisfaction; (2) the total
+
+<!-- b002212 | prose | pages [10] -->
+关注数学模型
+
+<!-- b002213 | furniture | pages [10] -->
+2
+
+<!-- b002214 | furniture | pages [10] -->
+MATHmodels
+
+<!-- b002215 | furniture | pages [10] -->
+获取更多资讯
+
+<!-- b002216 | furniture | pages [11] -->
+Team # 2502617
+
+<!-- b002217 | furniture | pages [11] -->
+Page 11 of 25
+
+<!-- b002218 | prose | pages [11] -->
+hidden economic benefit generated by social satisfaction.
+
+<!-- b002219 | prose | pages [11] -->
+A1 (10) Cadd = 1 + e(Nt−k1Nr)t
+
+<!-- b002220 | prose | pages [11] -->
+where A1 represents the hidden benefits derived from social satisfaction as equivalent quantitative metrics, which diminish when the number of tourists reaches a certain ratio k1 of the local population
+
+<!-- b002221 | prose | pages [11] -->
+微信公众号：数学模型
+
+<!-- b002222 | prose | pages [11] -->
+or when tax revenue increases.
+
+<!-- b002223 | prose | pages [11] -->
+4.2.3 Overall Social Performance
+
+<!-- b002224 | prose | pages [11] -->
+In Model II, we combine the stress of living in Juneau with the stress of overcrowding due to the growth in the number of tourists and obtain the social benefit equivalent by measuring satisfaction through a virtual economic value. Since satisfaction is judged differently by different groups, subject to the 2023 Statistic of Juneau[3], it can be assumed that the social benefits are in an acceptable range when more than 60%, of residents achieve a state of satisfaction.
+
+<!-- b002225 | prose | pages [11] -->
+微信号：MATHmodels
+
+<!-- b002226 | caption | pages [11] -->
+Figure 5: Social benefits - Schematic Social Satisfaction Analysis
+
+<!-- b002227 | prose | pages [11] -->
+In 2023, Juneau reaches 1.67 million visitors and the reality of residents being dissatisfied with the excessive number of visitors arises. In this context, we take the social satisfaction in 2023 as the baseline social satisfaction and calculate the off between the number of tourists and social satisfaction. That is, when the social satisfaction satisfies S > 0.6 × S2023, the social benefit satisfies the constraint.
+
+<!-- b002228 | prose | pages [11] -->
+4.3
+
+<!-- b002229 | heading | pages [11] -->
+Sub-model III: Environmental Carrying Capacity Model
+
+<!-- b002230 | prose | pages [11] -->
+Minimizing environmental benefits is the third important objective in addition to maximizing economic and social benefits. Excessive numbers of tourists at any given time may result in the destruction of local natural and cultural resources due to insufficient carrying capacity. In addition, the airplanes, cruise ships, and other means of transportation used by tourists to travel to destinations such as Juneau can also lead to increased emissions of greenhouse gases such as carbon dioxide, which in turn leads to higher temperatures and glacier melting.
+
+<!-- b002231 | furniture | pages [12] -->
+Team # 2502617
+
+<!-- b002232 | furniture | pages [12] -->
+Page 12 of 25
+
+<!-- b002233 | prose | pages [12] -->
+Environmental damage has significant hidden economic costs for the tourism industry and increases potential government expenditures. In order to quantitatively assess the hidden economic costs of environmental damage, in the environmental benefit analysis, we accounted for the carbon footprint of attractions in the city of Juneau and conducted an economization analysis using the equivalent of economic growth per unit of carbon emissions. Specifically, the primary objectives and key analyses of economic benefits are shown below
+
+<!-- b002234 | prose | pages [12] -->
+(11) min Env = CCO2 −Cenv
+
+<!-- b002235 | prose | pages [12] -->
+where, Cenv represents government expenditure on environmental governance, while Cco2 repre- sents the hidden costs arising from environmental degradation caused by carbon emissions. The difference between these two variables quantifies the magnitude of tourism’s environmental impact.
+
+<!-- b002236 | prose | pages [12] -->
+4.3.1 Carbon Footprint Accounting
+
+<!-- b002237 | prose | pages [12] -->
+Since the primary cause of glacier melt is temperature increase, the glacier recession equation summarized for assessing the recession of Mendenhall Glacier in Juneau is as follows
+
+<!-- b002238 | prose | pages [12] -->
+m
+
+<!-- b002239 | prose | pages [12] -->
+m
+
+<!-- b002240 | prose | pages [12] -->
+m
+
+<!-- b002241 | prose | pages [12] -->
+m
+
+<!-- b002242 | prose | pages [12] -->
+m
+
+<!-- b002243 | prose | pages [12] -->
+m
+
+<!-- b002244 | prose | pages [12] -->
+m
+
+<!-- b002245 | prose | pages [12] -->
+m
+
+<!-- b002246 | prose | pages [12] -->
+m
+
+<!-- b002247 | prose | pages [12] -->
+m
+
+<!-- b002248 | prose | pages [12] -->
+m
+
+<!-- b002249 | prose | pages [12] -->
+m
+
+<!-- b002250 | prose | pages [12] -->
+m
+
+<!-- b002251 | prose | pages [12] -->
+m
+
+<!-- b002252 | prose | pages [12] -->
+m
+
+<!-- b002253 | prose | pages [12] -->
+m
+
+<!-- b002254 | prose | pages [12] -->
+m
+
+<!-- b002255 | prose | pages [12] -->
+m
+
+<!-- b002256 | prose | pages [12] -->
+m
+
+<!-- b002257 | prose | pages [12] -->
+m
+
+<!-- b002258 | prose | pages [12] -->
+m
+
+<!-- b002259 | prose | pages [12] -->
+m
+
+<!-- b002260 | prose | pages [12] -->
+m
+
+<!-- b002261 | prose | pages [12] -->
+m
+
+<!-- b002262 | prose | pages [12] -->
+m
+
+<!-- b002263 | prose | pages [12] -->
+m
+
+<!-- b002264 | prose | pages [12] -->
+m
+
+<!-- b002265 | prose | pages [12] -->
+m
+
+<!-- b002266 | prose | pages [12] -->
+m
+
+<!-- b002267 | prose | pages [12] -->
+m
+
+<!-- b002268 | prose | pages [12] -->
+m
+
+<!-- b002269 | prose | pages [12] -->
+m
+
+<!-- b002270 | prose | pages [12] -->
+m
+
+<!-- b002271 | prose | pages [12] -->
+m
+
+<!-- b002272 | prose | pages [12] -->
+m
+
+<!-- b002273 | prose | pages [12] -->
+m
+
+<!-- b002274 | prose | pages [12] -->
+m
+
+<!-- b002275 | prose | pages [12] -->
+m
+
+<!-- b002276 | prose | pages [12] -->
+m
+
+<!-- b002277 | prose | pages [12] -->
+m
+
+<!-- b002278 | prose | pages [12] -->
+m
+
+<!-- b002279 | prose | pages [12] -->
+m
+
+<!-- b002280 | prose | pages [12] -->
+m
+
+<!-- b002281 | prose | pages [12] -->
+m
+
+<!-- b002282 | prose | pages [12] -->
+m
+
+<!-- b002283 | prose | pages [12] -->
+m
+
+<!-- b002284 | prose | pages [12] -->
+m
+
+<!-- b002285 | prose | pages [12] -->
+m
+
+<!-- b002286 | prose | pages [12] -->
+m
+
+<!-- b002287 | prose | pages [12] -->
+m
+
+<!-- b002288 | prose | pages [12] -->
+m
+
+<!-- b002289 | prose | pages [12] -->
+m
+
+<!-- b002290 | prose | pages [12] -->
+m
+
+<!-- b002291 | prose | pages [12] -->
+m
+
+<!-- b002292 | prose | pages [12] -->
+m
+
+<!-- b002293 | prose | pages [12] -->
+m
+
+<!-- b002294 | prose | pages [12] -->
+m
+
+<!-- b002295 | prose | pages [12] -->
+m
+
+<!-- b002296 | prose | pages [12] -->
+m
+
+<!-- b002297 | prose | pages [12] -->
+m
+
+<!-- b002298 | prose | pages [12] -->
+m
+
+<!-- b002299 | prose | pages [12] -->
+m
+
+<!-- b002300 | prose | pages [12] -->
+m
+
+<!-- b002301 | prose | pages [12] -->
+m
+
+<!-- b002302 | prose | pages [12] -->
+m
+
+<!-- b002303 | prose | pages [12] -->
+m
+
+<!-- b002304 | prose | pages [12] -->
+m
+
+<!-- b002305 | prose | pages [12] -->
+m
+
+<!-- b002306 | prose | pages [12] -->
+m
+
+<!-- b002307 | prose | pages [12] -->
+m
+
+<!-- b002308 | prose | pages [12] -->
+m
+
+<!-- b002309 | prose | pages [12] -->
+m
+
+<!-- b002310 | prose | pages [12] -->
+m
+
+<!-- b002311 | prose | pages [12] -->
+m
+
+<!-- b002312 | prose | pages [12] -->
+m
+
+<!-- b002313 | prose | pages [12] -->
+m
+
+<!-- b002314 | prose | pages [12] -->
+m
+
+<!-- b002315 | prose | pages [12] -->
+m
+
+<!-- b002316 | prose | pages [12] -->
+m
+
+<!-- b002317 | prose | pages [12] -->
+m
+
+<!-- b002318 | prose | pages [12] -->
+m
+
+<!-- b002319 | prose | pages [12] -->
+m
+
+<!-- b002320 | prose | pages [12] -->
+m
+
+<!-- b002321 | prose | pages [12] -->
+m
+
+<!-- b002322 | prose | pages [12] -->
+m
+
+<!-- b002323 | prose | pages [12] -->
+m
+
+<!-- b002324 | prose | pages [12] -->
+m
+
+<!-- b002325 | prose | pages [12] -->
+m
+
+<!-- b002326 | prose | pages [12] -->
+m
+
+<!-- b002327 | prose | pages [12] -->
+m
+
+<!-- b002328 | prose | pages [12] -->
+m
+
+<!-- b002329 | prose | pages [12] -->
+m
+
+<!-- b002330 | prose | pages [12] -->
+m
+
+<!-- b002331 | prose | pages [12] -->
+m
+
+<!-- b002332 | prose | pages [12] -->
+m
+
+<!-- b002333 | prose | pages [12] -->
+m
+
+<!-- b002334 | prose | pages [12] -->
+m
+
+<!-- b002335 | prose | pages [12] -->
+m
+
+<!-- b002336 | prose | pages [12] -->
+m
+
+<!-- b002337 | prose | pages [12] -->
+m
+
+<!-- b002338 | prose | pages [12] -->
+m
+
+<!-- b002339 | prose | pages [12] -->
+m
+
+<!-- b002340 | prose | pages [12] -->
+m
+
+<!-- b002341 | prose | pages [12] -->
+m
+
+<!-- b002342 | prose | pages [12] -->
+m
+
+<!-- b002343 | prose | pages [12] -->
+m
+
+<!-- b002344 | prose | pages [12] -->
+m
+
+<!-- b002345 | prose | pages [12] -->
+m
+
+<!-- b002346 | prose | pages [12] -->
+m
+
+<!-- b002347 | prose | pages [12] -->
+m
+
+<!-- b002348 | prose | pages [12] -->
+m
+
+<!-- b002349 | prose | pages [12] -->
+m
+
+<!-- b002350 | prose | pages [12] -->
+m
+
+<!-- b002351 | prose | pages [12] -->
+m
+
+<!-- b002352 | prose | pages [12] -->
+m
+
+<!-- b002353 | prose | pages [12] -->
+m
+
+<!-- b002354 | prose | pages [12] -->
+m
+
+<!-- b002355 | prose | pages [12] -->
+m
+
+<!-- b002356 | prose | pages [12] -->
+m
+
+<!-- b002357 | prose | pages [12] -->
+m
+
+<!-- b002358 | prose | pages [12] -->
+m
+
+<!-- b002359 | prose | pages [12] -->
+m
+
+<!-- b002360 | prose | pages [12] -->
+m
+
+<!-- b002361 | prose | pages [12] -->
+m
+
+<!-- b002362 | prose | pages [12] -->
+m
+
+<!-- b002363 | prose | pages [12] -->
+m
+
+<!-- b002364 | prose | pages [12] -->
+m
+
+<!-- b002365 | prose | pages [12] -->
+m
+
+<!-- b002366 | prose | pages [12] -->
+m
+
+<!-- b002367 | prose | pages [12] -->
+m
+
+<!-- b002368 | prose | pages [12] -->
+m
+
+<!-- b002369 | prose | pages [12] -->
+m
+
+<!-- b002370 | prose | pages [12] -->
+m
+
+<!-- b002371 | prose | pages [12] -->
+m
+
+<!-- b002372 | prose | pages [12] -->
+m
+
+<!-- b002373 | prose | pages [12] -->
+m
+
+<!-- b002374 | prose | pages [12] -->
+m
+
+<!-- b002375 | prose | pages [12] -->
+m
+
+<!-- b002376 | prose | pages [12] -->
+m
+
+<!-- b002377 | prose | pages [12] -->
+m
+
+<!-- b002378 | prose | pages [12] -->
+m
+
+<!-- b002379 | prose | pages [12] -->
+m
+
+<!-- b002380 | prose | pages [12] -->
+m
+
+<!-- b002381 | prose | pages [12] -->
+m
+
+<!-- b002382 | prose | pages [12] -->
+m
+
+<!-- b002383 | prose | pages [12] -->
+m
+
+<!-- b002384 | prose | pages [12] -->
+m
+
+<!-- b002385 | prose | pages [12] -->
+m
+
+<!-- b002386 | prose | pages [12] -->
+m
+
+<!-- b002387 | prose | pages [12] -->
+m
+
+<!-- b002388 | prose | pages [12] -->
+m
+
+<!-- b002389 | prose | pages [12] -->
+m
+
+<!-- b002390 | prose | pages [12] -->
+m
+
+<!-- b002391 | prose | pages [12] -->
+m
+
+<!-- b002392 | prose | pages [12] -->
+m
+
+<!-- b002393 | prose | pages [12] -->
+m
+
+<!-- b002394 | prose | pages [12] -->
+m
+
+<!-- b002395 | prose | pages [12] -->
+m
+
+<!-- b002396 | prose | pages [12] -->
+m
+
+<!-- b002397 | prose | pages [12] -->
+m
+
+<!-- b002398 | prose | pages [12] -->
+m
+
+<!-- b002399 | prose | pages [12] -->
+m
+
+<!-- b002400 | prose | pages [12] -->
+m
+
+<!-- b002401 | prose | pages [12] -->
+m
+
+<!-- b002402 | prose | pages [12] -->
+m
+
+<!-- b002403 | prose | pages [12] -->
+m
+
+<!-- b002404 | prose | pages [12] -->
+m
+
+<!-- b002405 | prose | pages [12] -->
+m
+
+<!-- b002406 | prose | pages [12] -->
+m
+
+<!-- b002407 | prose | pages [12] -->
+m
+
+<!-- b002408 | prose | pages [12] -->
+m
+
+<!-- b002409 | prose | pages [12] -->
+m
+
+<!-- b002410 | prose | pages [12] -->
+m
+
+<!-- b002411 | prose | pages [12] -->
+m
+
+<!-- b002412 | prose | pages [12] -->
+m
+
+<!-- b002413 | prose | pages [12] -->
+m
+
+<!-- b002414 | prose | pages [12] -->
+m
+
+<!-- b002415 | prose | pages [12] -->
+m
+
+<!-- b002416 | prose | pages [12] -->
+m
+
+<!-- b002417 | prose | pages [12] -->
+m
+
+<!-- b002418 | prose | pages [12] -->
+m
+
+<!-- b002419 | prose | pages [12] -->
+m
+
+<!-- b002420 | prose | pages [12] -->
+m
+
+<!-- b002421 | prose | pages [12] -->
+m
+
+<!-- b002422 | prose | pages [12] -->
+m
+
+<!-- b002423 | prose | pages [12] -->
+m
+
+<!-- b002424 | prose | pages [12] -->
+m
+
+<!-- b002425 | furniture | pages [12] -->
+
+
+<!-- b002426 | prose | pages [12] -->
+∆V
+
+<!-- b002427 | prose | pages [12] -->
+m
+
+<!-- b002428 | prose | pages [12] -->
+m
+
+<!-- b002429 | prose | pages [12] -->
+m
+
+<!-- b002430 | prose | pages [12] -->
+m
+
+<!-- b002431 | prose | pages [12] -->
+m
+
+<!-- b002432 | prose | pages [12] -->
+m
+
+<!-- b002433 | prose | pages [12] -->
+m
+
+<!-- b002434 | prose | pages [12] -->
+m
+
+<!-- b002435 | prose | pages [12] -->
+m
+
+<!-- b002436 | prose | pages [12] -->
+m
+
+<!-- b002437 | prose | pages [12] -->
+m
+
+<!-- b002438 | prose | pages [12] -->
+m
+
+<!-- b002439 | prose | pages [12] -->
+m
+
+<!-- b002440 | prose | pages [12] -->
+m
+
+<!-- b002441 | prose | pages [12] -->
+m
+
+<!-- b002442 | prose | pages [12] -->
+m
+
+<!-- b002443 | prose | pages [12] -->
+m
+
+<!-- b002444 | prose | pages [12] -->
+m
+
+<!-- b002445 | prose | pages [12] -->
+m
+
+<!-- b002446 | prose | pages [12] -->
+m
+
+<!-- b002447 | prose | pages [12] -->
+m
+
+<!-- b002448 | prose | pages [12] -->
+m
+
+<!-- b002449 | prose | pages [12] -->
+m
+
+<!-- b002450 | prose | pages [12] -->
+m
+
+<!-- b002451 | prose | pages [12] -->
+m
+
+<!-- b002452 | prose | pages [12] -->
+m
+
+<!-- b002453 | prose | pages [12] -->
+m
+
+<!-- b002454 | prose | pages [12] -->
+m
+
+<!-- b002455 | prose | pages [12] -->
+m
+
+<!-- b002456 | prose | pages [12] -->
+m
+
+<!-- b002457 | prose | pages [12] -->
+m
+
+<!-- b002458 | prose | pages [12] -->
+m
+
+<!-- b002459 | prose | pages [12] -->
+m
+
+<!-- b002460 | prose | pages [12] -->
+m
+
+<!-- b002461 | prose | pages [12] -->
+m
+
+<!-- b002462 | prose | pages [12] -->
+m
+
+<!-- b002463 | prose | pages [12] -->
+m
+
+<!-- b002464 | prose | pages [12] -->
+m
+
+<!-- b002465 | prose | pages [12] -->
+m
+
+<!-- b002466 | prose | pages [12] -->
+m
+
+<!-- b002467 | prose | pages [12] -->
+m
+
+<!-- b002468 | prose | pages [12] -->
+m
+
+<!-- b002469 | prose | pages [12] -->
+m
+
+<!-- b002470 | prose | pages [12] -->
+m
+
+<!-- b002471 | prose | pages [12] -->
+m
+
+<!-- b002472 | prose | pages [12] -->
+m
+
+<!-- b002473 | prose | pages [12] -->
+m
+
+<!-- b002474 | prose | pages [12] -->
+m
+
+<!-- b002475 | prose | pages [12] -->
+m
+
+<!-- b002476 | prose | pages [12] -->
+m
+
+<!-- b002477 | prose | pages [12] -->
+m
+
+<!-- b002478 | prose | pages [12] -->
+m
+
+<!-- b002479 | prose | pages [12] -->
+m
+
+<!-- b002480 | prose | pages [12] -->
+m
+
+<!-- b002481 | prose | pages [12] -->
+m
+
+<!-- b002482 | prose | pages [12] -->
+m
+
+<!-- b002483 | prose | pages [12] -->
+m
+
+<!-- b002484 | prose | pages [12] -->
+m
+
+<!-- b002485 | prose | pages [12] -->
+m
+
+<!-- b002486 | prose | pages [12] -->
+m
+
+<!-- b002487 | prose | pages [12] -->
+m
+
+<!-- b002488 | prose | pages [12] -->
+m
+
+<!-- b002489 | prose | pages [12] -->
+m
+
+<!-- b002490 | prose | pages [12] -->
+m
+
+<!-- b002491 | prose | pages [12] -->
+m
+
+<!-- b002492 | prose | pages [12] -->
+m
+
+<!-- b002493 | prose | pages [12] -->
+m
+
+<!-- b002494 | prose | pages [12] -->
+m
+
+<!-- b002495 | prose | pages [12] -->
+m
+
+<!-- b002496 | prose | pages [12] -->
+m
+
+<!-- b002497 | prose | pages [12] -->
+m
+
+<!-- b002498 | prose | pages [12] -->
+m
+
+<!-- b002499 | prose | pages [12] -->
+m
+
+<!-- b002500 | prose | pages [12] -->
+m
+
+<!-- b002501 | prose | pages [12] -->
+m
+
+<!-- b002502 | prose | pages [12] -->
+= λ ln
+
+<!-- b002503 | prose | pages [12] -->
+m
+
+<!-- b002504 | prose | pages [12] -->
+m
+
+<!-- b002505 | prose | pages [12] -->
+m
+
+<!-- b002506 | prose | pages [12] -->
+m
+
+<!-- b002507 | prose | pages [12] -->
+m
+
+<!-- b002508 | prose | pages [12] -->
+m
+
+<!-- b002509 | prose | pages [12] -->
+m
+
+<!-- b002510 | prose | pages [12] -->
+m
+
+<!-- b002511 | prose | pages [12] -->
+m
+
+<!-- b002512 | prose | pages [12] -->
+m
+
+<!-- b002513 | prose | pages [12] -->
+m
+
+<!-- b002514 | prose | pages [12] -->
+m
+
+<!-- b002515 | prose | pages [12] -->
+m
+
+<!-- b002516 | prose | pages [12] -->
+m
+
+<!-- b002517 | prose | pages [12] -->
+m
+
+<!-- b002518 | prose | pages [12] -->
+m
+
+<!-- b002519 | prose | pages [12] -->
+m
+
+<!-- b002520 | prose | pages [12] -->
+m
+
+<!-- b002521 | prose | pages [12] -->
+m
+
+<!-- b002522 | prose | pages [12] -->
+m
+
+<!-- b002523 | prose | pages [12] -->
+m
+
+<!-- b002524 | prose | pages [12] -->
+m
+
+<!-- b002525 | prose | pages [12] -->
+m
+
+<!-- b002526 | prose | pages [12] -->
+m
+
+<!-- b002527 | prose | pages [12] -->
+m
+
+<!-- b002528 | prose | pages [12] -->
+m
+
+<!-- b002529 | prose | pages [12] -->
+m
+
+<!-- b002530 | prose | pages [12] -->
+m
+
+<!-- b002531 | prose | pages [12] -->
+m
+
+<!-- b002532 | prose | pages [12] -->
+m
+
+<!-- b002533 | prose | pages [12] -->
+m
+
+<!-- b002534 | prose | pages [12] -->
+m
+
+<!-- b002535 | prose | pages [12] -->
+m
+
+<!-- b002536 | prose | pages [12] -->
+m
+
+<!-- b002537 | prose | pages [12] -->
+m
+
+<!-- b002538 | prose | pages [12] -->
+m
+
+<!-- b002539 | prose | pages [12] -->
+m
+
+<!-- b002540 | prose | pages [12] -->
+m
+
+<!-- b002541 | prose | pages [12] -->
+m
+
+<!-- b002542 | prose | pages [12] -->
+m
+
+<!-- b002543 | prose | pages [12] -->
+m
+
+<!-- b002544 | prose | pages [12] -->
+m
+
+<!-- b002545 | prose | pages [12] -->
+m
+
+<!-- b002546 | prose | pages [12] -->
+m
+
+<!-- b002547 | prose | pages [12] -->
+m
+
+<!-- b002548 | prose | pages [12] -->
+m
+
+<!-- b002549 | prose | pages [12] -->
+m
+
+<!-- b002550 | prose | pages [12] -->
+m
+
+<!-- b002551 | prose | pages [12] -->
+m
+
+<!-- b002552 | prose | pages [12] -->
+m
+
+<!-- b002553 | prose | pages [12] -->
+m
+
+<!-- b002554 | prose | pages [12] -->
+m
+
+<!-- b002555 | prose | pages [12] -->
+m
+
+<!-- b002556 | prose | pages [12] -->
+m
+
+<!-- b002557 | prose | pages [12] -->
+m
+
+<!-- b002558 | prose | pages [12] -->
+m
+
+<!-- b002559 | prose | pages [12] -->
+m
+
+<!-- b002560 | prose | pages [12] -->
+m
+
+<!-- b002561 | prose | pages [12] -->
+m
+
+<!-- b002562 | prose | pages [12] -->
+m
+
+<!-- b002563 | prose | pages [12] -->
+m
+
+<!-- b002564 | prose | pages [12] -->
+m
+
+<!-- b002565 | prose | pages [12] -->
+m
+
+<!-- b002566 | prose | pages [12] -->
+m
+
+<!-- b002567 | prose | pages [12] -->
+m
+
+<!-- b002568 | prose | pages [12] -->
+m
+
+<!-- b002569 | prose | pages [12] -->
+m
+
+<!-- b002570 | prose | pages [12] -->
+m
+
+<!-- b002571 | prose | pages [12] -->
+m
+
+<!-- b002572 | prose | pages [12] -->
+m
+
+<!-- b002573 | prose | pages [12] -->
+m
+
+<!-- b002574 | prose | pages [12] -->
+m
+
+<!-- b002575 | prose | pages [12] -->
+m
+
+<!-- b002576 | prose | pages [12] -->
+m
+
+<!-- b002577 | prose | pages [12] -->
+m
+
+<!-- b002578 | prose | pages [12] -->
+m
+
+<!-- b002579 | prose | pages [12] -->
+m
+
+<!-- b002580 | prose | pages [12] -->
+m
+
+<!-- b002581 | prose | pages [12] -->
+m
+
+<!-- b002582 | prose | pages [12] -->
+m
+
+<!-- b002583 | prose | pages [12] -->
+m
+
+<!-- b002584 | prose | pages [12] -->
+m
+
+<!-- b002585 | prose | pages [12] -->
+m
+
+<!-- b002586 | prose | pages [12] -->
+m
+
+<!-- b002587 | prose | pages [12] -->
+m
+
+<!-- b002588 | prose | pages [12] -->
+m
+
+<!-- b002589 | prose | pages [12] -->
+V0
+
+<!-- b002590 | prose | pages [12] -->
+m
+
+<!-- b002591 | prose | pages [12] -->
+m
+
+<!-- b002592 | prose | pages [12] -->
+m
+
+<!-- b002593 | prose | pages [12] -->
+m
+
+<!-- b002594 | prose | pages [12] -->
+m
+
+<!-- b002595 | prose | pages [12] -->
+m
+
+<!-- b002596 | prose | pages [12] -->
+m
+
+<!-- b002597 | prose | pages [12] -->
+m
+
+<!-- b002598 | prose | pages [12] -->
+m
+
+<!-- b002599 | prose | pages [12] -->
+m
+
+<!-- b002600 | prose | pages [12] -->
+m
+
+<!-- b002601 | prose | pages [12] -->
+m
+
+<!-- b002602 | prose | pages [12] -->
+m
+
+<!-- b002603 | prose | pages [12] -->
+m
+
+<!-- b002604 | prose | pages [12] -->
+m
+
+<!-- b002605 | prose | pages [12] -->
+m
+
+<!-- b002606 | prose | pages [12] -->
+m
+
+<!-- b002607 | prose | pages [12] -->
+m
+
+<!-- b002608 | prose | pages [12] -->
+m
+
+<!-- b002609 | prose | pages [12] -->
+m
+
+<!-- b002610 | prose | pages [12] -->
+m
+
+<!-- b002611 | prose | pages [12] -->
+m
+
+<!-- b002612 | prose | pages [12] -->
+m
+
+<!-- b002613 | prose | pages [12] -->
+m
+
+<!-- b002614 | prose | pages [12] -->
+m
+
+<!-- b002615 | prose | pages [12] -->
+m
+
+<!-- b002616 | prose | pages [12] -->
+m
+
+<!-- b002617 | prose | pages [12] -->
+m
+
+<!-- b002618 | prose | pages [12] -->
+m
+
+<!-- b002619 | prose | pages [12] -->
+m
+
+<!-- b002620 | prose | pages [12] -->
+m
+
+<!-- b002621 | prose | pages [12] -->
+m
+
+<!-- b002622 | prose | pages [12] -->
+m
+
+<!-- b002623 | prose | pages [12] -->
+m
+
+<!-- b002624 | prose | pages [12] -->
+m
+
+<!-- b002625 | prose | pages [12] -->
+m
+
+<!-- b002626 | prose | pages [12] -->
+m
+
+<!-- b002627 | prose | pages [12] -->
+m
+
+<!-- b002628 | prose | pages [12] -->
+m
+
+<!-- b002629 | prose | pages [12] -->
+m
+
+<!-- b002630 | prose | pages [12] -->
+m
+
+<!-- b002631 | prose | pages [12] -->
+m
+
+<!-- b002632 | prose | pages [12] -->
+m
+
+<!-- b002633 | prose | pages [12] -->
+m
+
+<!-- b002634 | prose | pages [12] -->
+m
+
+<!-- b002635 | prose | pages [12] -->
+m
+
+<!-- b002636 | prose | pages [12] -->
+m
+
+<!-- b002637 | prose | pages [12] -->
+m
+
+<!-- b002638 | prose | pages [12] -->
+m
+
+<!-- b002639 | prose | pages [12] -->
+m
+
+<!-- b002640 | prose | pages [12] -->
+m
+
+<!-- b002641 | prose | pages [12] -->
+m
+
+<!-- b002642 | prose | pages [12] -->
+m
+
+<!-- b002643 | prose | pages [12] -->
+m
+
+<!-- b002644 | prose | pages [12] -->
+m
+
+<!-- b002645 | prose | pages [12] -->
+m
+
+<!-- b002646 | prose | pages [12] -->
+m
+
+<!-- b002647 | prose | pages [12] -->
+m
+
+<!-- b002648 | prose | pages [12] -->
+m
+
+<!-- b002649 | prose | pages [12] -->
+m
+
+<!-- b002650 | prose | pages [12] -->
+m
+
+<!-- b002651 | prose | pages [12] -->
+m
+
+<!-- b002652 | prose | pages [12] -->
+m
+
+<!-- b002653 | prose | pages [12] -->
+m
+
+<!-- b002654 | prose | pages [12] -->
+m
+
+<!-- b002655 | prose | pages [12] -->
+m
+
+<!-- b002656 | prose | pages [12] -->
+m
+
+<!-- b002657 | prose | pages [12] -->
+m
+
+<!-- b002658 | prose | pages [12] -->
+m
+
+<!-- b002659 | prose | pages [12] -->
+m
+
+<!-- b002660 | prose | pages [12] -->
+m
+
+<!-- b002661 | prose | pages [12] -->
+m
+
+<!-- b002662 | prose | pages [12] -->
+m
+
+<!-- b002663 | prose | pages [12] -->
+m
+
+<!-- b002664 | prose | pages [12] -->
+m
+
+<!-- b002665 | prose | pages [12] -->
+m
+
+<!-- b002666 | prose | pages [12] -->
+m
+
+<!-- b002667 | prose | pages [12] -->
+m
+
+<!-- b002668 | prose | pages [12] -->
+m
+
+<!-- b002669 | prose | pages [12] -->
+m
+
+<!-- b002670 | prose | pages [12] -->
+m
+
+<!-- b002671 | prose | pages [12] -->
+m
+
+<!-- b002672 | prose | pages [12] -->
+m
+
+<!-- b002673 | prose | pages [12] -->
+m
+
+<!-- b002674 | prose | pages [12] -->
+m
+
+<!-- b002675 | prose | pages [12] -->
+m
+
+<!-- b002676 | prose | pages [12] -->
+m
+
+<!-- b002677 | prose | pages [12] -->
+m
+
+<!-- b002678 | prose | pages [12] -->
+m
+
+<!-- b002679 | prose | pages [12] -->
+m
+
+<!-- b002680 | prose | pages [12] -->
+m
+
+<!-- b002681 | prose | pages [12] -->
+m
+
+<!-- b002682 | prose | pages [12] -->
+m
+
+<!-- b002683 | prose | pages [12] -->
+m
+
+<!-- b002684 | prose | pages [12] -->
+m
+
+<!-- b002685 | prose | pages [12] -->
+m
+
+<!-- b002686 | prose | pages [12] -->
+m
+
+<!-- b002687 | prose | pages [12] -->
+m
+
+<!-- b002688 | prose | pages [12] -->
+m
+
+<!-- b002689 | prose | pages [12] -->
+m
+
+<!-- b002690 | prose | pages [12] -->
+m
+
+<!-- b002691 | prose | pages [12] -->
+m
+
+<!-- b002692 | prose | pages [12] -->
+m
+
+<!-- b002693 | prose | pages [12] -->
+m
+
+<!-- b002694 | prose | pages [12] -->
+m
+
+<!-- b002695 | prose | pages [12] -->
+m
+
+<!-- b002696 | prose | pages [12] -->
+m
+
+<!-- b002697 | prose | pages [12] -->
+m
+
+<!-- b002698 | prose | pages [12] -->
+m
+
+<!-- b002699 | prose | pages [12] -->
+m
+
+<!-- b002700 | prose | pages [12] -->
+m
+
+<!-- b002701 | prose | pages [12] -->
+m
+
+<!-- b002702 | prose | pages [12] -->
+m
+
+<!-- b002703 | prose | pages [12] -->
+m
+
+<!-- b002704 | prose | pages [12] -->
+m
+
+<!-- b002705 | prose | pages [12] -->
+m
+
+<!-- b002706 | prose | pages [12] -->
+m
+
+<!-- b002707 | prose | pages [12] -->
+m
+
+<!-- b002708 | prose | pages [12] -->
+m
+
+<!-- b002709 | prose | pages [12] -->
+m
+
+<!-- b002710 | prose | pages [12] -->
+m
+
+<!-- b002711 | prose | pages [12] -->
+m
+
+<!-- b002712 | prose | pages [12] -->
+m
+
+<!-- b002713 | prose | pages [12] -->
+m
+
+<!-- b002714 | prose | pages [12] -->
+m
+
+<!-- b002715 | prose | pages [12] -->
+m
+
+<!-- b002716 | prose | pages [12] -->
+m
+
+<!-- b002717 | prose | pages [12] -->
+m
+
+<!-- b002718 | prose | pages [12] -->
+m
+
+<!-- b002719 | prose | pages [12] -->
+m
+
+<!-- b002720 | prose | pages [12] -->
+m
+
+<!-- b002721 | prose | pages [12] -->
+m
+
+<!-- b002722 | prose | pages [12] -->
+m
+
+<!-- b002723 | prose | pages [12] -->
+m
+
+<!-- b002724 | prose | pages [12] -->
+m
+
+<!-- b002725 | prose | pages [12] -->
+m
+
+<!-- b002726 | prose | pages [12] -->
+m
+
+<!-- b002727 | prose | pages [12] -->
+m
+
+<!-- b002728 | prose | pages [12] -->
+m
+
+<!-- b002729 | prose | pages [12] -->
+m
+
+<!-- b002730 | prose | pages [12] -->
+m
+
+<!-- b002731 | prose | pages [12] -->
+m
+
+<!-- b002732 | prose | pages [12] -->
+m
+
+<!-- b002733 | prose | pages [12] -->
+m
+
+<!-- b002734 | prose | pages [12] -->
+m
+
+<!-- b002735 | prose | pages [12] -->
+m
+
+<!-- b002736 | prose | pages [12] -->
+m
+
+<!-- b002737 | prose | pages [12] -->
+m
+
+<!-- b002738 | prose | pages [12] -->
+m
+
+<!-- b002739 | prose | pages [12] -->
+m
+
+<!-- b002740 | prose | pages [12] -->
+m
+
+<!-- b002741 | prose | pages [12] -->
+m
+
+<!-- b002742 | prose | pages [12] -->
+m
+
+<!-- b002743 | prose | pages [12] -->
+m
+
+<!-- b002744 | prose | pages [12] -->
+m
+
+<!-- b002745 | prose | pages [12] -->
+m
+
+<!-- b002746 | prose | pages [12] -->
+m
+
+<!-- b002747 | prose | pages [12] -->
+m
+
+<!-- b002748 | prose | pages [12] -->
+m
+
+<!-- b002749 | prose | pages [12] -->
+m
+
+<!-- b002750 | prose | pages [12] -->
+m
+
+<!-- b002751 | prose | pages [12] -->
+m
+
+<!-- b002752 | prose | pages [12] -->
+m
+
+<!-- b002753 | prose | pages [12] -->
+m
+
+<!-- b002754 | prose | pages [12] -->
+m
+
+<!-- b002755 | prose | pages [12] -->
+m
+
+<!-- b002756 | prose | pages [12] -->
+m
+
+<!-- b002757 | prose | pages [12] -->
+m
+
+<!-- b002758 | prose | pages [12] -->
+m
+
+<!-- b002759 | prose | pages [12] -->
+m
+
+<!-- b002760 | prose | pages [12] -->
+m
+
+<!-- b002761 | prose | pages [12] -->
+m
+
+<!-- b002762 | prose | pages [12] -->
+m
+
+<!-- b002763 | prose | pages [12] -->
+m
+
+<!-- b002764 | prose | pages [12] -->
+m
+
+<!-- b002765 | prose | pages [12] -->
+m
+
+<!-- b002766 | prose | pages [12] -->
+m
+
+<!-- b002767 | prose | pages [12] -->
+m
+
+<!-- b002768 | prose | pages [12] -->
+m
+
+<!-- b002769 | prose | pages [12] -->
+m
+
+<!-- b002770 | prose | pages [12] -->
+m
+
+<!-- b002771 | prose | pages [12] -->
+m
+
+<!-- b002772 | prose | pages [12] -->
+m
+
+<!-- b002773 | prose | pages [12] -->
+m
+
+<!-- b002774 | prose | pages [12] -->
+!
+
+<!-- b002775 | prose | pages [12] -->
+1 + ∆ECO2
+
+<!-- b002776 | prose | pages [12] -->
+(12)
+
+<!-- b002777 | prose | pages [12] -->
+C0
+
+<!-- b002778 | prose | pages [12] -->
+where ECO2 represents the total carbon emissions from each scenic area in Juneau City, C0
+
+<!-- b002779 | prose | pages [12] -->
+m
+
+<!-- b002780 | prose | pages [12] -->
+m
+
+<!-- b002781 | prose | pages [12] -->
+m
+
+<!-- b002782 | prose | pages [12] -->
+m
+
+<!-- b002783 | prose | pages [12] -->
+m
+
+<!-- b002784 | prose | pages [12] -->
+m
+
+<!-- b002785 | prose | pages [12] -->
+m
+
+<!-- b002786 | prose | pages [12] -->
+m
+
+<!-- b002787 | prose | pages [12] -->
+m
+
+<!-- b002788 | prose | pages [12] -->
+m
+
+<!-- b002789 | prose | pages [12] -->
+m
+
+<!-- b002790 | prose | pages [12] -->
+m
+
+<!-- b002791 | prose | pages [12] -->
+m
+
+<!-- b002792 | prose | pages [12] -->
+m
+
+<!-- b002793 | prose | pages [12] -->
+m
+
+<!-- b002794 | prose | pages [12] -->
+m
+
+<!-- b002795 | prose | pages [12] -->
+m
+
+<!-- b002796 | prose | pages [12] -->
+m
+
+<!-- b002797 | prose | pages [12] -->
+m
+
+<!-- b002798 | prose | pages [12] -->
+m
+
+<!-- b002799 | prose | pages [12] -->
+m
+
+<!-- b002800 | prose | pages [12] -->
+m
+
+<!-- b002801 | prose | pages [12] -->
+m
+
+<!-- b002802 | prose | pages [12] -->
+m
+
+<!-- b002803 | prose | pages [12] -->
+m
+
+<!-- b002804 | prose | pages [12] -->
+m
+
+<!-- b002805 | prose | pages [12] -->
+m
+
+<!-- b002806 | prose | pages [12] -->
+m
+
+<!-- b002807 | prose | pages [12] -->
+m
+
+<!-- b002808 | prose | pages [12] -->
+m
+
+<!-- b002809 | prose | pages [12] -->
+m
+
+<!-- b002810 | prose | pages [12] -->
+m
+
+<!-- b002811 | prose | pages [12] -->
+m
+
+<!-- b002812 | prose | pages [12] -->
+m
+
+<!-- b002813 | prose | pages [12] -->
+m
+
+<!-- b002814 | prose | pages [12] -->
+m
+
+<!-- b002815 | prose | pages [12] -->
+m
+
+<!-- b002816 | prose | pages [12] -->
+m
+
+<!-- b002817 | prose | pages [12] -->
+m
+
+<!-- b002818 | prose | pages [12] -->
+m
+
+<!-- b002819 | prose | pages [12] -->
+m
+
+<!-- b002820 | prose | pages [12] -->
+m
+
+<!-- b002821 | prose | pages [12] -->
+m
+
+<!-- b002822 | prose | pages [12] -->
+m
+
+<!-- b002823 | prose | pages [12] -->
+m
+
+<!-- b002824 | prose | pages [12] -->
+m
+
+<!-- b002825 | prose | pages [12] -->
+m
+
+<!-- b002826 | prose | pages [12] -->
+m
+
+<!-- b002827 | prose | pages [12] -->
+m
+
+<!-- b002828 | prose | pages [12] -->
+m
+
+<!-- b002829 | prose | pages [12] -->
+m
+
+<!-- b002830 | prose | pages [12] -->
+m
+
+<!-- b002831 | prose | pages [12] -->
+m
+
+<!-- b002832 | prose | pages [12] -->
+m
+
+<!-- b002833 | prose | pages [12] -->
+m
+
+<!-- b002834 | prose | pages [12] -->
+m
+
+<!-- b002835 | prose | pages [12] -->
+m
+
+<!-- b002836 | prose | pages [12] -->
+m
+
+<!-- b002837 | prose | pages [12] -->
+m
+
+<!-- b002838 | prose | pages [12] -->
+m
+
+<!-- b002839 | prose | pages [12] -->
+m
+
+<!-- b002840 | prose | pages [12] -->
+m
+
+<!-- b002841 | prose | pages [12] -->
+m
+
+<!-- b002842 | prose | pages [12] -->
+m
+
+<!-- b002843 | prose | pages [12] -->
+m
+
+<!-- b002844 | prose | pages [12] -->
+m
+
+<!-- b002845 | prose | pages [12] -->
+m
+
+<!-- b002846 | prose | pages [12] -->
+m
+
+<!-- b002847 | prose | pages [12] -->
+m
+
+<!-- b002848 | prose | pages [12] -->
+m
+
+<!-- b002849 | prose | pages [12] -->
+m
+
+<!-- b002850 | prose | pages [12] -->
+m
+
+<!-- b002851 | prose | pages [12] -->
+m
+
+<!-- b002852 | prose | pages [12] -->
+m
+
+<!-- b002853 | prose | pages [12] -->
+m
+
+<!-- b002854 | prose | pages [12] -->
+m
+
+<!-- b002855 | prose | pages [12] -->
+m
+
+<!-- b002856 | prose | pages [12] -->
+m
+
+<!-- b002857 | prose | pages [12] -->
+m
+
+<!-- b002858 | prose | pages [12] -->
+m
+
+<!-- b002859 | prose | pages [12] -->
+m
+
+<!-- b002860 | prose | pages [12] -->
+m
+
+<!-- b002861 | prose | pages [12] -->
+m
+
+<!-- b002862 | prose | pages [12] -->
+m
+
+<!-- b002863 | prose | pages [12] -->
+m
+
+<!-- b002864 | prose | pages [12] -->
+m
+
+<!-- b002865 | prose | pages [12] -->
+m
+
+<!-- b002866 | prose | pages [12] -->
+m
+
+<!-- b002867 | prose | pages [12] -->
+m
+
+<!-- b002868 | prose | pages [12] -->
+m
+
+<!-- b002869 | prose | pages [12] -->
+m
+
+<!-- b002870 | prose | pages [12] -->
+m
+
+<!-- b002871 | prose | pages [12] -->
+m
+
+<!-- b002872 | prose | pages [12] -->
+m
+
+<!-- b002873 | prose | pages [12] -->
+m
+
+<!-- b002874 | prose | pages [12] -->
+m
+
+<!-- b002875 | prose | pages [12] -->
+m
+
+<!-- b002876 | prose | pages [12] -->
+m
+
+<!-- b002877 | prose | pages [12] -->
+m
+
+<!-- b002878 | prose | pages [12] -->
+m
+
+<!-- b002879 | prose | pages [12] -->
+m
+
+<!-- b002880 | prose | pages [12] -->
+m
+
+<!-- b002881 | prose | pages [12] -->
+m
+
+<!-- b002882 | prose | pages [12] -->
+m
+
+<!-- b002883 | prose | pages [12] -->
+m
+
+<!-- b002884 | prose | pages [12] -->
+m
+
+<!-- b002885 | prose | pages [12] -->
+m
+
+<!-- b002886 | prose | pages [12] -->
+m
+
+<!-- b002887 | prose | pages [12] -->
+m
+
+<!-- b002888 | prose | pages [12] -->
+m
+
+<!-- b002889 | prose | pages [12] -->
+m
+
+<!-- b002890 | prose | pages [12] -->
+m
+
+<!-- b002891 | prose | pages [12] -->
+m
+
+<!-- b002892 | prose | pages [12] -->
+m
+
+<!-- b002893 | prose | pages [12] -->
+m
+
+<!-- b002894 | prose | pages [12] -->
+m
+
+<!-- b002895 | prose | pages [12] -->
+m
+
+<!-- b002896 | prose | pages [12] -->
+m
+
+<!-- b002897 | prose | pages [12] -->
+m
+
+<!-- b002898 | prose | pages [12] -->
+m
+
+<!-- b002899 | prose | pages [12] -->
+m
+
+<!-- b002900 | prose | pages [12] -->
+m
+
+<!-- b002901 | prose | pages [12] -->
+m
+
+<!-- b002902 | prose | pages [12] -->
+m
+
+<!-- b002903 | prose | pages [12] -->
+m
+
+<!-- b002904 | prose | pages [12] -->
+m
+
+<!-- b002905 | prose | pages [12] -->
+m
+
+<!-- b002906 | prose | pages [12] -->
+m
+
+<!-- b002907 | prose | pages [12] -->
+m
+
+<!-- b002908 | prose | pages [12] -->
+m
+
+<!-- b002909 | prose | pages [12] -->
+represents the air carbon dioxide concentration in Juneau City in 2023, and λ represents the climate
+
+<!-- b002910 | prose | pages [12] -->
+m
+
+<!-- b002911 | prose | pages [12] -->
+m
+
+<!-- b002912 | prose | pages [12] -->
+m
+
+<!-- b002913 | prose | pages [12] -->
+m
+
+<!-- b002914 | prose | pages [12] -->
+m
+
+<!-- b002915 | prose | pages [12] -->
+m
+
+<!-- b002916 | prose | pages [12] -->
+m
+
+<!-- b002917 | prose | pages [12] -->
+m
+
+<!-- b002918 | prose | pages [12] -->
+m
+
+<!-- b002919 | prose | pages [12] -->
+m
+
+<!-- b002920 | prose | pages [12] -->
+m
+
+<!-- b002921 | prose | pages [12] -->
+m
+
+<!-- b002922 | prose | pages [12] -->
+m
+
+<!-- b002923 | prose | pages [12] -->
+m
+
+<!-- b002924 | prose | pages [12] -->
+m
+
+<!-- b002925 | prose | pages [12] -->
+m
+
+<!-- b002926 | prose | pages [12] -->
+m
+
+<!-- b002927 | prose | pages [12] -->
+m
+
+<!-- b002928 | prose | pages [12] -->
+m
+
+<!-- b002929 | prose | pages [12] -->
+m
+
+<!-- b002930 | prose | pages [12] -->
+m
+
+<!-- b002931 | prose | pages [12] -->
+m
+
+<!-- b002932 | prose | pages [12] -->
+m
+
+<!-- b002933 | prose | pages [12] -->
+m
+
+<!-- b002934 | prose | pages [12] -->
+m
+
+<!-- b002935 | prose | pages [12] -->
+sensitivity, which is usually taken as 0.8◦C/(W/m2).
+
+<!-- b002936 | prose | pages [12] -->
+It can be seen from the above equation that the retreat of Mendenhall glacier is mainly related to carbon emission. In addition, in order to prevent over-parameterization, this formula is only used to predict the melting rate of glacier, and it is not added to the environmental benefit evaluation model, but replaced by carbon emission.
+
+<!-- b002937 | prose | pages [12] -->
+In the process of carbon footprint accounting, we take into account that changes in the number of visitors to different attractions may lead to different carbon emissions, and analyze the carbon emissions of different attractions separately, so as to measure the impact of the growth in the number of visitors on the environment. According to the McKinsey Marginal Emission Reduction Curve[18], the carbon emissions from visitors to each attraction can be derived as follows
+
+<!-- b002938 | prose | pages [12] -->
+(13) Eci = γ × (riNt)2
+
+<!-- b002939 | prose | pages [12] -->
+where γ represents the average carbon emissions generated by each tourist, and ri represents the proportion of tourists visiting the i-th attraction out of the total number of tourists. According to the statistics[3], we think the value of r is {0.2, 0.2, 0.6}, among these, 0.6 is the proportion of tourists going to the glacier.
+
+<!-- b002940 | prose | pages [12] -->
+From this, the total carbon emissions from the sites in Juneau can be expressed as
+
+<!-- b002941 | prose | pages [12] -->
+Eco2 =
+
+<!-- b002942 | prose | pages [12] -->
+(14)
+
+<!-- b002943 | prose | pages [12] -->
+X
+
+<!-- b002944 | prose | pages [12] -->
+Eci
+
+<!-- b002945 | prose | pages [12] -->
+i
+
+<!-- b002946 | prose | pages [12] -->
+where Eci represents the carbon emissions from managing the i-th tourist attraction, and the equation calculates the total decentralized carbon emissions Eco2 by taking the sum of the individual emission costs.
+
+<!-- b002947 | prose | pages [12] -->
+关注数学模型
+
+<!-- b002948 | furniture | pages [12] -->
+2
+
+<!-- b002949 | furniture | pages [12] -->
+MATHmodels
+
+<!-- b002950 | furniture | pages [12] -->
+获取更多资讯
+
+<!-- b002951 | furniture | pages [13] -->
+Team # 2502617
+
+<!-- b002952 | furniture | pages [13] -->
+Page 13 of 25
+
+<!-- b002953 | prose | pages [13] -->
+4.3.2 Monetization of Carbon Footprint
+
+<!-- b002954 | prose | pages [13] -->
+Municipal revenues increase when the number of tourists increases. However, environmental
+
+<!-- b002955 | prose | pages [13] -->
+微信公众号：数学模型
+
+<!-- b002956 | prose | pages [13] -->
+benefits decrease as CO2 emissions increase. To ensure the sustainability of tourism development at the attraction, the hidden environmental management costs of the municipality rise.
+
+<!-- b002957 | prose | pages [13] -->
+In the carbon footprint economic analysis model, for Cenv, we use tax to reflect the government’s additional revenue; for CCO2, firstly estimate the virtual cost equivalent per unit of carbon emissions, and then calculate the potential economic loss due to environmental pollution. Specifically, the model we use is shown below 
+
+<!-- b002958 | prose | pages [13] -->
+A2t Cenv = Nt ·
+
+<!-- b002959 | prose | pages [13] -->
+ 
+
+<!-- b002960 | prose | pages [13] -->
+(15)
+
+<!-- b002961 | prose | pages [13] -->
+1 + ek2t CCO2 = CperCECO2
+
+<!-- b002962 | prose | pages [13] -->
+ 
+
+<!-- b002963 | prose | pages [13] -->
+where CperC represents the virtual economic cost corresponding to a unit of CO2 emissions, A2
+
+<!-- b002964 | prose | pages [13] -->
+微信号：MATHmodels
+
+<!-- b002965 | prose | pages [13] -->
+represents the proportion of tax revenues used to improve the environment, and k2 represents the elasticity adjustment coefficient, which indicates that as tax revenues increase, their effect in environmental management tends to be saturated.
+
+<!-- b002966 | prose | pages [13] -->
+4.3.3 Overall Environmental Performance
+
+<!-- b002967 | prose | pages [13] -->
+The presented environmental impact model integrates two critical nonlinear dynamics to quan- tify tourism sustainability. The formulation exhibits a dual structure balancing government-led environmental investments against dispersed carbon emission costs. The environmental gover- nance component Cenv reflects diminishing returns on tax-funded ecological improvements as expenditures increase —— a mechanism preventing over-reliance on financial solutions.
+
+<!-- b002968 | caption | pages [13] -->
+Figure 6: Environmental benefits - Schematic Minimization of Environmental Impact Analysis
+
+<!-- b002969 | prose | pages [13] -->
+Conversely, the carbon cost aggregation CCO2 inherently penalizes concentrated tourism pat- terns through its quadratic summation structure. This mathematical design creates an optimization landscape where effective environmental management requires both strategic fiscal allocation and tourist flow distribution.
+
+<!-- b002970 | furniture | pages [14] -->
+Team # 2502617
+
+<!-- b002971 | furniture | pages [14] -->
+Page 14 of 25
+
+<!-- b002972 | prose | pages [14] -->
+The model’s nonlinear interactions emphasize that simply increasing environmental spending becomes progressively less effective, while carbon costs grow disproportionately with visitor con- centration, demanding balanced spatial-temporal management of tourism resources for sustainable outcomes.
+
+<!-- b002973 | heading | pages [14] -->
+Pareto Optimal Solution for Total benefit
+
+<!-- b002974 | prose | pages [14] -->
+4.4
+
+<!-- b002975 | prose | pages [14] -->
+From the analysis in the preceding three sections, expressions for economic, social, and en- vironmental benefits can be derived respectively. The total benefit is formulated as a weighted average of these three dimensions, yielding the following optimization objective:
+
+<!-- b002976 | prose | pages [14] -->
+max E = CGi −CGc
+
+<!-- b002977 | prose | pages [14] -->
+  
+
+<!-- b002978 | prose | pages [14] -->
+max S = s × Cadd
+
+<!-- b002979 | prose | pages [14] -->
+ 
+
+<!-- b002980 | prose | pages [14] -->
+(16)
+
+<!-- b002981 | prose | pages [14] -->
+min Env = Cco2 −Cenv
+
+<!-- b002982 | prose | pages [14] -->
+  
+
+<!-- b002983 | prose | pages [14] -->
+max T = ω1E + ω2S −ω3Env
+
+<!-- b002984 | prose | pages [14] -->
+
+
+<!-- b002985 | prose | pages [14] -->
+where ωi(i = 1, 2, 3) is the weight of three benefits.
+
+<!-- b002986 | prose | pages [14] -->
+Additionally, the constraints are formulated as follows:
+
+<!-- b002987 | prose | pages [14] -->
+
+
+<!-- b002988 | prose | pages [14] -->
+E > 0
+
+<!-- b002989 | prose | pages [14] -->
+  
+
+<!-- b002990 | prose | pages [14] -->
+S > Smin
+
+<!-- b002991 | prose | pages [14] -->
+   
+
+<!-- b002992 | prose | pages [14] -->
+(17)
+
+<!-- b002993 | prose | pages [14] -->
+Env < 0
+
+<!-- b002994 | prose | pages [14] -->
+st.
+
+<!-- b002995 | prose | pages [14] -->
+T > 0
+
+<!-- b002996 | prose | pages [14] -->
+    
+
+<!-- b002997 | prose | pages [14] -->
+Ntmax > Nt > 0
+
+<!-- b002998 | prose | pages [14] -->
+ 
+
+<!-- b002999 | prose | pages [14] -->
+where Ntmax denotes the maximum tourist capacity, which can be set to the 2023 tourist volume(i.e., 1.67 million); where Smin denotes the minimum social benefit that Juneau can sustain, based on the social benefit in 2023 and calculated using the parameters from 2023 according to the aforementioned formula.
+
+<!-- b003000 | prose | pages [14] -->
+4.4.1 Determination of Weight Value
+
+<!-- b003001 | prose | pages [14] -->
+The weights for economic, social, and environmental benefits are derived from state-level reference metrics: U.S. state GDP rankings[19], cost-of-living rankings by the Missouri Economic Research and Information Center (MERIC)[20], and Yale University’s state-level Environmental Performance Index (EPI) rankings[21]. This methodology assumes that a lower ranking (denoted as rki, which i means the i-th dimension) in a specific dimension indicates a greater demand for improvement in that dimension, thus justifying a higher assigned weight. For instance, the Alaska’s multidimensional rankings are expressed as rk = {47/50, 46/50, 43/50}.
+
+<!-- b003002 | prose | pages [14] -->
+It is crucial to emphasize that the relative interdimensional relationships are contingent upon state-specific contextual factors. This dependency thus necessitates the following weight method formulation:
+
+<!-- b003003 | prose | pages [14] -->
+ωi = rki
+
+<!-- b003004 | prose | pages [14] -->
+(18)
+
+<!-- b003005 | prose | pages [14] -->
+P rki
+
+<!-- b003006 | prose | pages [14] -->
+where, the weights for the three dimensions (economic, social, and environmental) in the Alaska are calculated as ω = {0.346, 0.338, 0.316}, which can be approximated as those of Juneau, given its role as the state’s central hub for cruise tourism and primary data collection point.
+
+<!-- b003007 | prose | pages [14] -->
+关注数学模型
+
+<!-- b003008 | furniture | pages [14] -->
+2
+
+<!-- b003009 | furniture | pages [14] -->
+MATHmodels
+
+<!-- b003010 | furniture | pages [14] -->
+获取更多资讯
+
+<!-- b003011 | furniture | pages [15] -->
+Team # 2502617
+
+<!-- b003012 | furniture | pages [15] -->
+Page 15 of 25
+
+<!-- b003013 | prose | pages [15] -->
+Global Pareto Optimization in the Game between Scenic Spots 4.4.2
+
+<!-- b003014 | prose | pages [15] -->
+Economic, social and environmental benefits usually form a competitive relationship. This competition is typically influenced by multiple factors (e.g., the number of tourists and tax rates), and in the absence of coordinated mechanisms, natural game-theoretic interactions often lead to outcomes that deviate from Pareto Optimization, with strategic autonomy tending to converge toward suboptimal equilibria.
+
+<!-- b003015 | prose | pages [15] -->
+Specifically, by solving the Multi-Objective Programming Model using the SLSQP method, under the above constraints, we can obtain a Pareto optimal solution where the benefits are most reasonably allocated, and there is no room for improvement in the total benefit, which is the results
+
+<!-- b003016 | prose | pages [15] -->
+微信公众号：数学模型
+
+<!-- b003017 | prose | pages [15] -->
+of the Multi-Objective Programming Model.
+
+<!-- b003018 | prose | pages [15] -->
+Economic vs Environmental Trade-off
+
+<!-- b003019 | prose | pages [15] -->
+Economic vs Social Trade-off
+
+<!-- b003020 | prose | pages [15] -->
+5000
+
+<!-- b003021 | prose | pages [15] -->
+0
+
+<!-- b003022 | prose | pages [15] -->
+Environmental Benefit (Carbon Units)
+
+<!-- b003023 | prose | pages [15] -->
+1000
+
+<!-- b003024 | prose | pages [15] -->
+4000
+
+<!-- b003025 | prose | pages [15] -->
+Social Benefit (Index Score)
+
+<!-- b003026 | prose | pages [15] -->
+2000
+
+<!-- b003027 | prose | pages [15] -->
+2000
+
+<!-- b003028 | prose | pages [15] -->
+Environmental Benefit
+
+<!-- b003029 | prose | pages [15] -->
+3000
+
+<!-- b003030 | prose | pages [15] -->
+3000
+
+<!-- b003031 | prose | pages [15] -->
+4000
+
+<!-- b003032 | prose | pages [15] -->
+4000
+
+<!-- b003033 | prose | pages [15] -->
+5000
+
+<!-- b003034 | prose | pages [15] -->
+2000
+
+<!-- b003035 | prose | pages [15] -->
+6000
+
+<!-- b003036 | prose | pages [15] -->
+6000
+
+<!-- b003037 | prose | pages [15] -->
+7000
+
+<!-- b003038 | prose | pages [15] -->
+1000
+
+<!-- b003039 | prose | pages [15] -->
+8000
+
+<!-- b003040 | prose | pages [15] -->
+8000
+
+<!-- b003041 | prose | pages [15] -->
+0
+
+<!-- b003042 | prose | pages [15] -->
+Social vs Environmental Trade-off
+
+<!-- b003043 | prose | pages [15] -->
+0
+
+<!-- b003044 | prose | pages [15] -->
+Environmental Benefit (Carbon Units)
+
+<!-- b003045 | prose | pages [15] -->
+1750
+
+<!-- b003046 | prose | pages [15] -->
+4000
+
+<!-- b003047 | prose | pages [15] -->
+2000
+
+<!-- b003048 | prose | pages [15] -->
+1500
+
+<!-- b003049 | prose | pages [15] -->
+Economic Benefit
+
+<!-- b003050 | prose | pages [15] -->
+1250
+
+<!-- b003051 | prose | pages [15] -->
+3000
+
+<!-- b003052 | prose | pages [15] -->
+Social Benefit
+
+<!-- b003053 | prose | pages [15] -->
+4000
+
+<!-- b003054 | prose | pages [15] -->
+1000
+
+<!-- b003055 | prose | pages [15] -->
+2000
+
+<!-- b003056 | prose | pages [15] -->
+750
+
+<!-- b003057 | prose | pages [15] -->
+6000
+
+<!-- b003058 | prose | pages [15] -->
+500
+
+<!-- b003059 | prose | pages [15] -->
+1000
+
+<!-- b003060 | prose | pages [15] -->
+250
+
+<!-- b003061 | prose | pages [15] -->
+8000
+
+<!-- b003062 | prose | pages [15] -->
+微信号：MATHmodels
+
+<!-- b003063 | prose | pages [15] -->
+1000 1250 1500 1750 2000
+
+<!-- b003064 | prose | pages [15] -->
+0 250 500 750 1000 1250 1500 1750 2000
+
+<!-- b003065 | prose | pages [15] -->
+0 250 500 750
+
+<!-- b003066 | prose | pages [15] -->
+0 1000 2000 3000 4000 5000
+
+<!-- b003067 | prose | pages [15] -->
+Economic Benefit (Million USD)
+
+<!-- b003068 | prose | pages [15] -->
+Economic Benefit (Million USD)
+
+<!-- b003069 | prose | pages [15] -->
+Social Benefit (Index Score)
+
+<!-- b003070 | caption | pages [15] -->
+Figure 7: Schematic Pareto Optimization Solving Procedure
+
+<!-- b003071 | prose | pages [15] -->
+5
+
+<!-- b003072 | heading | pages [15] -->
+Results and Extension
+
+<!-- b003073 | prose | pages [15] -->
+5.1 Optimization Objectives
+
+<!-- b003074 | prose | pages [15] -->
+In the model, we try to analyze and optimize the total maximization of benefits by finding the optimal number of tourists, in which the economic, social and environmental benefits are all within the acceptable domain are the main constraints in the optimization process.
+
+<!-- b003075 | prose | pages [15] -->
+5.2 Constraints Analysis
+
+<!-- b003076 | prose | pages [15] -->
+• Juneau 1.Economic Constraints Analysis: Taking into account the diminishing marginal benefit and increasing marginal cost effects brought about by the growth in the number of tourists, the acceptable number of tourists under economic constraints can be derived. When the economic benefit is greater than 0, the economic benefit is acceptable. The economic constraint fully takes into account the effects of tourist spending, tax rates and other factors, and is able to reflect the additional revenue generated by tourism development.
+
+<!-- b003077 | prose | pages [15] -->
+2.Social Constraints Analysis: When the number of tourists increases, the income of the residents will increase, but the cost of living necessities, such as rent, food and beverage, will At the same time, when the number of tourists is too high, residents may be likewise rise. dissatisfied with the reduced convenience of social services due to crowding.
+
+<!-- b003078 | prose | pages [15] -->
+The acceptable
+
+<!-- b003079 | furniture | pages [16] -->
+Team # 2502617
+
+<!-- b003080 | furniture | pages [16] -->
+Page 16 of 25
+
+<!-- b003081 | prose | pages [16] -->
+number of tourists under social constraints can be derived. Based on empirical data, the social benefits are acceptable when more than 60% of the residents are satisfied with the standard.
+
+<!-- b003082 | prose | pages [16] -->
+3.Environmental Constraints Analysis: Since the maximum carrying capacity of the envi- ronment is limited, when the number of tourists is too high or the distribution of tourists is too centralized, the possibility of environmental damage increases, which leads to adverse effects. In addition, tourists traveling by cruise ships, airplanes and other means of transportation will produce a certain carbon footprint. Accordingly, the acceptable number of tourists under environmental constraints can be derived.
+
+<!-- b003083 | caption | pages [16] -->
+Figure 8: Tourist-Constraint Stringency Heatmap
+
+<!-- b003084 | prose | pages [16] -->
+• Jiuzhaigou As a tourist city that also uses natural resources as its main attraction, Jiuzhaigou’s constraints
+
+<!-- b003085 | prose | pages [16] -->
+m
+
+<!-- b003086 | prose | pages [16] -->
+m
+
+<!-- b003087 | prose | pages [16] -->
+m
+
+<!-- b003088 | prose | pages [16] -->
+m
+
+<!-- b003089 | prose | pages [16] -->
+m
+
+<!-- b003090 | prose | pages [16] -->
+m
+
+<!-- b003091 | prose | pages [16] -->
+m
+
+<!-- b003092 | prose | pages [16] -->
+m
+
+<!-- b003093 | prose | pages [16] -->
+m
+
+<!-- b003094 | prose | pages [16] -->
+m
+
+<!-- b003095 | prose | pages [16] -->
+m
+
+<!-- b003096 | prose | pages [16] -->
+m
+
+<!-- b003097 | prose | pages [16] -->
+m
+
+<!-- b003098 | prose | pages [16] -->
+m
+
+<!-- b003099 | prose | pages [16] -->
+m
+
+<!-- b003100 | prose | pages [16] -->
+m
+
+<!-- b003101 | prose | pages [16] -->
+m
+
+<!-- b003102 | prose | pages [16] -->
+m
+
+<!-- b003103 | prose | pages [16] -->
+m
+
+<!-- b003104 | prose | pages [16] -->
+m
+
+<!-- b003105 | prose | pages [16] -->
+m
+
+<!-- b003106 | prose | pages [16] -->
+m
+
+<!-- b003107 | prose | pages [16] -->
+m
+
+<!-- b003108 | prose | pages [16] -->
+m
+
+<!-- b003109 | prose | pages [16] -->
+m
+
+<!-- b003110 | prose | pages [16] -->
+m
+
+<!-- b003111 | prose | pages [16] -->
+m
+
+<!-- b003112 | prose | pages [16] -->
+m
+
+<!-- b003113 | prose | pages [16] -->
+m
+
+<!-- b003114 | prose | pages [16] -->
+m
+
+<!-- b003115 | prose | pages [16] -->
+m
+
+<!-- b003116 | prose | pages [16] -->
+m
+
+<!-- b003117 | prose | pages [16] -->
+m
+
+<!-- b003118 | prose | pages [16] -->
+m
+
+<!-- b003119 | prose | pages [16] -->
+m
+
+<!-- b003120 | prose | pages [16] -->
+m
+
+<!-- b003121 | prose | pages [16] -->
+m
+
+<!-- b003122 | prose | pages [16] -->
+m
+
+<!-- b003123 | prose | pages [16] -->
+m
+
+<!-- b003124 | prose | pages [16] -->
+m
+
+<!-- b003125 | prose | pages [16] -->
+m
+
+<!-- b003126 | prose | pages [16] -->
+m
+
+<!-- b003127 | prose | pages [16] -->
+m
+
+<!-- b003128 | prose | pages [16] -->
+m
+
+<!-- b003129 | prose | pages [16] -->
+m
+
+<!-- b003130 | prose | pages [16] -->
+m
+
+<!-- b003131 | prose | pages [16] -->
+m
+
+<!-- b003132 | prose | pages [16] -->
+m
+
+<!-- b003133 | prose | pages [16] -->
+m
+
+<!-- b003134 | prose | pages [16] -->
+m
+
+<!-- b003135 | prose | pages [16] -->
+m
+
+<!-- b003136 | prose | pages [16] -->
+m
+
+<!-- b003137 | prose | pages [16] -->
+m
+
+<!-- b003138 | prose | pages [16] -->
+m
+
+<!-- b003139 | prose | pages [16] -->
+m
+
+<!-- b003140 | prose | pages [16] -->
+m
+
+<!-- b003141 | prose | pages [16] -->
+m
+
+<!-- b003142 | prose | pages [16] -->
+m
+
+<!-- b003143 | prose | pages [16] -->
+m
+
+<!-- b003144 | prose | pages [16] -->
+m
+
+<!-- b003145 | prose | pages [16] -->
+m
+
+<!-- b003146 | prose | pages [16] -->
+m
+
+<!-- b003147 | prose | pages [16] -->
+m
+
+<!-- b003148 | prose | pages [16] -->
+m
+
+<!-- b003149 | prose | pages [16] -->
+m
+
+<!-- b003150 | prose | pages [16] -->
+m
+
+<!-- b003151 | prose | pages [16] -->
+m
+
+<!-- b003152 | prose | pages [16] -->
+m
+
+<!-- b003153 | prose | pages [16] -->
+m
+
+<!-- b003154 | prose | pages [16] -->
+m
+
+<!-- b003155 | prose | pages [16] -->
+m
+
+<!-- b003156 | prose | pages [16] -->
+m
+
+<!-- b003157 | prose | pages [16] -->
+m
+
+<!-- b003158 | prose | pages [16] -->
+m
+
+<!-- b003159 | prose | pages [16] -->
+m
+
+<!-- b003160 | prose | pages [16] -->
+m
+
+<!-- b003161 | prose | pages [16] -->
+m
+
+<!-- b003162 | prose | pages [16] -->
+m
+
+<!-- b003163 | prose | pages [16] -->
+m
+
+<!-- b003164 | prose | pages [16] -->
+m
+
+<!-- b003165 | prose | pages [16] -->
+m
+
+<!-- b003166 | prose | pages [16] -->
+m
+
+<!-- b003167 | prose | pages [16] -->
+m
+
+<!-- b003168 | prose | pages [16] -->
+m
+
+<!-- b003169 | prose | pages [16] -->
+m
+
+<!-- b003170 | prose | pages [16] -->
+m
+
+<!-- b003171 | prose | pages [16] -->
+m
+
+<!-- b003172 | prose | pages [16] -->
+m
+
+<!-- b003173 | prose | pages [16] -->
+m
+
+<!-- b003174 | prose | pages [16] -->
+m
+
+<!-- b003175 | prose | pages [16] -->
+m
+
+<!-- b003176 | prose | pages [16] -->
+m
+
+<!-- b003177 | prose | pages [16] -->
+m
+
+<!-- b003178 | prose | pages [16] -->
+m
+
+<!-- b003179 | prose | pages [16] -->
+m
+
+<!-- b003180 | prose | pages [16] -->
+to sustainable tourism development are roughly the same as those of Juneau. However, unlike the
+
+<!-- b003181 | prose | pages [16] -->
+m
+
+<!-- b003182 | prose | pages [16] -->
+m
+
+<!-- b003183 | prose | pages [16] -->
+m
+
+<!-- b003184 | prose | pages [16] -->
+m
+
+<!-- b003185 | prose | pages [16] -->
+m
+
+<!-- b003186 | prose | pages [16] -->
+m
+
+<!-- b003187 | prose | pages [16] -->
+m
+
+<!-- b003188 | prose | pages [16] -->
+m
+
+<!-- b003189 | prose | pages [16] -->
+m
+
+<!-- b003190 | prose | pages [16] -->
+m
+
+<!-- b003191 | prose | pages [16] -->
+m
+
+<!-- b003192 | prose | pages [16] -->
+m
+
+<!-- b003193 | prose | pages [16] -->
+m
+
+<!-- b003194 | prose | pages [16] -->
+m
+
+<!-- b003195 | prose | pages [16] -->
+m
+
+<!-- b003196 | prose | pages [16] -->
+m
+
+<!-- b003197 | prose | pages [16] -->
+m
+
+<!-- b003198 | prose | pages [16] -->
+m
+
+<!-- b003199 | prose | pages [16] -->
+m
+
+<!-- b003200 | prose | pages [16] -->
+m
+
+<!-- b003201 | prose | pages [16] -->
+m
+
+<!-- b003202 | prose | pages [16] -->
+m
+
+<!-- b003203 | prose | pages [16] -->
+m
+
+<!-- b003204 | prose | pages [16] -->
+m
+
+<!-- b003205 | prose | pages [16] -->
+m
+
+<!-- b003206 | prose | pages [16] -->
+m
+
+<!-- b003207 | prose | pages [16] -->
+m
+
+<!-- b003208 | prose | pages [16] -->
+m
+
+<!-- b003209 | prose | pages [16] -->
+m
+
+<!-- b003210 | prose | pages [16] -->
+m
+
+<!-- b003211 | prose | pages [16] -->
+m
+
+<!-- b003212 | prose | pages [16] -->
+m
+
+<!-- b003213 | prose | pages [16] -->
+m
+
+<!-- b003214 | prose | pages [16] -->
+m
+
+<!-- b003215 | prose | pages [16] -->
+m
+
+<!-- b003216 | prose | pages [16] -->
+m
+
+<!-- b003217 | prose | pages [16] -->
+m
+
+<!-- b003218 | prose | pages [16] -->
+m
+
+<!-- b003219 | prose | pages [16] -->
+m
+
+<!-- b003220 | prose | pages [16] -->
+m
+
+<!-- b003221 | prose | pages [16] -->
+m
+
+<!-- b003222 | prose | pages [16] -->
+m
+
+<!-- b003223 | prose | pages [16] -->
+m
+
+<!-- b003224 | prose | pages [16] -->
+m
+
+<!-- b003225 | prose | pages [16] -->
+m
+
+<!-- b003226 | prose | pages [16] -->
+m
+
+<!-- b003227 | prose | pages [16] -->
+m
+
+<!-- b003228 | prose | pages [16] -->
+m
+
+<!-- b003229 | prose | pages [16] -->
+m
+
+<!-- b003230 | prose | pages [16] -->
+m
+
+<!-- b003231 | prose | pages [16] -->
+m
+
+<!-- b003232 | prose | pages [16] -->
+m
+
+<!-- b003233 | prose | pages [16] -->
+m
+
+<!-- b003234 | prose | pages [16] -->
+m
+
+<!-- b003235 | prose | pages [16] -->
+m
+
+<!-- b003236 | prose | pages [16] -->
+m
+
+<!-- b003237 | prose | pages [16] -->
+m
+
+<!-- b003238 | prose | pages [16] -->
+m
+
+<!-- b003239 | prose | pages [16] -->
+m
+
+<!-- b003240 | prose | pages [16] -->
+m
+
+<!-- b003241 | prose | pages [16] -->
+m
+
+<!-- b003242 | prose | pages [16] -->
+m
+
+<!-- b003243 | prose | pages [16] -->
+m
+
+<!-- b003244 | prose | pages [16] -->
+m
+
+<!-- b003245 | prose | pages [16] -->
+m
+
+<!-- b003246 | prose | pages [16] -->
+m
+
+<!-- b003247 | prose | pages [16] -->
+m
+
+<!-- b003248 | prose | pages [16] -->
+m
+
+<!-- b003249 | prose | pages [16] -->
+m
+
+<!-- b003250 | prose | pages [16] -->
+m
+
+<!-- b003251 | prose | pages [16] -->
+m
+
+<!-- b003252 | prose | pages [16] -->
+m
+
+<!-- b003253 | prose | pages [16] -->
+m
+
+<!-- b003254 | prose | pages [16] -->
+m
+
+<!-- b003255 | prose | pages [16] -->
+m
+
+<!-- b003256 | prose | pages [16] -->
+m
+
+<!-- b003257 | prose | pages [16] -->
+m
+
+<!-- b003258 | prose | pages [16] -->
+m
+
+<!-- b003259 | prose | pages [16] -->
+m
+
+<!-- b003260 | prose | pages [16] -->
+m
+
+<!-- b003261 | prose | pages [16] -->
+m
+
+<!-- b003262 | prose | pages [16] -->
+m
+
+<!-- b003263 | prose | pages [16] -->
+m
+
+<!-- b003264 | prose | pages [16] -->
+m
+
+<!-- b003265 | prose | pages [16] -->
+m
+
+<!-- b003266 | prose | pages [16] -->
+m
+
+<!-- b003267 | prose | pages [16] -->
+m
+
+<!-- b003268 | prose | pages [16] -->
+m
+
+<!-- b003269 | prose | pages [16] -->
+m
+
+<!-- b003270 | prose | pages [16] -->
+m
+
+<!-- b003271 | prose | pages [16] -->
+m
+
+<!-- b003272 | prose | pages [16] -->
+m
+
+<!-- b003273 | prose | pages [16] -->
+m
+
+<!-- b003274 | prose | pages [16] -->
+m
+
+<!-- b003275 | prose | pages [16] -->
+m
+
+<!-- b003276 | prose | pages [16] -->
+m
+
+<!-- b003277 | prose | pages [16] -->
+m
+
+<!-- b003278 | prose | pages [16] -->
+m
+
+<!-- b003279 | prose | pages [16] -->
+m
+
+<!-- b003280 | prose | pages [16] -->
+m
+
+<!-- b003281 | prose | pages [16] -->
+m
+
+<!-- b003282 | prose | pages [16] -->
+m
+
+<!-- b003283 | prose | pages [16] -->
+m
+
+<!-- b003284 | prose | pages [16] -->
+m
+
+<!-- b003285 | prose | pages [16] -->
+m
+
+<!-- b003286 | prose | pages [16] -->
+m
+
+<!-- b003287 | prose | pages [16] -->
+m
+
+<!-- b003288 | prose | pages [16] -->
+m
+
+<!-- b003289 | prose | pages [16] -->
+m
+
+<!-- b003290 | prose | pages [16] -->
+m
+
+<!-- b003291 | prose | pages [16] -->
+m
+
+<!-- b003292 | prose | pages [16] -->
+m
+
+<!-- b003293 | prose | pages [16] -->
+m
+
+<!-- b003294 | prose | pages [16] -->
+m
+
+<!-- b003295 | prose | pages [16] -->
+m
+
+<!-- b003296 | prose | pages [16] -->
+m
+
+<!-- b003297 | prose | pages [16] -->
+m
+
+<!-- b003298 | prose | pages [16] -->
+m
+
+<!-- b003299 | prose | pages [16] -->
+m
+
+<!-- b003300 | prose | pages [16] -->
+m
+
+<!-- b003301 | prose | pages [16] -->
+m
+
+<!-- b003302 | prose | pages [16] -->
+m
+
+<!-- b003303 | prose | pages [16] -->
+m
+
+<!-- b003304 | prose | pages [16] -->
+m
+
+<!-- b003305 | prose | pages [16] -->
+m
+
+<!-- b003306 | prose | pages [16] -->
+m
+
+<!-- b003307 | prose | pages [16] -->
+m
+
+<!-- b003308 | prose | pages [16] -->
+m
+
+<!-- b003309 | prose | pages [16] -->
+m
+
+<!-- b003310 | prose | pages [16] -->
+m
+
+<!-- b003311 | prose | pages [16] -->
+m
+
+<!-- b003312 | prose | pages [16] -->
+m
+
+<!-- b003313 | prose | pages [16] -->
+m
+
+<!-- b003314 | prose | pages [16] -->
+m
+
+<!-- b003315 | prose | pages [16] -->
+m
+
+<!-- b003316 | prose | pages [16] -->
+m
+
+<!-- b003317 | prose | pages [16] -->
+better economic benefit of Juneau, Jiuzhaigou is much more influenced by economic benefit in its
+
+<!-- b003318 | prose | pages [16] -->
+m
+
+<!-- b003319 | prose | pages [16] -->
+m
+
+<!-- b003320 | prose | pages [16] -->
+m
+
+<!-- b003321 | prose | pages [16] -->
+m
+
+<!-- b003322 | prose | pages [16] -->
+m
+
+<!-- b003323 | prose | pages [16] -->
+m
+
+<!-- b003324 | prose | pages [16] -->
+m
+
+<!-- b003325 | prose | pages [16] -->
+m
+
+<!-- b003326 | prose | pages [16] -->
+m
+
+<!-- b003327 | prose | pages [16] -->
+m
+
+<!-- b003328 | prose | pages [16] -->
+m
+
+<!-- b003329 | prose | pages [16] -->
+m
+
+<!-- b003330 | prose | pages [16] -->
+m
+
+<!-- b003331 | prose | pages [16] -->
+m
+
+<!-- b003332 | prose | pages [16] -->
+m
+
+<!-- b003333 | prose | pages [16] -->
+m
+
+<!-- b003334 | prose | pages [16] -->
+m
+
+<!-- b003335 | prose | pages [16] -->
+m
+
+<!-- b003336 | prose | pages [16] -->
+m
+
+<!-- b003337 | prose | pages [16] -->
+m
+
+<!-- b003338 | prose | pages [16] -->
+m
+
+<!-- b003339 | prose | pages [16] -->
+m
+
+<!-- b003340 | prose | pages [16] -->
+m
+
+<!-- b003341 | prose | pages [16] -->
+m
+
+<!-- b003342 | prose | pages [16] -->
+m
+
+<!-- b003343 | prose | pages [16] -->
+m
+
+<!-- b003344 | prose | pages [16] -->
+m
+
+<!-- b003345 | prose | pages [16] -->
+m
+
+<!-- b003346 | prose | pages [16] -->
+m
+
+<!-- b003347 | prose | pages [16] -->
+m
+
+<!-- b003348 | prose | pages [16] -->
+m
+
+<!-- b003349 | prose | pages [16] -->
+m
+
+<!-- b003350 | prose | pages [16] -->
+m
+
+<!-- b003351 | prose | pages [16] -->
+m
+
+<!-- b003352 | prose | pages [16] -->
+m
+
+<!-- b003353 | prose | pages [16] -->
+m
+
+<!-- b003354 | prose | pages [16] -->
+m
+
+<!-- b003355 | prose | pages [16] -->
+m
+
+<!-- b003356 | prose | pages [16] -->
+m
+
+<!-- b003357 | prose | pages [16] -->
+m
+
+<!-- b003358 | prose | pages [16] -->
+m
+
+<!-- b003359 | prose | pages [16] -->
+m
+
+<!-- b003360 | prose | pages [16] -->
+m
+
+<!-- b003361 | prose | pages [16] -->
+m
+
+<!-- b003362 | prose | pages [16] -->
+m
+
+<!-- b003363 | prose | pages [16] -->
+m
+
+<!-- b003364 | prose | pages [16] -->
+m
+
+<!-- b003365 | prose | pages [16] -->
+m
+
+<!-- b003366 | prose | pages [16] -->
+m
+
+<!-- b003367 | prose | pages [16] -->
+m
+
+<!-- b003368 | prose | pages [16] -->
+m
+
+<!-- b003369 | prose | pages [16] -->
+m
+
+<!-- b003370 | prose | pages [16] -->
+m
+
+<!-- b003371 | prose | pages [16] -->
+m
+
+<!-- b003372 | prose | pages [16] -->
+m
+
+<!-- b003373 | prose | pages [16] -->
+m
+
+<!-- b003374 | prose | pages [16] -->
+m
+
+<!-- b003375 | prose | pages [16] -->
+m
+
+<!-- b003376 | prose | pages [16] -->
+m
+
+<!-- b003377 | prose | pages [16] -->
+m
+
+<!-- b003378 | prose | pages [16] -->
+m
+
+<!-- b003379 | prose | pages [16] -->
+m
+
+<!-- b003380 | prose | pages [16] -->
+m
+
+<!-- b003381 | prose | pages [16] -->
+m
+
+<!-- b003382 | prose | pages [16] -->
+m
+
+<!-- b003383 | prose | pages [16] -->
+m
+
+<!-- b003384 | prose | pages [16] -->
+m
+
+<!-- b003385 | prose | pages [16] -->
+m
+
+<!-- b003386 | prose | pages [16] -->
+m
+
+<!-- b003387 | prose | pages [16] -->
+m
+
+<!-- b003388 | prose | pages [16] -->
+m
+
+<!-- b003389 | prose | pages [16] -->
+m
+
+<!-- b003390 | prose | pages [16] -->
+m
+
+<!-- b003391 | prose | pages [16] -->
+m
+
+<!-- b003392 | prose | pages [16] -->
+m
+
+<!-- b003393 | prose | pages [16] -->
+m
+
+<!-- b003394 | prose | pages [16] -->
+m
+
+<!-- b003395 | prose | pages [16] -->
+m
+
+<!-- b003396 | prose | pages [16] -->
+m
+
+<!-- b003397 | prose | pages [16] -->
+m
+
+<!-- b003398 | prose | pages [16] -->
+m
+
+<!-- b003399 | prose | pages [16] -->
+m
+
+<!-- b003400 | prose | pages [16] -->
+m
+
+<!-- b003401 | prose | pages [16] -->
+m
+
+<!-- b003402 | prose | pages [16] -->
+m
+
+<!-- b003403 | prose | pages [16] -->
+m
+
+<!-- b003404 | prose | pages [16] -->
+m
+
+<!-- b003405 | prose | pages [16] -->
+m
+
+<!-- b003406 | prose | pages [16] -->
+m
+
+<!-- b003407 | prose | pages [16] -->
+m
+
+<!-- b003408 | prose | pages [16] -->
+m
+
+<!-- b003409 | prose | pages [16] -->
+m
+
+<!-- b003410 | prose | pages [16] -->
+m
+
+<!-- b003411 | prose | pages [16] -->
+m
+
+<!-- b003412 | prose | pages [16] -->
+m
+
+<!-- b003413 | prose | pages [16] -->
+m
+
+<!-- b003414 | prose | pages [16] -->
+m
+
+<!-- b003415 | prose | pages [16] -->
+m
+
+<!-- b003416 | prose | pages [16] -->
+m
+
+<!-- b003417 | prose | pages [16] -->
+m
+
+<!-- b003418 | prose | pages [16] -->
+m
+
+<!-- b003419 | prose | pages [16] -->
+m
+
+<!-- b003420 | prose | pages [16] -->
+m
+
+<!-- b003421 | prose | pages [16] -->
+m
+
+<!-- b003422 | prose | pages [16] -->
+m
+
+<!-- b003423 | prose | pages [16] -->
+m
+
+<!-- b003424 | prose | pages [16] -->
+m
+
+<!-- b003425 | prose | pages [16] -->
+m
+
+<!-- b003426 | prose | pages [16] -->
+m
+
+<!-- b003427 | prose | pages [16] -->
+m
+
+<!-- b003428 | prose | pages [16] -->
+m
+
+<!-- b003429 | prose | pages [16] -->
+m
+
+<!-- b003430 | prose | pages [16] -->
+m
+
+<!-- b003431 | prose | pages [16] -->
+m
+
+<!-- b003432 | prose | pages [16] -->
+m
+
+<!-- b003433 | prose | pages [16] -->
+m
+
+<!-- b003434 | prose | pages [16] -->
+m
+
+<!-- b003435 | prose | pages [16] -->
+m
+
+<!-- b003436 | prose | pages [16] -->
+m
+
+<!-- b003437 | prose | pages [16] -->
+m
+
+<!-- b003438 | prose | pages [16] -->
+m
+
+<!-- b003439 | prose | pages [16] -->
+m
+
+<!-- b003440 | prose | pages [16] -->
+m
+
+<!-- b003441 | prose | pages [16] -->
+m
+
+<!-- b003442 | prose | pages [16] -->
+m
+
+<!-- b003443 | prose | pages [16] -->
+m
+
+<!-- b003444 | prose | pages [16] -->
+m
+
+<!-- b003445 | prose | pages [16] -->
+m
+
+<!-- b003446 | prose | pages [16] -->
+m
+
+<!-- b003447 | prose | pages [16] -->
+m
+
+<!-- b003448 | prose | pages [16] -->
+m
+
+<!-- b003449 | prose | pages [16] -->
+m
+
+<!-- b003450 | prose | pages [16] -->
+m
+
+<!-- b003451 | prose | pages [16] -->
+m
+
+<!-- b003452 | prose | pages [16] -->
+m
+
+<!-- b003453 | prose | pages [16] -->
+m
+
+<!-- b003454 | prose | pages [16] -->
+m
+
+<!-- b003455 | prose | pages [16] -->
+m
+
+<!-- b003456 | prose | pages [16] -->
+m
+
+<!-- b003457 | prose | pages [16] -->
+m
+
+<!-- b003458 | prose | pages [16] -->
+development and less influenced by environment benefit due to the temperate, therefore need give
+
+<!-- b003459 | prose | pages [16] -->
+m
+
+<!-- b003460 | prose | pages [16] -->
+m
+
+<!-- b003461 | prose | pages [16] -->
+m
+
+<!-- b003462 | prose | pages [16] -->
+m
+
+<!-- b003463 | prose | pages [16] -->
+m
+
+<!-- b003464 | prose | pages [16] -->
+m
+
+<!-- b003465 | prose | pages [16] -->
+m
+
+<!-- b003466 | prose | pages [16] -->
+m
+
+<!-- b003467 | prose | pages [16] -->
+m
+
+<!-- b003468 | prose | pages [16] -->
+m
+
+<!-- b003469 | prose | pages [16] -->
+m
+
+<!-- b003470 | prose | pages [16] -->
+m
+
+<!-- b003471 | prose | pages [16] -->
+m
+
+<!-- b003472 | prose | pages [16] -->
+m
+
+<!-- b003473 | prose | pages [16] -->
+m
+
+<!-- b003474 | prose | pages [16] -->
+m
+
+<!-- b003475 | prose | pages [16] -->
+m
+
+<!-- b003476 | prose | pages [16] -->
+m
+
+<!-- b003477 | prose | pages [16] -->
+m
+
+<!-- b003478 | prose | pages [16] -->
+m
+
+<!-- b003479 | prose | pages [16] -->
+m
+
+<!-- b003480 | prose | pages [16] -->
+m
+
+<!-- b003481 | prose | pages [16] -->
+m
+
+<!-- b003482 | prose | pages [16] -->
+m
+
+<!-- b003483 | prose | pages [16] -->
+m
+
+<!-- b003484 | prose | pages [16] -->
+m
+
+<!-- b003485 | prose | pages [16] -->
+m
+
+<!-- b003486 | prose | pages [16] -->
+m
+
+<!-- b003487 | prose | pages [16] -->
+m
+
+<!-- b003488 | prose | pages [16] -->
+m
+
+<!-- b003489 | prose | pages [16] -->
+m
+
+<!-- b003490 | prose | pages [16] -->
+m
+
+<!-- b003491 | prose | pages [16] -->
+m
+
+<!-- b003492 | prose | pages [16] -->
+m
+
+<!-- b003493 | prose | pages [16] -->
+m
+
+<!-- b003494 | prose | pages [16] -->
+m
+
+<!-- b003495 | prose | pages [16] -->
+m
+
+<!-- b003496 | prose | pages [16] -->
+m
+
+<!-- b003497 | prose | pages [16] -->
+m
+
+<!-- b003498 | prose | pages [16] -->
+m
+
+<!-- b003499 | prose | pages [16] -->
+m
+
+<!-- b003500 | prose | pages [16] -->
+m
+
+<!-- b003501 | prose | pages [16] -->
+m
+
+<!-- b003502 | prose | pages [16] -->
+m
+
+<!-- b003503 | prose | pages [16] -->
+m
+
+<!-- b003504 | prose | pages [16] -->
+m
+
+<!-- b003505 | prose | pages [16] -->
+m
+
+<!-- b003506 | prose | pages [16] -->
+m
+
+<!-- b003507 | prose | pages [16] -->
+m
+
+<!-- b003508 | prose | pages [16] -->
+m
+
+<!-- b003509 | prose | pages [16] -->
+m
+
+<!-- b003510 | prose | pages [16] -->
+m
+
+<!-- b003511 | prose | pages [16] -->
+m
+
+<!-- b003512 | prose | pages [16] -->
+m
+
+<!-- b003513 | prose | pages [16] -->
+m
+
+<!-- b003514 | prose | pages [16] -->
+m
+
+<!-- b003515 | prose | pages [16] -->
+m
+
+<!-- b003516 | prose | pages [16] -->
+m
+
+<!-- b003517 | prose | pages [16] -->
+m
+
+<!-- b003518 | prose | pages [16] -->
+m
+
+<!-- b003519 | prose | pages [16] -->
+m
+
+<!-- b003520 | prose | pages [16] -->
+m
+
+<!-- b003521 | prose | pages [16] -->
+m
+
+<!-- b003522 | prose | pages [16] -->
+m
+
+<!-- b003523 | prose | pages [16] -->
+m
+
+<!-- b003524 | prose | pages [16] -->
+m
+
+<!-- b003525 | prose | pages [16] -->
+m
+
+<!-- b003526 | prose | pages [16] -->
+m
+
+<!-- b003527 | prose | pages [16] -->
+m
+
+<!-- b003528 | prose | pages [16] -->
+m
+
+<!-- b003529 | prose | pages [16] -->
+m
+
+<!-- b003530 | prose | pages [16] -->
+m
+
+<!-- b003531 | prose | pages [16] -->
+m
+
+<!-- b003532 | prose | pages [16] -->
+m
+
+<!-- b003533 | prose | pages [16] -->
+m
+
+<!-- b003534 | prose | pages [16] -->
+m
+
+<!-- b003535 | prose | pages [16] -->
+m
+
+<!-- b003536 | prose | pages [16] -->
+m
+
+<!-- b003537 | prose | pages [16] -->
+m
+
+<!-- b003538 | prose | pages [16] -->
+m
+
+<!-- b003539 | prose | pages [16] -->
+m
+
+<!-- b003540 | prose | pages [16] -->
+m
+
+<!-- b003541 | prose | pages [16] -->
+m
+
+<!-- b003542 | prose | pages [16] -->
+m
+
+<!-- b003543 | prose | pages [16] -->
+m
+
+<!-- b003544 | prose | pages [16] -->
+m
+
+<!-- b003545 | prose | pages [16] -->
+m
+
+<!-- b003546 | prose | pages [16] -->
+m
+
+<!-- b003547 | prose | pages [16] -->
+m
+
+<!-- b003548 | prose | pages [16] -->
+m
+
+<!-- b003549 | prose | pages [16] -->
+m
+
+<!-- b003550 | prose | pages [16] -->
+m
+
+<!-- b003551 | prose | pages [16] -->
+m
+
+<!-- b003552 | prose | pages [16] -->
+m
+
+<!-- b003553 | prose | pages [16] -->
+m
+
+<!-- b003554 | prose | pages [16] -->
+m
+
+<!-- b003555 | prose | pages [16] -->
+m
+
+<!-- b003556 | prose | pages [16] -->
+m
+
+<!-- b003557 | prose | pages [16] -->
+m
+
+<!-- b003558 | prose | pages [16] -->
+m
+
+<!-- b003559 | prose | pages [16] -->
+m
+
+<!-- b003560 | prose | pages [16] -->
+m
+
+<!-- b003561 | prose | pages [16] -->
+m
+
+<!-- b003562 | prose | pages [16] -->
+m
+
+<!-- b003563 | prose | pages [16] -->
+m
+
+<!-- b003564 | prose | pages [16] -->
+m
+
+<!-- b003565 | prose | pages [16] -->
+m
+
+<!-- b003566 | prose | pages [16] -->
+m
+
+<!-- b003567 | prose | pages [16] -->
+m
+
+<!-- b003568 | prose | pages [16] -->
+m
+
+<!-- b003569 | prose | pages [16] -->
+m
+
+<!-- b003570 | prose | pages [16] -->
+m
+
+<!-- b003571 | prose | pages [16] -->
+m
+
+<!-- b003572 | prose | pages [16] -->
+m
+
+<!-- b003573 | prose | pages [16] -->
+m
+
+<!-- b003574 | prose | pages [16] -->
+m
+
+<!-- b003575 | prose | pages [16] -->
+m
+
+<!-- b003576 | prose | pages [16] -->
+m
+
+<!-- b003577 | prose | pages [16] -->
+m
+
+<!-- b003578 | prose | pages [16] -->
+m
+
+<!-- b003579 | prose | pages [16] -->
+m
+
+<!-- b003580 | prose | pages [16] -->
+m
+
+<!-- b003581 | prose | pages [16] -->
+m
+
+<!-- b003582 | prose | pages [16] -->
+m
+
+<!-- b003583 | prose | pages [16] -->
+m
+
+<!-- b003584 | prose | pages [16] -->
+m
+
+<!-- b003585 | prose | pages [16] -->
+m
+
+<!-- b003586 | prose | pages [16] -->
+m
+
+<!-- b003587 | prose | pages [16] -->
+m
+
+<!-- b003588 | prose | pages [16] -->
+m
+
+<!-- b003589 | prose | pages [16] -->
+m
+
+<!-- b003590 | prose | pages [16] -->
+m
+
+<!-- b003591 | prose | pages [16] -->
+m
+
+<!-- b003592 | prose | pages [16] -->
+m
+
+<!-- b003593 | prose | pages [16] -->
+m
+
+<!-- b003594 | prose | pages [16] -->
+m
+
+<!-- b003595 | prose | pages [16] -->
+m
+
+<!-- b003596 | prose | pages [16] -->
+m
+
+<!-- b003597 | prose | pages [16] -->
+m
+
+<!-- b003598 | prose | pages [16] -->
+m
+
+<!-- b003599 | prose | pages [16] -->
+m
+
+<!-- b003600 | prose | pages [16] -->
+m
+
+<!-- b003601 | prose | pages [16] -->
+m
+
+<!-- b003602 | prose | pages [16] -->
+m
+
+<!-- b003603 | prose | pages [16] -->
+m
+
+<!-- b003604 | prose | pages [16] -->
+more consideration to economic constraints and more consideration to environment constraints.the
+
+<!-- b003605 | prose | pages [16] -->
+m
+
+<!-- b003606 | prose | pages [16] -->
+m
+
+<!-- b003607 | prose | pages [16] -->
+m
+
+<!-- b003608 | prose | pages [16] -->
+m
+
+<!-- b003609 | prose | pages [16] -->
+m
+
+<!-- b003610 | prose | pages [16] -->
+m
+
+<!-- b003611 | prose | pages [16] -->
+m
+
+<!-- b003612 | prose | pages [16] -->
+m
+
+<!-- b003613 | prose | pages [16] -->
+m
+
+<!-- b003614 | prose | pages [16] -->
+m
+
+<!-- b003615 | prose | pages [16] -->
+m
+
+<!-- b003616 | prose | pages [16] -->
+m
+
+<!-- b003617 | prose | pages [16] -->
+m
+
+<!-- b003618 | prose | pages [16] -->
+m
+
+<!-- b003619 | prose | pages [16] -->
+m
+
+<!-- b003620 | prose | pages [16] -->
+m
+
+<!-- b003621 | prose | pages [16] -->
+m
+
+<!-- b003622 | prose | pages [16] -->
+m
+
+<!-- b003623 | prose | pages [16] -->
+m
+
+<!-- b003624 | prose | pages [16] -->
+m
+
+<!-- b003625 | prose | pages [16] -->
+m
+
+<!-- b003626 | prose | pages [16] -->
+m
+
+<!-- b003627 | prose | pages [16] -->
+m
+
+<!-- b003628 | prose | pages [16] -->
+m
+
+<!-- b003629 | prose | pages [16] -->
+m
+
+<!-- b003630 | prose | pages [16] -->
+m
+
+<!-- b003631 | prose | pages [16] -->
+m
+
+<!-- b003632 | prose | pages [16] -->
+m
+
+<!-- b003633 | prose | pages [16] -->
+m
+
+<!-- b003634 | prose | pages [16] -->
+m
+
+<!-- b003635 | prose | pages [16] -->
+m
+
+<!-- b003636 | prose | pages [16] -->
+m
+
+<!-- b003637 | prose | pages [16] -->
+m
+
+<!-- b003638 | prose | pages [16] -->
+m
+
+<!-- b003639 | prose | pages [16] -->
+m
+
+<!-- b003640 | prose | pages [16] -->
+m
+
+<!-- b003641 | prose | pages [16] -->
+m
+
+<!-- b003642 | prose | pages [16] -->
+m
+
+<!-- b003643 | prose | pages [16] -->
+m
+
+<!-- b003644 | prose | pages [16] -->
+m
+
+<!-- b003645 | prose | pages [16] -->
+m
+
+<!-- b003646 | prose | pages [16] -->
+m
+
+<!-- b003647 | prose | pages [16] -->
+m
+
+<!-- b003648 | prose | pages [16] -->
+m
+
+<!-- b003649 | prose | pages [16] -->
+m
+
+<!-- b003650 | prose | pages [16] -->
+m
+
+<!-- b003651 | prose | pages [16] -->
+m
+
+<!-- b003652 | prose | pages [16] -->
+m
+
+<!-- b003653 | prose | pages [16] -->
+m
+
+<!-- b003654 | prose | pages [16] -->
+m
+
+<!-- b003655 | prose | pages [16] -->
+m
+
+<!-- b003656 | prose | pages [16] -->
+m
+
+<!-- b003657 | prose | pages [16] -->
+m
+
+<!-- b003658 | prose | pages [16] -->
+m
+
+<!-- b003659 | prose | pages [16] -->
+m
+
+<!-- b003660 | prose | pages [16] -->
+m
+
+<!-- b003661 | prose | pages [16] -->
+m
+
+<!-- b003662 | prose | pages [16] -->
+m
+
+<!-- b003663 | prose | pages [16] -->
+m
+
+<!-- b003664 | prose | pages [16] -->
+m
+
+<!-- b003665 | prose | pages [16] -->
+m
+
+<!-- b003666 | prose | pages [16] -->
+m
+
+<!-- b003667 | prose | pages [16] -->
+m
+
+<!-- b003668 | prose | pages [16] -->
+m
+
+<!-- b003669 | prose | pages [16] -->
+m
+
+<!-- b003670 | prose | pages [16] -->
+m
+
+<!-- b003671 | prose | pages [16] -->
+m
+
+<!-- b003672 | prose | pages [16] -->
+m
+
+<!-- b003673 | prose | pages [16] -->
+m
+
+<!-- b003674 | prose | pages [16] -->
+m
+
+<!-- b003675 | prose | pages [16] -->
+m
+
+<!-- b003676 | prose | pages [16] -->
+m
+
+<!-- b003677 | prose | pages [16] -->
+m
+
+<!-- b003678 | prose | pages [16] -->
+m
+
+<!-- b003679 | prose | pages [16] -->
+m
+
+<!-- b003680 | prose | pages [16] -->
+m
+
+<!-- b003681 | prose | pages [16] -->
+m
+
+<!-- b003682 | prose | pages [16] -->
+m
+
+<!-- b003683 | prose | pages [16] -->
+m
+
+<!-- b003684 | prose | pages [16] -->
+m
+
+<!-- b003685 | prose | pages [16] -->
+m
+
+<!-- b003686 | prose | pages [16] -->
+m
+
+<!-- b003687 | prose | pages [16] -->
+m
+
+<!-- b003688 | prose | pages [16] -->
+m
+
+<!-- b003689 | prose | pages [16] -->
+m
+
+<!-- b003690 | prose | pages [16] -->
+m
+
+<!-- b003691 | prose | pages [16] -->
+m
+
+<!-- b003692 | prose | pages [16] -->
+m
+
+<!-- b003693 | prose | pages [16] -->
+m
+
+<!-- b003694 | prose | pages [16] -->
+m
+
+<!-- b003695 | prose | pages [16] -->
+m
+
+<!-- b003696 | prose | pages [16] -->
+m
+
+<!-- b003697 | prose | pages [16] -->
+m
+
+<!-- b003698 | prose | pages [16] -->
+m
+
+<!-- b003699 | prose | pages [16] -->
+m
+
+<!-- b003700 | prose | pages [16] -->
+m
+
+<!-- b003701 | prose | pages [16] -->
+m
+
+<!-- b003702 | prose | pages [16] -->
+m
+
+<!-- b003703 | prose | pages [16] -->
+m
+
+<!-- b003704 | prose | pages [16] -->
+m
+
+<!-- b003705 | prose | pages [16] -->
+m
+
+<!-- b003706 | prose | pages [16] -->
+m
+
+<!-- b003707 | prose | pages [16] -->
+m
+
+<!-- b003708 | prose | pages [16] -->
+m
+
+<!-- b003709 | prose | pages [16] -->
+m
+
+<!-- b003710 | prose | pages [16] -->
+m
+
+<!-- b003711 | prose | pages [16] -->
+m
+
+<!-- b003712 | prose | pages [16] -->
+m
+
+<!-- b003713 | prose | pages [16] -->
+m
+
+<!-- b003714 | prose | pages [16] -->
+m
+
+<!-- b003715 | prose | pages [16] -->
+m
+
+<!-- b003716 | prose | pages [16] -->
+m
+
+<!-- b003717 | prose | pages [16] -->
+m
+
+<!-- b003718 | prose | pages [16] -->
+m
+
+<!-- b003719 | prose | pages [16] -->
+m
+
+<!-- b003720 | prose | pages [16] -->
+m
+
+<!-- b003721 | prose | pages [16] -->
+m
+
+<!-- b003722 | prose | pages [16] -->
+m
+
+<!-- b003723 | prose | pages [16] -->
+m
+
+<!-- b003724 | prose | pages [16] -->
+m
+
+<!-- b003725 | prose | pages [16] -->
+m
+
+<!-- b003726 | prose | pages [16] -->
+m
+
+<!-- b003727 | prose | pages [16] -->
+m
+
+<!-- b003728 | prose | pages [16] -->
+m
+
+<!-- b003729 | prose | pages [16] -->
+m
+
+<!-- b003730 | prose | pages [16] -->
+m
+
+<!-- b003731 | prose | pages [16] -->
+m
+
+<!-- b003732 | prose | pages [16] -->
+m
+
+<!-- b003733 | prose | pages [16] -->
+m
+
+<!-- b003734 | prose | pages [16] -->
+initial weighting parameters were adjusted to w = {0.625, 0.313, 0.062}.
+
+<!-- b003735 | prose | pages [16] -->
+m
+
+<!-- b003736 | prose | pages [16] -->
+m
+
+<!-- b003737 | prose | pages [16] -->
+m
+
+<!-- b003738 | prose | pages [16] -->
+m
+
+<!-- b003739 | prose | pages [16] -->
+m
+
+<!-- b003740 | prose | pages [16] -->
+m
+
+<!-- b003741 | prose | pages [16] -->
+m
+
+<!-- b003742 | prose | pages [16] -->
+m
+
+<!-- b003743 | prose | pages [16] -->
+m
+
+<!-- b003744 | prose | pages [16] -->
+m
+
+<!-- b003745 | prose | pages [16] -->
+m
+
+<!-- b003746 | prose | pages [16] -->
+m
+
+<!-- b003747 | prose | pages [16] -->
+m
+
+<!-- b003748 | prose | pages [16] -->
+m
+
+<!-- b003749 | prose | pages [16] -->
+m
+
+<!-- b003750 | prose | pages [16] -->
+m
+
+<!-- b003751 | prose | pages [16] -->
+m
+
+<!-- b003752 | prose | pages [16] -->
+m
+
+<!-- b003753 | prose | pages [16] -->
+m
+
+<!-- b003754 | prose | pages [16] -->
+m
+
+<!-- b003755 | prose | pages [16] -->
+m
+
+<!-- b003756 | prose | pages [16] -->
+m
+
+<!-- b003757 | prose | pages [16] -->
+m
+
+<!-- b003758 | prose | pages [16] -->
+m
+
+<!-- b003759 | prose | pages [16] -->
+m
+
+<!-- b003760 | prose | pages [16] -->
+m
+
+<!-- b003761 | prose | pages [16] -->
+m
+
+<!-- b003762 | prose | pages [16] -->
+m
+
+<!-- b003763 | prose | pages [16] -->
+m
+
+<!-- b003764 | prose | pages [16] -->
+m
+
+<!-- b003765 | prose | pages [16] -->
+m
+
+<!-- b003766 | prose | pages [16] -->
+m
+
+<!-- b003767 | prose | pages [16] -->
+m
+
+<!-- b003768 | prose | pages [16] -->
+m
+
+<!-- b003769 | prose | pages [16] -->
+m
+
+<!-- b003770 | prose | pages [16] -->
+m
+
+<!-- b003771 | prose | pages [16] -->
+m
+
+<!-- b003772 | prose | pages [16] -->
+m
+
+<!-- b003773 | prose | pages [16] -->
+m
+
+<!-- b003774 | prose | pages [16] -->
+m
+
+<!-- b003775 | prose | pages [16] -->
+m
+
+<!-- b003776 | prose | pages [16] -->
+m
+
+<!-- b003777 | prose | pages [16] -->
+5.3
+
+<!-- b003778 | heading | pages [16] -->
+Optimization Result Analysis
+
+<!-- b003779 | prose | pages [16] -->
+• Juneau
+
+<!-- b003780 | prose | pages [16] -->
+1.Optimal Number of Tourists: We traverse the number of tourists in the range of 0-10 million, and through the coupled analysis of social, economic, and environmental benefits, we conclude that the total benefits is maximized when the total number of tourists is 1.32 million.
+
+<!-- b003781 | prose | pages [16] -->
+2.Global Pareto Optimization: The maximum total benefits T is about 8 million when considering only the changes in the decision variables, at which point the net income (Ct −Cgc) is 576 million dollars and the total performance (E + S −Env, means the direct sum of each benefit, representing the total benefit, used to measure the overall benefit; while weighted T used for optimization) is about 15 million. The optimal solution where the benefit first increases and then decreases with the number of tourists is shown in Figure 9, which is obviously in line with reality.
+
+<!-- b003782 | prose | pages [16] -->
+关注数学模型
+
+<!-- b003783 | furniture | pages [16] -->
+2
+
+<!-- b003784 | furniture | pages [16] -->
+MATHmodels
+
+<!-- b003785 | furniture | pages [16] -->
+获取更多资讯
+
+<!-- b003786 | furniture | pages [17] -->
+Team # 2502617
+
+<!-- b003787 | furniture | pages [17] -->
+Page 17 of 25
+
+<!-- b003788 | prose | pages [17] -->
+微信公众号：数学模型
+
+<!-- b003789 | prose | pages [17] -->
+10
+
+<!-- b003790 | prose | pages [17] -->
+Economic Benefit
+
+<!-- b003791 | prose | pages [17] -->
+7
+
+<!-- b003792 | prose | pages [17] -->
+Positive Benefit Area Negative Impact Area
+
+<!-- b003793 | prose | pages [17] -->
+0
+
+<!-- b003794 | prose | pages [17] -->
+6
+
+<!-- b003795 | prose | pages [17] -->
+5
+
+<!-- b003796 | prose | pages [17] -->
+Economic Benefit
+
+<!-- b003797 | prose | pages [17] -->
+10
+
+<!-- b003798 | prose | pages [17] -->
+Social Benefit
+
+<!-- b003799 | prose | pages [17] -->
+4
+
+<!-- b003800 | prose | pages [17] -->
+20
+
+<!-- b003801 | prose | pages [17] -->
+3
+
+<!-- b003802 | prose | pages [17] -->
+2
+
+<!-- b003803 | prose | pages [17] -->
+30
+
+<!-- b003804 | prose | pages [17] -->
+1
+
+<!-- b003805 | prose | pages [17] -->
+40
+
+<!-- b003806 | prose | pages [17] -->
+0
+
+<!-- b003807 | prose | pages [17] -->
+0 2 4 6 8 10
+
+<!-- b003808 | prose | pages [17] -->
+0 2
+
+<!-- b003809 | prose | pages [17] -->
+Nt
+
+<!-- b003810 | prose | pages [17] -->
+0.3 Benefit Increase Velocity
+
+<!-- b003811 | prose | pages [17] -->
+0
+
+<!-- b003812 | prose | pages [17] -->
+500
+
+<!-- b003813 | prose | pages [17] -->
+10
+
+<!-- b003814 | prose | pages [17] -->
+0.2
+
+<!-- b003815 | prose | pages [17] -->
+0
+
+<!-- b003816 | prose | pages [17] -->
+20
+
+<!-- b003817 | prose | pages [17] -->
+500
+
+<!-- b003818 | prose | pages [17] -->
+30
+
+<!-- b003819 | prose | pages [17] -->
+0.1
+
+<!-- b003820 | prose | pages [17] -->
+1000
+
+<!-- b003821 | prose | pages [17] -->
+40
+
+<!-- b003822 | prose | pages [17] -->
+0
+
+<!-- b003823 | prose | pages [17] -->
+Social Benefit Positive Benefit Area Negative Impact Area
+
+<!-- b003824 | prose | pages [17] -->
+25
+
+<!-- b003825 | prose | pages [17] -->
+50
+
+<!-- b003826 | prose | pages [17] -->
+Environmental Benefit
+
+<!-- b003827 | prose | pages [17] -->
+75
+
+<!-- b003828 | prose | pages [17] -->
+100
+
+<!-- b003829 | prose | pages [17] -->
+125
+
+<!-- b003830 | prose | pages [17] -->
+Environmental Benefit
+
+<!-- b003831 | prose | pages [17] -->
+150
+
+<!-- b003832 | prose | pages [17] -->
+Negative Benefit Area Positive Impact Area
+
+<!-- b003833 | prose | pages [17] -->
+4 4 6 8 10
+
+<!-- b003834 | prose | pages [17] -->
+0 2 4 6 8 10
+
+<!-- b003835 | prose | pages [17] -->
+Nt Nt
+
+<!-- b003836 | prose | pages [17] -->
+Nt
+
+<!-- b003837 | prose | pages [17] -->
+1.0
+
+<!-- b003838 | prose | pages [17] -->
+20 Net Income Increase Velocity
+
+<!-- b003839 | prose | pages [17] -->
+Performance Increase Velocity
+
+<!-- b003840 | prose | pages [17] -->
+0
+
+<!-- b003841 | prose | pages [17] -->
+0.8
+
+<!-- b003842 | prose | pages [17] -->
+15
+
+<!-- b003843 | prose | pages [17] -->
+0.6
+
+<!-- b003844 | prose | pages [17] -->
+50
+
+<!-- b003845 | prose | pages [17] -->
+10
+
+<!-- b003846 | prose | pages [17] -->
+0.4
+
+<!-- b003847 | prose | pages [17] -->
+100
+
+<!-- b003848 | prose | pages [17] -->
+5
+
+<!-- b003849 | prose | pages [17] -->
+0.2
+
+<!-- b003850 | prose | pages [17] -->
+微信号：MATHmodels
+
+<!-- b003851 | prose | pages [17] -->
+50
+
+<!-- b003852 | prose | pages [17] -->
+0.0
+
+<!-- b003853 | prose | pages [17] -->
+1500
+
+<!-- b003854 | prose | pages [17] -->
+60
+
+<!-- b003855 | prose | pages [17] -->
+2000
+
+<!-- b003856 | prose | pages [17] -->
+0.1
+
+<!-- b003857 | prose | pages [17] -->
+70
+
+<!-- b003858 | prose | pages [17] -->
+Total Benefit
+
+<!-- b003859 | prose | pages [17] -->
+Net Income
+
+<!-- b003860 | prose | pages [17] -->
+2500
+
+<!-- b003861 | prose | pages [17] -->
+0 2 4 6 8 10
+
+<!-- b003862 | prose | pages [17] -->
+0 2
+
+<!-- b003863 | prose | pages [17] -->
+Nt
+
+<!-- b003864 | prose | pages [17] -->
+0.0
+
+<!-- b003865 | prose | pages [17] -->
+150
+
+<!-- b003866 | prose | pages [17] -->
+0
+
+<!-- b003867 | prose | pages [17] -->
+0.2
+
+<!-- b003868 | prose | pages [17] -->
+Total Performance
+
+<!-- b003869 | prose | pages [17] -->
+5
+
+<!-- b003870 | prose | pages [17] -->
+200
+
+<!-- b003871 | prose | pages [17] -->
+4 4 6 8 10
+
+<!-- b003872 | prose | pages [17] -->
+0 2 4 6 8 10
+
+<!-- b003873 | prose | pages [17] -->
+Nt Nt
+
+<!-- b003874 | prose | pages [17] -->
+Nt
+
+<!-- b003875 | caption | pages [17] -->
+Figure 9: Optimization Results - Juneau
+
+<!-- b003876 | prose | pages [17] -->
+• Jiuzhaigou In the process of optimization for Jiuzhaigou, the selection of key parameters is basically the same as that of Juneau, but some parameters have been adjusted according to national conditions and environmental changes. According to China’s value-added tax rate, t=13% of Jiuzhaigou; while the other two key parameters are considered to be approximately the same as Juneau’s.
+
+<!-- b003877 | prose | pages [17] -->
+50
+
+<!-- b003878 | prose | pages [17] -->
+50
+
+<!-- b003879 | prose | pages [17] -->
+0
+
+<!-- b003880 | prose | pages [17] -->
+40
+
+<!-- b003881 | prose | pages [17] -->
+50
+
+<!-- b003882 | prose | pages [17] -->
+100
+
+<!-- b003883 | prose | pages [17] -->
+Economic Benefit
+
+<!-- b003884 | prose | pages [17] -->
+30
+
+<!-- b003885 | prose | pages [17] -->
+Social Benefit
+
+<!-- b003886 | prose | pages [17] -->
+150
+
+<!-- b003887 | prose | pages [17] -->
+20
+
+<!-- b003888 | prose | pages [17] -->
+200
+
+<!-- b003889 | prose | pages [17] -->
+250
+
+<!-- b003890 | prose | pages [17] -->
+10
+
+<!-- b003891 | prose | pages [17] -->
+Economic Benefit
+
+<!-- b003892 | prose | pages [17] -->
+300
+
+<!-- b003893 | prose | pages [17] -->
+Positive Benefit Area
+
+<!-- b003894 | prose | pages [17] -->
+0
+
+<!-- b003895 | prose | pages [17] -->
+Negative Impact Area
+
+<!-- b003896 | prose | pages [17] -->
+350
+
+<!-- b003897 | prose | pages [17] -->
+0 5 10 15 20 25 30
+
+<!-- b003898 | prose | pages [17] -->
+0 5 10
+
+<!-- b003899 | prose | pages [17] -->
+Nt
+
+<!-- b003900 | prose | pages [17] -->
+Benefit Increase Velocity 1.0
+
+<!-- b003901 | prose | pages [17] -->
+0
+
+<!-- b003902 | prose | pages [17] -->
+0
+
+<!-- b003903 | prose | pages [17] -->
+0.8
+
+<!-- b003904 | prose | pages [17] -->
+2000
+
+<!-- b003905 | prose | pages [17] -->
+0.6
+
+<!-- b003906 | prose | pages [17] -->
+50
+
+<!-- b003907 | prose | pages [17] -->
+0.4
+
+<!-- b003908 | prose | pages [17] -->
+100
+
+<!-- b003909 | prose | pages [17] -->
+4000
+
+<!-- b003910 | prose | pages [17] -->
+0.2
+
+<!-- b003911 | prose | pages [17] -->
+150
+
+<!-- b003912 | prose | pages [17] -->
+0.0
+
+<!-- b003913 | prose | pages [17] -->
+6000
+
+<!-- b003914 | prose | pages [17] -->
+0.2
+
+<!-- b003915 | prose | pages [17] -->
+200
+
+<!-- b003916 | prose | pages [17] -->
+8000
+
+<!-- b003917 | prose | pages [17] -->
+0.4
+
+<!-- b003918 | prose | pages [17] -->
+Total Benefit
+
+<!-- b003919 | prose | pages [17] -->
+Net Income
+
+<!-- b003920 | prose | pages [17] -->
+250
+
+<!-- b003921 | prose | pages [17] -->
+0 5 10 15 20 25 30
+
+<!-- b003922 | prose | pages [17] -->
+0 5 10
+
+<!-- b003923 | prose | pages [17] -->
+Nt
+
+<!-- b003924 | prose | pages [17] -->
+0
+
+<!-- b003925 | prose | pages [17] -->
+Social Benefit Positive Benefit Area Negative Impact Area
+
+<!-- b003926 | prose | pages [17] -->
+100
+
+<!-- b003927 | prose | pages [17] -->
+Environmental Benefit
+
+<!-- b003928 | prose | pages [17] -->
+200
+
+<!-- b003929 | prose | pages [17] -->
+300
+
+<!-- b003930 | prose | pages [17] -->
+400
+
+<!-- b003931 | prose | pages [17] -->
+500
+
+<!-- b003932 | prose | pages [17] -->
+Environmental Benefit Negative Benefit Area Positive Impact Area
+
+<!-- b003933 | prose | pages [17] -->
+600
+
+<!-- b003934 | prose | pages [17] -->
+15 15 20 25 30
+
+<!-- b003935 | prose | pages [17] -->
+0 5 10 15 20 25 30
+
+<!-- b003936 | prose | pages [17] -->
+Nt Nt
+
+<!-- b003937 | prose | pages [17] -->
+Nt
+
+<!-- b003938 | prose | pages [17] -->
+15 Net Income Increase Velocity
+
+<!-- b003939 | prose | pages [17] -->
+Performance Increase Velocity 1.5
+
+<!-- b003940 | prose | pages [17] -->
+0
+
+<!-- b003941 | prose | pages [17] -->
+10
+
+<!-- b003942 | prose | pages [17] -->
+1.0
+
+<!-- b003943 | prose | pages [17] -->
+200
+
+<!-- b003944 | prose | pages [17] -->
+5
+
+<!-- b003945 | prose | pages [17] -->
+0.5
+
+<!-- b003946 | prose | pages [17] -->
+0
+
+<!-- b003947 | prose | pages [17] -->
+400
+
+<!-- b003948 | prose | pages [17] -->
+0.0
+
+<!-- b003949 | prose | pages [17] -->
+5
+
+<!-- b003950 | prose | pages [17] -->
+600
+
+<!-- b003951 | prose | pages [17] -->
+0.5
+
+<!-- b003952 | prose | pages [17] -->
+10
+
+<!-- b003953 | prose | pages [17] -->
+1.0
+
+<!-- b003954 | prose | pages [17] -->
+800
+
+<!-- b003955 | prose | pages [17] -->
+15
+
+<!-- b003956 | prose | pages [17] -->
+Total Performance
+
+<!-- b003957 | prose | pages [17] -->
+1.5
+
+<!-- b003958 | prose | pages [17] -->
+15 15 20 25 30
+
+<!-- b003959 | prose | pages [17] -->
+0 5 10 15 20 25 30
+
+<!-- b003960 | prose | pages [17] -->
+Nt Nt
+
+<!-- b003961 | prose | pages [17] -->
+Nt
+
+<!-- b003962 | caption | pages [17] -->
+Figure 10: Optimization Results - Jiuzhaigou
+
+<!-- b003963 | prose | pages [17] -->
+1.Optimal Number of Tourists: We traverse the number of tourists in the range of 0-10 million, and through the coupled analysis of social, economic, and environmental benefits, we conclude that the total benefits are maximized when the total number of tourists is 3.32 million.
+
+<!-- b003964 | prose | pages [17] -->
+2.Global Pareto Optimization: The maximum total benefits T (total benefits of the municipal sector) is 37 million when considering only the changes in the decision variables, at which point
+
+<!-- b003965 | prose | pages [17] -->
+m
+
+<!-- b003966 | prose | pages [17] -->
+m
+
+<!-- b003967 | prose | pages [17] -->
+m
+
+<!-- b003968 | prose | pages [17] -->
+m
+
+<!-- b003969 | prose | pages [17] -->
+m
+
+<!-- b003970 | prose | pages [17] -->
+m
+
+<!-- b003971 | prose | pages [17] -->
+m
+
+<!-- b003972 | prose | pages [17] -->
+m
+
+<!-- b003973 | prose | pages [17] -->
+m
+
+<!-- b003974 | prose | pages [17] -->
+m
+
+<!-- b003975 | prose | pages [17] -->
+m
+
+<!-- b003976 | prose | pages [17] -->
+m
+
+<!-- b003977 | prose | pages [17] -->
+m
+
+<!-- b003978 | prose | pages [17] -->
+m
+
+<!-- b003979 | prose | pages [17] -->
+m
+
+<!-- b003980 | prose | pages [17] -->
+m
+
+<!-- b003981 | prose | pages [17] -->
+m
+
+<!-- b003982 | prose | pages [17] -->
+m
+
+<!-- b003983 | prose | pages [17] -->
+m
+
+<!-- b003984 | prose | pages [17] -->
+m
+
+<!-- b003985 | prose | pages [17] -->
+m
+
+<!-- b003986 | prose | pages [17] -->
+m
+
+<!-- b003987 | prose | pages [17] -->
+m
+
+<!-- b003988 | prose | pages [17] -->
+m
+
+<!-- b003989 | prose | pages [17] -->
+m
+
+<!-- b003990 | prose | pages [17] -->
+m
+
+<!-- b003991 | prose | pages [17] -->
+m
+
+<!-- b003992 | prose | pages [17] -->
+m
+
+<!-- b003993 | prose | pages [17] -->
+m
+
+<!-- b003994 | prose | pages [17] -->
+m
+
+<!-- b003995 | prose | pages [17] -->
+m
+
+<!-- b003996 | prose | pages [17] -->
+m
+
+<!-- b003997 | prose | pages [17] -->
+m
+
+<!-- b003998 | prose | pages [17] -->
+m
+
+<!-- b003999 | prose | pages [17] -->
+m
+
+<!-- b004000 | prose | pages [17] -->
+m
+
+<!-- b004001 | prose | pages [17] -->
+m
+
+<!-- b004002 | prose | pages [17] -->
+m
+
+<!-- b004003 | prose | pages [17] -->
+m
+
+<!-- b004004 | prose | pages [17] -->
+m
+
+<!-- b004005 | prose | pages [17] -->
+m
+
+<!-- b004006 | prose | pages [17] -->
+m
+
+<!-- b004007 | prose | pages [17] -->
+m
+
+<!-- b004008 | prose | pages [17] -->
+m
+
+<!-- b004009 | prose | pages [17] -->
+m
+
+<!-- b004010 | prose | pages [17] -->
+m
+
+<!-- b004011 | prose | pages [17] -->
+m
+
+<!-- b004012 | prose | pages [17] -->
+m
+
+<!-- b004013 | prose | pages [17] -->
+m
+
+<!-- b004014 | prose | pages [17] -->
+m
+
+<!-- b004015 | prose | pages [17] -->
+m
+
+<!-- b004016 | prose | pages [17] -->
+m
+
+<!-- b004017 | prose | pages [17] -->
+m
+
+<!-- b004018 | prose | pages [17] -->
+m
+
+<!-- b004019 | prose | pages [17] -->
+m
+
+<!-- b004020 | prose | pages [17] -->
+m
+
+<!-- b004021 | prose | pages [17] -->
+m
+
+<!-- b004022 | prose | pages [17] -->
+m
+
+<!-- b004023 | prose | pages [17] -->
+m
+
+<!-- b004024 | prose | pages [17] -->
+m
+
+<!-- b004025 | prose | pages [17] -->
+m
+
+<!-- b004026 | prose | pages [17] -->
+m
+
+<!-- b004027 | prose | pages [17] -->
+m
+
+<!-- b004028 | prose | pages [17] -->
+m
+
+<!-- b004029 | prose | pages [17] -->
+m
+
+<!-- b004030 | prose | pages [17] -->
+m
+
+<!-- b004031 | prose | pages [17] -->
+m
+
+<!-- b004032 | prose | pages [17] -->
+m
+
+<!-- b004033 | prose | pages [17] -->
+m
+
+<!-- b004034 | prose | pages [17] -->
+m
+
+<!-- b004035 | prose | pages [17] -->
+m
+
+<!-- b004036 | prose | pages [17] -->
+m
+
+<!-- b004037 | prose | pages [17] -->
+m
+
+<!-- b004038 | prose | pages [17] -->
+m
+
+<!-- b004039 | prose | pages [17] -->
+m
+
+<!-- b004040 | prose | pages [17] -->
+m
+
+<!-- b004041 | prose | pages [17] -->
+m
+
+<!-- b004042 | prose | pages [17] -->
+m
+
+<!-- b004043 | prose | pages [17] -->
+m
+
+<!-- b004044 | prose | pages [17] -->
+m
+
+<!-- b004045 | prose | pages [17] -->
+m
+
+<!-- b004046 | prose | pages [17] -->
+m
+
+<!-- b004047 | prose | pages [17] -->
+m
+
+<!-- b004048 | prose | pages [17] -->
+m
+
+<!-- b004049 | prose | pages [17] -->
+m
+
+<!-- b004050 | prose | pages [17] -->
+m
+
+<!-- b004051 | prose | pages [17] -->
+m
+
+<!-- b004052 | prose | pages [17] -->
+m
+
+<!-- b004053 | prose | pages [17] -->
+m
+
+<!-- b004054 | prose | pages [17] -->
+m
+
+<!-- b004055 | prose | pages [17] -->
+m
+
+<!-- b004056 | prose | pages [17] -->
+m
+
+<!-- b004057 | prose | pages [17] -->
+m
+
+<!-- b004058 | prose | pages [17] -->
+m
+
+<!-- b004059 | prose | pages [17] -->
+m
+
+<!-- b004060 | prose | pages [17] -->
+m
+
+<!-- b004061 | prose | pages [17] -->
+m
+
+<!-- b004062 | prose | pages [17] -->
+m
+
+<!-- b004063 | prose | pages [17] -->
+m
+
+<!-- b004064 | prose | pages [17] -->
+m
+
+<!-- b004065 | prose | pages [17] -->
+m
+
+<!-- b004066 | prose | pages [17] -->
+m
+
+<!-- b004067 | prose | pages [17] -->
+m
+
+<!-- b004068 | prose | pages [17] -->
+m
+
+<!-- b004069 | prose | pages [17] -->
+m
+
+<!-- b004070 | prose | pages [17] -->
+m
+
+<!-- b004071 | prose | pages [17] -->
+m
+
+<!-- b004072 | prose | pages [17] -->
+m
+
+<!-- b004073 | prose | pages [17] -->
+m
+
+<!-- b004074 | prose | pages [17] -->
+m
+
+<!-- b004075 | prose | pages [17] -->
+m
+
+<!-- b004076 | prose | pages [17] -->
+m
+
+<!-- b004077 | prose | pages [17] -->
+m
+
+<!-- b004078 | prose | pages [17] -->
+m
+
+<!-- b004079 | prose | pages [17] -->
+m
+
+<!-- b004080 | prose | pages [17] -->
+m
+
+<!-- b004081 | prose | pages [17] -->
+m
+
+<!-- b004082 | prose | pages [17] -->
+m
+
+<!-- b004083 | prose | pages [17] -->
+m
+
+<!-- b004084 | prose | pages [17] -->
+m
+
+<!-- b004085 | prose | pages [17] -->
+m
+
+<!-- b004086 | prose | pages [17] -->
+m
+
+<!-- b004087 | prose | pages [17] -->
+m
+
+<!-- b004088 | prose | pages [17] -->
+m
+
+<!-- b004089 | prose | pages [17] -->
+m
+
+<!-- b004090 | prose | pages [17] -->
+m
+
+<!-- b004091 | prose | pages [17] -->
+m
+
+<!-- b004092 | prose | pages [17] -->
+m
+
+<!-- b004093 | prose | pages [17] -->
+m
+
+<!-- b004094 | prose | pages [17] -->
+m
+
+<!-- b004095 | prose | pages [17] -->
+m
+
+<!-- b004096 | prose | pages [17] -->
+m
+
+<!-- b004097 | prose | pages [17] -->
+m
+
+<!-- b004098 | prose | pages [17] -->
+m
+
+<!-- b004099 | prose | pages [17] -->
+m
+
+<!-- b004100 | prose | pages [17] -->
+m
+
+<!-- b004101 | prose | pages [17] -->
+m
+
+<!-- b004102 | prose | pages [17] -->
+m
+
+<!-- b004103 | prose | pages [17] -->
+m
+
+<!-- b004104 | prose | pages [17] -->
+m
+
+<!-- b004105 | prose | pages [17] -->
+m
+
+<!-- b004106 | prose | pages [17] -->
+m
+
+<!-- b004107 | prose | pages [17] -->
+m
+
+<!-- b004108 | prose | pages [17] -->
+m
+
+<!-- b004109 | prose | pages [17] -->
+m
+
+<!-- b004110 | prose | pages [17] -->
+m
+
+<!-- b004111 | prose | pages [17] -->
+m
+
+<!-- b004112 | prose | pages [17] -->
+m
+
+<!-- b004113 | prose | pages [17] -->
+m
+
+<!-- b004114 | prose | pages [17] -->
+m
+
+<!-- b004115 | prose | pages [17] -->
+m
+
+<!-- b004116 | prose | pages [17] -->
+m
+
+<!-- b004117 | prose | pages [17] -->
+m
+
+<!-- b004118 | prose | pages [17] -->
+m
+
+<!-- b004119 | prose | pages [17] -->
+m
+
+<!-- b004120 | prose | pages [17] -->
+m
+
+<!-- b004121 | prose | pages [17] -->
+m
+
+<!-- b004122 | prose | pages [17] -->
+m
+
+<!-- b004123 | prose | pages [17] -->
+m
+
+<!-- b004124 | prose | pages [17] -->
+m
+
+<!-- b004125 | prose | pages [17] -->
+m
+
+<!-- b004126 | prose | pages [17] -->
+m
+
+<!-- b004127 | prose | pages [17] -->
+m
+
+<!-- b004128 | prose | pages [17] -->
+m
+
+<!-- b004129 | prose | pages [17] -->
+m
+
+<!-- b004130 | prose | pages [17] -->
+m
+
+<!-- b004131 | prose | pages [17] -->
+m
+
+<!-- b004132 | prose | pages [17] -->
+m
+
+<!-- b004133 | prose | pages [17] -->
+m
+
+<!-- b004134 | prose | pages [17] -->
+m
+
+<!-- b004135 | prose | pages [17] -->
+m
+
+<!-- b004136 | prose | pages [17] -->
+m
+
+<!-- b004137 | prose | pages [17] -->
+m
+
+<!-- b004138 | prose | pages [17] -->
+m
+
+<!-- b004139 | prose | pages [17] -->
+m
+
+<!-- b004140 | prose | pages [17] -->
+m
+
+<!-- b004141 | prose | pages [17] -->
+m
+
+<!-- b004142 | prose | pages [17] -->
+m
+
+<!-- b004143 | prose | pages [17] -->
+m
+
+<!-- b004144 | prose | pages [17] -->
+m
+
+<!-- b004145 | prose | pages [17] -->
+m
+
+<!-- b004146 | prose | pages [17] -->
+m
+
+<!-- b004147 | prose | pages [17] -->
+m
+
+<!-- b004148 | prose | pages [17] -->
+m
+
+<!-- b004149 | prose | pages [17] -->
+m
+
+<!-- b004150 | prose | pages [17] -->
+m
+
+<!-- b004151 | prose | pages [17] -->
+m
+
+<!-- b004152 | prose | pages [17] -->
+m
+
+<!-- b004153 | prose | pages [17] -->
+m
+
+<!-- b004154 | prose | pages [17] -->
+m
+
+<!-- b004155 | prose | pages [17] -->
+m
+
+<!-- b004156 | prose | pages [17] -->
+m
+
+<!-- b004157 | prose | pages [17] -->
+m
+
+<!-- b004158 | prose | pages [17] -->
+m
+
+<!-- b004159 | prose | pages [17] -->
+m
+
+<!-- b004160 | prose | pages [17] -->
+m
+
+<!-- b004161 | prose | pages [17] -->
+m
+
+<!-- b004162 | prose | pages [17] -->
+m
+
+<!-- b004163 | prose | pages [17] -->
+m
+
+<!-- b004164 | prose | pages [17] -->
+m
+
+<!-- b004165 | prose | pages [17] -->
+m
+
+<!-- b004166 | prose | pages [17] -->
+m
+
+<!-- b004167 | prose | pages [17] -->
+m
+
+<!-- b004168 | prose | pages [17] -->
+m
+
+<!-- b004169 | prose | pages [17] -->
+m
+
+<!-- b004170 | prose | pages [17] -->
+m
+
+<!-- b004171 | prose | pages [17] -->
+m
+
+<!-- b004172 | prose | pages [17] -->
+m
+
+<!-- b004173 | prose | pages [17] -->
+m
+
+<!-- b004174 | prose | pages [17] -->
+m
+
+<!-- b004175 | prose | pages [17] -->
+m
+
+<!-- b004176 | prose | pages [17] -->
+m
+
+<!-- b004177 | prose | pages [17] -->
+m
+
+<!-- b004178 | prose | pages [17] -->
+m
+
+<!-- b004179 | prose | pages [17] -->
+m
+
+<!-- b004180 | prose | pages [17] -->
+m
+
+<!-- b004181 | prose | pages [17] -->
+m
+
+<!-- b004182 | prose | pages [17] -->
+m
+
+<!-- b004183 | prose | pages [17] -->
+m
+
+<!-- b004184 | prose | pages [17] -->
+m
+
+<!-- b004185 | prose | pages [17] -->
+m
+
+<!-- b004186 | prose | pages [17] -->
+m
+
+<!-- b004187 | prose | pages [17] -->
+m
+
+<!-- b004188 | prose | pages [17] -->
+m
+
+<!-- b004189 | prose | pages [17] -->
+m
+
+<!-- b004190 | prose | pages [17] -->
+m
+
+<!-- b004191 | prose | pages [17] -->
+m
+
+<!-- b004192 | prose | pages [17] -->
+m
+
+<!-- b004193 | prose | pages [17] -->
+m
+
+<!-- b004194 | prose | pages [17] -->
+m
+
+<!-- b004195 | prose | pages [17] -->
+m
+
+<!-- b004196 | prose | pages [17] -->
+m
+
+<!-- b004197 | prose | pages [17] -->
+m
+
+<!-- b004198 | prose | pages [17] -->
+m
+
+<!-- b004199 | prose | pages [17] -->
+m
+
+<!-- b004200 | prose | pages [17] -->
+m
+
+<!-- b004201 | prose | pages [17] -->
+m
+
+<!-- b004202 | prose | pages [17] -->
+m
+
+<!-- b004203 | prose | pages [17] -->
+m
+
+<!-- b004204 | prose | pages [17] -->
+m
+
+<!-- b004205 | prose | pages [17] -->
+m
+
+<!-- b004206 | prose | pages [17] -->
+m
+
+<!-- b004207 | prose | pages [17] -->
+m
+
+<!-- b004208 | prose | pages [17] -->
+m
+
+<!-- b004209 | prose | pages [17] -->
+m
+
+<!-- b004210 | prose | pages [17] -->
+m
+
+<!-- b004211 | prose | pages [17] -->
+m
+
+<!-- b004212 | prose | pages [17] -->
+m
+
+<!-- b004213 | prose | pages [17] -->
+m
+
+<!-- b004214 | prose | pages [17] -->
+m
+
+<!-- b004215 | prose | pages [17] -->
+m
+
+<!-- b004216 | prose | pages [17] -->
+m
+
+<!-- b004217 | prose | pages [17] -->
+m
+
+<!-- b004218 | prose | pages [17] -->
+m
+
+<!-- b004219 | prose | pages [17] -->
+m
+
+<!-- b004220 | prose | pages [17] -->
+m
+
+<!-- b004221 | prose | pages [17] -->
+m
+
+<!-- b004222 | prose | pages [17] -->
+m
+
+<!-- b004223 | prose | pages [17] -->
+m
+
+<!-- b004224 | prose | pages [17] -->
+m
+
+<!-- b004225 | prose | pages [17] -->
+m
+
+<!-- b004226 | prose | pages [17] -->
+m
+
+<!-- b004227 | prose | pages [17] -->
+m
+
+<!-- b004228 | prose | pages [17] -->
+m
+
+<!-- b004229 | prose | pages [17] -->
+m
+
+<!-- b004230 | prose | pages [17] -->
+m
+
+<!-- b004231 | prose | pages [17] -->
+m
+
+<!-- b004232 | prose | pages [17] -->
+m
+
+<!-- b004233 | prose | pages [17] -->
+m
+
+<!-- b004234 | prose | pages [17] -->
+m
+
+<!-- b004235 | prose | pages [17] -->
+m
+
+<!-- b004236 | prose | pages [17] -->
+m
+
+<!-- b004237 | prose | pages [17] -->
+m
+
+<!-- b004238 | prose | pages [17] -->
+m
+
+<!-- b004239 | prose | pages [17] -->
+m
+
+<!-- b004240 | prose | pages [17] -->
+m
+
+<!-- b004241 | prose | pages [17] -->
+m
+
+<!-- b004242 | prose | pages [17] -->
+m
+
+<!-- b004243 | prose | pages [17] -->
+m
+
+<!-- b004244 | prose | pages [17] -->
+m
+
+<!-- b004245 | prose | pages [17] -->
+m
+
+<!-- b004246 | prose | pages [17] -->
+m
+
+<!-- b004247 | prose | pages [17] -->
+m
+
+<!-- b004248 | prose | pages [17] -->
+m
+
+<!-- b004249 | furniture | pages [17] -->
+m
+
+<!-- b004250 | furniture | pages [17] -->
+m
+
+<!-- b004251 | furniture | pages [17] -->
+m
+
+<!-- b004252 | furniture | pages [17] -->
+m
+
+<!-- b004253 | furniture | pages [17] -->
+m
+
+<!-- b004254 | furniture | pages [17] -->
+m
+
+<!-- b004255 | furniture | pages [17] -->
+m
+
+<!-- b004256 | furniture | pages [17] -->
+m
+
+<!-- b004257 | furniture | pages [17] -->
+m
+
+<!-- b004258 | furniture | pages [17] -->
+m
+
+<!-- b004259 | furniture | pages [17] -->
+m
+
+<!-- b004260 | furniture | pages [17] -->
+m
+
+<!-- b004261 | furniture | pages [17] -->
+m
+
+<!-- b004262 | furniture | pages [17] -->
+m
+
+<!-- b004263 | furniture | pages [17] -->
+m
+
+<!-- b004264 | furniture | pages [17] -->
+m
+
+<!-- b004265 | furniture | pages [17] -->
+m
+
+<!-- b004266 | furniture | pages [17] -->
+m
+
+<!-- b004267 | furniture | pages [17] -->
+m
+
+<!-- b004268 | furniture | pages [17] -->
+m
+
+<!-- b004269 | furniture | pages [17] -->
+m
+
+<!-- b004270 | furniture | pages [17] -->
+m
+
+<!-- b004271 | furniture | pages [17] -->
+m
+
+<!-- b004272 | furniture | pages [17] -->
+m
+
+<!-- b004273 | furniture | pages [17] -->
+m
+
+<!-- b004274 | furniture | pages [17] -->
+m
+
+<!-- b004275 | furniture | pages [17] -->
+m
+
+<!-- b004276 | furniture | pages [17] -->
+m
+
+<!-- b004277 | furniture | pages [17] -->
+m
+
+<!-- b004278 | furniture | pages [17] -->
+m
+
+<!-- b004279 | furniture | pages [17] -->
+m
+
+<!-- b004280 | furniture | pages [17] -->
+m
+
+<!-- b004281 | furniture | pages [17] -->
+m
+
+<!-- b004282 | furniture | pages [17] -->
+m
+
+<!-- b004283 | furniture | pages [17] -->
+m
+
+<!-- b004284 | furniture | pages [17] -->
+m
+
+<!-- b004285 | furniture | pages [17] -->
+m
+
+<!-- b004286 | furniture | pages [17] -->
+m
+
+<!-- b004287 | furniture | pages [17] -->
+m
+
+<!-- b004288 | furniture | pages [17] -->
+m
+
+<!-- b004289 | furniture | pages [17] -->
+m
+
+<!-- b004290 | furniture | pages [17] -->
+m
+
+<!-- b004291 | furniture | pages [17] -->
+m
+
+<!-- b004292 | furniture | pages [17] -->
+m
+
+<!-- b004293 | furniture | pages [17] -->
+m
+
+<!-- b004294 | furniture | pages [17] -->
+m
+
+<!-- b004295 | furniture | pages [17] -->
+m
+
+<!-- b004296 | furniture | pages [17] -->
+m
+
+<!-- b004297 | furniture | pages [17] -->
+m
+
+<!-- b004298 | furniture | pages [17] -->
+m
+
+<!-- b004299 | furniture | pages [17] -->
+m
+
+<!-- b004300 | furniture | pages [17] -->
+m
+
+<!-- b004301 | furniture | pages [17] -->
+m
+
+<!-- b004302 | furniture | pages [17] -->
+m
+
+<!-- b004303 | furniture | pages [17] -->
+m
+
+<!-- b004304 | furniture | pages [17] -->
+m
+
+<!-- b004305 | furniture | pages [17] -->
+m
+
+<!-- b004306 | furniture | pages [17] -->
+m
+
+<!-- b004307 | furniture | pages [17] -->
+m
+
+<!-- b004308 | furniture | pages [17] -->
+m
+
+<!-- b004309 | furniture | pages [17] -->
+m
+
+<!-- b004310 | furniture | pages [17] -->
+m
+
+<!-- b004311 | furniture | pages [17] -->
+m
+
+<!-- b004312 | furniture | pages [17] -->
+m
+
+<!-- b004313 | furniture | pages [17] -->
+m
+
+<!-- b004314 | furniture | pages [17] -->
+m
+
+<!-- b004315 | furniture | pages [17] -->
+m
+
+<!-- b004316 | furniture | pages [17] -->
+m
+
+<!-- b004317 | furniture | pages [17] -->
+m
+
+<!-- b004318 | furniture | pages [17] -->
+m
+
+<!-- b004319 | furniture | pages [17] -->
+m
+
+<!-- b004320 | furniture | pages [17] -->
+m
+
+<!-- b004321 | furniture | pages [17] -->
+m
+
+<!-- b004322 | furniture | pages [17] -->
+m
+
+<!-- b004323 | furniture | pages [17] -->
+m
+
+<!-- b004324 | furniture | pages [17] -->
+m
+
+<!-- b004325 | furniture | pages [17] -->
+m
+
+<!-- b004326 | furniture | pages [17] -->
+m
+
+<!-- b004327 | furniture | pages [17] -->
+m
+
+<!-- b004328 | furniture | pages [17] -->
+m
+
+<!-- b004329 | furniture | pages [17] -->
+m
+
+<!-- b004330 | furniture | pages [17] -->
+m
+
+<!-- b004331 | furniture | pages [17] -->
+m
+
+<!-- b004332 | furniture | pages [17] -->
+m
+
+<!-- b004333 | furniture | pages [17] -->
+m
+
+<!-- b004334 | furniture | pages [17] -->
+m
+
+<!-- b004335 | furniture | pages [17] -->
+m
+
+<!-- b004336 | furniture | pages [17] -->
+m
+
+<!-- b004337 | furniture | pages [17] -->
+m
+
+<!-- b004338 | furniture | pages [17] -->
+m
+
+<!-- b004339 | furniture | pages [17] -->
+m
+
+<!-- b004340 | furniture | pages [17] -->
+m
+
+<!-- b004341 | furniture | pages [17] -->
+m
+
+<!-- b004342 | furniture | pages [17] -->
+m
+
+<!-- b004343 | furniture | pages [17] -->
+m
+
+<!-- b004344 | furniture | pages [17] -->
+m
+
+<!-- b004345 | furniture | pages [17] -->
+m
+
+<!-- b004346 | furniture | pages [17] -->
+m
+
+<!-- b004347 | furniture | pages [17] -->
+m
+
+<!-- b004348 | furniture | pages [17] -->
+m
+
+<!-- b004349 | furniture | pages [17] -->
+m
+
+<!-- b004350 | furniture | pages [17] -->
+m
+
+<!-- b004351 | furniture | pages [17] -->
+m
+
+<!-- b004352 | furniture | pages [17] -->
+m
+
+<!-- b004353 | furniture | pages [17] -->
+m
+
+<!-- b004354 | furniture | pages [17] -->
+m
+
+<!-- b004355 | furniture | pages [17] -->
+m
+
+<!-- b004356 | furniture | pages [17] -->
+m
+
+<!-- b004357 | furniture | pages [17] -->
+m
+
+<!-- b004358 | furniture | pages [17] -->
+m
+
+<!-- b004359 | furniture | pages [17] -->
+m
+
+<!-- b004360 | furniture | pages [17] -->
+m
+
+<!-- b004361 | furniture | pages [17] -->
+m
+
+<!-- b004362 | furniture | pages [17] -->
+m
+
+<!-- b004363 | furniture | pages [17] -->
+m
+
+<!-- b004364 | furniture | pages [17] -->
+m
+
+<!-- b004365 | furniture | pages [17] -->
+m
+
+<!-- b004366 | furniture | pages [17] -->
+m
+
+<!-- b004367 | furniture | pages [17] -->
+m
+
+<!-- b004368 | furniture | pages [17] -->
+m
+
+<!-- b004369 | furniture | pages [17] -->
+m
+
+<!-- b004370 | furniture | pages [17] -->
+m
+
+<!-- b004371 | furniture | pages [17] -->
+m
+
+<!-- b004372 | furniture | pages [17] -->
+m
+
+<!-- b004373 | furniture | pages [17] -->
+m
+
+<!-- b004374 | furniture | pages [17] -->
+m
+
+<!-- b004375 | furniture | pages [17] -->
+m
+
+<!-- b004376 | furniture | pages [17] -->
+m
+
+<!-- b004377 | furniture | pages [17] -->
+m
+
+<!-- b004378 | furniture | pages [17] -->
+m
+
+<!-- b004379 | furniture | pages [17] -->
+m
+
+<!-- b004380 | furniture | pages [17] -->
+m
+
+<!-- b004381 | furniture | pages [17] -->
+m
+
+<!-- b004382 | furniture | pages [17] -->
+m
+
+<!-- b004383 | furniture | pages [17] -->
+m
+
+<!-- b004384 | furniture | pages [17] -->
+m
+
+<!-- b004385 | furniture | pages [17] -->
+m
+
+<!-- b004386 | furniture | pages [17] -->
+m
+
+<!-- b004387 | furniture | pages [17] -->
+m
+
+<!-- b004388 | furniture | pages [17] -->
+m
+
+<!-- b004389 | furniture | pages [17] -->
+m
+
+<!-- b004390 | furniture | pages [17] -->
+m
+
+<!-- b004391 | furniture | pages [17] -->
+m
+
+<!-- b004392 | furniture | pages [17] -->
+m
+
+<!-- b004393 | furniture | pages [17] -->
+m
+
+<!-- b004394 | furniture | pages [17] -->
+m
+
+<!-- b004395 | furniture | pages [17] -->
+m
+
+<!-- b004396 | furniture | pages [17] -->
+m
+
+<!-- b004397 | furniture | pages [17] -->
+m
+
+<!-- b004398 | furniture | pages [17] -->
+m
+
+<!-- b004399 | furniture | pages [17] -->
+m
+
+<!-- b004400 | furniture | pages [17] -->
+m
+
+<!-- b004401 | furniture | pages [17] -->
+m
+
+<!-- b004402 | furniture | pages [17] -->
+m
+
+<!-- b004403 | furniture | pages [17] -->
+m
+
+<!-- b004404 | furniture | pages [17] -->
+m
+
+<!-- b004405 | furniture | pages [17] -->
+m
+
+<!-- b004406 | furniture | pages [17] -->
+m
+
+<!-- b004407 | furniture | pages [17] -->
+m
+
+<!-- b004408 | furniture | pages [17] -->
+m
+
+<!-- b004409 | furniture | pages [17] -->
+m
+
+<!-- b004410 | furniture | pages [17] -->
+m
+
+<!-- b004411 | furniture | pages [17] -->
+m
+
+<!-- b004412 | furniture | pages [17] -->
+m
+
+<!-- b004413 | furniture | pages [17] -->
+m
+
+<!-- b004414 | furniture | pages [17] -->
+m
+
+<!-- b004415 | furniture | pages [17] -->
+m
+
+<!-- b004416 | furniture | pages [17] -->
+m
+
+<!-- b004417 | furniture | pages [17] -->
+m
+
+<!-- b004418 | furniture | pages [17] -->
+m
+
+<!-- b004419 | furniture | pages [17] -->
+m
+
+<!-- b004420 | furniture | pages [17] -->
+m
+
+<!-- b004421 | furniture | pages [17] -->
+m
+
+<!-- b004422 | furniture | pages [17] -->
+m
+
+<!-- b004423 | furniture | pages [17] -->
+m
+
+<!-- b004424 | furniture | pages [17] -->
+m
+
+<!-- b004425 | furniture | pages [17] -->
+m
+
+<!-- b004426 | furniture | pages [17] -->
+m
+
+<!-- b004427 | furniture | pages [17] -->
+m
+
+<!-- b004428 | furniture | pages [17] -->
+m
+
+<!-- b004429 | furniture | pages [17] -->
+m
+
+<!-- b004430 | furniture | pages [17] -->
+m
+
+<!-- b004431 | furniture | pages [17] -->
+m
+
+<!-- b004432 | furniture | pages [17] -->
+m
+
+<!-- b004433 | furniture | pages [17] -->
+m
+
+<!-- b004434 | furniture | pages [17] -->
+m
+
+<!-- b004435 | furniture | pages [17] -->
+m
+
+<!-- b004436 | furniture | pages [17] -->
+m
+
+<!-- b004437 | furniture | pages [17] -->
+m
+
+<!-- b004438 | furniture | pages [17] -->
+m
+
+<!-- b004439 | furniture | pages [17] -->
+m
+
+<!-- b004440 | furniture | pages [17] -->
+m
+
+<!-- b004441 | furniture | pages [17] -->
+m
+
+<!-- b004442 | furniture | pages [17] -->
+m
+
+<!-- b004443 | furniture | pages [17] -->
+m
+
+<!-- b004444 | furniture | pages [17] -->
+m
+
+<!-- b004445 | furniture | pages [17] -->
+m
+
+<!-- b004446 | furniture | pages [17] -->
+m
+
+<!-- b004447 | furniture | pages [17] -->
+m
+
+<!-- b004448 | furniture | pages [17] -->
+m
+
+<!-- b004449 | furniture | pages [17] -->
+m
+
+<!-- b004450 | furniture | pages [17] -->
+m
+
+<!-- b004451 | furniture | pages [17] -->
+m
+
+<!-- b004452 | furniture | pages [17] -->
+m
+
+<!-- b004453 | furniture | pages [17] -->
+m
+
+<!-- b004454 | furniture | pages [17] -->
+m
+
+<!-- b004455 | furniture | pages [17] -->
+m
+
+<!-- b004456 | furniture | pages [17] -->
+m
+
+<!-- b004457 | furniture | pages [17] -->
+m
+
+<!-- b004458 | furniture | pages [17] -->
+m
+
+<!-- b004459 | furniture | pages [17] -->
+m
+
+<!-- b004460 | furniture | pages [17] -->
+m
+
+<!-- b004461 | furniture | pages [17] -->
+m
+
+<!-- b004462 | furniture | pages [17] -->
+m
+
+<!-- b004463 | furniture | pages [17] -->
+m
+
+<!-- b004464 | furniture | pages [17] -->
+m
+
+<!-- b004465 | furniture | pages [17] -->
+m
+
+<!-- b004466 | furniture | pages [17] -->
+m
+
+<!-- b004467 | furniture | pages [17] -->
+m
+
+<!-- b004468 | furniture | pages [17] -->
+m
+
+<!-- b004469 | furniture | pages [17] -->
+m
+
+<!-- b004470 | furniture | pages [17] -->
+m
+
+<!-- b004471 | furniture | pages [17] -->
+m
+
+<!-- b004472 | furniture | pages [17] -->
+m
+
+<!-- b004473 | furniture | pages [17] -->
+m
+
+<!-- b004474 | furniture | pages [17] -->
+m
+
+<!-- b004475 | furniture | pages [17] -->
+m
+
+<!-- b004476 | furniture | pages [17] -->
+m
+
+<!-- b004477 | furniture | pages [17] -->
+m
+
+<!-- b004478 | furniture | pages [17] -->
+m
+
+<!-- b004479 | furniture | pages [17] -->
+m
+
+<!-- b004480 | furniture | pages [17] -->
+m
+
+<!-- b004481 | furniture | pages [17] -->
+m
+
+<!-- b004482 | furniture | pages [17] -->
+m
+
+<!-- b004483 | furniture | pages [17] -->
+m
+
+<!-- b004484 | furniture | pages [17] -->
+m
+
+<!-- b004485 | furniture | pages [17] -->
+m
+
+<!-- b004486 | furniture | pages [17] -->
+m
+
+<!-- b004487 | furniture | pages [17] -->
+m
+
+<!-- b004488 | furniture | pages [17] -->
+m
+
+<!-- b004489 | furniture | pages [17] -->
+m
+
+<!-- b004490 | furniture | pages [17] -->
+m
+
+<!-- b004491 | furniture | pages [17] -->
+m
+
+<!-- b004492 | furniture | pages [17] -->
+m
+
+<!-- b004493 | furniture | pages [17] -->
+m
+
+<!-- b004494 | furniture | pages [17] -->
+m
+
+<!-- b004495 | furniture | pages [17] -->
+m
+
+<!-- b004496 | furniture | pages [17] -->
+m
+
+<!-- b004497 | furniture | pages [17] -->
+m
+
+<!-- b004498 | furniture | pages [17] -->
+m
+
+<!-- b004499 | furniture | pages [17] -->
+m
+
+<!-- b004500 | furniture | pages [17] -->
+m
+
+<!-- b004501 | furniture | pages [17] -->
+m
+
+<!-- b004502 | furniture | pages [17] -->
+m
+
+<!-- b004503 | furniture | pages [17] -->
+m
+
+<!-- b004504 | furniture | pages [17] -->
+m
+
+<!-- b004505 | furniture | pages [17] -->
+m
+
+<!-- b004506 | furniture | pages [17] -->
+m
+
+<!-- b004507 | furniture | pages [17] -->
+m
+
+<!-- b004508 | furniture | pages [17] -->
+m
+
+<!-- b004509 | furniture | pages [17] -->
+m
+
+<!-- b004510 | furniture | pages [17] -->
+m
+
+<!-- b004511 | furniture | pages [17] -->
+m
+
+<!-- b004512 | furniture | pages [17] -->
+m
+
+<!-- b004513 | furniture | pages [17] -->
+m
+
+<!-- b004514 | furniture | pages [17] -->
+m
+
+<!-- b004515 | furniture | pages [17] -->
+m
+
+<!-- b004516 | furniture | pages [17] -->
+m
+
+<!-- b004517 | furniture | pages [17] -->
+m
+
+<!-- b004518 | furniture | pages [17] -->
+m
+
+<!-- b004519 | furniture | pages [17] -->
+m
+
+<!-- b004520 | furniture | pages [17] -->
+m
+
+<!-- b004521 | furniture | pages [17] -->
+m
+
+<!-- b004522 | furniture | pages [17] -->
+m
+
+<!-- b004523 | furniture | pages [17] -->
+m
+
+<!-- b004524 | furniture | pages [17] -->
+m
+
+<!-- b004525 | furniture | pages [17] -->
+m
+
+<!-- b004526 | furniture | pages [17] -->
+m
+
+<!-- b004527 | furniture | pages [17] -->
+m
+
+<!-- b004528 | furniture | pages [17] -->
+m
+
+<!-- b004529 | furniture | pages [17] -->
+m
+
+<!-- b004530 | furniture | pages [17] -->
+m
+
+<!-- b004531 | furniture | pages [17] -->
+m
+
+<!-- b004532 | furniture | pages [17] -->
+m
+
+<!-- b004533 | furniture | pages [17] -->
+m
+
+<!-- b004534 | furniture | pages [17] -->
+m
+
+<!-- b004535 | furniture | pages [17] -->
+m
+
+<!-- b004536 | furniture | pages [17] -->
+m
+
+<!-- b004537 | furniture | pages [17] -->
+m
+
+<!-- b004538 | furniture | pages [17] -->
+m
+
+<!-- b004539 | furniture | pages [17] -->
+m
+
+<!-- b004540 | furniture | pages [17] -->
+m
+
+<!-- b004541 | furniture | pages [17] -->
+m
+
+<!-- b004542 | furniture | pages [17] -->
+m
+
+<!-- b004543 | furniture | pages [17] -->
+m
+
+<!-- b004544 | furniture | pages [17] -->
+m
+
+<!-- b004545 | furniture | pages [17] -->
+m
+
+<!-- b004546 | furniture | pages [17] -->
+m
+
+<!-- b004547 | furniture | pages [17] -->
+m
+
+<!-- b004548 | furniture | pages [17] -->
+m
+
+<!-- b004549 | furniture | pages [17] -->
+m
+
+<!-- b004550 | furniture | pages [17] -->
+m
+
+<!-- b004551 | furniture | pages [17] -->
+m
+
+<!-- b004552 | furniture | pages [17] -->
+m
+
+<!-- b004553 | furniture | pages [17] -->
+m
+
+<!-- b004554 | furniture | pages [17] -->
+m
+
+<!-- b004555 | furniture | pages [17] -->
+m
+
+<!-- b004556 | furniture | pages [17] -->
+m
+
+<!-- b004557 | furniture | pages [17] -->
+m
+
+<!-- b004558 | furniture | pages [17] -->
+m
+
+<!-- b004559 | furniture | pages [17] -->
+m
+
+<!-- b004560 | furniture | pages [17] -->
+m
+
+<!-- b004561 | furniture | pages [17] -->
+m
+
+<!-- b004562 | furniture | pages [17] -->
+m
+
+<!-- b004563 | furniture | pages [17] -->
+m
+
+<!-- b004564 | furniture | pages [17] -->
+m
+
+<!-- b004565 | furniture | pages [17] -->
+m
+
+<!-- b004566 | furniture | pages [17] -->
+m
+
+<!-- b004567 | furniture | pages [17] -->
+m
+
+<!-- b004568 | furniture | pages [17] -->
+m
+
+<!-- b004569 | furniture | pages [17] -->
+m
+
+<!-- b004570 | furniture | pages [17] -->
+m
+
+<!-- b004571 | furniture | pages [17] -->
+m
+
+<!-- b004572 | furniture | pages [17] -->
+m
+
+<!-- b004573 | furniture | pages [17] -->
+m
+
+<!-- b004574 | furniture | pages [17] -->
+m
+
+<!-- b004575 | furniture | pages [17] -->
+m
+
+<!-- b004576 | furniture | pages [17] -->
+m
+
+<!-- b004577 | furniture | pages [17] -->
+m
+
+<!-- b004578 | furniture | pages [17] -->
+m
+
+<!-- b004579 | furniture | pages [17] -->
+m
+
+<!-- b004580 | furniture | pages [17] -->
+m
+
+<!-- b004581 | furniture | pages [17] -->
+m
+
+<!-- b004582 | furniture | pages [17] -->
+m
+
+<!-- b004583 | furniture | pages [17] -->
+m
+
+<!-- b004584 | furniture | pages [17] -->
+m
+
+<!-- b004585 | furniture | pages [17] -->
+m
+
+<!-- b004586 | furniture | pages [17] -->
+m
+
+<!-- b004587 | furniture | pages [17] -->
+m
+
+<!-- b004588 | furniture | pages [17] -->
+m
+
+<!-- b004589 | furniture | pages [17] -->
+m
+
+<!-- b004590 | furniture | pages [17] -->
+m
+
+<!-- b004591 | furniture | pages [17] -->
+m
+
+<!-- b004592 | furniture | pages [17] -->
+m
+
+<!-- b004593 | furniture | pages [17] -->
+m
+
+<!-- b004594 | furniture | pages [17] -->
+m
+
+<!-- b004595 | furniture | pages [17] -->
+m
+
+<!-- b004596 | furniture | pages [17] -->
+m
+
+<!-- b004597 | furniture | pages [17] -->
+m
+
+<!-- b004598 | furniture | pages [17] -->
+m
+
+<!-- b004599 | furniture | pages [17] -->
+m
+
+<!-- b004600 | furniture | pages [17] -->
+m
+
+<!-- b004601 | furniture | pages [17] -->
+m
+
+<!-- b004602 | furniture | pages [17] -->
+m
+
+<!-- b004603 | furniture | pages [17] -->
+m
+
+<!-- b004604 | furniture | pages [17] -->
+m
+
+<!-- b004605 | furniture | pages [17] -->
+m
+
+<!-- b004606 | furniture | pages [17] -->
+m
+
+<!-- b004607 | furniture | pages [17] -->
+m
+
+<!-- b004608 | furniture | pages [17] -->
+m
+
+<!-- b004609 | furniture | pages [17] -->
+m
+
+<!-- b004610 | furniture | pages [17] -->
+m
+
+<!-- b004611 | furniture | pages [17] -->
+m
+
+<!-- b004612 | furniture | pages [17] -->
+m
+
+<!-- b004613 | furniture | pages [17] -->
+m
+
+<!-- b004614 | furniture | pages [17] -->
+m
+
+<!-- b004615 | furniture | pages [17] -->
+m
+
+<!-- b004616 | furniture | pages [17] -->
+m
+
+<!-- b004617 | furniture | pages [17] -->
+m
+
+<!-- b004618 | furniture | pages [17] -->
+m
+
+<!-- b004619 | furniture | pages [17] -->
+m
+
+<!-- b004620 | furniture | pages [17] -->
+m
+
+<!-- b004621 | furniture | pages [17] -->
+m
+
+<!-- b004622 | furniture | pages [17] -->
+m
+
+<!-- b004623 | furniture | pages [17] -->
+m
+
+<!-- b004624 | furniture | pages [17] -->
+m
+
+<!-- b004625 | furniture | pages [17] -->
+m
+
+<!-- b004626 | furniture | pages [17] -->
+m
+
+<!-- b004627 | furniture | pages [17] -->
+m
+
+<!-- b004628 | furniture | pages [17] -->
+m
+
+<!-- b004629 | furniture | pages [17] -->
+m
+
+<!-- b004630 | furniture | pages [17] -->
+m
+
+<!-- b004631 | furniture | pages [17] -->
+m
+
+<!-- b004632 | furniture | pages [17] -->
+m
+
+<!-- b004633 | furniture | pages [17] -->
+m
+
+<!-- b004634 | furniture | pages [17] -->
+m
+
+<!-- b004635 | furniture | pages [17] -->
+m
+
+<!-- b004636 | furniture | pages [17] -->
+m
+
+<!-- b004637 | furniture | pages [17] -->
+m
+
+<!-- b004638 | furniture | pages [17] -->
+m
+
+<!-- b004639 | furniture | pages [17] -->
+m
+
+<!-- b004640 | furniture | pages [17] -->
+m
+
+<!-- b004641 | furniture | pages [17] -->
+m
+
+<!-- b004642 | furniture | pages [17] -->
+m
+
+<!-- b004643 | furniture | pages [17] -->
+m
+
+<!-- b004644 | furniture | pages [17] -->
+m
+
+<!-- b004645 | furniture | pages [17] -->
+m
+
+<!-- b004646 | furniture | pages [17] -->
+m
+
+<!-- b004647 | furniture | pages [17] -->
+m
+
+<!-- b004648 | furniture | pages [17] -->
+m
+
+<!-- b004649 | furniture | pages [17] -->
+m
+
+<!-- b004650 | furniture | pages [17] -->
+m
+
+<!-- b004651 | furniture | pages [17] -->
+m
+
+<!-- b004652 | furniture | pages [18] -->
+Team # 2502617
+
+<!-- b004653 | prose | pages [18] -->
+the net economic is 743 million dollars.
+
+<!-- b004654 | furniture | pages [18] -->
+Page 18 of 25
+
+<!-- b004655 | prose | pages [18] -->
+From the Figure 9 and Figure 10, it can be observed that the overall trend of benefits changes is approximately similar, which reflects the good scalability of the model. However, due to the extremely small weight of environmental benefits in Jiuzhaigou, its value is much lower than that of Juneau. This also reflects Jiuzhaigou’s selective neglect of environmental benefits in its pursuit of economic gains, reflecting the differences between different cities.
+
+<!-- b004656 | prose | pages [18] -->
+5.4 Key Parameter Determination
+
+<!-- b004657 | prose | pages [18] -->
+m
+
+<!-- b004658 | prose | pages [18] -->
+m
+
+<!-- b004659 | prose | pages [18] -->
+m
+
+<!-- b004660 | prose | pages [18] -->
+m
+
+<!-- b004661 | prose | pages [18] -->
+m
+
+<!-- b004662 | prose | pages [18] -->
+m
+
+<!-- b004663 | prose | pages [18] -->
+m
+
+<!-- b004664 | prose | pages [18] -->
+m
+
+<!-- b004665 | prose | pages [18] -->
+m
+
+<!-- b004666 | prose | pages [18] -->
+m
+
+<!-- b004667 | prose | pages [18] -->
+m
+
+<!-- b004668 | prose | pages [18] -->
+m
+
+<!-- b004669 | prose | pages [18] -->
+m
+
+<!-- b004670 | prose | pages [18] -->
+m
+
+<!-- b004671 | prose | pages [18] -->
+m
+
+<!-- b004672 | prose | pages [18] -->
+m
+
+<!-- b004673 | prose | pages [18] -->
+m
+
+<!-- b004674 | prose | pages [18] -->
+m
+
+<!-- b004675 | prose | pages [18] -->
+m
+
+<!-- b004676 | prose | pages [18] -->
+m
+
+<!-- b004677 | prose | pages [18] -->
+m
+
+<!-- b004678 | prose | pages [18] -->
+m
+
+<!-- b004679 | prose | pages [18] -->
+m
+
+<!-- b004680 | prose | pages [18] -->
+m
+
+<!-- b004681 | prose | pages [18] -->
+m
+
+<!-- b004682 | prose | pages [18] -->
+m
+
+<!-- b004683 | prose | pages [18] -->
+m
+
+<!-- b004684 | prose | pages [18] -->
+m
+
+<!-- b004685 | prose | pages [18] -->
+m
+
+<!-- b004686 | prose | pages [18] -->
+m
+
+<!-- b004687 | prose | pages [18] -->
+m
+
+<!-- b004688 | prose | pages [18] -->
+m
+
+<!-- b004689 | prose | pages [18] -->
+m
+
+<!-- b004690 | prose | pages [18] -->
+m
+
+<!-- b004691 | prose | pages [18] -->
+m
+
+<!-- b004692 | prose | pages [18] -->
+m
+
+<!-- b004693 | prose | pages [18] -->
+m
+
+<!-- b004694 | prose | pages [18] -->
+m
+
+<!-- b004695 | prose | pages [18] -->
+m
+
+<!-- b004696 | prose | pages [18] -->
+m
+
+<!-- b004697 | prose | pages [18] -->
+m
+
+<!-- b004698 | prose | pages [18] -->
+m
+
+<!-- b004699 | prose | pages [18] -->
+m
+
+<!-- b004700 | prose | pages [18] -->
+m
+
+<!-- b004701 | prose | pages [18] -->
+m
+
+<!-- b004702 | prose | pages [18] -->
+m
+
+<!-- b004703 | prose | pages [18] -->
+m
+
+<!-- b004704 | prose | pages [18] -->
+m
+
+<!-- b004705 | prose | pages [18] -->
+m
+
+<!-- b004706 | prose | pages [18] -->
+m
+
+<!-- b004707 | prose | pages [18] -->
+m
+
+<!-- b004708 | prose | pages [18] -->
+m
+
+<!-- b004709 | prose | pages [18] -->
+m
+
+<!-- b004710 | prose | pages [18] -->
+m
+
+<!-- b004711 | prose | pages [18] -->
+m
+
+<!-- b004712 | prose | pages [18] -->
+m
+
+<!-- b004713 | prose | pages [18] -->
+m
+
+<!-- b004714 | prose | pages [18] -->
+m
+
+<!-- b004715 | prose | pages [18] -->
+m
+
+<!-- b004716 | prose | pages [18] -->
+m
+
+<!-- b004717 | prose | pages [18] -->
+m
+
+<!-- b004718 | prose | pages [18] -->
+m
+
+<!-- b004719 | prose | pages [18] -->
+m
+
+<!-- b004720 | prose | pages [18] -->
+m
+
+<!-- b004721 | prose | pages [18] -->
+m
+
+<!-- b004722 | prose | pages [18] -->
+m
+
+<!-- b004723 | prose | pages [18] -->
+m
+
+<!-- b004724 | prose | pages [18] -->
+m
+
+<!-- b004725 | prose | pages [18] -->
+m
+
+<!-- b004726 | prose | pages [18] -->
+m
+
+<!-- b004727 | prose | pages [18] -->
+m
+
+<!-- b004728 | prose | pages [18] -->
+m
+
+<!-- b004729 | prose | pages [18] -->
+m
+
+<!-- b004730 | prose | pages [18] -->
+m
+
+<!-- b004731 | prose | pages [18] -->
+m
+
+<!-- b004732 | prose | pages [18] -->
+m
+
+<!-- b004733 | prose | pages [18] -->
+m
+
+<!-- b004734 | prose | pages [18] -->
+m
+
+<!-- b004735 | prose | pages [18] -->
+m
+
+<!-- b004736 | prose | pages [18] -->
+m
+
+<!-- b004737 | prose | pages [18] -->
+m
+
+<!-- b004738 | prose | pages [18] -->
+m
+
+<!-- b004739 | prose | pages [18] -->
+m
+
+<!-- b004740 | prose | pages [18] -->
+m
+
+<!-- b004741 | prose | pages [18] -->
+m
+
+<!-- b004742 | prose | pages [18] -->
+m
+
+<!-- b004743 | prose | pages [18] -->
+m
+
+<!-- b004744 | prose | pages [18] -->
+m
+
+<!-- b004745 | prose | pages [18] -->
+m
+
+<!-- b004746 | prose | pages [18] -->
+m
+
+<!-- b004747 | prose | pages [18] -->
+m
+
+<!-- b004748 | prose | pages [18] -->
+m
+
+<!-- b004749 | prose | pages [18] -->
+m
+
+<!-- b004750 | prose | pages [18] -->
+m
+
+<!-- b004751 | prose | pages [18] -->
+m
+
+<!-- b004752 | prose | pages [18] -->
+m
+
+<!-- b004753 | prose | pages [18] -->
+m
+
+<!-- b004754 | prose | pages [18] -->
+m
+
+<!-- b004755 | prose | pages [18] -->
+m
+
+<!-- b004756 | prose | pages [18] -->
+m
+
+<!-- b004757 | prose | pages [18] -->
+m
+
+<!-- b004758 | prose | pages [18] -->
+m
+
+<!-- b004759 | prose | pages [18] -->
+m
+
+<!-- b004760 | prose | pages [18] -->
+m
+
+<!-- b004761 | prose | pages [18] -->
+m
+
+<!-- b004762 | prose | pages [18] -->
+m
+
+<!-- b004763 | prose | pages [18] -->
+m
+
+<!-- b004764 | prose | pages [18] -->
+m
+
+<!-- b004765 | prose | pages [18] -->
+m
+
+<!-- b004766 | prose | pages [18] -->
+m
+
+<!-- b004767 | prose | pages [18] -->
+m
+
+<!-- b004768 | prose | pages [18] -->
+m
+
+<!-- b004769 | prose | pages [18] -->
+m
+
+<!-- b004770 | prose | pages [18] -->
+m
+
+<!-- b004771 | prose | pages [18] -->
+m
+
+<!-- b004772 | prose | pages [18] -->
+m
+
+<!-- b004773 | prose | pages [18] -->
+m
+
+<!-- b004774 | prose | pages [18] -->
+m
+
+<!-- b004775 | prose | pages [18] -->
+m
+
+<!-- b004776 | prose | pages [18] -->
+m
+
+<!-- b004777 | prose | pages [18] -->
+m
+
+<!-- b004778 | prose | pages [18] -->
+m
+
+<!-- b004779 | prose | pages [18] -->
+m
+
+<!-- b004780 | prose | pages [18] -->
+m
+
+<!-- b004781 | prose | pages [18] -->
+m
+
+<!-- b004782 | prose | pages [18] -->
+m
+
+<!-- b004783 | prose | pages [18] -->
+m
+
+<!-- b004784 | prose | pages [18] -->
+m
+
+<!-- b004785 | prose | pages [18] -->
+m
+
+<!-- b004786 | prose | pages [18] -->
+m
+
+<!-- b004787 | prose | pages [18] -->
+m
+
+<!-- b004788 | prose | pages [18] -->
+m
+
+<!-- b004789 | prose | pages [18] -->
+• Juneau
+
+<!-- b004790 | prose | pages [18] -->
+m
+
+<!-- b004791 | prose | pages [18] -->
+m
+
+<!-- b004792 | prose | pages [18] -->
+m
+
+<!-- b004793 | prose | pages [18] -->
+m
+
+<!-- b004794 | prose | pages [18] -->
+m
+
+<!-- b004795 | prose | pages [18] -->
+m
+
+<!-- b004796 | prose | pages [18] -->
+m
+
+<!-- b004797 | prose | pages [18] -->
+m
+
+<!-- b004798 | prose | pages [18] -->
+m
+
+<!-- b004799 | prose | pages [18] -->
+m
+
+<!-- b004800 | prose | pages [18] -->
+m
+
+<!-- b004801 | prose | pages [18] -->
+m
+
+<!-- b004802 | prose | pages [18] -->
+m
+
+<!-- b004803 | prose | pages [18] -->
+m
+
+<!-- b004804 | prose | pages [18] -->
+m
+
+<!-- b004805 | prose | pages [18] -->
+m
+
+<!-- b004806 | prose | pages [18] -->
+m
+
+<!-- b004807 | prose | pages [18] -->
+m
+
+<!-- b004808 | prose | pages [18] -->
+m
+
+<!-- b004809 | prose | pages [18] -->
+m
+
+<!-- b004810 | prose | pages [18] -->
+m
+
+<!-- b004811 | prose | pages [18] -->
+m
+
+<!-- b004812 | prose | pages [18] -->
+m
+
+<!-- b004813 | prose | pages [18] -->
+m
+
+<!-- b004814 | prose | pages [18] -->
+m
+
+<!-- b004815 | prose | pages [18] -->
+m
+
+<!-- b004816 | prose | pages [18] -->
+m
+
+<!-- b004817 | prose | pages [18] -->
+m
+
+<!-- b004818 | prose | pages [18] -->
+m
+
+<!-- b004819 | prose | pages [18] -->
+m
+
+<!-- b004820 | prose | pages [18] -->
+m
+
+<!-- b004821 | prose | pages [18] -->
+m
+
+<!-- b004822 | prose | pages [18] -->
+m
+
+<!-- b004823 | prose | pages [18] -->
+m
+
+<!-- b004824 | prose | pages [18] -->
+m
+
+<!-- b004825 | prose | pages [18] -->
+m
+
+<!-- b004826 | prose | pages [18] -->
+m
+
+<!-- b004827 | prose | pages [18] -->
+m
+
+<!-- b004828 | prose | pages [18] -->
+m
+
+<!-- b004829 | prose | pages [18] -->
+m
+
+<!-- b004830 | prose | pages [18] -->
+m
+
+<!-- b004831 | prose | pages [18] -->
+m
+
+<!-- b004832 | prose | pages [18] -->
+m
+
+<!-- b004833 | prose | pages [18] -->
+m
+
+<!-- b004834 | prose | pages [18] -->
+m
+
+<!-- b004835 | prose | pages [18] -->
+m
+
+<!-- b004836 | prose | pages [18] -->
+m
+
+<!-- b004837 | prose | pages [18] -->
+m
+
+<!-- b004838 | prose | pages [18] -->
+m
+
+<!-- b004839 | prose | pages [18] -->
+m
+
+<!-- b004840 | prose | pages [18] -->
+m
+
+<!-- b004841 | prose | pages [18] -->
+m
+
+<!-- b004842 | prose | pages [18] -->
+m
+
+<!-- b004843 | prose | pages [18] -->
+m
+
+<!-- b004844 | prose | pages [18] -->
+m
+
+<!-- b004845 | prose | pages [18] -->
+m
+
+<!-- b004846 | prose | pages [18] -->
+m
+
+<!-- b004847 | prose | pages [18] -->
+m
+
+<!-- b004848 | prose | pages [18] -->
+m
+
+<!-- b004849 | prose | pages [18] -->
+m
+
+<!-- b004850 | prose | pages [18] -->
+m
+
+<!-- b004851 | prose | pages [18] -->
+m
+
+<!-- b004852 | prose | pages [18] -->
+m
+
+<!-- b004853 | prose | pages [18] -->
+m
+
+<!-- b004854 | prose | pages [18] -->
+m
+
+<!-- b004855 | prose | pages [18] -->
+m
+
+<!-- b004856 | prose | pages [18] -->
+m
+
+<!-- b004857 | prose | pages [18] -->
+m
+
+<!-- b004858 | prose | pages [18] -->
+m
+
+<!-- b004859 | prose | pages [18] -->
+m
+
+<!-- b004860 | prose | pages [18] -->
+m
+
+<!-- b004861 | prose | pages [18] -->
+m
+
+<!-- b004862 | prose | pages [18] -->
+m
+
+<!-- b004863 | prose | pages [18] -->
+m
+
+<!-- b004864 | prose | pages [18] -->
+m
+
+<!-- b004865 | prose | pages [18] -->
+m
+
+<!-- b004866 | prose | pages [18] -->
+m
+
+<!-- b004867 | prose | pages [18] -->
+m
+
+<!-- b004868 | prose | pages [18] -->
+m
+
+<!-- b004869 | prose | pages [18] -->
+m
+
+<!-- b004870 | prose | pages [18] -->
+m
+
+<!-- b004871 | prose | pages [18] -->
+m
+
+<!-- b004872 | prose | pages [18] -->
+m
+
+<!-- b004873 | prose | pages [18] -->
+m
+
+<!-- b004874 | prose | pages [18] -->
+m
+
+<!-- b004875 | prose | pages [18] -->
+m
+
+<!-- b004876 | prose | pages [18] -->
+m
+
+<!-- b004877 | prose | pages [18] -->
+m
+
+<!-- b004878 | prose | pages [18] -->
+m
+
+<!-- b004879 | prose | pages [18] -->
+m
+
+<!-- b004880 | prose | pages [18] -->
+m
+
+<!-- b004881 | prose | pages [18] -->
+m
+
+<!-- b004882 | prose | pages [18] -->
+m
+
+<!-- b004883 | prose | pages [18] -->
+m
+
+<!-- b004884 | prose | pages [18] -->
+m
+
+<!-- b004885 | prose | pages [18] -->
+m
+
+<!-- b004886 | prose | pages [18] -->
+m
+
+<!-- b004887 | prose | pages [18] -->
+m
+
+<!-- b004888 | prose | pages [18] -->
+m
+
+<!-- b004889 | prose | pages [18] -->
+m
+
+<!-- b004890 | prose | pages [18] -->
+m
+
+<!-- b004891 | prose | pages [18] -->
+m
+
+<!-- b004892 | prose | pages [18] -->
+m
+
+<!-- b004893 | prose | pages [18] -->
+m
+
+<!-- b004894 | prose | pages [18] -->
+m
+
+<!-- b004895 | prose | pages [18] -->
+m
+
+<!-- b004896 | prose | pages [18] -->
+m
+
+<!-- b004897 | prose | pages [18] -->
+m
+
+<!-- b004898 | prose | pages [18] -->
+m
+
+<!-- b004899 | prose | pages [18] -->
+m
+
+<!-- b004900 | prose | pages [18] -->
+m
+
+<!-- b004901 | prose | pages [18] -->
+m
+
+<!-- b004902 | prose | pages [18] -->
+m
+
+<!-- b004903 | prose | pages [18] -->
+m
+
+<!-- b004904 | prose | pages [18] -->
+m
+
+<!-- b004905 | prose | pages [18] -->
+m
+
+<!-- b004906 | prose | pages [18] -->
+m
+
+<!-- b004907 | prose | pages [18] -->
+m
+
+<!-- b004908 | prose | pages [18] -->
+m
+
+<!-- b004909 | prose | pages [18] -->
+m
+
+<!-- b004910 | prose | pages [18] -->
+m
+
+<!-- b004911 | prose | pages [18] -->
+m
+
+<!-- b004912 | prose | pages [18] -->
+m
+
+<!-- b004913 | prose | pages [18] -->
+m
+
+<!-- b004914 | prose | pages [18] -->
+m
+
+<!-- b004915 | prose | pages [18] -->
+m
+
+<!-- b004916 | prose | pages [18] -->
+m
+
+<!-- b004917 | prose | pages [18] -->
+m
+
+<!-- b004918 | prose | pages [18] -->
+m
+
+<!-- b004919 | prose | pages [18] -->
+m
+
+<!-- b004920 | prose | pages [18] -->
+m
+
+<!-- b004921 | prose | pages [18] -->
+m
+
+<!-- b004922 | prose | pages [18] -->
+m
+
+<!-- b004923 | prose | pages [18] -->
+m
+
+<!-- b004924 | prose | pages [18] -->
+m
+
+<!-- b004925 | prose | pages [18] -->
+m
+
+<!-- b004926 | prose | pages [18] -->
+m
+
+<!-- b004927 | prose | pages [18] -->
+m
+
+<!-- b004928 | prose | pages [18] -->
+m m
+
+<!-- b004929 | prose | pages [18] -->
+m m
+
+<!-- b004930 | prose | pages [18] -->
+m m
+
+<!-- b004931 | prose | pages [18] -->
+m m
+
+<!-- b004932 | prose | pages [18] -->
+m m
+
+<!-- b004933 | prose | pages [18] -->
+m m
+
+<!-- b004934 | prose | pages [18] -->
+m m
+
+<!-- b004935 | prose | pages [18] -->
+m m
+
+<!-- b004936 | prose | pages [18] -->
+m m m m
+
+<!-- b004937 | prose | pages [18] -->
+m m
+
+<!-- b004938 | prose | pages [18] -->
+m m
+
+<!-- b004939 | prose | pages [18] -->
+m m
+
+<!-- b004940 | prose | pages [18] -->
+m m
+
+<!-- b004941 | prose | pages [18] -->
+m m
+
+<!-- b004942 | prose | pages [18] -->
+m m
+
+<!-- b004943 | prose | pages [18] -->
+m m m m
+
+<!-- b004944 | prose | pages [18] -->
+m m
+
+<!-- b004945 | prose | pages [18] -->
+m m
+
+<!-- b004946 | prose | pages [18] -->
+m m
+
+<!-- b004947 | prose | pages [18] -->
+m m
+
+<!-- b004948 | prose | pages [18] -->
+m m
+
+<!-- b004949 | prose | pages [18] -->
+m m
+
+<!-- b004950 | prose | pages [18] -->
+m m
+
+<!-- b004951 | prose | pages [18] -->
+m m
+
+<!-- b004952 | prose | pages [18] -->
+1.Proportion of Tourist(rglacier):The degree of dispersion of tourists reflects the ratio of the
+
+<!-- b004953 | prose | pages [18] -->
+m
+
+<!-- b004954 | prose | pages [18] -->
+m
+
+<!-- b004955 | prose | pages [18] -->
+m
+
+<!-- b004956 | prose | pages [18] -->
+m
+
+<!-- b004957 | prose | pages [18] -->
+m
+
+<!-- b004958 | prose | pages [18] -->
+m
+
+<!-- b004959 | prose | pages [18] -->
+m
+
+<!-- b004960 | prose | pages [18] -->
+m
+
+<!-- b004961 | prose | pages [18] -->
+m
+
+<!-- b004962 | prose | pages [18] -->
+m
+
+<!-- b004963 | prose | pages [18] -->
+m
+
+<!-- b004964 | prose | pages [18] -->
+m
+
+<!-- b004965 | prose | pages [18] -->
+m
+
+<!-- b004966 | prose | pages [18] -->
+m
+
+<!-- b004967 | prose | pages [18] -->
+m
+
+<!-- b004968 | prose | pages [18] -->
+m
+
+<!-- b004969 | prose | pages [18] -->
+m
+
+<!-- b004970 | prose | pages [18] -->
+m
+
+<!-- b004971 | prose | pages [18] -->
+m
+
+<!-- b004972 | prose | pages [18] -->
+m
+
+<!-- b004973 | prose | pages [18] -->
+m
+
+<!-- b004974 | prose | pages [18] -->
+m
+
+<!-- b004975 | prose | pages [18] -->
+m
+
+<!-- b004976 | prose | pages [18] -->
+m
+
+<!-- b004977 | prose | pages [18] -->
+m
+
+<!-- b004978 | prose | pages [18] -->
+m
+
+<!-- b004979 | prose | pages [18] -->
+m
+
+<!-- b004980 | prose | pages [18] -->
+m
+
+<!-- b004981 | prose | pages [18] -->
+m
+
+<!-- b004982 | prose | pages [18] -->
+m
+
+<!-- b004983 | prose | pages [18] -->
+m
+
+<!-- b004984 | prose | pages [18] -->
+m
+
+<!-- b004985 | prose | pages [18] -->
+m
+
+<!-- b004986 | prose | pages [18] -->
+m
+
+<!-- b004987 | prose | pages [18] -->
+m
+
+<!-- b004988 | prose | pages [18] -->
+m
+
+<!-- b004989 | prose | pages [18] -->
+m
+
+<!-- b004990 | prose | pages [18] -->
+m
+
+<!-- b004991 | prose | pages [18] -->
+m
+
+<!-- b004992 | prose | pages [18] -->
+m
+
+<!-- b004993 | prose | pages [18] -->
+m
+
+<!-- b004994 | prose | pages [18] -->
+m
+
+<!-- b004995 | prose | pages [18] -->
+m
+
+<!-- b004996 | prose | pages [18] -->
+m
+
+<!-- b004997 | prose | pages [18] -->
+m
+
+<!-- b004998 | prose | pages [18] -->
+m
+
+<!-- b004999 | prose | pages [18] -->
+m
+
+<!-- b005000 | prose | pages [18] -->
+m
+
+<!-- b005001 | prose | pages [18] -->
+m
+
+<!-- b005002 | prose | pages [18] -->
+m
+
+<!-- b005003 | prose | pages [18] -->
+m
+
+<!-- b005004 | prose | pages [18] -->
+m
+
+<!-- b005005 | prose | pages [18] -->
+m
+
+<!-- b005006 | prose | pages [18] -->
+m
+
+<!-- b005007 | prose | pages [18] -->
+m
+
+<!-- b005008 | prose | pages [18] -->
+m
+
+<!-- b005009 | prose | pages [18] -->
+m
+
+<!-- b005010 | prose | pages [18] -->
+m
+
+<!-- b005011 | prose | pages [18] -->
+m
+
+<!-- b005012 | prose | pages [18] -->
+m
+
+<!-- b005013 | prose | pages [18] -->
+m
+
+<!-- b005014 | prose | pages [18] -->
+m
+
+<!-- b005015 | prose | pages [18] -->
+m
+
+<!-- b005016 | prose | pages [18] -->
+m
+
+<!-- b005017 | prose | pages [18] -->
+m
+
+<!-- b005018 | prose | pages [18] -->
+m
+
+<!-- b005019 | prose | pages [18] -->
+m
+
+<!-- b005020 | prose | pages [18] -->
+m
+
+<!-- b005021 | prose | pages [18] -->
+m
+
+<!-- b005022 | prose | pages [18] -->
+m
+
+<!-- b005023 | prose | pages [18] -->
+m
+
+<!-- b005024 | prose | pages [18] -->
+m
+
+<!-- b005025 | prose | pages [18] -->
+m
+
+<!-- b005026 | prose | pages [18] -->
+m
+
+<!-- b005027 | prose | pages [18] -->
+m
+
+<!-- b005028 | prose | pages [18] -->
+m
+
+<!-- b005029 | prose | pages [18] -->
+m
+
+<!-- b005030 | prose | pages [18] -->
+m
+
+<!-- b005031 | prose | pages [18] -->
+m
+
+<!-- b005032 | prose | pages [18] -->
+m
+
+<!-- b005033 | prose | pages [18] -->
+m
+
+<!-- b005034 | prose | pages [18] -->
+m
+
+<!-- b005035 | prose | pages [18] -->
+m
+
+<!-- b005036 | prose | pages [18] -->
+m
+
+<!-- b005037 | prose | pages [18] -->
+m
+
+<!-- b005038 | prose | pages [18] -->
+m
+
+<!-- b005039 | prose | pages [18] -->
+m
+
+<!-- b005040 | prose | pages [18] -->
+m
+
+<!-- b005041 | prose | pages [18] -->
+m
+
+<!-- b005042 | prose | pages [18] -->
+m
+
+<!-- b005043 | prose | pages [18] -->
+m
+
+<!-- b005044 | prose | pages [18] -->
+m
+
+<!-- b005045 | prose | pages [18] -->
+m
+
+<!-- b005046 | prose | pages [18] -->
+m
+
+<!-- b005047 | prose | pages [18] -->
+m
+
+<!-- b005048 | prose | pages [18] -->
+m
+
+<!-- b005049 | prose | pages [18] -->
+m
+
+<!-- b005050 | prose | pages [18] -->
+m
+
+<!-- b005051 | prose | pages [18] -->
+m
+
+<!-- b005052 | prose | pages [18] -->
+m
+
+<!-- b005053 | prose | pages [18] -->
+m
+
+<!-- b005054 | prose | pages [18] -->
+m
+
+<!-- b005055 | prose | pages [18] -->
+m
+
+<!-- b005056 | prose | pages [18] -->
+m
+
+<!-- b005057 | prose | pages [18] -->
+m
+
+<!-- b005058 | prose | pages [18] -->
+m
+
+<!-- b005059 | prose | pages [18] -->
+m
+
+<!-- b005060 | prose | pages [18] -->
+m
+
+<!-- b005061 | prose | pages [18] -->
+m
+
+<!-- b005062 | prose | pages [18] -->
+m
+
+<!-- b005063 | prose | pages [18] -->
+m
+
+<!-- b005064 | prose | pages [18] -->
+m
+
+<!-- b005065 | prose | pages [18] -->
+m
+
+<!-- b005066 | prose | pages [18] -->
+m
+
+<!-- b005067 | prose | pages [18] -->
+m
+
+<!-- b005068 | prose | pages [18] -->
+m
+
+<!-- b005069 | prose | pages [18] -->
+m
+
+<!-- b005070 | prose | pages [18] -->
+m
+
+<!-- b005071 | prose | pages [18] -->
+m
+
+<!-- b005072 | prose | pages [18] -->
+m
+
+<!-- b005073 | prose | pages [18] -->
+m
+
+<!-- b005074 | prose | pages [18] -->
+m
+
+<!-- b005075 | prose | pages [18] -->
+m
+
+<!-- b005076 | prose | pages [18] -->
+m
+
+<!-- b005077 | prose | pages [18] -->
+m
+
+<!-- b005078 | prose | pages [18] -->
+m
+
+<!-- b005079 | prose | pages [18] -->
+m
+
+<!-- b005080 | prose | pages [18] -->
+m
+
+<!-- b005081 | prose | pages [18] -->
+m
+
+<!-- b005082 | prose | pages [18] -->
+m
+
+<!-- b005083 | prose | pages [18] -->
+m
+
+<!-- b005084 | prose | pages [18] -->
+m
+
+<!-- b005085 | prose | pages [18] -->
+m
+
+<!-- b005086 | prose | pages [18] -->
+m
+
+<!-- b005087 | prose | pages [18] -->
+m
+
+<!-- b005088 | prose | pages [18] -->
+m m
+
+<!-- b005089 | prose | pages [18] -->
+m m
+
+<!-- b005090 | prose | pages [18] -->
+m m
+
+<!-- b005091 | prose | pages [18] -->
+m m
+
+<!-- b005092 | prose | pages [18] -->
+m m
+
+<!-- b005093 | prose | pages [18] -->
+m m
+
+<!-- b005094 | prose | pages [18] -->
+m m
+
+<!-- b005095 | prose | pages [18] -->
+m m
+
+<!-- b005096 | prose | pages [18] -->
+m m
+
+<!-- b005097 | prose | pages [18] -->
+m m
+
+<!-- b005098 | prose | pages [18] -->
+m m
+
+<!-- b005099 | prose | pages [18] -->
+m m
+
+<!-- b005100 | prose | pages [18] -->
+m m
+
+<!-- b005101 | prose | pages [18] -->
+m m
+
+<!-- b005102 | prose | pages [18] -->
+actual number of tourists accommodated in different scenic spots, Juneau Tourism Bureau website
+
+<!-- b005103 | prose | pages [18] -->
+m
+
+<!-- b005104 | prose | pages [18] -->
+m
+
+<!-- b005105 | prose | pages [18] -->
+m
+
+<!-- b005106 | prose | pages [18] -->
+m
+
+<!-- b005107 | prose | pages [18] -->
+m
+
+<!-- b005108 | prose | pages [18] -->
+m
+
+<!-- b005109 | prose | pages [18] -->
+m
+
+<!-- b005110 | prose | pages [18] -->
+m
+
+<!-- b005111 | prose | pages [18] -->
+m
+
+<!-- b005112 | prose | pages [18] -->
+m
+
+<!-- b005113 | prose | pages [18] -->
+m
+
+<!-- b005114 | prose | pages [18] -->
+m
+
+<!-- b005115 | prose | pages [18] -->
+m
+
+<!-- b005116 | prose | pages [18] -->
+m
+
+<!-- b005117 | prose | pages [18] -->
+m
+
+<!-- b005118 | prose | pages [18] -->
+m
+
+<!-- b005119 | prose | pages [18] -->
+m
+
+<!-- b005120 | prose | pages [18] -->
+m
+
+<!-- b005121 | prose | pages [18] -->
+m
+
+<!-- b005122 | prose | pages [18] -->
+m
+
+<!-- b005123 | prose | pages [18] -->
+m
+
+<!-- b005124 | prose | pages [18] -->
+m
+
+<!-- b005125 | prose | pages [18] -->
+m
+
+<!-- b005126 | prose | pages [18] -->
+m
+
+<!-- b005127 | prose | pages [18] -->
+m
+
+<!-- b005128 | prose | pages [18] -->
+m
+
+<!-- b005129 | prose | pages [18] -->
+m
+
+<!-- b005130 | prose | pages [18] -->
+m
+
+<!-- b005131 | prose | pages [18] -->
+m
+
+<!-- b005132 | prose | pages [18] -->
+m
+
+<!-- b005133 | prose | pages [18] -->
+m
+
+<!-- b005134 | prose | pages [18] -->
+m
+
+<!-- b005135 | prose | pages [18] -->
+m
+
+<!-- b005136 | prose | pages [18] -->
+m
+
+<!-- b005137 | prose | pages [18] -->
+m
+
+<!-- b005138 | prose | pages [18] -->
+m
+
+<!-- b005139 | prose | pages [18] -->
+m
+
+<!-- b005140 | prose | pages [18] -->
+m
+
+<!-- b005141 | prose | pages [18] -->
+m
+
+<!-- b005142 | prose | pages [18] -->
+m
+
+<!-- b005143 | prose | pages [18] -->
+m
+
+<!-- b005144 | prose | pages [18] -->
+m
+
+<!-- b005145 | prose | pages [18] -->
+m
+
+<!-- b005146 | prose | pages [18] -->
+m
+
+<!-- b005147 | prose | pages [18] -->
+m
+
+<!-- b005148 | prose | pages [18] -->
+m
+
+<!-- b005149 | prose | pages [18] -->
+m
+
+<!-- b005150 | prose | pages [18] -->
+m
+
+<!-- b005151 | prose | pages [18] -->
+m
+
+<!-- b005152 | prose | pages [18] -->
+m
+
+<!-- b005153 | prose | pages [18] -->
+m
+
+<!-- b005154 | prose | pages [18] -->
+m
+
+<!-- b005155 | prose | pages [18] -->
+m
+
+<!-- b005156 | prose | pages [18] -->
+m
+
+<!-- b005157 | prose | pages [18] -->
+m
+
+<!-- b005158 | prose | pages [18] -->
+m
+
+<!-- b005159 | prose | pages [18] -->
+m
+
+<!-- b005160 | prose | pages [18] -->
+m
+
+<!-- b005161 | prose | pages [18] -->
+m
+
+<!-- b005162 | prose | pages [18] -->
+m
+
+<!-- b005163 | prose | pages [18] -->
+m
+
+<!-- b005164 | prose | pages [18] -->
+m
+
+<!-- b005165 | prose | pages [18] -->
+m
+
+<!-- b005166 | prose | pages [18] -->
+m
+
+<!-- b005167 | prose | pages [18] -->
+m
+
+<!-- b005168 | prose | pages [18] -->
+m
+
+<!-- b005169 | prose | pages [18] -->
+m
+
+<!-- b005170 | prose | pages [18] -->
+m
+
+<!-- b005171 | prose | pages [18] -->
+m
+
+<!-- b005172 | prose | pages [18] -->
+m
+
+<!-- b005173 | prose | pages [18] -->
+m
+
+<!-- b005174 | prose | pages [18] -->
+m
+
+<!-- b005175 | prose | pages [18] -->
+m
+
+<!-- b005176 | prose | pages [18] -->
+m
+
+<!-- b005177 | prose | pages [18] -->
+m
+
+<!-- b005178 | prose | pages [18] -->
+m
+
+<!-- b005179 | prose | pages [18] -->
+m
+
+<!-- b005180 | prose | pages [18] -->
+m
+
+<!-- b005181 | prose | pages [18] -->
+m
+
+<!-- b005182 | prose | pages [18] -->
+m
+
+<!-- b005183 | prose | pages [18] -->
+m
+
+<!-- b005184 | prose | pages [18] -->
+m
+
+<!-- b005185 | prose | pages [18] -->
+m
+
+<!-- b005186 | prose | pages [18] -->
+m
+
+<!-- b005187 | prose | pages [18] -->
+m
+
+<!-- b005188 | prose | pages [18] -->
+m
+
+<!-- b005189 | prose | pages [18] -->
+m
+
+<!-- b005190 | prose | pages [18] -->
+m
+
+<!-- b005191 | prose | pages [18] -->
+m
+
+<!-- b005192 | prose | pages [18] -->
+m
+
+<!-- b005193 | prose | pages [18] -->
+m
+
+<!-- b005194 | prose | pages [18] -->
+m
+
+<!-- b005195 | prose | pages [18] -->
+m
+
+<!-- b005196 | prose | pages [18] -->
+m
+
+<!-- b005197 | prose | pages [18] -->
+m
+
+<!-- b005198 | prose | pages [18] -->
+m
+
+<!-- b005199 | prose | pages [18] -->
+m
+
+<!-- b005200 | prose | pages [18] -->
+m
+
+<!-- b005201 | prose | pages [18] -->
+m
+
+<!-- b005202 | prose | pages [18] -->
+m
+
+<!-- b005203 | prose | pages [18] -->
+m
+
+<!-- b005204 | prose | pages [18] -->
+m
+
+<!-- b005205 | prose | pages [18] -->
+m
+
+<!-- b005206 | prose | pages [18] -->
+m
+
+<!-- b005207 | prose | pages [18] -->
+m
+
+<!-- b005208 | prose | pages [18] -->
+m
+
+<!-- b005209 | prose | pages [18] -->
+m
+
+<!-- b005210 | prose | pages [18] -->
+m
+
+<!-- b005211 | prose | pages [18] -->
+m
+
+<!-- b005212 | prose | pages [18] -->
+m
+
+<!-- b005213 | prose | pages [18] -->
+m
+
+<!-- b005214 | prose | pages [18] -->
+m m m m m m
+
+<!-- b005215 | prose | pages [18] -->
+m m
+
+<!-- b005216 | prose | pages [18] -->
+m m
+
+<!-- b005217 | prose | pages [18] -->
+m m
+
+<!-- b005218 | prose | pages [18] -->
+m m
+
+<!-- b005219 | prose | pages [18] -->
+m m
+
+<!-- b005220 | prose | pages [18] -->
+m m
+
+<!-- b005221 | prose | pages [18] -->
+m m
+
+<!-- b005222 | prose | pages [18] -->
+statistics show that more than 60% of tourists to Juneau City will go to Mendenhall Glacier.
+
+<!-- b005223 | prose | pages [18] -->
+m
+
+<!-- b005224 | prose | pages [18] -->
+m
+
+<!-- b005225 | prose | pages [18] -->
+m
+
+<!-- b005226 | prose | pages [18] -->
+m
+
+<!-- b005227 | prose | pages [18] -->
+m
+
+<!-- b005228 | prose | pages [18] -->
+m
+
+<!-- b005229 | prose | pages [18] -->
+m
+
+<!-- b005230 | prose | pages [18] -->
+m
+
+<!-- b005231 | prose | pages [18] -->
+m
+
+<!-- b005232 | prose | pages [18] -->
+m
+
+<!-- b005233 | prose | pages [18] -->
+m
+
+<!-- b005234 | prose | pages [18] -->
+m
+
+<!-- b005235 | prose | pages [18] -->
+m
+
+<!-- b005236 | prose | pages [18] -->
+m
+
+<!-- b005237 | prose | pages [18] -->
+m
+
+<!-- b005238 | prose | pages [18] -->
+m
+
+<!-- b005239 | prose | pages [18] -->
+m
+
+<!-- b005240 | prose | pages [18] -->
+m
+
+<!-- b005241 | prose | pages [18] -->
+m
+
+<!-- b005242 | prose | pages [18] -->
+m
+
+<!-- b005243 | prose | pages [18] -->
+m
+
+<!-- b005244 | prose | pages [18] -->
+m
+
+<!-- b005245 | prose | pages [18] -->
+m
+
+<!-- b005246 | prose | pages [18] -->
+m
+
+<!-- b005247 | prose | pages [18] -->
+m
+
+<!-- b005248 | prose | pages [18] -->
+m
+
+<!-- b005249 | prose | pages [18] -->
+m
+
+<!-- b005250 | prose | pages [18] -->
+m
+
+<!-- b005251 | prose | pages [18] -->
+m
+
+<!-- b005252 | prose | pages [18] -->
+m
+
+<!-- b005253 | prose | pages [18] -->
+m
+
+<!-- b005254 | prose | pages [18] -->
+m
+
+<!-- b005255 | prose | pages [18] -->
+m
+
+<!-- b005256 | prose | pages [18] -->
+m
+
+<!-- b005257 | prose | pages [18] -->
+m
+
+<!-- b005258 | prose | pages [18] -->
+m
+
+<!-- b005259 | prose | pages [18] -->
+m
+
+<!-- b005260 | prose | pages [18] -->
+m
+
+<!-- b005261 | prose | pages [18] -->
+m
+
+<!-- b005262 | prose | pages [18] -->
+m
+
+<!-- b005263 | prose | pages [18] -->
+m
+
+<!-- b005264 | prose | pages [18] -->
+m
+
+<!-- b005265 | prose | pages [18] -->
+m
+
+<!-- b005266 | prose | pages [18] -->
+m
+
+<!-- b005267 | prose | pages [18] -->
+m
+
+<!-- b005268 | prose | pages [18] -->
+m
+
+<!-- b005269 | prose | pages [18] -->
+m
+
+<!-- b005270 | prose | pages [18] -->
+m
+
+<!-- b005271 | prose | pages [18] -->
+m
+
+<!-- b005272 | prose | pages [18] -->
+m
+
+<!-- b005273 | prose | pages [18] -->
+m
+
+<!-- b005274 | prose | pages [18] -->
+m
+
+<!-- b005275 | prose | pages [18] -->
+m
+
+<!-- b005276 | prose | pages [18] -->
+m
+
+<!-- b005277 | prose | pages [18] -->
+m
+
+<!-- b005278 | prose | pages [18] -->
+m
+
+<!-- b005279 | prose | pages [18] -->
+m
+
+<!-- b005280 | prose | pages [18] -->
+m
+
+<!-- b005281 | prose | pages [18] -->
+m
+
+<!-- b005282 | prose | pages [18] -->
+m
+
+<!-- b005283 | prose | pages [18] -->
+m
+
+<!-- b005284 | prose | pages [18] -->
+m
+
+<!-- b005285 | prose | pages [18] -->
+m
+
+<!-- b005286 | prose | pages [18] -->
+m
+
+<!-- b005287 | prose | pages [18] -->
+m
+
+<!-- b005288 | prose | pages [18] -->
+m
+
+<!-- b005289 | prose | pages [18] -->
+m
+
+<!-- b005290 | prose | pages [18] -->
+m
+
+<!-- b005291 | prose | pages [18] -->
+m
+
+<!-- b005292 | prose | pages [18] -->
+m
+
+<!-- b005293 | prose | pages [18] -->
+m
+
+<!-- b005294 | prose | pages [18] -->
+m
+
+<!-- b005295 | prose | pages [18] -->
+m
+
+<!-- b005296 | prose | pages [18] -->
+m
+
+<!-- b005297 | prose | pages [18] -->
+m
+
+<!-- b005298 | prose | pages [18] -->
+m
+
+<!-- b005299 | prose | pages [18] -->
+m
+
+<!-- b005300 | prose | pages [18] -->
+m
+
+<!-- b005301 | prose | pages [18] -->
+m
+
+<!-- b005302 | prose | pages [18] -->
+m
+
+<!-- b005303 | prose | pages [18] -->
+m
+
+<!-- b005304 | prose | pages [18] -->
+m
+
+<!-- b005305 | prose | pages [18] -->
+m
+
+<!-- b005306 | prose | pages [18] -->
+m
+
+<!-- b005307 | prose | pages [18] -->
+m
+
+<!-- b005308 | prose | pages [18] -->
+m
+
+<!-- b005309 | prose | pages [18] -->
+m
+
+<!-- b005310 | prose | pages [18] -->
+m
+
+<!-- b005311 | prose | pages [18] -->
+m
+
+<!-- b005312 | prose | pages [18] -->
+m
+
+<!-- b005313 | prose | pages [18] -->
+m
+
+<!-- b005314 | prose | pages [18] -->
+m
+
+<!-- b005315 | prose | pages [18] -->
+m
+
+<!-- b005316 | prose | pages [18] -->
+m
+
+<!-- b005317 | prose | pages [18] -->
+m
+
+<!-- b005318 | prose | pages [18] -->
+m
+
+<!-- b005319 | prose | pages [18] -->
+m
+
+<!-- b005320 | prose | pages [18] -->
+m
+
+<!-- b005321 | prose | pages [18] -->
+m
+
+<!-- b005322 | prose | pages [18] -->
+m
+
+<!-- b005323 | prose | pages [18] -->
+m
+
+<!-- b005324 | prose | pages [18] -->
+m
+
+<!-- b005325 | prose | pages [18] -->
+m
+
+<!-- b005326 | prose | pages [18] -->
+m
+
+<!-- b005327 | prose | pages [18] -->
+m
+
+<!-- b005328 | prose | pages [18] -->
+m
+
+<!-- b005329 | prose | pages [18] -->
+m
+
+<!-- b005330 | prose | pages [18] -->
+m
+
+<!-- b005331 | prose | pages [18] -->
+m
+
+<!-- b005332 | prose | pages [18] -->
+m
+
+<!-- b005333 | prose | pages [18] -->
+m m
+
+<!-- b005334 | prose | pages [18] -->
+m m
+
+<!-- b005335 | prose | pages [18] -->
+m m
+
+<!-- b005336 | prose | pages [18] -->
+m m
+
+<!-- b005337 | prose | pages [18] -->
+m m
+
+<!-- b005338 | prose | pages [18] -->
+m m
+
+<!-- b005339 | prose | pages [18] -->
+m m m m
+
+<!-- b005340 | prose | pages [18] -->
+m m
+
+<!-- b005341 | prose | pages [18] -->
+m m
+
+<!-- b005342 | prose | pages [18] -->
+m m
+
+<!-- b005343 | prose | pages [18] -->
+2.Tax Rate(t): Based on the data of various local tax rates published on the official website of the Juneau City Government, combined with the data of the total income generated by the tourism industry in Juneau and the municipal economic income, the comprehensive tax rate for tourists during their travel in Juneau is calculated to be 5%.
+
+<!-- b005344 | prose | pages [18] -->
+3.Visitor Consumption(A0):Visitor Consumption reflects the cost of food, lodging, excursions, and souvenir purchases incurred by tourists during their visit to the City of Juneau. In short, tourist consumption reflects to some extent the prices of scenic spots and local life.
+
+<!-- b005345 | prose | pages [18] -->
+Related images of changes in visitor numbers and total benefits when each key factor changes are in the section Sensitivity Analysis.
+
+<!-- b005346 | prose | pages [18] -->
+• Jiuzhaigou
+
+<!-- b005347 | caption | pages [18] -->
+Figure 11: Changes of Total Tourists and Performance per Tourist in Jiuzhaigou
+
+<!-- b005348 | prose | pages [18] -->
+(Performance per Tourist is short for Performance)
+
+<!-- b005349 | prose | pages [18] -->
+From Figure 11, the following observations can be made: (1) When the proportion of tourists visiting Jiuzhaigou valley (r) is approximately equal to the proportion visiting other attractions, the optimal total benefit corresponds to the maximum tourist volume and maximum performance. This indicates that maintaining diversion measures is beneficial for sustainable tourism. (2) As tax rates (t) increase, the additional expenditure for tourists also rises, leading to a reduction in the number of tourists required to achieve optimal performance. Meanwhile, performance itself increases. (3) The effect of increased tourist expenditure is similar to that of increasing t; however, due to diminishing marginal benefits, the graph exhibits an inflection point.
+
+<!-- b005350 | prose | pages [18] -->
+关注数学模型
+
+<!-- b005351 | furniture | pages [18] -->
+2
+
+<!-- b005352 | furniture | pages [18] -->
+MATHmodels
+
+<!-- b005353 | furniture | pages [18] -->
+获取更多资讯
+
+<!-- b005354 | furniture | pages [20] -->
+Team # 2502617
+
+<!-- b005355 | furniture | pages [20] -->
+Page 20 of 25
+
+<!-- b005356 | prose | pages [20] -->
+expenditure plan, carefully assess the probability of environmental damage, and prevent the chain reaction caused by reduced environmental benefits.
+
+<!-- b005357 | prose | pages [20] -->
+7
+
+<!-- b005358 | heading | pages [20] -->
+Sensitivity Analysis
+
+<!-- b005359 | prose | pages [20] -->
+Effect of Changes in Total Tourists and Performance per Tourist 7.1
+
+<!-- b005360 | prose | pages [20] -->
+In the model sensitivity analysis, we mainly analyzed the effects of small perturbations in the proportion of tourists, tax rate and tourist consumption, on the total number of tourists and total benefits. The results of the sensitivity analysis are shown in Figures 13 and 14.
+
+<!-- b005361 | caption | pages [20] -->
+Figure 13: Sensitivity Analysis - Changes of Total Tourists and Performance per Tourist
+
+<!-- b005362 | prose | pages [20] -->
+The conclusions that can be drawn from the two graphs on the left are that (1) the greatest number of tourists visit the glacier when the proportion of tourists visiting the glacier is roughly equal to the proportion of tourists visiting the other attractions (2) the number of tourists required for optimal performance decreases further as the tax rate increases. These are roughly the same conclusions reached in the Jiuzhaigou analysis.
+
+<!-- b005363 | prose | pages [20] -->
+Compared to Jiuzhaigou, there is a big difference in Juno’s performance when the number of tourists changes. When tourist spending is below US$4,000, consumers view tourism expenses as a price inelastic product, so the number of tourists continues to increase, while the performance gen- erated per tourist shows a slow increase because the rate of diminishing marginal effects is smaller than the rate of rising tourist numbers. Subsequently, when spending per tourist exceeds $4,000, the sensitivity of tourists to price changes increases, and tourism expenditures are transformed into a price-elastic good, with the number of tourists decreasing sharply, the total benefits of the tourist attractions, and the performance generated per tourist decreasing in the same trend.
+
+<!-- b005364 | prose | pages [20] -->
+7.2 Effect of Changes in Total benefit
+
+<!-- b005365 | caption | pages [20] -->
+Figure 14: Sensitivity Analysis - Changes of Total benefit
+
+<!-- b005366 | prose | pages [20] -->
+关注数学模型
+
+<!-- b005367 | furniture | pages [20] -->
+2
+
+<!-- b005368 | furniture | pages [20] -->
+MATHmodels
+
+<!-- b005369 | furniture | pages [20] -->
+获取更多资讯
+
+<!-- b005370 | furniture | pages [21] -->
+Team # 2502617
+
+<!-- b005371 | furniture | pages [21] -->
+Page 21 of 25
+
+<!-- b005372 | prose | pages [21] -->
+In the sensitivity analysis of total benefits, the tax rate, tourist proportion, and tourist consump-
+
+<!-- b005373 | prose | pages [21] -->
+微信公众号：数学模型
+
+<!-- b005374 | prose | pages [21] -->
+tion were analyzed as key parameters. The results are as follows: (1) As the tourist proportion increases by 1% from 0, social, environmental, economic, and total benefits all increase due to a more balanced distribution of tourists. (2) As the tax rate increases by 1% from 5%, environmen- tal benefits rise, while economic, social, and total benefits decline. (3) As tourist consumption increases by 1.25% from 3,000 USD, economic and social benefits rise, environmental benefits decrease, and total benefits first increase and then decrease.
+
+<!-- b005375 | prose | pages [21] -->
+8
+
+<!-- b005376 | heading | pages [21] -->
+Strengths and Weaknesses
+
+<!-- b005377 | prose | pages [21] -->
+8.1
+
+<!-- b005378 | heading | pages [21] -->
+Strengths
+
+<!-- b005379 | prose | pages [21] -->
+微信号：MATHmodels
+
+<!-- b005380 | heading | pages [21] -->
+1. Computational Feasibility:
+
+<!-- b005381 | prose | pages [21] -->
+The model employs Pareto-optimal solutions with nonlinear marginal effect formulations, ensuring theoretical rigor while balancing realism and numerical stability. By integrating economic, social, and ecological dimensions into a unified framework, Pareto optimization explicitly reveals trade-offs among these aspects, providing policymakers with systematic pathways for optimization.
+
+<!-- b005382 | heading | pages [21] -->
+2. Holistic Cost Internalization: Social policies and environmental impacts are consolidated into
+
+<!-- b005383 | prose | pages [21] -->
+quantifiable metrics, translating hidden costs (e.g., carbon footprint, infrastructure strain) into monetary terms. This approach mitigates over-parameterization risks in multi-objective models.
+
+<!-- b005384 | heading | pages [21] -->
+3. Generalizability & Practicality: The framework is adaptable to other tourism destinations
+
+<!-- b005385 | prose | pages [21] -->
+suffering from overtourism, demonstrating strong generalizability. Its visual outputs and sen- sitivity analyses align with empirical trends, accurately reflecting real-world requirements and policy constraints.
+
+<!-- b005386 | prose | pages [21] -->
+8.2
+
+<!-- b005387 | heading | pages [21] -->
+Weaknesses
+
+<!-- b005388 | heading | pages [21] -->
+1. Temporal Simplification: The model ignores time-lag effects in tourism’s response to policy
+
+<!-- b005389 | prose | pages [21] -->
+changes.
+
+<!-- b005390 | prose | pages [21] -->
+While elasticity coefficients partially correct deviations, their calibration remains subjective. Delayed demand adjustments necessitate dynamic extensions, for example, time- series models for long-term impact analysis.
+
+<!-- b005391 | heading | pages [21] -->
+2. Spatiotemporal Narrowness: External competition, infrastructure decay, and seasonal fluctua-
+
+<!-- b005392 | prose | pages [21] -->
+tions are excluded, potentially inflating optimization results. Future iterations should incorporate regional linkage mechanisms (e.g., cross-border tourism flows, shared infrastructure costs) to enhance realism.
+
+<!-- b005393 | prose | pages [21] -->
+9
+
+<!-- b005394 | heading | pages [21] -->
+Conclusion
+
+<!-- b005395 | prose | pages [21] -->
+The model provides a practical tool in places like Juneau, which balances simplicity with real-world applicabilityaddressing economic, society, and environmental benefit by hidden cost monetization . The fixed system approach allows quick policy solutions, matching the focus of cities on short-term budgets. Its strength lies in showing Pareto Optimization –— giving leaders clear metrics when managing tourism pressures.
+
+<!-- b005396 | prose | pages [21] -->
+m
+
+<!-- b005397 | prose | pages [21] -->
+m
+
+<!-- b005398 | prose | pages [21] -->
+m
+
+<!-- b005399 | prose | pages [21] -->
+m
+
+<!-- b005400 | prose | pages [21] -->
+m
+
+<!-- b005401 | prose | pages [21] -->
+m
+
+<!-- b005402 | prose | pages [21] -->
+m
+
+<!-- b005403 | prose | pages [21] -->
+m
+
+<!-- b005404 | prose | pages [21] -->
+m
+
+<!-- b005405 | prose | pages [21] -->
+m
+
+<!-- b005406 | prose | pages [21] -->
+m
+
+<!-- b005407 | prose | pages [21] -->
+m
+
+<!-- b005408 | prose | pages [21] -->
+m
+
+<!-- b005409 | prose | pages [21] -->
+m
+
+<!-- b005410 | prose | pages [21] -->
+m
+
+<!-- b005411 | prose | pages [21] -->
+m
+
+<!-- b005412 | prose | pages [21] -->
+m
+
+<!-- b005413 | prose | pages [21] -->
+m
+
+<!-- b005414 | prose | pages [21] -->
+m
+
+<!-- b005415 | prose | pages [21] -->
+m
+
+<!-- b005416 | prose | pages [21] -->
+m
+
+<!-- b005417 | prose | pages [21] -->
+m
+
+<!-- b005418 | prose | pages [21] -->
+m
+
+<!-- b005419 | prose | pages [21] -->
+m
+
+<!-- b005420 | prose | pages [21] -->
+m
+
+<!-- b005421 | prose | pages [21] -->
+m
+
+<!-- b005422 | prose | pages [21] -->
+m
+
+<!-- b005423 | prose | pages [21] -->
+m
+
+<!-- b005424 | prose | pages [21] -->
+m
+
+<!-- b005425 | prose | pages [21] -->
+m
+
+<!-- b005426 | prose | pages [21] -->
+m
+
+<!-- b005427 | prose | pages [21] -->
+m
+
+<!-- b005428 | prose | pages [21] -->
+m
+
+<!-- b005429 | prose | pages [21] -->
+m
+
+<!-- b005430 | prose | pages [21] -->
+m
+
+<!-- b005431 | prose | pages [21] -->
+m
+
+<!-- b005432 | prose | pages [21] -->
+m
+
+<!-- b005433 | prose | pages [21] -->
+m
+
+<!-- b005434 | prose | pages [21] -->
+m
+
+<!-- b005435 | prose | pages [21] -->
+m
+
+<!-- b005436 | prose | pages [21] -->
+m
+
+<!-- b005437 | prose | pages [21] -->
+m
+
+<!-- b005438 | prose | pages [21] -->
+m
+
+<!-- b005439 | prose | pages [21] -->
+m
+
+<!-- b005440 | prose | pages [21] -->
+m
+
+<!-- b005441 | prose | pages [21] -->
+m
+
+<!-- b005442 | prose | pages [21] -->
+m
+
+<!-- b005443 | prose | pages [21] -->
+m
+
+<!-- b005444 | prose | pages [21] -->
+m
+
+<!-- b005445 | prose | pages [21] -->
+m
+
+<!-- b005446 | prose | pages [21] -->
+m
+
+<!-- b005447 | prose | pages [21] -->
+m
+
+<!-- b005448 | prose | pages [21] -->
+m
+
+<!-- b005449 | prose | pages [21] -->
+m
+
+<!-- b005450 | prose | pages [21] -->
+m
+
+<!-- b005451 | prose | pages [21] -->
+m
+
+<!-- b005452 | prose | pages [21] -->
+m
+
+<!-- b005453 | prose | pages [21] -->
+m
+
+<!-- b005454 | prose | pages [21] -->
+m
+
+<!-- b005455 | prose | pages [21] -->
+m
+
+<!-- b005456 | prose | pages [21] -->
+m
+
+<!-- b005457 | prose | pages [21] -->
+m
+
+<!-- b005458 | prose | pages [21] -->
+m
+
+<!-- b005459 | prose | pages [21] -->
+m
+
+<!-- b005460 | prose | pages [21] -->
+m
+
+<!-- b005461 | prose | pages [21] -->
+m
+
+<!-- b005462 | prose | pages [21] -->
+m
+
+<!-- b005463 | prose | pages [21] -->
+m
+
+<!-- b005464 | prose | pages [21] -->
+m
+
+<!-- b005465 | prose | pages [21] -->
+m
+
+<!-- b005466 | prose | pages [21] -->
+m
+
+<!-- b005467 | prose | pages [21] -->
+m
+
+<!-- b005468 | prose | pages [21] -->
+m
+
+<!-- b005469 | prose | pages [21] -->
+m
+
+<!-- b005470 | prose | pages [21] -->
+m
+
+<!-- b005471 | prose | pages [21] -->
+m
+
+<!-- b005472 | prose | pages [21] -->
+m
+
+<!-- b005473 | prose | pages [21] -->
+m
+
+<!-- b005474 | prose | pages [21] -->
+m
+
+<!-- b005475 | prose | pages [21] -->
+m
+
+<!-- b005476 | prose | pages [21] -->
+m
+
+<!-- b005477 | prose | pages [21] -->
+m
+
+<!-- b005478 | prose | pages [21] -->
+m
+
+<!-- b005479 | prose | pages [21] -->
+m
+
+<!-- b005480 | prose | pages [21] -->
+m
+
+<!-- b005481 | prose | pages [21] -->
+m
+
+<!-- b005482 | prose | pages [21] -->
+m
+
+<!-- b005483 | prose | pages [21] -->
+m
+
+<!-- b005484 | prose | pages [21] -->
+m
+
+<!-- b005485 | prose | pages [21] -->
+m
+
+<!-- b005486 | prose | pages [21] -->
+m
+
+<!-- b005487 | prose | pages [21] -->
+m
+
+<!-- b005488 | prose | pages [21] -->
+m
+
+<!-- b005489 | prose | pages [21] -->
+m
+
+<!-- b005490 | prose | pages [21] -->
+m
+
+<!-- b005491 | prose | pages [21] -->
+m
+
+<!-- b005492 | prose | pages [21] -->
+m
+
+<!-- b005493 | prose | pages [21] -->
+m
+
+<!-- b005494 | prose | pages [21] -->
+m
+
+<!-- b005495 | prose | pages [21] -->
+m
+
+<!-- b005496 | prose | pages [21] -->
+m
+
+<!-- b005497 | prose | pages [21] -->
+m
+
+<!-- b005498 | prose | pages [21] -->
+m
+
+<!-- b005499 | prose | pages [21] -->
+m
+
+<!-- b005500 | prose | pages [21] -->
+m
+
+<!-- b005501 | prose | pages [21] -->
+m
+
+<!-- b005502 | prose | pages [21] -->
+m
+
+<!-- b005503 | prose | pages [21] -->
+m
+
+<!-- b005504 | prose | pages [21] -->
+m
+
+<!-- b005505 | prose | pages [21] -->
+m
+
+<!-- b005506 | prose | pages [21] -->
+m
+
+<!-- b005507 | prose | pages [21] -->
+m
+
+<!-- b005508 | prose | pages [21] -->
+m
+
+<!-- b005509 | prose | pages [21] -->
+m
+
+<!-- b005510 | prose | pages [21] -->
+m
+
+<!-- b005511 | prose | pages [21] -->
+m
+
+<!-- b005512 | prose | pages [21] -->
+m
+
+<!-- b005513 | prose | pages [21] -->
+m
+
+<!-- b005514 | prose | pages [21] -->
+m
+
+<!-- b005515 | prose | pages [21] -->
+m
+
+<!-- b005516 | prose | pages [21] -->
+m
+
+<!-- b005517 | prose | pages [21] -->
+m
+
+<!-- b005518 | prose | pages [21] -->
+m
+
+<!-- b005519 | prose | pages [21] -->
+m
+
+<!-- b005520 | prose | pages [21] -->
+m
+
+<!-- b005521 | prose | pages [21] -->
+m
+
+<!-- b005522 | prose | pages [21] -->
+m
+
+<!-- b005523 | prose | pages [21] -->
+m
+
+<!-- b005524 | prose | pages [21] -->
+m
+
+<!-- b005525 | prose | pages [21] -->
+m
+
+<!-- b005526 | prose | pages [21] -->
+m
+
+<!-- b005527 | prose | pages [21] -->
+m
+
+<!-- b005528 | prose | pages [21] -->
+m
+
+<!-- b005529 | prose | pages [21] -->
+m
+
+<!-- b005530 | prose | pages [21] -->
+m
+
+<!-- b005531 | prose | pages [21] -->
+m
+
+<!-- b005532 | prose | pages [21] -->
+m
+
+<!-- b005533 | prose | pages [21] -->
+m
+
+<!-- b005534 | prose | pages [21] -->
+m
+
+<!-- b005535 | prose | pages [21] -->
+m
+
+<!-- b005536 | prose | pages [21] -->
+m
+
+<!-- b005537 | prose | pages [21] -->
+m
+
+<!-- b005538 | prose | pages [21] -->
+m
+
+<!-- b005539 | prose | pages [21] -->
+m
+
+<!-- b005540 | prose | pages [21] -->
+m
+
+<!-- b005541 | prose | pages [21] -->
+m
+
+<!-- b005542 | prose | pages [21] -->
+m
+
+<!-- b005543 | prose | pages [21] -->
+m
+
+<!-- b005544 | prose | pages [21] -->
+m
+
+<!-- b005545 | prose | pages [21] -->
+m
+
+<!-- b005546 | prose | pages [21] -->
+m
+
+<!-- b005547 | prose | pages [21] -->
+m
+
+<!-- b005548 | prose | pages [21] -->
+m
+
+<!-- b005549 | prose | pages [21] -->
+m
+
+<!-- b005550 | prose | pages [21] -->
+m
+
+<!-- b005551 | prose | pages [21] -->
+m
+
+<!-- b005552 | prose | pages [21] -->
+m
+
+<!-- b005553 | prose | pages [21] -->
+m
+
+<!-- b005554 | prose | pages [21] -->
+m
+
+<!-- b005555 | prose | pages [21] -->
+m
+
+<!-- b005556 | prose | pages [21] -->
+m
+
+<!-- b005557 | prose | pages [21] -->
+m
+
+<!-- b005558 | prose | pages [21] -->
+m
+
+<!-- b005559 | prose | pages [21] -->
+m
+
+<!-- b005560 | prose | pages [21] -->
+m
+
+<!-- b005561 | prose | pages [21] -->
+m
+
+<!-- b005562 | prose | pages [21] -->
+m
+
+<!-- b005563 | prose | pages [21] -->
+m
+
+<!-- b005564 | prose | pages [21] -->
+m
+
+<!-- b005565 | prose | pages [21] -->
+m
+
+<!-- b005566 | prose | pages [21] -->
+m
+
+<!-- b005567 | prose | pages [21] -->
+m
+
+<!-- b005568 | prose | pages [21] -->
+m
+
+<!-- b005569 | prose | pages [21] -->
+m
+
+<!-- b005570 | prose | pages [21] -->
+m
+
+<!-- b005571 | prose | pages [21] -->
+m
+
+<!-- b005572 | prose | pages [21] -->
+m
+
+<!-- b005573 | prose | pages [21] -->
+m
+
+<!-- b005574 | prose | pages [21] -->
+m
+
+<!-- b005575 | prose | pages [21] -->
+m
+
+<!-- b005576 | prose | pages [21] -->
+m
+
+<!-- b005577 | prose | pages [21] -->
+m
+
+<!-- b005578 | prose | pages [21] -->
+m
+
+<!-- b005579 | prose | pages [21] -->
+m
+
+<!-- b005580 | prose | pages [21] -->
+m
+
+<!-- b005581 | prose | pages [21] -->
+m
+
+<!-- b005582 | prose | pages [21] -->
+m
+
+<!-- b005583 | prose | pages [21] -->
+m
+
+<!-- b005584 | prose | pages [21] -->
+m
+
+<!-- b005585 | prose | pages [21] -->
+m
+
+<!-- b005586 | prose | pages [21] -->
+m
+
+<!-- b005587 | prose | pages [21] -->
+m
+
+<!-- b005588 | prose | pages [21] -->
+m
+
+<!-- b005589 | prose | pages [21] -->
+m
+
+<!-- b005590 | prose | pages [21] -->
+m
+
+<!-- b005591 | prose | pages [21] -->
+m
+
+<!-- b005592 | prose | pages [21] -->
+m
+
+<!-- b005593 | prose | pages [21] -->
+m
+
+<!-- b005594 | prose | pages [21] -->
+m
+
+<!-- b005595 | prose | pages [21] -->
+m
+
+<!-- b005596 | prose | pages [21] -->
+m
+
+<!-- b005597 | prose | pages [21] -->
+m
+
+<!-- b005598 | prose | pages [21] -->
+m
+
+<!-- b005599 | prose | pages [21] -->
+m
+
+<!-- b005600 | prose | pages [21] -->
+m
+
+<!-- b005601 | prose | pages [21] -->
+m
+
+<!-- b005602 | prose | pages [21] -->
+m
+
+<!-- b005603 | prose | pages [21] -->
+m
+
+<!-- b005604 | prose | pages [21] -->
+m
+
+<!-- b005605 | prose | pages [21] -->
+m
+
+<!-- b005606 | prose | pages [21] -->
+m
+
+<!-- b005607 | prose | pages [21] -->
+m
+
+<!-- b005608 | prose | pages [21] -->
+m
+
+<!-- b005609 | prose | pages [21] -->
+m
+
+<!-- b005610 | prose | pages [21] -->
+m
+
+<!-- b005611 | prose | pages [21] -->
+m
+
+<!-- b005612 | prose | pages [21] -->
+m
+
+<!-- b005613 | prose | pages [21] -->
+m
+
+<!-- b005614 | prose | pages [21] -->
+m
+
+<!-- b005615 | prose | pages [21] -->
+m
+
+<!-- b005616 | prose | pages [21] -->
+m
+
+<!-- b005617 | prose | pages [21] -->
+m
+
+<!-- b005618 | prose | pages [21] -->
+m
+
+<!-- b005619 | prose | pages [21] -->
+m
+
+<!-- b005620 | prose | pages [21] -->
+m
+
+<!-- b005621 | prose | pages [21] -->
+m
+
+<!-- b005622 | prose | pages [21] -->
+m
+
+<!-- b005623 | prose | pages [21] -->
+m
+
+<!-- b005624 | prose | pages [21] -->
+m
+
+<!-- b005625 | prose | pages [21] -->
+m
+
+<!-- b005626 | prose | pages [21] -->
+m
+
+<!-- b005627 | prose | pages [21] -->
+m
+
+<!-- b005628 | prose | pages [21] -->
+m
+
+<!-- b005629 | prose | pages [21] -->
+m
+
+<!-- b005630 | prose | pages [21] -->
+m
+
+<!-- b005631 | prose | pages [21] -->
+m
+
+<!-- b005632 | prose | pages [21] -->
+m
+
+<!-- b005633 | prose | pages [21] -->
+m
+
+<!-- b005634 | prose | pages [21] -->
+m
+
+<!-- b005635 | prose | pages [21] -->
+m
+
+<!-- b005636 | prose | pages [21] -->
+m
+
+<!-- b005637 | prose | pages [21] -->
+m
+
+<!-- b005638 | prose | pages [21] -->
+m
+
+<!-- b005639 | prose | pages [21] -->
+m
+
+<!-- b005640 | prose | pages [21] -->
+m
+
+<!-- b005641 | prose | pages [21] -->
+m
+
+<!-- b005642 | prose | pages [21] -->
+m
+
+<!-- b005643 | prose | pages [21] -->
+m
+
+<!-- b005644 | prose | pages [21] -->
+m
+
+<!-- b005645 | prose | pages [21] -->
+m
+
+<!-- b005646 | prose | pages [21] -->
+m
+
+<!-- b005647 | prose | pages [21] -->
+m
+
+<!-- b005648 | prose | pages [21] -->
+m
+
+<!-- b005649 | prose | pages [21] -->
+m
+
+<!-- b005650 | prose | pages [21] -->
+m
+
+<!-- b005651 | prose | pages [21] -->
+m
+
+<!-- b005652 | prose | pages [21] -->
+m
+
+<!-- b005653 | prose | pages [21] -->
+m
+
+<!-- b005654 | prose | pages [21] -->
+m
+
+<!-- b005655 | prose | pages [21] -->
+m
+
+<!-- b005656 | prose | pages [21] -->
+m
+
+<!-- b005657 | prose | pages [21] -->
+m
+
+<!-- b005658 | prose | pages [21] -->
+m
+
+<!-- b005659 | prose | pages [21] -->
+m
+
+<!-- b005660 | prose | pages [21] -->
+m
+
+<!-- b005661 | prose | pages [21] -->
+m
+
+<!-- b005662 | prose | pages [21] -->
+m
+
+<!-- b005663 | prose | pages [21] -->
+m
+
+<!-- b005664 | prose | pages [21] -->
+m
+
+<!-- b005665 | prose | pages [21] -->
+m
+
+<!-- b005666 | prose | pages [21] -->
+m
+
+<!-- b005667 | prose | pages [21] -->
+m
+
+<!-- b005668 | prose | pages [21] -->
+m
+
+<!-- b005669 | prose | pages [21] -->
+m
+
+<!-- b005670 | prose | pages [21] -->
+m
+
+<!-- b005671 | prose | pages [21] -->
+m
+
+<!-- b005672 | prose | pages [21] -->
+m
+
+<!-- b005673 | prose | pages [21] -->
+m
+
+<!-- b005674 | prose | pages [21] -->
+m
+
+<!-- b005675 | prose | pages [21] -->
+m
+
+<!-- b005676 | prose | pages [21] -->
+m
+
+<!-- b005677 | prose | pages [21] -->
+m
+
+<!-- b005678 | prose | pages [21] -->
+m
+
+<!-- b005679 | prose | pages [21] -->
+m
+
+<!-- b005680 | furniture | pages [21] -->
+m
+
+<!-- b005681 | furniture | pages [21] -->
+m
+
+<!-- b005682 | furniture | pages [21] -->
+m
+
+<!-- b005683 | furniture | pages [21] -->
+m
+
+<!-- b005684 | furniture | pages [21] -->
+m
+
+<!-- b005685 | furniture | pages [21] -->
+m
+
+<!-- b005686 | furniture | pages [21] -->
+m
+
+<!-- b005687 | furniture | pages [21] -->
+m
+
+<!-- b005688 | furniture | pages [21] -->
+m
+
+<!-- b005689 | furniture | pages [21] -->
+m
+
+<!-- b005690 | furniture | pages [21] -->
+m
+
+<!-- b005691 | furniture | pages [21] -->
+m
+
+<!-- b005692 | furniture | pages [21] -->
+m
+
+<!-- b005693 | furniture | pages [21] -->
+m
+
+<!-- b005694 | furniture | pages [21] -->
+m
+
+<!-- b005695 | furniture | pages [21] -->
+m
+
+<!-- b005696 | furniture | pages [21] -->
+m
+
+<!-- b005697 | furniture | pages [21] -->
+m
+
+<!-- b005698 | furniture | pages [21] -->
+m
+
+<!-- b005699 | furniture | pages [21] -->
+m
+
+<!-- b005700 | furniture | pages [21] -->
+m
+
+<!-- b005701 | furniture | pages [21] -->
+m
+
+<!-- b005702 | furniture | pages [21] -->
+m
+
+<!-- b005703 | furniture | pages [21] -->
+m
+
+<!-- b005704 | furniture | pages [21] -->
+m
+
+<!-- b005705 | furniture | pages [21] -->
+m
+
+<!-- b005706 | furniture | pages [21] -->
+m
+
+<!-- b005707 | furniture | pages [21] -->
+m
+
+<!-- b005708 | furniture | pages [21] -->
+m
+
+<!-- b005709 | furniture | pages [21] -->
+m
+
+<!-- b005710 | furniture | pages [21] -->
+m
+
+<!-- b005711 | furniture | pages [21] -->
+m
+
+<!-- b005712 | furniture | pages [21] -->
+m
+
+<!-- b005713 | furniture | pages [21] -->
+m
+
+<!-- b005714 | furniture | pages [21] -->
+m
+
+<!-- b005715 | furniture | pages [21] -->
+m
+
+<!-- b005716 | furniture | pages [21] -->
+m
+
+<!-- b005717 | furniture | pages [21] -->
+m
+
+<!-- b005718 | furniture | pages [21] -->
+m
+
+<!-- b005719 | furniture | pages [21] -->
+m
+
+<!-- b005720 | furniture | pages [21] -->
+m
+
+<!-- b005721 | furniture | pages [21] -->
+m
+
+<!-- b005722 | furniture | pages [21] -->
+m
+
+<!-- b005723 | furniture | pages [21] -->
+m
+
+<!-- b005724 | furniture | pages [21] -->
+m
+
+<!-- b005725 | furniture | pages [21] -->
+m
+
+<!-- b005726 | furniture | pages [21] -->
+m
+
+<!-- b005727 | furniture | pages [21] -->
+m
+
+<!-- b005728 | furniture | pages [21] -->
+m
+
+<!-- b005729 | furniture | pages [21] -->
+m
+
+<!-- b005730 | furniture | pages [21] -->
+m
+
+<!-- b005731 | furniture | pages [21] -->
+m
+
+<!-- b005732 | furniture | pages [21] -->
+m
+
+<!-- b005733 | furniture | pages [21] -->
+m
+
+<!-- b005734 | furniture | pages [21] -->
+m
+
+<!-- b005735 | furniture | pages [21] -->
+m
+
+<!-- b005736 | furniture | pages [21] -->
+m
+
+<!-- b005737 | furniture | pages [21] -->
+m
+
+<!-- b005738 | furniture | pages [21] -->
+m
+
+<!-- b005739 | furniture | pages [21] -->
+m
+
+<!-- b005740 | furniture | pages [21] -->
+m
+
+<!-- b005741 | furniture | pages [21] -->
+m
+
+<!-- b005742 | furniture | pages [21] -->
+m
+
+<!-- b005743 | furniture | pages [21] -->
+m
+
+<!-- b005744 | furniture | pages [21] -->
+m
+
+<!-- b005745 | furniture | pages [21] -->
+m
+
+<!-- b005746 | furniture | pages [21] -->
+m
+
+<!-- b005747 | furniture | pages [21] -->
+m
+
+<!-- b005748 | furniture | pages [21] -->
+m
+
+<!-- b005749 | furniture | pages [21] -->
+m
+
+<!-- b005750 | furniture | pages [21] -->
+m
+
+<!-- b005751 | furniture | pages [21] -->
+m
+
+<!-- b005752 | furniture | pages [21] -->
+m
+
+<!-- b005753 | furniture | pages [21] -->
+m
+
+<!-- b005754 | furniture | pages [21] -->
+m
+
+<!-- b005755 | furniture | pages [21] -->
+m
+
+<!-- b005756 | furniture | pages [21] -->
+m
+
+<!-- b005757 | furniture | pages [21] -->
+m
+
+<!-- b005758 | furniture | pages [21] -->
+m
+
+<!-- b005759 | furniture | pages [21] -->
+m
+
+<!-- b005760 | furniture | pages [21] -->
+m
+
+<!-- b005761 | furniture | pages [21] -->
+m
+
+<!-- b005762 | furniture | pages [21] -->
+m
+
+<!-- b005763 | furniture | pages [21] -->
+m
+
+<!-- b005764 | furniture | pages [21] -->
+m
+
+<!-- b005765 | furniture | pages [21] -->
+m
+
+<!-- b005766 | furniture | pages [21] -->
+m
+
+<!-- b005767 | furniture | pages [21] -->
+m
+
+<!-- b005768 | furniture | pages [21] -->
+m
+
+<!-- b005769 | furniture | pages [21] -->
+m
+
+<!-- b005770 | furniture | pages [21] -->
+m
+
+<!-- b005771 | furniture | pages [21] -->
+m
+
+<!-- b005772 | furniture | pages [21] -->
+m
+
+<!-- b005773 | furniture | pages [21] -->
+m
+
+<!-- b005774 | furniture | pages [21] -->
+m
+
+<!-- b005775 | furniture | pages [21] -->
+m
+
+<!-- b005776 | furniture | pages [21] -->
+m
+
+<!-- b005777 | furniture | pages [21] -->
+m
+
+<!-- b005778 | furniture | pages [21] -->
+m
+
+<!-- b005779 | furniture | pages [21] -->
+m
+
+<!-- b005780 | furniture | pages [21] -->
+m
+
+<!-- b005781 | furniture | pages [21] -->
+m
+
+<!-- b005782 | furniture | pages [21] -->
+m
+
+<!-- b005783 | furniture | pages [21] -->
+m
+
+<!-- b005784 | furniture | pages [21] -->
+m
+
+<!-- b005785 | furniture | pages [21] -->
+m
+
+<!-- b005786 | furniture | pages [21] -->
+m
+
+<!-- b005787 | furniture | pages [21] -->
+m
+
+<!-- b005788 | furniture | pages [21] -->
+m
+
+<!-- b005789 | furniture | pages [21] -->
+m
+
+<!-- b005790 | furniture | pages [21] -->
+m
+
+<!-- b005791 | furniture | pages [21] -->
+m
+
+<!-- b005792 | furniture | pages [21] -->
+m
+
+<!-- b005793 | furniture | pages [21] -->
+m
+
+<!-- b005794 | furniture | pages [21] -->
+m
+
+<!-- b005795 | furniture | pages [21] -->
+m
+
+<!-- b005796 | furniture | pages [21] -->
+m
+
+<!-- b005797 | furniture | pages [21] -->
+m
+
+<!-- b005798 | furniture | pages [21] -->
+m
+
+<!-- b005799 | furniture | pages [21] -->
+m
+
+<!-- b005800 | furniture | pages [21] -->
+m
+
+<!-- b005801 | furniture | pages [21] -->
+m
+
+<!-- b005802 | furniture | pages [21] -->
+m
+
+<!-- b005803 | furniture | pages [21] -->
+m
+
+<!-- b005804 | furniture | pages [21] -->
+m
+
+<!-- b005805 | furniture | pages [21] -->
+m
+
+<!-- b005806 | furniture | pages [21] -->
+m
+
+<!-- b005807 | furniture | pages [21] -->
+m
+
+<!-- b005808 | furniture | pages [21] -->
+m
+
+<!-- b005809 | furniture | pages [21] -->
+m
+
+<!-- b005810 | furniture | pages [21] -->
+m
+
+<!-- b005811 | furniture | pages [21] -->
+m
+
+<!-- b005812 | furniture | pages [21] -->
+m
+
+<!-- b005813 | furniture | pages [21] -->
+m
+
+<!-- b005814 | furniture | pages [21] -->
+m
+
+<!-- b005815 | furniture | pages [21] -->
+m
+
+<!-- b005816 | furniture | pages [21] -->
+m
+
+<!-- b005817 | furniture | pages [21] -->
+m
+
+<!-- b005818 | furniture | pages [21] -->
+m
+
+<!-- b005819 | furniture | pages [21] -->
+m
+
+<!-- b005820 | furniture | pages [21] -->
+m
+
+<!-- b005821 | furniture | pages [21] -->
+m
+
+<!-- b005822 | furniture | pages [21] -->
+m
+
+<!-- b005823 | furniture | pages [21] -->
+m
+
+<!-- b005824 | furniture | pages [21] -->
+m
+
+<!-- b005825 | furniture | pages [21] -->
+m
+
+<!-- b005826 | furniture | pages [21] -->
+m
+
+<!-- b005827 | furniture | pages [21] -->
+m
+
+<!-- b005828 | furniture | pages [21] -->
+m
+
+<!-- b005829 | furniture | pages [21] -->
+m
+
+<!-- b005830 | furniture | pages [21] -->
+m
+
+<!-- b005831 | furniture | pages [21] -->
+m
+
+<!-- b005832 | furniture | pages [21] -->
+m
+
+<!-- b005833 | furniture | pages [21] -->
+m
+
+<!-- b005834 | furniture | pages [21] -->
+m
+
+<!-- b005835 | furniture | pages [21] -->
+m
+
+<!-- b005836 | furniture | pages [21] -->
+m
+
+<!-- b005837 | furniture | pages [21] -->
+m
+
+<!-- b005838 | furniture | pages [21] -->
+m
+
+<!-- b005839 | furniture | pages [21] -->
+m
+
+<!-- b005840 | furniture | pages [21] -->
+m
+
+<!-- b005841 | furniture | pages [21] -->
+m
+
+<!-- b005842 | furniture | pages [21] -->
+m
+
+<!-- b005843 | furniture | pages [21] -->
+m
+
+<!-- b005844 | furniture | pages [21] -->
+m
+
+<!-- b005845 | furniture | pages [21] -->
+m
+
+<!-- b005846 | furniture | pages [21] -->
+m
+
+<!-- b005847 | furniture | pages [21] -->
+m
+
+<!-- b005848 | furniture | pages [21] -->
+m
+
+<!-- b005849 | furniture | pages [21] -->
+m
+
+<!-- b005850 | furniture | pages [21] -->
+m
+
+<!-- b005851 | furniture | pages [21] -->
+m
+
+<!-- b005852 | furniture | pages [21] -->
+m
+
+<!-- b005853 | furniture | pages [21] -->
+m
+
+<!-- b005854 | furniture | pages [21] -->
+m
+
+<!-- b005855 | furniture | pages [21] -->
+m
+
+<!-- b005856 | furniture | pages [21] -->
+m
+
+<!-- b005857 | furniture | pages [21] -->
+m
+
+<!-- b005858 | furniture | pages [21] -->
+m
+
+<!-- b005859 | furniture | pages [21] -->
+m
+
+<!-- b005860 | furniture | pages [21] -->
+m
+
+<!-- b005861 | furniture | pages [21] -->
+m
+
+<!-- b005862 | furniture | pages [21] -->
+m
+
+<!-- b005863 | furniture | pages [21] -->
+m
+
+<!-- b005864 | furniture | pages [21] -->
+m
+
+<!-- b005865 | furniture | pages [21] -->
+m
+
+<!-- b005866 | furniture | pages [21] -->
+m
+
+<!-- b005867 | furniture | pages [21] -->
+m
+
+<!-- b005868 | furniture | pages [21] -->
+m
+
+<!-- b005869 | furniture | pages [21] -->
+m
+
+<!-- b005870 | furniture | pages [21] -->
+m
+
+<!-- b005871 | furniture | pages [21] -->
+m
+
+<!-- b005872 | furniture | pages [21] -->
+m
+
+<!-- b005873 | furniture | pages [21] -->
+m
+
+<!-- b005874 | furniture | pages [21] -->
+m
+
+<!-- b005875 | furniture | pages [21] -->
+m
+
+<!-- b005876 | furniture | pages [21] -->
+m
+
+<!-- b005877 | furniture | pages [21] -->
+m
+
+<!-- b005878 | furniture | pages [21] -->
+m
+
+<!-- b005879 | furniture | pages [21] -->
+m
+
+<!-- b005880 | furniture | pages [21] -->
+m
+
+<!-- b005881 | furniture | pages [21] -->
+m
+
+<!-- b005882 | furniture | pages [21] -->
+m
+
+<!-- b005883 | furniture | pages [21] -->
+m
+
+<!-- b005884 | furniture | pages [21] -->
+m
+
+<!-- b005885 | furniture | pages [21] -->
+m
+
+<!-- b005886 | furniture | pages [21] -->
+m
+
+<!-- b005887 | furniture | pages [21] -->
+m
+
+<!-- b005888 | furniture | pages [21] -->
+m
+
+<!-- b005889 | furniture | pages [21] -->
+m
+
+<!-- b005890 | furniture | pages [21] -->
+m
+
+<!-- b005891 | furniture | pages [21] -->
+m
+
+<!-- b005892 | furniture | pages [21] -->
+m
+
+<!-- b005893 | furniture | pages [21] -->
+m
+
+<!-- b005894 | furniture | pages [21] -->
+m
+
+<!-- b005895 | furniture | pages [21] -->
+m
+
+<!-- b005896 | furniture | pages [21] -->
+m
+
+<!-- b005897 | furniture | pages [21] -->
+m
+
+<!-- b005898 | furniture | pages [21] -->
+m
+
+<!-- b005899 | furniture | pages [21] -->
+m
+
+<!-- b005900 | furniture | pages [21] -->
+m
+
+<!-- b005901 | furniture | pages [21] -->
+m
+
+<!-- b005902 | furniture | pages [21] -->
+m
+
+<!-- b005903 | furniture | pages [21] -->
+m
+
+<!-- b005904 | furniture | pages [21] -->
+m
+
+<!-- b005905 | furniture | pages [21] -->
+m
+
+<!-- b005906 | furniture | pages [21] -->
+m
+
+<!-- b005907 | furniture | pages [21] -->
+m
+
+<!-- b005908 | furniture | pages [21] -->
+m
+
+<!-- b005909 | furniture | pages [21] -->
+m
+
+<!-- b005910 | furniture | pages [21] -->
+m
+
+<!-- b005911 | furniture | pages [21] -->
+m
+
+<!-- b005912 | furniture | pages [21] -->
+m
+
+<!-- b005913 | furniture | pages [21] -->
+m
+
+<!-- b005914 | furniture | pages [21] -->
+m
+
+<!-- b005915 | furniture | pages [21] -->
+m
+
+<!-- b005916 | furniture | pages [21] -->
+m
+
+<!-- b005917 | furniture | pages [21] -->
+m
+
+<!-- b005918 | furniture | pages [21] -->
+m
+
+<!-- b005919 | furniture | pages [21] -->
+m
+
+<!-- b005920 | furniture | pages [21] -->
+m
+
+<!-- b005921 | furniture | pages [21] -->
+m
+
+<!-- b005922 | furniture | pages [21] -->
+m
+
+<!-- b005923 | furniture | pages [21] -->
+m
+
+<!-- b005924 | furniture | pages [21] -->
+m
+
+<!-- b005925 | furniture | pages [21] -->
+m
+
+<!-- b005926 | furniture | pages [21] -->
+m
+
+<!-- b005927 | furniture | pages [21] -->
+m
+
+<!-- b005928 | furniture | pages [21] -->
+m
+
+<!-- b005929 | furniture | pages [21] -->
+m
+
+<!-- b005930 | furniture | pages [21] -->
+m
+
+<!-- b005931 | furniture | pages [21] -->
+m
+
+<!-- b005932 | furniture | pages [21] -->
+m
+
+<!-- b005933 | furniture | pages [21] -->
+m
+
+<!-- b005934 | furniture | pages [21] -->
+m
+
+<!-- b005935 | furniture | pages [21] -->
+m
+
+<!-- b005936 | furniture | pages [21] -->
+m
+
+<!-- b005937 | furniture | pages [21] -->
+m
+
+<!-- b005938 | furniture | pages [21] -->
+m
+
+<!-- b005939 | furniture | pages [21] -->
+m
+
+<!-- b005940 | furniture | pages [21] -->
+m
+
+<!-- b005941 | furniture | pages [21] -->
+m
+
+<!-- b005942 | furniture | pages [21] -->
+m
+
+<!-- b005943 | furniture | pages [21] -->
+m
+
+<!-- b005944 | furniture | pages [21] -->
+m
+
+<!-- b005945 | furniture | pages [21] -->
+m
+
+<!-- b005946 | furniture | pages [21] -->
+m
+
+<!-- b005947 | furniture | pages [21] -->
+m
+
+<!-- b005948 | furniture | pages [21] -->
+m
+
+<!-- b005949 | furniture | pages [21] -->
+m
+
+<!-- b005950 | furniture | pages [21] -->
+m
+
+<!-- b005951 | furniture | pages [21] -->
+m
+
+<!-- b005952 | furniture | pages [21] -->
+m
+
+<!-- b005953 | furniture | pages [21] -->
+m
+
+<!-- b005954 | furniture | pages [21] -->
+m
+
+<!-- b005955 | furniture | pages [21] -->
+m
+
+<!-- b005956 | furniture | pages [21] -->
+m
+
+<!-- b005957 | furniture | pages [21] -->
+m
+
+<!-- b005958 | furniture | pages [21] -->
+m
+
+<!-- b005959 | furniture | pages [21] -->
+m
+
+<!-- b005960 | furniture | pages [21] -->
+m
+
+<!-- b005961 | furniture | pages [21] -->
+m
+
+<!-- b005962 | furniture | pages [21] -->
+m
+
+<!-- b005963 | furniture | pages [21] -->
+m
+
+<!-- b005964 | furniture | pages [21] -->
+m
+
+<!-- b005965 | furniture | pages [21] -->
+m
+
+<!-- b005966 | furniture | pages [21] -->
+m
+
+<!-- b005967 | furniture | pages [21] -->
+m
+
+<!-- b005968 | furniture | pages [21] -->
+m
+
+<!-- b005969 | furniture | pages [21] -->
+m
+
+<!-- b005970 | furniture | pages [21] -->
+m
+
+<!-- b005971 | furniture | pages [21] -->
+m
+
+<!-- b005972 | furniture | pages [21] -->
+m
+
+<!-- b005973 | furniture | pages [21] -->
+m
+
+<!-- b005974 | furniture | pages [21] -->
+m
+
+<!-- b005975 | furniture | pages [21] -->
+m
+
+<!-- b005976 | furniture | pages [21] -->
+m
+
+<!-- b005977 | furniture | pages [21] -->
+m
+
+<!-- b005978 | furniture | pages [21] -->
+m
+
+<!-- b005979 | furniture | pages [21] -->
+m
+
+<!-- b005980 | furniture | pages [21] -->
+m
+
+<!-- b005981 | furniture | pages [21] -->
+m
+
+<!-- b005982 | furniture | pages [21] -->
+m
+
+<!-- b005983 | furniture | pages [21] -->
+m
+
+<!-- b005984 | furniture | pages [21] -->
+m
+
+<!-- b005985 | furniture | pages [21] -->
+m
+
+<!-- b005986 | furniture | pages [21] -->
+m
+
+<!-- b005987 | furniture | pages [21] -->
+m
+
+<!-- b005988 | furniture | pages [21] -->
+m
+
+<!-- b005989 | furniture | pages [21] -->
+m
+
+<!-- b005990 | furniture | pages [21] -->
+m
+
+<!-- b005991 | furniture | pages [21] -->
+m
+
+<!-- b005992 | furniture | pages [21] -->
+m
+
+<!-- b005993 | furniture | pages [21] -->
+m
+
+<!-- b005994 | furniture | pages [21] -->
+m
+
+<!-- b005995 | furniture | pages [21] -->
+m
+
+<!-- b005996 | furniture | pages [21] -->
+m
+
+<!-- b005997 | furniture | pages [21] -->
+m
+
+<!-- b005998 | furniture | pages [21] -->
+m
+
+<!-- b005999 | furniture | pages [21] -->
+m
+
+<!-- b006000 | furniture | pages [21] -->
+m
+
+<!-- b006001 | furniture | pages [21] -->
+m
+
+<!-- b006002 | furniture | pages [21] -->
+m
+
+<!-- b006003 | furniture | pages [21] -->
+m
+
+<!-- b006004 | furniture | pages [21] -->
+m
+
+<!-- b006005 | furniture | pages [21] -->
+m
+
+<!-- b006006 | furniture | pages [21] -->
+m
+
+<!-- b006007 | furniture | pages [21] -->
+m
+
+<!-- b006008 | furniture | pages [21] -->
+m
+
+<!-- b006009 | furniture | pages [21] -->
+m
+
+<!-- b006010 | furniture | pages [21] -->
+m
+
+<!-- b006011 | furniture | pages [21] -->
+m
+
+<!-- b006012 | furniture | pages [21] -->
+m
+
+<!-- b006013 | furniture | pages [21] -->
+m
+
+<!-- b006014 | furniture | pages [21] -->
+m
+
+<!-- b006015 | furniture | pages [21] -->
+m
+
+<!-- b006016 | furniture | pages [21] -->
+m
+
+<!-- b006017 | furniture | pages [21] -->
+m
+
+<!-- b006018 | furniture | pages [21] -->
+m
+
+<!-- b006019 | furniture | pages [21] -->
+m
+
+<!-- b006020 | furniture | pages [21] -->
+m
+
+<!-- b006021 | furniture | pages [21] -->
+m
+
+<!-- b006022 | furniture | pages [21] -->
+m
+
+<!-- b006023 | furniture | pages [21] -->
+m
+
+<!-- b006024 | furniture | pages [21] -->
+m
+
+<!-- b006025 | furniture | pages [21] -->
+m
+
+<!-- b006026 | furniture | pages [21] -->
+m
+
+<!-- b006027 | furniture | pages [21] -->
+m
+
+<!-- b006028 | furniture | pages [21] -->
+m
+
+<!-- b006029 | furniture | pages [21] -->
+m
+
+<!-- b006030 | furniture | pages [21] -->
+m
+
+<!-- b006031 | furniture | pages [21] -->
+m
+
+<!-- b006032 | furniture | pages [21] -->
+m
+
+<!-- b006033 | furniture | pages [21] -->
+m
+
+<!-- b006034 | furniture | pages [21] -->
+m
+
+<!-- b006035 | furniture | pages [21] -->
+m
+
+<!-- b006036 | furniture | pages [21] -->
+m
+
+<!-- b006037 | furniture | pages [21] -->
+m
+
+<!-- b006038 | furniture | pages [21] -->
+m
+
+<!-- b006039 | furniture | pages [21] -->
+m
+
+<!-- b006040 | furniture | pages [21] -->
+m
+
+<!-- b006041 | furniture | pages [21] -->
+m
+
+<!-- b006042 | furniture | pages [21] -->
+m
+
+<!-- b006043 | furniture | pages [21] -->
+m
+
+<!-- b006044 | furniture | pages [21] -->
+m
+
+<!-- b006045 | furniture | pages [21] -->
+m
+
+<!-- b006046 | furniture | pages [21] -->
+m
+
+<!-- b006047 | furniture | pages [21] -->
+m
+
+<!-- b006048 | furniture | pages [21] -->
+m
+
+<!-- b006049 | furniture | pages [21] -->
+m
+
+<!-- b006050 | furniture | pages [21] -->
+m
+
+<!-- b006051 | furniture | pages [21] -->
+m
+
+<!-- b006052 | furniture | pages [21] -->
+m
+
+<!-- b006053 | furniture | pages [21] -->
+m
+
+<!-- b006054 | furniture | pages [21] -->
+m
+
+<!-- b006055 | furniture | pages [21] -->
+m
+
+<!-- b006056 | furniture | pages [21] -->
+m
+
+<!-- b006057 | furniture | pages [21] -->
+m
+
+<!-- b006058 | furniture | pages [21] -->
+m
+
+<!-- b006059 | furniture | pages [21] -->
+m
+
+<!-- b006060 | furniture | pages [21] -->
+m
+
+<!-- b006061 | furniture | pages [21] -->
+m
+
+<!-- b006062 | furniture | pages [21] -->
+m
+
+<!-- b006063 | furniture | pages [21] -->
+m
+
+<!-- b006064 | furniture | pages [21] -->
+m
+
+<!-- b006065 | furniture | pages [21] -->
+m
+
+<!-- b006066 | furniture | pages [21] -->
+m
+
+<!-- b006067 | furniture | pages [21] -->
+m
+
+<!-- b006068 | furniture | pages [21] -->
+m
+
+<!-- b006069 | furniture | pages [21] -->
+m
+
+<!-- b006070 | furniture | pages [21] -->
+m
+
+<!-- b006071 | furniture | pages [21] -->
+m
+
+<!-- b006072 | furniture | pages [21] -->
+m
+
+<!-- b006073 | furniture | pages [21] -->
+m
+
+<!-- b006074 | furniture | pages [21] -->
+m
+
+<!-- b006075 | furniture | pages [21] -->
+m
+
+<!-- b006076 | furniture | pages [21] -->
+m
+
+<!-- b006077 | furniture | pages [21] -->
+m
+
+<!-- b006078 | furniture | pages [21] -->
+m
+
+<!-- b006079 | furniture | pages [21] -->
+m
+
+<!-- b006080 | furniture | pages [21] -->
+m
+
+<!-- b006081 | furniture | pages [21] -->
+m
+
+<!-- b006082 | furniture | pages [21] -->
+m
+
+<!-- b006083 | furniture | pages [23] -->
+Team # 2502617
+
+<!-- b006084 | furniture | pages [23] -->
+Page 23 of 25
+
+<!-- b006085 | heading | pages [23] -->
+References
+
+<!-- b006086 | references | pages [23] -->
+[1]
+
+<!-- b006087 | references | pages [23] -->
+Cristina Campos Herrero et al. “Tourism under a life cycle thinking approach: A review of
+
+<!-- b006088 | references | pages [23] -->
+perspectives and new challenges for the tourism sector in the last decades”. In: Science of
+
+<!-- b006089 | references | pages [23] -->
+the Total Environment (2022). doi: 10.1016/j.scitotenv.2022.157261.
+
+<!-- b006090 | references | pages [23] -->
+[2]
+
+<!-- b006091 | references | pages [23] -->
+url: https://abc7.com/post/juneau-alaska-cruise-ship-limits-overtourism/
+
+<!-- b006092 | references | pages [23] -->
+15048713/.
+
+<!-- b006093 | references | pages [23] -->
+微信公众号：数学模型
+
+<!-- b006094 | references | pages [23] -->
+[3]
+
+<!-- b006095 | references | pages [23] -->
+url: https://juneau.org/wp-content/uploads/2024/01/CBJ-Cruise-Impacts-
+
+<!-- b006096 | references | pages [23] -->
+2023-Report-1.22.24.pdf.
+
+<!-- b006097 | references | pages [23] -->
+[4]
+
+<!-- b006098 | references | pages [23] -->
+SF McCool. “Making tourism sustainable, sustainable tourism, and what should tourism sus-
+
+<!-- b006099 | references | pages [23] -->
+tain: Different questions, different indicators”. In: PROCEEDINGS OF THE 1999 INTERNA-
+
+<!-- b006100 | references | pages [23] -->
+TIONAL SYMPOSIUM ON COASTAL AND MARINE TOURISM: BALANCING TOURISM
+
+<!-- b006101 | references | pages [23] -->
+AND CONSERVATION (2002).
+
+<!-- b006102 | references | pages [23] -->
+[5]
+
+<!-- b006103 | references | pages [23] -->
+ClaireWeishar. “Frommasstourismtosustainabletourism?”In: CONFINS-REVUEFRANCO-
+
+<!-- b006104 | references | pages [23] -->
+BRESILIENNE DE GEOGRAPHIE-REVISTA FRANCO-BRASILEIRA DE GEOGRAFIA
+
+<!-- b006105 | references | pages [23] -->
+(2021).
+
+<!-- b006106 | references | pages [23] -->
+微信号：MATHmodels
+
+<!-- b006107 | references | pages [23] -->
+[6]
+
+<!-- b006108 | references | pages [23] -->
+Yi Guo, Jinbo Jiang, and Shengchao Li. “A Sustainable Tourism Policy Research Review”.
+
+<!-- b006109 | references | pages [23] -->
+In: SUSTAINABILITY (2019). doi: {10.3390/su11113187}.
+
+<!-- b006110 | references | pages [23] -->
+[7]
+
+<!-- b006111 | references | pages [23] -->
+Haiyan Kong et al. “Exploring Chinese sustainable tourism: a 25-year perspective”. In:
+
+<!-- b006112 | references | pages [23] -->
+JOURNAL OF SUSTAINABLE TOURISM (2024). doi: {10 . 1080 / 09669582 . 2024 .
+
+<!-- b006113 | references | pages [23] -->
+2347547}.
+
+<!-- b006114 | references | pages [23] -->
+[8]
+
+<!-- b006115 | references | pages [23] -->
+Andrea Saayman and ShiNa Li. “The contribution of economics to sustainable tourism re-
+
+<!-- b006116 | references | pages [23] -->
+search”. In: JOURNAL OF SUSTAINABLE TOURISM 31 (2023). doi: 10.1080/09669582.
+
+<!-- b006117 | references | pages [23] -->
+2023.2224943.
+
+<!-- b006118 | references | pages [23] -->
+[9]
+
+<!-- b006119 | references | pages [23] -->
+Michelle M. Whitford and Lisa M. Ruhanen. “Australian indigenous tourism policy: practical
+
+<!-- b006120 | references | pages [23] -->
+and sustainable policies?” In: JOURNAL OF SUSTAINABLE TOURISM 18 (2010). doi:
+
+<!-- b006121 | references | pages [23] -->
+10.1080/09669581003602325.
+
+<!-- b006122 | references | pages [23] -->
+[10]
+
+<!-- b006123 | references | pages [23] -->
+Muhamad and Anugrah Gusta Prima. “Implementation Of Sustainable Tourism Destination
+
+<!-- b006124 | references | pages [23] -->
+Development Achievements (Indicators of Sustainable Tourism Development (STD), Sus-
+
+<!-- b006125 | references | pages [23] -->
+tainable Tourism Observatory (STO) Towards Sustainable Tourism Certification (STC) in
+
+<!-- b006126 | references | pages [23] -->
+Pulesari Village, Wonokerto, Turi District, Sleman Regency, Daerah Istimewa Yogyakarta)”.
+
+<!-- b006127 | references | pages [23] -->
+In: PROCEEDINGS OF THE ASIA TOURISM FORUM 2016 - THE 12TH BIENNIAL CON-
+
+<!-- b006128 | references | pages [23] -->
+FERENCE OF HOSPITALITY AND TOURISM INDUSTRY IN ASIA (2016).
+
+<!-- b006129 | references | pages [23] -->
+[11]
+
+<!-- b006130 | references | pages [23] -->
+Seldjan Timur and Donald Getz. “Sustainable Tourism Development: How Do Destination
+
+<!-- b006131 | references | pages [23] -->
+Stakeholders Perceive Sustainable Urban Tourism?” In: SUSTAINABLE DEVELOPMENT
+
+<!-- b006132 | references | pages [23] -->
+17 (2009). doi: 10.1002/sd.384.
+
+<!-- b006133 | references | pages [23] -->
+[12]
+
+<!-- b006134 | references | pages [23] -->
+Georgiana Daniela Stoica et al. “Perspectives for the Development of Sustainable Cultural
+
+<!-- b006135 | references | pages [23] -->
+Tourism”. In: SUSTAINABILITY 14 (2022). doi: 10.3390/su14095678.
+
+<!-- b006136 | references | pages [23] -->
+[13]
+
+<!-- b006137 | references | pages [23] -->
+Keartisak Sriprateep et al. “Multi-Objective Optimization of Resilient, Sustainable, and
+
+<!-- b006138 | references | pages [23] -->
+Safe Urban Bus Routes for Tourism Promotion Using a Hybrid Reinforcement Learning
+
+<!-- b006139 | references | pages [23] -->
+Algorithm”. In: MATHEMATICS 12 (2024). doi: 10.3390/math12142283.
+
+<!-- b006140 | references | pages [23] -->
+m
+
+<!-- b006141 | references | pages [23] -->
+m
+
+<!-- b006142 | references | pages [23] -->
+m
+
+<!-- b006143 | references | pages [23] -->
+m
+
+<!-- b006144 | references | pages [23] -->
+m
+
+<!-- b006145 | references | pages [23] -->
+m
+
+<!-- b006146 | references | pages [23] -->
+m
+
+<!-- b006147 | references | pages [23] -->
+m
+
+<!-- b006148 | references | pages [23] -->
+m
+
+<!-- b006149 | references | pages [23] -->
+m
+
+<!-- b006150 | references | pages [23] -->
+m
+
+<!-- b006151 | references | pages [23] -->
+m
+
+<!-- b006152 | references | pages [23] -->
+m
+
+<!-- b006153 | references | pages [23] -->
+m
+
+<!-- b006154 | references | pages [23] -->
+m
+
+<!-- b006155 | references | pages [23] -->
+m
+
+<!-- b006156 | references | pages [23] -->
+m
+
+<!-- b006157 | references | pages [23] -->
+m
+
+<!-- b006158 | references | pages [23] -->
+m
+
+<!-- b006159 | references | pages [23] -->
+m
+
+<!-- b006160 | references | pages [23] -->
+m
+
+<!-- b006161 | references | pages [23] -->
+m
+
+<!-- b006162 | references | pages [23] -->
+m
+
+<!-- b006163 | references | pages [23] -->
+m
+
+<!-- b006164 | references | pages [23] -->
+m
+
+<!-- b006165 | references | pages [23] -->
+m
+
+<!-- b006166 | references | pages [23] -->
+m
+
+<!-- b006167 | references | pages [23] -->
+m
+
+<!-- b006168 | references | pages [23] -->
+m
+
+<!-- b006169 | references | pages [23] -->
+m
+
+<!-- b006170 | references | pages [23] -->
+m
+
+<!-- b006171 | references | pages [23] -->
+m
+
+<!-- b006172 | references | pages [23] -->
+m
+
+<!-- b006173 | references | pages [23] -->
+m
+
+<!-- b006174 | references | pages [23] -->
+m
+
+<!-- b006175 | references | pages [23] -->
+m
+
+<!-- b006176 | references | pages [23] -->
+m
+
+<!-- b006177 | references | pages [23] -->
+m
+
+<!-- b006178 | references | pages [23] -->
+m
+
+<!-- b006179 | references | pages [23] -->
+m
+
+<!-- b006180 | references | pages [23] -->
+m
+
+<!-- b006181 | references | pages [23] -->
+m
+
+<!-- b006182 | references | pages [23] -->
+m
+
+<!-- b006183 | references | pages [23] -->
+m
+
+<!-- b006184 | references | pages [23] -->
+m
+
+<!-- b006185 | references | pages [23] -->
+m
+
+<!-- b006186 | references | pages [23] -->
+m
+
+<!-- b006187 | references | pages [23] -->
+m
+
+<!-- b006188 | references | pages [23] -->
+m
+
+<!-- b006189 | references | pages [23] -->
+m
+
+<!-- b006190 | references | pages [23] -->
+m
+
+<!-- b006191 | references | pages [23] -->
+m
+
+<!-- b006192 | references | pages [23] -->
+m
+
+<!-- b006193 | references | pages [23] -->
+m
+
+<!-- b006194 | references | pages [23] -->
+m
+
+<!-- b006195 | references | pages [23] -->
+m
+
+<!-- b006196 | references | pages [23] -->
+m
+
+<!-- b006197 | references | pages [23] -->
+m
+
+<!-- b006198 | references | pages [23] -->
+m
+
+<!-- b006199 | references | pages [23] -->
+m
+
+<!-- b006200 | references | pages [23] -->
+m
+
+<!-- b006201 | references | pages [23] -->
+m
+
+<!-- b006202 | references | pages [23] -->
+m
+
+<!-- b006203 | references | pages [23] -->
+m
+
+<!-- b006204 | references | pages [23] -->
+m
+
+<!-- b006205 | references | pages [23] -->
+m
+
+<!-- b006206 | references | pages [23] -->
+m
+
+<!-- b006207 | references | pages [23] -->
+m
+
+<!-- b006208 | references | pages [23] -->
+m
+
+<!-- b006209 | references | pages [23] -->
+m
+
+<!-- b006210 | references | pages [23] -->
+m
+
+<!-- b006211 | references | pages [23] -->
+m
+
+<!-- b006212 | references | pages [23] -->
+m
+
+<!-- b006213 | references | pages [23] -->
+m
+
+<!-- b006214 | references | pages [23] -->
+m
+
+<!-- b006215 | references | pages [23] -->
+m
+
+<!-- b006216 | references | pages [23] -->
+m
+
+<!-- b006217 | references | pages [23] -->
+m
+
+<!-- b006218 | references | pages [23] -->
+m
+
+<!-- b006219 | references | pages [23] -->
+m
+
+<!-- b006220 | references | pages [23] -->
+m
+
+<!-- b006221 | references | pages [23] -->
+m
+
+<!-- b006222 | references | pages [23] -->
+m
+
+<!-- b006223 | references | pages [23] -->
+m
+
+<!-- b006224 | references | pages [23] -->
+m
+
+<!-- b006225 | references | pages [23] -->
+m
+
+<!-- b006226 | references | pages [23] -->
+m
+
+<!-- b006227 | references | pages [23] -->
+m
+
+<!-- b006228 | references | pages [23] -->
+m
+
+<!-- b006229 | references | pages [23] -->
+m
+
+<!-- b006230 | references | pages [23] -->
+m
+
+<!-- b006231 | references | pages [23] -->
+m
+
+<!-- b006232 | references | pages [23] -->
+m
+
+<!-- b006233 | references | pages [23] -->
+m
+
+<!-- b006234 | references | pages [23] -->
+m
+
+<!-- b006235 | references | pages [23] -->
+m
+
+<!-- b006236 | references | pages [23] -->
+m
+
+<!-- b006237 | references | pages [23] -->
+m
+
+<!-- b006238 | references | pages [23] -->
+m
+
+<!-- b006239 | references | pages [23] -->
+m
+
+<!-- b006240 | references | pages [23] -->
+m
+
+<!-- b006241 | references | pages [23] -->
+m
+
+<!-- b006242 | references | pages [23] -->
+m
+
+<!-- b006243 | references | pages [23] -->
+m
+
+<!-- b006244 | references | pages [23] -->
+m
+
+<!-- b006245 | references | pages [23] -->
+m
+
+<!-- b006246 | references | pages [23] -->
+m
+
+<!-- b006247 | references | pages [23] -->
+m
+
+<!-- b006248 | references | pages [23] -->
+m
+
+<!-- b006249 | references | pages [23] -->
+m
+
+<!-- b006250 | references | pages [23] -->
+m
+
+<!-- b006251 | references | pages [23] -->
+m
+
+<!-- b006252 | references | pages [23] -->
+m
+
+<!-- b006253 | references | pages [23] -->
+m
+
+<!-- b006254 | references | pages [23] -->
+m
+
+<!-- b006255 | references | pages [23] -->
+m
+
+<!-- b006256 | references | pages [23] -->
+m
+
+<!-- b006257 | references | pages [23] -->
+m
+
+<!-- b006258 | references | pages [23] -->
+m
+
+<!-- b006259 | references | pages [23] -->
+m
+
+<!-- b006260 | references | pages [23] -->
+m
+
+<!-- b006261 | references | pages [23] -->
+m
+
+<!-- b006262 | references | pages [23] -->
+m
+
+<!-- b006263 | references | pages [23] -->
+m
+
+<!-- b006264 | references | pages [23] -->
+m
+
+<!-- b006265 | references | pages [23] -->
+m
+
+<!-- b006266 | references | pages [23] -->
+m
+
+<!-- b006267 | references | pages [23] -->
+m
+
+<!-- b006268 | references | pages [23] -->
+m
+
+<!-- b006269 | references | pages [23] -->
+m
+
+<!-- b006270 | references | pages [23] -->
+m
+
+<!-- b006271 | references | pages [23] -->
+m
+
+<!-- b006272 | references | pages [23] -->
+m
+
+<!-- b006273 | references | pages [23] -->
+m
+
+<!-- b006274 | references | pages [23] -->
+m
+
+<!-- b006275 | references | pages [23] -->
+m
+
+<!-- b006276 | references | pages [23] -->
+m
+
+<!-- b006277 | references | pages [23] -->
+m
+
+<!-- b006278 | references | pages [23] -->
+m
+
+<!-- b006279 | references | pages [23] -->
+m
+
+<!-- b006280 | references | pages [23] -->
+m
+
+<!-- b006281 | references | pages [23] -->
+m
+
+<!-- b006282 | references | pages [23] -->
+m
+
+<!-- b006283 | references | pages [23] -->
+m
+
+<!-- b006284 | references | pages [23] -->
+m
+
+<!-- b006285 | references | pages [23] -->
+m
+
+<!-- b006286 | references | pages [23] -->
+m
+
+<!-- b006287 | references | pages [23] -->
+m
+
+<!-- b006288 | references | pages [23] -->
+m
+
+<!-- b006289 | references | pages [23] -->
+m
+
+<!-- b006290 | references | pages [23] -->
+m
+
+<!-- b006291 | references | pages [23] -->
+m
+
+<!-- b006292 | references | pages [23] -->
+m
+
+<!-- b006293 | references | pages [23] -->
+m
+
+<!-- b006294 | references | pages [23] -->
+m
+
+<!-- b006295 | references | pages [23] -->
+m
+
+<!-- b006296 | references | pages [23] -->
+m
+
+<!-- b006297 | references | pages [23] -->
+m
+
+<!-- b006298 | references | pages [23] -->
+m
+
+<!-- b006299 | references | pages [23] -->
+m
+
+<!-- b006300 | references | pages [23] -->
+m
+
+<!-- b006301 | references | pages [23] -->
+m
+
+<!-- b006302 | references | pages [23] -->
+m
+
+<!-- b006303 | references | pages [23] -->
+m
+
+<!-- b006304 | references | pages [23] -->
+m
+
+<!-- b006305 | references | pages [23] -->
+m
+
+<!-- b006306 | references | pages [23] -->
+m
+
+<!-- b006307 | references | pages [23] -->
+m
+
+<!-- b006308 | references | pages [23] -->
+m
+
+<!-- b006309 | references | pages [23] -->
+m
+
+<!-- b006310 | references | pages [23] -->
+m
+
+<!-- b006311 | references | pages [23] -->
+m
+
+<!-- b006312 | references | pages [23] -->
+m
+
+<!-- b006313 | references | pages [23] -->
+m
+
+<!-- b006314 | references | pages [23] -->
+m
+
+<!-- b006315 | references | pages [23] -->
+m
+
+<!-- b006316 | references | pages [23] -->
+m
+
+<!-- b006317 | references | pages [23] -->
+m
+
+<!-- b006318 | references | pages [23] -->
+m
+
+<!-- b006319 | references | pages [23] -->
+m
+
+<!-- b006320 | references | pages [23] -->
+m
+
+<!-- b006321 | references | pages [23] -->
+m
+
+<!-- b006322 | references | pages [23] -->
+m
+
+<!-- b006323 | references | pages [23] -->
+m
+
+<!-- b006324 | references | pages [23] -->
+m
+
+<!-- b006325 | references | pages [23] -->
+m
+
+<!-- b006326 | references | pages [23] -->
+m
+
+<!-- b006327 | references | pages [23] -->
+m
+
+<!-- b006328 | references | pages [23] -->
+m
+
+<!-- b006329 | references | pages [23] -->
+m
+
+<!-- b006330 | references | pages [23] -->
+m
+
+<!-- b006331 | references | pages [23] -->
+m
+
+<!-- b006332 | references | pages [23] -->
+m
+
+<!-- b006333 | references | pages [23] -->
+m
+
+<!-- b006334 | references | pages [23] -->
+m
+
+<!-- b006335 | references | pages [23] -->
+m
+
+<!-- b006336 | references | pages [23] -->
+m
+
+<!-- b006337 | references | pages [23] -->
+m
+
+<!-- b006338 | references | pages [23] -->
+m
+
+<!-- b006339 | references | pages [23] -->
+m
+
+<!-- b006340 | references | pages [23] -->
+m
+
+<!-- b006341 | references | pages [23] -->
+m
+
+<!-- b006342 | references | pages [23] -->
+m
+
+<!-- b006343 | references | pages [23] -->
+m
+
+<!-- b006344 | references | pages [23] -->
+m
+
+<!-- b006345 | references | pages [23] -->
+m
+
+<!-- b006346 | references | pages [23] -->
+m
+
+<!-- b006347 | references | pages [23] -->
+m
+
+<!-- b006348 | references | pages [23] -->
+m
+
+<!-- b006349 | references | pages [23] -->
+m
+
+<!-- b006350 | references | pages [23] -->
+m
+
+<!-- b006351 | references | pages [23] -->
+m
+
+<!-- b006352 | references | pages [23] -->
+m
+
+<!-- b006353 | references | pages [23] -->
+m
+
+<!-- b006354 | references | pages [23] -->
+m
+
+<!-- b006355 | references | pages [23] -->
+m
+
+<!-- b006356 | references | pages [23] -->
+m
+
+<!-- b006357 | references | pages [23] -->
+m
+
+<!-- b006358 | references | pages [23] -->
+m
+
+<!-- b006359 | references | pages [23] -->
+m
+
+<!-- b006360 | references | pages [23] -->
+m
+
+<!-- b006361 | references | pages [23] -->
+m
+
+<!-- b006362 | references | pages [23] -->
+m
+
+<!-- b006363 | references | pages [23] -->
+m
+
+<!-- b006364 | references | pages [23] -->
+m
+
+<!-- b006365 | references | pages [23] -->
+m
+
+<!-- b006366 | references | pages [23] -->
+m
+
+<!-- b006367 | references | pages [23] -->
+m
+
+<!-- b006368 | references | pages [23] -->
+m
+
+<!-- b006369 | references | pages [23] -->
+m
+
+<!-- b006370 | references | pages [23] -->
+m
+
+<!-- b006371 | references | pages [23] -->
+m
+
+<!-- b006372 | references | pages [23] -->
+m
+
+<!-- b006373 | references | pages [23] -->
+m
+
+<!-- b006374 | references | pages [23] -->
+m
+
+<!-- b006375 | references | pages [23] -->
+m
+
+<!-- b006376 | references | pages [23] -->
+m
+
+<!-- b006377 | references | pages [23] -->
+m
+
+<!-- b006378 | references | pages [23] -->
+m
+
+<!-- b006379 | references | pages [23] -->
+m
+
+<!-- b006380 | references | pages [23] -->
+m
+
+<!-- b006381 | references | pages [23] -->
+m
+
+<!-- b006382 | references | pages [23] -->
+m
+
+<!-- b006383 | references | pages [23] -->
+m
+
+<!-- b006384 | references | pages [23] -->
+m
+
+<!-- b006385 | references | pages [23] -->
+m
+
+<!-- b006386 | references | pages [23] -->
+m
+
+<!-- b006387 | references | pages [23] -->
+m
+
+<!-- b006388 | references | pages [23] -->
+m
+
+<!-- b006389 | references | pages [23] -->
+m
+
+<!-- b006390 | references | pages [23] -->
+m
+
+<!-- b006391 | references | pages [23] -->
+m
+
+<!-- b006392 | references | pages [23] -->
+m
+
+<!-- b006393 | references | pages [23] -->
+m
+
+<!-- b006394 | references | pages [23] -->
+m
+
+<!-- b006395 | references | pages [23] -->
+m
+
+<!-- b006396 | references | pages [23] -->
+m
+
+<!-- b006397 | references | pages [23] -->
+m
+
+<!-- b006398 | references | pages [23] -->
+m
+
+<!-- b006399 | references | pages [23] -->
+m
+
+<!-- b006400 | references | pages [23] -->
+m
+
+<!-- b006401 | references | pages [23] -->
+m
+
+<!-- b006402 | references | pages [23] -->
+m
+
+<!-- b006403 | references | pages [23] -->
+m
+
+<!-- b006404 | references | pages [23] -->
+m
+
+<!-- b006405 | references | pages [23] -->
+m
+
+<!-- b006406 | references | pages [23] -->
+m
+
+<!-- b006407 | references | pages [23] -->
+m
+
+<!-- b006408 | references | pages [23] -->
+m
+
+<!-- b006409 | references | pages [23] -->
+m
+
+<!-- b006410 | references | pages [23] -->
+m
+
+<!-- b006411 | references | pages [23] -->
+m
+
+<!-- b006412 | references | pages [23] -->
+m
+
+<!-- b006413 | references | pages [23] -->
+m
+
+<!-- b006414 | references | pages [23] -->
+m
+
+<!-- b006415 | references | pages [23] -->
+m
+
+<!-- b006416 | references | pages [23] -->
+m
+
+<!-- b006417 | references | pages [23] -->
+m
+
+<!-- b006418 | references | pages [23] -->
+m
+
+<!-- b006419 | references | pages [23] -->
+m
+
+<!-- b006420 | references | pages [23] -->
+m
+
+<!-- b006421 | references | pages [23] -->
+m
+
+<!-- b006422 | references | pages [23] -->
+m
+
+<!-- b006423 | references | pages [23] -->
+m
+
+<!-- b006424 | furniture | pages [23] -->
+m
+
+<!-- b006425 | furniture | pages [23] -->
+m
+
+<!-- b006426 | furniture | pages [23] -->
+m
+
+<!-- b006427 | furniture | pages [23] -->
+m
+
+<!-- b006428 | furniture | pages [23] -->
+m
+
+<!-- b006429 | furniture | pages [23] -->
+m
+
+<!-- b006430 | furniture | pages [23] -->
+m
+
+<!-- b006431 | furniture | pages [23] -->
+m
+
+<!-- b006432 | furniture | pages [23] -->
+m
+
+<!-- b006433 | furniture | pages [23] -->
+m
+
+<!-- b006434 | furniture | pages [23] -->
+m
+
+<!-- b006435 | furniture | pages [23] -->
+m
+
+<!-- b006436 | furniture | pages [23] -->
+m
+
+<!-- b006437 | furniture | pages [23] -->
+m
+
+<!-- b006438 | furniture | pages [23] -->
+m
+
+<!-- b006439 | furniture | pages [23] -->
+m
+
+<!-- b006440 | furniture | pages [23] -->
+m
+
+<!-- b006441 | furniture | pages [23] -->
+m
+
+<!-- b006442 | furniture | pages [23] -->
+m
+
+<!-- b006443 | furniture | pages [23] -->
+m
+
+<!-- b006444 | furniture | pages [23] -->
+m
+
+<!-- b006445 | furniture | pages [23] -->
+m
+
+<!-- b006446 | furniture | pages [23] -->
+m
+
+<!-- b006447 | furniture | pages [23] -->
+m
+
+<!-- b006448 | furniture | pages [23] -->
+m
+
+<!-- b006449 | furniture | pages [23] -->
+m
+
+<!-- b006450 | furniture | pages [23] -->
+m
+
+<!-- b006451 | furniture | pages [23] -->
+m
+
+<!-- b006452 | furniture | pages [23] -->
+m
+
+<!-- b006453 | furniture | pages [23] -->
+m
+
+<!-- b006454 | furniture | pages [23] -->
+m
+
+<!-- b006455 | furniture | pages [23] -->
+m
+
+<!-- b006456 | furniture | pages [23] -->
+m
+
+<!-- b006457 | furniture | pages [23] -->
+m
+
+<!-- b006458 | furniture | pages [23] -->
+m
+
+<!-- b006459 | furniture | pages [23] -->
+m
+
+<!-- b006460 | furniture | pages [23] -->
+m
+
+<!-- b006461 | furniture | pages [23] -->
+m
+
+<!-- b006462 | furniture | pages [23] -->
+m
+
+<!-- b006463 | furniture | pages [23] -->
+m
+
+<!-- b006464 | furniture | pages [23] -->
+m
+
+<!-- b006465 | furniture | pages [23] -->
+m
+
+<!-- b006466 | furniture | pages [23] -->
+m
+
+<!-- b006467 | furniture | pages [23] -->
+m
+
+<!-- b006468 | furniture | pages [23] -->
+m
+
+<!-- b006469 | furniture | pages [23] -->
+m
+
+<!-- b006470 | furniture | pages [23] -->
+m
+
+<!-- b006471 | furniture | pages [23] -->
+m
+
+<!-- b006472 | furniture | pages [23] -->
+m
+
+<!-- b006473 | furniture | pages [23] -->
+m
+
+<!-- b006474 | furniture | pages [23] -->
+m
+
+<!-- b006475 | furniture | pages [23] -->
+m
+
+<!-- b006476 | furniture | pages [23] -->
+m
+
+<!-- b006477 | furniture | pages [23] -->
+m
+
+<!-- b006478 | furniture | pages [23] -->
+m
+
+<!-- b006479 | furniture | pages [23] -->
+m
+
+<!-- b006480 | furniture | pages [23] -->
+m
+
+<!-- b006481 | furniture | pages [23] -->
+m
+
+<!-- b006482 | furniture | pages [23] -->
+m
+
+<!-- b006483 | furniture | pages [23] -->
+m
+
+<!-- b006484 | furniture | pages [23] -->
+m
+
+<!-- b006485 | furniture | pages [23] -->
+m
+
+<!-- b006486 | furniture | pages [23] -->
+m
+
+<!-- b006487 | furniture | pages [23] -->
+m
+
+<!-- b006488 | furniture | pages [23] -->
+m
+
+<!-- b006489 | furniture | pages [23] -->
+m
+
+<!-- b006490 | furniture | pages [23] -->
+m
+
+<!-- b006491 | furniture | pages [23] -->
+m
+
+<!-- b006492 | furniture | pages [23] -->
+m
+
+<!-- b006493 | furniture | pages [23] -->
+m
+
+<!-- b006494 | furniture | pages [23] -->
+m
+
+<!-- b006495 | furniture | pages [23] -->
+m
+
+<!-- b006496 | furniture | pages [23] -->
+m
+
+<!-- b006497 | furniture | pages [23] -->
+m
+
+<!-- b006498 | furniture | pages [23] -->
+m
+
+<!-- b006499 | furniture | pages [23] -->
+m
+
+<!-- b006500 | furniture | pages [23] -->
+m
+
+<!-- b006501 | furniture | pages [23] -->
+m
+
+<!-- b006502 | furniture | pages [23] -->
+m
+
+<!-- b006503 | furniture | pages [23] -->
+m
+
+<!-- b006504 | furniture | pages [23] -->
+m
+
+<!-- b006505 | furniture | pages [23] -->
+m
+
+<!-- b006506 | furniture | pages [23] -->
+m
+
+<!-- b006507 | furniture | pages [23] -->
+m
+
+<!-- b006508 | furniture | pages [23] -->
+m
+
+<!-- b006509 | furniture | pages [23] -->
+m
+
+<!-- b006510 | furniture | pages [23] -->
+m
+
+<!-- b006511 | furniture | pages [23] -->
+m
+
+<!-- b006512 | furniture | pages [23] -->
+m
+
+<!-- b006513 | furniture | pages [23] -->
+m
+
+<!-- b006514 | furniture | pages [23] -->
+m
+
+<!-- b006515 | furniture | pages [23] -->
+m
+
+<!-- b006516 | furniture | pages [23] -->
+m
+
+<!-- b006517 | furniture | pages [23] -->
+m
+
+<!-- b006518 | furniture | pages [23] -->
+m
+
+<!-- b006519 | furniture | pages [23] -->
+m
+
+<!-- b006520 | furniture | pages [23] -->
+m
+
+<!-- b006521 | furniture | pages [23] -->
+m
+
+<!-- b006522 | furniture | pages [23] -->
+m
+
+<!-- b006523 | furniture | pages [23] -->
+m
+
+<!-- b006524 | furniture | pages [23] -->
+m
+
+<!-- b006525 | furniture | pages [23] -->
+m
+
+<!-- b006526 | furniture | pages [23] -->
+m
+
+<!-- b006527 | furniture | pages [23] -->
+m
+
+<!-- b006528 | furniture | pages [23] -->
+m
+
+<!-- b006529 | furniture | pages [23] -->
+m
+
+<!-- b006530 | furniture | pages [23] -->
+m
+
+<!-- b006531 | furniture | pages [23] -->
+m
+
+<!-- b006532 | furniture | pages [23] -->
+m
+
+<!-- b006533 | furniture | pages [23] -->
+m
+
+<!-- b006534 | furniture | pages [23] -->
+m
+
+<!-- b006535 | furniture | pages [23] -->
+m
+
+<!-- b006536 | furniture | pages [23] -->
+m
+
+<!-- b006537 | furniture | pages [23] -->
+m
+
+<!-- b006538 | furniture | pages [23] -->
+m
+
+<!-- b006539 | furniture | pages [23] -->
+m
+
+<!-- b006540 | furniture | pages [23] -->
+m
+
+<!-- b006541 | furniture | pages [23] -->
+m
+
+<!-- b006542 | furniture | pages [23] -->
+m
+
+<!-- b006543 | furniture | pages [23] -->
+m
+
+<!-- b006544 | furniture | pages [23] -->
+m
+
+<!-- b006545 | furniture | pages [23] -->
+m
+
+<!-- b006546 | furniture | pages [23] -->
+m
+
+<!-- b006547 | furniture | pages [23] -->
+m
+
+<!-- b006548 | furniture | pages [23] -->
+m
+
+<!-- b006549 | furniture | pages [23] -->
+m
+
+<!-- b006550 | furniture | pages [23] -->
+m
+
+<!-- b006551 | furniture | pages [23] -->
+m
+
+<!-- b006552 | furniture | pages [23] -->
+m
+
+<!-- b006553 | furniture | pages [23] -->
+m
+
+<!-- b006554 | furniture | pages [23] -->
+m
+
+<!-- b006555 | furniture | pages [23] -->
+m
+
+<!-- b006556 | furniture | pages [23] -->
+m
+
+<!-- b006557 | furniture | pages [23] -->
+m
+
+<!-- b006558 | furniture | pages [23] -->
+m
+
+<!-- b006559 | furniture | pages [23] -->
+m
+
+<!-- b006560 | furniture | pages [23] -->
+m
+
+<!-- b006561 | furniture | pages [23] -->
+m
+
+<!-- b006562 | furniture | pages [23] -->
+m
+
+<!-- b006563 | furniture | pages [23] -->
+m
+
+<!-- b006564 | furniture | pages [23] -->
+m
+
+<!-- b006565 | furniture | pages [23] -->
+m
+
+<!-- b006566 | furniture | pages [23] -->
+m
+
+<!-- b006567 | furniture | pages [23] -->
+m
+
+<!-- b006568 | furniture | pages [23] -->
+m
+
+<!-- b006569 | furniture | pages [23] -->
+m
+
+<!-- b006570 | furniture | pages [23] -->
+m
+
+<!-- b006571 | furniture | pages [23] -->
+m
+
+<!-- b006572 | furniture | pages [23] -->
+m
+
+<!-- b006573 | furniture | pages [23] -->
+m
+
+<!-- b006574 | furniture | pages [23] -->
+m
+
+<!-- b006575 | furniture | pages [23] -->
+m
+
+<!-- b006576 | furniture | pages [23] -->
+m
+
+<!-- b006577 | furniture | pages [23] -->
+m
+
+<!-- b006578 | furniture | pages [23] -->
+m
+
+<!-- b006579 | furniture | pages [23] -->
+m
+
+<!-- b006580 | furniture | pages [23] -->
+m
+
+<!-- b006581 | furniture | pages [23] -->
+m
+
+<!-- b006582 | furniture | pages [23] -->
+m
+
+<!-- b006583 | furniture | pages [23] -->
+m
+
+<!-- b006584 | furniture | pages [23] -->
+m
+
+<!-- b006585 | furniture | pages [23] -->
+m
+
+<!-- b006586 | furniture | pages [23] -->
+m
+
+<!-- b006587 | furniture | pages [23] -->
+m
+
+<!-- b006588 | furniture | pages [23] -->
+m
+
+<!-- b006589 | furniture | pages [23] -->
+m
+
+<!-- b006590 | furniture | pages [23] -->
+m
+
+<!-- b006591 | furniture | pages [23] -->
+m
+
+<!-- b006592 | furniture | pages [23] -->
+m
+
+<!-- b006593 | furniture | pages [23] -->
+m
+
+<!-- b006594 | furniture | pages [23] -->
+m
+
+<!-- b006595 | furniture | pages [23] -->
+m
+
+<!-- b006596 | furniture | pages [23] -->
+m
+
+<!-- b006597 | furniture | pages [23] -->
+m
+
+<!-- b006598 | furniture | pages [23] -->
+m
+
+<!-- b006599 | furniture | pages [23] -->
+m
+
+<!-- b006600 | furniture | pages [23] -->
+m
+
+<!-- b006601 | furniture | pages [23] -->
+m
+
+<!-- b006602 | furniture | pages [23] -->
+m
+
+<!-- b006603 | furniture | pages [23] -->
+m
+
+<!-- b006604 | furniture | pages [23] -->
+m
+
+<!-- b006605 | furniture | pages [23] -->
+m
+
+<!-- b006606 | furniture | pages [23] -->
+m
+
+<!-- b006607 | furniture | pages [23] -->
+m
+
+<!-- b006608 | furniture | pages [23] -->
+m
+
+<!-- b006609 | furniture | pages [23] -->
+m
+
+<!-- b006610 | furniture | pages [23] -->
+m
+
+<!-- b006611 | furniture | pages [23] -->
+m
+
+<!-- b006612 | furniture | pages [23] -->
+m
+
+<!-- b006613 | furniture | pages [23] -->
+m
+
+<!-- b006614 | furniture | pages [23] -->
+m
+
+<!-- b006615 | furniture | pages [23] -->
+m
+
+<!-- b006616 | furniture | pages [23] -->
+m
+
+<!-- b006617 | furniture | pages [23] -->
+m
+
+<!-- b006618 | furniture | pages [23] -->
+m
+
+<!-- b006619 | furniture | pages [23] -->
+m
+
+<!-- b006620 | furniture | pages [23] -->
+m
+
+<!-- b006621 | furniture | pages [23] -->
+m
+
+<!-- b006622 | furniture | pages [23] -->
+m
+
+<!-- b006623 | furniture | pages [23] -->
+m
+
+<!-- b006624 | furniture | pages [23] -->
+m
+
+<!-- b006625 | furniture | pages [23] -->
+m
+
+<!-- b006626 | furniture | pages [23] -->
+m
+
+<!-- b006627 | furniture | pages [23] -->
+m
+
+<!-- b006628 | furniture | pages [23] -->
+m
+
+<!-- b006629 | furniture | pages [23] -->
+m
+
+<!-- b006630 | furniture | pages [23] -->
+m
+
+<!-- b006631 | furniture | pages [23] -->
+m
+
+<!-- b006632 | furniture | pages [23] -->
+m
+
+<!-- b006633 | furniture | pages [23] -->
+m
+
+<!-- b006634 | furniture | pages [23] -->
+m
+
+<!-- b006635 | furniture | pages [23] -->
+m
+
+<!-- b006636 | furniture | pages [23] -->
+m
+
+<!-- b006637 | furniture | pages [23] -->
+m
+
+<!-- b006638 | furniture | pages [23] -->
+m
+
+<!-- b006639 | furniture | pages [23] -->
+m
+
+<!-- b006640 | furniture | pages [23] -->
+m
+
+<!-- b006641 | furniture | pages [23] -->
+m
+
+<!-- b006642 | furniture | pages [23] -->
+m
+
+<!-- b006643 | furniture | pages [23] -->
+m
+
+<!-- b006644 | furniture | pages [23] -->
+m
+
+<!-- b006645 | furniture | pages [23] -->
+m
+
+<!-- b006646 | furniture | pages [23] -->
+m
+
+<!-- b006647 | furniture | pages [23] -->
+m
+
+<!-- b006648 | furniture | pages [23] -->
+m
+
+<!-- b006649 | furniture | pages [23] -->
+m
+
+<!-- b006650 | furniture | pages [23] -->
+m
+
+<!-- b006651 | furniture | pages [23] -->
+m
+
+<!-- b006652 | furniture | pages [23] -->
+m
+
+<!-- b006653 | furniture | pages [23] -->
+m
+
+<!-- b006654 | furniture | pages [23] -->
+m
+
+<!-- b006655 | furniture | pages [23] -->
+m
+
+<!-- b006656 | furniture | pages [23] -->
+m
+
+<!-- b006657 | furniture | pages [23] -->
+m
+
+<!-- b006658 | furniture | pages [23] -->
+m
+
+<!-- b006659 | furniture | pages [23] -->
+m
+
+<!-- b006660 | furniture | pages [23] -->
+m
+
+<!-- b006661 | furniture | pages [23] -->
+m
+
+<!-- b006662 | furniture | pages [23] -->
+m
+
+<!-- b006663 | furniture | pages [23] -->
+m
+
+<!-- b006664 | furniture | pages [23] -->
+m
+
+<!-- b006665 | furniture | pages [23] -->
+m
+
+<!-- b006666 | furniture | pages [23] -->
+m
+
+<!-- b006667 | furniture | pages [23] -->
+m
+
+<!-- b006668 | furniture | pages [23] -->
+m
+
+<!-- b006669 | furniture | pages [23] -->
+m
+
+<!-- b006670 | furniture | pages [23] -->
+m
+
+<!-- b006671 | furniture | pages [23] -->
+m
+
+<!-- b006672 | furniture | pages [23] -->
+m
+
+<!-- b006673 | furniture | pages [23] -->
+m
+
+<!-- b006674 | furniture | pages [23] -->
+m
+
+<!-- b006675 | furniture | pages [23] -->
+m
+
+<!-- b006676 | furniture | pages [23] -->
+m
+
+<!-- b006677 | furniture | pages [23] -->
+m
+
+<!-- b006678 | furniture | pages [23] -->
+m
+
+<!-- b006679 | furniture | pages [23] -->
+m
+
+<!-- b006680 | furniture | pages [23] -->
+m
+
+<!-- b006681 | furniture | pages [23] -->
+m
+
+<!-- b006682 | furniture | pages [23] -->
+m
+
+<!-- b006683 | furniture | pages [23] -->
+m
+
+<!-- b006684 | furniture | pages [23] -->
+m
+
+<!-- b006685 | furniture | pages [23] -->
+m
+
+<!-- b006686 | furniture | pages [23] -->
+m
+
+<!-- b006687 | furniture | pages [23] -->
+m
+
+<!-- b006688 | furniture | pages [23] -->
+m
+
+<!-- b006689 | furniture | pages [23] -->
+m
+
+<!-- b006690 | furniture | pages [23] -->
+m
+
+<!-- b006691 | furniture | pages [23] -->
+m
+
+<!-- b006692 | furniture | pages [23] -->
+m
+
+<!-- b006693 | furniture | pages [23] -->
+m
+
+<!-- b006694 | furniture | pages [23] -->
+m
+
+<!-- b006695 | furniture | pages [23] -->
+m
+
+<!-- b006696 | furniture | pages [23] -->
+m
+
+<!-- b006697 | furniture | pages [23] -->
+m
+
+<!-- b006698 | furniture | pages [23] -->
+m
+
+<!-- b006699 | furniture | pages [23] -->
+m
+
+<!-- b006700 | furniture | pages [23] -->
+m
+
+<!-- b006701 | furniture | pages [23] -->
+m
+
+<!-- b006702 | furniture | pages [23] -->
+m
+
+<!-- b006703 | furniture | pages [23] -->
+m
+
+<!-- b006704 | furniture | pages [23] -->
+m
+
+<!-- b006705 | furniture | pages [23] -->
+m
+
+<!-- b006706 | furniture | pages [23] -->
+m
+
+<!-- b006707 | furniture | pages [23] -->
+m
+
+<!-- b006708 | furniture | pages [23] -->
+m
+
+<!-- b006709 | furniture | pages [23] -->
+m
+
+<!-- b006710 | furniture | pages [23] -->
+m
+
+<!-- b006711 | furniture | pages [23] -->
+m
+
+<!-- b006712 | furniture | pages [23] -->
+m
+
+<!-- b006713 | furniture | pages [23] -->
+m
+
+<!-- b006714 | furniture | pages [23] -->
+m
+
+<!-- b006715 | furniture | pages [23] -->
+m
+
+<!-- b006716 | furniture | pages [23] -->
+m
+
+<!-- b006717 | furniture | pages [23] -->
+m
+
+<!-- b006718 | furniture | pages [23] -->
+m
+
+<!-- b006719 | furniture | pages [23] -->
+m
+
+<!-- b006720 | furniture | pages [23] -->
+m
+
+<!-- b006721 | furniture | pages [23] -->
+m
+
+<!-- b006722 | furniture | pages [23] -->
+m
+
+<!-- b006723 | furniture | pages [23] -->
+m
+
+<!-- b006724 | furniture | pages [23] -->
+m
+
+<!-- b006725 | furniture | pages [23] -->
+m
+
+<!-- b006726 | furniture | pages [23] -->
+m
+
+<!-- b006727 | furniture | pages [23] -->
+m
+
+<!-- b006728 | furniture | pages [23] -->
+m
+
+<!-- b006729 | furniture | pages [23] -->
+m
+
+<!-- b006730 | furniture | pages [23] -->
+m
+
+<!-- b006731 | furniture | pages [23] -->
+m
+
+<!-- b006732 | furniture | pages [23] -->
+m
+
+<!-- b006733 | furniture | pages [23] -->
+m
+
+<!-- b006734 | furniture | pages [23] -->
+m
+
+<!-- b006735 | furniture | pages [23] -->
+m
+
+<!-- b006736 | furniture | pages [23] -->
+m
+
+<!-- b006737 | furniture | pages [23] -->
+m
+
+<!-- b006738 | furniture | pages [23] -->
+m
+
+<!-- b006739 | furniture | pages [23] -->
+m
+
+<!-- b006740 | furniture | pages [23] -->
+m
+
+<!-- b006741 | furniture | pages [23] -->
+m
+
+<!-- b006742 | furniture | pages [23] -->
+m
+
+<!-- b006743 | furniture | pages [23] -->
+m
+
+<!-- b006744 | furniture | pages [23] -->
+m
+
+<!-- b006745 | furniture | pages [23] -->
+m
+
+<!-- b006746 | furniture | pages [23] -->
+m
+
+<!-- b006747 | furniture | pages [23] -->
+m
+
+<!-- b006748 | furniture | pages [23] -->
+m
+
+<!-- b006749 | furniture | pages [23] -->
+m
+
+<!-- b006750 | furniture | pages [23] -->
+m
+
+<!-- b006751 | furniture | pages [23] -->
+m
+
+<!-- b006752 | furniture | pages [23] -->
+m
+
+<!-- b006753 | furniture | pages [23] -->
+m
+
+<!-- b006754 | furniture | pages [23] -->
+m
+
+<!-- b006755 | furniture | pages [23] -->
+m
+
+<!-- b006756 | furniture | pages [23] -->
+m
+
+<!-- b006757 | furniture | pages [23] -->
+m
+
+<!-- b006758 | furniture | pages [23] -->
+m
+
+<!-- b006759 | furniture | pages [23] -->
+m
+
+<!-- b006760 | furniture | pages [23] -->
+m
+
+<!-- b006761 | furniture | pages [23] -->
+m
+
+<!-- b006762 | furniture | pages [23] -->
+m
+
+<!-- b006763 | furniture | pages [23] -->
+m
+
+<!-- b006764 | furniture | pages [23] -->
+m
+
+<!-- b006765 | furniture | pages [23] -->
+m
+
+<!-- b006766 | furniture | pages [23] -->
+m
+
+<!-- b006767 | furniture | pages [23] -->
+m
+
+<!-- b006768 | furniture | pages [23] -->
+m
+
+<!-- b006769 | furniture | pages [23] -->
+m
+
+<!-- b006770 | furniture | pages [23] -->
+m
+
+<!-- b006771 | furniture | pages [23] -->
+m
+
+<!-- b006772 | furniture | pages [23] -->
+m
+
+<!-- b006773 | furniture | pages [23] -->
+m
+
+<!-- b006774 | furniture | pages [23] -->
+m
+
+<!-- b006775 | furniture | pages [23] -->
+m
+
+<!-- b006776 | furniture | pages [23] -->
+m
+
+<!-- b006777 | furniture | pages [23] -->
+m
+
+<!-- b006778 | furniture | pages [23] -->
+m
+
+<!-- b006779 | furniture | pages [23] -->
+m
+
+<!-- b006780 | furniture | pages [23] -->
+m
+
+<!-- b006781 | furniture | pages [23] -->
+m
+
+<!-- b006782 | furniture | pages [23] -->
+m
+
+<!-- b006783 | furniture | pages [23] -->
+m
+
+<!-- b006784 | furniture | pages [23] -->
+m
+
+<!-- b006785 | furniture | pages [23] -->
+m
+
+<!-- b006786 | furniture | pages [23] -->
+m
+
+<!-- b006787 | furniture | pages [23] -->
+m
+
+<!-- b006788 | furniture | pages [23] -->
+m
+
+<!-- b006789 | furniture | pages [23] -->
+m
+
+<!-- b006790 | furniture | pages [23] -->
+m
+
+<!-- b006791 | furniture | pages [23] -->
+m
+
+<!-- b006792 | furniture | pages [23] -->
+m
+
+<!-- b006793 | furniture | pages [23] -->
+m
+
+<!-- b006794 | furniture | pages [23] -->
+m
+
+<!-- b006795 | furniture | pages [23] -->
+m
+
+<!-- b006796 | furniture | pages [23] -->
+m
+
+<!-- b006797 | furniture | pages [23] -->
+m
+
+<!-- b006798 | furniture | pages [23] -->
+m
+
+<!-- b006799 | furniture | pages [23] -->
+m
+
+<!-- b006800 | furniture | pages [23] -->
+m
+
+<!-- b006801 | furniture | pages [23] -->
+m
+
+<!-- b006802 | furniture | pages [23] -->
+m
+
+<!-- b006803 | furniture | pages [23] -->
+m
+
+<!-- b006804 | furniture | pages [23] -->
+m
+
+<!-- b006805 | furniture | pages [23] -->
+m
+
+<!-- b006806 | furniture | pages [23] -->
+m
+
+<!-- b006807 | furniture | pages [23] -->
+m
+
+<!-- b006808 | furniture | pages [23] -->
+m
+
+<!-- b006809 | furniture | pages [23] -->
+m
+
+<!-- b006810 | furniture | pages [23] -->
+m
+
+<!-- b006811 | furniture | pages [23] -->
+m
+
+<!-- b006812 | furniture | pages [23] -->
+m
+
+<!-- b006813 | furniture | pages [23] -->
+m
+
+<!-- b006814 | furniture | pages [23] -->
+m
+
+<!-- b006815 | furniture | pages [23] -->
+m
+
+<!-- b006816 | furniture | pages [23] -->
+m
+
+<!-- b006817 | furniture | pages [23] -->
+m
+
+<!-- b006818 | furniture | pages [23] -->
+m
+
+<!-- b006819 | furniture | pages [23] -->
+m
+
+<!-- b006820 | furniture | pages [23] -->
+m
+
+<!-- b006821 | furniture | pages [23] -->
+m
+
+<!-- b006822 | furniture | pages [23] -->
+m
+
+<!-- b006823 | furniture | pages [23] -->
+m
+
+<!-- b006824 | furniture | pages [23] -->
+m
+
+<!-- b006825 | furniture | pages [23] -->
+m
+
+<!-- b006826 | furniture | pages [23] -->
+m
+
+<!-- b006827 | furniture | pages [24] -->
+Team # 2502617
+
+<!-- b006828 | furniture | pages [24] -->
+Page 24 of 25
+
+<!-- b006829 | references | pages [24] -->
+Young Dae Ko and Byung Duk Song. “Sustainable service design and revenue management
+
+<!-- b006830 | references | pages [24] -->
+[14]
+
+<!-- b006831 | references | pages [24] -->
+for electric tour bus systems: seoul city tour bus service and the eco-mileage program”.
+
+<!-- b006832 | references | pages [24] -->
+In: JOURNAL OF SUSTAINABLE TOURISM 27 (2019). doi: 10.1080/09669582.2018.
+
+<!-- b006833 | references | pages [24] -->
+m
+
+<!-- b006834 | references | pages [24] -->
+m
+
+<!-- b006835 | references | pages [24] -->
+m
+
+<!-- b006836 | references | pages [24] -->
+m
+
+<!-- b006837 | references | pages [24] -->
+m
+
+<!-- b006838 | references | pages [24] -->
+m
+
+<!-- b006839 | references | pages [24] -->
+m
+
+<!-- b006840 | references | pages [24] -->
+m
+
+<!-- b006841 | references | pages [24] -->
+m
+
+<!-- b006842 | references | pages [24] -->
+m
+
+<!-- b006843 | references | pages [24] -->
+m
+
+<!-- b006844 | references | pages [24] -->
+m
+
+<!-- b006845 | references | pages [24] -->
+m
+
+<!-- b006846 | references | pages [24] -->
+m
+
+<!-- b006847 | references | pages [24] -->
+m
+
+<!-- b006848 | references | pages [24] -->
+m
+
+<!-- b006849 | references | pages [24] -->
+m
+
+<!-- b006850 | references | pages [24] -->
+m
+
+<!-- b006851 | references | pages [24] -->
+m
+
+<!-- b006852 | references | pages [24] -->
+m
+
+<!-- b006853 | references | pages [24] -->
+m
+
+<!-- b006854 | references | pages [24] -->
+m
+
+<!-- b006855 | references | pages [24] -->
+m
+
+<!-- b006856 | references | pages [24] -->
+m
+
+<!-- b006857 | references | pages [24] -->
+m
+
+<!-- b006858 | references | pages [24] -->
+m
+
+<!-- b006859 | references | pages [24] -->
+m
+
+<!-- b006860 | references | pages [24] -->
+m
+
+<!-- b006861 | references | pages [24] -->
+m
+
+<!-- b006862 | references | pages [24] -->
+m
+
+<!-- b006863 | references | pages [24] -->
+m
+
+<!-- b006864 | references | pages [24] -->
+m
+
+<!-- b006865 | references | pages [24] -->
+m
+
+<!-- b006866 | references | pages [24] -->
+m
+
+<!-- b006867 | references | pages [24] -->
+m
+
+<!-- b006868 | references | pages [24] -->
+m
+
+<!-- b006869 | references | pages [24] -->
+m
+
+<!-- b006870 | references | pages [24] -->
+m
+
+<!-- b006871 | references | pages [24] -->
+m
+
+<!-- b006872 | references | pages [24] -->
+m
+
+<!-- b006873 | references | pages [24] -->
+m
+
+<!-- b006874 | references | pages [24] -->
+m
+
+<!-- b006875 | references | pages [24] -->
+m
+
+<!-- b006876 | references | pages [24] -->
+m
+
+<!-- b006877 | references | pages [24] -->
+m
+
+<!-- b006878 | references | pages [24] -->
+m
+
+<!-- b006879 | references | pages [24] -->
+m
+
+<!-- b006880 | references | pages [24] -->
+m
+
+<!-- b006881 | references | pages [24] -->
+m
+
+<!-- b006882 | references | pages [24] -->
+m
+
+<!-- b006883 | references | pages [24] -->
+m
+
+<!-- b006884 | references | pages [24] -->
+m
+
+<!-- b006885 | references | pages [24] -->
+m
+
+<!-- b006886 | references | pages [24] -->
+m
+
+<!-- b006887 | references | pages [24] -->
+m
+
+<!-- b006888 | references | pages [24] -->
+m
+
+<!-- b006889 | references | pages [24] -->
+m
+
+<!-- b006890 | references | pages [24] -->
+m
+
+<!-- b006891 | references | pages [24] -->
+m
+
+<!-- b006892 | references | pages [24] -->
+m
+
+<!-- b006893 | references | pages [24] -->
+m
+
+<!-- b006894 | references | pages [24] -->
+m
+
+<!-- b006895 | references | pages [24] -->
+m
+
+<!-- b006896 | references | pages [24] -->
+m
+
+<!-- b006897 | references | pages [24] -->
+m
+
+<!-- b006898 | references | pages [24] -->
+m
+
+<!-- b006899 | references | pages [24] -->
+m
+
+<!-- b006900 | references | pages [24] -->
+m
+
+<!-- b006901 | references | pages [24] -->
+m
+
+<!-- b006902 | references | pages [24] -->
+m
+
+<!-- b006903 | references | pages [24] -->
+m
+
+<!-- b006904 | references | pages [24] -->
+m
+
+<!-- b006905 | references | pages [24] -->
+m
+
+<!-- b006906 | references | pages [24] -->
+m
+
+<!-- b006907 | references | pages [24] -->
+m
+
+<!-- b006908 | references | pages [24] -->
+m
+
+<!-- b006909 | references | pages [24] -->
+m
+
+<!-- b006910 | references | pages [24] -->
+m
+
+<!-- b006911 | references | pages [24] -->
+m
+
+<!-- b006912 | references | pages [24] -->
+m
+
+<!-- b006913 | references | pages [24] -->
+m
+
+<!-- b006914 | references | pages [24] -->
+m
+
+<!-- b006915 | references | pages [24] -->
+m
+
+<!-- b006916 | references | pages [24] -->
+m
+
+<!-- b006917 | references | pages [24] -->
+m
+
+<!-- b006918 | references | pages [24] -->
+m
+
+<!-- b006919 | references | pages [24] -->
+m
+
+<!-- b006920 | references | pages [24] -->
+m
+
+<!-- b006921 | references | pages [24] -->
+m
+
+<!-- b006922 | references | pages [24] -->
+m
+
+<!-- b006923 | references | pages [24] -->
+m
+
+<!-- b006924 | references | pages [24] -->
+m
+
+<!-- b006925 | references | pages [24] -->
+m
+
+<!-- b006926 | references | pages [24] -->
+m
+
+<!-- b006927 | references | pages [24] -->
+m
+
+<!-- b006928 | references | pages [24] -->
+m
+
+<!-- b006929 | references | pages [24] -->
+m
+
+<!-- b006930 | references | pages [24] -->
+m
+
+<!-- b006931 | references | pages [24] -->
+m
+
+<!-- b006932 | references | pages [24] -->
+m
+
+<!-- b006933 | references | pages [24] -->
+m
+
+<!-- b006934 | references | pages [24] -->
+m
+
+<!-- b006935 | references | pages [24] -->
+m
+
+<!-- b006936 | references | pages [24] -->
+m
+
+<!-- b006937 | references | pages [24] -->
+m
+
+<!-- b006938 | references | pages [24] -->
+m
+
+<!-- b006939 | references | pages [24] -->
+m
+
+<!-- b006940 | references | pages [24] -->
+m
+
+<!-- b006941 | references | pages [24] -->
+m
+
+<!-- b006942 | references | pages [24] -->
+m
+
+<!-- b006943 | references | pages [24] -->
+m
+
+<!-- b006944 | references | pages [24] -->
+m
+
+<!-- b006945 | references | pages [24] -->
+m
+
+<!-- b006946 | references | pages [24] -->
+m
+
+<!-- b006947 | references | pages [24] -->
+m
+
+<!-- b006948 | references | pages [24] -->
+m
+
+<!-- b006949 | references | pages [24] -->
+m
+
+<!-- b006950 | references | pages [24] -->
+m
+
+<!-- b006951 | references | pages [24] -->
+m
+
+<!-- b006952 | references | pages [24] -->
+m
+
+<!-- b006953 | references | pages [24] -->
+m
+
+<!-- b006954 | references | pages [24] -->
+m
+
+<!-- b006955 | references | pages [24] -->
+m
+
+<!-- b006956 | references | pages [24] -->
+m
+
+<!-- b006957 | references | pages [24] -->
+m
+
+<!-- b006958 | references | pages [24] -->
+m
+
+<!-- b006959 | references | pages [24] -->
+m
+
+<!-- b006960 | references | pages [24] -->
+m
+
+<!-- b006961 | references | pages [24] -->
+m
+
+<!-- b006962 | references | pages [24] -->
+m
+
+<!-- b006963 | references | pages [24] -->
+m
+
+<!-- b006964 | references | pages [24] -->
+m
+
+<!-- b006965 | references | pages [24] -->
+m
+
+<!-- b006966 | references | pages [24] -->
+m
+
+<!-- b006967 | references | pages [24] -->
+m
+
+<!-- b006968 | references | pages [24] -->
+m
+
+<!-- b006969 | references | pages [24] -->
+m
+
+<!-- b006970 | references | pages [24] -->
+m
+
+<!-- b006971 | references | pages [24] -->
+m
+
+<!-- b006972 | references | pages [24] -->
+m
+
+<!-- b006973 | references | pages [24] -->
+m
+
+<!-- b006974 | references | pages [24] -->
+m
+
+<!-- b006975 | references | pages [24] -->
+m
+
+<!-- b006976 | references | pages [24] -->
+m
+
+<!-- b006977 | references | pages [24] -->
+m
+
+<!-- b006978 | references | pages [24] -->
+m
+
+<!-- b006979 | references | pages [24] -->
+1560453.
+
+<!-- b006980 | references | pages [24] -->
+m
+
+<!-- b006981 | references | pages [24] -->
+m
+
+<!-- b006982 | references | pages [24] -->
+m
+
+<!-- b006983 | references | pages [24] -->
+m
+
+<!-- b006984 | references | pages [24] -->
+m
+
+<!-- b006985 | references | pages [24] -->
+m
+
+<!-- b006986 | references | pages [24] -->
+m
+
+<!-- b006987 | references | pages [24] -->
+m
+
+<!-- b006988 | references | pages [24] -->
+m
+
+<!-- b006989 | references | pages [24] -->
+m
+
+<!-- b006990 | references | pages [24] -->
+m
+
+<!-- b006991 | references | pages [24] -->
+m
+
+<!-- b006992 | references | pages [24] -->
+m
+
+<!-- b006993 | references | pages [24] -->
+m
+
+<!-- b006994 | references | pages [24] -->
+m
+
+<!-- b006995 | references | pages [24] -->
+m
+
+<!-- b006996 | references | pages [24] -->
+m
+
+<!-- b006997 | references | pages [24] -->
+m
+
+<!-- b006998 | references | pages [24] -->
+m
+
+<!-- b006999 | references | pages [24] -->
+m
+
+<!-- b007000 | references | pages [24] -->
+m
+
+<!-- b007001 | references | pages [24] -->
+m
+
+<!-- b007002 | references | pages [24] -->
+m
+
+<!-- b007003 | references | pages [24] -->
+m
+
+<!-- b007004 | references | pages [24] -->
+m
+
+<!-- b007005 | references | pages [24] -->
+m
+
+<!-- b007006 | references | pages [24] -->
+m
+
+<!-- b007007 | references | pages [24] -->
+m
+
+<!-- b007008 | references | pages [24] -->
+m
+
+<!-- b007009 | references | pages [24] -->
+m
+
+<!-- b007010 | references | pages [24] -->
+m
+
+<!-- b007011 | references | pages [24] -->
+m
+
+<!-- b007012 | references | pages [24] -->
+m
+
+<!-- b007013 | references | pages [24] -->
+m
+
+<!-- b007014 | references | pages [24] -->
+m
+
+<!-- b007015 | references | pages [24] -->
+m
+
+<!-- b007016 | references | pages [24] -->
+m
+
+<!-- b007017 | references | pages [24] -->
+m
+
+<!-- b007018 | references | pages [24] -->
+m
+
+<!-- b007019 | references | pages [24] -->
+m
+
+<!-- b007020 | references | pages [24] -->
+m
+
+<!-- b007021 | references | pages [24] -->
+m
+
+<!-- b007022 | references | pages [24] -->
+m
+
+<!-- b007023 | references | pages [24] -->
+m
+
+<!-- b007024 | references | pages [24] -->
+m
+
+<!-- b007025 | references | pages [24] -->
+m
+
+<!-- b007026 | references | pages [24] -->
+m
+
+<!-- b007027 | references | pages [24] -->
+m
+
+<!-- b007028 | references | pages [24] -->
+m
+
+<!-- b007029 | references | pages [24] -->
+m
+
+<!-- b007030 | references | pages [24] -->
+m
+
+<!-- b007031 | references | pages [24] -->
+m
+
+<!-- b007032 | references | pages [24] -->
+m
+
+<!-- b007033 | references | pages [24] -->
+m
+
+<!-- b007034 | references | pages [24] -->
+m
+
+<!-- b007035 | references | pages [24] -->
+m
+
+<!-- b007036 | references | pages [24] -->
+m
+
+<!-- b007037 | references | pages [24] -->
+m
+
+<!-- b007038 | references | pages [24] -->
+m
+
+<!-- b007039 | references | pages [24] -->
+m
+
+<!-- b007040 | references | pages [24] -->
+m
+
+<!-- b007041 | references | pages [24] -->
+m
+
+<!-- b007042 | references | pages [24] -->
+m
+
+<!-- b007043 | references | pages [24] -->
+m
+
+<!-- b007044 | references | pages [24] -->
+m
+
+<!-- b007045 | references | pages [24] -->
+m
+
+<!-- b007046 | references | pages [24] -->
+m
+
+<!-- b007047 | references | pages [24] -->
+m
+
+<!-- b007048 | references | pages [24] -->
+m
+
+<!-- b007049 | references | pages [24] -->
+m
+
+<!-- b007050 | references | pages [24] -->
+m
+
+<!-- b007051 | references | pages [24] -->
+m
+
+<!-- b007052 | references | pages [24] -->
+m
+
+<!-- b007053 | references | pages [24] -->
+m
+
+<!-- b007054 | references | pages [24] -->
+m
+
+<!-- b007055 | references | pages [24] -->
+m
+
+<!-- b007056 | references | pages [24] -->
+m
+
+<!-- b007057 | references | pages [24] -->
+m
+
+<!-- b007058 | references | pages [24] -->
+m
+
+<!-- b007059 | references | pages [24] -->
+m
+
+<!-- b007060 | references | pages [24] -->
+m
+
+<!-- b007061 | references | pages [24] -->
+m
+
+<!-- b007062 | references | pages [24] -->
+m
+
+<!-- b007063 | references | pages [24] -->
+m
+
+<!-- b007064 | references | pages [24] -->
+m
+
+<!-- b007065 | references | pages [24] -->
+m
+
+<!-- b007066 | references | pages [24] -->
+m
+
+<!-- b007067 | references | pages [24] -->
+m
+
+<!-- b007068 | references | pages [24] -->
+m
+
+<!-- b007069 | references | pages [24] -->
+m
+
+<!-- b007070 | references | pages [24] -->
+m
+
+<!-- b007071 | references | pages [24] -->
+m
+
+<!-- b007072 | references | pages [24] -->
+m
+
+<!-- b007073 | references | pages [24] -->
+m
+
+<!-- b007074 | references | pages [24] -->
+m
+
+<!-- b007075 | references | pages [24] -->
+m
+
+<!-- b007076 | references | pages [24] -->
+m
+
+<!-- b007077 | references | pages [24] -->
+m
+
+<!-- b007078 | references | pages [24] -->
+m
+
+<!-- b007079 | references | pages [24] -->
+m
+
+<!-- b007080 | references | pages [24] -->
+m
+
+<!-- b007081 | references | pages [24] -->
+m
+
+<!-- b007082 | references | pages [24] -->
+m
+
+<!-- b007083 | references | pages [24] -->
+m
+
+<!-- b007084 | references | pages [24] -->
+m
+
+<!-- b007085 | references | pages [24] -->
+m
+
+<!-- b007086 | references | pages [24] -->
+m
+
+<!-- b007087 | references | pages [24] -->
+m
+
+<!-- b007088 | references | pages [24] -->
+m
+
+<!-- b007089 | references | pages [24] -->
+m
+
+<!-- b007090 | references | pages [24] -->
+m
+
+<!-- b007091 | references | pages [24] -->
+m
+
+<!-- b007092 | references | pages [24] -->
+m
+
+<!-- b007093 | references | pages [24] -->
+m
+
+<!-- b007094 | references | pages [24] -->
+m
+
+<!-- b007095 | references | pages [24] -->
+m
+
+<!-- b007096 | references | pages [24] -->
+m
+
+<!-- b007097 | references | pages [24] -->
+m
+
+<!-- b007098 | references | pages [24] -->
+m
+
+<!-- b007099 | references | pages [24] -->
+m
+
+<!-- b007100 | references | pages [24] -->
+m
+
+<!-- b007101 | references | pages [24] -->
+m
+
+<!-- b007102 | references | pages [24] -->
+m
+
+<!-- b007103 | references | pages [24] -->
+m
+
+<!-- b007104 | references | pages [24] -->
+m
+
+<!-- b007105 | references | pages [24] -->
+m
+
+<!-- b007106 | references | pages [24] -->
+m
+
+<!-- b007107 | references | pages [24] -->
+m
+
+<!-- b007108 | references | pages [24] -->
+m
+
+<!-- b007109 | references | pages [24] -->
+m
+
+<!-- b007110 | references | pages [24] -->
+m
+
+<!-- b007111 | references | pages [24] -->
+m
+
+<!-- b007112 | references | pages [24] -->
+m
+
+<!-- b007113 | references | pages [24] -->
+m
+
+<!-- b007114 | references | pages [24] -->
+m
+
+<!-- b007115 | references | pages [24] -->
+m
+
+<!-- b007116 | references | pages [24] -->
+m
+
+<!-- b007117 | references | pages [24] -->
+m
+
+<!-- b007118 | references | pages [24] -->
+m
+
+<!-- b007119 | references | pages [24] -->
+m
+
+<!-- b007120 | references | pages [24] -->
+m
+
+<!-- b007121 | references | pages [24] -->
+m
+
+<!-- b007122 | references | pages [24] -->
+m
+
+<!-- b007123 | references | pages [24] -->
+m
+
+<!-- b007124 | references | pages [24] -->
+m
+
+<!-- b007125 | references | pages [24] -->
+m
+
+<!-- b007126 | references | pages [24] -->
+m
+
+<!-- b007127 | references | pages [24] -->
+m
+
+<!-- b007128 | references | pages [24] -->
+m
+
+<!-- b007129 | references | pages [24] -->
+m
+
+<!-- b007130 | references | pages [24] -->
+m
+
+<!-- b007131 | references | pages [24] -->
+m
+
+<!-- b007132 | references | pages [24] -->
+m
+
+<!-- b007133 | references | pages [24] -->
+m
+
+<!-- b007134 | references | pages [24] -->
+m
+
+<!-- b007135 | references | pages [24] -->
+m
+
+<!-- b007136 | references | pages [24] -->
+m
+
+<!-- b007137 | references | pages [24] -->
+m
+
+<!-- b007138 | references | pages [24] -->
+m
+
+<!-- b007139 | references | pages [24] -->
+m
+
+<!-- b007140 | references | pages [24] -->
+m
+
+<!-- b007141 | references | pages [24] -->
+m
+
+<!-- b007142 | references | pages [24] -->
+m
+
+<!-- b007143 | references | pages [24] -->
+m
+
+<!-- b007144 | references | pages [24] -->
+m
+
+<!-- b007145 | references | pages [24] -->
+m
+
+<!-- b007146 | references | pages [24] -->
+m
+
+<!-- b007147 | references | pages [24] -->
+m
+
+<!-- b007148 | references | pages [24] -->
+m
+
+<!-- b007149 | references | pages [24] -->
+m
+
+<!-- b007150 | references | pages [24] -->
+m
+
+<!-- b007151 | references | pages [24] -->
+m
+
+<!-- b007152 | references | pages [24] -->
+m
+
+<!-- b007153 | references | pages [24] -->
+m
+
+<!-- b007154 | references | pages [24] -->
+m
+
+<!-- b007155 | references | pages [24] -->
+m
+
+<!-- b007156 | references | pages [24] -->
+m
+
+<!-- b007157 | references | pages [24] -->
+m
+
+<!-- b007158 | references | pages [24] -->
+m
+
+<!-- b007159 | references | pages [24] -->
+m
+
+<!-- b007160 | references | pages [24] -->
+m
+
+<!-- b007161 | references | pages [24] -->
+m
+
+<!-- b007162 | references | pages [24] -->
+m
+
+<!-- b007163 | references | pages [24] -->
+m
+
+<!-- b007164 | references | pages [24] -->
+m
+
+<!-- b007165 | references | pages [24] -->
+m
+
+<!-- b007166 | references | pages [24] -->
+Xiangping Wang and Huajun Tang. “Research on Tourism Supply Chain Coordination Un-
+
+<!-- b007167 | references | pages [24] -->
+[15]
+
+<!-- b007168 | references | pages [24] -->
+m
+
+<!-- b007169 | references | pages [24] -->
+m
+
+<!-- b007170 | references | pages [24] -->
+m
+
+<!-- b007171 | references | pages [24] -->
+m
+
+<!-- b007172 | references | pages [24] -->
+m
+
+<!-- b007173 | references | pages [24] -->
+m
+
+<!-- b007174 | references | pages [24] -->
+m
+
+<!-- b007175 | references | pages [24] -->
+m
+
+<!-- b007176 | references | pages [24] -->
+m
+
+<!-- b007177 | references | pages [24] -->
+m
+
+<!-- b007178 | references | pages [24] -->
+m
+
+<!-- b007179 | references | pages [24] -->
+m
+
+<!-- b007180 | references | pages [24] -->
+m
+
+<!-- b007181 | references | pages [24] -->
+m
+
+<!-- b007182 | references | pages [24] -->
+m
+
+<!-- b007183 | references | pages [24] -->
+m
+
+<!-- b007184 | references | pages [24] -->
+m
+
+<!-- b007185 | references | pages [24] -->
+m
+
+<!-- b007186 | references | pages [24] -->
+m
+
+<!-- b007187 | references | pages [24] -->
+m
+
+<!-- b007188 | references | pages [24] -->
+m
+
+<!-- b007189 | references | pages [24] -->
+m
+
+<!-- b007190 | references | pages [24] -->
+m
+
+<!-- b007191 | references | pages [24] -->
+m
+
+<!-- b007192 | references | pages [24] -->
+m
+
+<!-- b007193 | references | pages [24] -->
+m
+
+<!-- b007194 | references | pages [24] -->
+m
+
+<!-- b007195 | references | pages [24] -->
+m
+
+<!-- b007196 | references | pages [24] -->
+m
+
+<!-- b007197 | references | pages [24] -->
+m
+
+<!-- b007198 | references | pages [24] -->
+m
+
+<!-- b007199 | references | pages [24] -->
+m
+
+<!-- b007200 | references | pages [24] -->
+m
+
+<!-- b007201 | references | pages [24] -->
+m
+
+<!-- b007202 | references | pages [24] -->
+m
+
+<!-- b007203 | references | pages [24] -->
+m
+
+<!-- b007204 | references | pages [24] -->
+m
+
+<!-- b007205 | references | pages [24] -->
+m
+
+<!-- b007206 | references | pages [24] -->
+m
+
+<!-- b007207 | references | pages [24] -->
+m
+
+<!-- b007208 | references | pages [24] -->
+m
+
+<!-- b007209 | references | pages [24] -->
+m
+
+<!-- b007210 | references | pages [24] -->
+m
+
+<!-- b007211 | references | pages [24] -->
+m
+
+<!-- b007212 | references | pages [24] -->
+m
+
+<!-- b007213 | references | pages [24] -->
+m
+
+<!-- b007214 | references | pages [24] -->
+m
+
+<!-- b007215 | references | pages [24] -->
+m
+
+<!-- b007216 | references | pages [24] -->
+m
+
+<!-- b007217 | references | pages [24] -->
+m
+
+<!-- b007218 | references | pages [24] -->
+m
+
+<!-- b007219 | references | pages [24] -->
+m
+
+<!-- b007220 | references | pages [24] -->
+m
+
+<!-- b007221 | references | pages [24] -->
+m
+
+<!-- b007222 | references | pages [24] -->
+m
+
+<!-- b007223 | references | pages [24] -->
+m
+
+<!-- b007224 | references | pages [24] -->
+m
+
+<!-- b007225 | references | pages [24] -->
+m
+
+<!-- b007226 | references | pages [24] -->
+m
+
+<!-- b007227 | references | pages [24] -->
+m
+
+<!-- b007228 | references | pages [24] -->
+m
+
+<!-- b007229 | references | pages [24] -->
+m
+
+<!-- b007230 | references | pages [24] -->
+m
+
+<!-- b007231 | references | pages [24] -->
+m
+
+<!-- b007232 | references | pages [24] -->
+m
+
+<!-- b007233 | references | pages [24] -->
+m
+
+<!-- b007234 | references | pages [24] -->
+m
+
+<!-- b007235 | references | pages [24] -->
+m
+
+<!-- b007236 | references | pages [24] -->
+m
+
+<!-- b007237 | references | pages [24] -->
+m
+
+<!-- b007238 | references | pages [24] -->
+m
+
+<!-- b007239 | references | pages [24] -->
+m
+
+<!-- b007240 | references | pages [24] -->
+m
+
+<!-- b007241 | references | pages [24] -->
+m
+
+<!-- b007242 | references | pages [24] -->
+m
+
+<!-- b007243 | references | pages [24] -->
+m
+
+<!-- b007244 | references | pages [24] -->
+m
+
+<!-- b007245 | references | pages [24] -->
+m
+
+<!-- b007246 | references | pages [24] -->
+m
+
+<!-- b007247 | references | pages [24] -->
+m
+
+<!-- b007248 | references | pages [24] -->
+m
+
+<!-- b007249 | references | pages [24] -->
+m
+
+<!-- b007250 | references | pages [24] -->
+m
+
+<!-- b007251 | references | pages [24] -->
+m
+
+<!-- b007252 | references | pages [24] -->
+m
+
+<!-- b007253 | references | pages [24] -->
+m
+
+<!-- b007254 | references | pages [24] -->
+m
+
+<!-- b007255 | references | pages [24] -->
+m
+
+<!-- b007256 | references | pages [24] -->
+m
+
+<!-- b007257 | references | pages [24] -->
+m
+
+<!-- b007258 | references | pages [24] -->
+m
+
+<!-- b007259 | references | pages [24] -->
+m
+
+<!-- b007260 | references | pages [24] -->
+m
+
+<!-- b007261 | references | pages [24] -->
+m
+
+<!-- b007262 | references | pages [24] -->
+m
+
+<!-- b007263 | references | pages [24] -->
+m
+
+<!-- b007264 | references | pages [24] -->
+m
+
+<!-- b007265 | references | pages [24] -->
+m
+
+<!-- b007266 | references | pages [24] -->
+m
+
+<!-- b007267 | references | pages [24] -->
+m
+
+<!-- b007268 | references | pages [24] -->
+m
+
+<!-- b007269 | references | pages [24] -->
+m
+
+<!-- b007270 | references | pages [24] -->
+m
+
+<!-- b007271 | references | pages [24] -->
+m
+
+<!-- b007272 | references | pages [24] -->
+m
+
+<!-- b007273 | references | pages [24] -->
+m
+
+<!-- b007274 | references | pages [24] -->
+m
+
+<!-- b007275 | references | pages [24] -->
+m
+
+<!-- b007276 | references | pages [24] -->
+m
+
+<!-- b007277 | references | pages [24] -->
+m
+
+<!-- b007278 | references | pages [24] -->
+m
+
+<!-- b007279 | references | pages [24] -->
+m
+
+<!-- b007280 | references | pages [24] -->
+m
+
+<!-- b007281 | references | pages [24] -->
+m
+
+<!-- b007282 | references | pages [24] -->
+m
+
+<!-- b007283 | references | pages [24] -->
+m
+
+<!-- b007284 | references | pages [24] -->
+m
+
+<!-- b007285 | references | pages [24] -->
+m
+
+<!-- b007286 | references | pages [24] -->
+m
+
+<!-- b007287 | references | pages [24] -->
+m
+
+<!-- b007288 | references | pages [24] -->
+m
+
+<!-- b007289 | references | pages [24] -->
+m
+
+<!-- b007290 | references | pages [24] -->
+m
+
+<!-- b007291 | references | pages [24] -->
+m
+
+<!-- b007292 | references | pages [24] -->
+m
+
+<!-- b007293 | references | pages [24] -->
+m
+
+<!-- b007294 | references | pages [24] -->
+m
+
+<!-- b007295 | references | pages [24] -->
+m
+
+<!-- b007296 | references | pages [24] -->
+m
+
+<!-- b007297 | references | pages [24] -->
+m
+
+<!-- b007298 | references | pages [24] -->
+m
+
+<!-- b007299 | references | pages [24] -->
+m
+
+<!-- b007300 | references | pages [24] -->
+m
+
+<!-- b007301 | references | pages [24] -->
+m
+
+<!-- b007302 | references | pages [24] -->
+m
+
+<!-- b007303 | references | pages [24] -->
+m
+
+<!-- b007304 | references | pages [24] -->
+m
+
+<!-- b007305 | references | pages [24] -->
+m
+
+<!-- b007306 | references | pages [24] -->
+m
+
+<!-- b007307 | references | pages [24] -->
+m
+
+<!-- b007308 | references | pages [24] -->
+m
+
+<!-- b007309 | references | pages [24] -->
+m
+
+<!-- b007310 | references | pages [24] -->
+m
+
+<!-- b007311 | references | pages [24] -->
+m
+
+<!-- b007312 | references | pages [24] -->
+m
+
+<!-- b007313 | references | pages [24] -->
+m
+
+<!-- b007314 | references | pages [24] -->
+m
+
+<!-- b007315 | references | pages [24] -->
+m
+
+<!-- b007316 | references | pages [24] -->
+m
+
+<!-- b007317 | references | pages [24] -->
+m
+
+<!-- b007318 | references | pages [24] -->
+der the Background of Low-Carbon Tourism”. In: (). doi: 10.1109/ieem45057.2020.
+
+<!-- b007319 | references | pages [24] -->
+m
+
+<!-- b007320 | references | pages [24] -->
+m
+
+<!-- b007321 | references | pages [24] -->
+m
+
+<!-- b007322 | references | pages [24] -->
+m
+
+<!-- b007323 | references | pages [24] -->
+m
+
+<!-- b007324 | references | pages [24] -->
+m
+
+<!-- b007325 | references | pages [24] -->
+m
+
+<!-- b007326 | references | pages [24] -->
+m
+
+<!-- b007327 | references | pages [24] -->
+m
+
+<!-- b007328 | references | pages [24] -->
+m
+
+<!-- b007329 | references | pages [24] -->
+m
+
+<!-- b007330 | references | pages [24] -->
+m
+
+<!-- b007331 | references | pages [24] -->
+m
+
+<!-- b007332 | references | pages [24] -->
+m
+
+<!-- b007333 | references | pages [24] -->
+m
+
+<!-- b007334 | references | pages [24] -->
+m
+
+<!-- b007335 | references | pages [24] -->
+m
+
+<!-- b007336 | references | pages [24] -->
+m
+
+<!-- b007337 | references | pages [24] -->
+m
+
+<!-- b007338 | references | pages [24] -->
+m
+
+<!-- b007339 | references | pages [24] -->
+m
+
+<!-- b007340 | references | pages [24] -->
+m
+
+<!-- b007341 | references | pages [24] -->
+m
+
+<!-- b007342 | references | pages [24] -->
+m
+
+<!-- b007343 | references | pages [24] -->
+m
+
+<!-- b007344 | references | pages [24] -->
+m
+
+<!-- b007345 | references | pages [24] -->
+m
+
+<!-- b007346 | references | pages [24] -->
+m
+
+<!-- b007347 | references | pages [24] -->
+m
+
+<!-- b007348 | references | pages [24] -->
+m
+
+<!-- b007349 | references | pages [24] -->
+m
+
+<!-- b007350 | references | pages [24] -->
+m
+
+<!-- b007351 | references | pages [24] -->
+m
+
+<!-- b007352 | references | pages [24] -->
+m
+
+<!-- b007353 | references | pages [24] -->
+m
+
+<!-- b007354 | references | pages [24] -->
+m
+
+<!-- b007355 | references | pages [24] -->
+m
+
+<!-- b007356 | references | pages [24] -->
+m
+
+<!-- b007357 | references | pages [24] -->
+m
+
+<!-- b007358 | references | pages [24] -->
+m
+
+<!-- b007359 | references | pages [24] -->
+m
+
+<!-- b007360 | references | pages [24] -->
+m
+
+<!-- b007361 | references | pages [24] -->
+m
+
+<!-- b007362 | references | pages [24] -->
+m
+
+<!-- b007363 | references | pages [24] -->
+m
+
+<!-- b007364 | references | pages [24] -->
+m
+
+<!-- b007365 | references | pages [24] -->
+m
+
+<!-- b007366 | references | pages [24] -->
+m
+
+<!-- b007367 | references | pages [24] -->
+m
+
+<!-- b007368 | references | pages [24] -->
+m
+
+<!-- b007369 | references | pages [24] -->
+m
+
+<!-- b007370 | references | pages [24] -->
+m
+
+<!-- b007371 | references | pages [24] -->
+m
+
+<!-- b007372 | references | pages [24] -->
+m
+
+<!-- b007373 | references | pages [24] -->
+m
+
+<!-- b007374 | references | pages [24] -->
+m
+
+<!-- b007375 | references | pages [24] -->
+m
+
+<!-- b007376 | references | pages [24] -->
+m
+
+<!-- b007377 | references | pages [24] -->
+m
+
+<!-- b007378 | references | pages [24] -->
+m
+
+<!-- b007379 | references | pages [24] -->
+m
+
+<!-- b007380 | references | pages [24] -->
+m
+
+<!-- b007381 | references | pages [24] -->
+m
+
+<!-- b007382 | references | pages [24] -->
+m
+
+<!-- b007383 | references | pages [24] -->
+m
+
+<!-- b007384 | references | pages [24] -->
+m
+
+<!-- b007385 | references | pages [24] -->
+m
+
+<!-- b007386 | references | pages [24] -->
+m
+
+<!-- b007387 | references | pages [24] -->
+m
+
+<!-- b007388 | references | pages [24] -->
+m
+
+<!-- b007389 | references | pages [24] -->
+m
+
+<!-- b007390 | references | pages [24] -->
+m
+
+<!-- b007391 | references | pages [24] -->
+m
+
+<!-- b007392 | references | pages [24] -->
+m
+
+<!-- b007393 | references | pages [24] -->
+m
+
+<!-- b007394 | references | pages [24] -->
+m
+
+<!-- b007395 | references | pages [24] -->
+m
+
+<!-- b007396 | references | pages [24] -->
+m
+
+<!-- b007397 | references | pages [24] -->
+m
+
+<!-- b007398 | references | pages [24] -->
+m
+
+<!-- b007399 | references | pages [24] -->
+m
+
+<!-- b007400 | references | pages [24] -->
+m
+
+<!-- b007401 | references | pages [24] -->
+m
+
+<!-- b007402 | references | pages [24] -->
+m
+
+<!-- b007403 | references | pages [24] -->
+m
+
+<!-- b007404 | references | pages [24] -->
+m
+
+<!-- b007405 | references | pages [24] -->
+m
+
+<!-- b007406 | references | pages [24] -->
+m
+
+<!-- b007407 | references | pages [24] -->
+m
+
+<!-- b007408 | references | pages [24] -->
+m
+
+<!-- b007409 | references | pages [24] -->
+m
+
+<!-- b007410 | references | pages [24] -->
+m
+
+<!-- b007411 | references | pages [24] -->
+m
+
+<!-- b007412 | references | pages [24] -->
+m
+
+<!-- b007413 | references | pages [24] -->
+m
+
+<!-- b007414 | references | pages [24] -->
+m
+
+<!-- b007415 | references | pages [24] -->
+m
+
+<!-- b007416 | references | pages [24] -->
+m
+
+<!-- b007417 | references | pages [24] -->
+m
+
+<!-- b007418 | references | pages [24] -->
+m
+
+<!-- b007419 | references | pages [24] -->
+m
+
+<!-- b007420 | references | pages [24] -->
+m
+
+<!-- b007421 | references | pages [24] -->
+m
+
+<!-- b007422 | references | pages [24] -->
+m
+
+<!-- b007423 | references | pages [24] -->
+m
+
+<!-- b007424 | references | pages [24] -->
+m
+
+<!-- b007425 | references | pages [24] -->
+m
+
+<!-- b007426 | references | pages [24] -->
+m
+
+<!-- b007427 | references | pages [24] -->
+m
+
+<!-- b007428 | references | pages [24] -->
+m
+
+<!-- b007429 | references | pages [24] -->
+m
+
+<!-- b007430 | references | pages [24] -->
+m
+
+<!-- b007431 | references | pages [24] -->
+m
+
+<!-- b007432 | references | pages [24] -->
+m
+
+<!-- b007433 | references | pages [24] -->
+m
+
+<!-- b007434 | references | pages [24] -->
+m
+
+<!-- b007435 | references | pages [24] -->
+m
+
+<!-- b007436 | references | pages [24] -->
+m
+
+<!-- b007437 | references | pages [24] -->
+m
+
+<!-- b007438 | references | pages [24] -->
+m
+
+<!-- b007439 | references | pages [24] -->
+m
+
+<!-- b007440 | references | pages [24] -->
+m
+
+<!-- b007441 | references | pages [24] -->
+m
+
+<!-- b007442 | references | pages [24] -->
+m
+
+<!-- b007443 | references | pages [24] -->
+m
+
+<!-- b007444 | references | pages [24] -->
+m
+
+<!-- b007445 | references | pages [24] -->
+m
+
+<!-- b007446 | references | pages [24] -->
+m
+
+<!-- b007447 | references | pages [24] -->
+m
+
+<!-- b007448 | references | pages [24] -->
+m
+
+<!-- b007449 | references | pages [24] -->
+m
+
+<!-- b007450 | references | pages [24] -->
+m
+
+<!-- b007451 | references | pages [24] -->
+m
+
+<!-- b007452 | references | pages [24] -->
+m
+
+<!-- b007453 | references | pages [24] -->
+m
+
+<!-- b007454 | references | pages [24] -->
+m
+
+<!-- b007455 | references | pages [24] -->
+m
+
+<!-- b007456 | references | pages [24] -->
+m
+
+<!-- b007457 | references | pages [24] -->
+m
+
+<!-- b007458 | references | pages [24] -->
+m
+
+<!-- b007459 | references | pages [24] -->
+m
+
+<!-- b007460 | references | pages [24] -->
+m
+
+<!-- b007461 | references | pages [24] -->
+m
+
+<!-- b007462 | references | pages [24] -->
+m
+
+<!-- b007463 | references | pages [24] -->
+m
+
+<!-- b007464 | references | pages [24] -->
+9309894.
+
+<!-- b007465 | references | pages [24] -->
+m
+
+<!-- b007466 | references | pages [24] -->
+m
+
+<!-- b007467 | references | pages [24] -->
+m
+
+<!-- b007468 | references | pages [24] -->
+m
+
+<!-- b007469 | references | pages [24] -->
+m
+
+<!-- b007470 | references | pages [24] -->
+m
+
+<!-- b007471 | references | pages [24] -->
+m
+
+<!-- b007472 | references | pages [24] -->
+m
+
+<!-- b007473 | references | pages [24] -->
+m
+
+<!-- b007474 | references | pages [24] -->
+m
+
+<!-- b007475 | references | pages [24] -->
+m
+
+<!-- b007476 | references | pages [24] -->
+m
+
+<!-- b007477 | references | pages [24] -->
+m
+
+<!-- b007478 | references | pages [24] -->
+m
+
+<!-- b007479 | references | pages [24] -->
+m
+
+<!-- b007480 | references | pages [24] -->
+m
+
+<!-- b007481 | references | pages [24] -->
+m
+
+<!-- b007482 | references | pages [24] -->
+m
+
+<!-- b007483 | references | pages [24] -->
+m
+
+<!-- b007484 | references | pages [24] -->
+m
+
+<!-- b007485 | references | pages [24] -->
+m
+
+<!-- b007486 | references | pages [24] -->
+m
+
+<!-- b007487 | references | pages [24] -->
+m
+
+<!-- b007488 | references | pages [24] -->
+m
+
+<!-- b007489 | references | pages [24] -->
+m
+
+<!-- b007490 | references | pages [24] -->
+m
+
+<!-- b007491 | references | pages [24] -->
+m
+
+<!-- b007492 | references | pages [24] -->
+m
+
+<!-- b007493 | references | pages [24] -->
+m
+
+<!-- b007494 | references | pages [24] -->
+m
+
+<!-- b007495 | references | pages [24] -->
+m
+
+<!-- b007496 | references | pages [24] -->
+m
+
+<!-- b007497 | references | pages [24] -->
+m
+
+<!-- b007498 | references | pages [24] -->
+m
+
+<!-- b007499 | references | pages [24] -->
+m
+
+<!-- b007500 | references | pages [24] -->
+m
+
+<!-- b007501 | references | pages [24] -->
+m
+
+<!-- b007502 | references | pages [24] -->
+m
+
+<!-- b007503 | references | pages [24] -->
+m
+
+<!-- b007504 | references | pages [24] -->
+m
+
+<!-- b007505 | references | pages [24] -->
+m
+
+<!-- b007506 | references | pages [24] -->
+m
+
+<!-- b007507 | references | pages [24] -->
+m
+
+<!-- b007508 | references | pages [24] -->
+m
+
+<!-- b007509 | references | pages [24] -->
+m
+
+<!-- b007510 | references | pages [24] -->
+m
+
+<!-- b007511 | references | pages [24] -->
+m
+
+<!-- b007512 | references | pages [24] -->
+m
+
+<!-- b007513 | references | pages [24] -->
+m
+
+<!-- b007514 | references | pages [24] -->
+m
+
+<!-- b007515 | references | pages [24] -->
+m
+
+<!-- b007516 | references | pages [24] -->
+m
+
+<!-- b007517 | references | pages [24] -->
+m
+
+<!-- b007518 | references | pages [24] -->
+m
+
+<!-- b007519 | references | pages [24] -->
+m
+
+<!-- b007520 | references | pages [24] -->
+m
+
+<!-- b007521 | references | pages [24] -->
+m
+
+<!-- b007522 | references | pages [24] -->
+m
+
+<!-- b007523 | references | pages [24] -->
+m
+
+<!-- b007524 | references | pages [24] -->
+m
+
+<!-- b007525 | references | pages [24] -->
+url: https://foe.org/news/cruise-passengers-carbon/.
+
+<!-- b007526 | references | pages [24] -->
+[16]
+
+<!-- b007527 | references | pages [24] -->
+Bernard M. S. van Praag. “Perspectives from the happiness literature and the role of new
+
+<!-- b007528 | references | pages [24] -->
+[17]
+
+<!-- b007529 | references | pages [24] -->
+instruments for policy analysis”. In: CESIFO ECONOMIC STUDIES 53 (2007). doi: 10.
+
+<!-- b007530 | references | pages [24] -->
+1093/cesifo/ifm002.
+
+<!-- b007531 | references | pages [24] -->
+Frank Ackerman, Elizabeth A. Stanton, and Ramon Bueno. “CRED: A new model of cli-
+
+<!-- b007532 | references | pages [24] -->
+[18]
+
+<!-- b007533 | references | pages [24] -->
+mate and development”. In: ECOLOGICAL ECONOMICS 85 (2013). doi: 10.1016/j.
+
+<!-- b007534 | references | pages [24] -->
+ecolecon.2011.04.006.
+
+<!-- b007535 | references | pages [24] -->
+[19]
+
+<!-- b007536 | references | pages [24] -->
+url: https://meric.mo.gov/.
+
+<!-- b007537 | references | pages [24] -->
+url: https://www.bea.gov/data/gdp/gdp-state.
+
+<!-- b007538 | references | pages [24] -->
+[20]
+
+<!-- b007539 | references | pages [24] -->
+[21]
+
+<!-- b007540 | references | pages [24] -->
+url: https://epi.yale.edu/.
+
+<!-- b007541 | references | pages [24] -->
+关注数学模型
+
+<!-- b007542 | furniture | pages [24] -->
+2
+
+<!-- b007543 | furniture | pages [24] -->
+MATHmodels
+
+<!-- b007544 | furniture | pages [24] -->
+获取更多资讯
+
+<!-- b007545 | furniture | pages [25] -->
+Team # 2502617
+
+<!-- b007546 | furniture | pages [25] -->
+Page 25 of 25
+
+<!-- b007547 | heading | pages [25] -->
+Memo
+
+<!-- b007548 | prose | pages [25] -->
+To: Juneau Tourism Council
+
+<!-- b007549 | prose | pages [25] -->
+微信公众号：数学模型
+
+<!-- b007550 | heading | pages [25] -->
+Subject: Sustainable Tourism Management Recommendations for Juneau
+
+<!-- b007551 | prose | pages [25] -->
+Honorable Members of the Juneau Tourism Council,
+
+<!-- b007552 | prose | pages [25] -->
+The city of Juneau is attracting the attention and love of tourists with its beautiful natural landscape and comfortable living environment, which undoubtedly brings great economic benefits to the city of Juneau. However, it has been noted that due to the rapid increase in the number of tourists, the natural resources of the City of Juneau are being damaged and the normal life of the residents is being disturbed by the swarm of tourists.
+
+<!-- b007553 | prose | pages [25] -->
+Our assessment of the current state of tourism development in the City of Juneau indicates that if no management measures are taken to limit the number of visitors or protect the natural
+
+<!-- b007554 | prose | pages [25] -->
+微信号：MATHmodels
+
+<!-- b007555 | prose | pages [25] -->
+environment, the number of visitors will remain above 1.6 million for the next decade, and the most popular attraction, the Mendenhall Glacier, will disappear from its current viewpoints within 25 years and completely recede within 90 years, which will inevitably affect the long- term tourism and economic development of the City of Juneau. As the makers of management decisions for tourism management in Juneau, it is important to develop appropriate management strategies to achieve sustainable tourism. To this end, we have constructed a mathematical model and propose the following actionable measures to you:
+
+<!-- b007556 | prose | pages [25] -->
+Measure 1: Increase Visitor Dispersion
+
+<!-- b007557 | prose | pages [25] -->
+Methods: Increase publicity for niche attractions and limit visitor flow or periodically close popular scenic spots
+
+<!-- b007558 | prose | pages [25] -->
+Effect: The greater the dispersion of tourists, the more balanced the number of tourists accepted by each attraction, and when the dispersion of tourists is close to 1/n (n is the total number of attractions), the greater the total benefits.
+
+<!-- b007559 | prose | pages [25] -->
+Measure 2: Increase Tourist Consumption
+
+<!-- b007560 | prose | pages [25] -->
+Methods: Increase tax rates and commodity prices at scenic spots
+
+<!-- b007561 | prose | pages [25] -->
+Effect: When the tax rate and prices increase, the number of tourists decreases and the total benefits increases. The total benefit is greatest when the tax rate is adjusted to 0.58.
+
+<!-- b007562 | prose | pages [25] -->
+Measure 3: Determine the Optimal Number of Tourists
+
+<!-- b007563 | prose | pages [25] -->
+Method: Analyze the number of tourists when the total benefits is maximum through Pareto optimality
+
+<!-- b007564 | prose | pages [25] -->
+Effect: Ensure the Sustainable evelopment of regional tourism and promote the maximization of social benefits. The social benefit is maximized when the total number of tourists is 1.32 million in the year.
+
+<!-- b007565 | prose | pages [25] -->
+Sincerely,
+
+<!-- b007566 | furniture | pages [25] -->
+Team #2502617
+
+<!-- b007567 | prose | pages [25] -->
+m
+
+<!-- b007568 | prose | pages [25] -->
+m
+
+<!-- b007569 | prose | pages [25] -->
+m
+
+<!-- b007570 | prose | pages [25] -->
+m
+
+<!-- b007571 | prose | pages [25] -->
+m
+
+<!-- b007572 | prose | pages [25] -->
+m
+
+<!-- b007573 | prose | pages [25] -->
+m
+
+<!-- b007574 | prose | pages [25] -->
+m
+
+<!-- b007575 | prose | pages [25] -->
+m
+
+<!-- b007576 | prose | pages [25] -->
+m
+
+<!-- b007577 | prose | pages [25] -->
+m
+
+<!-- b007578 | prose | pages [25] -->
+m
+
+<!-- b007579 | prose | pages [25] -->
+m
+
+<!-- b007580 | prose | pages [25] -->
+m
+
+<!-- b007581 | prose | pages [25] -->
+m
+
+<!-- b007582 | prose | pages [25] -->
+m
+
+<!-- b007583 | prose | pages [25] -->
+m
+
+<!-- b007584 | prose | pages [25] -->
+m
+
+<!-- b007585 | prose | pages [25] -->
+m
+
+<!-- b007586 | prose | pages [25] -->
+m
+
+<!-- b007587 | prose | pages [25] -->
+m
+
+<!-- b007588 | prose | pages [25] -->
+m
+
+<!-- b007589 | prose | pages [25] -->
+m
+
+<!-- b007590 | prose | pages [25] -->
+m
+
+<!-- b007591 | prose | pages [25] -->
+m
+
+<!-- b007592 | prose | pages [25] -->
+m
+
+<!-- b007593 | prose | pages [25] -->
+m
+
+<!-- b007594 | prose | pages [25] -->
+m
+
+<!-- b007595 | prose | pages [25] -->
+m
+
+<!-- b007596 | prose | pages [25] -->
+m
+
+<!-- b007597 | prose | pages [25] -->
+m
+
+<!-- b007598 | prose | pages [25] -->
+m
+
+<!-- b007599 | prose | pages [25] -->
+m
+
+<!-- b007600 | prose | pages [25] -->
+m
+
+<!-- b007601 | prose | pages [25] -->
+m
+
+<!-- b007602 | prose | pages [25] -->
+m
+
+<!-- b007603 | prose | pages [25] -->
+m
+
+<!-- b007604 | prose | pages [25] -->
+m
+
+<!-- b007605 | prose | pages [25] -->
+m
+
+<!-- b007606 | prose | pages [25] -->
+m
+
+<!-- b007607 | prose | pages [25] -->
+m
+
+<!-- b007608 | prose | pages [25] -->
+m
+
+<!-- b007609 | prose | pages [25] -->
+m
+
+<!-- b007610 | prose | pages [25] -->
+m
+
+<!-- b007611 | prose | pages [25] -->
+m
+
+<!-- b007612 | prose | pages [25] -->
+m
+
+<!-- b007613 | prose | pages [25] -->
+m
+
+<!-- b007614 | prose | pages [25] -->
+m
+
+<!-- b007615 | prose | pages [25] -->
+m
+
+<!-- b007616 | prose | pages [25] -->
+m
+
+<!-- b007617 | prose | pages [25] -->
+m
+
+<!-- b007618 | prose | pages [25] -->
+m
+
+<!-- b007619 | prose | pages [25] -->
+m
+
+<!-- b007620 | prose | pages [25] -->
+m
+
+<!-- b007621 | prose | pages [25] -->
+m
+
+<!-- b007622 | prose | pages [25] -->
+m
+
+<!-- b007623 | prose | pages [25] -->
+m
+
+<!-- b007624 | prose | pages [25] -->
+m
+
+<!-- b007625 | prose | pages [25] -->
+m
+
+<!-- b007626 | prose | pages [25] -->
+m
+
+<!-- b007627 | prose | pages [25] -->
+m
+
+<!-- b007628 | prose | pages [25] -->
+m
+
+<!-- b007629 | prose | pages [25] -->
+m
+
+<!-- b007630 | prose | pages [25] -->
+m
+
+<!-- b007631 | prose | pages [25] -->
+m
+
+<!-- b007632 | prose | pages [25] -->
+m
+
+<!-- b007633 | prose | pages [25] -->
+m
+
+<!-- b007634 | prose | pages [25] -->
+m
+
+<!-- b007635 | prose | pages [25] -->
+m
+
+<!-- b007636 | prose | pages [25] -->
+m
+
+<!-- b007637 | prose | pages [25] -->
+m
+
+<!-- b007638 | prose | pages [25] -->
+m
+
+<!-- b007639 | prose | pages [25] -->
+m
+
+<!-- b007640 | prose | pages [25] -->
+m
+
+<!-- b007641 | prose | pages [25] -->
+m
+
+<!-- b007642 | prose | pages [25] -->
+m
+
+<!-- b007643 | prose | pages [25] -->
+m
+
+<!-- b007644 | prose | pages [25] -->
+m
+
+<!-- b007645 | prose | pages [25] -->
+m
+
+<!-- b007646 | prose | pages [25] -->
+m
+
+<!-- b007647 | prose | pages [25] -->
+m
+
+<!-- b007648 | prose | pages [25] -->
+m
+
+<!-- b007649 | prose | pages [25] -->
+m
+
+<!-- b007650 | prose | pages [25] -->
+m
+
+<!-- b007651 | prose | pages [25] -->
+m
+
+<!-- b007652 | prose | pages [25] -->
+m
+
+<!-- b007653 | prose | pages [25] -->
+m
+
+<!-- b007654 | prose | pages [25] -->
+m
+
+<!-- b007655 | prose | pages [25] -->
+m
+
+<!-- b007656 | prose | pages [25] -->
+m
+
+<!-- b007657 | prose | pages [25] -->
+m
+
+<!-- b007658 | prose | pages [25] -->
+m
+
+<!-- b007659 | prose | pages [25] -->
+m
+
+<!-- b007660 | prose | pages [25] -->
+m
+
+<!-- b007661 | prose | pages [25] -->
+m
+
+<!-- b007662 | prose | pages [25] -->
+m
+
+<!-- b007663 | prose | pages [25] -->
+m
+
+<!-- b007664 | prose | pages [25] -->
+m
+
+<!-- b007665 | prose | pages [25] -->
+m
+
+<!-- b007666 | prose | pages [25] -->
+m
+
+<!-- b007667 | prose | pages [25] -->
+m
+
+<!-- b007668 | prose | pages [25] -->
+m
+
+<!-- b007669 | prose | pages [25] -->
+m
+
+<!-- b007670 | prose | pages [25] -->
+m
+
+<!-- b007671 | prose | pages [25] -->
+m
+
+<!-- b007672 | prose | pages [25] -->
+m
+
+<!-- b007673 | prose | pages [25] -->
+m
+
+<!-- b007674 | prose | pages [25] -->
+m
+
+<!-- b007675 | prose | pages [25] -->
+m
+
+<!-- b007676 | prose | pages [25] -->
+m
+
+<!-- b007677 | prose | pages [25] -->
+m
+
+<!-- b007678 | prose | pages [25] -->
+m
+
+<!-- b007679 | prose | pages [25] -->
+m
+
+<!-- b007680 | prose | pages [25] -->
+m
+
+<!-- b007681 | prose | pages [25] -->
+m
+
+<!-- b007682 | prose | pages [25] -->
+m
+
+<!-- b007683 | prose | pages [25] -->
+m
+
+<!-- b007684 | prose | pages [25] -->
+m
+
+<!-- b007685 | prose | pages [25] -->
+m
+
+<!-- b007686 | prose | pages [25] -->
+m
+
+<!-- b007687 | prose | pages [25] -->
+m
+
+<!-- b007688 | prose | pages [25] -->
+m
+
+<!-- b007689 | prose | pages [25] -->
+m
+
+<!-- b007690 | prose | pages [25] -->
+m
+
+<!-- b007691 | prose | pages [25] -->
+m
+
+<!-- b007692 | prose | pages [25] -->
+m
+
+<!-- b007693 | prose | pages [25] -->
+m
+
+<!-- b007694 | prose | pages [25] -->
+m
+
+<!-- b007695 | prose | pages [25] -->
+m
+
+<!-- b007696 | prose | pages [25] -->
+m
+
+<!-- b007697 | prose | pages [25] -->
+m
+
+<!-- b007698 | prose | pages [25] -->
+m
+
+<!-- b007699 | prose | pages [25] -->
+m
+
+<!-- b007700 | prose | pages [25] -->
+m
+
+<!-- b007701 | prose | pages [25] -->
+m
+
+<!-- b007702 | prose | pages [25] -->
+m
+
+<!-- b007703 | prose | pages [25] -->
+m
+
+<!-- b007704 | prose | pages [25] -->
+m
+
+<!-- b007705 | prose | pages [25] -->
+m
+
+<!-- b007706 | prose | pages [25] -->
+m
+
+<!-- b007707 | prose | pages [25] -->
+m
+
+<!-- b007708 | prose | pages [25] -->
+m
+
+<!-- b007709 | prose | pages [25] -->
+m
+
+<!-- b007710 | prose | pages [25] -->
+m
+
+<!-- b007711 | prose | pages [25] -->
+m
+
+<!-- b007712 | prose | pages [25] -->
+m
+
+<!-- b007713 | prose | pages [25] -->
+m
+
+<!-- b007714 | prose | pages [25] -->
+m
+
+<!-- b007715 | prose | pages [25] -->
+m
+
+<!-- b007716 | prose | pages [25] -->
+m
+
+<!-- b007717 | prose | pages [25] -->
+m
+
+<!-- b007718 | prose | pages [25] -->
+m
+
+<!-- b007719 | prose | pages [25] -->
+m
+
+<!-- b007720 | prose | pages [25] -->
+m
+
+<!-- b007721 | prose | pages [25] -->
+m
+
+<!-- b007722 | prose | pages [25] -->
+m
+
+<!-- b007723 | prose | pages [25] -->
+m
+
+<!-- b007724 | prose | pages [25] -->
+m
+
+<!-- b007725 | prose | pages [25] -->
+m
+
+<!-- b007726 | prose | pages [25] -->
+m
+
+<!-- b007727 | prose | pages [25] -->
+m
+
+<!-- b007728 | prose | pages [25] -->
+m
+
+<!-- b007729 | prose | pages [25] -->
+m
+
+<!-- b007730 | prose | pages [25] -->
+m
+
+<!-- b007731 | prose | pages [25] -->
+m
+
+<!-- b007732 | prose | pages [25] -->
+m
+
+<!-- b007733 | prose | pages [25] -->
+m
+
+<!-- b007734 | prose | pages [25] -->
+m
+
+<!-- b007735 | prose | pages [25] -->
+m
+
+<!-- b007736 | prose | pages [25] -->
+m
+
+<!-- b007737 | prose | pages [25] -->
+m
+
+<!-- b007738 | prose | pages [25] -->
+m
+
+<!-- b007739 | prose | pages [25] -->
+m
+
+<!-- b007740 | prose | pages [25] -->
+m
+
+<!-- b007741 | prose | pages [25] -->
+m
+
+<!-- b007742 | prose | pages [25] -->
+m
+
+<!-- b007743 | prose | pages [25] -->
+m
+
+<!-- b007744 | prose | pages [25] -->
+m
+
+<!-- b007745 | prose | pages [25] -->
+m
+
+<!-- b007746 | prose | pages [25] -->
+m
+
+<!-- b007747 | prose | pages [25] -->
+m
+
+<!-- b007748 | prose | pages [25] -->
+m
+
+<!-- b007749 | prose | pages [25] -->
+m
+
+<!-- b007750 | prose | pages [25] -->
+m
+
+<!-- b007751 | prose | pages [25] -->
+m
+
+<!-- b007752 | prose | pages [25] -->
+m
+
+<!-- b007753 | prose | pages [25] -->
+m
+
+<!-- b007754 | prose | pages [25] -->
+m
+
+<!-- b007755 | prose | pages [25] -->
+m
+
+<!-- b007756 | prose | pages [25] -->
+m
+
+<!-- b007757 | prose | pages [25] -->
+m
+
+<!-- b007758 | prose | pages [25] -->
+m
+
+<!-- b007759 | prose | pages [25] -->
+m
+
+<!-- b007760 | prose | pages [25] -->
+m
+
+<!-- b007761 | prose | pages [25] -->
+m
+
+<!-- b007762 | prose | pages [25] -->
+m
+
+<!-- b007763 | prose | pages [25] -->
+m
+
+<!-- b007764 | prose | pages [25] -->
+m
+
+<!-- b007765 | prose | pages [25] -->
+m
+
+<!-- b007766 | prose | pages [25] -->
+m
+
+<!-- b007767 | prose | pages [25] -->
+m
+
+<!-- b007768 | prose | pages [25] -->
+m
+
+<!-- b007769 | prose | pages [25] -->
+m
+
+<!-- b007770 | prose | pages [25] -->
+m
+
+<!-- b007771 | prose | pages [25] -->
+m
+
+<!-- b007772 | prose | pages [25] -->
+m
+
+<!-- b007773 | prose | pages [25] -->
+m
+
+<!-- b007774 | prose | pages [25] -->
+m
+
+<!-- b007775 | prose | pages [25] -->
+m
+
+<!-- b007776 | prose | pages [25] -->
+m
+
+<!-- b007777 | prose | pages [25] -->
+m
+
+<!-- b007778 | prose | pages [25] -->
+m
+
+<!-- b007779 | prose | pages [25] -->
+m
+
+<!-- b007780 | prose | pages [25] -->
+m
+
+<!-- b007781 | prose | pages [25] -->
+m
+
+<!-- b007782 | prose | pages [25] -->
+m
+
+<!-- b007783 | prose | pages [25] -->
+m
+
+<!-- b007784 | prose | pages [25] -->
+m
+
+<!-- b007785 | prose | pages [25] -->
+m
+
+<!-- b007786 | prose | pages [25] -->
+m
+
+<!-- b007787 | prose | pages [25] -->
+m
+
+<!-- b007788 | prose | pages [25] -->
+m
+
+<!-- b007789 | prose | pages [25] -->
+m
+
+<!-- b007790 | prose | pages [25] -->
+m
+
+<!-- b007791 | prose | pages [25] -->
+m
+
+<!-- b007792 | prose | pages [25] -->
+m
+
+<!-- b007793 | prose | pages [25] -->
+m
+
+<!-- b007794 | prose | pages [25] -->
+m
+
+<!-- b007795 | prose | pages [25] -->
+m
+
+<!-- b007796 | prose | pages [25] -->
+m
+
+<!-- b007797 | prose | pages [25] -->
+m
+
+<!-- b007798 | prose | pages [25] -->
+m
+
+<!-- b007799 | prose | pages [25] -->
+m
+
+<!-- b007800 | prose | pages [25] -->
+m
+
+<!-- b007801 | prose | pages [25] -->
+m
+
+<!-- b007802 | prose | pages [25] -->
+m
+
+<!-- b007803 | prose | pages [25] -->
+m
+
+<!-- b007804 | prose | pages [25] -->
+m
+
+<!-- b007805 | prose | pages [25] -->
+m
+
+<!-- b007806 | prose | pages [25] -->
+m
+
+<!-- b007807 | prose | pages [25] -->
+m
+
+<!-- b007808 | prose | pages [25] -->
+m
+
+<!-- b007809 | prose | pages [25] -->
+m
+
+<!-- b007810 | prose | pages [25] -->
+m
+
+<!-- b007811 | prose | pages [25] -->
+m
+
+<!-- b007812 | prose | pages [25] -->
+m
+
+<!-- b007813 | prose | pages [25] -->
+m
+
+<!-- b007814 | prose | pages [25] -->
+m
+
+<!-- b007815 | prose | pages [25] -->
+m
+
+<!-- b007816 | prose | pages [25] -->
+m
+
+<!-- b007817 | prose | pages [25] -->
+m
+
+<!-- b007818 | prose | pages [25] -->
+m
+
+<!-- b007819 | prose | pages [25] -->
+m
+
+<!-- b007820 | prose | pages [25] -->
+m
+
+<!-- b007821 | prose | pages [25] -->
+m
+
+<!-- b007822 | prose | pages [25] -->
+m
+
+<!-- b007823 | prose | pages [25] -->
+m
+
+<!-- b007824 | prose | pages [25] -->
+m
+
+<!-- b007825 | prose | pages [25] -->
+m
+
+<!-- b007826 | prose | pages [25] -->
+m
+
+<!-- b007827 | prose | pages [25] -->
+m
+
+<!-- b007828 | prose | pages [25] -->
+m
+
+<!-- b007829 | prose | pages [25] -->
+m
+
+<!-- b007830 | prose | pages [25] -->
+m
+
+<!-- b007831 | prose | pages [25] -->
+m
+
+<!-- b007832 | prose | pages [25] -->
+m
+
+<!-- b007833 | prose | pages [25] -->
+m
+
+<!-- b007834 | prose | pages [25] -->
+m
+
+<!-- b007835 | prose | pages [25] -->
+m
+
+<!-- b007836 | prose | pages [25] -->
+m
+
+<!-- b007837 | prose | pages [25] -->
+m
+
+<!-- b007838 | prose | pages [25] -->
+m
+
+<!-- b007839 | prose | pages [25] -->
+m
+
+<!-- b007840 | prose | pages [25] -->
+m
+
+<!-- b007841 | prose | pages [25] -->
+m
+
+<!-- b007842 | prose | pages [25] -->
+m
+
+<!-- b007843 | prose | pages [25] -->
+m
+
+<!-- b007844 | prose | pages [25] -->
+m
+
+<!-- b007845 | prose | pages [25] -->
+m
+
+<!-- b007846 | prose | pages [25] -->
+m
+
+<!-- b007847 | prose | pages [25] -->
+m
+
+<!-- b007848 | prose | pages [25] -->
+m
+
+<!-- b007849 | prose | pages [25] -->
+m
+
+<!-- b007850 | prose | pages [25] -->
+m
+
+<!-- b007851 | furniture | pages [25] -->
+m
+
+<!-- b007852 | furniture | pages [25] -->
+m
+
+<!-- b007853 | furniture | pages [25] -->
+m
+
+<!-- b007854 | furniture | pages [25] -->
+m
+
+<!-- b007855 | furniture | pages [25] -->
+m
+
+<!-- b007856 | furniture | pages [25] -->
+m
+
+<!-- b007857 | furniture | pages [25] -->
+m
+
+<!-- b007858 | furniture | pages [25] -->
+m
+
+<!-- b007859 | furniture | pages [25] -->
+m
+
+<!-- b007860 | furniture | pages [25] -->
+m
+
+<!-- b007861 | furniture | pages [25] -->
+m
+
+<!-- b007862 | furniture | pages [25] -->
+m
+
+<!-- b007863 | furniture | pages [25] -->
+m
+
+<!-- b007864 | furniture | pages [25] -->
+m
+
+<!-- b007865 | furniture | pages [25] -->
+m
+
+<!-- b007866 | furniture | pages [25] -->
+m
+
+<!-- b007867 | furniture | pages [25] -->
+m
+
+<!-- b007868 | furniture | pages [25] -->
+m
+
+<!-- b007869 | furniture | pages [25] -->
+m
+
+<!-- b007870 | furniture | pages [25] -->
+m
+
+<!-- b007871 | furniture | pages [25] -->
+m
+
+<!-- b007872 | furniture | pages [25] -->
+m
+
+<!-- b007873 | furniture | pages [25] -->
+m
+
+<!-- b007874 | furniture | pages [25] -->
+m
+
+<!-- b007875 | furniture | pages [25] -->
+m
+
+<!-- b007876 | furniture | pages [25] -->
+m
+
+<!-- b007877 | furniture | pages [25] -->
+m
+
+<!-- b007878 | furniture | pages [25] -->
+m
+
+<!-- b007879 | furniture | pages [25] -->
+m
+
+<!-- b007880 | furniture | pages [25] -->
+m
+
+<!-- b007881 | furniture | pages [25] -->
+m
+
+<!-- b007882 | furniture | pages [25] -->
+m
+
+<!-- b007883 | furniture | pages [25] -->
+m
+
+<!-- b007884 | furniture | pages [25] -->
+m
+
+<!-- b007885 | furniture | pages [25] -->
+m
+
+<!-- b007886 | furniture | pages [25] -->
+m
+
+<!-- b007887 | furniture | pages [25] -->
+m
+
+<!-- b007888 | furniture | pages [25] -->
+m
+
+<!-- b007889 | furniture | pages [25] -->
+m
+
+<!-- b007890 | furniture | pages [25] -->
+m
+
+<!-- b007891 | furniture | pages [25] -->
+m
+
+<!-- b007892 | furniture | pages [25] -->
+m
+
+<!-- b007893 | furniture | pages [25] -->
+m
+
+<!-- b007894 | furniture | pages [25] -->
+m
+
+<!-- b007895 | furniture | pages [25] -->
+m
+
+<!-- b007896 | furniture | pages [25] -->
+m
+
+<!-- b007897 | furniture | pages [25] -->
+m
+
+<!-- b007898 | furniture | pages [25] -->
+m
+
+<!-- b007899 | furniture | pages [25] -->
+m
+
+<!-- b007900 | furniture | pages [25] -->
+m
+
+<!-- b007901 | furniture | pages [25] -->
+m
+
+<!-- b007902 | furniture | pages [25] -->
+m
+
+<!-- b007903 | furniture | pages [25] -->
+m
+
+<!-- b007904 | furniture | pages [25] -->
+m
+
+<!-- b007905 | furniture | pages [25] -->
+m
+
+<!-- b007906 | furniture | pages [25] -->
+m
+
+<!-- b007907 | furniture | pages [25] -->
+m
+
+<!-- b007908 | furniture | pages [25] -->
+m
+
+<!-- b007909 | furniture | pages [25] -->
+m
+
+<!-- b007910 | furniture | pages [25] -->
+m
+
+<!-- b007911 | furniture | pages [25] -->
+m
+
+<!-- b007912 | furniture | pages [25] -->
+m
+
+<!-- b007913 | furniture | pages [25] -->
+m
+
+<!-- b007914 | furniture | pages [25] -->
+m
+
+<!-- b007915 | furniture | pages [25] -->
+m
+
+<!-- b007916 | furniture | pages [25] -->
+m
+
+<!-- b007917 | furniture | pages [25] -->
+m
+
+<!-- b007918 | furniture | pages [25] -->
+m
+
+<!-- b007919 | furniture | pages [25] -->
+m
+
+<!-- b007920 | furniture | pages [25] -->
+m
+
+<!-- b007921 | furniture | pages [25] -->
+m
+
+<!-- b007922 | furniture | pages [25] -->
+m
+
+<!-- b007923 | furniture | pages [25] -->
+m
+
+<!-- b007924 | furniture | pages [25] -->
+m
+
+<!-- b007925 | furniture | pages [25] -->
+m
+
+<!-- b007926 | furniture | pages [25] -->
+m
+
+<!-- b007927 | furniture | pages [25] -->
+m
+
+<!-- b007928 | furniture | pages [25] -->
+m
+
+<!-- b007929 | furniture | pages [25] -->
+m
+
+<!-- b007930 | furniture | pages [25] -->
+m
+
+<!-- b007931 | furniture | pages [25] -->
+m
+
+<!-- b007932 | furniture | pages [25] -->
+m
+
+<!-- b007933 | furniture | pages [25] -->
+m
+
+<!-- b007934 | furniture | pages [25] -->
+m
+
+<!-- b007935 | furniture | pages [25] -->
+m
+
+<!-- b007936 | furniture | pages [25] -->
+m
+
+<!-- b007937 | furniture | pages [25] -->
+m
+
+<!-- b007938 | furniture | pages [25] -->
+m
+
+<!-- b007939 | furniture | pages [25] -->
+m
+
+<!-- b007940 | furniture | pages [25] -->
+m
+
+<!-- b007941 | furniture | pages [25] -->
+m
+
+<!-- b007942 | furniture | pages [25] -->
+m
+
+<!-- b007943 | furniture | pages [25] -->
+m
+
+<!-- b007944 | furniture | pages [25] -->
+m
+
+<!-- b007945 | furniture | pages [25] -->
+m
+
+<!-- b007946 | furniture | pages [25] -->
+m
+
+<!-- b007947 | furniture | pages [25] -->
+m
+
+<!-- b007948 | furniture | pages [25] -->
+m
+
+<!-- b007949 | furniture | pages [25] -->
+m
+
+<!-- b007950 | furniture | pages [25] -->
+m
+
+<!-- b007951 | furniture | pages [25] -->
+m
+
+<!-- b007952 | furniture | pages [25] -->
+m
+
+<!-- b007953 | furniture | pages [25] -->
+m
+
+<!-- b007954 | furniture | pages [25] -->
+m
+
+<!-- b007955 | furniture | pages [25] -->
+m
+
+<!-- b007956 | furniture | pages [25] -->
+m
+
+<!-- b007957 | furniture | pages [25] -->
+m
+
+<!-- b007958 | furniture | pages [25] -->
+m
+
+<!-- b007959 | furniture | pages [25] -->
+m
+
+<!-- b007960 | furniture | pages [25] -->
+m
+
+<!-- b007961 | furniture | pages [25] -->
+m
+
+<!-- b007962 | furniture | pages [25] -->
+m
+
+<!-- b007963 | furniture | pages [25] -->
+m
+
+<!-- b007964 | furniture | pages [25] -->
+m
+
+<!-- b007965 | furniture | pages [25] -->
+m
+
+<!-- b007966 | furniture | pages [25] -->
+m
+
+<!-- b007967 | furniture | pages [25] -->
+m
+
+<!-- b007968 | furniture | pages [25] -->
+m
+
+<!-- b007969 | furniture | pages [25] -->
+m
+
+<!-- b007970 | furniture | pages [25] -->
+m
+
+<!-- b007971 | furniture | pages [25] -->
+m
+
+<!-- b007972 | furniture | pages [25] -->
+m
+
+<!-- b007973 | furniture | pages [25] -->
+m
+
+<!-- b007974 | furniture | pages [25] -->
+m
+
+<!-- b007975 | furniture | pages [25] -->
+m
+
+<!-- b007976 | furniture | pages [25] -->
+m
+
+<!-- b007977 | furniture | pages [25] -->
+m
+
+<!-- b007978 | furniture | pages [25] -->
+m
+
+<!-- b007979 | furniture | pages [25] -->
+m
+
+<!-- b007980 | furniture | pages [25] -->
+m
+
+<!-- b007981 | furniture | pages [25] -->
+m
+
+<!-- b007982 | furniture | pages [25] -->
+m
+
+<!-- b007983 | furniture | pages [25] -->
+m
+
+<!-- b007984 | furniture | pages [25] -->
+m
+
+<!-- b007985 | furniture | pages [25] -->
+m
+
+<!-- b007986 | furniture | pages [25] -->
+m
+
+<!-- b007987 | furniture | pages [25] -->
+m
+
+<!-- b007988 | furniture | pages [25] -->
+m
+
+<!-- b007989 | furniture | pages [25] -->
+m
+
+<!-- b007990 | furniture | pages [25] -->
+m
+
+<!-- b007991 | furniture | pages [25] -->
+m
+
+<!-- b007992 | furniture | pages [25] -->
+m
+
+<!-- b007993 | furniture | pages [25] -->
+m
+
+<!-- b007994 | furniture | pages [25] -->
+m
+
+<!-- b007995 | furniture | pages [25] -->
+m
+
+<!-- b007996 | furniture | pages [25] -->
+m
+
+<!-- b007997 | furniture | pages [25] -->
+m
+
+<!-- b007998 | furniture | pages [25] -->
+m
+
+<!-- b007999 | furniture | pages [25] -->
+m
+
+<!-- b008000 | furniture | pages [25] -->
+m
+
+<!-- b008001 | furniture | pages [25] -->
+m
+
+<!-- b008002 | furniture | pages [25] -->
+m
+
+<!-- b008003 | furniture | pages [25] -->
+m
+
+<!-- b008004 | furniture | pages [25] -->
+m
+
+<!-- b008005 | furniture | pages [25] -->
+m
+
+<!-- b008006 | furniture | pages [25] -->
+m
+
+<!-- b008007 | furniture | pages [25] -->
+m
+
+<!-- b008008 | furniture | pages [25] -->
+m
+
+<!-- b008009 | furniture | pages [25] -->
+m
+
+<!-- b008010 | furniture | pages [25] -->
+m
+
+<!-- b008011 | furniture | pages [25] -->
+m
+
+<!-- b008012 | furniture | pages [25] -->
+m
+
+<!-- b008013 | furniture | pages [25] -->
+m
+
+<!-- b008014 | furniture | pages [25] -->
+m
+
+<!-- b008015 | furniture | pages [25] -->
+m
+
+<!-- b008016 | furniture | pages [25] -->
+m
+
+<!-- b008017 | furniture | pages [25] -->
+m
+
+<!-- b008018 | furniture | pages [25] -->
+m
+
+<!-- b008019 | furniture | pages [25] -->
+m
+
+<!-- b008020 | furniture | pages [25] -->
+m
+
+<!-- b008021 | furniture | pages [25] -->
+m
+
+<!-- b008022 | furniture | pages [25] -->
+m
+
+<!-- b008023 | furniture | pages [25] -->
+m
+
+<!-- b008024 | furniture | pages [25] -->
+m
+
+<!-- b008025 | furniture | pages [25] -->
+m
+
+<!-- b008026 | furniture | pages [25] -->
+m
+
+<!-- b008027 | furniture | pages [25] -->
+m
+
+<!-- b008028 | furniture | pages [25] -->
+m
+
+<!-- b008029 | furniture | pages [25] -->
+m
+
+<!-- b008030 | furniture | pages [25] -->
+m
+
+<!-- b008031 | furniture | pages [25] -->
+m
+
+<!-- b008032 | furniture | pages [25] -->
+m
+
+<!-- b008033 | furniture | pages [25] -->
+m
+
+<!-- b008034 | furniture | pages [25] -->
+m
+
+<!-- b008035 | furniture | pages [25] -->
+m
+
+<!-- b008036 | furniture | pages [25] -->
+m
+
+<!-- b008037 | furniture | pages [25] -->
+m
+
+<!-- b008038 | furniture | pages [25] -->
+m
+
+<!-- b008039 | furniture | pages [25] -->
+m
+
+<!-- b008040 | furniture | pages [25] -->
+m
+
+<!-- b008041 | furniture | pages [25] -->
+m
+
+<!-- b008042 | furniture | pages [25] -->
+m
+
+<!-- b008043 | furniture | pages [25] -->
+m
+
+<!-- b008044 | furniture | pages [25] -->
+m
+
+<!-- b008045 | furniture | pages [25] -->
+m
+
+<!-- b008046 | furniture | pages [25] -->
+m
+
+<!-- b008047 | furniture | pages [25] -->
+m
+
+<!-- b008048 | furniture | pages [25] -->
+m
+
+<!-- b008049 | furniture | pages [25] -->
+m
+
+<!-- b008050 | furniture | pages [25] -->
+m
+
+<!-- b008051 | furniture | pages [25] -->
+m
+
+<!-- b008052 | furniture | pages [25] -->
+m
+
+<!-- b008053 | furniture | pages [25] -->
+m
+
+<!-- b008054 | furniture | pages [25] -->
+m
+
+<!-- b008055 | furniture | pages [25] -->
+m
+
+<!-- b008056 | furniture | pages [25] -->
+m
+
+<!-- b008057 | furniture | pages [25] -->
+m
+
+<!-- b008058 | furniture | pages [25] -->
+m
+
+<!-- b008059 | furniture | pages [25] -->
+m
+
+<!-- b008060 | furniture | pages [25] -->
+m
+
+<!-- b008061 | furniture | pages [25] -->
+m
+
+<!-- b008062 | furniture | pages [25] -->
+m
+
+<!-- b008063 | furniture | pages [25] -->
+m
+
+<!-- b008064 | furniture | pages [25] -->
+m
+
+<!-- b008065 | furniture | pages [25] -->
+m
+
+<!-- b008066 | furniture | pages [25] -->
+m
+
+<!-- b008067 | furniture | pages [25] -->
+m
+
+<!-- b008068 | furniture | pages [25] -->
+m
+
+<!-- b008069 | furniture | pages [25] -->
+m
+
+<!-- b008070 | furniture | pages [25] -->
+m
+
+<!-- b008071 | furniture | pages [25] -->
+m
+
+<!-- b008072 | furniture | pages [25] -->
+m
+
+<!-- b008073 | furniture | pages [25] -->
+m
+
+<!-- b008074 | furniture | pages [25] -->
+m
+
+<!-- b008075 | furniture | pages [25] -->
+m
+
+<!-- b008076 | furniture | pages [25] -->
+m
+
+<!-- b008077 | furniture | pages [25] -->
+m
+
+<!-- b008078 | furniture | pages [25] -->
+m
+
+<!-- b008079 | furniture | pages [25] -->
+m
+
+<!-- b008080 | furniture | pages [25] -->
+m
+
+<!-- b008081 | furniture | pages [25] -->
+m
+
+<!-- b008082 | furniture | pages [25] -->
+m
+
+<!-- b008083 | furniture | pages [25] -->
+m
+
+<!-- b008084 | furniture | pages [25] -->
+m
+
+<!-- b008085 | furniture | pages [25] -->
+m
+
+<!-- b008086 | furniture | pages [25] -->
+m
+
+<!-- b008087 | furniture | pages [25] -->
+m
+
+<!-- b008088 | furniture | pages [25] -->
+m
+
+<!-- b008089 | furniture | pages [25] -->
+m
+
+<!-- b008090 | furniture | pages [25] -->
+m
+
+<!-- b008091 | furniture | pages [25] -->
+m
+
+<!-- b008092 | furniture | pages [25] -->
+m
+
+<!-- b008093 | furniture | pages [25] -->
+m
+
+<!-- b008094 | furniture | pages [25] -->
+m
+
+<!-- b008095 | furniture | pages [25] -->
+m
+
+<!-- b008096 | furniture | pages [25] -->
+m
+
+<!-- b008097 | furniture | pages [25] -->
+m
+
+<!-- b008098 | furniture | pages [25] -->
+m
+
+<!-- b008099 | furniture | pages [25] -->
+m
+
+<!-- b008100 | furniture | pages [25] -->
+m
+
+<!-- b008101 | furniture | pages [25] -->
+m
+
+<!-- b008102 | furniture | pages [25] -->
+m
+
+<!-- b008103 | furniture | pages [25] -->
+m
+
+<!-- b008104 | furniture | pages [25] -->
+m
+
+<!-- b008105 | furniture | pages [25] -->
+m
+
+<!-- b008106 | furniture | pages [25] -->
+m
+
+<!-- b008107 | furniture | pages [25] -->
+m
+
+<!-- b008108 | furniture | pages [25] -->
+m
+
+<!-- b008109 | furniture | pages [25] -->
+m
+
+<!-- b008110 | furniture | pages [25] -->
+m
+
+<!-- b008111 | furniture | pages [25] -->
+m
+
+<!-- b008112 | furniture | pages [25] -->
+m
+
+<!-- b008113 | furniture | pages [25] -->
+m
+
+<!-- b008114 | furniture | pages [25] -->
+m
+
+<!-- b008115 | furniture | pages [25] -->
+m
+
+<!-- b008116 | furniture | pages [25] -->
+m
+
+<!-- b008117 | furniture | pages [25] -->
+m
+
+<!-- b008118 | furniture | pages [25] -->
+m
+
+<!-- b008119 | furniture | pages [25] -->
+m
+
+<!-- b008120 | furniture | pages [25] -->
+m
+
+<!-- b008121 | furniture | pages [25] -->
+m
+
+<!-- b008122 | furniture | pages [25] -->
+m
+
+<!-- b008123 | furniture | pages [25] -->
+m
+
+<!-- b008124 | furniture | pages [25] -->
+m
+
+<!-- b008125 | furniture | pages [25] -->
+m
+
+<!-- b008126 | furniture | pages [25] -->
+m
+
+<!-- b008127 | furniture | pages [25] -->
+m
+
+<!-- b008128 | furniture | pages [25] -->
+m
+
+<!-- b008129 | furniture | pages [25] -->
+m
+
+<!-- b008130 | furniture | pages [25] -->
+m
+
+<!-- b008131 | furniture | pages [25] -->
+m
+
+<!-- b008132 | furniture | pages [25] -->
+m
+
+<!-- b008133 | furniture | pages [25] -->
+m
+
+<!-- b008134 | furniture | pages [25] -->
+m
+
+<!-- b008135 | furniture | pages [25] -->
+m
+
+<!-- b008136 | furniture | pages [25] -->
+m
+
+<!-- b008137 | furniture | pages [25] -->
+m
+
+<!-- b008138 | furniture | pages [25] -->
+m
+
+<!-- b008139 | furniture | pages [25] -->
+m
+
+<!-- b008140 | furniture | pages [25] -->
+m
+
+<!-- b008141 | furniture | pages [25] -->
+m
+
+<!-- b008142 | furniture | pages [25] -->
+m
+
+<!-- b008143 | furniture | pages [25] -->
+m
+
+<!-- b008144 | furniture | pages [25] -->
+m
+
+<!-- b008145 | furniture | pages [25] -->
+m
+
+<!-- b008146 | furniture | pages [25] -->
+m
+
+<!-- b008147 | furniture | pages [25] -->
+m
+
+<!-- b008148 | furniture | pages [25] -->
+m
+
+<!-- b008149 | furniture | pages [25] -->
+m
+
+<!-- b008150 | furniture | pages [25] -->
+m
+
+<!-- b008151 | furniture | pages [25] -->
+m
+
+<!-- b008152 | furniture | pages [25] -->
+m
+
+<!-- b008153 | furniture | pages [25] -->
+m
+
+<!-- b008154 | furniture | pages [25] -->
+m
+
+<!-- b008155 | furniture | pages [25] -->
+m
+
+<!-- b008156 | furniture | pages [25] -->
+m
+
+<!-- b008157 | furniture | pages [25] -->
+m
+
+<!-- b008158 | furniture | pages [25] -->
+m
+
+<!-- b008159 | furniture | pages [25] -->
+m
+
+<!-- b008160 | furniture | pages [25] -->
+m
+
+<!-- b008161 | furniture | pages [25] -->
+m
+
+<!-- b008162 | furniture | pages [25] -->
+m
+
+<!-- b008163 | furniture | pages [25] -->
+m
+
+<!-- b008164 | furniture | pages [25] -->
+m
+
+<!-- b008165 | furniture | pages [25] -->
+m
+
+<!-- b008166 | furniture | pages [25] -->
+m
+
+<!-- b008167 | furniture | pages [25] -->
+m
+
+<!-- b008168 | furniture | pages [25] -->
+m
+
+<!-- b008169 | furniture | pages [25] -->
+m
+
+<!-- b008170 | furniture | pages [25] -->
+m
+
+<!-- b008171 | furniture | pages [25] -->
+m
+
+<!-- b008172 | furniture | pages [25] -->
+m
+
+<!-- b008173 | furniture | pages [25] -->
+m
+
+<!-- b008174 | furniture | pages [25] -->
+m
+
+<!-- b008175 | furniture | pages [25] -->
+m
+
+<!-- b008176 | furniture | pages [25] -->
+m
+
+<!-- b008177 | furniture | pages [25] -->
+m
+
+<!-- b008178 | furniture | pages [25] -->
+m
+
+<!-- b008179 | furniture | pages [25] -->
+m
+
+<!-- b008180 | furniture | pages [25] -->
+m
+
+<!-- b008181 | furniture | pages [25] -->
+m
+
+<!-- b008182 | furniture | pages [25] -->
+m
+
+<!-- b008183 | furniture | pages [25] -->
+m
+
+<!-- b008184 | furniture | pages [25] -->
+m
+
+<!-- b008185 | furniture | pages [25] -->
+m
+
+<!-- b008186 | furniture | pages [25] -->
+m
+
+<!-- b008187 | furniture | pages [25] -->
+m
+
+<!-- b008188 | furniture | pages [25] -->
+m
+
+<!-- b008189 | furniture | pages [25] -->
+m
+
+<!-- b008190 | furniture | pages [25] -->
+m
+
+<!-- b008191 | furniture | pages [25] -->
+m
+
+<!-- b008192 | furniture | pages [25] -->
+m
+
+<!-- b008193 | furniture | pages [25] -->
+m
+
+<!-- b008194 | furniture | pages [25] -->
+m
+
+<!-- b008195 | furniture | pages [25] -->
+m
+
+<!-- b008196 | furniture | pages [25] -->
+m
+
+<!-- b008197 | furniture | pages [25] -->
+m
+
+<!-- b008198 | furniture | pages [25] -->
+m
+
+<!-- b008199 | furniture | pages [25] -->
+m
+
+<!-- b008200 | furniture | pages [25] -->
+m
+
+<!-- b008201 | furniture | pages [25] -->
+m
+
+<!-- b008202 | furniture | pages [25] -->
+m
+
+<!-- b008203 | furniture | pages [25] -->
+m
+
+<!-- b008204 | furniture | pages [25] -->
+m
+
+<!-- b008205 | furniture | pages [25] -->
+m
+
+<!-- b008206 | furniture | pages [25] -->
+m
+
+<!-- b008207 | furniture | pages [25] -->
+m
+
+<!-- b008208 | furniture | pages [25] -->
+m
+
+<!-- b008209 | furniture | pages [25] -->
+m
+
+<!-- b008210 | furniture | pages [25] -->
+m
+
+<!-- b008211 | furniture | pages [25] -->
+m
+
+<!-- b008212 | furniture | pages [25] -->
+m
+
+<!-- b008213 | furniture | pages [25] -->
+m
+
+<!-- b008214 | furniture | pages [25] -->
+m
+
+<!-- b008215 | furniture | pages [25] -->
+m
+
+<!-- b008216 | furniture | pages [25] -->
+m
+
+<!-- b008217 | furniture | pages [25] -->
+m
+
+<!-- b008218 | furniture | pages [25] -->
+m
+
+<!-- b008219 | furniture | pages [25] -->
+m
+
+<!-- b008220 | furniture | pages [25] -->
+m
+
+<!-- b008221 | furniture | pages [25] -->
+m
+
+<!-- b008222 | furniture | pages [25] -->
+m
+
+<!-- b008223 | furniture | pages [25] -->
+m
+
+<!-- b008224 | furniture | pages [25] -->
+m
+
+<!-- b008225 | furniture | pages [25] -->
+m
+
+<!-- b008226 | furniture | pages [25] -->
+m
+
+<!-- b008227 | furniture | pages [25] -->
+m
+
+<!-- b008228 | furniture | pages [25] -->
+m
+
+<!-- b008229 | furniture | pages [25] -->
+m
+
+<!-- b008230 | furniture | pages [25] -->
+m
+
+<!-- b008231 | furniture | pages [25] -->
+m
+
+<!-- b008232 | furniture | pages [25] -->
+m
+
+<!-- b008233 | furniture | pages [25] -->
+m
+
+<!-- b008234 | furniture | pages [25] -->
+m
+
+<!-- b008235 | furniture | pages [25] -->
+m
+
+<!-- b008236 | furniture | pages [25] -->
+m
+
+<!-- b008237 | furniture | pages [25] -->
+m
+
+<!-- b008238 | furniture | pages [25] -->
+m
+
+<!-- b008239 | furniture | pages [25] -->
+m
+
+<!-- b008240 | furniture | pages [25] -->
+m
+
+<!-- b008241 | furniture | pages [25] -->
+m
+
+<!-- b008242 | furniture | pages [25] -->
+m
+
+<!-- b008243 | furniture | pages [25] -->
+m
+
+<!-- b008244 | furniture | pages [25] -->
+m
+
+<!-- b008245 | furniture | pages [25] -->
+m
+
+<!-- b008246 | furniture | pages [25] -->
+m
+
+<!-- b008247 | furniture | pages [25] -->
+m
+
+<!-- b008248 | furniture | pages [25] -->
+m
+
+<!-- b008249 | furniture | pages [25] -->
+m
+
+<!-- b008250 | furniture | pages [25] -->
+m
+
+<!-- b008251 | furniture | pages [25] -->
+m
+
+<!-- b008252 | furniture | pages [25] -->
+m
+
+<!-- b008253 | furniture | pages [25] -->
+m
+
+<!-- b008254 | heading | pages [26] -->
+Report on use of AI
+
+<!-- b008255 | ai_disclosure | pages [26] -->
+1. OpenAl ChatGPT
+
+<!-- b008256 | ai_disclosure | pages [26] -->
+Query1: <Please explain to me in simple terms the meaning of Pareto optimization and the
+
+<!-- b008257 | ai_disclosure | pages [26] -->
+scenarios of its use>
+
+<!-- b008258 | ai_disclosure | pages [26] -->
+Output: <Pareto optimization means a situation where you can’t improve someone’s situation
+
+<!-- b008259 | ai_disclosure | pages [26] -->
+without making someone else worse off. It’s about finding the best outcome where no one
+
+<!-- b008260 | ai_disclosure | pages [26] -->
+can benefit without someone else losing out. Example: Imagine sharing a pizza. If you take
+
+<!-- b008261 | ai_disclosure | pages [26] -->
+more, your friend gets less. A Pareto optimal split means neither of you can get a better
+
+<!-- b008262 | ai_disclosure | pages [26] -->
+deal without the other losing. Scenarios: Economics: Resources are used as efficiently as
+
+<!-- b008263 | ai_disclosure | pages [26] -->
+possible. Negotiations: Both parties try to find a deal where both benefit without harming
+
+<!-- b008264 | ai_disclosure | pages [26] -->
+the other. Public Policy: Governments aim to improve welfare without negatively impacting
+
+<!-- b008265 | ai_disclosure | pages [26] -->
+anyone. It’s about balance and fairness, where no one can be made better off without hurting
+
+<!-- b008266 | ai_disclosure | pages [26] -->
+someone else.>
+
+<!-- b008267 | ai_disclosure | pages [26] -->
+2. OpenAl chatGPT
+
+<!-- b008268 | ai_disclosure | pages [26] -->
+Query1: <I will send you the paragraphs of the paper written in Chinese and ask you to
+
+<!-- b008269 | ai_disclosure | pages [26] -->
+translate the content of the paragraphs into English. Requirements: standardized use of
+
+<!-- b008270 | ai_disclosure | pages [26] -->
+language, no grammatical errors, no mistakes or omissions.>
+
+<!-- b008271 | ai_disclosure | pages [26] -->
+Output: <Got it! Feel free to send me the paragraphs, and I’ll translate them into English
+
+<!-- b008272 | ai_disclosure | pages [26] -->
+with accuracy and attention to detail.>
+
+<!-- b008273 | ai_disclosure | pages [26] -->
+3. OpenAl ChatGPT
+
+<!-- b008274 | ai_disclosure | pages [26] -->
+Query1: <Next I’m going to talk about sending you a piece of Python code and ask you to
+
+<!-- b008275 | ai_disclosure | pages [26] -->
+check the code for syntax errors.>
+
+<!-- b008276 | ai_disclosure | pages [26] -->
+Output: <Your Python code looks mostly fine, but I did spot a couple of potential issues and
+
+<!-- b008277 | ai_disclosure | pages [26] -->
+suggestions: Line 18: You are using np.exp(k1 ∗t) but haven’t defined k1 yet. If this is a typo
+
+<!-- b008278 | ai_disclosure | pages [26] -->
+or unintentional, make sure to replace k1 with a value or a properly defined variable. Line
+
+<!-- b008279 | ai_disclosure | pages [26] -->
+22: α1 is calculated using np.linspace(0, 1.5, 100), but this will generate an array. When
+
+<!-- b008280 | ai_disclosure | pages [26] -->
+you use it in the CCO2 equation, it might cause dimension mismatch. You should check if this
+
+<!-- b008281 | ai_disclosure | pages [26] -->
+is intended or modify your approach accordingly. Line 25: In the equation for CCO2, you are
+
+<!-- b008282 | ai_disclosure | pages [26] -->
+using α1 on both sides of the equation, which is fine as long as it makes sense for the model.
+
+<!-- b008283 | ai_disclosure | pages [26] -->
+Just make sure this is not a mistake. Line 33: For plt.scatter(minEnvN t, minEnvvalue, ...),
+
+<!-- b008284 | ai_disclosure | pages [26] -->
+you’re plotting a point without explicitly checking if minEnvvalue is finite or valid. You may
+
+<!-- b008285 | ai_disclosure | pages [26] -->
+want to check for NaN or inf before plotting. Font warning: The Times New Roman font
+
+<!-- b008286 | ai_disclosure | pages [26] -->
+you’re setting might not always be available in all environments. You could include a fallback
+
+<!-- b008287 | ai_disclosure | pages [26] -->
+font like this:>
+
+<!-- b008288 | ai_disclosure | pages [26] -->
+4. OpenAl ChatGPT
+
+<!-- b008289 | ai_disclosure | pages [26] -->
+Query1: <Could you briefly tell me the format of the Memo?>
+
+<!-- b008290 | ai_disclosure | pages [26] -->
+Output: <Certainly! Here’s a brief summary of the memo format: Header Section: To:
+
+<!-- b008291 | ai_disclosure | pages [26] -->
+Recipient(s) of the memo. From: The sender’s name or title. Date: The date the memo is
+
+<!-- b008292 | ai_disclosure | pages [26] -->
+being sent. Subject: A short, clear statement of the memo’s topic. Body Section: A clear and
+
+<!-- b008293 | ai_disclosure | pages [26] -->
+concise explanation of the memo’s purpose. You can break it into numbered or bulleted points
+
+<!-- b008294 | ai_disclosure | pages [26] -->
+for clarity, especially if providing instructions, updates, or details. Closing (Optional)>
+
+<!-- b008295 | ai_disclosure | pages [26] -->
+关注数学模型
+
+<!-- b008296 | furniture | pages [26] -->
+2
+
+<!-- b008297 | furniture | pages [26] -->
+MATHmodels
+
+<!-- b008298 | furniture | pages [26] -->
+获取更多资讯
