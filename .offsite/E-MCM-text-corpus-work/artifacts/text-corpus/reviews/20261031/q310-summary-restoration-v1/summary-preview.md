@@ -1,0 +1,19 @@
+Summary
+
+Aiming to comprehend the evolution of music, we combine the network science, cosine similarity, Cooling Model and Gravity Model in physics, as well as other statistical methods to explore how music evolves through influence across artists and genres.
+
+Above all, we created the directed influencer network to visualize the relationship between influencers and followers. We then explain the concept of music influence with the help of the Cooling Model to describe one’s declining influence as the time interval gets longer. Having done that, we show the music influence of artists in a subnetwork by the size of nodes and conduct detailed analysis.
+
+Next, after data pre-processing, we use PCA to reduce the dimensionality of music characteristics and extract four factors. Based on the eigenvector formed by the four factors, we calculate cosine similarity between artisits or genres. Our method to measure similarity proves to be right since artists within genres get higher similarity than artists between genres.
+
+Then, we develop our basic model of network and similarity to solve tasks about the evolution of music.Our analysis is from the following four perspectives.
+
+For tasks about influencers and followers, we compare the similarity density curve between followers and influencers or non-influencers and affirm the influencers’ impact on followers music. Then, we rebuild the eigenvector to calculate similarity by removing each characteristic to see which one is more contagious during the influence process of a particular genre.
+
+For tasks about trends of genres, firstly we calculate the similarity matrix of genres and describe relations and difference between genres accordingly. Next, based on the Gravity Model, we estimate the dominant genre of each year and analyze the trends of genres changing over time. In addition, we analyze the evolution of country music particularly by using popularity and counts to figure out dynamic influencer and explain the fusion of country and other genres during its evolution.
+
+For tasks about musical revolutions, we analyze the cosine similarity between each year and its following year to identify significant changes as revolutions. We find that the periods of the 1940s, 1960s and 1980s are revolutionary period and we particularly anaylze the revolution between 1965 and 1967 to find out the Beatles and Bob Dylan are two artists represent revolution in this periods.
+
+For tasks about other impacts of music evolution, we give a detailed analysis on the genre timeline and revolution period with major cultural, social, political or technological changes, explaining how events like the Cold War, Civil Rights Movements influenced the evolution of music.
+
+To summarize, our models have enlightening values for further study due to its comprehensiveness, innovation and good performace in sensitive analysis.

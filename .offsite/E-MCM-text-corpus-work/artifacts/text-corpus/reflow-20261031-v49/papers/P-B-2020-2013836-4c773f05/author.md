@@ -1,0 +1,17 @@
+MCM/ICM
+
+Summary Sheet
+
+Summary
+
+Sandcastle building, a recreational activity popular among beach goers, offer people with opportunities to create their exclusive sand-made works and making a sandcastle foundations is typically the first step of simple or complicated sandcastles. However, sandcastle foundations are always threatened by external destructive power. Since that not all sandcastles preform the same in dangerous surroundings, people may wonder what should be done to create a more durable sandcastle foundation and whether there is a desired shape of it.
+
+In this paper, a cellular automata based mathematical model is established to find the answer. Firstly, we derived models for tides and sea waves by analyzing the movement of seawater. Accordingly, the internal force analysis and external force analysis were carried out, the former includes viscous force model and collapse model, the latter is comprised of impact force and lift. Next, we demonstrated the process of force analysis after dividing the relative position of sand cells into different cases.
+
+Furthermore, sand-to-water proportion influences the stability of sandcastle foundation by changing the value of viscous force, which is the basis for identifying the optimal sand-to-water proportion. Afterwards we extend our model with consideration of rain, whose impact force is much more larger than that of seawater. Likewise, sand-to-water mixture proportion also changes when surface contacts water.
+
+In computer simulation, we generated initial sandcastle foundations on their 2-D embryos with different gradients. Through iteration algorithm, a series of best 3-dimensional geometric shapes are found, featured with shell-shaped cross section. The ideal shape can be divided into three parts. Part A buffers the incoming sea water and decelerates the water without being broken. Part B cuts off the seawater flow directly, while it could further mitigate the seawater. Part C is the back bulk whose construction is steady, containing most of the sand. In parallel, we figured out the optimal sand-to-water mixture proportion, which is 2.63, or 2.70 in the rain. In the end, we listed practical strategies to make the sandcastle foundation last longer: the adjustment of building time, adding supporting structures and improving building materials.
+
+Finally, we finished sensitivity analysis and summarized the strengths and weaknesses of the model.
+
+The longest lasting sandcastle foundation

@@ -1,0 +1,2179 @@
+# P-F-2021-2103649-5f40ae4f
+
+Status: machine-draft; not source-verified.
+
+
+<!-- b000001 | furniture | pages [1] -->
+2021
+
+<!-- b000002 | front_matter | pages [1] -->
+Problem Chosen
+
+<!-- b000003 | furniture | pages [1] -->
+Team Control Number
+
+<!-- b000004 | furniture | pages [1] -->
+微信公众号：数学模型
+
+<!-- b000005 | prose | pages [1] -->
+MCM/ICM
+
+<!-- b000006 | title | pages [1] -->
+F
+
+<!-- b000007 | furniture | pages [1] -->
+2103649
+
+<!-- b000008 | heading | pages [1] -->
+Summary Sheet
+
+<!-- b000009 | title | pages [1] -->
+Health Status and Treatment Plan: A Physical Examination
+
+<!-- b000010 | title | pages [1] -->
+Report for Higher Education in Different Countries
+
+<!-- b000011 | title | pages [1] -->
+微信公众号：数学模型
+
+<!-- b000012 | heading | pages [1] -->
+Summary
+
+<!-- b000013 | prose | pages [1] -->
+Higher education system is an essential part of the development of a country. It directly undertakes the national scientiﬁc research tasks, providing most of the major research results. More importantly, the system has been cultivating talents for the future, which ensures the nation’s future development.
+
+<!-- b000014 | prose | pages [1] -->
+Every country has its unique higher education system, with the corresponding strengths and weak- nesses. It is necessary to analyze and evaluate a system comprehensively, continuing its strengths and adjusting its weaknesses. However, the discrepancy between systems of different countries has made it hard to build a uniform evaluation standard for every country. In this article, we build a suite of measurement models to assess the health and sustainability of higher education systems.
+
+<!-- b000015 | prose | pages [1] -->
+To measure the health status of each country’s system, we select raw data for six main factors
+
+<!-- b000016 | title | pages [1] -->
+微信号：MATHmodels
+
+<!-- b000017 | prose | pages [1] -->
+and fourteen indicators of ﬁfty countries, with the time period from 2009 to 2018. Then we verify the distribution law of the data and choose 80% quantile as the health range for each indicator. Afterwards, we use the analytic hierachy process (AHP) to determine the weight for each indicator. We introduce the concept of overall point gain (OPG), representing the general health status of a system.
+
+<!-- b000018 | prose | pages [1] -->
+We also establish the method for examine sustainability by using DEA - Malmquist model. It is a highly objective model, commonly applied in time series analysis. According to the comparisons of the relative efﬁciency between different years, we can obtain the efﬁciency change trend. Then we can analyze the sustainability with the trend.
+
+<!-- b000019 | prose | pages [1] -->
+Then we select ﬁve countries as analysis objects: the US, the UK, Germany, Japan, India. With our models, we evaluate the health and sustainability of them. Our conclusion is: The US’ system is sub-healthy and sustainable, the UK’s system is sub-healthy with poor sustainability, the Germany’s system is completely healthy with excellent sustainability, the Japan’s system is unhealthy but sus- tainable, the India’s system is unhealthy and unsustainable. Since the higher education system of India has much room for improvement, we choose India to analyze further.
+
+<!-- b000020 | prose | pages [1] -->
+First, we measure India’s current system. Limited resources, large population, and economic pres- sure cause the low enrollment rate and high unemployment rate. Second, based on the analysis above, we propose our three-phase vision, including short-term, mid-term and long-term. For our vision, we propose some targeted policies. In short-term policies, we increase the indicators quickly. The policies includes to reduce the cost of education for the poor, to lower the minimum wage standard, and to Lower the admission standards for foreign students. In long-term policies, we take the social situation of India into considered. The policies includes Family planning, Economic structure transformation, and Educational environment improvement. We also use Markov Chain to predict the implementa- tion of policies in the future, which can reﬂect the ﬂexibility of policies. Then, we assess the real-world impacts and the difﬁculty to the policy implementation.
+
+<!-- b000021 | prose | pages [1] -->
+Finally, we discuss the strengths and weaknesses of our models, leaving room for further studies.
+
+<!-- b000022 | keywords | pages [1] -->
+Keywords: higher education system, AHP model, Kolmogorov - Smirnov test, DEA-Malmquist model,
+
+<!-- b000023 | prose | pages [1] -->
+targeted policies, Markov chain
+
+<!-- b000024 | furniture | pages [1] -->
+微信号：MATHmodels
+
+<!-- b000025 | prose | pages [1] -->
+关注数学模型
+
+<!-- b000026 | furniture | pages [1] -->
+2
+
+<!-- b000027 | furniture | pages [1] -->
+MATHmodels
+
+<!-- b000028 | furniture | pages [1] -->
+获取更多资讯
+
+<!-- b000029 | furniture | pages [2] -->
+Team # 2103649
+
+<!-- b000030 | furniture | pages [2] -->
+Page 2 of 25
+
+<!-- b000031 | furniture | pages [2] -->
+微信公众号：数学模型
+
+<!-- b000032 | heading | pages [2] -->
+Contents
+
+<!-- b000033 | contents | pages [2] -->
+1 Introduction
+
+<!-- b000034 | contents | pages [2] -->
+4
+
+<!-- b000035 | contents | pages [2] -->
+1.1
+
+<!-- b000036 | contents | pages [2] -->
+Background
+
+<!-- b000037 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000038 | contents | pages [2] -->
+4
+
+<!-- b000039 | contents | pages [2] -->
+微信公众号：数学模型
+
+<!-- b000040 | contents | pages [2] -->
+1.2
+
+<!-- b000041 | contents | pages [2] -->
+Our Works . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000042 | contents | pages [2] -->
+4
+
+<!-- b000043 | contents | pages [2] -->
+2 General Assumption and Symbol Explanation
+
+<!-- b000044 | contents | pages [2] -->
+4
+
+<!-- b000045 | contents | pages [2] -->
+2.1
+
+<!-- b000046 | contents | pages [2] -->
+General Assumption . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000047 | contents | pages [2] -->
+4
+
+<!-- b000048 | contents | pages [2] -->
+2.2
+
+<!-- b000049 | contents | pages [2] -->
+Symbol Explanation
+
+<!-- b000050 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000051 | contents | pages [2] -->
+5
+
+<!-- b000052 | contents | pages [2] -->
+3 Main Factors and Data Selection
+
+<!-- b000053 | contents | pages [2] -->
+5
+
+<!-- b000054 | contents | pages [2] -->
+3.1
+
+<!-- b000055 | contents | pages [2] -->
+Main Factors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000056 | contents | pages [2] -->
+5
+
+<!-- b000057 | contents | pages [2] -->
+3.1.1
+
+<!-- b000058 | contents | pages [2] -->
+Investment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000059 | contents | pages [2] -->
+5
+
+<!-- b000060 | contents | pages [2] -->
+3.1.2
+
+<!-- b000061 | contents | pages [2] -->
+Accessibility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000062 | contents | pages [2] -->
+5
+
+<!-- b000063 | contents | pages [2] -->
+3.1.3
+
+<!-- b000064 | contents | pages [2] -->
+Education Level . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000065 | contents | pages [2] -->
+6
+
+<!-- b000066 | contents | pages [2] -->
+微信号：MATHmodels
+
+<!-- b000067 | contents | pages [2] -->
+3.1.4
+
+<!-- b000068 | contents | pages [2] -->
+Research Level
+
+<!-- b000069 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000070 | contents | pages [2] -->
+6
+
+<!-- b000071 | contents | pages [2] -->
+3.1.5
+
+<!-- b000072 | contents | pages [2] -->
+Educational Equity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000073 | contents | pages [2] -->
+6
+
+<!-- b000074 | contents | pages [2] -->
+3.1.6
+
+<!-- b000075 | contents | pages [2] -->
+Attraction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000076 | contents | pages [2] -->
+6
+
+<!-- b000077 | contents | pages [2] -->
+3.2
+
+<!-- b000078 | contents | pages [2] -->
+Data Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000079 | contents | pages [2] -->
+6
+
+<!-- b000080 | contents | pages [2] -->
+4 Diagnosis Methods: Models for Health and Sustainability
+
+<!-- b000081 | contents | pages [2] -->
+8
+
+<!-- b000082 | contents | pages [2] -->
+4.1
+
+<!-- b000083 | contents | pages [2] -->
+Health Model
+
+<!-- b000084 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000085 | contents | pages [2] -->
+8
+
+<!-- b000086 | contents | pages [2] -->
+4.1.1
+
+<!-- b000087 | contents | pages [2] -->
+Determine the Weight of Indicators
+
+<!-- b000088 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000089 | contents | pages [2] -->
+8
+
+<!-- b000090 | contents | pages [2] -->
+4.1.2
+
+<!-- b000091 | contents | pages [2] -->
+Select Health Range
+
+<!-- b000092 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000093 | contents | pages [2] -->
+10
+
+<!-- b000094 | contents | pages [2] -->
+4.1.3
+
+<!-- b000095 | contents | pages [2] -->
+Diagnosis of Health Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000096 | contents | pages [2] -->
+11
+
+<!-- b000097 | contents | pages [2] -->
+4.2
+
+<!-- b000098 | contents | pages [2] -->
+Sustainability analysis with DEA-Malmquist model . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000099 | contents | pages [2] -->
+12
+
+<!-- b000100 | contents | pages [2] -->
+4.2.1
+
+<!-- b000101 | contents | pages [2] -->
+Basic DEA model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000102 | contents | pages [2] -->
+12
+
+<!-- b000103 | contents | pages [2] -->
+4.2.2
+
+<!-- b000104 | contents | pages [2] -->
+DEA-Malmquist model
+
+<!-- b000105 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000106 | contents | pages [2] -->
+13
+
+<!-- b000107 | contents | pages [2] -->
+4.2.3
+
+<!-- b000108 | contents | pages [2] -->
+Sustainability analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000109 | contents | pages [2] -->
+13
+
+<!-- b000110 | contents | pages [2] -->
+5 Case Tracking: Model Application on Different Countries
+
+<!-- b000111 | contents | pages [2] -->
+13
+
+<!-- b000112 | contents | pages [2] -->
+5.1
+
+<!-- b000113 | contents | pages [2] -->
+the United States
+
+<!-- b000114 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000115 | contents | pages [2] -->
+14
+
+<!-- b000116 | contents | pages [2] -->
+5.2
+
+<!-- b000117 | contents | pages [2] -->
+the United Kingdom
+
+<!-- b000118 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000119 | contents | pages [2] -->
+14
+
+<!-- b000120 | contents | pages [2] -->
+5.3
+
+<!-- b000121 | contents | pages [2] -->
+Germany . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000122 | contents | pages [2] -->
+15
+
+<!-- b000123 | contents | pages [2] -->
+5.4
+
+<!-- b000124 | contents | pages [2] -->
+Japan . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000125 | contents | pages [2] -->
+15
+
+<!-- b000126 | contents | pages [2] -->
+5.5
+
+<!-- b000127 | contents | pages [2] -->
+India
+
+<!-- b000128 | contents | pages [2] -->
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000129 | contents | pages [2] -->
+15
+
+<!-- b000130 | contents | pages [2] -->
+6 Treatment Plan: Case Study on the Higher Education System of India
+
+<!-- b000131 | contents | pages [2] -->
+16
+
+<!-- b000132 | contents | pages [2] -->
+6.1
+
+<!-- b000133 | contents | pages [2] -->
+The Analysis of Current System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000134 | contents | pages [2] -->
+16
+
+<!-- b000135 | contents | pages [2] -->
+6.1.1
+
+<!-- b000136 | contents | pages [2] -->
+Health . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000137 | contents | pages [2] -->
+17
+
+<!-- b000138 | furniture | pages [2] -->
+微信号：MATHmodels
+
+<!-- b000139 | contents | pages [2] -->
+关注数学模型
+
+<!-- b000140 | furniture | pages [2] -->
+2
+
+<!-- b000141 | furniture | pages [2] -->
+MATHmodels
+
+<!-- b000142 | furniture | pages [2] -->
+获取更多资讯
+
+<!-- b000143 | furniture | pages [3] -->
+Team # 2103649
+
+<!-- b000144 | furniture | pages [3] -->
+Page 3 of 25
+
+<!-- b000145 | furniture | pages [3] -->
+微信公众号：数学模型
+
+<!-- b000146 | contents | pages [3] -->
+6.1.2
+
+<!-- b000147 | contents | pages [3] -->
+Sustainability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000148 | furniture | pages [3] -->
+17
+
+<!-- b000149 | contents | pages [3] -->
+6.2
+
+<!-- b000150 | contents | pages [3] -->
+Our Vision and Comparison . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000151 | contents | pages [3] -->
+17
+
+<!-- b000152 | contents | pages [3] -->
+6.3
+
+<!-- b000153 | contents | pages [3] -->
+Treatment Plan: Our Targeted Policies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000154 | contents | pages [3] -->
+18
+
+<!-- b000155 | contents | pages [3] -->
+6.3.1
+
+<!-- b000156 | contents | pages [3] -->
+Declaration for Our Policies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000157 | contents | pages [3] -->
+18
+
+<!-- b000158 | contents | pages [3] -->
+微信公众号：数学模型
+
+<!-- b000159 | contents | pages [3] -->
+6.3.2
+
+<!-- b000160 | contents | pages [3] -->
+Policy Implementation Model Realized by Using Markov Chain . . . . . . . . . . .
+
+<!-- b000161 | contents | pages [3] -->
+20
+
+<!-- b000162 | contents | pages [3] -->
+6.3.3
+
+<!-- b000163 | contents | pages [3] -->
+Implementation Timeline for India . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000164 | contents | pages [3] -->
+20
+
+<!-- b000165 | contents | pages [3] -->
+6.4
+
+<!-- b000166 | contents | pages [3] -->
+the Real-World Impacts and Difﬁculties . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+<!-- b000167 | contents | pages [3] -->
+22
+
+<!-- b000168 | heading | pages [3] -->
+7 Model Strengths and Weaknesses
+
+<!-- b000169 | prose | pages [3] -->
+23
+
+<!-- b000170 | prose | pages [3] -->
+7.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+<!-- b000171 | prose | pages [3] -->
+7.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+<!-- b000172 | heading | pages [3] -->
+Appendices
+
+<!-- b000173 | prose | pages [3] -->
+24
+
+<!-- b000174 | heading | pages [3] -->
+Appendix A Codes
+
+<!-- b000175 | prose | pages [3] -->
+24 微信号：MATHmodels A.1 Code for AHP . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+<!-- b000176 | prose | pages [3] -->
+A.2 Code for Malkov Chain . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+<!-- b000177 | furniture | pages [3] -->
+微信号：MATHmodels
+
+<!-- b000178 | prose | pages [3] -->
+关注数学模型
+
+<!-- b000179 | furniture | pages [3] -->
+2
+
+<!-- b000180 | furniture | pages [3] -->
+MATHmodels
+
+<!-- b000181 | furniture | pages [3] -->
+获取更多资讯
+
+<!-- b000182 | furniture | pages [4] -->
+Team # 2103649
+
+<!-- b000183 | furniture | pages [4] -->
+Page 4 of 25
+
+<!-- b000184 | furniture | pages [4] -->
+微信公众号：数学模型
+
+<!-- b000185 | heading | pages [4] -->
+1 Introduction
+
+<!-- b000186 | heading | pages [4] -->
+1.1 Background
+
+<!-- b000187 | prose | pages [4] -->
+The higher education system is the core competitiveness of a country’s education system. The sys- tem not only undertakes the task of cultivating talents for the country, but also shoulders its unique 微信公众号：数学模型 economic and research responsibilities. Therefore, it is of great signiﬁcance to establish a model that can fully evaluate the higher education system.
+
+<!-- b000188 | prose | pages [4] -->
+However, countries in the world have different national conditions, and the problems they face in higher education construction are also different. Just building an evaluation model is far from enough. How to determine the weak part of a country’s higher education and how to give reasonable policies in accordance with the national conditions is a question worth pondering.
+
+<!-- b000189 | heading | pages [4] -->
+1.2 Our Works
+
+<!-- b000190 | prose | pages [4] -->
+In order to deal with the situation, we have completed the following tasks:
+
+<!-- b000191 | prose | pages [4] -->
+• We select raw data for 14 indicators of 50 countries with the time period from 2009 to 2018. Then 微信号：MATHmodels we verify the distribution law of the data through Kolmogorov - Smirnov test and choose 80% quantile as the acceptance range (health range). This quantile is a choice based on our basic assumptions.
+
+<!-- b000192 | prose | pages [4] -->
+• We use the analytic hierachy process to determine the weight for each indicator. The result can be used to measure the health status for speciﬁc countries. We also establish the method for examine sustainability using DEA - Malmquist model.
+
+<!-- b000193 | prose | pages [4] -->
+• Then we apply our models to ﬁve selected countries to test the efﬁciency. By applying the models, we make brief diagnosis for their health and sustainability conditions.
+
+<!-- b000194 | prose | pages [4] -->
+• By comparing the test results of ﬁve countries, we selected India, which has a larger upside po- tential, as the case we study. After evaluating its status, we build our vision and develop targeted policies. We then use Markov chain to predict the effect of our polies and draw the timeline for prediction. Afterwards, we analyzed the impact of the policy on the actual situation and possible obstacles.
+
+<!-- b000195 | heading | pages [4] -->
+2 General Assumption and Symbol Explanation
+
+<!-- b000196 | heading | pages [4] -->
+2.1 General Assumption
+
+<!-- b000197 | prose | pages [4] -->
+In order to enable the model to accurately reﬂect the health status of higher education system, we analogize the health evaluation method of the medical system and make the following assumptions.
+
+<!-- b000198 | prose | pages [4] -->
+1. Statistics we collect from the website are actual and reliable.
+
+<!-- b000199 | prose | pages [4] -->
+2. The overall health of higher education is only related to our evaluation indicators.
+
+<!-- b000200 | prose | pages [4] -->
+3. The indicators we choose possess the same distribution law as the population of higher educa- tion system, so the overall situation can be estimated through samples.
+
+<!-- b000201 | prose | pages [4] -->
+4. The population of the higher education system conforms to the hypothetical distribution law and can be used to measure the health status. The population does not actually exist, it is not inconsistent with the totality of all countries.
+
+<!-- b000202 | prose | pages [4] -->
+5. Similar to physical examination indicators, there is a speciﬁc interval that determines whether
+
+<!-- b000203 | furniture | pages [4] -->
+微信号：MATHmodels
+
+<!-- b000204 | prose | pages [4] -->
+关注数学模型 the values for indicators are healthy.
+
+<!-- b000205 | furniture | pages [4] -->
+2
+
+<!-- b000206 | furniture | pages [4] -->
+MATHmodels
+
+<!-- b000207 | furniture | pages [4] -->
+获取更多资讯
+
+<!-- b000208 | furniture | pages [5] -->
+Team # 2103649
+
+<!-- b000209 | furniture | pages [5] -->
+Page 5 of 25
+
+<!-- b000210 | furniture | pages [5] -->
+微信公众号：数学模型
+
+<!-- b000211 | prose | pages [5] -->
+6. Within a certain period of time, some indicators will not be affected by the implementation of policies and can be regarded as constants.
+
+<!-- b000212 | prose | pages [5] -->
+Based on the above assumptions, we have selected a reasonable data set and used corresponding processing methods to establish a comprehensive evaluation standard for the higher education system.
+
+<!-- b000213 | prose | pages [5] -->
+微信公众号：数学模型
+
+<!-- b000214 | heading | pages [5] -->
+2.2 Symbol Explanation
+
+<!-- b000215 | prose | pages [5] -->
+Name Explanation Iij Input indicators for sustainability analysis Oij Output indicators for sustainability ananlysis Sig. Signiﬁcance level for K-S test OPG Overall point gain {pi} 0 - 1 sequence showing the health status PIE Policy implementation effect BU Buffer for modeling parameters DCN Difference between the current value and the normal value of the index
+
+<!-- b000216 | prose | pages [5] -->
+微信号：MATHmodels
+
+<!-- b000217 | heading | pages [5] -->
+3 Main Factors and Data Selection
+
+<!-- b000218 | heading | pages [5] -->
+3.1 Main Factors
+
+<!-- b000219 | prose | pages [5] -->
+In order to make a sound assessment of the higher education system, we need to measure its health and sustainability. Similar to the deﬁnation of biological health, the health of a system refers to its ability to perform normal functions and respond to changes in the outside world. For a healthy higher education system, it needs to have the normal function of education, and be able to repair and renew itself [1]. The sustainability consists of normativity, equity, integration, and dynamism [2], it measures the ability of a system to maintain and update itself.
+
+<!-- b000220 | prose | pages [5] -->
+Based on the above deﬁnitions, we have compiled the six factors that measure the higher education system, which will be described below.
+
+<!-- b000221 | heading | pages [5] -->
+3.1.1 Investment
+
+<!-- b000222 | prose | pages [5] -->
+The investment factor measures a government’s willingness to invest in higher education, making it one of the most important indicators. With limited resources, the more the government invests in higher education, the more the country attaches importance to it. This factor will be qualiﬁed through two indicators: government expenditure on tertiary education and research and development expen- diture. The former one measures how willing the country wants to enhance its higher education, the latter one shows the government support on further education.
+
+<!-- b000223 | heading | pages [5] -->
+3.1.2 Accessibility
+
+<!-- b000224 | prose | pages [5] -->
+Accessibility measures the difﬁculty of receiving higher education in a country. Higher accessibility can reﬂect a better construction for the system. In this part, we take the admission rate and number of higher education institutions per capita as detailed indicators. The admission rate can intuitively show the degree of higher education of the right-age population, and can be used to measure the perfection of the education system. The number of higher education institutions per capita can reﬂect the difﬁculty of individual receiving higher education, which is another description from the micro level.
+
+<!-- b000225 | furniture | pages [5] -->
+微信号：MATHmodels
+
+<!-- b000226 | prose | pages [5] -->
+关注数学模型
+
+<!-- b000227 | furniture | pages [5] -->
+2
+
+<!-- b000228 | furniture | pages [5] -->
+MATHmodels
+
+<!-- b000229 | furniture | pages [5] -->
+获取更多资讯
+
+<!-- b000230 | furniture | pages [6] -->
+Team # 2103649
+
+<!-- b000231 | furniture | pages [6] -->
+Page 6 of 25
+
+<!-- b000232 | furniture | pages [6] -->
+微信公众号：数学模型
+
+<!-- b000233 | heading | pages [6] -->
+3.1.3 Education Level
+
+<!-- b000234 | prose | pages [6] -->
+Education level (written as "E-level" below) is the evaluation for teaching level in different countries. This is the measure of system efﬁciency. In this section, we have selected three indicators as represen- tatives. The number of top 1000 universities per capita reﬂects the country’s high-level educational capabilities. This determines the academic reputation of the country. Net ﬂow of internationally mo- 微信公众号：数学模型 bile students works as an important output indicator for education sustainability. When the indicator is negative, it means that the current country’s higher education system is relatively weak. The third indicator, pupil-teacher ratio, measures the distribution of educational resources in the country. The lower the ratio, the more educational resources the individual gets.
+
+<!-- b000235 | heading | pages [6] -->
+3.1.4 Research Level
+
+<!-- b000236 | prose | pages [6] -->
+Research level (written as "R-level" below) is the evaluation for research level. This part is relatively complicated, so we discribe it with three indicators: highly cited paper per institution, nature-index research per institution, and patent per institution. The three indicators measure the level of scientiﬁc research education, the level of experimental research and the level of applied research. Considering the values of these three indicators comprehensively, we can infer the corresponding research level through the research results. 微信号：MATHmodels
+
+<!-- b000237 | heading | pages [6] -->
+3.1.5 Educational Equity
+
+<!-- b000238 | prose | pages [6] -->
+Educational equity (written as "equity" below) is a measure of achievement, fairness, and opportu- nity in education [3]. It consists of socioeconomic equity, gender equity and racial equity. Since racial inequality is not a global phenomenon, and there is no uniﬁed evaluation standard, this element will not be considered.
+
+<!-- b000239 | prose | pages [6] -->
+We use the ratio of average tuition fee and GDP per capita to evaluate the socioeconomic equity, and gender equity is measured with school enrollment gender parity index (GPI).
+
+<!-- b000240 | heading | pages [6] -->
+3.1.6 Attraction
+
+<!-- b000241 | prose | pages [6] -->
+In addition to the aforementioned reasons, the attraction of the higher education system is also an important evaluation factor for healthy and sustainable development. In general, we evaluate the attractiveness through research interest and educational interest. The attractiveness of research comes from the collision of excellent thinking and the birth of inspiration, which can be measured by academic exchanges. We initially selected the number of academic conferences and the number of outstanding award winners as indicators for this content. However, academic conferences are highly mobile and are not suitable for national assessments, so we chose the award winners (including Nobel, Turing and Fields) as the indicator. Educational interest is measured by Employment rate of people with higher education1. Too low the employment rate indicates that the national education system is inperfect, while too high shows that the system is not attractive enough.
+
+<!-- b000242 | heading | pages [6] -->
+3.2 Data Selection
+
+<!-- b000243 | prose | pages [6] -->
+To assess health status and sustainable development, we use the same set of data but different evaluation methods. To assess the health status, we will calculate the weight of the data and list the main indicators, thereby constructing a conﬁdence interval similar to the pathology test.
+
+<!-- b000244 | prose | pages [6] -->
+The method of assessing sustainability is slightly different. We select indicators for evaluating sev- eral aspects of sustainability based on the sustainability principle discussed before and use them as
+
+<!-- b000245 | prose | pages [6] -->
+1In the database of World Bank, this indicator is named as the labor force with advanced education (% of total working-age population with advanced education).
+
+<!-- b000246 | furniture | pages [6] -->
+微信号：MATHmodels
+
+<!-- b000247 | prose | pages [6, 7] -->
+关注数学模型 output variables. The remaining indicators will be used as input variables to determine changes in output indicators. In short, we treat decision variables as input variables and reﬂection variables as output variables to measure sustainability. When assessing sustainability, we will select appropriate indicators from the given input and output.
+
+<!-- b000248 | furniture | pages [6] -->
+2
+
+<!-- b000249 | furniture | pages [6] -->
+MATHmodels
+
+<!-- b000250 | furniture | pages [6] -->
+获取更多资讯
+
+<!-- b000251 | furniture | pages [7] -->
+Team # 2103649
+
+<!-- b000252 | furniture | pages [7] -->
+Page 7 of 25
+
+<!-- b000253 | furniture | pages [7] -->
+微信公众号：数学模型
+
+<!-- b000255 | prose | pages [7] -->
+Here is a table of selected indicators. The letter ‘P’ for impact column means the indicator has a positive effect on higher education. ‘N’ refers to the opposite. Certain indicators will have a negative 微信公众号：数学模型 impact on the results when they are too high or too low, so we allocate letter ‘B’ to them.
+
+<!-- b000256 | prose | pages [7] -->
+For input variables, they are encoded with Iij, for the output ones, we use symbol Oij as the repre- sentatives. ‘i’ shows the number of each indicator and ‘j’ represents the country.
+
+<!-- b000257 | caption | pages [7] -->
+Table 1: Indicators for higher education
+
+<!-- b000258 | prose | pages [7] -->
+Factor Indicator Symbol Unit Impact D.S.
+
+<!-- b000259 | prose | pages [7] -->
+I1j Investment Government expenditure on tertiary educa- % P a tion as % Of GDP I2j Research and development expenditure (% of % P a GDP) I3j Accessibility School enrollment, tertiary (% gross) % P a I4j Number of higher education institutions per - P b capita 微信号：MATHmodels I5j E-level Number of top 1000 universities per capita - P c O1j Net ﬂow ratio of internationally mobile stu- % P a dents (inbound - outbound) I6j Pupil-teacher ratio, tertiary - N a O2j R-level Highly cited paper per institution - P d O3j Nature-index research per institution - P e O4j Patent per institution - P a O5j Equity Ratio of average tuition fee and GDP per - N c capita I7j School enrollment, tertiary (gross), gender - B a parity index (GPI) O6j Attraction Important award winners - P b O7j The labor force with advanced education (% % B a of total working-age population with ad- vanced education)
+
+<!-- b000260 | prose | pages [7] -->
+Note: D.S. is the abstract of data source. D.S. a is collected from World Bank World Development Indicators [4] and Education Statistics - All Indicators [5]. D.S. b is quoted from the corresponding page of Wikipedia. D.S. c is compiled from the public information of QS Rankings [6]. D.S. d and e come from webofscience [?] and Nature-index [7], respectively.
+
+<!-- b000261 | prose | pages [7] -->
+Considering assumption 3 and 4, we randomly sample from countries with more complete higher education systems and investigate their indicators from 2009 to 2018. The 50 selected samples are shown below.
+
+<!-- b000262 | caption | pages [7] -->
+Table 2: 50 countries we select (in alphabetical order)
+
+<!-- b000263 | prose | pages [7] -->
+Countries 1 2 3 4 5 1 Argentina Czech Republic Ireland New Zealand South Korea 2 Australia Denmark Israel Norway Spain 3 Austria Egypt Italy Pakistan Sweden 4 Belarus Estonia Japan Philippines Switzerland 5 Belgium Finland Kazakhstan Poland Thailand 6 Brazil France Lebanon Portugal Turkey 7 Canada Germany Malaysia Russia Ukraine 8 Chile Greece Mexico Saudi Arabia United Arab Emirates 9 China India Mongolia Singapore United Kindom 10 Colombia Iodonesia Netherlands South Africa United States
+
+<!-- b000264 | furniture | pages [7] -->
+微信号：MATHmodels
+
+<!-- b000265 | prose | pages [7, 8] -->
+Here is a map showing the countries we select. 关注数学模型 微信公众号：数学模型
+
+<!-- b000266 | furniture | pages [7] -->
+2
+
+<!-- b000267 | furniture | pages [7] -->
+MATHmodels
+
+<!-- b000268 | furniture | pages [7] -->
+获取更多资讯
+
+<!-- b000269 | furniture | pages [8] -->
+Team # 2103649
+
+<!-- b000270 | furniture | pages [8] -->
+Page 8 of 25
+
+<!-- b000271 | furniture | pages [8] -->
+微信公众号：数学模型
+
+<!-- b000273 | caption | pages [8] -->
+Figure 1: Map for countries we select
+
+<!-- b000274 | prose | pages [8] -->
+With reference to the indicators in Table 1, we surveyed 50 countries and completed the standard- ization of the data, making preparations for the establishment of the model.
+
+<!-- b000275 | heading | pages [8] -->
+4 Diagnosis Methods: Models for Health and Sustainability
+
+<!-- b000276 | prose | pages [8] -->
+微信号：MATHmodels In this section, we build up the health model and sustainability model for higher education system. Using both models together, we are able to run the physical examination and make a diagnosis of the health and sustainability of each country. The process can be described with the following graph.
+
+<!-- b000277 | prose | pages [8] -->
+Selection of Health Range
+
+<!-- b000278 | prose | pages [8] -->
+Weights of Analysis of AHP Health Different Factors Each Factor
+
+<!-- b000279 | prose | pages [8] -->
+Data DEA- Efficiency Malmquist Sustainability Change Trend
+
+<!-- b000280 | heading | pages [8] -->
+Model
+
+<!-- b000281 | heading | pages [8] -->
+Results
+
+<!-- b000282 | prose | pages [8] -->
+Diagnosis methods
+
+<!-- b000283 | heading | pages [8] -->
+Modeling
+
+<!-- b000284 | caption | pages [8] -->
+Figure 2: Process for the physical examination
+
+<!-- b000285 | heading | pages [8] -->
+4.1 Health Model
+
+<!-- b000286 | prose | pages [8] -->
+During the physical examination, the doctor usually checks the patient’s various indicators and judges whether they are in the normal range. These indicators possess different weights, and indicators with larger weights have a greater impact on health conditions. We use similar methods to measure the health of the higher education system. Based on the previous assumptions, we determined the corresponding health range for each indicator, and determined the weight of each indicator through Analytic Hierarchy Process. The overall health status and the health status of each factor will be given through these analyses.
+
+<!-- b000287 | heading | pages [8] -->
+4.1.1 Determine the Weight of Indicators
+
+<!-- b000288 | prose | pages [8] -->
+The main method we use to determine the weight is analytic hierachy process.
+
+<!-- b000289 | furniture | pages [8] -->
+微信号：MATHmodels
+
+<!-- b000290 | prose | pages [8, 9] -->
+关注数学模型 Consistency Weights of Factors Pairwise Comparison Maximum True Test Different Factors Selection Comparisons Matrix Eigenvalue 微信公众号：数学模型 False
+
+<!-- b000291 | furniture | pages [8] -->
+2
+
+<!-- b000292 | furniture | pages [8] -->
+MATHmodels
+
+<!-- b000293 | furniture | pages [8] -->
+获取更多资讯
+
+<!-- b000294 | furniture | pages [9] -->
+Team # 2103649
+
+<!-- b000295 | furniture | pages [9] -->
+Page 9 of 25
+
+<!-- b000296 | furniture | pages [9] -->
+微信公众号：数学模型
+
+<!-- b000298 | caption | pages [9] -->
+Figure 3: Process of AHP
+
+<!-- b000299 | prose | pages [9] -->
+Analytic Hierarchy Process (AHP) is an accurate approach for quantifying the weights of decision criteria, widely used in different decision situations, in ﬁelds like government, business, healthcare, shipbuilding, industry and education [8]. In our analysis, we use this method to determine weights of different main factors. Similarly, we determine the weights of different indicators in each factor. The following are the steps.
+
+<!-- b000300 | prose | pages [9] -->
+• Factors selection
+
+<!-- b000301 | prose | pages [9] -->
+We have selected several main factors previously. For each main factor, we have chosen some 微信号：MATHmodels indicators as well.
+
+<!-- b000302 | prose | pages [9] -->
+• Pairwise comparisons between different factors
+
+<!-- b000303 | prose | pages [9] -->
+According to pairwise comparisons, we establish priorities among the factors. We think that the importance of main factors satisﬁes the following relationship:
+
+<!-- b000304 | prose | pages [9] -->
+Investment ≈Access ⩾Education ≈Research ⩾Equity ≈Attraction
+
+<!-- b000305 | prose | pages [9] -->
+• Calculation of comparison matrix With the relationship discussed before, we get our comparison matrix (bij)6×6.
+
+<!-- b000306 | prose | pages [9] -->
+F1 F2 F3 F4 F5 F6   1 1 1 1 1 F1 1 3 5 5 7 9   1 1 1 1 F2 3 1   3 3 5 7   1 1 F3 5 3 1 1   3 5 ,   1 1 F4 5 3 1 1   3 5   1 F5 7 5 3 3 1 3 F6 9 7 5 5 3 1
+
+<!-- b000307 | prose | pages [9] -->
+where Fi for i = 1, 2, · · · , 6 represent investment, access, education, research, equity, attraction respectively.
+
+<!-- b000308 | prose | pages [9] -->
+• Consistency Test
+
+<!-- b000309 | prose | pages [9] -->
+We can calculate the eigenvalues and eigenvectors of the matrix before. Next we need to perform consistency test with the maximum eigenvalue λmax.
+
+<!-- b000310 | prose | pages [9] -->
+CI = λmax −n , (1) n −1 CR = CI RI , (2)
+
+<!-- b000311 | prose | pages [9] -->
+where RI = 1.24 when n = 6. For the above comparison matrix, we obtain CR = 0.0416 ⩽0.1, thus the comparison matrix is acceptable.
+
+<!-- b000312 | prose | pages [9] -->
+• Calculation of weights Passing the consistency test, we can get the weights of main factors by the eigenvector corresponding to the maximum eigenvalue: investment (0.4615), access (0.2402),
+
+<!-- b000313 | furniture | pages [9] -->
+微信号：MATHmodels
+
+<!-- b000314 | prose | pages [9] -->
+关注数学模型 education (0.1095), research (0.1095), equity(0.0515), attraction (0.0515) .
+
+<!-- b000315 | furniture | pages [9] -->
+2
+
+<!-- b000316 | furniture | pages [9] -->
+MATHmodels
+
+<!-- b000317 | furniture | pages [9] -->
+获取更多资讯
+
+<!-- b000318 | furniture | pages [10] -->
+Team # 2103649
+
+<!-- b000319 | furniture | pages [10] -->
+Page 10 of 25
+
+<!-- b000320 | furniture | pages [10] -->
+微信公众号：数学模型
+
+<!-- b000321 | prose | pages [10] -->
+With the same method, we get the weights of different indicators of each factor, shown in the fol- lowing graph.
+
+<!-- b000322 | prose | pages [10] -->
+Weight of each indicator
+
+<!-- b000323 | prose | pages [10] -->
+Top 1000 universities: 5.91% ​Top 1000 universities: 5.91% Higher education ​Higher education 微信公众号：数学模型 ​institutions: 12.01% ​institutions: 12.01% Student-teacher ratio: 3.25% ​Student-teacher ratio: 3.25% Net flow ratio: 1.79% ​Net flow ratio: 1.79% Highly cited paper: 6.37% ​Highly cited paper: 6.37% School enrollment: 12.01% ​School enrollment: 12.01% Nature-index: 3.38% ​Nature-index: 3.38% Education ​Education Access ​Access Patent: 1.2% ​Patent: 1.2% Research ​Research Employment rate: 3.6% ​Employment rate: 3.6% Attraction ​Attraction Equity ​Equity Major award winners: 1.55% ​Major award winners: 1.55% Investment ​Investment Gender parity index: 1.55% ​Gender parity index: 1.55% Tuition fee: 3.6% ​Tuition fee: 3.6% Education: 23.075% ​Education: 23.075%
+
+<!-- b000324 | prose | pages [10] -->
+Research and ​Research and ​development: 23.075% ​development: 23.075%
+
+<!-- b000325 | caption | pages [10] -->
+Figure 4: Weight of each indicator
+
+<!-- b000326 | prose | pages [10] -->
+微信号：MATHmodels Through weight analysis, we can get the rankings of indicators according to weight. The top-ranked indicator is called the main indicator, which has a huge impact on the overall health. The lower-ranked indicators are called secondary indicators, which have little impact on the overall health, but their cumulative effects cannot be ignored.
+
+<!-- b000327 | heading | pages [10] -->
+4.1.2 Select Health Range
+
+<!-- b000328 | prose | pages [10] -->
+Most countries with complete higher education systems have healthy higher education. By apply- ing analysis from QS Rankings, we ﬁx the ratio of healthy higher education to 0.8. This shows that 80% of the population is healthy. Based on the assumptions, we have developed the following principles for healthy range selection.
+
+<!-- b000329 | prose | pages [10] -->
+• Positive indicators: Select the sample data from high to low 80% quantile as the estimator of the overall lower bound2.
+
+<!-- b000330 | prose | pages [10] -->
+• Negative indicators: Select the sample data from low to high 80% quantile as the estimator of the overall upper bound.
+
+<!-- b000331 | prose | pages [10] -->
+• Others: Estimate the distribution law of the population through the sample and determine the interval.
+
+<!-- b000332 | prose | pages [10] -->
+The health range corresponding to positive and negative indicators is better given, and what needs to be considered is the distribution law of other indicators: GPI and employment rate. By drawing the frequency histograms of these two indicators, we found that they have a law similar to the normal distribution. In order to verify this conjecture, we performed the Kolmogorov - Smirnov test (K-S test) [9] on these two indicators using SPSS. Due to space limitations, the detailed principles of K-S test will not be discussed here, only the results will be shown.
+
+<!-- b000333 | prose | pages [10] -->
+Given the signiﬁcance level α = 0.05, we obtain the results of the K-S test for the two indicators, as shown below. Since the signiﬁcance levels for both indicators are above α, we can conclude that they all passed the K-S test.
+
+<!-- b000334 | prose | pages [10] -->
+Here are the Q-Q plots of the two data to verify the correctness of the results. It can be seen that the data points are distributed near the straight line, and the results of the K-S test can be accepted.
+
+<!-- b000335 | prose | pages [10] -->
+2Note that the net ﬂow ratio is slightly different from other indicators. When it is negative, it means that this country’s
+
+<!-- b000336 | furniture | pages [10] -->
+微信号：MATHmodels
+
+<!-- b000337 | prose | pages [10] -->
+关注数学模型 indicator is unhealthy. With this in mind, the lower bound of this indicator is set to 0.
+
+<!-- b000338 | furniture | pages [10] -->
+2
+
+<!-- b000339 | furniture | pages [10] -->
+MATHmodels
+
+<!-- b000340 | furniture | pages [10] -->
+获取更多资讯
+
+<!-- b000341 | furniture | pages [11] -->
+Team # 2103649
+
+<!-- b000342 | furniture | pages [11] -->
+Page 11 of 25
+
+<!-- b000343 | furniture | pages [11] -->
+微信公众号：数学模型
+
+<!-- b000344 | prose | pages [11] -->
+Tests of Normality Tests of Normality Kolmogorov-Smirnov Shapiro-Wilk Kolmogorov-Smirnov Shapiro-Wilk Statistic df Sig. Statistic df Sig. Statistic df Sig. Statistic df Sig.
+
+<!-- b000345 | prose | pages [11] -->
+0.087 0.200 GPI 47 47 0.981 0.615 Empl. Rate 0.122 50 0.061 0.964 50 0.129
+
+<!-- b000346 | caption | pages [11] -->
+Figure 5: K-S result for GPI
+
+<!-- b000347 | caption | pages [11] -->
+Figure 6: K-S result for employment rate
+
+<!-- b000348 | prose | pages [11] -->
+Normal Q-Q Plot of GPI Normal Q-Q Plot of Empl. Rate 微信公众号：数学模型 3
+
+<!-- b000349 | prose | pages [11] -->
+2 2
+
+<!-- b000350 | prose | pages [11] -->
+1 Expected Normal Expected Normal 0 0
+
+<!-- b000351 | prose | pages [11] -->
+-1 -2
+
+<!-- b000352 | prose | pages [11] -->
+-2
+
+<!-- b000353 | prose | pages [11] -->
+-3 -4 0.8 1.0 1.2 1.4 60 70 80 90 Observed Value Observed Value
+
+<!-- b000354 | caption | pages [11] -->
+Figure 7: Q-Q plot for GPI
+
+<!-- b000355 | caption | pages [11] -->
+Figure 8: Q-Q plot for employment rate
+
+<!-- b000356 | prose | pages [11] -->
+微信号：MATHmodels In result, the acceptable health range of the two can be given by using normal distribution proper- ties.
+
+<!-- b000357 | caption | pages [11] -->
+Table 3: Health Range
+
+<!-- b000358 | prose | pages [11] -->
+Indicator Upper Bound Lower Bound Education expenditure 100 1 Research and development expenditure 100 0.6 School enrollment - 50 1.63 × 10−6 Number of higher education institutions per capita - 1.15 × 10−7 Number of top 1000 universities per capita - Net ﬂow ratio - 0 Pupil-teacher ratio 22 0 Highly cited paper per institution - 1 Nature-index per institution - 0.76 Patent per institution - 3.27 Average tuition fee ratio 0.54 - GPI 1.344 0.966 Major award winners - 2 Employment rate 84.57 68.98
+
+<!-- b000359 | heading | pages [11] -->
+4.1.3 Diagnosis of Health Conditions
+
+<!-- b000360 | prose | pages [11] -->
+We use a simple acceptance/rejection model (0-1 model) to determine the health conditions.
+
+<!-- b000361 | prose | pages [11] -->
+The overall health condition can be measured with point gain and the occuring problem can be located. For each indicator i, if the value falls in the range of health, the point pi = 1, otherwise pi = 0. ωi is the weight of indicator i.
+
+<!-- b000362 | prose | pages [11] -->
+We caculate the point gain with the equation below:
+
+<!-- b000363 | prose | pages [11] -->
+14 ∑ OPG = ωipi (3) i=1
+
+<!-- b000364 | prose | pages [11] -->
+Overall point gain (OPG) describes the health condition of a system, but only when its value is 1 can it prove that the system is completely healthy. If the OPG value is too low, it means that the countrys education system has at least one main indicator or a large number of secondary indicators that are
+
+<!-- b000365 | furniture | pages [11] -->
+微信号：MATHmodels
+
+<!-- b000366 | prose | pages [11] -->
+关注数学模型 wrong.
+
+<!-- b000367 | furniture | pages [11] -->
+2
+
+<!-- b000368 | furniture | pages [11] -->
+MATHmodels
+
+<!-- b000369 | furniture | pages [11] -->
+获取更多资讯
+
+<!-- b000370 | furniture | pages [12] -->
+Team # 2103649
+
+<!-- b000371 | furniture | pages [12] -->
+Page 12 of 25
+
+<!-- b000372 | furniture | pages [12] -->
+微信公众号：数学模型
+
+<!-- b000373 | prose | pages [12] -->
+We have classiﬁed the health status as follows:
+
+<!-- b000374 | prose | pages [12] -->
+• Healthy: OPG = 1, showing that all indicators are normal.
+
+<!-- b000375 | prose | pages [12] -->
+• Sub-healthy: OPG ⩾0.9, showing that the system has small problems.
+
+<!-- b000376 | prose | pages [12] -->
+• Unhealthy: 0.6 ⩽OPG < 0.9, showing that one or more main indicators are wrong, which can 微信公众号：数学模型 be improved.
+
+<!-- b000377 | prose | pages [12] -->
+• Extremely unhealthy: 0.4 ⩽OPG < 0.6, showing that the overall problem of the system is serious, and more reasonable construction of higher education is needed.
+
+<!-- b000378 | prose | pages [12] -->
+• Serious: 0.2 ⩽OPG < 0.4, showing that the higher education system is seriously out of balance and cannot perform its normal functions.
+
+<!-- b000379 | prose | pages [12] -->
+• Bad: OPG ⩽0.2, showing that the country has no higher education system.
+
+<!-- b000380 | prose | pages [12] -->
+The following ﬁgure shows the lower bound for each status more intuitively.
+
+<!-- b000381 | prose | pages [12] -->
+Lower Bound for OPG Rankings 微信号：MATHmodels Basic Distinction Based on Health Status Rank
+
+<!-- b000382 | prose | pages [12] -->
+Healthy
+
+<!-- b000383 | prose | pages [12] -->
+Sub-Healthy
+
+<!-- b000384 | prose | pages [12] -->
+Unhealthy
+
+<!-- b000385 | prose | pages [12] -->
+Extremely Unhealthy
+
+<!-- b000386 | prose | pages [12] -->
+Serious OPG 0 0.2 0.4 0.6 0.8 1
+
+<!-- b000387 | prose | pages [12] -->
+Unhealthy Healthy
+
+<!-- b000388 | caption | pages [12] -->
+Figure 9: Lower bound for OPG rankings
+
+<!-- b000389 | heading | pages [12] -->
+4.2 Sustainability analysis with DEA-Malmquist model
+
+<!-- b000390 | heading | pages [12] -->
+4.2.1 Basic DEA model
+
+<!-- b000391 | prose | pages [12] -->
+Data envelopment analysis (DEA) is one of the most common methods in the analysis of the per- formance of universities. There are several models of DEA. Among them, the CCR model by Charnes, Cooper and Rhodes, has a simple form and a complete theory. The model is easy to understand and perform.
+
+<!-- b000392 | prose | pages [12] -->
+Without prior weights on the inputs and outputs, DEA can be used to evaluate the relative efﬁciency among multiple-input and multiple-output different decision making units (DMUs) [10]. In a one- input, one-output situation, efﬁciency is usually deﬁned as the ratio of output over input [11]. Similarly, the efﬁciency is deﬁned as Equation 4:
+
+<!-- b000393 | prose | pages [12] -->
+∑ M ymjumj m=1 θj = , (4) N∑ xnjvnj n=1
+
+<!-- b000394 | furniture | pages [12] -->
+微信号：MATHmodels
+
+<!-- b000395 | prose | pages [12, 13] -->
+关注数学模型 where xnj(n = 1, 2, · · · , N), ymj(m = 1, 2, · · · , M) represent N inputs and M outputs of the jth DMU respectively, with the corresponding input weights and output weights umj, vnj, with all inputs, outputs and weights non-negative.
+
+<!-- b000396 | furniture | pages [12] -->
+2
+
+<!-- b000397 | furniture | pages [12] -->
+MATHmodels
+
+<!-- b000398 | furniture | pages [12] -->
+获取更多资讯
+
+<!-- b000399 | furniture | pages [13] -->
+Team # 2103649
+
+<!-- b000400 | furniture | pages [13] -->
+Page 13 of 25
+
+<!-- b000401 | furniture | pages [13] -->
+微信公众号：数学模型
+
+<!-- b000403 | prose | pages [13] -->
+Thus the analysis to the performance of the system is transformed to the following linear program- ming problem:
+
+<!-- b000404 | prose | pages [13] -->
+∑ M 微信公众号：数学模型 ymjumj m=1 max θj = , N∑ xnjvnj n=1  ∑ M   ymkumj   m=1 ⩽1, k = 1, 2, · · · , K, ∑ N s.t. (5) xnkvnj    n=1  umj, vnj ⩾0, m = 1, 2, · · · , M; n = 1, 2, · · · , N,
+
+<!-- b000405 | prose | pages [13] -->
+where K is the total of DMUs. If the optimal solution of the above problem exists and max θj is 1, then we can judge this DMU is effective, meaning the corresponding ratio of outputs to inputs can be maxmized.
+
+<!-- b000406 | prose | pages [13] -->
+微信号：MATHmodels
+
+<!-- b000407 | heading | pages [13] -->
+4.2.2 DEA-Malmquist model
+
+<!-- b000408 | prose | pages [13] -->
+As discussed above, DEA can be used to measure the relative efﬁciency among a series of DMUs. However, in the analysis of time series, basic CCR model just calculate and compare the values of efﬁciency of different time. It ignores the temporal change of productivity. Therefore, we use DEA- Malmquist model, more commonly applied in time series analysis. This method introduces the Malmquist distance, considering the time-varying productivity. We can make a dynamic analysis to efﬁciency with it.
+
+<!-- b000409 | heading | pages [13] -->
+4.2.3 Sustainability analysis
+
+<!-- b000410 | prose | pages [13] -->
+From DEA-Malmquist model, we obtain the efﬁciency ratio between two adjacent years. The re- sults can be calculated fast by DEAP, a software of DEA related model. If we assume that the efﬁciency of the ﬁrst year were 1, then we can get the temporal trend of efﬁciency. Based on the four aspects of sustainability and the trend, we propose the following criteria:
+
+<!-- b000411 | prose | pages [13] -->
+• If in the last ﬁve years, one country’s efﬁciency has declined for three consecutive years, then its system is not considered sustainable.
+
+<!-- b000412 | prose | pages [13] -->
+• If in the last ﬁve years, one country’s efﬁciency has declined for only two consecutive years, then its system’s sustainability is considered poor.
+
+<!-- b000413 | prose | pages [13] -->
+• If in the last ﬁve years, one country’s efﬁciency has declined for no more than one year, then its system is considered highly sustainable.
+
+<!-- b000414 | prose | pages [13] -->
+In the ﬁrst scenario, we think this system cannot maintain its effectiveness. In the second scenario, the system can sometimes maintain its current situation. Finally, we believe the existence of ﬂuctuation, but a highly sustainable system can recover from its decline quickly.
+
+<!-- b000415 | heading | pages [13] -->
+5 Case Tracking: Model Application on Different Countries
+
+<!-- b000416 | prose | pages [13] -->
+Since the measuring models are completed, we try to apply our models to speciﬁc countries to evaluate their health and sustainability status. We randomly select the following ﬁve countries, and the
+
+<!-- b000417 | furniture | pages [13] -->
+微信号：MATHmodels
+
+<!-- b000418 | prose | pages [13, 14] -->
+situation for each country will be discussed detailedly. 关注数学模型 微信公众号：数学模型
+
+<!-- b000419 | furniture | pages [13] -->
+2
+
+<!-- b000420 | furniture | pages [13] -->
+MATHmodels
+
+<!-- b000421 | furniture | pages [13] -->
+获取更多资讯
+
+<!-- b000422 | furniture | pages [14] -->
+Team # 2103649
+
+<!-- b000423 | furniture | pages [14] -->
+Page 14 of 25
+
+<!-- b000424 | furniture | pages [14] -->
+微信公众号：数学模型
+
+<!-- b000426 | caption | pages [14] -->
+Figure 10: Five countries we analyse
+
+<!-- b000427 | prose | pages [14] -->
+5.1 the United States
+
+<!-- b000428 | prose | pages [14] -->
+We ﬁrst evaluate the current health status of the US compared to the health range in Table 3. The indicator point sequence {pi} and OPG are as follows:
+
+<!-- b000429 | prose | pages [14] -->
+{pi} = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1}, OPG = 0.964 微信号：MATHmodels We found that the average tuition fee ratio of the US is abnormal, making the status of the US sub- healthy. The abnormality of this indicator shows that the cost of education in the United States is high, and the equity of education is not strong enough.
+
+<!-- b000430 | prose | pages [14] -->
+For sustainability, the efﬁciency (2009 to 2018) can be shown in the following plot:
+
+<!-- b000431 | prose | pages [14] -->
+Sustainability Analysis Data for the US 1.5
+
+<!-- b000432 | prose | pages [14] -->
+1.2
+
+<!-- b000433 | prose | pages [14] -->
+0.9
+
+<!-- b000434 | prose | pages [14] -->
+0.6
+
+<!-- b000435 | prose | pages [14] -->
+0.3
+
+<!-- b000436 | prose | pages [14] -->
+0 Year 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018
+
+<!-- b000437 | caption | pages [14] -->
+Figure 11: Sustainability analysis for the US
+
+<!-- b000438 | prose | pages [14] -->
+The efﬁciency turns out to have a steady and growing trend, showing that the higher education in the US is sustainable and innovative.
+
+<!-- b000439 | prose | pages [14] -->
+5.2 the United Kingdom
+
+<!-- b000440 | prose | pages [14] -->
+Similar to the former ways, we ﬁrst evaluate the grade sequence and OPG:
+
+<!-- b000441 | prose | pages [14] -->
+{pi} = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, OPG = 0.964
+
+<!-- b000442 | prose | pages [14] -->
+And then the efﬁciency for sustainability:
+
+<!-- b000443 | prose | pages [14] -->
+The health status for the UK is sub-healthy. The employment rate is a little bit higher than the upper bound. This shows that the UK’s vocational education and scientiﬁc research education are not balanced, and need to be improved through policies and teaching methods. The sustainability of UK
+
+<!-- b000444 | furniture | pages [14] -->
+微信号：MATHmodels
+
+<!-- b000445 | prose | pages [14] -->
+关注数学模型 is a bit poor, the policies should be improved actively.
+
+<!-- b000446 | furniture | pages [14] -->
+2
+
+<!-- b000447 | furniture | pages [14] -->
+MATHmodels
+
+<!-- b000448 | furniture | pages [14] -->
+获取更多资讯
+
+<!-- b000449 | furniture | pages [15] -->
+Team # 2103649
+
+<!-- b000450 | furniture | pages [15] -->
+Page 15 of 25
+
+<!-- b000451 | furniture | pages [15] -->
+微信公众号：数学模型
+
+<!-- b000452 | prose | pages [15] -->
+Sustainability Analysis Data for England 1.2
+
+<!-- b000453 | prose | pages [15] -->
+1
+
+<!-- b000454 | prose | pages [15] -->
+0.8
+
+<!-- b000455 | prose | pages [15] -->
+0.6 微信公众号：数学模型 0.4
+
+<!-- b000456 | prose | pages [15] -->
+0.2
+
+<!-- b000457 | prose | pages [15] -->
+0 Year 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018
+
+<!-- b000458 | caption | pages [15] -->
+Figure 12: Sustainability analysis for the UK
+
+<!-- b000459 | heading | pages [15] -->
+5.3 Germany
+
+<!-- b000460 | prose | pages [15] -->
+The situation for Germany is slightly different from former countries. For health status, we have:
+
+<!-- b000461 | prose | pages [15] -->
+{pi} = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, OPG = 1.00 微信号：MATHmodels This means that the higher education system in Germany is completely healthy. As for sustainabil- ity, we have:
+
+<!-- b000462 | prose | pages [15] -->
+Sustainability Analysis Data for Germany 2.5
+
+<!-- b000463 | prose | pages [15] -->
+2
+
+<!-- b000464 | prose | pages [15] -->
+1.5
+
+<!-- b000465 | prose | pages [15] -->
+1
+
+<!-- b000466 | prose | pages [15] -->
+0.5
+
+<!-- b000467 | prose | pages [15] -->
+0 Year 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018
+
+<!-- b000468 | caption | pages [15] -->
+Figure 13: Sustainability analysis for Germany
+
+<!-- b000469 | prose | pages [15] -->
+It is a completely growing trend, showing that German system possesses great sustainability.
+
+<!-- b000470 | heading | pages [15] -->
+5.4 Japan
+
+<!-- b000471 | prose | pages [15] -->
+For Japan, the point sequence, OPG and sustainability plot are as follows:
+
+<!-- b000472 | prose | pages [15] -->
+{pi} = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1}, OPG = 0.7774
+
+<!-- b000473 | prose | pages [15] -->
+The health status for Japan is unhealthy, causing by the lack of education investment and gender inequalty. However, the sustainability plot shows that the higher education is sustainable, the gov- ernment is trying to deal with the problems and improve its system structure, creating a better future for Japanese education.
+
+<!-- b000474 | heading | pages [15] -->
+5.5 India
+
+<!-- b000475 | prose | pages [15] -->
+Compared with the above-mentioned countries, India’s higher education system has more serious
+
+<!-- b000476 | furniture | pages [15] -->
+微信号：MATHmodels
+
+<!-- b000477 | prose | pages [15] -->
+关注数学模型 problems. This can be reﬂected through the structure of point sequence:
+
+<!-- b000478 | furniture | pages [15] -->
+2
+
+<!-- b000479 | furniture | pages [15] -->
+MATHmodels
+
+<!-- b000480 | furniture | pages [15] -->
+获取更多资讯
+
+<!-- b000481 | furniture | pages [16] -->
+Team # 2103649
+
+<!-- b000482 | furniture | pages [16] -->
+Page 16 of 25
+
+<!-- b000483 | furniture | pages [16] -->
+微信公众号：数学模型
+
+<!-- b000484 | prose | pages [16] -->
+Sustainability Analysis Data for Japan 1.5
+
+<!-- b000485 | prose | pages [16] -->
+1.2
+
+<!-- b000486 | prose | pages [16] -->
+0.9
+
+<!-- b000487 | prose | pages [16] -->
+微信公众号：数学模型 0.6
+
+<!-- b000488 | prose | pages [16] -->
+0.3
+
+<!-- b000489 | prose | pages [16] -->
+0 Year 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018
+
+<!-- b000490 | caption | pages [16] -->
+Figure 14: Sustainability analysis for Japan
+
+<!-- b000491 | prose | pages [16] -->
+{pi} = {1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0}, OPG = 0.5783
+
+<!-- b000492 | prose | pages [16] -->
+The health condition for India is extremely unhealthy, resulting in different factors. The problem mainly occurs in accessibility, education level, reasearch level, educational equity, and attraction.
+
+<!-- b000493 | prose | pages [16] -->
+微信号：MATHmodels This shows that there is still much room for improvement in Indian higher education.
+
+<!-- b000494 | prose | pages [16] -->
+As for the sustainability, we have the plot below:
+
+<!-- b000495 | prose | pages [16] -->
+Sustainability Analysis Data for India 1.5
+
+<!-- b000496 | prose | pages [16] -->
+1.2
+
+<!-- b000497 | prose | pages [16] -->
+0.9
+
+<!-- b000498 | prose | pages [16] -->
+0.6
+
+<!-- b000499 | prose | pages [16] -->
+0.3
+
+<!-- b000500 | prose | pages [16] -->
+0 Year 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018
+
+<!-- b000501 | caption | pages [16] -->
+Figure 15: Sustainability analysis for India
+
+<!-- b000502 | prose | pages [16] -->
+The higher education in India seems to be unstable, presenting a unsustainable development in recent years. The education department should take appropriate actions to deal with it.
+
+<!-- b000503 | heading | pages [16] -->
+6 Treatment Plan: Case Study on the Higher Education System of India
+
+<!-- b000504 | prose | pages [16] -->
+By comparing the ﬁve countries mentioned above, we ﬁnd that the state of higher education in India is worrying. To study the impact of policies on the higher education system, India acts as an ideal sample. In this section, we will treat India as our "patient", give out a complete analysis and determine the treatment plan. After that, we will analyze the feasibility of the plan in combination with reality.
+
+<!-- b000505 | prose | pages [16] -->
+This case study can provide clearer policy guidance for the current dilemma of higher education in India, making itself a strong social application value.
+
+<!-- b000506 | heading | pages [16] -->
+6.1 The Analysis of Current System
+
+<!-- b000507 | prose | pages [16] -->
+We have already evaluated the health condition for India in subsection 5.5, and now we will conduct a more detailed analysis of its health problems based on the real world situation.
+
+<!-- b000508 | furniture | pages [16] -->
+微信号：MATHmodels
+
+<!-- b000509 | prose | pages [16] -->
+关注数学模型
+
+<!-- b000510 | furniture | pages [16] -->
+2
+
+<!-- b000511 | furniture | pages [16] -->
+MATHmodels
+
+<!-- b000512 | furniture | pages [16] -->
+获取更多资讯
+
+<!-- b000513 | furniture | pages [17] -->
+Team # 2103649
+
+<!-- b000514 | furniture | pages [17] -->
+Page 17 of 25
+
+<!-- b000515 | furniture | pages [17] -->
+微信公众号：数学模型
+
+<!-- b000516 | heading | pages [17] -->
+6.1.1 Health
+
+<!-- b000517 | prose | pages [17] -->
+• Education investment
+
+<!-- b000518 | prose | pages [17] -->
+The investment factor of India reaches the standard, but it can still reﬂect many problems. The state’s insufﬁcient funding of public educational institutions has led to the rapid growth of private 微信公众号：数学模型 higher education. More and more public institutions are forced to develop self-ﬁnanced courses, with the rising tuition fees [12]. As a result, the popularization and development of higher education are further restricted.
+
+<!-- b000519 | prose | pages [17] -->
+• Universality of higher education
+
+<!-- b000520 | prose | pages [17] -->
+India’s higher education enrollment rate is only 29%, far below 50%. The number of higher edu- cation institutions is also relatively low. The average tuition fee is much higher than the standard. In addition, the population receiving higher education is mainly composed of urban residents, meaning the low enrollment rate in rural areas. These indicators represent that higher education is not popular enough in India. Large amount of low-income people cannot afford the high cost of education, and most people do not have the opportunity to receive higher education.
+
+<!-- b000521 | prose | pages [17] -->
+微信号：MATHmodels
+
+<!-- b000522 | prose | pages [17] -->
+• The level of research
+
+<!-- b000523 | prose | pages [17] -->
+India has excellent performance in research factor with more than ten important award winners, which contrasts with India’s relatively low research expenditures.
+
+<!-- b000524 | prose | pages [17] -->
+• Educational gap
+
+<!-- b000525 | prose | pages [17] -->
+The student-teacher ratio in India is as high as 25, which indicates the lack of educational resources and quality of education in most universities in India. In contrast, among the top 1,000 universities in QS, there are 24 in India, reﬂecting that Indias top universities still have a high level of teaching and research. On the other hand, many graduates from top schools will choose to go abroad for further studies, and prefer to stay there after graduation. Too much human capital ﬂight further aggravates the decline in India’s education level, forming a vicious circle.
+
+<!-- b000526 | prose | pages [17] -->
+• High unemployment rate
+
+<!-- b000527 | prose | pages [17] -->
+Among the population with higher education in India, the employment rate is only 60%, which is also not up to standard. The Indian curriculum lacks both the main elements of learning content and the depth and ﬂuency of the international curriculum. The lack of quality of education has led to un- qualiﬁed and unclear knowledge acquired by students, causing mass unemployment among educated young people. [wiki-India]
+
+<!-- b000528 | heading | pages [17] -->
+6.1.2 Sustainability
+
+<!-- b000529 | prose | pages [17] -->
+According to DEA-Malmquist model, the India’s efﬁciency has declined for four adjacent years. The expenditure have been increasing, while the results have hardly increased. It can be predicted that without policy intervention, Indias efﬁciency will continue to decline in the future. Thus, its system is not considered sustainable.
+
+<!-- b000530 | heading | pages [17] -->
+6.2 Our Vision and Comparison
+
+<!-- b000531 | prose | pages [17] -->
+The problems in the Indian higher education system are complex and serious, and it is difﬁcult to make changes simply. In order to normalize higher education in India, we have to build our vision for different period of time. With the goal of achieving a comprehensive health of education (OPG = 1),
+
+<!-- b000532 | furniture | pages [17] -->
+微信号：MATHmodels
+
+<!-- b000533 | prose | pages [17, 18] -->
+we have formulated the following three-phase vision for short-term, medium-term and long-term.关注数学模型 • Short-term vision: Normalize the main indicators (including school enrollment, employment rate, and related indicators) in 10 - 15 years.
+
+<!-- b000534 | furniture | pages [17] -->
+2
+
+<!-- b000535 | furniture | pages [17] -->
+MATHmodels
+
+<!-- b000536 | furniture | pages [17] -->
+获取更多资讯
+
+<!-- b000537 | furniture | pages [18] -->
+Team # 2103649
+
+<!-- b000538 | furniture | pages [18] -->
+Page 18 of 25
+
+<!-- b000539 | furniture | pages [18] -->
+微信公众号：数学模型
+
+<!-- b000541 | prose | pages [18] -->
+The ﬁrst requirement for disease treatment is to prevent the deterioration of the disease. Similarly, for the higher education in India, our vision is to prevent the deterioration of the higher education in India and make it develop sustainably. Compared with the current situation, the OPG value of India, which has realized its short-term vision, will be greater than 0.7324, approaching the 微信公众号：数学模型 current situation of Japan. At the same time, the stability of the system will be greatly improved, from a downward trend to an upward trend.
+
+<!-- b000542 | prose | pages [18] -->
+• Mid-term vision: Adjust the remaining indicators except the number of higher education institu- tions to make the system close to the sub-health state in 50 years.
+
+<!-- b000543 | prose | pages [18] -->
+Through economic development and education construction, gradually improve the entrance fees and the treatment of foreign students, and increase the number of teachers. According to the best estimate, in about 50 years, India’s net ﬂow ratio will break through zero, while other indicators will basically normalize. The value of OPG will be close to 0.8799, reaching the lower bound of sub-healthy. Compared with the previous sustainable growth rate, it will gradually slow down and approach a steady state.
+
+<!-- b000544 | prose | pages [18] -->
+• Long-term (ﬁnal) vision: build a healthy higher education system in a hundred years.
+
+<!-- b000545 | prose | pages [18] -->
+微信号：MATHmodels Through centuries of continuous efforts, gradually increase the number of higher education in- stitutions in India and improve educational capabilities. Our vision is to make the value of OPG equal to 1, while maintaining sustainability without decline. This is the ﬁnal destination for our policies.
+
+<!-- b000546 | heading | pages [18] -->
+6.3 Treatment Plan: Our Targeted Policies
+
+<!-- b000547 | prose | pages [18] -->
+Considering the vision given before, we have formulated the short-term policies to realize the short- and medium-term vision and the long-term policies to realize the ﬁnal vision. We will give the speciﬁc impact of the policies and the methods to measure the changes in the indicators after the implementa- tion of the policies. Based on these contents, we will determine the implementation timeline from the original state to the target state.
+
+<!-- b000548 | heading | pages [18] -->
+6.3.1 Declaration for Our Policies
+
+<!-- b000549 | heading | pages [18] -->
+1. Short-term policies
+
+<!-- b000550 | prose | pages [18] -->
+Due to India’s limited resources, large population, and economic pressure, it is not realistic to invest extensively to improve all relevant variables. In the long run, the problem of education quality is also a problem of economic development. Only when the economy is sufﬁciently developed can there be a chance to invest enough in education. Without that, the basic problems like school coverage, the allocation of education resources etc. cannot be solved radically. However, the problem of India’s education system is too serious to hold any longer, the actions shall be taken immediately. Considering the situation, we formulate policies that can quickly change indicators with unhealthy conditions in a short period of time.
+
+<!-- b000551 | prose | pages [18] -->
+• Reduce the cost of education for the poor.
+
+<!-- b000552 | prose | pages [18] -->
+In our statistics, we can ﬁnd that the average education cost of the 50 countries accounts for 49.3% of the GDP per capita, but the ratio in India is as high as 238.1%. Many people cannot receive higher education because of unaffordable high education costs. In this regard, we suggest that the govern- ment lower the tuition fees of higher education or give more education subsidies to poor families to support their higher education (this solution partly refers to the suggestion given in [13]). Increasing the enrollment rate can also be a solution.
+
+<!-- b000553 | furniture | pages [18] -->
+微信号：MATHmodels
+
+<!-- b000554 | prose | pages [18, 19] -->
+关注数学模型 • Lower the minimum wage standard.
+
+<!-- b000555 | furniture | pages [18] -->
+2
+
+<!-- b000556 | furniture | pages [18] -->
+MATHmodels
+
+<!-- b000557 | furniture | pages [18] -->
+获取更多资讯
+
+<!-- b000558 | furniture | pages [19] -->
+Team # 2103649
+
+<!-- b000559 | furniture | pages [19] -->
+Page 19 of 25
+
+<!-- b000560 | furniture | pages [19] -->
+微信公众号：数学模型
+
+<!-- b000562 | prose | pages [19] -->
+Refering to multiple research results in history, it is found that the minimum wage standard has a negative correlation with the enrollment rate. Compared to the high cost for higher education, In- dian teenagers prefer getting a job directly to furthering their studies. If the minimum wage declines, the proportion of the labor force receiving higher education will increase, and the higher education 微信公众号：数学模型 enrollment rate will increase accordingly.
+
+<!-- b000563 | prose | pages [19] -->
+• Lower the admission standards for foreign students.
+
+<!-- b000564 | prose | pages [19] -->
+India has 24 universities ranking top 1000 in the world, which is higher than the world’s average. However, the international students admitted is less than the students studying abroad. It is mainly caused by the lack of high scholarships and appropriate standards for international students. For top business schools in India, the GMTA score requirement is around 710 points. This score is sufﬁcient for 6-7 top American universities to provide full tuition waivers for such students. In India, less than 10% of the local students can reach the standard, and domestic education may not be able to satisfy the international students who rank the top in India. Therefore, the standards should be lowered to attract more foreign students and improve the enviroment for academic exchanges.
+
+<!-- b000565 | prose | pages [19] -->
+微信号：MATHmodels
+
+<!-- b000566 | heading | pages [19] -->
+2. Long-term policies
+
+<!-- b000567 | prose | pages [19] -->
+In contrast, the purpose of short-term policies is to move indicators closer to healthy values. But in order to achieve a healthy state, we also need to consider sustainable long-term policies. Therefore, we made the following recommendations.
+
+<!-- b000568 | prose | pages [19] -->
+• Family planning.
+
+<!-- b000569 | prose | pages [19] -->
+We found that India’s education expenditure and research & development expenditure is higher than the normal value, which means that its education investment is already healthy. If more investment is applied to build more facilities, it will put more pressure to the on the economy, and the quality of education cannot be guaranteed. It is more reasonable to solve the problem from the population than to solve the problem from the investment. Therefore, it is imperative to slow the growth of population down, and the policy should encourage family planning. Reducing the population of the right age can signiﬁcantly reduce the pressure on education and increase the enrollment rate.
+
+<!-- b000570 | prose | pages [19] -->
+• Economic structure transformation.
+
+<!-- b000571 | prose | pages [19] -->
+When the national education becomes healthy, the increase of enrollment rate and the net ﬂow ratio of international students will increase the workforce receiving higher education. In that case, we are able to invest more talents for economic construction. These talents will serve as the guiding force for economic development and contribute to increasing education investment. This input-output-input model realizes the positive feedback of the economic system, possessing good sustainability.
+
+<!-- b000572 | prose | pages [19] -->
+• Educational environment improvement.
+
+<!-- b000573 | prose | pages [19] -->
+The teacher-student ratio in India is a difﬁcult problem to deal with. Teachers in India are treated well. They are paid with high salaries and are always respected. However ,even if the current en- rollment rate is very low, higher education is still facing the dilemma of insufﬁcient teachers in India. Why is this happening? After consulting relevant information, we found that the educational environ- ment in India is the main reason affecting the number of teachers. Indias own educational environment has greatly increased the difﬁculty of recruiting foreign teachers, while local students with teacher po- tential usually choose to ﬁnd employment or go abroad. In conclusion, improving the educational environment in India is a necessary condition for solving the problem of insufﬁcient teachers, it must
+
+<!-- b000574 | furniture | pages [19] -->
+微信号：MATHmodels
+
+<!-- b000575 | prose | pages [19] -->
+关注数学模型 be considered while excuting the policies.
+
+<!-- b000576 | furniture | pages [19] -->
+2
+
+<!-- b000577 | furniture | pages [19] -->
+MATHmodels
+
+<!-- b000578 | furniture | pages [19] -->
+获取更多资讯
+
+<!-- b000579 | furniture | pages [20] -->
+Team # 2103649
+
+<!-- b000580 | furniture | pages [20] -->
+Page 20 of 25
+
+<!-- b000581 | furniture | pages [20] -->
+微信公众号：数学模型
+
+<!-- b000582 | heading | pages [20] -->
+6.3.2 Policy Implementation Model Realized by Using Markov Chain
+
+<!-- b000583 | prose | pages [20] -->
+Since we have selected a healthy range for each indicator, we put forward speciﬁc policy recom- mendations for its ‘unhealthy’ indicators to converge towards ‘healthy’. However, our policies can only provide the direction for the changes, the efﬁciency can not be speciﬁed. In that case, we believe that the effect of policy implementation is a random process.
+
+<!-- b000584 | prose | pages [20] -->
+微信公众号：数学模型 In order to facilitate subsequent modeling, we make the following assumptions based on the general assumptions:
+
+<!-- b000585 | prose | pages [20] -->
+• One of the three states of policy implementation is excuted every year: good, poor, counterpro- ductive. If the policy is effectively implemented, the indicator will change quickly to approach the normal value, but if the policy is not effectively implemented, the indicator state will remain unchanged or even worse.
+
+<!-- b000586 | prose | pages [20] -->
+• The state that happens in the next year depends on the current state and value of current in- dicators. If the policy functions well in the previous year, it is easier to implement in the next year. Moreover, the closer the current indicator is to the normal, the weaker the role regulatory policy plays. This assumption is made in consideration of the relationship between the degree of unhealthy indicators and the role of policies. The more unhealthy the indicators, the greater the willingness to implement the corresponding policies and the greater the acceptability of the 微信号：MATHmodels policies. On the contrary, if the indicators are reaching the health limit, the policies will not result so obvious.
+
+<!-- b000587 | prose | pages [20] -->
+• Under the control of the policies, unhealthy education indicators will eventually reach normal values. The policies are ﬂexible. When the effect is reduced due to its close to the normal value, the policies will be adjusted appropriately, and ﬁnally the index will converge to the normal value.
+
+<!-- b000588 | prose | pages [20] -->
+We model with the assumptions above, determine the to use Markov chain to predict the trend of indicators under policy intervention. We believe that policy implementation effect ( PIE ) and buffer ( BU ) are factors determining the current state and they are random variables, whose distribution are shown below. Since the difference between the current value and the normal value of the index ( DCN ) affects the policy intensity, we add it to the distribution function of PIE to represent its role. The distribution law of PIE and BU is shown in the following table:
+
+<!-- b000589 | caption | pages [20] -->
+Table 4: Distribution law for modeling parameters
+
+<!-- b000590 | prose | pages [20] -->
+Last state PIE BU Distribution law X1 ∼N(k · DCN + 0.01, 0.01), Y 1 ∼N(0.01, 0.01) X1 Y 1 Good X2 ∼N(k · DCN, 0.01), Y 2 ∼N(0, 0.01) X2 Y 2 Poor X3 ∼N(k · DCN −0.01, 0.01), Y 3 ∼N(−0.01, 0.01) X3 Y 3 Counterproductive
+
+<!-- b000591 | prose | pages [20] -->
+The variable k is used to control the severity of the value change. It varies from indicator to indicator. As for modeling, if X +Y > 0.05, it indicates that the policy is in good state. If X +Y < 0.05, it indicates that the policy has counterproductive effect.
+
+<!-- b000592 | prose | pages [20] -->
+With the discussion above, we We can use the indicator value of the i-th year to determine the value of the i + 1-th year, and the transfer equation can be given in the following form:
+
+<!-- b000593 | prose | pages [20] -->
+value(i + 1) = value(i) × (1 −(X + Y )) (6)
+
+<!-- b000594 | heading | pages [20] -->
+6.3.3 Implementation Timeline for India
+
+<!-- b000595 | prose | pages [20] -->
+Based on the above model, we have predicted the effect of the policy implementation. Due to the large amount of forecast data, we choose the changes in the main indicators of each stage to reﬂect the overall changes.
+
+<!-- b000596 | prose | pages [20] -->
+For the short-term vision, the main indicators are the enrollment and the employment rate. Apply-
+
+<!-- b000597 | furniture | pages [20] -->
+微信号：MATHmodels
+
+<!-- b000598 | prose | pages [20] -->
+关注数学模型 ing ﬂexible policies to both indicators, the prediction curves are as follows:
+
+<!-- b000599 | furniture | pages [20] -->
+2
+
+<!-- b000600 | furniture | pages [20] -->
+MATHmodels
+
+<!-- b000601 | furniture | pages [20] -->
+获取更多资讯
+
+<!-- b000602 | furniture | pages [21] -->
+Team # 2103649
+
+<!-- b000603 | furniture | pages [21] -->
+Page 21 of 25
+
+<!-- b000604 | furniture | pages [21] -->
+微信公众号：数学模型
+
+<!-- b000605 | prose | pages [21] -->
+The Prediction for Employment Rate The Prediction for Enrollment Rate 85 60 55 80 50 75 45 40 70 35 65 30 60 25 微信公众号：数学模型 0 5 10 15 20 25 30 0 5 10 15 20 25 30
+
+<!-- b000606 | prose | pages [21] -->
+0 1 2 3 4 5 6 0 1 2 3 4 5 6 7 8 9 7 8 9 10 11 12 13 10 11 12 13 14 15 16 17 18 19 14 15 16 17 18 19
+
+<!-- b000607 | caption | pages [21] -->
+Figure 16: Prediction for employment rate
+
+<!-- b000608 | caption | pages [21] -->
+Figure 17: Prediction for enrollment rate
+
+<!-- b000609 | prose | pages [21] -->
+After twenty independent repeated experiments (different curves in the plot), we found that em- ployment rate achieves the lower bound of health range with the average of 10 years and the school enrollment rate turns normal in about 13 years. The short-term vision seem to be achieved success- fully.
+
+<!-- b000610 | prose | pages [21] -->
+As for the mid-term vision, it can be represented by the net ﬂow ratio of international mobile students. For the vision we proposed, its value would turn normal in 50 years. The Markov chain gives out prediction results shown below:
+
+<!-- b000611 | prose | pages [21] -->
+微信号：MATHmodels The Prediction of Net Flow Ratio 0.5
+
+<!-- b000612 | prose | pages [21] -->
+0 0 10 20 30 40 50 60 70 80 90 100
+
+<!-- b000613 | prose | pages [21] -->
+‐0.5
+
+<!-- b000614 | prose | pages [21] -->
+‐1
+
+<!-- b000615 | prose | pages [21] -->
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+
+<!-- b000616 | caption | pages [21] -->
+Figure 18: Prediciton for net ﬂow ratio of international mobile students
+
+<!-- b000617 | prose | pages [21] -->
+The average cost for the net ﬂow ratio to be normal is 48 years, meeting the requirement of mid- term vision.
+
+<!-- b000618 | prose | pages [21] -->
+For the long-time vision, the main factor, number of higher education institutions, act as a discrete variable. Although it cannot be predicted through Markov chain, we can set speciﬁed goals for the government to achieve. Here is the implementation timeline for health status:
+
+<!-- b000619 | prose | pages [21] -->
+Policy Implementation Effect Schedule
+
+<!-- b000620 | prose | pages [21] -->
+India's education system The policy began School enrollment rate achieves healthy and to be implemented reaches health level sustainable development
+
+<!-- b000621 | prose | pages [21] -->
+2118 2031 2066 2018 2028
+
+<!-- b000622 | prose | pages [21] -->
+The employment rate Net flow ratio of internationally reaches health level mobile students reaches health level
+
+<!-- b000623 | caption | pages [21] -->
+Figure 19: Timeline for health visions
+
+<!-- b000624 | prose | pages [21] -->
+For the sustainability part, our policies begin with curing and maintaining a sustainable system, so
+
+<!-- b000625 | furniture | pages [21] -->
+微信号：MATHmodels
+
+<!-- b000626 | prose | pages [21, 22] -->
+关注数学模型 a sharp turn can be observed at the beginning. With short-term and mid-term visions achieved, the growth of sustainability slows down and shows a stable trend. Using DEA-Malmquist model, we can plot the timeline for sustainability. Observation concluded that all our visions are achieved properly.
+
+<!-- b000627 | furniture | pages [21] -->
+2
+
+<!-- b000628 | furniture | pages [21] -->
+MATHmodels
+
+<!-- b000629 | furniture | pages [21] -->
+获取更多资讯
+
+<!-- b000630 | furniture | pages [22] -->
+Team # 2103649
+
+<!-- b000631 | furniture | pages [22] -->
+Page 22 of 25
+
+<!-- b000632 | furniture | pages [22] -->
+微信公众号：数学模型
+
+<!-- b000634 | prose | pages [22] -->
+Sustainbility Analysis Efficiency from 2009 to 2018 4 Third Stage 微信公众号：数学模型 (2068-2118) Second Stage (2033-2068) 3 First Stage (2018-2033)
+
+<!-- b000635 | prose | pages [22] -->
+2
+
+<!-- b000636 | prose | pages [22] -->
+1
+
+<!-- b000637 | prose | pages [22] -->
+0 2009 2015 2021 2027 2033 2039 2045 2051 2057 2063 2069 2075 2081 2087 2093 2099 2105 2111 2117
+
+<!-- b000638 | caption | pages [22] -->
+Figure 20: Timeline for sustainability
+
+<!-- b000639 | prose | pages [22] -->
+微信号：MATHmodels 6.4 the Real-World Impacts and Difﬁculties
+
+<!-- b000640 | prose | pages [22] -->
+We believe that the short-term policies we designed are for the transition period, and the long-term policies are for the end state. If they can be implemented well, the India’s education system will reach the state of healthy and sustainable in a hundred years. But in fact, the policies may encounter many problems when implementing in India. These problems will hinder the implementation of policies to some extent, creating obstacles for the excution. Here are some of them.
+
+<!-- b000641 | prose | pages [22] -->
+1. Higher education in India is elite education. The cost is relatively high. The government may only be able to afford tuition for a small portion of outstanding students. The increase in enrollment rate may not be as ideal as predicted.
+
+<!-- b000642 | prose | pages [22] -->
+2. Although lowering the minimum wage can motivate young people to receive higher education, there is still a large number of people who can only support their families by doing odd jobs in India. If the minimum wage is suddenly lowered, their lives will be severely affected.
+
+<!-- b000643 | prose | pages [22] -->
+3. Newly added domestic and foreign students may put great pressure on teachers. India inherently lacks teachers in higher education. If the increase in foreign students and the increase in teachers cannot maintain a relative balance, the teacher retention rate will decrease. This will constitute a negative feedback: the teacher’s departure leads to the decrease of students, making the attempt to increase the number of foreign students fail.
+
+<!-- b000644 | prose | pages [22] -->
+4. The most serious problem is dealing with social concepts.A Although the caste system has been abolished in law, the idea of hierarchy still exists. Indians of the lowest rank cannot receive normalized education as the others do, and there is no real fairness for people with low caste.
+
+<!-- b000645 | prose | pages [22] -->
+This backward feudal concept severely limited India’s development potential. If changes are not made, the efﬁciency of the policy will be affected.
+
+<!-- b000646 | prose | pages [22] -->
+However, we are still optimistic about the development of higher education in India. Although change is difﬁcult, it is not impossible. We believe that through the reasonable guidance of policies, the national education environment and the education level of citizens will be gradually improved. Education in India will eventually reach a healthy and sustainable state.
+
+<!-- b000647 | furniture | pages [22] -->
+微信号：MATHmodels
+
+<!-- b000648 | prose | pages [22] -->
+关注数学模型
+
+<!-- b000649 | furniture | pages [22] -->
+2
+
+<!-- b000650 | furniture | pages [22] -->
+MATHmodels
+
+<!-- b000651 | furniture | pages [22] -->
+获取更多资讯
+
+<!-- b000652 | furniture | pages [23] -->
+Team # 2103649
+
+<!-- b000653 | furniture | pages [23] -->
+Page 23 of 25
+
+<!-- b000654 | furniture | pages [23] -->
+微信公众号：数学模型
+
+<!-- b000655 | heading | pages [23] -->
+7 Model Strengths and Weaknesses
+
+<!-- b000656 | heading | pages [23] -->
+7.1 Strengths
+
+<!-- b000657 | prose | pages [23] -->
+• We have established clear criteria for health and sustainability.
+
+<!-- b000658 | prose | pages [23] -->
+For each indicator, we have determined a clear range of health through data analysis. For the 微信公众号：数学模型 measurement of sustainability, we adopted the DEA-Malmquist model by comparing the relative efﬁciency of higher education in different years. The relative efﬁciency between different years can reﬂect the changes in system quality over time and can be used to measure sustainability.
+
+<!-- b000659 | prose | pages [23] -->
+• We have selected enough indicators.
+
+<!-- b000660 | prose | pages [23] -->
+We have selected six main factors and fourteen indicators, which can fully reﬂect the health of the higher education system. Meanwhile, it also provides speciﬁc directions for our policy analysis.
+
+<!-- b000661 | prose | pages [23] -->
+• DEA is a completely objective method.
+
+<!-- b000662 | prose | pages [23] -->
+Using DEA to analyze efﬁciency does not need to specify the weights of various indicators in advance. Each weight is completely determined by the data. It is a completely objective method.
+
+<!-- b000663 | prose | pages [23] -->
+Moreover, the basic DEA model is not suitable for analyzing time series. We adopt the DEA- Malmquist model that considers the changes in productivity over time. Thus, the analysis is 微信号：MATHmodels more reasonable.
+
+<!-- b000664 | prose | pages [23] -->
+• Markov chain can predict the impact of policy well.
+
+<!-- b000665 | prose | pages [23] -->
+The premise of Markov chain is that the next state of the system is only related to the current state. In the process of policy implementation, the government will adjust the policy direction of the next year according to the implementation in that year. Therefore, the Markov chain is very suitable for analyzing the impact of policies.
+
+<!-- b000666 | heading | pages [23] -->
+7.2 Weaknesses
+
+<!-- b000667 | prose | pages [23] -->
+• There are not enough countries.
+
+<!-- b000668 | prose | pages [23] -->
+When determining the health range, we assumed and veriﬁed that certain indicators obey a nor- mal distribution, thereby determining the reasonable range of the indicators. However, due to the small total number of countries in the world, our calculated range may deviate from the range of true normal distribution.
+
+<!-- b000669 | prose | pages [23] -->
+• We did not consider the changes in standards over time.
+
+<!-- b000670 | prose | pages [23] -->
+When analyzing the vision system, we followed the standards in 2018. However, the various indicators of different countries may change in the future. In our model, we have not considered changes in standards.
+
+<!-- b000671 | furniture | pages [23] -->
+微信号：MATHmodels
+
+<!-- b000672 | prose | pages [23] -->
+关注数学模型
+
+<!-- b000673 | furniture | pages [23] -->
+2
+
+<!-- b000674 | furniture | pages [23] -->
+MATHmodels
+
+<!-- b000675 | furniture | pages [23] -->
+获取更多资讯
+
+<!-- b000676 | furniture | pages [24] -->
+Team # 2103649
+
+<!-- b000677 | furniture | pages [24] -->
+Page 24 of 25
+
+<!-- b000678 | furniture | pages [24] -->
+微信公众号：数学模型
+
+<!-- b000679 | heading | pages [24] -->
+References
+
+<!-- b000680 | references | pages [24] -->
+[1] M. T. Dooris, J. Cawood, S. Doherty, and S. Powell, “Healthy universities: Concept, model and
+
+<!-- b000681 | references | pages [24] -->
+framework for applying the healthy settings approach within higher education in england,” 2010.
+
+<!-- b000682 | references | pages [24] -->
+[2] T. Waas, J. Hug, K. Ceulemans, W. Lambrechts, J. Vandenabeele, R. Lozano, and T. Wright, “Sus-
+
+<!-- b000683 | references | pages [24] -->
+微信公众号：数学模型
+
+<!-- b000684 | references | pages [24] -->
+tainable higher education. understanding and moving forward,” 2012.
+
+<!-- b000685 | references | pages [24] -->
+[3] Wikipedia, “Educational equity,” https://en.wikipedia.org/wiki/Educational_equity.
+
+<!-- b000686 | references | pages [24] -->
+[4] World Bank, “World development indicator,” https://databank.worldbank.org/reports.aspx?
+
+<!-- b000687 | references | pages [24] -->
+source=world_development_indicators.
+
+<!-- b000688 | references | pages [24] -->
+[5] ——, “Education statistics,” https://databank.worldbank.org/source/education-statistics_all_
+
+<!-- b000689 | references | pages [24] -->
+indicators.
+
+<!-- b000690 | references | pages [24] -->
+[6] QS, “Topuniversities,” https://www.topuniversities.com/.
+
+<!-- b000691 | references | pages [24] -->
+[7] natureindex.com, “nature index,” https://www.natureindex.com/.
+
+<!-- b000692 | references | pages [24] -->
+[8] Wikipedia, “Analytic hierarchy process,” https://en.wikipedia.org/wiki/Analytic_hierarchy_
+
+<!-- b000693 | references | pages [24] -->
+process.
+
+<!-- b000694 | references | pages [24] -->
+微信号：MATHmodels
+
+<!-- b000695 | references | pages [24] -->
+[9] ——, “Kolmogorov smirnov test,” https://en.wikipedia.org/wiki/Kolmogorov_Smirnov_test.
+
+<!-- b000696 | references | pages [24] -->
+[10] F.-H. F. Liu and P. hsiang Wang, “Dea malmquist productivity measure: Taiwanese semiconductor
+
+<!-- b000697 | references | pages [24] -->
+companies,” International Journal of Production Economics, vol. 112, no. 1, pp. 367–379, 2008,
+
+<!-- b000698 | references | pages [24] -->
+special Section on Recent Developments in the Design, Control, Planning and Scheduling of
+
+<!-- b000699 | references | pages [24] -->
+Productive Systems. [Online]. Available:
+
+<!-- b000700 | references | pages [24] -->
+https://www.sciencedirect.com/science/article/pii/
+
+<!-- b000701 | references | pages [24] -->
+S0925527307001739
+
+<!-- b000702 | references | pages [24] -->
+[11] Wikipedia, “Data envelopment analysis,” https://en.wikipedia.org/wiki/Data_envelopment_
+
+<!-- b000703 | references | pages [24] -->
+analysis.
+
+<!-- b000704 | references | pages [24] -->
+[12] ——, “India,” https://en.wikipedia.org/wiki/India.
+
+<!-- b000705 | references | pages [24] -->
+[13] X. Wei, “Wales’ new measures to increase enrollment in higher education,” 2006.
+
+<!-- b000706 | heading | pages [24] -->
+Appendices
+
+<!-- b000707 | heading | pages [24] -->
+Appendix A
+
+<!-- b000708 | prose | pages [24] -->
+Codes
+
+<!-- b000709 | prose | pages [24] -->
+A.1 Code for AHP
+
+<!-- b000710 | prose | pages [24] -->
+clc, clear B=[1 1/3 1/5 1/5 1/7 1/9 %Attraction 3 1 1/3 1/3 1/5 1/7 %Equity 5 3 1 1 1/3 1/5 %Research 5 3 1 1 1/3 1/5 %Education 7 5 3 3 1 1/3 %Access 9 7 5 5 3 1]; %Expenditure [n,m]=size(B); for i=1:n for j=1:n if B(i,j)*B(j,i)~=1 fprintf(’i=%d,j=%d,B(i,j)=%d,B(j,i)=%d\n’,i,j,B(i,j),B(j,i)) end end end [Vec,Dig]=eig(B);%Eigenvalues and eigenvectors eigen=max(Dig); eigmax=max(eigen);%The maximum eigenvalue
+
+<!-- b000711 | furniture | pages [24] -->
+微信号：MATHmodels
+
+<!-- b000712 | prose | pages [24] -->
+关注数学模型 c1=find(eigen(1,:)==max(eigen));
+
+<!-- b000713 | furniture | pages [24] -->
+2
+
+<!-- b000714 | furniture | pages [24] -->
+MATHmodels
+
+<!-- b000715 | furniture | pages [24] -->
+获取更多资讯
+
+<!-- b000716 | furniture | pages [25] -->
+Team # 2103649
+
+<!-- b000717 | furniture | pages [25] -->
+Page 25 of 25
+
+<!-- b000718 | furniture | pages [25] -->
+微信公众号：数学模型
+
+<!-- b000719 | prose | pages [25] -->
+eigmaxv=Vec(:,c1);%eigenvector corresponding to the maximum eigenvalue weight=zeros(n,1); for i=1:n weight(i,1)=eigmaxv(i,1)/sum(eigmaxv); end weight=weight’ %Consistency test RI=[0,0,0.58,0.9,1.12,1.24,1.32,1.41,1.45,1.49,1.52,1.54,1.56,1.58,1.59]; CI=(eigmax-n)/(n-1); CR=CI/RI(1,n); 微信公众号：数学模型 CR if CR>=0.1 fprintf(’Consistency test failed\n’); else fprintf(’Consistency test passed\n’); end
+
+<!-- b000720 | prose | pages [25] -->
+A.2 Code for Malkov Chain
+
+<!-- b000721 | prose | pages [25] -->
+import numpy as np import pandas as pd def loadDatadet(infile):
+
+<!-- b000722 | prose | pages [25] -->
+f=open(infile,’r’) sourceInLine=f.readlines() dataset=[] for line in sourceInLine:
+
+<!-- b000723 | prose | pages [25] -->
+temp1=line.strip(’\n’) temp2=temp1.split(’\t’) 微信号：MATHmodels dataset.append(temp2) return dataset infile=’data.txt’ infile=loadDatadet(infile) k=0.0017 tmp=0 normal=77 n=100 j=0 all=[] writer=pd.ExcelWriter("output2.xlsx") while j < 20:
+
+<!-- b000724 | prose | pages [25] -->
+a=60 al=[a] i=0 while i < n:
+
+<!-- b000725 | prose | pages [25] -->
+p=float(infile[j+30][i])+float(infile[j+31][i])+k*(a-normal)+tmp a = a*(1-p) i=i+1 if p>0.05:
+
+<!-- b000726 | prose | pages [25] -->
+tmp=0.01 if p<-0.05:
+
+<!-- b000727 | prose | pages [25] -->
+tmp=-0.01 else:
+
+<!-- b000728 | prose | pages [25] -->
+tmp=0 print(’a’+str(i)+’:’+str(a)) al.append(a) all.append(al) j+=1 data=pd.DataFrame(all) data.to_excel(writer,’page_1’,float_format=’%.5f’) writer.save writer.close()
+
+<!-- b000729 | furniture | pages [25] -->
+微信号：MATHmodels
+
+<!-- b000730 | prose | pages [25] -->
+关注数学模型
+
+<!-- b000731 | furniture | pages [25] -->
+2
+
+<!-- b000732 | furniture | pages [25] -->
+MATHmodels
+
+<!-- b000733 | furniture | pages [25] -->
+获取更多资讯

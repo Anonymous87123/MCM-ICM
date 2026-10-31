@@ -1,0 +1,13 @@
+Summary
+
+The object of our model is to provide an emergency evacuation for the Louvre. In the meantime, this model can also identify potential bottlenecks and has certain adaptability. However, complex building structures and the interaction among people makes the problem much harder. In this paper, we present a system dynamic planning model. And both the systematicness during the planning and the individuality of the visitors are considered in our model.
+
+The first part of our model is to solve the influence of individual factors. The effect will be ultimately reflected in the flow speed of the crowd. In this way, while calculating the flow speed of the crowd, we adopt N&M model and Stable Evacuation Speed model (SES Model) to deal with different situation.
+
+The second part is to visualize the building into a graph. Then simplify the problem from muti-to-muti plan to single-to-single plan through adding two virtual nodes. This step makes the following solution much easier.
+
+The third part of the model is the systematic planning of evacuation route. Here a new algorithm with Ford-Fulkerson algorithm as the core, and considering the previous two parts of the model are proposed. In this way, the algorithm can carry out route planning from the perspective of system, and fully consider the micro factors.
+
+Then, a simulated building is built to verify the validity of the model. The model obtains the result within 0.457s with a scale of 770 people. Besides, to a certain extent, the result matches practical case. In addition, it is able to evacuate the crowd from the dangerous room with the fastest speed in the emergency treatment, which shows excellent performance.
+
+Finally, we implement this model to the Louvre. It cost 36.15s to get the result with a scale of 6700 people and accuracy of 0.1s. The total evacuation cost 288.7s.  After the flow and margin matrices are visualized, it clearly shows the whole evacuation process and potential bottlenecks. Also, we present a series of suggestions for practical use of the model.

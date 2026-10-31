@@ -1,0 +1,11 @@
+Summary
+
+To measure the evolution and revolution of musicians’ community, our team introduces a model to quantify their identities across time based on the dynamic networks from interactions between musicians across time. The model contains three core parts: rescaled PageRank to measure inﬂuence, optimization of weighted cosine distance to measure similarity with time structure, and a comprehensive measure combing inﬂuence and similarity.
+
+To measure importance of nodes in network more accurately, we improve the traditional PageRank model by introducing a method of "rescaling". This is a method taking corresponding nodes’ relative positions among contemporaries into account which effectively solves the problem of time preference in the ordinary PageRank and allow us to compare inﬂuence of musicians vertically.
+
+Then, based on musical characteristics of their works across time, we design a weighted cosine distance as the measure of similarity. And in order to determine the weight vector, we optimize the error function of MSE with its labels from the structure of networks by Stochastic Gradient Descent. Except from similarity of musical identities from the same period, we also consider the potential lag effects of previous works in our model. This makes the similarity model precisely capture musicians within a same genre.
+
+In addition, we conbime the similarity into rescaled PageRank model in order to making use of more information than indegree. With this update, our model can better overcome the problem of time-bias. Also, by the comparison of results between two measures, we are able to take a glimpse at the relationship between inﬂuence and similarity. And by evolution of inﬂuence and musical characteristics, we can also trace how a genre change over time with different positions in the network. Some cases studies are presented to show how it works.
+
+Finally, we made some tests to check whether we can dig out more information from the graph structure by Graph Convolutional Network(GCN). Sensitivity analysis is also held to determine the width of average window in the process of rescaling. Strength and weakness of the model are also summarized for further imporving the measures.
