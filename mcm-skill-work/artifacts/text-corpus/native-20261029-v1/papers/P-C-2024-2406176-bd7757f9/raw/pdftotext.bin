@@ -1,0 +1,2922 @@
+           Problem Chosen                     2024                   Team Control Number
+                                            MCM/ICM
+                   C                      Summary Sheet
+                                                                           2406176
+
+                                             Summary
+    Momentum, elucidating the phenomenon wherein a player’s real-time performance surpasses
+pre-match expectations, holds paramount significance in tennis matches. This paper introduces the
+
+
+
+
+                                                                               型
+Real-Time Momentum Quantification (RTMQ) model, which quantifies momentum by assessing
+the disparity between a player’s pre-match win probability and the real-time win probability. The
+study establishes the importance of momentum by comparing our model’s results with an alternative
+
+
+
+
+                                                                模
+model that neglects in-match performance. Notably, specialized indicators are employed to predict
+momentum swings, and game theory is applied to strategize against different opponents.
+
+
+
+
+                                                               学
+    First, we use the independent and identically distributed (IID) assumption to reverse calculate the
+server’s probability of winning the first point (𝑝 0 ), base on the Elo rating system. IID assumption
+is not applied to calculate any other value, including real-time win probability. Then, RTMQ
+
+
+
+
+                                                      数
+model is constructed by integrating 𝑝 0 and the Real-Time Win Probability (RTWP) model for
+calculating subsequent point win probabilities during a match, that also eliminates the effect of
+
+                                       ：
+the serve side advantage. The resulting momentum difference aligns seamlessly with real-world
+
+
+
+
+                                                                   els
+observations. The significance of momentum is confirmed through a K-S test, rejecting the
+hypothesis that in-match performance is inconsequential. Further analysis involves applying the
+                                      号
+Fourier Series Fitting (FSF) model to track momentum trend.
+
+
+
+
+                                                                 od
+    To forecast large momentum shifts, a Swing Prediction (SP) model is introduced. The model
+                             众
+
+operates on a per-set basis, as a set provides a more comprehensive dataset for analysis compared to
+                                                                m
+individual games. We sample the momentum trend value (MMTTV) from the momentum trend at
+the end of each set. This is because the frequent in-set momentum shifts can render predictions based
+                     公
+
+
+                                                  H
+on real-time momentum data at the end of each set unreliable. At the same time, key technical
+performance factors are distilled from specialized indicators through factor analysis. We then
+                                               AT
+      信
+
+
+
+
+employ a Multivariate Linear Regression model to predict the swings. Our model demonstrates
+an impressive prediction accuracy of 90.44% on our test problem, with specific factors such as
+2nd_serve_direct_won and Net_approach_point_won identified as crucial contributors to player
+     微
+
+                                        M
+
+
+1’s momentum.
+    The paper extends its analysis to dynamic strategic choices made by tennis players during
+                               ：
+
+
+
+
+matches, employing the Mixed-Strategy Nash Equilibrium model. K-means clustering is
+utilized to determine strategic clusters. The Nash equilibrium is calculated, offering insights into
+optimal strategy combinations against different opponents.
+                       号
+
+
+
+
+    The efficacy of the proposed models is validated through testing on notable tennis matches,
+including the extraordinarily tight 2023 Wimbledon Gentlemen’s Final between Carlos Alcaraz and
+               信
+
+
+
+
+Novak Djokovic, and the one-sided 2017 French Open match between Andy Murray and Andrey
+Kuznetsov. The SP model exhibits high accuracy (85.32% for the Alcaraz vs. Djokovic match,
+      微
+
+
+
+
+and 88.34% for the Murray vs. Kuznetsov match), while the FSF model accurately cap-
+tures momentum trends, taking into account the score situation and historical commentary.
+Eventually, we pinpoint crucial factors for inclusion in future models.
+Keywords: tennis; momentum; real-time win probability; Elo rating system; mixed-strategy Nash
+equilibrium; quantification model
+
+                                                                                                 2
+                                                                                                     关注数学模型
+                                                                                        MATHmodels
+
+
+                                                                                                     获取更多资讯
+Team # 2406176                                                                              Page 2 of 27
+
+
+                                           Contents
+
+
+1   Introduction                                                                                      4
+    1.1   Background Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        4
+
+
+
+
+                                                                              型
+    1.2   Problem Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      4
+    1.3   Model Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        5
+
+
+
+
+                                                               模
+2   Assumptions                                                                                       5
+
+
+
+
+                                                              学
+3   Notifications                                                                                     6
+
+
+
+
+                                                      数
+4   Data Source                                                                                       6
+
+                                       ：
+
+                                                                  els
+5   Real-Time Momentum Quantification Model                                                           6
+                                      号
+    5.1   Pre-match Win Prediction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      7
+
+
+
+
+                                                                od
+    5.2   Probability of Winning the First Point . . . . . . . . . . . . . . . . . . . . . . . .      8
+                              众
+
+    5.3   Dynamic Computation of the Subsequent Points’ Win Probabilities . . . . . . . . .           9
+    5.4
+                                                               m
+          Quantification of Momentum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+                       公
+
+
+                                                  H
+          5.4.1     Verification of the Significance of Momentum . . . . . . . . . . . . . . . . 12
+                                               AT
+      信
+
+
+
+
+    5.5   Momentum Trend Value (MMTTV) Visualization . . . . . . . . . . . . . . . . . . 14
+
+6   Swing Prediction Model                                                                           15
+     微
+
+                                        M
+
+
+
+    6.1   Data Preprocessing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+    6.2   Indicators Calculation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+                                ：
+
+
+
+
+    6.3   Exploratory Factor Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+                        号
+
+
+
+
+    6.4   Prediction of Swing Based on Multivariate Linear Regression Model . . . . . . . . 17
+              信
+
+
+
+
+7   Mixed-Strategy Nash Equilibrium Model                                                            18
+    7.1   Strategy Payoff Calculation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+      微
+
+
+
+
+    7.2   Model Setup . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+8   Test of FSF Model and SP Model                                                                   21
+    8.1   The Match between Alcaraz and Djokovic . . . . . . . . . . . . . . . . . . . . . . 21
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                            Page 3 of 27
+
+
+    8.2   Model Generalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+    8.3   Contextual Limitations in SP Model . . . . . . . . . . . . . . . . . . . . . . . . . 22
+    8.4   Key Indicators to be Included in Future Models . . . . . . . . . . . . . . . . . . . 22
+
+
+
+
+                                                                            型
+9   Sensitivity Analysis                                                                           23
+
+Appendices                                                                                         26
+
+
+
+
+                                                             模
+                                                            学
+                                                    数
+                                      ：
+
+                                                                els
+                                     号
+
+                                                              od
+                             众
+
+                                                             m
+                     公
+
+
+                                                 H
+                                              AT
+      信
+     微
+
+                                       M
+                              ：
+                      号
+              信
+      微
+
+
+
+
+                                                                                              2
+                                                                                                  关注数学模型
+                                                                                     MATHmodels
+
+
+                                                                                                  获取更多资讯
+Team # 2406176                                                                             Page 4 of 27
+
+
+1      Introduction
+1.1     Background Information
+    In the 2023 Wimbledon final, Carlos Alcaraz overcame Novak Djokovic’s initial dominance to
+win, demonstrating a thrilling momentum shift. This echoed the 2008 final where Rafael Nadal
+
+
+
+
+                                                                             型
+triumphed over Roger Federer, highlighting the unpredictable and captivating nature of tennis.
+   Research has shown that athletes, especially tennis players, can experience a psychological or
+physiological boost known as momentum. This concept was first explored in a study by Gilovich,
+
+
+
+
+                                                               模
+Vallone, and Tversky (1985), who identified a ‘hot hand’ phenomenon in basketball where
+a player’s real-time performance significantly exceeds pre-match expectations based on his
+
+
+
+
+                                                              学
+overall record. However, momentum can be temporary and may shift to the opponent, leading to
+swings where potential winners lose several points or games.
+
+
+
+
+                                                      数
+    This paper explores the dynamic performance changes of players throughout a game and offers
+in-depth insights into how players’ techniques and strategies should adapt in response to their
+opponents’ key factors.
+
+                                       ：
+
+                                                                  els
+1.2     Problem Analysis
+                                      号
+      • Task 1: Construct a model that dynamically calculates the performance of both players
+
+
+
+
+                                                                od
+        within the match, taking serving-advantage into consideration.
+                              众
+
+        In this paper, we develop an RTWP (Real-Time Win Probability) model that accurately
+        predicts the win probability of the subsequent point based on Elo rating system in real
+                                                               m
+        time. On that basis, we built the RTMQ (Real-Time Momentum Quantification) model by
+                      公
+
+
+        effectively quantifying player performance, by calculating the difference between real-
+                                                  H
+        time and pre-match win rates under separate serve/receive conditions (considering the
+                                               AT
+
+        serving side’s advantage). Finally we apply Fourier-series fitting to MMT to obtain the
+       信
+
+
+
+
+        momentum trend value (MMTTV).
+
+      • Task 2: Evaluate the significance of ’momentum’ in tennis matches.
+      微
+
+                                        M
+
+
+
+        We took the 2023 Winbledon final as an example and tested our RTWP model and the
+        CWP (Constant Win Probability) model, which neglects the influence of momentum. A
+                                ：
+
+
+
+
+        Kolmogorov-Smirnov (K-S) test is performed taking the model results as the input and
+        confirms the significant role that momentum plays in the match, reversing the coach’s
+        hypothesis.
+                        号
+
+
+
+
+      • Task 3: Determine the key indicators that could trigger a momentum shift.
+                信
+
+
+
+
+        We introduce the Swing Prediction (SP) model to anticipate substantial momentum shifts,
+        using the more stable MMTTV as a sample for each set. This is because the frequent in-set
+        momentum shifts can render predictions based on real-time momentum data at the end of
+        微
+
+
+
+
+        each set unreliable. MMTTV has no such fluctuations and effectively captures the trend
+        of MMT. Subsequently, we identify technical indicators influencing player performance,
+        extract common factors through factor analysis, and employ these as independent variables in
+        a Multivariate Linear Regression to predict the swings. Subsequently, we apply K-means
+
+
+                                                                                               2
+                                                                                                   关注数学模型
+                                                                                      MATHmodels
+
+
+                                                                                                   获取更多资讯
+Team # 2406176                                                                                 Page 5 of 27
+
+
+        clustering to distinguish between different tactics and finally calculate the player’s
+        optimal strategy using a mixed-strategy Nash equilibrium approach.
+
+      • Task 4: Assess the model’s ability to predict match swings and evaluate its performance
+        across various tournaments, court surfaces, and other sports.
+        We validated the accuracy of our model using data from other matches in the dataset and
+
+
+
+
+                                                                                 型
+        conducted a sensitivity analysis. Subsequently, we discussed potential improvements to the
+        model by considering factors such as climate and court surface. Finally, we further discussed
+
+
+
+
+                                                                  模
+        the generalization capabilities of our model using the 2017 French Open Men’s Singles
+        dataset as an example.
+
+
+
+
+                                                                 学
+1.3     Model Overview
+
+
+
+
+                                                        数
+                                         ：
+
+                                                                     els
+                                        号
+
+                                                                   od
+                                  众
+
+                                                                  m
+                       公
+
+
+                                                    H
+                                                 AT
+       信
+      微
+
+                                          M
+
+
+
+                                       Figure 1: Model Overview
+                                  ：
+
+
+
+
+2      Assumptions
+                         号
+
+
+
+
+      • All tennis players in the table demonstrate a high level of adaptability during play. This
+        adaptability is reflected in their ability to continuously modify strategies based on their
+                信
+
+
+
+
+        opponent’s characteristics.
+
+      • The technical indicators in the table, such as the way of winning, are able to fully characterize
+        微
+
+
+
+
+        the strategy adopted by the current player. Changes in these indicators during a match can
+        fully characterize changes in a player’s strategy.
+
+      • All data are authentic.
+
+
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯
+Team # 2406176                                                                               Page 6 of 27
+
+
+3      Notifications
+                           Table 1: Significant symbols in this paper
+     Symbols      Description
+   𝐸𝑖 (𝑡)         the 𝑖 𝑡ℎ player’s Elo rating at the 𝑡 𝑡ℎ match
+
+
+
+
+                                                                              型
+   𝑃𝑖 𝑗 (𝑡)       a prediction based on Elo indicating that the 𝑖 𝑡ℎ player defeats the 𝑗 𝑡ℎ opponent
+     𝑝0           the probability of a server winning the first point, constant during match
+
+
+
+
+                                                               模
+   ˆ 𝑚)
+   𝑝(𝑆            the probability of a server winning the next point, dynamic within match
+   𝜂(𝑆 𝑚 )        a dynamic weight that balances the pre-match and in-match serve information
+     𝜆𝑖           a weight emphasizing performance at the moment over the initial performance
+
+
+
+
+                                                              学
+   PA (t)         Real-Time Win Probability of player A
+  MMTA (t)        Real-Time Momentum value of player A
+ MMTTVA (t)       Real-Time Momentum Trend value of player A
+
+
+
+
+                                                      数
+4      Data Source                    ：
+
+                                                                  els
+                                     号
+                    Table 2: The websites we use to obtain the necessary data
+
+
+
+
+                                                                od
+ No.    Website                                   Usage
+                             众
+
+ 1      https://www.tenelos.com/                  Acquire Elo ratings of all players before match
+                                                               m
+ 2      https://www.atptour.com/en/rankings/      Acquire 𝑚𝑖 to calculate 𝐾𝑖 of players before match
+                     公
+
+
+        singles?DateWeek=2023-07-03
+                                                  H
+ 3      https://www.wimbledon.com/                Search for relevant data of players in the dataset
+                                               AT
+
+ 4      https://github.com/JeffSackmann/ ten-     2017 French Open dataset for problem 4
+      信
+
+
+
+
+        nis_slam_pointbypoint
+     微
+
+                                        M
+
+
+
+5      Real-Time Momentum Quantification Model
+                              ：
+
+
+
+
+    In our RTMQ model, we adopt a definition of momentum that is consistent with the classic
+interpretation of Gilovich et al. (1985). In this context, momentum is defined as a player’s
+                      号
+
+
+
+
+performance during a given period that significantly exceeds his expected performance based
+on pre-match predictions. The calculation of momentum involves determining the difference
+between the pre-match win probability and the real-time win probability. The greater the difference,
+               信
+
+
+
+
+the greater the momentum.
+   The modeling process is divided into four stages: obtaining the pre-match win prediction,
+       微
+
+
+
+
+determining the first point’s win probability, dynamically computing the subsequent points’
+win probabilities, and calculating the difference eventually. The modeling flow of the RTMQ
+model is shown below.
+
+
+
+
+                                                                                                 2
+                                                                                                     关注数学模型
+                                                                                        MATHmodels
+
+
+                                                                                                     获取更多资讯
+Team # 2406176                                                                                 Page 7 of 27
+
+
+
+
+                                                                                 型
+                                                                 模
+                                                                学
+                                                       数
+                                       ：
+
+                                                                    els
+                                      号
+
+                                                                  od
+                              众
+
+                                    Figure 2: RTMQ model setup   m
+                      公
+
+
+                                                   H
+5.1    Pre-match Win Prediction
+                                                AT
+       信
+
+
+
+
+    We utilize the Elo rating system to predict match outcomes before the game. This outstand-
+ing system, dynamic and zero-sum, adjusts player ratings based on match outcomes and maintains
+fairness. Its simplicity, robustness, and proven effectiveness across sports highlight its adaptability
+      微
+
+                                         M
+
+
+and reliability.
+   The rating of a player is calculated with the following recursive formula:
+                                ：
+
+
+
+
+                                                                          
+                             𝐸𝑖 (𝑡 + 1) = 𝐸𝑖 (𝑡) + 𝐾𝑖 × 𝑃𝑖 𝑗 (𝑡) − 𝑊𝑖 (𝑡)
+                                                                                                        (1)
+                                 𝐸𝑖 (1) = 1500
+                       号
+
+
+
+
+where 𝐸𝑖 denotes the 𝑖 𝑡ℎ player’s Elo rating (in a player’s very first tour match, 𝐸𝑖 (1) is assigned
+               信
+
+
+
+
+1500), 𝑡 is the number of match, 𝑊𝑖 is a discrete variable that equals 1 if the player loses the match
+and equals 0 if the player wins the match, and 𝑃𝑖 𝑗 (𝑡) is a prediction based on Elo indicating that
+the 𝑖 𝑡ℎ player defeats the 𝑗 𝑡ℎ opponent. 𝐾𝑖 , relevant to the number of the player’s career matches, is
+      微
+
+
+
+
+equal to
+                                                       250
+                                           𝐾𝑖 =                                                      (2)
+                                                  (𝑚𝑖 (𝑡) + 5) 0.4
+
+
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯
+Team # 2406176                                                                              Page 8 of 27
+
+
+where 𝑚𝑖 (𝑡) is match number. 𝑃𝑖 𝑗 (𝑡) is calculated through
+
+                                                       ( 𝐸 𝑗 (𝑡 ) −𝐸𝑖 (𝑡 ) ) −1
+                                                                           
+                                   𝑃𝑖 𝑗 (𝑡) = 1 + 10         400                                     (3)
+
+which matches our intuition. When 𝐸 𝑗 (𝑡) < 𝐸𝑖 (𝑡) and 𝐸 𝑗 (𝑡) − 𝐸𝑖 (𝑡) decreases, indicating a rising
+
+
+
+
+                                                                                  型
+competence of the 𝑖 𝑡ℎ player over the 𝑗 𝑡ℎ player, the winning probability 𝑃𝑖 𝑗 increases.
+
+5.2    Probability of Winning the First Point
+
+
+
+
+                                                                        模
+    To track the performance of the players, the win probability of the first point is calculated.
+We take the independent and identically distributed (IID) assumption and use 𝑃𝑖 𝑗 to reverse
+
+
+
+
+                                                                       学
+calculate the probability of the pre-match serving side winning the first point. The probability
+of securing the initial serving/receiving point in a match, represented as 𝑝 0 /𝑝 0 − 𝜀 (𝜀 = 0.25 for
+
+
+
+
+                                                         数
+men athletes and = 0.15 for women athletes, according to previous research led by Machar Reid),
+are assumed to be the same as the probability of winning any subsequent serving/receiving point
+prior to the beginning of the match. The probability of winning the upcoming point, 𝑝(𝑆    ˆ 𝑚 ), will
+
+                                      ：
+be recalculated after the conclusion of the first points as they occur. In mathematical terms, we
+
+
+
+
+                                                                            els
+aim to solve for 𝑝 0 through
+                                          𝑓0 ( 𝑝 0 , 𝑞 0 ) = 𝑃𝑖 𝑗                                  (4)
+                                     号
+
+                                                                          od
+    where 𝑞 0 = 1 − 𝑝 0 . The figure below indicates the progression of scores in a tennis game for a
+                             众
+
+server (if receiver, 𝑝𝑟𝑒𝑐𝑒𝑖𝑣𝑒𝑟
+                      0        = 𝑝 0 − 𝜀 and 𝑞𝑟𝑒𝑐𝑒𝑖𝑣𝑒𝑟
+                                              0        = 1 − 𝑝 0 + 𝜀).
+                                                                         m
+                     公
+
+
+                                                   H
+                                                AT
+       信
+      微
+
+                                        M
+                               ：
+                       号
+
+
+
+
+                   Figure 3: Progression of scores in a tennis game for a server
+              信
+
+
+
+
+   The following algorithm demonstrates the computation of 𝑓0 ( 𝑝 0 , 1 − 𝑝 0 ), which is entirely
+      微
+
+
+
+
+based on probability. The pseudocode below outlines the calculation of match-winning probability.
+
+
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                                                              Page 9 of 27
+
+
+Algorithm 1 Probability of Winning a Tennis Match
+Data: Player A’s and Player B’s probability of winning the first point 𝑝 0𝐴 , 𝑝 0𝐵 as servers
+Result: Probability of Player A winning the match 𝑃𝑖 𝑗
+begin
+                                                                                            20( 𝑝 0𝐴) 5 (1−𝑝 0𝐴) 3
+      Calculate 𝑝 𝐺 𝐴 = ( 𝑝 0𝐴 ) 4 + 4( 𝑝 0𝐴 ) 4 (1 − 𝑝 0𝐴 ) + 10( 𝑝 0𝐴 ) 4 (1 − 𝑝 0𝐴 ) 2 +  1−2𝑝 0𝐴 (1−𝑝 0𝐴)
+                                                                                                                   ;
+
+
+
+
+                                                                                                        型
+                                                                                                    𝐵   5
+                                                                                             20( 𝑝 0 ) (1−𝑝 0 )𝐵   3
+       Calculate 𝑝 𝐺 𝐵 = ( 𝑝 0𝐵 ) 4 + 4( 𝑝 0𝐵 ) 4 (1 − 𝑝 0𝐵 ) + 10( 𝑝 0𝐵 ) 4 (1 − 𝑝 0𝐵 ) 2 + 1−2𝑝      𝐵 (1−𝑝 𝐵 ) ;
+                                                                                                       0       0
+       Set 𝑝 𝑅 = 1 − 𝑝 𝐺 𝐴 ;
+
+
+
+
+                                                                                   模
+       Set 𝑞 𝐺 𝐴 = 1 − 𝑝 𝐺 𝐴 ;
+       Set 𝑞 𝐺 𝐵 = 1 − 𝑝 𝐺 𝐵 ;
+       Calculate 𝑝 𝑆 𝐴 (6, 0) = ( 𝑝 𝐺 𝐴 · 𝑞 𝐺 𝐵 ) 3 ;
+
+
+
+
+                                                                                  学
+       Calculate 𝑝 𝑆 𝐴 (6, 1) = 3 · ( 𝑝 𝐺 𝐴 ) 3 · 𝑞 𝐺 𝐴 · (𝑞 𝐺 𝐵 ) 3 + 3 · ( 𝑝 𝐺 𝐴 ) 4 · 𝑝 𝐺 𝐵 · (𝑞 𝐺 𝐵 ) 2 ;
+       Calculate 𝑝 𝑆 𝐴 (6, 2) = 12 · ( 𝑝 𝐺 𝐴 ) 5 · (𝑞 𝐺 𝐴 ) 2 · 𝑝 𝐺 𝐵 · 𝑞 𝐺 𝐵 + 10 · ( 𝑝 𝐺 𝐴 ) 6 · ( 𝑝 𝐺 𝐵 ) 2 · 𝑞 𝐺 𝐵 ;
+
+
+
+
+                                                                       数
+       Calculate 𝑝 𝑆 𝐴 (6, 3) = 60 · ( 𝑝 𝐺 𝐴 ) 7 · (𝑞 𝐺 𝐴 ) · ( 𝑝 𝐺 𝐵 ) 2 + 15 · ( 𝑝 𝐺 𝐴 ) 8 · 𝑝 𝐺 𝐵 ;
+       Calculate 𝑝 𝑆 𝐴 (6, 4) = 360 · ( 𝑝 𝐺 𝐴 ) 9 · 𝑝 𝐺 𝐵 ;
+       Calculate 𝑝 𝑆 𝐴 (6, 5) = 720 · ( 𝑝 𝐺 𝐴 ) 10 ;
+                                                   ：
+       Calculate 𝑃𝑖 𝑗 = 𝑓0 ( 𝑝 0 , 1 − 𝑝 0 ) = 𝑝 𝑆 𝐴 (6, 0) + 𝑝 𝑆 𝐴 (6, 1) + 𝑝 𝑆 𝐴 (6, 2) + 𝑝 𝑆 𝐴 (6, 3) + 𝑝 𝑆 𝐴 (6, 4) +
+
+
+
+
+                                                                                       els
+       𝑝 𝑆 𝐴 (6, 5);
+                                                  号
+       return 𝑃𝑖 𝑗 ;
+
+
+
+
+                                                                                     od
+end
+                                       众
+
+                                                                                    m
+   This pseudocode outlines the steps to calculate the probability of Player A winning a tennis
+                            公
+
+
+
+match based on the given game probabilities. Explanations of the symbols are:
+                                                                 H
+                                                              AT
+
+      • 𝑝 𝐺 𝑋 : The probability that Player X wins a game when serving, X=A or B.
+        信
+
+
+
+
+      • 𝑝 𝑅 : The probability that Player B wins a game when receiving, i.e. 𝑝 𝑅 = 1 − 𝑝 𝐺 𝐴 .
+       微
+
+                                                     M
+
+
+      • 𝑞 𝐺 𝑋 : The probability that player X loses a game when serving, X=A or B, i.e. 𝑞 𝐺 𝐴 = 1− 𝑝 𝐺 𝐴 .
+
+      • 𝑝 𝑆 𝐴 (6, 𝑘): The probability that Player A wins a set with a score of 6-k, where k=0,1,2,3,4,5.
+                                         ：
+
+
+
+
+      • 𝑃𝑖 𝑗 : The probability that Player A wins the match.
+                              号
+
+
+
+
+    We plot the relationship between 𝑃𝑖 𝑗 and 𝑝 0 . From Figure 4 we can see that 𝑃𝑖 𝑗 is a monotonically
+increasing function, thus we apply the dichotomy method to calculate 𝑝 0 .
+                   信
+
+
+
+
+   Therefore, for a given 𝑃𝑖 𝑗 , the probability of winning the first point can be obtained and
+applied in the dynamic algorithm updating the probability of winning the next point below.
+         微
+
+
+
+
+5.3      Dynamic Computation of the Subsequent Points’ Win Probabilities
+    Once we determine the first point’s win probability, we proceed to compute the win probability
+for the next point. We propose an efficient method to update the winning probability of both
+
+
+                                                                                                                                2
+                                                                                                                                    关注数学模型
+                                                                                                                       MATHmodels
+
+
+                                                                                                                                    获取更多资讯
+Team # 2406176                                                                           Page 10 of 27
+
+
+
+
+                                                                                     型
+                                                                    模
+                                                                   学
+                                                          数
+                              Figure 4: Relationship between 𝑃𝑖 𝑗 and 𝑝 0
+
+
+                                         ：
+players in the next point through the equation below, considering the strong zero-sum game
+
+
+
+
+                                                                       els
+property of tennis
+                                        号
+                                𝑝 𝐴 = 𝑝ˆ𝑠𝐴 (𝑆 𝑚 ) if A is server and B is receiver
+
+
+
+
+                                                                     od
+                              
+                              
+                               𝑠
+                              
+                              
+                   PA (𝑡) =                                                                           (5)
+                               众
+
+                               𝑝 𝐴 = 1 − 𝑝ˆ𝑠𝐵 (𝑆 𝑚 ) if A is receiver and B is server
+                              
+                              
+                               𝑟                                   m
+                     公
+
+
+where PA (𝑡) is player A’s probability of winning the next point, 𝑝 𝑠𝐴 /𝑝𝑟𝐴 is the probability of A
+                                                     H
+winning the next point as a server/receiver. Therefore the model only requires an updating rule
+                                                  AT
+
+for the server’s probability of winning the next point. We applied the Quasi-Binomial Estimator
+      信
+
+
+
+
+                           𝑝ˆ𝑠 (𝑆 𝑚 ) = 𝜂(𝑆 𝑚 ) × 𝑝 0 + (1 − 𝜂(𝑆 𝑚 )) × 𝑝¯𝑠 (𝑆 𝑚 )                    (6)
+     微
+
+                                           M
+
+
+where 𝑝ˆ𝑠 (𝑆 𝑚 ) is the probability of winning the next point for a server, 𝑝¯𝑠 (𝑆 𝑚 ) denotes the mean
+number of points won on serve through the 𝑛𝑡ℎ point of the match given a scoreline of 𝑆 𝑚 . 𝜂(𝑆 𝑚 ) is
+                                 ：
+
+
+
+
+a dynamic weight that reflects in-match performance, varying between 0 and 1. Setting it to a
+constant 1 makes 𝑝ˆ𝑠 (𝑆 𝑚 ) = 𝑝 0 , effectively disregarding in-match performance. Consequently,
+momentum, which is influenced by the flow of points within the match, ceases to be a factor
+                       号
+
+
+
+
+as it no longer affects the win probability of subsequent points. 𝑝 0 is the probability of winning
+the first point as stated in the section above. The parameter 𝜂(𝑆 𝑚 ) balances the pre-match and
+in-match serve information, with larger 𝜂(𝑆 𝑚 ) values placing more emphasis on pre-match serve
+               信
+
+
+
+
+expectations. 𝜂(𝑆 𝑚 ) is calculated by
+      微
+
+
+
+
+                                           𝜂(𝑆 𝑚 ) = 𝛼/(𝛼 + 𝑛)                                        (7)
+
+where 𝑛 represents the number of points played on serve by the current player, while 𝛼 is proportional
+to 𝜂 and represents the pre-match confidence in a player’s serving performance, quantifying the
+in-match evidence needed to revise these pre-match expectations. We aim to optimize 𝑛 𝑠 and 𝑛𝑟 to
+
+
+                                                                                                  2
+                                                                                                      关注数学模型
+                                                                                         MATHmodels
+
+
+                                                                                                      获取更多资讯
+Team # 2406176                                                                                Page 11 of 27
+
+
+minimize inconsistencies between dynamic and pre-match serve expectations, as well as the error
+between observed and dynamic expectations, by minimizing a specific loss function
+                   1 ∑︁                                                                                
+      𝐿𝑜𝑠𝑠(𝑛) = −        𝜆𝑖 (𝑦𝑖 log( 𝑝¯𝑠 (𝑆𝑖 )) + (1 − 𝑦𝑖 ) log(1 − 𝑝¯𝑠 (𝑆𝑖 ))) + ( 𝑝¯𝑠 (𝑆𝑖 ) − 𝑝 0 ) 2   (8)
+                   𝑚 𝑖
+
+
+
+
+                                                                                    型
+where 𝑦𝑖 represents the number of points a server has won out of 𝑚 service points. In any game,
+an athlete’s performance in the moment of the game is more indicative of subsequent performance
+than performance early in the game. Therefore the dynamic weight 𝜆𝑖 is calculated as
+
+
+
+
+                                                                   模
+                                                       𝑖
+                                                𝜆 𝑖 = Í𝑚                                                  (9)
+                                                        𝑖=1 𝑖
+
+
+
+
+                                                                  学
+We take the match between Carlos and Nicolas for instance, and the result is shown in the figure
+below.
+
+
+
+
+                                                           数
+                                         ：
+
+                                                                       els
+                                        号
+
+                                                                     od
+                               众
+
+                                                                    m
+                      公
+
+
+                                                     H
+                                                  AT
+       信
+      微
+
+                                           M
+
+
+
+       Figure 5: Real-time changes in Carlos’s and Nicolas’s next point winning probability
+                                 ：
+
+
+
+
+    The figure clearly indicates a significant serving side advantage, which must be factored into
+player performance assessments. A server with a 51% win probability isn’t necessarily performing
+                        号
+
+
+
+
+better than a receiver with a 49% win rate. Therefore, it is necessary to further eliminate this
+advantage.
+               信
+
+
+
+
+5.4    Quantification of Momentum
+       微
+
+
+
+
+    With the win probability in real time, we are capable of acquiring the player’s performance in
+real time                              (
+                                         PA (𝑡) − 𝑝 0𝐴 , if A is server
+                       MMTA (𝑡) =                                                             (10)
+                                         PA (𝑡) − 𝑝 0𝐴 + 𝜀 , if A is receiver
+The real-time performance for Carlos and Nicolas in their matchup is indicated below.
+
+                                                                                                      2
+                                                                                                          关注数学模型
+                                                                                             MATHmodels
+
+
+                                                                                                          获取更多资讯
+Team # 2406176                                                                           Page 12 of 27
+
+
+
+
+                                                                                型
+                                                                模
+                                                               学
+                                                       数
+                                       ：
+
+                                                                   els
+                                      号
+                       Figure 6: Real-time momentum of Carlos and Nicolas
+
+
+
+
+                                                                 od
+                              众
+
+    Carlos’s momentum curve shows more distinct peaks than Nicolas’s, indicating that Carlos’s
+                                                                m
+performance is often significantly higher than his pre-match predictions compared to Nicolas’s,
+especially in the middle of the game where Carlos’s momentum peaks are almost exclusive (between
+                     公
+
+
+                                                   H
+point #100 and #200). This suggests that Carlos has a strong momentum that helps him dominate
+the game during mid-match, which ultimately contributes to winning the match.
+                                                AT
+      信
+
+
+
+
+5.4.1   Verification of the Significance of Momentum
+     To assess the role of momentum in tennis, we apply the Constant Win Probability (CWP)
+     微
+
+                                         M
+
+
+model by setting 𝜂(𝑆 𝑚 ) = 1 in the Real-Time Win Probability (RTWP) model, thereby disregarding
+all in-match factors including momentum. We then consider the outcome of the CWP model as
+our observed value. If the coach’s assertion is incorrect, the residuals (the differences between
+                               ：
+
+
+
+
+the predicted and observed outcomes) would deviate from a normal distribution, indicating a
+discrepancy between the models and the observed results. We employ both qualitative (probability
+                       号
+
+
+
+
+distribution plots of the residuals) and quantitative (K-S test) methods to evaluate the validity of the
+coach’s hypothesis. If the coach’s claim is disproven, it confirms the existence and significance
+of momentum in tennis matches, thereby validating the effectiveness of our RTWP and RTMQ
+               信
+
+
+
+
+models.
+   Probability Distribution Plot of the Residuals
+        微
+
+
+
+
+   We plot the distribution of the residual in the figure 7 below.
+    This clearly suggests a non-normal distribution, since the mean values of 𝜎 are all larger
+than 0 and it is not distributed centrally symmetric, prompting us to use the K-S test for further
+investigation of the residuals’ distribution.
+
+                                                                                                  2
+                                                                                                      关注数学模型
+                                                                                         MATHmodels
+
+
+                                                                                                      获取更多资讯
+Team # 2406176                                                                         Page 13 of 27
+
+
+
+
+                                                                              型
+                                                              模
+                                                             学
+                                                     数
+      Figure 7: Probability distribution of the residual of Carlos Alcaraz and Nicolas Jarry
+
+                                      ：
+
+                                                                  els
+   K-S Test to Investigate the Distribution
+                                     号
+   In this case, the Null Hypothesis (H0) is the coach’s statement that momentum does not play
+
+
+
+
+                                                                od
+any role in the match. If H0 is true, then the residual should be close to a normal distribution. The
+                             众
+
+pseudocode for K-S Test is shown below.
+
+Algorithm 2 Kolmogorov-Smirnov (K-S) Test
+                                                               m
+                     公
+
+
+
+Data: Residuals 𝜎
+                                                    H
+Result: K-S test statistic 𝐷, p-value 𝑝
+                                                 AT
+
+begin
+       信
+
+
+
+
+   Sort the residuals 𝜎 in ascending order;
+    Set 𝑁 as the number of residuals;
+      微
+
+
+
+
+    for 𝑖 ← 1 to 𝑁 do
+                                        M
+
+
+
+       Calculate 𝐷 + = max(𝑖/𝑁 − 𝜎[𝑖 − 1]);
+        Calculate 𝐷 − = max(𝜎[𝑖 − 1] − (𝑖 − 1)/𝑁);
+                               ：
+
+
+
+
+   end
+                       √       √
+   Calculate 𝐷 = max( 𝑁 · 𝐷 + , 𝑁 · 𝐷 − );
+                      号
+
+
+
+
+                        Í∞                2 2
+    Calculate 𝑝 = 1 − 2 𝑖=1 (−1) 𝑖−1 𝑒 −2𝑖 𝐷 ;
+    return 𝐷, 𝑝;
+              信
+
+
+
+
+end
+      微
+
+
+
+
+    Running the K-S test as introduced in the pseudocode above, using statistical software, results
+are shown in table 3 below. The p-value for both players is much smaller than 0.05 (the common
+chosen significance level). Therefore, we reject the H0 hypothesis and confirm the significance
+of momentum in tennis matches.
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                            Page 14 of 27
+
+
+
+                              Table 3: Significant symbols in this paper
+                                 𝐷 Value                          𝑝 value
+              Carlos 0.49958267649880644                 1.338386540467465e-62 << 0.05
+              Nicolas 0.47375107203988065                 5.94542201790284e-56 << 0.05
+
+
+
+
+                                                                                  型
+5.5    Momentum Trend Value (MMTTV) Visualization
+
+
+
+
+                                                                    模
+    Considering the volatility and periodicity of the real-time momentum curve, we apply Fourier
+series to fit the curve to eliminate the effects of cyclical fluctuations in win probabilities, acquiring
+
+
+
+
+                                                                   学
+the momentum trend value (MMTTV) in real time. Fourier series is a powerful mathematical tool
+that can be used to represent and analyze periodic functions. It describes a periodic function as a
+
+
+
+
+                                                           数
+sum of sine and cosine functions. The general form of a Fourier series is
+                                             ∞
+                                            ∑︁
+                            𝑓 (𝑥) = 𝑎 0 +         [𝑎 𝑛 cos(𝑛𝑤𝑥) + 𝑏 𝑛 sin(𝑛𝑤𝑥)]                        (11)
+
+                                       ：    𝑛=1
+
+
+
+
+                                                                       els
+Applying Fourier series curve fitting to our real-time momentum data, we finally capture the
+                                      号
+momentum trend and obtain the MMTTV data for both athletes, which is the blue line in the figure
+
+
+
+
+                                                                     od
+below.
+                              众
+
+                                                                    m
+                      公
+
+
+                                                        H
+                                                     AT
+       信
+      微
+
+                                            M
+                                ：
+                       号
+               信
+
+
+
+
+                       Figure 8: The momentum trend value for both players
+      微
+
+
+
+
+    It is easy to see from the figure that a dramatic momentum shift occurred near point #130, when
+Carlos’ momentum reached over 0.23 and Nicolas’ momentum dropped to about 0.06, turning the
+situation around and leading to the swing. The final success of Carlos is therefore closely related
+to this momentum shift, and subsequent sustained rises in Nicolas’ momentum did not positively
+affect his final result.
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯
+Team # 2406176                                                                          Page 15 of 27
+
+
+6      Swing Prediction Model
+6.1     Data Preprocessing
+    In the Wimbledon_featured_matches.csv, columns AQ(speed_mph), AR(serve_width), AS
+(serve_depth), AT(return_depth) have missing values (NA). They are handled as follows:
+
+
+
+
+                                                                               型
+    Step 1: Address missing values in columns AR, AS, AT.
+
+      • If either column AB or AC in a row is 1, replace NA in columns AR, AS, AT of these
+
+
+
+
+                                                                模
+        rows with ’F’ (Fail). This is because columns AB and AC represent points lost due to player
+        errors. We assume that the NA values in these cases are unclassified results caused by errors.
+
+
+
+
+                                                               学
+      • If any of the columns U, V, W, X in a row is 1, replace NA in columns AR, AS, AT
+        of these rows with ’UN’ (Unknown). Columns U, V, W, X represent points scored due to
+
+
+
+
+                                                       数
+        high-quality shots (serve/return), with NA values attributed to unknown factors.
+
+    Step 2: Address missing values in column AQ .
+
+                                        ：
+      • Exclude the matches between Daniel Elahi Galan and Mikael Ymer, and between Guido
+
+
+
+
+                                                                   els
+        Pella and Roman Safiullin. This is because ball speed and rally count are both crucial
+                                       号
+        technical indicator in tennis, and these matches lack the two records.
+
+
+
+
+                                                                 od
+      • If any of the columns U, V, W, X, AB, AC, AD, AE, AF, AG in a row is 1, replace the NA
+                               众
+
+        in column AQ with the average ball speed of the match. This is because the absence of
+                                                                m
+        ball speed data for high-quality shots, error shots, and net shots may be due to errors in the
+        data recording process or factors that make the data unrecordable.
+                      公
+
+
+                                                   H
+6.2     Indicators Calculation
+                                                AT
+       信
+
+
+
+
+    Key indicators are calculated based on previous research and experience. We have identified 25
+indicators based on the mainstream technical indicators in tennis, related scientific research papers
+      微
+
+
+
+
+and professional analysis. Due to their excessive number, our paper shows the calculation of only
+                                          M
+
+
+
+3 of the indicators, the calculation and explanation of all indicators is in Appendix A.
+                                ：
+
+
+
+
+                                             n(ace)
+                              Aces_p𝑖 =
+                                      n(successful serves)
+                        号
+
+
+
+
+                                      n(server = 𝑗, break_pt_won = 𝑖)
+                           Break_p𝑖 =
+                                        n(server = 𝑗, break_pt = 1)                                  (12)
+                信
+
+
+
+
+                                        n(server = 𝑖, serve_depth = 𝐶𝑇 𝐿)
+                      Depth_CTL_p𝑖 =
+                                      n(server = 𝑖, serve_depth ≠ unknown)
+        微
+
+
+
+
+                                 ...
+
+where Aces_p𝑖 represents the proportion of successful serves by player 𝑖 that are aces, Break_p𝑖 rep-
+resents the proportion of break points won by player 𝑖 when player 𝑗 is serving, and Depth_CTL_p𝑖
+represents the proportion of serves by player 𝑖 that land in the “CTL” (Close To Line) depth zone.
+
+
+                                                                                                 2
+                                                                                                     关注数学模型
+                                                                                        MATHmodels
+
+
+                                                                                                     获取更多资讯
+Team # 2406176                                                                               Page 16 of 27
+
+
+6.3     Exploratory Factor Analysis
+     Given the multitude of performance indicators for a player, we use a Factor Analysis Model to
+distill key factors that better represent the player’s technical performance. Therefore, all indicators
+can be quantified by the factors with the corresponding weights. Let 𝑋 𝑝 ( 𝑝 = 1, 2, ..., 25) represent
+all indicators, and they can be represented by weighted factors as follows
+
+
+
+
+                                                                                   型
+                     𝑋1   𝜇1   𝛼11 𝛼12 · · · 𝛼1𝑚   𝐹1   𝜀1 
+                                                                   
+                     𝑋2   𝜇2   𝛼21 𝛼22 · · · 𝛼2𝑚   𝐹2   𝜀2 
+
+
+
+
+                                                                   模
+                     ..  =  ..  +  ..              ..   ..  +  ..                               (13)
+                                                                   
+                                            ..
+                     .   .   .          .           .   .   . 
+                                
+                     𝑋 𝑝   𝜇 𝑝   𝛼 𝑝1 𝛼 𝑝2 · · · 𝛼 𝑝𝑚   𝐹𝑚   𝜀 𝑝 
+
+
+
+
+                                                                  学
+                                                                   
+
+     where 𝐹1 , 𝐹2 , ..., 𝐹𝑚 are factors that are unobservable, 𝛼𝑖 𝑗 is the weight matrix of the factors, 𝜇𝑖
+is the mean of the variable 𝑋𝑖 and 𝜀𝑖 is the unique or error term for the variable 𝑋𝑖 . The constraints
+
+
+
+
+                                                         数
+of the model are
+                                   𝑐𝑜𝑣(𝐹, 𝜀) = 0, 𝐷 (𝐹𝑖 ) = 1, 𝐷 (𝜀𝑖 ) = 𝜎𝑖2                           (14)
+
+                                         ：
+Indicators undergo z-score normalization to normalize their scale and mitigate the effect of different
+
+
+
+
+                                                                      els
+units or magnitudes prior to factor analysis. We perform a Bartlett’s Test of Sphericity to determine
+                                        号
+if there is a high degree of internal correlation in the data. If so, factor analysis is performed.
+
+
+
+
+                                                                    od
+Algorithm 3 Bartlett’s Test of Sphericity
+                               众
+
+Data: Indicator matrix X
+                                                                   m
+Result: Test statistic, p-value, and a decision on whether the data need to be factor analyzed
+                      公
+
+
+begin
+                                                     H
+   𝜒2 = − log(det(𝑅))(𝑁 − 1 − 2𝑛+5   6 )
+    where 𝑅 is the correlation matrix   of the dataset, 𝑁 = 109 (number of data points), 𝑛 = 25;
+                                                  AT
+       信
+
+
+
+
+                                   
+                     2   𝑝( 𝑝+1)
+     𝑝 = 1 − 𝐹𝜒 2 𝜒 , 2 − 1 ;
+    if 𝑝 < 0.05 then
+      微
+
+
+
+
+       The data is appropriate for factor analysis.;
+                                          M
+
+
+
+   end
+   else
+                                 ：
+
+
+
+
+       The data is not appropriate for factor analysis.;
+   end
+end
+                        号
+                信
+
+
+
+
+    The test tells us 𝑝 < 0.05, so we performed factor analysis. We extract five factors. Taking 3
+factors as an example and looking at the factor loading matrix, we found:
+        微
+
+
+
+
+      • For Factor 1, Aces_p𝑖 (0.754), 1st_srv_won_p𝑖 (0.730), and Width_W_p𝑖 (0.685) have the
+        highest absolute factor loadings, which indicates that Factor 1 characterizes the player’s
+        ability to win points and quality of play as a server. Since this factor is almost entirely
+        related to server metrics, we treat Factor 1 as a factor specializing in server ability.
+
+
+                                                                                                      2
+                                                                                                          关注数学模型
+                                                                                             MATHmodels
+
+
+                                                                                                          获取更多资讯
+Team # 2406176                                                                                Page 17 of 27
+
+
+      • For Factor 2, Depth_CTL_p𝑖 (0.792) and Net_pt_won_p𝑖 (0.568) have the highest absolute
+        factor loadings. As a result of our research, we found that when a player tends to hit a CTL
+        ball, it is likely that the player will need to run longer distances faster to receive the ball. Thus
+        Factor 2 characterizes whether the player tends to put more or less effort into the play.
+
+      • For Factor 4, 1st_srv_drt_won_p𝑖 (0.710), Winners4_p𝑖 (-0.649), and Srv_avg_speed_p𝑖 (0.632)
+
+
+
+
+                                                                                    型
+        have the highest absolute values of the factor loadings. Thus Factor 4 indicates the player’s
+        explosive ability, especially the ability to win the ball in the serve-receive phase.
+
+
+
+
+                                                                    模
+We name the Factor 1 as AggressiveServe, Factor 2 as ExtendedPlay, Factor 3 as Endurance,
+Factor 4 as ActiveDefense, and Factor 5 as ForehandBias based on the characteristics of the
+
+
+
+
+                                                                   学
+indicators they contain and the characteristics of the factor loading matrix.
+
+6.4     Prediction of Swing Based on Multivariate Linear Regression Model
+
+
+
+
+                                                          数
+    We utilize a Multivariate Linear Regression Model to predict tangible momentum shifts,
+or swings, in tennis matches. Our model operates on a per-set basis, as a set provides a more
+
+                                          ：
+comprehensive dataset for analysis compared to individual games. This approach minimizes the
+
+
+
+
+                                                                       els
+impact of outliers and enhances the reliability of the player’s performance evaluation. For instance,
+a shift from high to low momentum of two sets often indicates a potential swing (tends to lose
+                                         号
+the game or even match). We sample the momentum trend value (MMTTV) from the momentum
+
+
+
+
+                                                                     od
+trend at the end of each set. This is because the frequent in-set momentum shifts can render
+                                众
+
+predictions based on real-time momentum data at the end of each set unreliable. By calculating
+                                                                    m
+the MMTTV values and other metrics at the end of each set, we align our methodology with
+previous research and established analytical strategies in sports media, thereby ensuring a
+                        公
+
+
+                                                      H
+robust prediction of momentum shifts. The subsequent section outlines the training process for
+the multivariate linear regression model that can be executed across numerous software platforms.
+                                                   AT
+        信
+
+
+
+
+Algorithm 4 Multivariate Linear Regression
+Data: Factor matrix (the 5 factors) X, Target vector MMTTV at the end of each set
+       微
+
+
+
+
+                                                         ˆ
+Result: Coefficients of the 5 factors 𝛽, Predictions MMTTV
+                                            M
+
+
+
+begin
+   Initialize coefficients 𝛽 for each feature in X to 0;
+                                  ：
+
+
+
+
+    Set learning rate 𝛼 and convergence threshold 𝜖;
+
+      while not converged do
+                         号
+
+
+
+
+                                                  ˆ
+         Calculate the predicted probabilities MMTTV   = 1+𝑒1−X𝛽 ;
+          Calculate the gradient 𝑘 = X𝑇 ( MMTTV ˆ   − MMTTV);
+                 信
+
+
+
+
+          Update coefficients 𝛽 = 𝛽 − 𝛼𝑘;
+          If ||𝑘 || < 𝜖, set converged to True;
+        微
+
+
+
+
+      end
+                 ˆ
+      return 𝛽, MMT;
+
+end
+
+
+                                                                                                       2
+                                                                                                           关注数学模型
+                                                                                              MATHmodels
+
+
+                                                                                                           获取更多资讯
+Team # 2406176                                                                           Page 18 of 27
+
+
+    We take the match between Carlos and Nicolas for testing our prediction model, and the result
+is shown in the figure below, indicating an accurate prediction.
+
+
+
+
+                                                                               型
+                                                                模
+                                                               学
+                  Figure 9: Prediction of the value of momentum for both players
+
+
+
+
+                                                      数
+    The result agrees well with the real-time MMTTV of the two athletes, with the peak and
+                                       ：
+trough in both figures occurring at the end of the second set. Sorting the weights of the factors,
+
+
+
+
+                                                                   els
+AggressiveServe have the largest absolute weights, indicating that they are the most related factors
+                                      号
+to predict the swings in the match. It is reasonable because serve ability and aggressiveness are
+
+
+
+
+                                                                 od
+the most central indicators of a good or bad server’s ability. From the figure below we can see the
+trend of the indicators are similar to that of the momentum curve.
+                             众
+
+7      Mixed-Strategy Nash Equilibrium Model                    m
+                     公
+
+
+
+    In the dynamic world of tennis, players strategically adopt different tactics with a certain
+                                                  H
+probability during a match to maximize their chances of winning. The choice of strategy, whether
+                                               AT
+
+for serving or receiving, can significantly affect the outcome of the game, creating a complex web
+       信
+
+
+
+
+of decisions. To analyze this intricate web of strategic choices, we have adopted a Mixed-Strategy
+Nash Equilibrium model. This model serves as a tool for predicting the most common combinations
+      微
+
+
+
+
+of strategies employed by players prior to the game. As the match unfolds, the model allows us to
+                                        M
+
+
+
+observe shifts in players’ strategies, providing valuable insights into which strategies a player must
+pursue to gain an upper hand. Through our model, we aim to unravel the probabilistic nature of
+                               ：
+
+
+
+
+strategic decision-making in tennis, paving the way for more informed and effective strategies.
+
+7.1     Strategy Payoff Calculation
+                       号
+
+
+
+
+    First we define the set of possible strategies that the opponent in the upcoming match (assume that
+we need to study Stefanos Tsitsipas) may adopt. The strategies of the players can be characterized
+               信
+
+
+
+
+by the factors we define previously. We compute the factor value at the end of each set in the
+dataset, followed by cluster analysis in unsupervised learning.
+        微
+
+
+
+
+    We tried clustering the dataset and found that the set of strategies makes the most sense when
+the number of clusters is 4 for the server and 3 for the receiver. Strategies that can be adopted by
+servers are as follows:
+
+      • Server Strategy 1: A=0.83, B=0.72, C=0.63, E=0.49. This indicates a steep angle and fast
+
+                                                                                                 2
+                                                                                                     关注数学模型
+                                                                                        MATHmodels
+
+
+                                                                                                     获取更多资讯
+Team # 2406176                                                                         Page 19 of 27
+
+
+     ball speed, therefore the strategy is named Side-Tearing Assault.
+
+   • Server Strategy 2: A=0.69, B=0.31, C=0.76, E=0.79. This describes the tendency of players
+     to use a variety of stroke speeds, stroke angles, and different ball paths to control the pace of
+     play, thus named Pace Control.
+
+   • Server Strategy 3: A=0.25, B=0.66, C=0.87, E=0.69. This suggests that the player tends to
+
+
+
+
+                                                                               型
+     play each point longer, and play faster, close-to-net balls, so that the opponent is forced to go
+     to the net and might make a mistake, thus named Low-Bounce Onslaught.
+
+
+
+
+                                                               模
+   • Server Strategy 4: A=0.44, B=0.52, C=0.55, E=0.54. This suggests that players adopt
+     slower ball speeds and hit a lot of approach shots, which is easy to create errors for the
+
+
+
+
+                                                              学
+     opponent, thus named Short-Ball Maneuver.
+
+
+
+
+                                                     数
+   For receiver strategies:
+
+   • Receiver Strategy 1 (Bottom Line Defense): With B=0.29, C=0.67, D=0.54, E=0.88, the
+                                      ：
+     player tends to conserve energy, engage in extended rallies, and favor forehand shots. This
+
+
+
+
+                                                                  els
+     strategy, characterized by precise stroke and angle control from the baseline, is a common
+                                     号
+     defensive approach.
+
+
+
+
+                                                                od
+   • Receiver Strategy 2 (Defense at the Net): With B=0.73, C=0.21, D=0.61, E=0.46, the
+                              众
+
+     player prefers to conserve energy, end points quickly, and actively defend. This strategy often
+     involves moving to the net to counter strong baseline attacks from the opponent.
+                                                               m
+                    公
+
+
+   • Receiver Strategy 3 (Deep Defense): With B=0.77, C=0.87, D=0.49, E=0.81, the receiver
+                                                 H
+     tends to play long points with a significant forehand bias. This strategy aims to provide
+     the player with more reaction time and make it challenging for the opponent to execute an
+                                              AT
+     信
+
+
+
+
+     effective attack.
+    微
+
+
+
+
+   The values of each factor in all strategies are shown in figure 10 below.
+                                       M
+                              ：
+                      号
+              信
+     微
+
+
+
+
+           Figure 10: The value of factors for strategies of both servers and receivers
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                                  Page 20 of 27
+
+
+   We incorporate the median value of each strategy cluster into our Swing Prediction Model to
+predict the MMT value for each corresponding strategy. This predicted value represents the exact
+payoff of the strategy and is used to calculate the expected payoffs below.
+
+7.2    Model Setup
+
+
+
+
+                                                                                      型
+    Mixed Strategies. A mixed strategy for player 𝑖 is defined as a probability distribution over the
+set of pure strategies. Let 𝑛𝑖 denote the number of pure strategies available to player 𝑖. A mixed
+strategy for player 𝑖 (the player is a server or a receiver) can then be represented as a vector
+
+
+
+
+                                                                             模
+                                           p𝑖 = ( 𝑝𝑖1 , 𝑝𝑖2 , ..., 𝑝𝑖𝑛𝑖 )                                    (15)
+
+
+
+
+                                                                            学
+where 𝑝𝑖 𝑗 is the probability that player 𝑖 will play pure strategy 𝑗. These probabilities are non-
+negative and sum to 1
+                                                    𝑛𝑖
+
+
+
+
+                                                                 数
+                                                   ∑︁
+                                       𝑝𝑖 𝑗 ≥ 0,       𝑝𝑖 𝑗 = 1                                (16)
+                                                           𝑗=1
+
+
+
+                                          ：
+    Expected Payoffs. The expected payoff for player 𝑖 given a profile of mixed strategies p is
+
+
+
+
+                                                                               els
+calculated as the sum of the payoffs for each possible outcome, weighted by the probability of that
+                                         号
+outcome. If 𝑢𝑖 (𝑠1 , ..., 𝑠𝑛 ) denotes the payoff to player 𝑖 for strategy profile (𝑠1 , ..., 𝑠𝑛 ), the expected
+payoff is given by:
+
+
+
+
+                                                                             od
+                                              ∑︁ ∑︁                        𝑛
+                                                                           Ö
+                                众
+
+                                 𝐸 [𝑢𝑖 (p)] =    ...    𝑢𝑖 (𝑠1 , ..., 𝑠𝑛 )   𝑝 𝑗𝑠𝑗                          (17)
+                                              𝑠1      𝑠𝑛
+                                                                            m
+                                                                            𝑗=1
+                       公
+
+
+   Best Responses. A best response for player 𝑖 is a strategy that maximizes player 𝑖’s expected
+                                                        H
+payoff, given the strategies of the other players. Formally, a best response p𝑖∗ satisfies
+                                                     AT
+       信
+
+
+
+
+                                        p𝑖∗ ∈ arg max 𝐸 [𝑢𝑖 (p𝑖 , p−𝑖 )]                                     (18)
+                                                     p𝑖
+      微
+
+
+
+
+    Nash Equilibrium. A mixed-strategy Nash equilibrium is a strategy profile where every
+                                            M
+
+
+
+player’s strategy is a best response to the strategies of the other players. Formally, a strategy profile
+p∗ = (p∗1 , ..., p∗𝑛 ) is a Nash equilibrium if and only if for all 𝑖
+                                  ：
+
+
+
+
+                                        p𝑖∗ ∈ arg max 𝐸 [𝑢𝑖 (p𝑖 , p∗−𝑖 )]                                    (19)
+                                                     p𝑖
+                         号
+
+
+
+
+In other words, no player can improve their expected payoff by unilaterally deviating from their
+equilibrium strategy. Bringing our strategies into the model, the probability combination of
+                信
+
+
+
+
+strategies that our player should take to against Stefanos Tsitsipas is shown in figure 11 below.
+       微
+
+
+
+
+                                                                                                         2
+                                                                                                             关注数学模型
+                                                                                                MATHmodels
+
+
+                                                                                                             获取更多资讯
+Team # 2406176                                                                         Page 21 of 27
+
+
+
+
+                                                                              型
+                                                              模
+                                                             学
+                                                     数
+      Figure 11: Optimized combination of strategies when S.T. is server and R.S. is receiver
+
+
+                                      ：
+
+                                                                  els
+8     Test of FSF Model and SP Model
+                                     号
+     After completing the construction of FSF and SP model, we used the data of other matches as a
+
+
+
+
+                                                                od
+test set to verify the accuracy of our model’s predictive ability. Here we use the FSF model instead
+                             众
+
+of the RTMQ model because we want to track the momentum trend without the frequent
+shifts in the RTMQ model.                                      m
+                     公
+
+
+8.1    The Match between Alcaraz and Djokovic
+                                                 H
+    First, we selected one of the most exciting match, the Grand Slam championship match between
+                                              AT
+       信
+
+
+
+
+the young Carlos Alcaraz and the veteran Novak Djokovic(The match number:1701). Inputting
+the point-by-point data into our model generate the MMTTV prediction. Fig.x demonstrates that,
+despite both players’ high levels, their MMTTVs closely overlapped, reflecting the match’s intensity.
+      微
+
+                                        M
+
+
+Analysis showed MMTTV aligned with the actual match: Djokovic led early, Alcaraz caught up,
+and Djokovic surged again before Alcaraz prevailed. This trend was consistent across multiple
+matches, confirming the model’s accuracy.
+                               ：
+                      号
+              信
+       微
+
+
+
+
+                           Figure 12: FSF model and SP model results
+
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                        Page 22 of 27
+
+
+8.2   Model Generalization
+   To assess our model’s generalization, we used men’s singles data from the 2017 French Open,
+which shares similarities with the 2023 Wimbledon Championships, including the best-of-five set
+format and IBM Slamtracker data collection. Despite differences in court surfaces (red clay vs.
+grass), our model maintained prediction accuracy, indicating good generalization.
+
+
+
+
+                                                                             型
+    In particular, the match between Andy Murray and Andrey Kuznetsov highlighted the model’s
+reliability. Murray’s dominance, reflected in his MMTTV, aligned with our predictions and the
+
+
+
+
+                                                              模
+match’s outcome, further confirming the model’s effectiveness.
+
+
+
+
+                                                             学
+                                                     数
+                                      ：
+
+                                                                 els
+                                     号
+
+                                                               od
+                           Figure 13: FSF model and SP model results
+                             众
+
+8.3   Contextual Limitations in SP Model                      m
+                     公
+
+
+
+    When applying SP model to conduct MMTTV predictions and dynamic game strategy selec-
+                                                 H
+tions, we observed that players balance their tactical strategies based on their own abilities and
+                                              AT
+
+those of their opponents. Within a single match context (e.g., all matches in the 2023 Wimbledon
+       信
+
+
+
+
+Championships can be considered as having a consistent background), the model’s predictions
+are accurate. However, when generalizing the model to different match contexts, various factors
+      微
+
+
+
+
+such as the court’s impact on tennis ball bounce, climatic conditions influenced by the time of
+                                       M
+
+
+
+the season, and other contextual elements prevent us from directly unifying datasets from different
+matches to make sufficiently accurate predictions for a player facing a new opponent in a different
+                              ：
+
+
+
+
+match context. For instance, knowing Roman Safiullin’s performance data only from grass courts
+at Wimbledon makes it challenging to predict his strategic choices when playing on clay courts.
+                      号
+
+
+
+
+8.4   Key Indicators to be Included in Future Models
+    Beyond the generalization verification with the French Open dataset, we further discuss the
+              信
+
+
+
+
+model’s generalization potential. Given the rule differences between men’s and women’s singles
+tennis, extending our model to women’s singles or tournaments would require reconsidering the
+change from best-of-five to best-of-three sets. This necessitates rederiving the initial value cali-
+      微
+
+
+
+
+bration’s independent and identically distributed assumption. Extending the model to other racket
+sports with a net, such as table tennis, would involve redefining technical indicators based on rule
+variations and performing common factor analysis across different sports, incorporating relevant
+technical analyses.
+
+
+                                                                                               2
+                                                                                                   关注数学模型
+                                                                                      MATHmodels
+
+
+                                                                                                   获取更多资讯
+Team # 2406176                                                                          Page 23 of 27
+
+
+9    Sensitivity Analysis
+    We conduct a sensitivity analysis on our model to assess its stability under external distur-
+bances, thereby highlighting its advantages. As shown in Fig.x, when we alter the initial game
+win probability as input, the overall trend prediction curve exhibited minimal translation despite
+significant deviations in the initial values. The stability of the curve trend remain intact, ensuring
+
+
+
+
+                                                                              型
+no impact on our MMT swing predictions. This demonstrates the strong robustness of our model.
+
+
+
+
+                                                               模
+                                                              学
+                                                      数
+                                      ：
+
+                                                                  els
+                                     号
+
+                                                                od
+                             众
+
+                                                               m
+                     公
+
+
+                                                  H
+                                               AT
+      信
+
+
+
+
+                          Figure 14: Sensitivity analysis of MMT model
+     微
+
+                                        M
+                               ：
+                       号
+              信
+      微
+
+
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                          Page 24 of 27
+
+
+To: Coaches
+From: Team # 2406176
+Date: Feb.5th, 2024
+
+
+
+
+                                                                              型
+    MEMO: Summary of Tennis Momentum Analysis and Coaching Recommendations
+
+We are pleased to provide you with a summary of our recent research on tennis momentum
+
+
+
+
+                                                                   模
+dynamics and the development of predictive models. Our research focuses on the Real-Time
+Momentum Quantification (RTMQ) Model, Swing Prediction (SP) Model, and the application of
+
+
+
+
+                                                                  学
+the Mixed-Strategy Nash Equilibrium Model in tennis matches.
+Our findings suggest that momentum plays a significant role in tennis matches. The RTMQ
+
+
+
+
+                                                       数
+model quantifies momentum by considering the disparity between pre-match and real-time win
+probabilities. The model calculates the difference between real-time and pre-match win rates under
+separate serve/receive conditions, taking into account the serving side’s advantage. The K-S test
+
+                                       ：
+confirms the significance of momentum, rejecting the hypothesis that in-match performance is
+
+
+
+
+                                                                     els
+inconsequential.
+                                      号
+The Swing Prediction (SP) Model operates on a per-set basis and exhibits an impressive 90.44%
+
+
+
+
+                                                                   od
+prediction accuracy for large momentum shifts. The model uses specialized indicators, such
+as 2nd_serve_direct_won and Net_approach_point_won, to predict momentum swings. These
+                              众
+
+factors contribute significantly to player momentum and can be used to prepare players to respond
+                                                                  m
+effectively to events that impact the flow of play during a tennis match.
+                      公
+
+
+                                                   H
+The Mixed-Strategy Nash Equilibrium Model provides insights into optimal strategic combinations
+against diverse opponents. The model uses K-means clustering to identify strategic clusters for
+                                                AT
+      信
+
+
+
+
+tailored strategies. Coaches can use this model to prepare players to respond effectively to different
+opponents and adjust their strategies accordingly.
+     微
+
+
+
+
+In conclusion, our research equips coaches with advanced tools and insights to navigate the intricate
+                                         M
+
+
+
+landscape of tennis momentum. Incorporating these findings into coaching strategies will enhance
+players’ ability to respond effectively to events impacting the flow of play, contributing to improved
+                                ：
+
+
+
+
+match outcomes. We recommend that coaches integrate these findings into their training programs
+to improve players’ responsiveness to dynamic events during matches.
+                       号
+
+
+
+
+Feel free to reach out for further discussion or clarification.
+Best Regards,
+                信
+
+
+
+
+Team # 2406176
+      微
+
+
+
+
+                                                                                                2
+                                                                                                    关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                    获取更多资讯
+Team # 2406176                                                                    Page 25 of 27
+
+
+References
+ [1] Angelini, G.; Candila, V.; De Angelis, L. Weighted Elo Rating for Tennis Match
+     Predictions. European Journal of Operational Research 2022, 297 (1), 120–132.
+     https://doi.org/10.1016/j.ejor.2021.04.011.
+
+ [2] Newton, P. K.; Keller, J. B. Probability of Winning at Tennis I. Theory and Data. Stud Appl
+
+
+
+
+                                                                          型
+     Math 2005, 114 (3), 241–269. https://doi.org/10.1111/j.0022-2526.2005.01547.x.
+
+
+
+
+                                                           模
+ [3] Sarcevic, A.; Vranic, M.; Pintar, D.; Krajna, A. Predictive Modeling of Tennis Matches:
+     A Review. In 2022 45th Jubilee International Convention on Information, Communica-
+     tion and Electronic Technology (MIPRO); IEEE: Opatĳa, Croatia, 2022; pp 1099–1104.
+
+
+
+
+                                                          学
+     https://doi.org/10.23919/MIPRO55190.2022.9803645.
+
+ [4] Newton, P. K.; Aslam, K. Monte Carlo Tennis: A Stochastic Markov Chain Model. Journal
+
+
+
+
+                                                   数
+     of Quantitative Analysis in Sports 2009, 5 (3). https://doi.org/10.2202/1559-0410.1169.
+
+ [5] Dietl, H. M.; Nesseler, C. Momentum in Tennis: Controlling the Match.
+
+                                    ：
+
+                                                              els
+ [6] Šarčević, A.; Pintar, D.; Vranić, M.; Gojsalić, A. Modeling In-Match Sports Dynam-
+     ics Using the Evolving Probability Method. Applied Sciences 2021, 11 (10), 4429.
+                                   号
+     https://doi.org/10.3390/app11104429.
+
+
+
+
+                                                            od
+ [7] Glass, A. J.; Kenjegalieva, K.; Taylor, J. Game, Set and Match: Evaluating the Ef-
+                           众
+
+     ficiency of Male Professional Tennis Players. J Prod Anal 2015, 43 (2), 119–131.
+     https://doi.org/10.1007/s11123-014-0401-3.            m
+                    公
+
+
+                                               H
+ [8] Klaassen, F. J. G. M.; Magnus, J. R. Forecasting the Winner of a Tennis Match. European
+     Journal of Operational Research 2003, 148 (2), 257–267. https://doi.org/10.1016/S0377-
+                                            AT
+     信
+
+
+
+
+     2217(02)00682-3.
+
+ [9] Bouzidis, T.; Karagiannis, G. Extending the Zero-Sum Gains Data Envelopment Analysis
+    微
+
+
+
+
+     Model. J Prod Anal 2022, 58 (2–3), 171–184. https://doi.org/10.1007/s11123-022-00644-1.
+                                     M
+
+
+
+[10] Kovalchik, S.; Reid, M. A Calibration Method with Dynamic Updates for Within-Match
+                             ：
+
+
+
+
+     Forecasting of Wins in Tennis. International Journal of Forecasting 2019, 35 (2), 756–766.
+     https://doi.org/10.1016/j.ĳforecast.2017.11.008.
+                     号
+
+
+
+
+[11] Shi Fuying, Zhang Hui, Liang Chengjun. Development of a Technical and Tactical Decision-
+     Making Analysis System for Tennis Matches [J]. Journal of Beĳing Sport University, 2010,
+     33(09): 129-132+138. DOI: 10.19582/j.cnki.11-3785/g8.2010.09.037.
+             信
+
+
+
+
+[12] Tao Zhixiang. Research on the Basic Unit of Athletic Process in Men’s Single Events of
+     Racket Net Sports [D]. Beĳing Sport University, 2003.
+      微
+
+
+
+
+[13] Ferrante, Marco & Fonseca, Giovanni & Carrari, Andrea. (2017). A new marko-
+     vian model for tennis matches. Electronic Journal of Applied Statistical Analysis. 10.
+     10.1285/i20705948v10n3p693.
+
+
+
+                                                                                           2
+                                                                                               关注数学模型
+                                                                                  MATHmodels
+
+
+                                                                                               获取更多资讯
+Team # 2406176                                                                        Page 26 of 27
+
+
+
+Appendices
+    Indicators in Swing Prediction Model in 6.2
+                                n(ace)
+             Aces_p𝑖 =
+                        n(successful serves)
+
+
+
+
+                                                                             型
+                                  2 ∗ n(winner)
+          Winners_p𝑖 =
+                        n(rally) − n(server) + n(winner)
+
+
+
+
+                                                              模
+                                                     n(winner | rally_n ≥ 4)
+         Winners4_p𝑖 = 2 ∗
+                            n(rally | rally ≥ 4) − n(server | rally_n ≥ 4) + n(winner | rally_n ≥ 4)
+
+
+
+
+                                                             学
+                                                           n(winner |1 ≤ rally_n ≤ 3)
+       Winners13_p𝑖 = 2 ∗
+                            n(rally | 1 ≤ rally_n ≤ 3) − n(server | 1 ≤ rally_n ≤ 3) + n(winner | 1 ≤ rally_n ≤ 3)
+                        count(double_fault)
+
+
+
+
+                                                     数
+     Double_fault_p𝑖 =
+                            count(server)
+                        count(server | serve_no = 1)
+        1st_srv_in_p𝑖 =
+
+                                      ：
+                                  serve_sum
+
+
+
+
+                                                                 els
+                        count(server | serve_no = 2, double_fault = 0)
+       2nd_srv_in_p𝑖 =
+                                            serve_sum
+                                     号
+                        n(server | serve_no = 1, point_victor = 𝑖)
+
+
+
+
+                                                               od
+     1st_srv_won_p𝑖 =
+                                  n(server | serve_no = 1)
+                             众
+
+                        n(server | serve_no = 2, point_victor = 𝑖)
+    2nd_srv_won_p𝑖 =
+                                  n(server | serve_no = 2)
+                        n(net_pt_won)
+                                                              m
+                    公
+
+
+      Net_pt_won_p𝑖 =
+                                                 H
+                           n(net_pt)
+                          n(unf_err)
+                                              AT
+
+    Total_unf_err_p𝑖 =
+     信
+
+
+
+
+                        n(total points)
+                        n(server = 𝑗, break_pt_won = 𝑖)
+            Break_p𝑖 =
+                           n(server = 𝑗, break_pt = 1)
+    微
+
+                                       M
+
+
+
+                        n(server | serve_no = 1, rally_count = 1)
+ 1st_srv_drt_won_p𝑖 =
+                                 n(server | serve_no = 1)
+                              ：
+
+
+
+
+                        n(server | serve_no = 2, rally_count = 1)
+2nd_srv_drt_won_p𝑖 =
+                                 n(server | serve_no = 2)
+                      号
+
+
+
+
+  Srv_avg_speed_p𝑖 = mean(speed_mph | server = 𝑖)
+                        n(server = 𝑗, serve_no = 1, point_victor = 𝑖)
+     1st_rcv_won_p𝑖 =
+                                  n(server = 𝑗, serve_no = 1)
+              信
+
+
+
+
+                        n(server = 𝑗, serve_no = 2, point_victor = 𝑖)
+    2nd_rcv_won_p𝑖 =
+                                  n(server = 𝑗, serve_no = 2)
+      微
+
+
+
+
+                             n(server = 𝑖, serve_width = 𝐵)
+         Width_B_p𝑖 =
+                        n(server = 𝑖, serve_width ≠ unknown)
+                            n(server = 𝑖, serve_width = 𝐶)
+         Width_C_p𝑖 =
+                        n(server = 𝑖, serve_width ≠ unknown)
+                            n(server = 𝑖, serve_width = 𝑊)
+        Width_W_p𝑖 =
+                        n(server = 𝑖, serve_width ≠ unknown)
+                                                                                               2
+                                                                                                   关注数学模型
+                                                                                      MATHmodels
+
+
+                                                                                                   获取更多资讯
+Team # 2406176                                                                        Page 27 of 27
+
+
+
+
+                                        n(server = 𝑖, serve_width = 𝐵𝐶)
+                      Width_BC_p𝑖 =
+                                     n(server = 𝑖, serve_width ≠ unknown)
+                                        n(server = 𝑖, serve_width = 𝐵𝑊)
+                      Width_BW_p𝑖 =
+                                     n(server = 𝑖, serve_width ≠ unknown)
+
+
+
+
+                                                                             型
+                                       n(server = 𝑖, serve_depth = 𝐶𝑇 𝐿)
+                     Depth_CTL_p𝑖 =
+                                     n(server = 𝑖, serve_depth ≠ unknown)
+
+
+
+
+                                                             模
+                                         n(server = 𝑗, return_depth = 𝐷)
+                 Return_depth_D_p𝑖 =
+                                     n(server = 𝑗, return_depth ≠ unknown)
+                                     n(point_victor = 𝑖, winner_shot_type = 𝐹)
+
+
+
+
+                                                            学
+                         F_won_p𝑖 =
+                                                 n(point_victor = 𝑖)
+
+
+
+
+                                                    数
+                         Table 4: Indicators and their brief introductions
+ No.          Symbol                                           Introduction
+  1           Aces_p𝑖
+                                     ：  Proportion of successful serves that are aces for player 𝑖.
+
+
+
+
+                                                                els
+  2         Winners_p𝑖                            Proportion of rallies won by player 𝑖.
+                                    号
+  3        Winners4_p𝑖                 Proportion of rallies with 4 or more shots won by player 𝑖.
+
+
+
+
+                                                              od
+  4       Winners13_p𝑖                   Proportion of rallies with 1 to 3 shots won by player 𝑖.
+  5      Double_fault_p𝑖                  Proportion of player 𝑖’s serves that are double faults.
+                            众
+
+  6        1st_srv_in_p𝑖                     Proportion of player 𝑖’s first serves that are in.
+  7       2nd_srv_in_p𝑖
+                                                             m
+                               Proportion of player 𝑖’s second serves that are in, excluding double faults.
+                     公
+
+
+  8      1st_srv_won_p𝑖               Proportion of player 𝑖’s first serves that result in a point won.
+                                                 H
+  9      2nd_srv_won_p𝑖             Proportion of player 𝑖’s second serves that result in a point won.
+ 10       Net_pt_won_p𝑖                         Proportion of net points won by player 𝑖.
+                                              AT
+     信
+
+
+
+
+ 11      Total_unf_err_p𝑖             Proportion of total points that are unforced errors for player 𝑖.
+ 12          Break_p𝑖                          Proportion of break points won by player 𝑖.
+    微
+
+
+
+
+ 13    1st_srv_drt_won_p𝑖        Proportion of player 𝑖’s first serves that directly result in a point won.
+                                       M
+
+
+
+ 14    2nd_srv_drt_won_p𝑖       Proportion of player 𝑖’s second serves that directly result in a point won.
+ 15     Srv_avg_speed_p𝑖                          Average speed of serves for player 𝑖.
+                              ：
+
+
+
+
+ 16      1st_rcv_won_p𝑖         Proportion of first serves received by player 𝑖 that result in a point won.
+ 17      2nd_rcv_won_p𝑖       Proportion of second serves received by player 𝑖 that result in a point won.
+ 18         Width_B_p𝑖               Proportion of player 𝑖’s serves that land in the "B" width zone.
+                      号
+
+
+
+
+ 19         Width_C_p𝑖               Proportion of player 𝑖’s serves that land in the "C" width zone.
+ 20        Width_W_p𝑖                Proportion of player 𝑖’s serves that land in the "W" width zone.
+              信
+
+
+
+
+ 21       Width_BC_p𝑖               Proportion of player 𝑖’s serves that land in the "BC" width zone.
+ 22       Width_BW_p𝑖               Proportion of player 𝑖’s serves that land in the "BW" width zone.
+ 23       Depth_CTL_p𝑖             Proportion of player 𝑖’s serves that land in the "CTL" depth zone.
+       微
+
+
+
+
+ 24    Return_depth_D_p𝑖       Proportion of serves received by player 𝑖 that land in the "D" depth zone.
+ 25          F_won_p𝑖                  Proportion of points won by player 𝑖 with a forehand shot.
+
+
+
+
+                                                                                              2
+                                                                                                  关注数学模型
+                                                                                     MATHmodels
+
+
+                                                                                                  获取更多资讯
+Team # 2406176                                                                                      Page 28
+
+
+                                     Report on Use of AI
+
+1. Bing AI
+   Query1: write a pseudocode for Bartlett’s Test of Sphericity, please generate in latex code
+   format. you should contain all necessary mathmetical equations.
+   Output: Here’s a pseudocode for Bartlett’s Test of Sphericity, which is a statistical test for the
+
+
+
+
+                                                                              型
+   assumption of equal variances in the population. The test statistic is calculated as follows:
+
+
+
+
+                                                              模
+Algorithm 5 Bartlett’s Test of Sphericity
+Data: Indicator matrix X
+Result: Test statistic, p-value, and a decision on whether the data need to be factor analyzed
+
+
+
+
+                                                             学
+begin
+   𝜒2 = − log(det(𝑅))(𝑁 − 1 − 2𝑛+5   6 )
+
+
+
+
+                                                     数
+    where 𝑅 is the correlation matrix
+                                        of the dataset, 𝑁 = 109 (number of data points), 𝑛 = 25;
+                     2   𝑝( 𝑝+1)
+     𝑝 = 1 − 𝐹𝜒 2 𝜒 , 2 − 1 ;
+    if 𝑝 < 0.05 then
+                                      ：
+       The data is appropriate for factor analysis.;
+
+
+
+
+                                                                  els
+   end
+                                     号
+   else
+
+
+
+
+                                                                od
+       The data is not appropriate for factor analysis.;
+   end
+                             众
+
+end
+                                                               m
+                     公
+
+
+                                                  H
+                                               AT
+     信
+    微
+
+                                        M
+                               ：
+                      号
+              信
+      微
+
+
+
+
+                                                                                                2
+                                                                                                       关注数学模型
+                                                                                       MATHmodels
+
+
+                                                                                                       获取更多资讯
+

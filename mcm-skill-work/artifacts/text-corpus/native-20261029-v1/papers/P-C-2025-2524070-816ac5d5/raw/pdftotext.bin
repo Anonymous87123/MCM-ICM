@@ -1,0 +1,2381 @@
+  Problem Chosen                        2025                       Team Control Number
+                                      MCM/ICM
+          C                         Summary Sheet
+                                                                         2524070
+
+
+From Data to Podiums: A Study for Olympic Medal
+                  Forecasting
+                                        Summary
+   This research examines the forecasting of Olympic medal counts by analyzing the
+competitive outcomes of various nations since the inception of the Olympic Games in
+
+
+
+
+                                         型
+1896. The study addresses five primary concerns:
+    Predict Medal Standings for the 2028 LA Olympics: To effectively model the
+
+
+
+
+                                       模
+number of medals awarded to countries, we propose a zero-inflated negative binomial
+regression model (ZINB). Adopting a Bayesian framework, we employ the Markov
+
+
+
+
+                                     学
+Chain Monte Carlo (MCMC) method to derive the posterior distribution of the model
+parameters. Subsequently, we conduct random simulations to predict the medal standings
+                                   数
+for the 2028 Olympics. Comprehensive testing of all parameters yielded Rhat values of 1,
+with both Bulk Effective Sample Size (ESS) and Tail ESS values reaching ten thousand,
+                               ：
+thereby demonstrating the model’s exceptional predictive stability and precision.
+
+
+
+                              el s
+    Overcoming the Historical Lack of Medals: We introduced the concepts of sampling
+                             号
+
+zero and structural zero within the ZIBN model. By evaluating the probability of
+                            od
+generating structural zeros in various countries, we predicted which nations might secure
+              众
+
+
+
+their first medal at the 2028 Los Angeles Olympics. The findings indicate that Mauritania
+                         Hm
+
+has a 24.8% chance of achieving this milestone!
+ 公
+
+
+
+
+    Factors Influencing Medal Totals: In this section,we employed an Association Rule
+Model utilizing GRI algorithm. Using the United States as a case study,we developed
+                      AT
+信
+
+
+
+
+a ’type-num’ comprehensive indicator 𝜑𝑖 as the antecedent and the medal count as the
+consequent, which led to the identification of five strong association rules. Furthermore,
+微
+
+
+
+
+the model reinforced the finding that "the host’s choice contribute to its medal success",
+                     M
+
+
+
+
+resulting in two strong rules. The analysis revealed that ’Athletics’ plays a vital role
+for all nations. The support for these rules was as high as 80.56%, with confidence
+          ：
+
+
+
+
+levels generally exceeding 80%, and lift values all above 1, confirming the validity of the
+findings.
+         号
+
+
+
+
+    Great Coach Effect: To investigate the presence of the "great coach" effect while
+ 信
+
+
+
+
+accounting for the influence of both the coach and the country they represent, we developed
+a mixed-effects model. In this model, the pairing of coach and country is treated as a
+random block, while the "great coach" factor is considered a fixed two-level factor. Our
+微
+
+
+
+
+analysis confirmed the existence of the "great coach" effect and provided a point estimate
+of 3.74. For the countries we analyzed, hiring a "great coach" increases the likelihood of
+winning a silver or gold medal to over 50%.
+    Original Insights: Based on the results of the regression parameter estimates and the
+established association rules, we found that the number of events has a minimal impact
+on performance and can be considered negligible. Therefore, we recommend targeted
+resource allocation, prioritization of qualifications based on medal probability, and
+precise talent scouting to synergistically enhance medal efficiency.
+Keywords: Zero-Inflated Negative Binomial Regression; Association Rules; GRI Algo-
+rithm; Mixed-effects Model; Prediction of the LA Olympics.
+Team 2524070                                                                           Page 3of 25
+
+
+1     Introduction
+1.1   Background
+   During each Olympic Games, spectators not only follow the thrilling sports competitions but also
+
+
+
+
+                                                                    型
+keep an eye on the national medal standings. Figure 1 illustrates the fluctuations in the total medal
+counts of seven nations, including the United States and China, over the past five Summer Olympics.
+
+
+
+
+                                                                  模
+                                                                学
+                                                              数
+                                                          ：
+
+                                                         el s
+                                                        号
+
+                                                       od
+                                         众
+
+                                                    Hm
+                            公
+
+            Figure 1: Total Medal Count of the Last 5 Summer Olympics – 7 Countries
+                                                 AT
+                           信
+
+
+
+   For these relatively strong nations, fans are particularly interested in ranking changes, such as
+                    微
+
+
+
+
+whether they have made it into the top 5 or top 3. They also pay attention to variations in the total
+                                                M
+
+number of medals, especially gold medals. Conversely, for some countries, securing even a single
+medal is a noteworthy accomplishment.
+                                    ：
+
+
+    Given this context, forecasting the medal counts for each nation in the upcoming Olympic Games
+                                   号
+
+
+
+is valuable. This article utilizes historical data from the Summer Olympics to predict the number
+of medals anticipated for the 2028 Games and seeks to identify factors that may influence medal
+                       信
+
+
+
+
+outcomes based on past data.
+
+1.2   Problem Restatement
+                      微
+
+
+
+
+   Through an in-depth analysis of the background, while considering the existing constraints, we
+can only use the given datasets to build the model. We need to address the following issues:
+    • Develop a predictive model for the medal count for the 2028 Summer Olympics. This model
+should estimate the number of gold, silver, and bronze medals for each participating country, as well
+as the overall medal tally, and should include a prediction interval. Furthermore, an analysis of the
+results should be conducted to determine whether the performance of each country is comparatively
+better or worse, with particular emphasis on including predictions for nations that have not previously
+secured any medals.
+   • Create a model to investigate the correlation between various sporting events and the medal
+outcomes of different countries. This model should account for both the quantity of events and
+                                           m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+                                         m     m                 m   m   m m m m m m m m   m m m m     m m     m
+                                         m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+                                         m   m   m         m   m   m m m     m m           m         m m   m   m m
+                                         m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+                                         m m   m       m m m m       m     m         m     m   m       m m       m
+                                         m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+                                               m m           m             m   m m m m m   m         m m   m   m m
+                                               m     m           m   m     m m m   m     m m   m       m m m   m m
+                                                             m m       m m m m       m m m
+                                         m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+                                         m           m   m m   m     m m   m m m m m m       m m m   m           m
+                                         m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+                                         m   m m m   m   m       m   m         m             m m m   m   m m m   m
+                                         m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+                                         m           m   m m     m m       m   m   m m m m m m m     m           m
+                                         m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+
+
+
+
+Team 2524070                                                                                                                    Page 6of 25
+
+
+Union, Yugoslavia, and other nations that have subsequently fragmented have been removed. Further-
+more, data from countries such as East Germany and West Germany, which have ceased to exist due
+to historical circumstances, have also been excluded.
+    5. The issue of missing values within the provided datasets was systematically addressed. The
+𝑎𝑡ℎ𝑙𝑒𝑡𝑒𝑠 and 𝑚𝑒𝑑𝑎𝑙𝑠 datasets contained no missing values. For the 𝑝𝑟𝑜𝑔𝑟𝑎𝑚𝑠 dataset, if related
+events were recorded in the 𝑎𝑡ℎ𝑙𝑒𝑡𝑒𝑠, the occurrences were counted to supplement the missing data;
+if no related events were recorded, all occurrences for that particular year were recorded as 0.
+    6. The treatment of question marks within the 𝑝𝑟𝑜𝑔𝑟𝑎𝑚𝑠 dataset was conducted as follows: for
+’?0’, it was interpreted that the event did not occur during that year for unspecified reasons. For
+’? non-0’, after verification, if the event was not recorded in the athletes data, it was also noted
+as zero. The ’??’ designation, which appeared in the athletes table, was determined to refer to
+informal competitions, such as exhibitions, which do not contribute to medal counts; consequently,
+data pertaining to these informal competitions was deleted. Furthermore, the items Jeu de Paume
+and Roque, which appeared with ’?’ in the Code, were found through research to have been briefly
+included as official events in the early Olympic Games but are no longer recognized; therefore, this
+data was also removed.
+   7. A garbled text issue was identified in the 𝑝𝑟𝑜𝑔𝑟𝑎𝑚𝑠 dataset, where ’Baseball**nd Softball’
+was recorded, while the 𝑎𝑡ℎ𝑙𝑒𝑡𝑒𝑠 dataset correctly listed it as ’Baseball/Softball’. Consequently, the
+𝑝𝑟𝑜𝑔𝑟𝑎𝑚𝑠 dataset was subsequently amended to align with the format used in the 𝑎𝑡ℎ𝑙𝑒𝑡𝑒𝑠 dataset.
+
+4     Who Will Rule the Medal Race at the 2028 LA Olympics?
+4.1   Count Regression Model
+   Problem 1 requires us to predict the medal outcomes for various countries at the 2028 Los Angeles
+Olympics. Since the dependent variable—the number of medals—is a count variable, meaning it can
+only take on non-negative integer values, we have opted to use a count regression model instead of a
+general regression or machine learning model.
+    In counting problems, there are two primary types of regression models: Poisson regression and
+negative binomial regression. Poisson regression is predicated on the assumption that the data follows
+a Poisson distribution, which necessitates that the mean and variance are approximately equal. Upon
+examining this assumption, we found the variances for the number of gold medals and the total number
+of medals to be 28.57 and 202.05, respectively, while the means were only 1.64 and 5.11. The variance
+of the total number of medals significantly exceeds the mean, indicating that the data is overdispersed.
+Consequently, we chose to employ negative binomial regression for our analysis.
+
+                                  Type                               Expectation                                     Variance
+                              Gold Medals                                                 1.64                        28.57
+                              Total Medals                                                5.11                        202.05
+
+                Table 2: Expectation and Variance for Gold Medals and Total Medals
+
+
+
+                                                                                                                                         2
+                                                                                                                                             关注数学模型
+                                                                                                                                MATHmodels
+
+
+                                                                                                                                             获取更多资讯
+                                                              Team 2524070                                                                                                          Page 7of 25
+
+
+
+
+                                                                                                                                                         型
+                                                                                                                                                       模
+                                                                                                                                                     学
+                                                                                                                                                   数
+                                                                                                                                               ：
+                                                                                      (a) Distribution of Gold Medals                                 (b) Distribution of Total Medals
+
+
+
+
+                                                                                                                                              el s
+                                                                                                         Figure 3: Histograms of Gold and Total Medals
+                                                                                                                                             号
+
+                                                                                                                                            od
+                                                                                                                               众
+                                                                  We believe that a country’s performance in a specific Olympic Games can be predicted by con-
+
+
+
+                                                                                                                                         Hm
+                                                              sidering several factors: the number of events that year, whether the country is the host, and its
+                                                              performance in the previous three Olympic Games. This reasoning is intuitive: more events provide
+                                                                                                             公
+
+                                                              greater opportunities to win medals; host countries often benefit from a home advantage and typically
+                                                              secure more medals; and past performance reflects the country’s overall strength. Based on these
+                                                                                                                                      AT
+                                                                                                            信
+
+
+
+                                                              factors, we developed the following model1 :
+                                                                                                    微
+
+
+
+
+                                                                                                                                                𝑦          𝜙
+                                                                                                                       𝑦+𝜙−1
+                                                                                                                                     M
+
+                                                                                                                                              𝜇            𝜙
+                                                                                                            𝑃(𝑌 = 𝑦) =                                                                             (1)
+                                                                                                                         𝑦                   𝜇+𝜙          𝜇+𝜙
+                                                                                                                       ：
+
+
+
+                                                              where 𝜙 is the overdispersion parameter and 𝜇 is the mean number of medals, which can be calculated
+                                                              as follows:
+                                                                                                                      号
+
+
+
+
+                                                                                                        3
+                                                                                                       ∑︁
+                                                                                          ln(𝜇) = 𝛽0 +    𝛽𝑖 𝑛𝑔𝑜𝑙𝑑,𝑖 + 𝛽4 𝑛𝑒𝑣𝑒𝑛𝑡𝑠 + 𝛽5 ℎ𝑜𝑠𝑡                   (2)
+                                                                                                      信
+
+
+
+
+                                                                                                                           𝑖=1
+
+                                                              4.2               Zero-Inflated Model
+                                                                                                     微
+
+
+
+
+                                                                  The Olympic Games, a prominent international sporting event, attract a significant number of
+                                                              athletes from around the world for each iteration. However, it is important to note that in each
+                                                              competition, typically only three nations are awarded medals, and instances of tied results are relatively
+                                                              rare. Historically, since the inception of the Olympic Games in 1896, numerous countries have yet to
+                                                              secure any medals. As a result, the dataset contains a substantial number of zero values. The prevalence
+                                                              of these zeros presents a challenge, as the negative binomial distribution does not adequately account
+                                                                            1 Using the count of gold medals as an illustration, the scenario for all medal totals is similar, with the only difference
+
+                                                              being that in the explanatory variables, the count of gold medals from the previous three years is replaced with the overall
+m m m m m m m
+m
+m   m m m
+            m
+            m
+                  m m m
+                  m m
+                    m
+                        m
+                            m m
+                            m   m m m m m
+                                m
+                                  m   m m
+
+                                          m m
+                                                  m
+                                                  m
+                                                      m m
+                                                      m m
+                                                              medal count from those same three years.
+                                                        m m m m m
+                                                                m m
+                                                                m   m
+                                                                      m m
+
+                                                                        m
+m   m m m   m   m   m m m m       m m     m   m   m       m     m   m m m
+m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+m           m         m m     m   m       m m       m m m       m   m
+m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                m m m   m m     m m       m m   m   m m m       m     m m
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+          m   m m m         m m     m m         m         m m       m
+      m m   m         m   m     m           m       m m m   m m m     m
+m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+m   m   m   m     m m             m     m m       m     m   m     m m m m
+m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+Team 2524070                                                                                     Page 8of 25
+
+
+for the frequent occurrence of zeros. This necessitates the use of the Zero-Inflated Model, which
+incorporates an additional framework specifically designed to address the zeros within the dataset,
+thereby providing a more accurate representation of the phenomenon of high-frequency zeros.
+    We propose that there are two distinct scenarios that may result in a value of zero. The first
+scenario occurs when a nation has the potential to secure a medal but ultimately fails to do so due to
+random factors; we categorize this type of zero value as a sampling zero, signifying that it is merely a
+random outcome derived from sampling. The second scenario arises when a nation lacks the requisite
+strength in a particular sport and, as a result, has no realistic chance of winning a medal; we designate
+this type of zero value as a structural zero. Subsequently, we will model the occurrence of zero values
+as a Bernoulli distribution process, which will be executed through logistic regression, as follows:
+                                                                1
+                                         𝑝 0 = 𝑃(𝑌 = 0) =                                                      (3)
+                                                             1 + 𝑒 −𝜆
+                           3
+                          ∑︁               6
+                                          ∑︁                    9
+                                                               ∑︁
+                 𝜆 = 𝛼0 +    𝛼𝑖 𝑛𝑔𝑜𝑙𝑑,𝑖 +    𝛼𝑖 𝑛 𝑠𝑖𝑙𝑣𝑒𝑟,𝑖−3 +      𝛼𝑖 𝑛 𝑏𝑟𝑜𝑛𝑧𝑒,𝑖−6 + 𝑐𝑜𝑢𝑛𝑡𝑟 𝑦                 (4)
+                           𝑖=1              𝑖=4              𝑖=7
+                                            𝑐𝑜𝑢𝑛𝑡𝑟 𝑦 ∼ N(0, 𝜎𝑐2 )                                              (5)
+
+In this analysis, we incorporate a random effect for the variable ’country’ to examine the variations in
+medal counts among various countries. This random effect is denoted as ’country’.
+
+4.3    Zero-Inflated Negative Binomial Model
+   We integrate the zero-inflated model with the negative binomial model to create the Zero-Inflated
+Negative Binomial model, ZINB:
+                                1
+                      𝑝0 =                                                                      𝑦=0
+                     
+                                    ,
+                            1 + 𝑒 −𝜆
+                     
+          𝑃(𝑌 = 𝑦) =                                                    𝑦      𝜙                           (6)
+                                                            𝑦+𝜙−1    𝜇        𝜙
+                      (1 − 𝑝 0 )𝑃(𝑌 = 𝑦|𝑌 > 0) = (1 − 𝑝 0 ) 𝑦                                   𝑦>0
+                     
+                     
+                                                                     𝜇+𝜙      𝜇+𝜙    ,
+                     
+
+    This model typically consists of two components: one part employs a binomial distribution to
+model the generation of zeros, while the other utilizes a negative binomial distribution to characterize
+the non-zero values. This dual structure enables the model to effectively address both actual zero
+counts and non-zero count data simultaneously.
+
+4.4    Fitting the Model Using Bayesian Inference and MCMC
+    In this problem, we utilized Bayesian inference in conjunction with Markov Chain Monte
+Carlo(MCMC) methods to fit the model and derive its posterior distribution. Bayesian inference
+allows for the integration of prior knowledge or beliefs regarding the parameters, which can sub-
+sequently be updated in light of the observed data. The application of MCMC techniques enables
+efficient sampling from the posterior distribution, particularly in scenarios where direct computation
+is challenging or unfeasible. The detailed procedural framework of the algorithm is illustrated in the
+following diagram.
+
+
+
+                                                                                                          2
+                                                                                                              关注数学模型
+                                                                                                 MATHmodels
+
+
+                                                                                                              获取更多资讯
+Team 2524070                                                                                           Page 9of 25
+
+
+
+
+Algorithm 1 MCMC Algorithm for Bayesian Model Fitting with Multiple Chains
+ 1: Input: Data {𝑦 𝑖 , 𝑋𝑖 }, initial parameter values 𝜃 (0)
+
+
+
+
+                                                   型
+ 2: Output: Samples from the posterior distribution of 𝜃
+ 3: Initialization: Set initial values for the model parameters:
+
+
+
+
+                                                 模
+ 4:     𝜃 (0) = {𝛽0 , 𝛽1 , . . . , 𝛽5 , 𝛼0 , 𝛼1 , . . . , 𝛼9 , 𝜇, 𝜙}
+ 5:     where 𝛽 are the negative binomial regression coefficients, 𝛼 are the zero-inflation coefficients,
+
+
+
+
+                                               学
+    and 𝜇 and 𝜙 are the parameters of the negative binomial distribution.
+                                                                                            (0)
+ 6: Initialize chains: Run 𝐶 parallel chains, each starting with random initial values of 𝜃 𝑐 for chain
+
+
+
+
+                                             数
+    𝑐 ∈ {1, 2, . . . , 𝐶}
+ 7: for each chain 𝑐 = 1, . . . , 𝐶 do
+ 8:
+                                         ：
+        for each iteration 𝑡 = 1, . . . , 𝑇 do
+
+
+
+
+                                        el s
+ 9:          Step 1: Compute the log-likelihood of the model with current parameter values:
+                                       号
+                                                                𝑁
+
+
+
+
+                                      od
+                                                               ∑︁
+                                         log-likelihood𝑐 =            log( 𝑝(𝑦𝑖 |𝜃 𝑐 ))
+                       众
+
+                                                                𝑖=1
+                                   Hm
+    where 𝑝(𝑦𝑖 |𝜃 𝑐 ) is the likelihood of the data given the parameters for chain 𝑐.
+       公
+
+
+
+10:       Step 2: Calculate the posterior distribution using Bayes’ Theorem:
+                                AT
+      信
+
+
+
+
+                                            𝑝(𝜃 𝑐 |data) ∝ 𝑝(data|𝜃 𝑐 ) · 𝑝(𝜃 𝑐 )
+
+    where 𝑝(data|𝜃 𝑐 ) is the likelihood, and 𝑝(𝜃 𝑐 ) is the prior distribution for chain 𝑐.
+微
+
+                               M
+
+
+
+11:         Step 3: Propose new values for the parameters 𝜃 𝑐∗ = {𝛽0∗ , 𝛽1∗ , . . . , 𝜇∗ , 𝜙∗ } using a proposal
+    distribution.
+                 ：
+
+
+
+
+12:         Step 4: Calculate the acceptance probability for the new parameter set:
+
+                                                               𝑝(𝜃 𝑐∗ |data)
+                                                                            
+                号
+
+
+
+
+                                         ∗
+                                     𝐴(𝜃 𝑐 → 𝜃 𝑐 ) = min 1,
+                                                               𝑝(𝜃 𝑐 |data)
+ 信
+
+
+
+
+13:        if a random number 𝑢 ∼ 𝑈 (0, 1) is less than the acceptance probability 𝐴 then
+14:                Accept the new parameter set: 𝜃 𝑐(𝑡) = 𝜃 𝑐∗
+微
+
+
+
+
+15:        else
+16:                Reject the new parameter set: 𝜃 𝑐(𝑡) = 𝜃 𝑐(𝑡−1)
+17:        end if
+18:    end for
+19: end for
+20: Return: The concatenated set of accepted parameter samples from all chains:
+                                n                                                                           o
+                            𝜃 = 𝜃 1(1) , 𝜃 1(2) , . . . , 𝜃 1(𝑇) , . . . , 𝜃 𝐶(1) , 𝜃 𝐶(2) , . . . , 𝜃 𝐶(𝑇)
+Team 2524070                                                                                                                                                            Page 10of 25
+
+
+4.5   Problem Solutions
+    We have previously derived the posterior distributions of the parameters associated with the zero-
+inflated negative binomial regression model using MCMC methods. To determine the medal standings
+of various nations for the year 2028, we employ simulation techniques to estimate the medal outcomes
+for each country. The detailed algorithmic procedure is outlined as follows:
+
+Algorithm 2 Bayesian Zero-Inflated Negative Binomial Model Prediction
+ 1: Input: Trained Bayesian model, new data 𝑋new
+ 2: Output: Point estimate and prediction interval
+ 3: 1. Get posterior samples: 𝜃 (𝑠) ∼ 𝑝(𝜃|𝑋, 𝑌 )
+ 4: 2. Make predictions for new data:
+ 5: for 𝑠 = 1 to 𝑆 do
+ 6:     Compute 𝑝 0(𝑠) and 𝜇 (𝑠)
+                  (𝑠)                    (𝑠)
+ 7:     Sample 𝑦 new  ∼ NegBin(𝜇 (𝑠) , 𝜃 disp )
+                                                                                            (𝑠)           (𝑠)
+ 8:     With probability 1 − 𝑝 0 , set 𝑦 new
+ 9: end for
+10: 3. Point estimate:
+                                             (𝑠)
+11: Compute point estimate 𝑦ˆ new = 𝑆1 𝑠=1 𝑦 new
+                                       Í𝑆
+12: 4. Prediction interval:
+13: Calculate the 2.5
+14: 5. Output: Return 𝑦ˆ new and the prediction interval
+
+
+
+    Based on the construction of the previous zero-inflated negative binomial model, we choose to use
+the zero-inflation factor to evaluate the likelihood of these nations achieving their first medal at the
+2028 Los Angeles Olympics. The relevant formula can be expressed as follows:
+                                                                                                                                 1
+                                                                                                           𝑃 (𝑖)
+                                                                                                             𝑓 𝑖𝑟 𝑠𝑡 = 1 −    1 + 𝑒 −𝜆𝑖
+                                                                                                   3
+                                                                                                  ∑︁                    6
+                                                                                                                       ∑︁                         9
+                                                                                                                                                 ∑︁
+                                                        𝜆 𝑖 = 𝛼0 +                                      𝛼𝑖 𝑛𝑔𝑜𝑙𝑑,𝑖 +         𝛼𝑖 𝑛 𝑠𝑖𝑙𝑣𝑒𝑟,𝑖−3 +         𝛼𝑖 𝑛 𝑏𝑟𝑜𝑛𝑧𝑒,𝑖−6 + 𝑐𝑜𝑢𝑛𝑡𝑟 𝑦𝑖
+                                                                                                  𝑖=1                  𝑖=4                       𝑖=7
+                                                                      = 𝛼0 + 𝑐𝑜𝑢𝑛𝑡𝑟 𝑦𝑖
+                m m m m m m m     m m m     m m   m   m m               m m m m m     m m
+                m           m     m m   m   m   m m m m m         m   m m       m m
+                m   m m m   m       m           m         m m     m   m m       m   m   m
+                m   m m m   m   m   m m m m       m m     m   m   m       m     m   m m m
+                m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+                m           m         m m     m   m       m m       m m m       m   m
+                m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+
+
+
+
+4.6   Results
+                                m m m   m m     m m       m m   m   m m m       m     m m
+                    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+                m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+                  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+                m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+                            m   m             m   m       m   m m m m m   m m     m
+                      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+                      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+                          m   m m m         m m     m m         m         m m       m
+                      m m   m         m   m     m           m       m m m   m m m     m
+                m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+                m   m   m   m     m m             m     m m       m     m   m     m m m m
+                m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+
+
+
+
+    Based on analytical assessments, the anticipated medal rankings for the 2028 Los Angeles Olympics
+                  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+                m     m                 m   m   m m m m m m m m   m m m m     m m     m
+                m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+                m   m   m         m   m   m m m     m m           m         m m   m   m m
+                m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+                m m   m       m m m m       m     m         m     m   m       m m       m
+                m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+                      m m           m             m   m m m m m   m         m m   m   m m
+
+
+
+
+are as follows. m m m m m m m
+                m
+                m
+                m
+                m
+                      m
+
+
+
+
+                    m m m
+                    m m m
+                    m m m
+                            m
+
+
+
+                            m
+                            m
+                            m
+                            m
+                                m
+                                m m
+
+                                m
+                                    m m
+                                    m
+
+                                m m m
+                                      m
+
+
+
+                                      m
+                                        m
+
+                                        m
+
+                                        m
+                                        m
+                                          m
+                                            m
+
+                                            m
+                                              m m m m
+
+                                            m m
+                                            m
+                                            m
+                                                m
+                                                  m m m
+
+
+
+
+                                                m m
+
+                                                m
+                                                    m
+
+
+
+                                                      m
+                                                        m
+
+
+
+
+                                                    m m m
+                                                          m
+                                                            m m m
+                                                            m
+                                                  m m m m m m
+                                                                m m
+
+                                                                m   m
+                                                                      m
+
+                                                                        m
+                                                                    m m m
+                                                        m m m m m m m m m
+                                                                    m m m
+                                                                      m m
+                                                                            m m m m m m m
+                                                                            m
+                                                                            m
+                                                                            m
+                                                                            m
+                                                                              m m m
+
+
+
+
+                                                                                m m m
+                                                                                m m m
+                                                                                m m m
+                                                                                      m m
+
+
+
+                                                                                        m
+                                                                                        m
+                                                                                        m
+                                                                                        m
+                m           m   m m     m m       m   m   m m m m m m m     m           m
+                m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+
+
+
+
+                                                                                                                                                                                   2
+                                                                                                                                                                                       关注数学模型
+                                                                                                                                                                          MATHmodels
+
+
+                                                                                                                                                                                       获取更多资讯
+                                     Team 2524070
+
+
+
+
+微         微
+ 信            信
+     号         公
+      ：            众
+          M         号
+           AT          ：
+                            数
+              Hm             学
+                   od           模
+                     el s        型
+                                     Page 11of 25
+Team 2524070                                                                           Page 12of 25
+
+
+   To evaluate the performance of countries in 2028 relative to 2024, we identified the twenty countries
+predicted to win the most medals in 2028 and the twenty countries that ranked highest in the 2024
+medal standings for our analysis. Here are the findings.
+
+
+
+
+Figure 4: Comparison of the top twenty predicted medal-winning countries in 2028 with the highest-
+ranked countries in the 2024 medal standings.Russia, Poland, and Cuba are anticipated to break into
+the top twenty, while Uzbekistan, Iran, Kenya, and Sweden are expected to fall short. The United
+States, Japan, Germany, and Ukraine are projected to earn more medals than they did in 2024, whereas
+China, Great Britain, France, Australia, Italy, the Netherlands, South Korea, Canada, Brazil, Hungary,
+and Spain are expected to win fewer medals. New Zealand’s medal count is anticipated to remain
+unchanged.
+
+
+   The anticipated medal distribution for the leading six countries in the 2028 medal standings is
+projected to be as follows.
+
+
+
+
+                 Figure 5: Predicted Medal Distribution for Top 6 Nations at LA28.
+
+
+   The following six nations have the potential to secure their inaugural Olympic medal at the 2028
+Los Angeles Games.
+
+                                                                                                  2
+                                                                                                      关注数学模型
+                                                                                         MATHmodels
+
+
+                                                                                                      获取更多资讯
+Team 2524070                                                                          Page 13of 25
+
+
+
+
+    Figure 6: The top six nations poised to win the inaugural medal at the Los Angeles Olympics.
+
+
+
+
+                                                   型
+4.7    Model Assessment
+
+
+
+
+                                                 模
+   Due to space limitations, only the performance evaluation and uncertainty measurement of the
+gold medal count prediction model are presented. The analysis process for the other models is similar,
+and the results are comparable.
+
+
+
+
+                                               学
+   According to the findings from MCMC, the parameter estimates for the zero-inflated negative
+                                             数
+binomial model and the highest density interval (HDI) are as follows: the standard errors for each
+parameter are quite small, indicating minimal uncertainty associated with each estimate.
+                                         ：
+    The table also presents the Rhat and Effective Sample Size (ESS) values for each parameter. In
+
+
+
+                                        el s
+this model, all Rhat values are 1.00, indicating that all parameters have converged, which reflects
+                                       号
+
+excellent model convergence. The Bulk ESS values for all parameters are substantial, suggesting that
+                                      od
+the MCMC chains provide a sufficient number of effective samples, thereby enhancing the reliability
+                         众
+
+
+
+of the results. Additionally, the Tail ESS values are also high, indicating that the model possesses an
+                                   Hm
+
+adequate number of effective samples in the tail region, which ensures that the estimation of extreme
+predictions is equally reliable.
+            公
+
+
+
+
+                       Estimate      95% HDI        Rhat           Bulk ESS      Tail ESS
+                                AT
+           信
+
+
+
+
+        𝛽0             -0.05         -0.49-0.38     1.00           24043         10826
+        𝛽1             0.41          0.38-0.44      1.00           11050         10315
+      微
+
+
+
+
+        𝛽2             0.28          0.24-0.31      1.00           10853         9464
+                               M
+
+
+
+
+        𝛽3             0.22          0.19-0.26      1.00           11291         10474
+        𝛽4             0.00          -0.00-0.00     1.00           25202         10858
+                    ：
+
+
+
+
+        𝛽5             10.47         9.55-11.36     1.00           13949         11491
+        𝜎𝑐2            2.53          2.46-2.60      1.00           13927         11230
+                   号
+
+
+
+
+              Table 3: Model Estimates with Uncertainty Intervals, Rhat, and ESS values
+       信
+
+
+
+
+5     How Events of Various Sports Impact the Results?
+      微
+
+
+
+
+5.1    Establishment of Indicators
+    This section aims to investigate the influence of events on the outcomes of the Olympic Games.
+Specifically, we seek to determine whether the number of events within each discipline for each
+Olympic game, as well as the types of events, affect the performance of participating countries,
+thereby impacting the overall medal standings.
+                                                              Team 2524070                                                                               Page 15of 25
+
+
+                                                                 The fundamental principle of the GRI algorithm can be expressed through a specific formula,
+                                                              which delineates the disparity between the probability of 𝑚 𝑐 occurring in the presence of 𝜑𝑖 and the
+                                                              overall probability of 𝑚 𝑐 .
+                                                                                                                                                               
+                                                                                                             𝑃(𝑚 𝑐 |𝜑𝑖 )                        1 − 𝑝(𝑚 𝑐 |𝜑𝑖 )
+                                                                        𝐽 (𝑚 𝑐 |𝜑𝑖 ) = 𝑝(𝜑𝑖 ) 𝑝(𝑚 𝑐 |𝜑𝑖 )𝑙𝑜𝑔             + (1 − 𝑝(𝑚 𝑐 |𝜑𝑖 ))𝑙𝑜𝑔                   (8)
+                                                                                                              𝑝(𝑚 𝑐 )                             1 − 𝑝(𝑚 𝑐 )
+
+                                                                  Utilizing the aforementioned algorithm, we conducted an analysis of data from the 29 Summer
+
+
+
+
+                                                                                                                   型
+                                                              Olympic Games in which the United States has participated, spanning the years 1896 to 2024. In
+                                                              accordance with Formula 7, we assigned a value of 0.5 to both 𝜔1 and 𝜔2 , reflecting the equal
+
+
+
+
+                                                                                                                 模
+                                                              significance attributed to the type factor and the number factor of events. Following this, we computed
+                                                              𝜑𝑖 for 65 disciplines based on the established formula, with select data presented in Table 5.
+
+
+
+
+                                                                                                               学
+                                                                 Year Wrestling(𝜑1 ) Athletics(𝜑2 ) Golf(𝜑3 ) Rowing(𝜑4 ) Fencing(𝜑5 ) Swimming(𝜑6 ) ...... 𝑚 𝑐
+
+
+                                                                                                             数
+                                                                 1896      0            0.617          0              0        0           0.061             20
+                                                                 1900      0            0.648        0.068         0.011     0.034         0.023             48
+                                                                 1904    0.160          0.611        0.042         0.097     0.097         0.153            231
+                                                                                                         ：
+                                                                                                                                                     ......
+                                                                 1908    0.052          0.554          0              0        0           0.073             47
+
+
+
+
+                                                                                                        el s
+                                                                 1912    0.009          0.597          0              0      0.036         0.071             64
+                                                                                                       号
+
+                                                                 1920    0.085          0.339          0           0.024     0.036         0.145             95
+                                                                                                      od       ......
+                                                                                        众
+
+
+                                                                 2016    0.045          0.236        0.010         0.035     0.035         0.182            121
+                                                                                                   Hm
+                                                                 2020    0.047          0.218        0.012         0.028     0.040         0.165     ...... 113
+                                                                             公
+
+
+
+
+                                                                 2024    0.051          0.250        0.009         0.038     0.041         0.161            126
+                                                                                                AT
+                                                                            信
+
+
+
+
+                                                                                                Table 5: Events-Medals Data Matrix
+                                                                            微
+
+
+
+
+                                                                  Association rules necessitate the classification of data. For the variable 𝜑𝑖 , classification is
+                                                                                               M
+
+
+
+
+                                                              conducted using the threshold 𝑄 0.5 ; values exceeding 𝑄 0.5 are designated as 1, signifying that the
+                                                                                   ：
+
+
+
+
+                                                              discipline is advantageous, while values that are less than or equal to 𝑄 0.5 are assigned a value of -1,
+                                                              indicating a normative status. In relation to the variable mc, its quantitative representation is illustrated
+                                                              in Figure 4. This variable is categorized into three segments: high, low, and normal, based on the
+                                                                                  号
+
+
+
+
+                                                              prevailing conditions in the United States, with corresponding values of 1, 0, and -1, respectively.
+                                                                             信
+                                                                            微
+
+
+
+
+m m m m m m m
+m
+m   m m m
+            m
+            m
+                  m m m
+                  m m
+                    m
+                        m
+                            m m
+                            m
+                                m
+                                  m   m m
+                                m m m m m
+                                          m m
+                                                  m
+                                                  m
+                                                        m m m m m
+                                                      m m
+                                                      m m
+                                                                m m
+                                                                m   m
+                                                                      m m
+
+                                                                        m
+                                                                                Figure 7: Total Medal Count of the USA in Past Summer Olympics
+m   m m m   m   m   m m m m       m m     m   m   m       m     m   m m m
+m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+m           m         m m     m   m       m m       m m m       m   m
+m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                m m m   m m     m m       m m   m   m m m       m     m m
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+          m   m m m         m m     m m         m         m m       m
+      m m   m         m   m     m           m       m m m   m m m     m
+m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+m   m   m   m     m m             m     m m       m     m   m     m m m m
+m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+Team 2524070                                                                            Page 16of 25
+
+
+    Consequently, we construct a data matrix of dimensions 29 by 66 and employ the GRI algorithm
+to extract the following robust association rules:
+
+
+
+
+           (a) Illustration of 5 Strong Rules                  (b) Network Graph Visualization
+
+                         Figure 8: The Result of Association Rule Model(USA)
+
+    According to the aforementioned criteria, it can be inferred that Basketball, Swimming, Volleyball,
+Judo, Archery, Tennis, and Rhythmic Gymnastics hold considerable significance for the United States.
+Increased participation in these sports may enhance the likelihood of the U.S. securing additional
+medals.
+    Employing a similar analytical framework, it is feasible to derive insights for other nations and
+perform comparative assessments to identify disciplines of importance across multiple countries.
+Furthermore, the previously defined indicator 𝑧𝑖 warrants examination. By calculating the average
+                                                                                                     7
+value of 𝑧𝑖 for all participating countries over the last seven Olympic Games, one can derive 𝑧𝑖 = 17 𝑧𝑖
+                                                                                                     Í
+                                                                                                       𝑖
+(the average medal-winning proportion for each event), which serves as a metric of importance.
+Visualization through a heatmap indicates that Athletics is of considerable significance for numerous
+countries.
+
+
+
+
+                   Figure 9: Importance of Sports(disciplines) to Various Countries
+
+                                                                                                   2
+                                                                                                       关注数学模型
+                                                                                          MATHmodels
+
+
+                                                                                                       获取更多资讯
+                                                              Team 2524070                                                                                                 Page 17of 25
+
+
+                                                                  Moreover, through the application of association rules, we can investigate whether the introduction
+                                                              of new disciplines by the host country contributes positively to the increase in medal counts. We
+                                                              construct item sets as delineated in the table..., where 𝑖 𝑓𝑖𝑛𝑡 indicates whether the new discipline was
+                                                              primarily introduced at the behest of the host country, 𝑖 𝑓 𝑝𝑎𝑟 denotes the host country’s participation in
+                                                              this discipline, 𝑖 𝑓 ℎ𝑎𝑣𝑒 indicates whether the host country secured an award, and 𝑖 𝑓𝑚𝑎𝑥 signifies whether
+                                                              the host country achieved the highest number of awards in this event. Each row of the data matrix
+                                                              encapsulates information regarding the new disciplines introduced in previous Olympic Games:
+
+                                                                                                  Symbol          𝑖 𝑓𝑖𝑛𝑡     𝑖 𝑓 𝑝𝑎𝑟          𝑖 𝑓 ℎ𝑎𝑣𝑒    𝑖 𝑓𝑚𝑎𝑥
+
+
+
+
+                                                                                                                                                     型
+                                                                                                    Sign           1/-1          1/-1          1/-1       1/-1
+
+
+
+
+                                                                                                                                                   模
+                                                                                                    Table 6: Relevant indicators of Host Countries
+
+
+
+
+                                                                                                                                                 学
+                                                                  We designate 𝑖 𝑓𝑖𝑛𝑡 and 𝑖 𝑓 𝑝𝑎𝑟 as the antecedents, while 𝑖 𝑓 ℎ𝑎𝑣𝑒 and 𝑖 𝑓𝑚𝑎𝑥 serve as the consequents,
+                                                              and we perform association analysis utilizing the GRI algorithm to derive the following rules.It can
+
+
+
+
+                                                                                                                                               数
+                                                              be posited that the inclusion of events at the behest of the host country is likely to be advantageous for
+                                                              that country, potentially facilitating an increase in their medal count:
+
+
+                                                                                                                                           ：
+
+                                                                                                                                          el s
+                                                                                                                                         号
+
+                                                                                                                                        od
+                                                                                                                      众
+
+                                                                                                                                     Hm
+                                                                                                      公
+
+                                                                                                                                  AT
+                                                                                                     信
+                                                                                             微
+
+                                                                                                                                 M
+                                                                                                                ：
+
+
+
+                                                                                        (a) Illustration of 2 Strong Rules                      (b) Network Graph Visualization
+
+                                                                                        Figure 10: The Result of Association Rule Model(Host Country)
+                                                                                                               号
+
+
+
+
+                                                              5.3             Results Analysis
+                                                                                                信
+
+
+
+
+                                                                  To assess the efficacy of a rule, it is essential to examine it through the lens of validity indicators
+                                                                                               微
+
+
+
+
+                                                              pertinent to association rules. For instance, consider the association analysis where the antecedent is
+                                                              denoted as 𝜑𝑖 and the consequent as 𝑚 𝑐 :
+
+                                                                            • Support
+                                                                                                                                          Ñ
+                                                                                                                                  𝑁 (𝜑𝑖       𝑚𝑐 )
+m m m m m m m
+m           m
+                  m m m
+                  m m   m
+                            m m
+                            m
+                                  m   m m
+                                m m m m m         m
+                                                        m m m m m
+                                                      m m       m m
+                                                                      m m
+                                                                                                                   𝑆 𝜑𝑖 →𝑚 𝑐 =                                                            (9)
+m
+m
+m
+m
+    m m m
+    m m m
+    m m m
+            m
+            m
+            m
+            m
+m m m m m m m
+                m
+                  m
+                    m
+                    m m m m
+
+
+
+                  m m
+                m m m
+                      m
+                      m m
+                          m
+
+                          m
+                        m m
+                                m
+                                  m m
+                              m m m m m
+                              m   m
+                                m m m m
+                                m m
+                                          m m
+                                          m
+
+                                          m m
+
+                                          m m
+                                              m
+
+
+
+                                                m
+                                                m
+                                                  m
+                                                  m
+                                                m m
+                                                      m m
+
+                                                        m m m m m m
+                                                    m m m
+                                                      m m
+                                                    m m m
+                                                          m
+
+
+
+                                                            m
+                                                                m
+                                                                m
+
+                                                                m
+                                                                m
+                                                                m
+                                                                    m   m
+                                                                    m m m
+
+                                                                    m
+                                                                      m
+
+                                                                    m m m
+                                                                      m m
+                                                                                                                                          𝑁
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+          m   m m m         m m     m m         m         m m       m
+      m m   m         m   m     m           m       m m m   m m m     m
+m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+m   m   m   m     m m             m     m m       m     m   m     m m m m
+m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+                                                             Team 2524070                                                                             Page 18of 25
+
+                                                                      Ñ
+m m m m m m m
+m
+m
+m
+    m m m
+    m m m
+            m
+            m
+            m   m
+                  m m m
+                  m m
+                    m
+                        m
+
+                    m m m m
+                            m m
+                            m
+                                  m   m m
+                                m m m m m
+                                m
+                                  m m
+                                          m m
+                                          m   m
+                                                  m
+                                                  m
+                                                  m
+                                                        m m m m m
+                                                      m m
+                                                      m m
+                                                          m
+                                                                m
+                                                                m
+                                                                 𝑁 (𝜑𝑖 𝑚 𝑐 ) signifies the number of transactions that include both 𝜑𝑖 and 𝑚 𝑐 , while N denotes the
+                                                                m m
+                                                                    m
+                                                                      m m
+
+                                                                        m
+                                                                    m m m
+m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+
+
+
+
+                                                             total number of transactions. The support metric of the rule indicates its generalizability; a higher
+m           m         m m     m   m       m m       m m m       m   m
+m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                m m m   m m     m m       m m   m   m m m       m     m m
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+
+
+
+
+m m m m
+m
+m m
+    m
+      m m m
+      m
+
+      m m
+
+        m
+          m m
+          m
+
+
+
+
+        m m
+            m
+
+            m
+                m
+              m m m
+
+              m m m
+
+              m m
+                  m m
+                      m
+                        m m m m m
+                        m
+
+
+
+                      m m
+
+                      m m
+                          m
+                            m m
+
+                            m m
+                                m
+
+
+
+                            m m m
+                                  m
+                                  m
+                                    m
+                              m m m m m
+                                    m m
+
+                                      m
+                                        m
+                                          m m
+
+
+
+                                          m
+                                        m m
+                                      m m m
+                                            m
+
+
+
+                                            m
+                                                m m
+                                                m
+
+                                              m m
+
+                                                m
+                                                  m
+
+
+
+
+                                                  m
+                                                        m
+                                                        m
+
+                                                    m m m
+
+
+
+                                                    m
+                                                        m
+                                                            m
+
+                                                          m m
+                                                             support value suggests a greater universality of the rule. In general, the minimum level for support
+                                                                m m
+                                                            m m m m m m m
+
+                                                            m m m
+                                                          m m m m
+                                                            m
+                                                        m m m
+                                                                    m
+
+                                                                    m
+                                                                      m m
+
+
+
+                                                                      m
+                                                                        m
+                                                                  m m m m
+                                                                m m m   m
+
+
+
+
+                                                             can be established at a fairly low point.
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+
+
+
+
+                                                                            • Confidence
+                                                                                                                       Ñ
+                                                                                                                 𝑁 (𝜑𝑖 𝑚 𝑐 ) 𝑆 𝜑𝑖 →𝑚 𝑐
+                                                                                                      𝐶𝜑𝑖 →𝑚 𝑐 =            =                                        (10)
+                                                                                                                    𝑁 (𝜑𝑖 )     𝑆 𝜑𝑖
+
+                                                                 𝑁 (𝜑𝑖 ) represents the number of transactions that include 𝜑𝑖 . The confidence of the rule can be
+                                                             interpreted as a conditional probability; a higher confidence level indicates a stronger reliability of the
+                                                             rule. In general, the minimum confidence threshold should be established at a fairly high level.
+
+                                                                            • Lift
+                                                                                                                   Ñ    
+                                                                                                             𝑁 (𝜑𝑖 𝑚 𝑐 ) 𝑁 (𝑚 𝑐 ) 𝐶𝜑𝑖 →𝑚 𝑐
+                                                                                                 𝐿 𝜑𝑖 →𝑚 𝑐 =                     =                                   (11)
+                                                                                                                𝑁 (𝜑𝑖 )    𝑁       𝑆𝑚𝑐
+
+                                                                 The lift of a rule is defined as the ratio of the rule’s confidence to the support of the consequent.
+                                                             This metric illustrates the extent to which the antecedent influences the consequent in comparison
+                                                             to the overall context. Consequently, when 𝐿 𝜑𝑖 →𝑚 𝑐 > 1 holds true, the antecedent exerts a positive
+                                                             influence on the consequent, with a greater lift indicating a stronger degree of positive influence.
+                                                             Conversely, if 𝐿 𝜑𝑖 →𝑚 𝑐 < 1 is true, even with high support and confidence, the rule still not be deemed
+                                                             effective.
+
+                                                                            • Deployment Capability
+
+                                                                                                          𝐷 𝜑𝑖 →𝑚 𝑐 = 𝑆 𝜑𝑖 − 𝑆 𝜑𝑖 →𝑚 𝑐                               (12)
+
+                                                                 Deployment capability measures the proportion of instances where the antecedent is true but the
+                                                             consequent is not. A higher deployment capability suggests greater potential for improvement in the
+                                                             rule; therefore, a lower deployment capability is generally preferred.
+                                                                 In conclusion, we have conducted a validity analysis of the rule outcomes from the preceding
+                                                             section, and the findings indicate that all our rules are valid and of considerable quality.
+
+
+
+
+                                                                                                                                                                 2
+                                                                                                                                                                     关注数学模型
+                                                                                                                                                        MATHmodels
+
+
+                                                                                                                                                                     获取更多资讯
+                                                              Team 2524070                                                                               Page 19of 25
+
+
+                                                                                      Antecedent      Consequent Supp. Conf. Lift Deploy. Rules Strength
+                                                                                     Basketball=1
+                                                                                     Swimming=1
+                                                                                                       𝑚 𝑐 =high 34.48 90.0 3.175 2.448        •••
+                                                                                     Volleyball=1
+                                                                                        Judo=1
+                                                                                Rhythmic Gymnastics=1 𝑚 𝑐 =high 31.03 88.89 2.148 3.447         ••
+                                                                                      Archery=1
+                                                                                                       𝑚 𝑐 =high 34.48 80.0 1.933 6.896          •
+                                                                                       Tennis =1
+                                                                                 Art Competitions=-1
+
+
+
+
+                                                                                                                                        型
+                                                                                      Diving=-1
+                                                                                                       𝑚 𝑐 =high 41.38 83.33 2.014 6.898        ••
+                                                                                 Modern Pentathlon=-1
+
+
+
+
+                                                                                                                                      模
+                                                                                        Polo=-1
+                                                                                 Art Competitions=-1
+
+
+
+
+                                                                                                                                    学
+                                                                                      Diving=-1
+                                                                                                       𝑚 𝑐 =high 41.38 83.33 2.014 6.898        ••
+                                                                                 Modern Pentathlon=-1
+
+
+
+
+                                                                                                                                  数
+                                                                                       Rugby=-1
+                                                                                              Table 7: Analysis of the Validity of Association Rules 1
+
+                                                                                                                              ：
+
+                                                                                                                             el s
+                                                                                                                            号
+                                                                                    Antecedent Consequent Supp. Conf. Lift Deploy. Rules Strength
+
+
+
+
+                                                                                                                           od
+                                                                                      𝑖 𝑓𝑖𝑛𝑡 =1
+                                                                                                𝑖 𝑓 ℎ𝑎𝑣𝑒 =1 80.56 100    1.2     0      •••
+                                                                                                             众
+
+                                                                                     𝑖 𝑓 𝑝𝑎𝑟 =1                         Hm
+                                                                                      𝑖 𝑓𝑖𝑛𝑡 =1
+                                                                                                𝑖 𝑓𝑚𝑎𝑥 =1   80.56 68.97 1.241 24.998      •
+                                                                                                 公
+
+
+                                                                                     𝑖 𝑓 𝑝𝑎𝑟 =1
+                                                                                              Table 8: Analysis of the Validity of Association Rules 2
+                                                                                                                     AT
+                                                                                                信
+                                                                                         微
+
+
+
+
+                                                              6               Could a Great Coach Boost Your Country’s Medal Count?
+                                                                                                                    M
+
+
+
+                                                                  In competitive sports, achieving success depends not only on the skills and training of athletes
+                                                                                                        ：
+
+
+
+
+                                                              but also significantly on the influence of coaches. The term "great coach" refers to those who
+                                                              achieve remarkable achievements with various teams or countries due to their outstanding tactical
+                                                                                                       号
+
+
+
+
+                                                              knowledge, extensive expertise, and ability to inspire their teams. These coaches are not limited
+                                                              by their nationality; they can transcend borders, sharing their coaching experience and strategies in
+                                                                                            信
+
+
+
+
+                                                              diverse sports environments, which can enhance the overall performance of their teams. However, this
+                                                              is merely a perception. Is the "great coach" effect genuinely real? In the following discussion, we will
+                                                                                           微
+
+
+
+
+                                                              explore the existence of the "great coach" effect and attempt to assess its impact on the medal tallies
+                                                              of different nations.
+                                                                            To examine the "Great Coach" phenomenon, we initially selected four prominent coaches:
+
+                                                                            1. Lang Ping, who led the U.S. women’s volleyball team to a silver medal at the 2008 Beijing
+                                                                               Olympics and guided the Chinese women’s volleyball team to a gold medal at the 2016 Rio
+m m m m m m m
+m           m
+                  m m m
+                  m m   m
+                            m m
+                            m
+                                  m   m m
+                                m m m m m         m
+                                                        m m m m m
+                                                      m m       m m
+                                                                      m m
+                                                                               Olympics;
+m   m m m   m       m           m         m m     m   m m       m   m   m
+m   m m m   m   m   m m m m       m m     m   m   m       m     m   m m m
+m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+m           m         m m     m   m       m m       m m m       m   m
+m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                m m m   m m     m m       m m   m   m m m       m     m m
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+          m   m m m         m m     m m         m         m m       m
+      m m   m         m   m     m           m       m m m   m m m     m
+m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+m   m   m   m     m m             m     m m       m     m   m     m m m m
+m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+Team 2524070                                                                             Page 20of 25
+
+
+   2. Bela Karolyi, the head coach of the women’s gymnastics team, led the Romanian team to three
+      gold medals, one silver medal and two bronze medals at the 1976 Montreal Olympics. He later
+      coached the U.S. team to a gold medal at the 1996 Atlanta Olympics.
+
+   3. Anastasia Bliznyuk, who began coaching in China in 2022, secured a gold medal in the Group
+      All-Around Rhythmic Gymnastics event at the 2024 Paris Olympics;
+
+   4. Erwann Le Péchoux, who has been coaching the Chinese fencing team since 2021 and won a
+      gold medal in Men’s Foil Team fencing.
+
+6.1    Analysis of Variance, Mixed-effects Model
+    We aim to investigate the role of a "great coach" as a variable influencing a country’s sports
+performance. This variable has two levels: a value of 1 indicates the presence of a "great coach," while
+a value of 0 indicates their absence. However, we recognize that the effectiveness of a "great coach"
+may depend on the specific conditions within a country. Even with an outstanding coach, if the athletes
+are unable to collaborate effectively or lack the necessary skills, the country’s sports performance may
+not improve. Therefore, it is essential to consider each country’s unique circumstances alongside the
+"great coach" factor to accurately assess the coach’s impact.
+     To facilitate this analysis, we will categorize our units of analysis into distinct "blocks", each
+comprising a specific coach and the country they represent. For example, Lang Ping coaching the U.S.
+team would represent one block, while her coaching of the Chinese team would constitute another.
+This approach will enhance our understanding of the relationship between coaches and countries and
+its impact on performance.
+   In our analysis, the presence of a "great coach" will be treated as a fixed effect, enabling us to
+concentrate on the specific impact of each coach. Conversely, the "block effect" will be regarded as a
+random effect, given that our study involves a limited selection of coaches and countries.
+   In summary, a country’s performance can be decomposed as follows:
+
+                                         𝑆𝑐𝑜𝑟𝑒 = 𝜑0 + 𝜑1 𝜔 + 𝛿 + 𝜀                                                                           (13)
+                                     (
+                                         1,   if a "great" coach is present
+                                𝜔=                                                                                                           (14)
+                                         0,   if no "great" coach is present
+                                     𝛿 ∼ N(0, 𝜎𝛿2 ),     𝜀 ∼ N(0, 𝜎 2 )                                                                      (15)
+
+In this context, 𝜑1 denotes the constant effect of the "great coach", 𝛿 signifies the random effect
+associated with the block, and 𝜀 stands for the error term.
+
+6.2    Definition of the Response Variable                                                 m m m m m m m
+                                                                                           m
+                                                                                           m
+                                                                                           m
+                                                                                               m m m
+                                                                                               m m m
+                                                                                                       m
+                                                                                                       m
+                                                                                                       m   m
+                                                                                                             m m m
+                                                                                                             m m
+                                                                                                               m
+                                                                                                                   m
+
+                                                                                                               m m m m
+                                                                                                                       m m
+                                                                                                                       m   m m m m m
+                                                                                                                           m
+                                                                                                                             m
+
+
+
+                                                                                                                             m m
+                                                                                                                                 m m
+
+                                                                                                                                     m m
+                                                                                                                                     m   m
+                                                                                                                                             m
+                                                                                                                                             m
+                                                                                                                                             m
+                                                                                                                                                   m m m m m
+                                                                                                                                                 m m
+                                                                                                                                                 m m
+                                                                                                                                                     m
+                                                                                                                                                           m m
+                                                                                                                                                           m
+                                                                                                                                                           m
+                                                                                                                                                               m
+                                                                                                                                                                 m m
+
+                                                                                                                                                                   m
+                                                                                                                                                               m m m
+                                                                                           m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+                                                                                           m           m         m m     m   m       m m       m m m       m   m
+                                                                                           m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                                                                                                           m m m   m m     m m       m m   m   m m m       m     m m
+                                                                                               m     m m     m m m m       m m     m   m m m       m m m m m m m m
+
+
+
+
+    How should we define the response variable? We believe that using the total number of medals
+                                                                                           m
+                                                                                             m
+                                                                                               m
+
+                                                                                           m m m
+                                                                                                 m m m m
+
+
+
+                                                                                                 m m m
+                                                                                                 m
+                                                                                                   m
+
+
+
+
+                                                                                                     m
+                                                                                                       m
+
+                                                                                                     m m
+                                                                                                         m m
+
+                                                                                                         m
+                                                                                                           m
+
+                                                                                                           m
+
+                                                                                                           m
+                                                                                                             m
+
+
+
+
+                                                                                                         m m m
+                                                                                                               m
+                                                                                                               m
+                                                                                                                   m
+
+                                                                                                                 m m m
+
+
+
+                                                                                                                   m
+                                                                                                                       m
+                                                                                                                   m m m m m m
+
+                                                                                                                         m
+                                                                                                                   m m m m m
+                                                                                                                         m m m m m
+                                                                                                                       m m
+                                                                                                                           m m m m
+
+
+
+                                                                                                                             m
+                                                                                                                               m
+
+                                                                                                                               m
+                                                                                                                                 m m
+
+
+
+
+                                                                                                                               m m
+                                                                                                                                   m
+                                                                                                                                     m m m m
+                                                                                                                                     m
+                                                                                                                                       m
+
+
+
+                                                                                                                                       m
+                                                                                                                                     m m
+                                                                                                                                           m m m m m m m m
+                                                                                                                                           m
+
+
+
+
+                                                                                                                                           m
+                                                                                                                                             m
+                                                                                                                                               m
+                                                                                                                                               m
+                                                                                                                                         m m m m m
+
+                                                                                                                                           m m
+                                                                                                                                                   m m
+                                                                                                                                                   m m m m
+
+                                                                                                                                                   m
+                                                                                                                                                   m
+                                                                                                                                                     m m
+                                                                                                                                                       m
+
+                                                                                                                                                     m m
+                                                                                                                                                           m
+                                                                                                                                                             m m
+                                                                                                                                                             m
+                                                                                                                                                           m m
+                                                                                                                                                       m m m m m m m
+                                                                                                                                                               m
+                                                                                                                                                                   m
+                                                                                                                                                                   m
+                                                                                                                                                                   m
+
+                                                                                                                                                                 m m
+
+
+
+
+earned by teams led by "great coaches" is not appropriate. Gold, silver, and bronze medals should not
+                                                                                                 m m   m         m   m     m           m       m m m   m m m     m
+                                                                                           m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+                                                                                           m   m   m   m     m m             m     m m       m     m   m     m m m m
+                                                                                           m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+                                                                                             m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+                                                                                           m     m                 m   m   m m m m m m m m   m m m m     m m     m
+                                                                                           m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+                                                                                           m   m   m         m   m   m m m     m m           m         m m   m   m m
+
+
+
+
+be treated as equal; for some nations, achieving their first bronze medal is a significant milestone, while
+                                                                                           m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+                                                                                           m m   m       m m m m       m     m         m     m   m       m m       m
+                                                                                           m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+                                                                                                 m m           m             m   m m m m m   m         m m   m   m m
+                                                                                                 m     m           m   m     m m m   m     m m   m       m m m   m m
+                                                                                                               m m       m m m m       m m m
+                                                                                           m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+                                                                                           m           m   m m   m     m m   m m m m m m       m m m   m           m
+
+
+
+
+for already successful countries, progressing from silver to gold represents a substantial advancement.
+                                                                                           m
+                                                                                           m
+                                                                                           m
+                                                                                           m
+                                                                                               m m m
+                                                                                               m m m
+                                                                                               m m m
+                                                                                                       m
+                                                                                                       m
+                                                                                                       m
+                                                                                                       m
+                                                                                           m m m m m m m
+                                                                                                           m m m
+                                                                                                           m
+
+                                                                                                           m m
+                                                                                                                 m
+                                                                                                                   m
+                                                                                                                   m
+
+
+
+                                                                                                           m m m m m
+                                                                                                                     m
+                                                                                                                   m m
+                                                                                                                       m
+                                                                                                                       m
+                                                                                                                           m m
+
+                                                                                                                           m
+
+                                                                                                                           m
+                                                                                                                             m
+                                                                                                                                 m
+
+                                                                                                                                 m
+                                                                                                                                   m m m m m m m m m
+
+                                                                                                                               m m m
+
+                                                                                                                                 m m m
+                                                                                                                                               m m m
+                                                                                                                                                 m m
+                                                                                                                                     m m m m m m m
+                                                                                                                                               m m
+                                                                                                                                                       m
+                                                                                                                                                       m
+                                                                                                                                                       m
+                                                                                                                                                       m
+                                                                                                                                                           m m m
+                                                                                                                                                           m m m
+                                                                                                                                                           m m m
+                                                                                                                                                                   m
+                                                                                                                                                                   m
+                                                                                                                                                                   m
+                                                                                                                                                                   m
+                                                                                                                                                       m m m m m m m
+
+
+
+
+Selecting only one type of medal fails to capture the true impact of "great coaches". Furthermore,
+
+                                                                                                       2
+                                                                                                                                          关注数学模型
+                                                                                           MATHmodels
+
+
+                                                                                                                                          获取更多资讯
+Team 2524070                                                                                    Page 22of 25
+
+
+          Random Effects       Variance        Std. Dev.
+               Block          7.220e-14        2.687e-07
+              Residual          9.395            3.065
+          Number of observations: 32, groups: block, 5
+           Fixed Effects       Estimate       Std. Error            df       t value       Pr(>|t|)
+            (Intercept)         0.4118              0.7434      30.0000       0.554        0.584
+           Fixed Factor         6.7216              1.0858      30.0000       6.190     8.2e-07 ***
+          Significance codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                            Table 11: Random and Fixed Effects Summary
+
+
+
+
+                  (a) Distribution of Gold Medals            (b) Distribution of Total Medals
+
+                    Figure 11: QQ Plot and Residuals Plot for Model Diagnostics
+
+
+    The QQ plot indicates that the data fails to satisfy the normality assumption, and the residual plot
+reveals a noticeable trend. To address this issue, we apply the Box-Cox transformation in an effort to
+adjust the parameters to align with the Gauss-Markov assumptions. Since the Box-Cox transformation
+requires the data to be positive and our dataset contains zeros, we have adjusted the values by adding
+one to each. The calculated coefficient for the Box-Cox transformation is 0.38. After performing the
+transformation and refitting the data, we generate new QQ and residual plots.
+
+
+
+
+                  (a) Distribution of Gold Medals            (b) Distribution of Total Medals
+
+   Figure 12: QQ Plot and Residuals Plot for Model Diagnostics(After Box-Cox Transformation)
+
+
+                                                                                                          2
+                                                                                                              关注数学模型
+                                                                                                 MATHmodels
+
+
+                                                                                                              获取更多资讯
+                                                              Team 2524070                                                                                     Page 23of 25
+
+
+                                                                  At this stage, the QQ plot shows a slanted straight line, with data points scattered around it,
+                                                              indicating that the data appears to satisfy the normality assumption. However, an analysis of the residual
+                                                              plot reveals that there is still a noticeable trend in the data following the Box-Cox transformation,
+                                                              suggesting that the residuals do not meet the homoscedasticity requirement. Consequently, we applied
+                                                              White’s robust standard errors to adjust and evaluate the model fitting results, which are presented
+                                                              in the table below. The effect of the "great coach" factor, obtained through the Box-Cox inverse
+
+
+
+
+                                                                                                                           型
+                                                                                Variable         Estimate   Std. Error   t value    Pr(>|t|)   CI Lower   CI Upper   df
+
+
+
+
+                                                                                                                         模
+                                                                                (Intercept)       0.1289     0.08992     1.434       0.1619    -0.05471    0.3126    30
+                                                                                Fixed Factor      1.1719     0.14391     8.143     4.329e-09    0.87800    1.4658    30
+
+
+
+
+                                                                                                                       学
+                                                                                           Table 12: Model Estimates with Confidence Intervals and t-Statistics
+
+
+
+
+                                                                                                                     数
+                                                              transformation formula, is 3.74.                   ：
+                                                              6.5              Results
+
+
+
+
+                                                                                                                el s
+                                                                 We conducted research to identify countries eager to achieve breakthroughs in specific sporting
+                                                                                                               号
+
+                                                              events. We found that Australia is particularly focused on advancing in basketball and tennis, with
+
+                                                                                                              od
+                                                              tennis being a traditional sport. However, in recent years, both men’s singles tennis and men’s
+                                                                                                 众
+
+
+                                                              basketball have failed to secure any medals. A similar situation is observed in France with men’s
+                                                                                                           Hm
+                                                              100m sprint athletics and in Canada with men’s basketball.
+                                                                                   公
+
+
+
+                                                                 Based on the estimated "Great Coach" effect and the conversion relationship between effect size
+                                                              and medal weight, if these nations choose to invest in a "great coach", the following outcomes are
+                                                                                                        AT
+                                                                                  信
+
+
+
+
+                                                              expected:
+                                                                            微
+
+                                                                                                       M
+
+
+
+                                                                            1. For countries that currently lack the capacity to secure a medal, there is a 74.8% probability of
+                                                                               winning a silver medal following investment;
+                                                                                            ：
+
+
+
+
+                                                                            2. For countries that can achieve a bronze medal but not a silver, there is a 57.4% probability of
+                                                                               winning a gold medal following investment;
+                                                                                           号
+
+
+
+
+                                                                            3. For countries that are capable of winning a silver medal but not a gold, there is an 87.4%
+                                                                             信
+
+
+
+
+                                                                               probability of winning a gold medal following investment.
+                                                                            微
+
+
+
+
+                                                                              Figure 13: If these countries invest in great coaches, they will reap the rewards of medals.
+m m m m m m m     m m m     m m   m   m m               m m m m m     m m
+m           m     m m   m   m   m m m m m         m   m m       m m
+m   m m m   m       m           m         m m     m   m m       m   m   m
+m   m m m   m   m   m m m m       m m     m   m   m       m     m   m m m
+m   m m m   m     m   m   m   m m m m m         m m     m m m m m m   m
+m           m         m m     m   m       m m       m m m       m   m
+m m m m m m m     m m     m     m m m m         m     m m   m   m   m m m
+                m m m   m m     m m       m m   m   m m m       m     m m
+    m     m m     m m m m       m m     m   m m m       m m m m m m m m
+m   m         m m   m   m   m   m m m m         m m m m m m m m         m
+  m   m m m m   m   m   m m m m m m   m m   m   m   m   m m     m       m
+m m m   m     m   m   m m m         m     m m m m   m   m m m m   m m   m
+            m   m             m   m       m   m m m m m   m m     m
+      m m m             m m m m m   m   m   m     m     m   m   m m   m m
+      m   m m   m       m     m m m m m   m m   m m     m   m m m m m m m
+          m   m m m         m m     m m         m         m m       m
+      m m   m         m   m     m           m       m m m   m m m     m
+m m m m       m m m   m m   m m   m   m   m   m m         m m m m   m   m
+m   m   m   m     m m             m     m m       m     m   m     m m m m
+m m     m m   m m     m m   m m m     m m m     m   m   m m m   m m m   m
+  m   m     m       m   m   m   m   m     m   m m     m   m m     m m
+m     m                 m   m   m m m m m m m m   m m m m     m m     m
+m   m m m   m m m m m   m     m       m m m m m   m m     m m   m   m   m
+m   m   m         m   m   m m m     m m           m         m m   m   m m
+m m   m     m m m   m   m m   m m m m   m   m m m m   m     m m         m
+m m   m       m m m m       m     m         m     m   m       m m       m
+m m m m   m m   m   m   m     m m m     m       m       m   m m   m     m
+      m m           m             m   m m m m m   m         m m   m   m m
+      m     m           m   m     m m m   m     m m   m       m m m   m m
+                    m m       m m m m       m m m
+m m m m m m m   m   m   m   m   m   m   m   m   m   m   m   m m m m m m m
+m           m   m m   m     m m   m m m m m m       m m m   m           m
+m   m m m   m   m m m   m   m   m m     m m m m m m m m m   m   m m m   m
+m   m m m   m   m       m   m         m             m m m   m   m m m   m
+m   m m m   m         m   m     m   m m m             m m   m   m m m   m
+m           m   m m     m m       m   m   m m m m m m m     m           m
+m m m m m m m   m m m m m       m     m m m         m m     m m m m m m m
+Team 2524070                                                                             Page 24of 25
+
+
+7     What Else Is Included in Our Model?
+    While conventional wisdom holds that "more events lead to higher medal chances", our Bayesian
+regression model shows: The regression coefficient for event count (𝛽4 ) has a 95% Highest Density
+Interval (HDI) that fully overlaps with zero. This means increasing the number of events entered
+does not have a statistically significant impact on a nation’s total medal count.
+    Furthermore, the findings from the Events-Medals Association Rule Model in the United States
+show a significant link between restricted involvement in specific sports and an increased total medal
+tally for the nation. This suggests that it is crucial for a country to carefully select the events it
+competes in, rather than taking part in a wide range of competitions.
+    Strategic Implications for Olympic Committees:
+
+    1. Resource Reallocation Opportunity: Concentrating resources on dominant events rather than
+       dispersing them across multiple disciplines may create a "focus effect" for higher returns.
+
+    2. Qualification Strategy Overhaul: Transition from a "quantity-driven" participation model to
+       a "medal conversion rate" evaluation system to prioritize high-potential events.
+
+    3. Talent Development Shift: Targeted investments in athletes/projects with podium potential
+       yield better results than a broad but shallow approach to talent cultivation.
+
+
+8     Model Evaluation
+8.1    Advantages
+    1. Zero-Inflated Negative Binomial Model.
+
+        (a) This model generally has two elements: one uses a binomial distribution to represent the
+            creation of zeros, and the other applies a negative binomial distribution to describe the
+            non-zero values. This two-part framework allows the model to effectively handle both true
+            zero counts and non-zero count data at the same time.
+        (b) Unlike regression models or machine learning algorithms designed for continuous out-
+            comes, the Zero-Inflated Negative Binomial model is specifically tailored for count data. It
+            ensures that predictions are non-negative integers, thus avoiding the problem of predicting
+            continuous values or negative numbers, which would be unrealistic in count data scenarios.
+
+    2. GRI Association Rule Model.
+
+        (a) Association rule mining is an automated analysis method that does not rely on pre-set
+            hypotheses but directly extracts relationships from data, avoiding biases from manual
+            assumptions.
+        (b) This model can handle large-scale datasets. The historical data of the Olympics involves
+            a vast and complex array of data from multiple countries, spanning various years, and
+            numerous events, and using association rules can efficiently reveal the intricate relationships
+            between the data.
+
+                                                                                                    2
+                                                                                                        关注数学模型
+                                                                                           MATHmodels
+
+
+                                                                                                        获取更多资讯
+Team 2524070                                                                           Page 25of 25
+
+
+       (c) The output of association rules is typically presented in the form of "if... then...", making
+           the interpretation of the rules intuitive and easy to understand.
+       (d) GRI can discover multi-level associations. For example, it can reveal not only the relation-
+           ship between a single event and the total number of medals but also the combined impact
+           of multiple events on the number of medals.
+
+  3. Mixed-effects Model. Mixed-effects models are highly effective for assessing significant differ-
+     ences among various levels of factors and accurately estimating the effects associated with fixed
+     factor levels. This model facilitates the investigation of the "great coach" effect, showcasing
+
+
+
+
+                                                           型
+     both efficacy and clarity in their application.
+
+
+
+
+                                                         模
+8.2   Limitations
+
+
+
+
+                                                       学
+  1. The resolution of the zero-inflated negative binomial model is accomplished through the imple-
+     mentation of the Markov Chain Monte Carlo (MCMC) algorithm, which necessitates consider-
+     able computational resources and is marked by lengthy processing times.
+
+
+
+                                                     数
+  2. Forecasting medal counts utilizes a simulation approach that also demands significant compu-
+                                                 ：
+     tational resources and entails extended solving durations.
+
+
+
+
+                                                el s
+  3. When mining rules, GRI may encounter false positive issues (irrelevant rules mistakenly iden-
+                                               号
+
+     tified as having strong associations). For instance, we may not be particularly concerned about
+
+                                              od
+     strong rules where mc equals 0, but such rules can still occur.
+                                众
+
+                                           Hm
+References
+                   公
+
+
+
+
+[1] Csurilla, Gergely, and Imre Fertő. 2024. "How to win the first Olympic medal? And the second?".
+                                        AT
+                  信
+
+
+
+
+    Social Science Quarterly 105: 1544–1564. https://doi.org/10.1111/ssqu.13436.
+           微
+
+
+
+
+[2] Olympic Games France Delegation.
+                                       M
+
+
+
+
+[3] How patience helps French sprinter Lemaitre to aim for a third Olympic podium.
+                           ：
+
+
+
+
+[4] World Bank.
+                          号
+              信
+             微
+
